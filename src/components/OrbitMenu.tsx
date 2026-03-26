@@ -31,11 +31,13 @@ const menuItems: OrbitItem[] = [
 interface OrbitMenuProps {
   isAuthenticated: boolean;
   userName?: string;
+  userAvatar?: string;
   onLoginClick?: () => void;
   onLogout?: () => void;
+  onItemClick?: (label: string) => void;
 }
 
-export default function OrbitMenu({ isAuthenticated, userName, onLoginClick, onLogout }: OrbitMenuProps) {
+export default function OrbitMenu({ isAuthenticated, userName, userAvatar, onLoginClick, onLogout, onItemClick }: OrbitMenuProps) {
   const radius = 240; // px from center
   const iconSize = 80;
 
