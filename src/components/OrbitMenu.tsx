@@ -99,7 +99,10 @@ export default function OrbitMenu({ isAuthenticated, userName, userAvatar, onLog
                   width: iconSize,
                 }}
               >
-                <div className={`flex flex-col items-center gap-1 ${isAuthenticated ? "cursor-pointer hover:scale-110 transition-transform" : ""}`}>
+              <div
+                onClick={() => isAuthenticated && onItemClick?.(item.label)}
+                className={`flex flex-col items-center gap-1 ${isAuthenticated ? "cursor-pointer hover:scale-110 transition-transform" : ""}`}
+              >
                   <img
                     src={item.icon}
                     alt={item.label}
