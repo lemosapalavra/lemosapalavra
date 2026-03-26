@@ -64,7 +64,7 @@ export default function OrbitMenu({ isAuthenticated, userName, onLoginClick, onL
         alt="Lemos a Palavra"
         width={220}
         height={220}
-        className="absolute z-10 drop-shadow-xl"
+        className={`absolute z-10 drop-shadow-xl transition-all duration-700 ${!isAuthenticated ? "grayscale opacity-70" : ""}`}
         style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
       />
 

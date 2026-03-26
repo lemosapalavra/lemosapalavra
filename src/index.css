@@ -123,8 +123,8 @@
 }
 
 .orbit-container {
-  animation: orbit-spin 30s linear infinite;
+  animation: orbit-spin 60s linear infinite;
 }
 .orbit-counter {
-  animation: orbit-counter-spin 30s linear infinite;
+  animation: orbit-counter-spin 60s linear infinite;
 }
