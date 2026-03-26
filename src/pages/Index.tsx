@@ -2,9 +2,19 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import OrbitMenu from "@/components/OrbitMenu";
 
+const labelToRoute: Record<string, string> = {
+  "BÍBLIA": "/biblia",
+  "LOUVORES": "/louvores",
+  "MÚSICAS": "/musicas",
+  "DEVOCIONAIS": "/devocionais",
+  "PEDIDOS\nDE ORAÇÃO": "/pedidos-oracao",
+  "ATIVIDADES": "/atividades",
+  "HISTÓRIAS": "/historias",
+};
+
 export default function Index() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+  const [user, setUser] = useState<{ name: string; email: string; avatar?: string } | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem("lemos_user");
@@ -18,6 +28,11 @@ export default function Index() {
     setUser(null);
   };
 
+  const handleItemClick = (label: string) => {
+    const route = labelToRoute[label];
+    if (route) navigate(route);
+  };
+
   return (
     <div
       className="min-h-screen flex items-center justify-center overflow-hidden"
@@ -27,8 +42,10 @@ export default function Index() {
         <OrbitMenu
           isAuthenticated={!!user}
           userName={user?.name}
+          userAvatar={user?.avatar}
           onLoginClick={() => navigate("/login")}
           onLogout={handleLogout}
+          onItemClick={handleItemClick}
         />
       </div>
     </div>
