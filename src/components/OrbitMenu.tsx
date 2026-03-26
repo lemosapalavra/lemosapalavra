@@ -31,21 +31,23 @@ const menuItems: OrbitItem[] = [
 interface OrbitMenuProps {
   isAuthenticated: boolean;
   userName?: string;
+  userAvatar?: string;
   onLoginClick?: () => void;
   onLogout?: () => void;
+  onItemClick?: (label: string) => void;
 }
 
-export default function OrbitMenu({ isAuthenticated, userName, onLoginClick, onLogout }: OrbitMenuProps) {
+export default function OrbitMenu({ isAuthenticated, userName, userAvatar, onLoginClick, onLogout, onItemClick }: OrbitMenuProps) {
   const radius = 240; // px from center
   const iconSize = 80;
 
   return (
     <div className="relative flex items-center justify-center" style={{ width: 600, height: 600 }}>
       {/* Top: login or user */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-20">
+      <div className="absolute -top-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-20">
         {isAuthenticated ? (
           <button onClick={onLogout} className="flex flex-col items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
-            <img src={iconUsuario} alt="Usuário" width={70} height={70} className="rounded-full shadow-lg" />
+            <img src={userAvatar || iconUsuario} alt="Usuário" width={70} height={70} className="rounded-full shadow-lg border-2 border-primary/30" />
             <span className="orbit-label text-secondary">Olá,</span>
             <span className="orbit-label">{userName || "USUÁRIO"}</span>
           </button>
@@ -97,7 +99,10 @@ export default function OrbitMenu({ isAuthenticated, userName, onLoginClick, onL
                   width: iconSize,
                 }}
               >
-                <div className={`flex flex-col items-center gap-1 ${isAuthenticated ? "cursor-pointer hover:scale-110 transition-transform" : ""}`}>
+              <div
+                onClick={() => isAuthenticated && onItemClick?.(item.label)}
+                className={`flex flex-col items-center gap-1 ${isAuthenticated ? "cursor-pointer hover:scale-110 transition-transform" : ""}`}
+              >
                   <img
                     src={item.icon}
                     alt={item.label}

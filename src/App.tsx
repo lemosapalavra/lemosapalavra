@@ -5,6 +5,13 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import Login from "./pages/Login.tsx";
+import Biblia from "./pages/Biblia.tsx";
+import Louvores from "./pages/Louvores.tsx";
+import Musicas from "./pages/Musicas.tsx";
+import Devocionais from "./pages/Devocionais.tsx";
+import PedidosOracao from "./pages/PedidosOracao.tsx";
+import Atividades from "./pages/Atividades.tsx";
+import Historias from "./pages/Historias.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -18,6 +25,13 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/biblia" element={<Biblia />} />
+          <Route path="/louvores" element={<Louvores />} />
+          <Route path="/musicas" element={<Musicas />} />
+          <Route path="/devocionais" element={<Devocionais />} />
+          <Route path="/pedidos-oracao" element={<PedidosOracao />} />
+          <Route path="/atividades" element={<Atividades />} />
+          <Route path="/historias" element={<Historias />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
