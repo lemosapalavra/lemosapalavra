@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import PageHeader from "@/components/PageHeader";
 import iconMusicas from "@/assets/icon-musicas.png";
 
 const categories = [
@@ -11,19 +11,10 @@ const categories = [
 ];
 
 export default function Musicas() {
-  const navigate = useNavigate();
-
   return (
-    <div className="min-h-screen py-8 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
+    <div className="min-h-screen py-6 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
       <div className="max-w-4xl mx-auto">
-        <button onClick={() => navigate("/")} className="btn-cartoon px-4 py-2 text-sm mb-6">← Voltar</button>
-        <div className="flex items-center gap-4 mb-8">
-          <img src={iconMusicas} alt="Músicas" width={80} height={80} className="rounded-full shadow-lg" />
-          <div>
-            <h1 className="font-display text-3xl font-bold text-foreground">Músicas</h1>
-            <p className="text-muted-foreground font-body">Arte, Harmonia, Melodia e Ritmo</p>
-          </div>
-        </div>
+        <PageHeader title="Músicas" subtitle="Arte, Harmonia, Melodia e Ritmo" icon={iconMusicas} />
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {categories.map((cat, i) => (
             <div key={i} className="bg-popover rounded-2xl p-5 shadow-md hover:shadow-lg hover:scale-105 transition-all cursor-pointer border border-border text-center">

@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-
 import logoCentral from "@/assets/logo-central.png";
 import iconBiblia from "@/assets/icon-biblia.png";
 import iconLouvores from "@/assets/icon-louvores.png";
@@ -38,13 +36,13 @@ interface OrbitMenuProps {
 }
 
 export default function OrbitMenu({ isAuthenticated, userName, userAvatar, onLoginClick, onLogout, onItemClick }: OrbitMenuProps) {
-  const radius = 240; // px from center
+  const radius = 240;
   const iconSize = 80;
 
   return (
     <div className="relative flex items-center justify-center" style={{ width: 600, height: 600 }}>
-      {/* Top: login or user */}
-      <div className="absolute -top-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-20">
+      {/* Top: login or user — positioned higher to avoid icon overlap */}
+      <div className="absolute -top-24 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-20">
         {isAuthenticated ? (
           <button onClick={onLogout} className="flex flex-col items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
             <img src={userAvatar || iconUsuario} alt="Usuário" width={70} height={70} className="rounded-full shadow-lg border-2 border-primary/30" />
@@ -72,7 +70,6 @@ export default function OrbitMenu({ isAuthenticated, userName, userAvatar, onLog
 
       {/* Orbiting icons */}
       <div
-        className={isAuthenticated ? "" : ""}
         style={{
           position: "absolute",
           width: radius * 2,
@@ -99,10 +96,10 @@ export default function OrbitMenu({ isAuthenticated, userName, userAvatar, onLog
                   width: iconSize,
                 }}
               >
-              <div
-                onClick={() => isAuthenticated && onItemClick?.(item.label)}
-                className={`flex flex-col items-center gap-1 ${isAuthenticated ? "cursor-pointer hover:scale-110 transition-transform" : ""}`}
-              >
+                <div
+                  onClick={() => isAuthenticated && onItemClick?.(item.label)}
+                  className={`flex flex-col items-center gap-1 ${isAuthenticated ? "cursor-pointer hover:scale-110 transition-transform" : ""}`}
+                >
                   <img
                     src={item.icon}
                     alt={item.label}

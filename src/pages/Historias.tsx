@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import PageHeader from "@/components/PageHeader";
 import iconHistorias from "@/assets/icon-historias.png";
 
 import avatarDavi from "@/assets/avatar-davi.png";
@@ -22,19 +22,10 @@ const stories = [
 ];
 
 export default function Historias() {
-  const navigate = useNavigate();
-
   return (
-    <div className="min-h-screen py-8 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
+    <div className="min-h-screen py-6 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
       <div className="max-w-4xl mx-auto">
-        <button onClick={() => navigate("/")} className="btn-cartoon px-4 py-2 text-sm mb-6">← Voltar</button>
-        <div className="flex items-center gap-4 mb-8">
-          <img src={iconHistorias} alt="Histórias" width={80} height={80} className="rounded-full shadow-lg" />
-          <div>
-            <h1 className="font-display text-3xl font-bold text-foreground">Histórias</h1>
-            <p className="text-muted-foreground font-body">Histórias bíblicas para toda família</p>
-          </div>
-        </div>
+        <PageHeader title="Histórias" subtitle="Histórias bíblicas para toda família" icon={iconHistorias} />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {stories.map((s, i) => (
             <div key={i} className="bg-popover rounded-2xl p-4 shadow-md hover:shadow-lg hover:scale-105 transition-all cursor-pointer border border-border flex items-center gap-4">

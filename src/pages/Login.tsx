@@ -58,14 +58,18 @@ export default function Login() {
     if (isRegister) {
       if (!role) return;
       if (!finalAvatar) return;
-      const userData = { name, birthDate, role, email, avatar: finalAvatar };
+      if (!password || password.length < 6) {
+        alert("A senha deve ter pelo menos 6 caracteres.");
+        return;
+      }
+      const userData = { name, birthDate, role, email, password, avatar: finalAvatar };
       localStorage.setItem("lemos_user", JSON.stringify(userData));
     } else {
       const stored = localStorage.getItem("lemos_user");
       if (stored) {
         const userData = JSON.parse(stored);
-        if (userData.email !== email) {
-          alert("E-mail não encontrado. Cadastre-se primeiro.");
+        if (userData.email !== email || userData.password !== password) {
+          alert("E-mail ou senha incorretos.");
           return;
         }
       } else {
@@ -145,36 +149,47 @@ export default function Login() {
             className={inputClass}
           />
 
-          {!isRegister && (
-            <input
-              type="password"
-              placeholder="Senha"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className={inputClass}
-            />
-          )}
+          <input
+            type="password"
+            placeholder="Senha"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            minLength={6}
+            className={inputClass}
+          />
 
           {isRegister && (
             <>
               {/* Avatar selection */}
               <div>
                 <p className="font-body text-sm text-foreground mb-2">Escolha seu avatar:</p>
-                <div className="grid grid-cols-5 gap-2">
+                <div className="grid grid-cols-5 gap-3">
                   {avatars.map((av) => (
                     <button
                       key={av.name}
                       type="button"
+                      title={av.name}
                       onClick={() => { setSelectedAvatar(av.src); setCustomAvatar(""); }}
-                      className={`rounded-full border-3 transition-all overflow-hidden ${
+                      className={`relative group rounded-full border-3 transition-all overflow-hidden ${
                         selectedAvatar === av.src && !customAvatar
                           ? "border-primary scale-110 ring-2 ring-primary/50"
                           : "border-transparent hover:border-primary/30"
                       }`}
                     >
                       <img src={av.src} alt={av.name} className="w-full h-full rounded-full" />
+                      <span className="absolute -bottom-0 left-0 right-0 bg-foreground/70 text-primary-foreground text-[10px] font-display font-bold text-center py-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {av.name}
+                      </span>
                     </button>
+                  ))}
+                </div>
+                {/* Show names below avatars */}
+                <div className="grid grid-cols-5 gap-3 mt-1">
+                  {avatars.map((av) => (
+                    <span key={av.name} className="text-center text-[10px] font-display font-bold text-foreground">
+                      {av.name}
+                    </span>
                   ))}
                 </div>
               </div>
