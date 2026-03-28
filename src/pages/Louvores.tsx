@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
+import FeedbackFooter from "@/components/FeedbackFooter";
 import iconLouvores from "@/assets/icon-louvores.png";
 
 const louvores = [

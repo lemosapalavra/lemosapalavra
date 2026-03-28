@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
+import FeedbackFooter from "@/components/FeedbackFooter";
 import iconHistorias from "@/assets/icon-historias.png";
 
 import avatarDavi from "@/assets/avatar-davi.png";

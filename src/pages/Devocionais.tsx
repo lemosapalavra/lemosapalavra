@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
+import FeedbackFooter from "@/components/FeedbackFooter";
 import iconDevocionais from "@/assets/icon-devocionais.png";
 
 const devos = [
