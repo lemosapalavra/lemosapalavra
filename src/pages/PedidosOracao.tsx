@@ -112,6 +112,7 @@ export default function PedidosOracao() {
           ))}
         </div>
       </div>
+      <FeedbackFooter />
     </div>
   );
 }
