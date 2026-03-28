@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
+import FeedbackFooter from "@/components/FeedbackFooter";
 import iconBiblia from "@/assets/icon-biblia.png";
 
 const antigoTestamento = [

@@ -71,6 +71,7 @@ export default function Historias() {
           </div>
         )}
       </div>
+      <FeedbackFooter />
     </div>
   );
 }

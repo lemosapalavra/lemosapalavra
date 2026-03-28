@@ -74,6 +74,7 @@ export default function Musicas() {
           })}
         </div>
       </div>
+      <FeedbackFooter />
     </div>
   );
 }

@@ -66,6 +66,7 @@ export default function Devocionais() {
           </div>
         )}
       </div>
+      <FeedbackFooter />
     </div>
   );
 }

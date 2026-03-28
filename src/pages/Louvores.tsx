@@ -49,6 +49,7 @@ export default function Louvores() {
           })}
         </div>
       </div>
+      <FeedbackFooter />
     </div>
   );
 }
