@@ -12,6 +12,8 @@ import avatarJose from "@/assets/avatar-jose.png";
 import avatarMaria from "@/assets/avatar-maria.png";
 import avatarMateus from "@/assets/avatar-mateus.png";
 import avatarMoises from "@/assets/avatar-moises.png";
+import avatarPedro from "@/assets/avatar-pedro.png";
+import avatarTiago from "@/assets/avatar-tiago.png";
 
 const avatars = [
   { src: avatarJesus, name: "Jesus" },
@@ -23,6 +25,8 @@ const avatars = [
   { src: avatarJose, name: "José" },
   { src: avatarJoao, name: "João" },
   { src: avatarMateus, name: "Mateus" },
+  { src: avatarPedro, name: "Pedro" },
+  { src: avatarTiago, name: "Tiago" },
   { src: avatarAnjo, name: "Anjo" },
 ];
 

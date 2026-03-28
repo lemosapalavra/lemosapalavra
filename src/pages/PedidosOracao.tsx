@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import PageHeader from "@/components/PageHeader";
+import FeedbackFooter from "@/components/FeedbackFooter";
 import iconPedidos from "@/assets/icon-pedidos-oracao.png";
 
 const tiposOracao = [
@@ -111,6 +112,7 @@ export default function PedidosOracao() {
           ))}
         </div>
       </div>
+      <FeedbackFooter />
     </div>
   );
 }
