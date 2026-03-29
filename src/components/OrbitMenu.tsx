@@ -6,6 +6,7 @@ import iconMusicas from "@/assets/icon-musicas.png";
 import iconAtividades from "@/assets/icon-atividades.png";
 import iconDevocionais from "@/assets/icon-devocionais.png";
 import iconPedidosOracao from "@/assets/icon-pedidos-oracao.png";
+import iconAlbum from "@/assets/icon-album.png";
 import iconLogin from "@/assets/icon-login.png";
 import iconUsuario from "@/assets/icon-usuario.png";
 
@@ -18,12 +19,13 @@ interface OrbitItem {
 
 const menuItems: OrbitItem[] = [
   { icon: iconBiblia, label: "BÍBLIA", sublabel: "66 livros", angle: -90 },
-  { icon: iconLouvores, label: "LOUVORES", sublabel: "Adoração a Deus", angle: -40 },
-  { icon: iconMusicas, label: "MÚSICAS", sublabel: "Arte, Harmonia,\nMelodia e ritmo", angle: 10 },
-  { icon: iconDevocionais, label: "DEVOCIONAIS", angle: 60 },
-  { icon: iconPedidosOracao, label: "PEDIDOS\nDE ORAÇÃO", angle: 110 },
-  { icon: iconAtividades, label: "ATIVIDADES", angle: 160 },
-  { icon: iconHistorias, label: "HISTÓRIAS", angle: 210 },
+  { icon: iconLouvores, label: "LOUVORES", sublabel: "Adoração a Deus", angle: -45 },
+  { icon: iconMusicas, label: "MÚSICAS", sublabel: "Arte, Harmonia,\nMelodia e ritmo", angle: 0 },
+  { icon: iconDevocionais, label: "DEVOCIONAIS", angle: 45 },
+  { icon: iconPedidosOracao, label: "PEDIDOS\nDE ORAÇÃO", angle: 90 },
+  { icon: iconAtividades, label: "ATIVIDADES", angle: 135 },
+  { icon: iconHistorias, label: "HISTÓRIAS", angle: 180 },
+  { icon: iconAlbum, label: "ÁLBUM", sublabel: "Figurinhas\nBíblicas", angle: 225 },
 ];
 
 interface OrbitMenuProps {
@@ -37,11 +39,11 @@ interface OrbitMenuProps {
 
 export default function OrbitMenu({ isAuthenticated, userName, userAvatar, onLoginClick, onLogout, onItemClick }: OrbitMenuProps) {
   const radius = 240;
-  const iconSize = 80;
+  const iconSize = 75;
 
   return (
     <div className="relative flex items-center justify-center" style={{ width: 600, height: 600 }}>
-      {/* Top: login or user — positioned higher to avoid icon overlap */}
+      {/* Top: login or user */}
       <div className="absolute -top-24 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-20">
         {isAuthenticated ? (
           <button onClick={onLogout} className="flex flex-col items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
@@ -59,14 +61,16 @@ export default function OrbitMenu({ isAuthenticated, userName, userAvatar, onLog
       </div>
 
       {/* Central logo */}
-      <img
-        src={logoCentral}
-        alt="Lemos a Palavra"
-        width={220}
-        height={220}
-        className={`absolute z-10 drop-shadow-xl transition-all duration-700 ${!isAuthenticated ? "grayscale opacity-70" : ""}`}
-        style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
-      />
+      <div className="absolute z-10 flex flex-col items-center" style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
+        <img
+          src={logoCentral}
+          alt="Lemos a Palavra"
+          width={200}
+          height={200}
+          className={`drop-shadow-xl transition-all duration-700 ${!isAuthenticated ? "grayscale opacity-70" : ""}`}
+        />
+        <span className="font-display text-sm font-bold text-foreground mt-1 text-center leading-tight">Clubinho da Palavra</span>
+      </div>
 
       {/* Orbiting icons */}
       <div
