@@ -33,7 +33,7 @@ export default function Configuracao() {
     const lastVisit = localStorage.getItem("lemos_last_visit") || "";
 
     setStats({
-      totalVisits: Object.values(visits).reduce((a: number, b: any) => a + (b as number), 0),
+      totalVisits: Object.values(visits).reduce<number>((a, b) => a + Number(b), 0),
       pedidos: pedidos.length,
       feedbacks: feedbacks.length,
       stickers: stickers.length,
