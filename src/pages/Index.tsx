@@ -12,6 +12,7 @@ const labelToRoute: Record<string, string> = {
   "PEDIDOS\nDE ORAÇÃO": "/pedidos-oracao",
   "ATIVIDADES": "/atividades",
   "HISTÓRIAS": "/historias",
+  "ÁLBUM": "/atividades?album=1",
 };
 
 export default function Index() {
@@ -22,7 +23,6 @@ export default function Index() {
     const stored = localStorage.getItem("lemos_user");
     if (stored) {
       const u = JSON.parse(stored);
-      // Award daily visit coins
       const today = new Date().toDateString();
       const lastVisit = localStorage.getItem("lemos_last_visit");
       if (lastVisit !== today) {
@@ -49,9 +49,9 @@ export default function Index() {
       className="min-h-screen flex flex-col items-center overflow-hidden relative"
       style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}
     >
-      {/* Top right: user info */}
+      {/* Top right: user info + config gear */}
       {user && (
-        <div className="absolute top-4 right-4 z-30 flex items-center gap-3 bg-popover/90 rounded-2xl px-4 py-2 shadow-lg border border-border">
+        <div className="absolute top-4 right-4 z-30 flex items-center gap-2 bg-popover/90 rounded-2xl px-4 py-2 shadow-lg border border-border">
           <div className="text-right">
             <p className="font-display text-sm font-bold text-foreground">{user.name}</p>
             <div className="flex items-center gap-1 justify-end">
@@ -64,11 +64,18 @@ export default function Index() {
             alt={user.name}
             className="w-12 h-12 rounded-full border-2 border-primary/30 shadow-md"
           />
+          <button
+            onClick={() => navigate("/config")}
+            className="ml-1 w-8 h-8 rounded-full bg-muted/50 flex items-center justify-center hover:bg-muted transition-colors"
+            title="Configurações"
+          >
+            ⚙️
+          </button>
         </div>
       )}
 
       <div className="flex-1 flex items-center justify-center">
-        <div className="scale-[0.65] sm:scale-75 md:scale-90 lg:scale-100">
+        <div className="scale-[0.6] sm:scale-[0.7] md:scale-[0.85] lg:scale-100">
           <OrbitMenu
             isAuthenticated={!!user}
             userName={user?.name}
