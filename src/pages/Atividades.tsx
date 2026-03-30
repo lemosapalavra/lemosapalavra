@@ -1,168 +1,150 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import iconAtividades from "@/assets/icon-atividades.png";
 
-// Generate 250 sticker data
-const stickerCategories = [
-  { name: "Personagens Bíblicos", emojis: ["👦", "👧", "👴", "👵", "👨", "👩", "🧔", "👸", "🤴", "👼"] },
-  { name: "Animais da Bíblia", emojis: ["🐑", "🐪", "🦁", "🐟", "🕊️", "🐴", "🐂", "🐍", "🦅", "🐘"] },
-  { name: "Lugares Sagrados", emojis: ["⛪", "🏔️", "🌊", "🏜️", "🌅", "🌳", "🏰", "⛺", "🗻", "🌄"] },
-  { name: "Objetos Bíblicos", emojis: ["📜", "🏺", "⚔️", "🛡️", "🪨", "🕯️", "🍞", "🍷", "💍", "🎺"] },
-  { name: "Milagres", emojis: ["✨", "🌟", "🔥", "🌈", "💧", "🌊", "☁️", "⭐", "💫", "🌙"] },
+const quizQuestions = [
+  { q: "Quem construiu a arca?", options: ["Moisés", "Noé", "Abraão", "Davi"], correct: 1 },
+  { q: "Quantos discípulos Jesus teve?", options: ["10", "11", "12", "13"], correct: 2 },
+  { q: "Quem matou Golias?", options: ["Saul", "Josué", "Davi", "Sansão"], correct: 2 },
+  { q: "Qual o primeiro livro da Bíblia?", options: ["Êxodo", "Gênesis", "Salmos", "Mateus"], correct: 1 },
+  { q: "Quem foi jogado na cova dos leões?", options: ["Jonas", "Daniel", "Paulo", "Pedro"], correct: 1 },
+  { q: "Onde Jesus nasceu?", options: ["Nazaré", "Jerusalém", "Belém", "Cafarnaum"], correct: 2 },
+  { q: "Quem batizou Jesus?", options: ["Pedro", "Paulo", "João Batista", "Tiago"], correct: 2 },
+  { q: "Quantos livros tem a Bíblia?", options: ["39", "27", "66", "73"], correct: 2 },
 ];
 
-const stickerNames = [
-  // Personagens (50)
-  "Adão", "Eva", "Noé", "Abraão", "Sara", "Isaque", "Rebeca", "Jacó", "Raquel", "José",
-  "Moisés", "Arão", "Miriã", "Josué", "Calebe", "Débora", "Gideão", "Sansão", "Rute", "Samuel",
-  "Davi", "Salomão", "Elias", "Eliseu", "Isaías", "Jeremias", "Daniel", "Jonas", "Ester", "Neemias",
-  "Maria", "José (pai)", "Jesus Bebê", "Jesus Menino", "Jesus Adulto", "João Batista", "Pedro", "Paulo", "Lucas", "Mateus",
-  "Marcos", "Tiago", "André", "Felipe", "Tomé", "Bartolomeu", "Judas", "Maria Madalena", "Lázaro", "Zaqueu",
-  // Animais (50)
-  "Ovelha Perdida", "Camelo de Rebeca", "Leão de Daniel", "Peixe de Jonas", "Pomba de Noé", "Corvo de Elias", "Burra de Balaão", "Serpente do Éden", "Águia de Isaías", "Cordeiro Pascal",
-  "Boi da Manjedoura", "Jumento de Jesus", "Peixes e Pães", "Carneiro de Abraão", "Gafanhotos de João", "Cão de Lázaro", "Urso de Davi", "Formiga Sábia", "Baleias do Mar", "Cabras do Rebanho",
-  "Cavalos do Apocalipse", "Lobos e Ovelhas", "Leoa e Filhotes", "Pássaros do Céu", "Abelhas de Sansão", "Rãs do Egito", "Moscas da Praga", "Gato do Templo", "Borboleta Renascida", "Tartaruga Paciente",
-  "Girafa Curiosa", "Elefante Fiel", "Hipopótamo de Jó", "Crocodilo do Nilo", "Coelho Saltitante", "Cervo Sedento", "Andorinha do Templo", "Galinha Protetora", "Cisne Gracioso", "Flamingo Rosa",
-  "Pinguim Pequeno", "Panda Amigo", "Urso Polar", "Cachorro Amigo", "Gatinho Carinhoso", "Papagaio Falante", "Tucano Colorido", "Arara Azul", "Beija-flor Veloz", "Borboleta do Jardim",
-  // Lugares (50)
-  "Jardim do Éden", "Monte Sinai", "Mar Vermelho", "Terra Prometida", "Belém", "Nazaré", "Jerusalém", "Templo de Salomão", "Rio Jordão", "Monte das Oliveiras",
-  "Getsêmani", "Calvário", "Tumba Vazia", "Estrada de Damasco", "Arca de Noé", "Torre de Babel", "Poço de Jacó", "Tabernáculo", "Deserto do Sinai", "Jericó",
-  "Babilônia", "Egito Antigo", "Palácio de Faraó", "Cova dos Leões", "Fornalha de Fogo", "Cenáculo", "Betânia", "Cafarnaum", "Galileia", "Samaria",
-  "Mar da Galileia", "Monte Carmelo", "Vale de Elá", "Nínive", "Tiro e Sidom", "Antioquia", "Roma Antiga", "Ilha de Patmos", "Corinto", "Éfeso",
-  "Filipos", "Tessalônica", "Creta", "Malta", "Sodoma", "Gomorra", "Monte Nebo", "Vale do Jordão", "Deserto de Judá", "Monte Hermon",
-  // Objetos (50)
-  "Tábuas da Lei", "Vara de Moisés", "Cajado de Davi", "Funda de Davi", "Arca da Aliança", "Maná do Céu", "Sarça Ardente", "Coluna de Fogo", "Estrela de Belém", "Presentes dos Magos",
-  "Coroa de Espinhos", "Cruz de Jesus", "Pão da Ceia", "Cálice da Comunhão", "Manto de Elias", "Chave de Pedro", "Espada do Espírito", "Escudo da Fé", "Capacete da Salvação", "Cinturão da Verdade",
-  "Sandálias da Paz", "Harpa de Davi", "Trombeta de Jericó", "Jarro de Azeite", "Rede de Pesca", "Lâmpada da Parábola", "Moeda da Viúva", "Perfume de Maria", "Toalha de Jesus", "Túnica de José",
-  "Pergaminho Sagrado", "Candelabro do Templo", "Altar de Incenso", "Mesa dos Pães", "Cortina do Templo", "Pedra Angular", "Semente da Parábola", "Trigo e Joio", "Pérola Preciosa", "Tesouro Escondido",
-  "Talentos de Ouro", "Denário Romano", "Rolo de Isaías", "Pedras do Peito", "Óleo da Unção", "Sal da Terra", "Fermento do Pão", "Frutos do Espírito", "Árvore da Vida", "Água da Vida",
-  // Milagres (50)
-  "Criação do Mundo", "Separação das Águas", "Pragas do Egito", "Travessia do Mar", "Água da Rocha", "Queda de Jericó", "Sol Parou", "Fogo do Céu", "Multiplicação dos Pães", "Água em Vinho",
-  "Cura do Cego", "Cura do Paralítico", "Ressurreição de Lázaro", "Tempestade Acalmada", "Caminhando sobre Água", "Pesca Milagrosa", "Transfiguração", "Ressurreição de Jesus", "Ascensão ao Céu", "Pentecostes",
-  "Cura de Naamã", "Machado Flutuando", "Azeite da Viúva", "Filho da Sunamita", "Muro de Fogo", "Escada de Jacó", "Burro que Falou", "Visão de Ezequiel", "Sonho de José", "Peixe com Moeda",
-  "Sombra de Pedro", "Terremoto na Prisão", "Víbora sem Veneno", "Toalha de Paulo", "Cura do Leproso", "Demônios nos Porcos", "Filha de Jairo", "Servo do Centurião", "Mulher Curada", "Dez Leprosos",
-  "Cego Bartimeu", "Surdo-Mudo", "Mão Mirrada", "Orelha Restaurada", "Anjo Libertador", "Línguas de Fogo", "Nuvem de Glória", "Arco-Íris de Noé", "Cidade Celestial", "Novo Céu e Nova Terra",
-];
-
-const activities = [
-  { title: "Colorir", emoji: "🎨", desc: "Desenhos bíblicos para pintar" },
-  { title: "Quiz Bíblico", emoji: "❓", desc: "Teste seus conhecimentos" },
-  { title: "Caça-Palavras", emoji: "🔍", desc: "Encontre as palavras escondidas" },
-  { title: "Quebra-Cabeça", emoji: "🧩", desc: "Monte cenas da Bíblia" },
-  { title: "Ligar os Pontos", emoji: "✏️", desc: "Descubra personagens bíblicos" },
-  { title: "Jogo da Memória", emoji: "🃏", desc: "Exercite sua memória com a Bíblia" },
-];
+const memoryCards = ["🐑", "🕊️", "🐟", "🦁", "⭐", "🌈", "🔥", "💧"];
 
 export default function Atividades() {
-  const [showAlbum, setShowAlbum] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(0);
+  const [activeGame, setActiveGame] = useState<string | null>(null);
+  const [quizIndex, setQuizIndex] = useState(0);
+  const [quizScore, setQuizScore] = useState(0);
+  const [quizDone, setQuizDone] = useState(false);
+  const [memoryBoard, setMemoryBoard] = useState<string[]>([]);
+  const [memoryFlipped, setMemoryFlipped] = useState<number[]>([]);
+  const [memoryMatched, setMemoryMatched] = useState<number[]>([]);
 
-  // Load collected stickers from localStorage
-  const collected = useMemo(() => {
-    try {
-      return JSON.parse(localStorage.getItem("lemos_stickers") || "[]") as number[];
-    } catch { return [] as number[]; }
-  }, []);
+  const activities = [
+    { title: "Quiz Bíblico", emoji: "❓", desc: "Teste seus conhecimentos", id: "quiz" },
+    { title: "Jogo da Memória", emoji: "🃏", desc: "Exercite sua memória", id: "memory" },
+    { title: "Colorir", emoji: "🎨", desc: "Desenhos bíblicos (em breve)", id: "soon" },
+    { title: "Caça-Palavras", emoji: "🔍", desc: "Encontre palavras (em breve)", id: "soon" },
+    { title: "Quebra-Cabeça", emoji: "🧩", desc: "Monte cenas (em breve)", id: "soon" },
+    { title: "Ligar os Pontos", emoji: "✏️", desc: "Descubra personagens (em breve)", id: "soon" },
+  ];
 
-  const buySticker = () => {
-    const user = JSON.parse(localStorage.getItem("lemos_user") || "{}");
-    const coins = user.coins || 0;
-    if (coins < 5) {
-      alert("Você precisa de pelo menos 5 moedinhas para comprar uma figurinha!");
-      return;
-    }
-    // Pick a random uncollected sticker
-    const uncollected = stickerNames.map((_, i) => i).filter(i => !collected.includes(i));
-    if (uncollected.length === 0) {
-      alert("Parabéns! Você já tem todas as figurinhas! 🎉");
-      return;
-    }
-    const randomIdx = uncollected[Math.floor(Math.random() * uncollected.length)];
-    const newCollected = [...collected, randomIdx];
-    localStorage.setItem("lemos_stickers", JSON.stringify(newCollected));
-    user.coins = coins - 5;
-    localStorage.setItem("lemos_user", JSON.stringify(user));
-    alert(`Você ganhou a figurinha: ${stickerNames[randomIdx]}! 🎉`);
-    window.location.reload();
+  const startQuiz = () => {
+    setActiveGame("quiz");
+    setQuizIndex(0);
+    setQuizScore(0);
+    setQuizDone(false);
   };
 
-  const getCategoryStickers = (catIdx: number) => {
-    const start = catIdx * 50;
-    return stickerNames.slice(start, start + 50);
+  const answerQuiz = (idx: number) => {
+    if (idx === quizQuestions[quizIndex].correct) {
+      setQuizScore(s => s + 1);
+    }
+    if (quizIndex + 1 >= quizQuestions.length) {
+      setQuizDone(true);
+      // Award coins
+      const user = JSON.parse(localStorage.getItem("lemos_user") || "{}");
+      user.coins = (user.coins || 0) + quizScore + 1;
+      localStorage.setItem("lemos_user", JSON.stringify(user));
+    } else {
+      setQuizIndex(i => i + 1);
+    }
   };
 
-  if (showAlbum) {
-    const catStickers = getCategoryStickers(selectedCategory);
-    const catStart = selectedCategory * 50;
+  const startMemory = () => {
+    const shuffled = [...memoryCards, ...memoryCards].sort(() => Math.random() - 0.5);
+    setMemoryBoard(shuffled);
+    setMemoryFlipped([]);
+    setMemoryMatched([]);
+    setActiveGame("memory");
+  };
 
+  const flipCard = (idx: number) => {
+    if (memoryFlipped.length === 2 || memoryFlipped.includes(idx) || memoryMatched.includes(idx)) return;
+    const newFlipped = [...memoryFlipped, idx];
+    setMemoryFlipped(newFlipped);
+    if (newFlipped.length === 2) {
+      if (memoryBoard[newFlipped[0]] === memoryBoard[newFlipped[1]]) {
+        setMemoryMatched(m => [...m, ...newFlipped]);
+        setMemoryFlipped([]);
+        if (memoryMatched.length + 2 === memoryBoard.length) {
+          const user = JSON.parse(localStorage.getItem("lemos_user") || "{}");
+          user.coins = (user.coins || 0) + 3;
+          localStorage.setItem("lemos_user", JSON.stringify(user));
+          setTimeout(() => alert("Parabéns! Você ganhou 3 moedinhas! 🪙"), 300);
+        }
+      } else {
+        setTimeout(() => setMemoryFlipped([]), 800);
+      }
+    }
+  };
+
+  if (activeGame === "quiz") {
     return (
       <div className="min-h-screen py-6 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
-        <div className="max-w-4xl mx-auto">
-          <PageHeader title="Álbum de Figurinhas" subtitle={`${collected.length} de ${stickerNames.length} coletadas`} icon={iconAtividades} />
+        <div className="max-w-lg mx-auto">
+          <PageHeader title="Quiz Bíblico" subtitle={`Pergunta ${quizIndex + 1}/${quizQuestions.length}`} icon={iconAtividades} />
+          {quizDone ? (
+            <div className="bg-popover rounded-2xl p-6 shadow-lg border border-border text-center">
+              <span className="text-6xl block mb-4">🏆</span>
+              <h2 className="font-display text-2xl font-bold text-foreground">Parabéns!</h2>
+              <p className="font-body text-lg text-foreground mt-2">Você acertou {quizScore} de {quizQuestions.length}!</p>
+              <p className="font-body text-sm text-primary mt-1">+{quizScore} moedinhas ganhas! 🪙</p>
+              <button onClick={() => setActiveGame(null)} className="btn-cartoon px-6 py-3 mt-4">Voltar</button>
+            </div>
+          ) : (
+            <div className="bg-popover rounded-2xl p-6 shadow-lg border border-border">
+              <h3 className="font-display text-lg font-bold text-foreground mb-4">{quizQuestions[quizIndex].q}</h3>
+              <div className="space-y-2">
+                {quizQuestions[quizIndex].options.map((opt, i) => (
+                  <button
+                    key={i}
+                    onClick={() => answerQuiz(i)}
+                    className="w-full text-left px-4 py-3 rounded-xl border-2 border-border bg-background hover:border-primary hover:bg-primary/10 transition-all font-body text-foreground"
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+              <p className="font-body text-xs text-muted-foreground mt-3 text-center">Pontuação: {quizScore} 🪙</p>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
-          <div className="flex gap-2 mb-4">
-            <button onClick={() => setShowAlbum(false)} className="px-4 py-2 rounded-full font-display text-sm font-bold bg-background text-foreground border border-border hover:border-primary/50">
-              ← Voltar
-            </button>
-            <button onClick={buySticker} className="btn-cartoon px-4 py-2 text-sm">
-              🪙 Comprar Figurinha (5 moedas)
-            </button>
-          </div>
-
-          {/* Progress bar */}
-          <div className="bg-background rounded-full h-4 mb-4 overflow-hidden border border-border">
-            <div
-              className="bg-primary h-full rounded-full transition-all"
-              style={{ width: `${(collected.length / stickerNames.length) * 100}%` }}
-            />
-          </div>
-
-          {/* Category tabs */}
-          <div className="flex gap-2 mb-4 flex-wrap">
-            {stickerCategories.map((cat, i) => (
-              <button
-                key={i}
-                onClick={() => setSelectedCategory(i)}
-                className={`px-3 py-1.5 rounded-full font-display text-xs font-bold transition-all ${
-                  selectedCategory === i
-                    ? "bg-primary text-primary-foreground shadow-lg"
-                    : "bg-popover text-foreground border border-border"
-                }`}
-              >
-                {cat.emojis[0]} {cat.name}
-              </button>
-            ))}
-          </div>
-
-          {/* Sticker grid */}
-          <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2">
-            {catStickers.map((name, i) => {
-              const globalIdx = catStart + i;
-              const isCollected = collected.includes(globalIdx);
-              const cat = stickerCategories[selectedCategory];
-              const emoji = cat.emojis[i % cat.emojis.length];
-
+  if (activeGame === "memory") {
+    return (
+      <div className="min-h-screen py-6 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
+        <div className="max-w-lg mx-auto">
+          <PageHeader title="Jogo da Memória" subtitle="Encontre os pares!" icon={iconAtividades} />
+          <button onClick={() => setActiveGame(null)} className="mb-4 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
+          <div className="grid grid-cols-4 gap-3">
+            {memoryBoard.map((card, i) => {
+              const isVisible = memoryFlipped.includes(i) || memoryMatched.includes(i);
               return (
-                <div
-                  key={globalIdx}
-                  className={`aspect-square rounded-xl border-2 flex flex-col items-center justify-center text-center p-1 transition-all ${
-                    isCollected
-                      ? "bg-popover border-primary/50 shadow-md"
-                      : "bg-muted/30 border-border opacity-40"
+                <button
+                  key={i}
+                  onClick={() => flipCard(i)}
+                  className={`aspect-square rounded-xl text-3xl flex items-center justify-center border-2 transition-all ${
+                    isVisible
+                      ? "bg-primary/10 border-primary"
+                      : "bg-popover border-border hover:border-primary/50"
                   }`}
-                  title={isCollected ? name : "???"}
                 >
-                  <span className="text-xl">{isCollected ? emoji : "❓"}</span>
-                  <span className="text-[8px] font-display font-bold text-foreground leading-tight mt-0.5">
-                    {isCollected ? name : `#${globalIdx + 1}`}
-                  </span>
-                </div>
+                  {isVisible ? card : "❓"}
+                </button>
               );
             })}
           </div>
+          <p className="font-body text-xs text-muted-foreground mt-3 text-center">Pares encontrados: {memoryMatched.length / 2}/{memoryCards.length}</p>
         </div>
-        <FeedbackFooter />
       </div>
     );
   }
@@ -171,25 +153,17 @@ export default function Atividades() {
     <div className="min-h-screen py-6 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
       <div className="max-w-4xl mx-auto">
         <PageHeader title="Atividades" subtitle="Aprenda brincando!" icon={iconAtividades} />
-
-        {/* Album banner */}
-        <div
-          onClick={() => setShowAlbum(true)}
-          className="bg-gradient-to-r from-primary/20 to-secondary/20 rounded-2xl p-5 mb-6 shadow-lg border border-primary/30 cursor-pointer hover:scale-[1.02] transition-all"
-        >
-          <div className="flex items-center gap-4">
-            <span className="text-5xl">📖</span>
-            <div>
-              <h3 className="font-display text-xl font-bold text-foreground">📸 Álbum Colecionável Bíblico</h3>
-              <p className="font-body text-sm text-muted-foreground">250 figurinhas religiosas para colecionar! Compre com moedinhas e troque com amigos.</p>
-              <p className="font-display text-xs font-bold text-primary mt-1">{collected.length}/{stickerNames.length} figurinhas coletadas</p>
-            </div>
-          </div>
-        </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {activities.map((a, i) => (
-            <div key={i} className="bg-popover rounded-2xl p-5 shadow-md hover:shadow-lg hover:scale-105 transition-all cursor-pointer border border-border text-center">
+            <div
+              key={i}
+              onClick={() => {
+                if (a.id === "quiz") startQuiz();
+                else if (a.id === "memory") startMemory();
+                else alert("Em breve! 🚀");
+              }}
+              className="bg-popover rounded-2xl p-5 shadow-md hover:shadow-lg hover:scale-105 transition-all cursor-pointer border border-border text-center"
+            >
               <span className="text-4xl block mb-2">{a.emoji}</span>
               <h3 className="font-display text-lg font-bold text-foreground">{a.title}</h3>
               <p className="font-body text-sm text-muted-foreground mt-1">{a.desc}</p>

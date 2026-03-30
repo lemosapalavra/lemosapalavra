@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import iconBiblia from "@/assets/icon-biblia.png";
+import iconVT from "@/assets/icon-velho-testamento.jpg";
+import iconNT from "@/assets/icon-novo-testamento.jpg";
+import iconDic from "@/assets/icon-dicionario.jpg";
 
 const antigoTestamento = [
   "Gênesis", "Êxodo", "Levítico", "Números", "Deuteronômio",
@@ -22,6 +25,76 @@ const novoTestamento = [
   "Tiago", "1 Pedro", "2 Pedro", "1 João", "2 João",
   "3 João", "Judas", "Apocalipse",
 ];
+
+// Simplified book summaries for when user clicks
+const bookSummaries: Record<string, string> = {
+  "Gênesis": "O livro dos começos: criação do mundo, Adão e Eva, Noé, Abraão, Isaque, Jacó e José. Mostra como Deus criou tudo e escolheu um povo para Si.",
+  "Êxodo": "A saída do Egito: Moisés liberta o povo de Israel da escravidão, as 10 pragas, a travessia do Mar Vermelho e os Dez Mandamentos no Monte Sinai.",
+  "Levítico": "Leis de santidade: regras para sacrifícios, festas e a vida do povo de Deus. Ensina que Deus é santo e quer que Seu povo também seja.",
+  "Números": "A jornada no deserto: contagem do povo, as murmurações, os espias e a peregrinação de 40 anos até a Terra Prometida.",
+  "Deuteronômio": "A segunda lei: Moisés repete as leis de Deus e despede-se do povo antes de entrarem na Terra Prometida.",
+  "Josué": "A conquista da Terra Prometida: Josué lidera Israel na travessia do Jordão, a queda de Jericó e a divisão da terra entre as tribos.",
+  "Juízes": "Ciclos de pecado e libertação: Deus levanta juízes como Gideão, Sansão e Débora para salvar Israel de seus inimigos.",
+  "Rute": "História de amor e fidelidade: Rute, uma estrangeira, escolhe seguir o Deus de Israel e se torna ancestral do rei Davi.",
+  "1 Samuel": "De Samuel a Saul: o último juiz, a escolha do primeiro rei e a ascensão do jovem Davi.",
+  "2 Samuel": "O reinado de Davi: suas vitórias, seu pecado e as consequências, mas também o coração de adorador.",
+  "1 Reis": "Salomão e a divisão: a sabedoria de Salomão, a construção do Templo e a divisão do reino em dois.",
+  "2 Reis": "Reis e profetas: a história dos reis de Israel e Judá até o exílio na Babilônia.",
+  "1 Crônicas": "A genealogia e o reinado de Davi sob a perspectiva da adoração e do Templo.",
+  "2 Crônicas": "De Salomão ao exílio: a história de Judá com foco no Templo e na adoração.",
+  "Esdras": "O retorno do exílio: o povo volta da Babilônia e reconstrói o Templo de Jerusalém.",
+  "Neemias": "A reconstrução dos muros: Neemias lidera a restauração de Jerusalém com fé e determinação.",
+  "Ester": "Coragem real: a rainha Ester arrisca sua vida para salvar o povo judeu da destruição.",
+  "Jó": "O sofrimento do justo: Jó perde tudo mas mantém a fé, e Deus o restaura duplamente.",
+  "Salmos": "O livro de orações e louvores: 150 cânticos que expressam alegria, dor, esperança e adoração a Deus.",
+  "Provérbios": "Sabedoria para a vida: conselhos práticos de Salomão para viver com sabedoria e temor a Deus.",
+  "Eclesiastes": "O sentido da vida: reflexões sobre a vaidade das coisas e o verdadeiro propósito da existência.",
+  "Cânticos": "O cântico do amor: poema de amor entre o noivo e a noiva, simbolizando o amor de Deus pelo Seu povo.",
+  "Isaías": "O profeta messiânico: visões da glória de Deus, profecias sobre Jesus e a esperança de salvação.",
+  "Jeremias": "O profeta chorão: alertas sobre o juízo de Deus, mas também promessas de uma nova aliança.",
+  "Lamentações": "Lamentos pela destruição de Jerusalém, mas com esperança na fidelidade de Deus.",
+  "Ezequiel": "Visões de glória: o profeta no exílio vê a glória de Deus e profetiza a restauração de Israel.",
+  "Daniel": "Fé na adversidade: Daniel e seus amigos permanecem fiéis a Deus na Babilônia; visões proféticas.",
+  "Oséias": "Amor fiel: Deus ama Israel como um esposo fiel, mesmo quando o povo é infiel.",
+  "Joel": "O Dia do Senhor: chamado ao arrependimento e promessa do derramamento do Espírito Santo.",
+  "Amós": "Justiça social: o profeta pastor denuncia a opressão e a injustiça em Israel.",
+  "Obadias": "O julgamento de Edom: o menor livro do AT anuncia o juízo contra o orgulho.",
+  "Jonas": "O profeta relutante: Jonas foge de Deus, é engolido por um peixe e prega em Nínive.",
+  "Miquéias": "Justiça e misericórdia: profecias sobre o nascimento do Messias em Belém.",
+  "Naum": "A queda de Nínive: Deus é justo e julga as nações que oprimem Seu povo.",
+  "Habacuque": "Diálogo com Deus: o profeta questiona a injustiça e aprende a viver pela fé.",
+  "Sofonias": "O Dia do Senhor: juízo sobre as nações e promessa de restauração.",
+  "Ageu": "Reconstruam o Templo: Deus encoraja o povo a priorizar Sua casa.",
+  "Zacarias": "Visões de esperança: profecias messiânicas e a restauração de Jerusalém.",
+  "Malaquias": "O último profeta: Deus repreende a desobediência e promete enviar Seu mensageiro.",
+  "Mateus": "Jesus, o Rei: o Evangelho que mostra Jesus como o Messias prometido a Israel.",
+  "Marcos": "Jesus, o Servo: o Evangelho mais curto, cheio de ação e milagres de Jesus.",
+  "Lucas": "Jesus, o Salvador: o Evangelho mais detalhado, mostrando Jesus como amigo de todos.",
+  "João": "Jesus, o Filho de Deus: o Evangelho espiritual que revela a divindade de Jesus.",
+  "Atos": "A Igreja nasce: o Espírito Santo desce, os apóstolos pregam e a Igreja se espalha pelo mundo.",
+  "Romanos": "A justificação pela fé: Paulo explica como somos salvos pela graça de Deus.",
+  "1 Coríntios": "Problemas na igreja: Paulo orienta sobre divisões, dons espirituais e o amor.",
+  "2 Coríntios": "O ministério de Paulo: defesa de seu apostolado e a força na fraqueza.",
+  "Gálatas": "Liberdade em Cristo: Paulo combate o legalismo e ensina sobre a graça.",
+  "Efésios": "A Igreja de Cristo: unidade, armadura de Deus e vida no Espírito.",
+  "Filipenses": "Alegria em Cristo: Paulo escreve da prisão sobre alegria e contentamento.",
+  "Colossenses": "A supremacia de Cristo: Jesus é acima de tudo e suficiente para tudo.",
+  "1 Tessalonicenses": "A volta de Jesus: Paulo encoraja sobre a esperança da segunda vinda.",
+  "2 Tessalonicenses": "Firmeza na fé: instruções sobre o Dia do Senhor e a perseverança.",
+  "1 Timóteo": "Instruções pastorais: Paulo orienta seu jovem discípulo no ministério.",
+  "2 Timóteo": "Última carta de Paulo: encorajamento para permanecer firme na fé.",
+  "Tito": "Liderança saudável: instruções sobre a organização da igreja em Creta.",
+  "Filemom": "Perdão e reconciliação: Paulo intercede pelo escravo Onésimo.",
+  "Hebreus": "Cristo é superior: Jesus é maior que os anjos, Moisés e os sacerdotes.",
+  "Tiago": "Fé com obras: a verdadeira fé se demonstra através das ações.",
+  "1 Pedro": "Esperança no sofrimento: encorajamento para cristãos perseguidos.",
+  "2 Pedro": "Crescimento espiritual: alertas contra falsos mestres.",
+  "1 João": "Deus é amor: certeza da salvação e a importância de amar uns aos outros.",
+  "2 João": "Caminhar na verdade: breve carta sobre verdade e amor.",
+  "3 João": "Hospitalidade cristã: elogio aos fiéis e repreensão aos orgulhosos.",
+  "Judas": "Contender pela fé: alerta contra falsos mestres que corrompem a graça.",
+  "Apocalipse": "A revelação final: visões de Jesus glorificado, o juízo final e o novo céu e nova terra.",
+};
 
 const dicionario: { term: string; def: string }[] = [
   { term: "Aarão", def: "Irmão de Moisés, primeiro sumo sacerdote de Israel." },
@@ -150,275 +223,330 @@ const dicionario: { term: string; def: string }[] = [
   { term: "Gálatas", def: "Carta de Paulo sobre a liberdade em Cristo e contra o legalismo." },
   { term: "Galileia", def: "Região no norte de Israel onde Jesus cresceu e iniciou Seu ministério." },
   { term: "Genealogia", def: "Lista de ancestrais; a linhagem de Jesus é registrada nos Evangelhos." },
-  { term: "Gênesis", def: "Primeiro livro da Bíblia; narra a criação do mundo e a origem da humanidade." },
+  { term: "Gênesis", def: "Primeiro livro da Bíblia; narra a criação do mundo." },
   { term: "Gentio", def: "Pessoa não judia; as nações fora de Israel." },
-  { term: "Getsêmani", def: "Jardim onde Jesus orou antes de Sua prisão e crucificação." },
+  { term: "Getsêmani", def: "Jardim onde Jesus orou antes de Sua prisão." },
   { term: "Glória", def: "Esplendor e majestade de Deus; Sua presença manifestada." },
-  { term: "Golias", def: "Gigante filisteu derrotado pelo jovem Davi com uma funda." },
+  { term: "Golias", def: "Gigante filisteu derrotado pelo jovem Davi." },
   { term: "Graça", def: "Favor imerecido de Deus para com a humanidade." },
-  { term: "Habacuque", def: "Profeta que questionou Deus sobre a injustiça e recebeu resposta." },
-  { term: "Hebreus", def: "Carta sobre a superioridade de Cristo e a fé dos patriarcas." },
+  { term: "Habacuque", def: "Profeta que questionou Deus sobre a injustiça." },
+  { term: "Hebreus", def: "Carta sobre a superioridade de Cristo." },
   { term: "Heresia", def: "Ensino contrário às doutrinas fundamentais da fé cristã." },
   { term: "Herodes", def: "Rei da Judeia que tentou matar o menino Jesus." },
-  { term: "Holocausto", def: "Sacrifício em que o animal era totalmente queimado em oferta a Deus." },
-  { term: "Hosana", def: "Exclamação de louvor que significa 'Salva-nos, Senhor'." },
-  { term: "Humildade", def: "Virtude de reconhecer a dependência de Deus; oposto do orgulho." },
-  { term: "Idolatria", def: "Adoração de falsos deuses ou qualquer coisa no lugar de Deus." },
-  { term: "Igreja", def: "Corpo de Cristo; comunidade dos crentes reunidos para adoração." },
-  { term: "Imaculada", def: "Sem mancha; referente à pureza de Maria." },
-  { term: "Imposição de Mãos", def: "Gesto de bênção, cura ou consagração no serviço de Deus." },
-  { term: "Incenso", def: "Substância aromática queimada como oferta a Deus no Templo." },
-  { term: "Intercessão", def: "Orar por outras pessoas, pedindo ajuda e proteção de Deus." },
+  { term: "Holocausto", def: "Sacrifício totalmente queimado em oferta a Deus." },
+  { term: "Hosana", def: "Exclamação de louvor: 'Salva-nos, Senhor'." },
+  { term: "Humildade", def: "Virtude de reconhecer a dependência de Deus." },
+  { term: "Idolatria", def: "Adoração de falsos deuses." },
+  { term: "Igreja", def: "Corpo de Cristo; comunidade dos crentes." },
+  { term: "Imaculada", def: "Sem mancha; referente à pureza." },
+  { term: "Imposição de Mãos", def: "Gesto de bênção, cura ou consagração." },
+  { term: "Incenso", def: "Substância aromática queimada como oferta no Templo." },
+  { term: "Intercessão", def: "Orar por outras pessoas." },
   { term: "Isaías", def: "Grande profeta que anunciou a vinda do Messias." },
-  { term: "Isaque", def: "Filho de Abraão e Sara, filho da promessa de Deus." },
+  { term: "Isaque", def: "Filho de Abraão e Sara, filho da promessa." },
   { term: "Israel", def: "Nação escolhida por Deus; também nome dado a Jacó." },
   { term: "Jacó", def: "Filho de Isaque, pai das doze tribos de Israel." },
   { term: "Jejum", def: "Abstinência voluntária de alimento para buscar a Deus." },
-  { term: "Jeremias", def: "Profeta chorão que pregou contra a idolatria de Judá." },
-  { term: "Jericó", def: "Cidade cujas muralhas caíram pela fé de Josué e do povo." },
-  { term: "Jerusalém", def: "Cidade Santa; centro religioso e político de Israel." },
-  { term: "Jesus", def: "Filho de Deus, Salvador do mundo, Messias prometido." },
-  { term: "Jezabel", def: "Rainha ímpia que promoveu a idolatria em Israel." },
-  { term: "Jó", def: "Homem justo que sofreu grandes provações mas manteve a fé em Deus." },
-  { term: "João", def: "Apóstolo amado de Jesus; autor do Evangelho e do Apocalipse." },
-  { term: "João Batista", def: "Profeta que preparou o caminho para Jesus, batizando no rio Jordão." },
+  { term: "Jeremias", def: "Profeta chorão que pregou contra a idolatria." },
+  { term: "Jericó", def: "Cidade cujas muralhas caíram pela fé." },
+  { term: "Jerusalém", def: "Cidade Santa; centro religioso de Israel." },
+  { term: "Jesus", def: "Filho de Deus, Salvador do mundo." },
+  { term: "Jezabel", def: "Rainha ímpia que promoveu a idolatria." },
+  { term: "Jó", def: "Homem justo que sofreu mas manteve a fé." },
+  { term: "João", def: "Apóstolo amado de Jesus." },
+  { term: "João Batista", def: "Profeta que preparou o caminho para Jesus." },
   { term: "Joel", def: "Profeta que anunciou o derramamento do Espírito Santo." },
-  { term: "Jonas", def: "Profeta engolido por um grande peixe; pregou em Nínive." },
-  { term: "Jordão", def: "Rio onde Jesus foi batizado por João Batista." },
-  { term: "José", def: "Filho de Jacó vendido pelos irmãos; tornou-se governador do Egito." },
-  { term: "José (pai de Jesus)", def: "Esposo de Maria, carpinteiro de Nazaré, pai adotivo de Jesus." },
-  { term: "Josué", def: "Sucessor de Moisés que liderou Israel na conquista da Terra Prometida." },
-  { term: "Jubileu", def: "Ano de libertação e restauração celebrado a cada cinquenta anos." },
-  { term: "Judas Iscariotes", def: "Discípulo que traiu Jesus por trinta moedas de prata." },
-  { term: "Judá", def: "Quarta tribo de Israel; tribo real da qual Jesus descende." },
-  { term: "Juízo", def: "Ato de Deus de julgar as ações dos seres humanos." },
-  { term: "Juízo Final", def: "Julgamento definitivo de toda a humanidade por Deus." },
-  { term: "Justiça", def: "Retidão moral; conformidade com a vontade de Deus." },
-  { term: "Justificação", def: "Ato de Deus de declarar o pecador justo pela fé em Cristo." },
+  { term: "Jonas", def: "Profeta engolido por um grande peixe." },
+  { term: "Jordão", def: "Rio onde Jesus foi batizado." },
+  { term: "José", def: "Filho de Jacó vendido; tornou-se governador do Egito." },
+  { term: "Josué", def: "Sucessor de Moisés na conquista da Terra Prometida." },
+  { term: "Jubileu", def: "Ano de libertação celebrado a cada 50 anos." },
+  { term: "Judas Iscariotes", def: "Discípulo que traiu Jesus." },
+  { term: "Judá", def: "Tribo real da qual Jesus descende." },
+  { term: "Juízo", def: "Ato de Deus de julgar as ações humanas." },
+  { term: "Juízo Final", def: "Julgamento definitivo de toda a humanidade." },
+  { term: "Justiça", def: "Retidão moral conforme a vontade de Deus." },
+  { term: "Justificação", def: "Deus declara o pecador justo pela fé." },
   { term: "Lamentações", def: "Livro de lamentos pela destruição de Jerusalém." },
-  { term: "Lavagem dos Pés", def: "Ato de Jesus lavando os pés dos discípulos como exemplo de serviço." },
-  { term: "Lázaro", def: "Amigo de Jesus que foi ressuscitado dos mortos." },
-  { term: "Lei", def: "Os mandamentos e estatutos dados por Deus a Israel." },
+  { term: "Lavagem dos Pés", def: "Ato de Jesus como exemplo de serviço." },
+  { term: "Lázaro", def: "Amigo de Jesus que foi ressuscitado." },
+  { term: "Lei", def: "Os mandamentos dados por Deus a Israel." },
   { term: "Levita", def: "Membro da tribo de Levi, dedicado ao serviço do Templo." },
-  { term: "Levítico", def: "Terceiro livro da Bíblia com leis sobre sacrifícios e santidade." },
-  { term: "Liberdade", def: "Livramento do pecado e da morte através de Cristo." },
+  { term: "Levítico", def: "Terceiro livro da Bíblia com leis sobre sacrifícios." },
+  { term: "Liberdade", def: "Livramento do pecado através de Cristo." },
   { term: "Livro da Vida", def: "Registro celestial dos nomes dos que são salvos." },
-  { term: "Louvor", def: "Expressão de gratidão e adoração a Deus através de palavras e música." },
-  { term: "Lucas", def: "Médico e autor do terceiro Evangelho e do livro de Atos." },
-  { term: "Luz", def: "Símbolo de Deus, verdade e justiça; Jesus é a Luz do Mundo." },
-  { term: "Maná", def: "Alimento milagroso dado por Deus aos israelitas no deserto." },
-  { term: "Mandamento", def: "Ordem divina para guiar a conduta do povo de Deus." },
-  { term: "Marcos", def: "Autor do segundo Evangelho; companheiro de Paulo e Pedro." },
-  { term: "Maria", def: "Mãe de Jesus, escolhida por Deus para gerar o Salvador." },
-  { term: "Maria Madalena", def: "Seguidora de Jesus, primeira testemunha da ressurreição." },
-  { term: "Marta", def: "Irmã de Lázaro e Maria, conhecida por sua hospitalidade." },
+  { term: "Louvor", def: "Expressão de gratidão e adoração a Deus." },
+  { term: "Lucas", def: "Médico e autor do terceiro Evangelho." },
+  { term: "Luz", def: "Símbolo de Deus e verdade; Jesus é a Luz do Mundo." },
+  { term: "Maná", def: "Alimento milagroso dado por Deus no deserto." },
+  { term: "Mandamento", def: "Ordem divina para guiar a conduta." },
+  { term: "Marcos", def: "Autor do segundo Evangelho." },
+  { term: "Maria", def: "Mãe de Jesus, escolhida por Deus." },
+  { term: "Maria Madalena", def: "Primeira testemunha da ressurreição." },
+  { term: "Marta", def: "Irmã de Lázaro, conhecida por sua hospitalidade." },
   { term: "Mártir", def: "Pessoa que morre pela fé em Cristo." },
-  { term: "Mateus", def: "Cobrador de impostos que se tornou apóstolo e autor do primeiro Evangelho." },
-  { term: "Mediador", def: "Aquele que intercede entre duas partes; Jesus é o mediador entre Deus e os homens." },
-  { term: "Meditação", def: "Reflexão profunda sobre a Palavra de Deus e Sua vontade." },
+  { term: "Mateus", def: "Cobrador de impostos que se tornou apóstolo." },
+  { term: "Mediador", def: "Jesus é o mediador entre Deus e os homens." },
+  { term: "Meditação", def: "Reflexão profunda sobre a Palavra de Deus." },
   { term: "Melquisedeque", def: "Sacerdote e rei de Salém; prefiguração de Cristo." },
-  { term: "Messias", def: "O Ungido de Deus; o Salvador prometido nas Escrituras." },
+  { term: "Messias", def: "O Ungido de Deus; o Salvador prometido." },
   { term: "Milagre", def: "Evento sobrenatural realizado pelo poder de Deus." },
   { term: "Ministério", def: "Serviço dedicado a Deus e ao próximo." },
-  { term: "Mirra", def: "Resina aromática usada em unguentos e no sepultamento de Jesus." },
-  { term: "Misericórdia", def: "Compaixão de Deus que perdoa e não aplica o castigo merecido." },
+  { term: "Mirra", def: "Resina aromática usada no sepultamento de Jesus." },
+  { term: "Misericórdia", def: "Compaixão de Deus que perdoa." },
   { term: "Missão", def: "Tarefa dada por Deus para espalhar o Evangelho." },
-  { term: "Missionário", def: "Pessoa enviada para pregar o Evangelho em outros lugares." },
-  { term: "Moisés", def: "Líder que tirou os israelitas do Egito; recebeu os Dez Mandamentos." },
-  { term: "Monte Sinai", def: "Montanha onde Deus entregou a Lei a Moisés." },
-  { term: "Morte", def: "Separação da alma do corpo; vencida por Cristo na ressurreição." },
-  { term: "Mundo", def: "O sistema de valores contrários a Deus; também a criação de Deus." },
-  { term: "Murmuração", def: "Queixa contra Deus ou Seus líderes; atitude condenada na Bíblia." },
+  { term: "Missionário", def: "Pessoa enviada para pregar o Evangelho." },
+  { term: "Moisés", def: "Líder que tirou Israel do Egito." },
+  { term: "Monte Sinai", def: "Montanha onde Deus entregou a Lei." },
+  { term: "Morte", def: "Separação da alma do corpo; vencida por Cristo." },
+  { term: "Mundo", def: "Sistema de valores contrários a Deus." },
+  { term: "Murmuração", def: "Queixa contra Deus; atitude condenada." },
   { term: "Naum", def: "Profeta que anunciou a destruição de Nínive." },
-  { term: "Nazaré", def: "Cidade onde Jesus cresceu, na região da Galileia." },
-  { term: "Neemias", def: "Líder que reconstruiu os muros de Jerusalém após o exílio." },
-  { term: "Nínive", def: "Capital da Assíria onde Jonas pregou arrependimento." },
-  { term: "Noé", def: "Homem justo que construiu a arca por ordem de Deus antes do dilúvio." },
-  { term: "Novo Testamento", def: "Segunda parte da Bíblia com 27 livros sobre Jesus e a Igreja." },
-  { term: "Obediência", def: "Submissão à vontade de Deus e aos Seus mandamentos." },
-  { term: "Oferta", def: "Presente voluntário dado a Deus como expressão de adoração." },
-  { term: "Oração", def: "Comunicação com Deus através de louvor, confissão, petição e gratidão." },
-  { term: "Ordenança", def: "Prática instituída por Jesus: batismo e Santa Ceia." },
-  { term: "Orgulho", def: "Exaltação própria; pecado que afasta o homem de Deus." },
-  { term: "Oséias", def: "Profeta cujo casamento simbolizou o amor fiel de Deus por Israel." },
-  { term: "Páscoa", def: "Festa que celebra a libertação de Israel do Egito; também a ressurreição de Cristo." },
-  { term: "Paciência", def: "Capacidade de esperar com confiança nos planos de Deus." },
+  { term: "Nazaré", def: "Cidade onde Jesus cresceu." },
+  { term: "Neemias", def: "Líder que reconstruiu os muros de Jerusalém." },
+  { term: "Nínive", def: "Capital da Assíria onde Jonas pregou." },
+  { term: "Noé", def: "Homem justo que construiu a arca." },
+  { term: "Novo Testamento", def: "Segunda parte da Bíblia com 27 livros." },
+  { term: "Obediência", def: "Submissão à vontade de Deus." },
+  { term: "Oferta", def: "Presente voluntário dado a Deus." },
+  { term: "Oração", def: "Comunicação com Deus." },
+  { term: "Ordenança", def: "Prática instituída por Jesus: batismo e Ceia." },
+  { term: "Orgulho", def: "Exaltação própria; pecado que afasta de Deus." },
+  { term: "Oséias", def: "Profeta cujo casamento simbolizou o amor de Deus." },
+  { term: "Páscoa", def: "Festa da libertação de Israel e ressurreição de Cristo." },
+  { term: "Paciência", def: "Capacidade de esperar nos planos de Deus." },
   { term: "Pacto", def: "Acordo solene entre Deus e Seu povo." },
-  { term: "Palavra de Deus", def: "A Bíblia Sagrada; também se refere a Jesus como Verbo de Deus." },
-  { term: "Parábola", def: "História curta contada por Jesus com ensinamento moral ou espiritual." },
-  { term: "Paraíso", def: "Lugar de felicidade eterna na presença de Deus." },
-  { term: "Pastor", def: "Líder espiritual que cuida e ensina o rebanho de Deus." },
-  { term: "Paulo", def: "Apóstolo dos gentios; escreveu grande parte do Novo Testamento." },
-  { term: "Paz", def: "Serenidade interior que vem do relacionamento com Deus." },
-  { term: "Pecado", def: "Transgressão da lei divina; ato contrário à vontade de Deus." },
-  { term: "Pecado Original", def: "A primeira desobediência de Adão e Eva que afetou toda a humanidade." },
-  { term: "Pedro", def: "Apóstolo líder, chamado de 'rocha' por Jesus." },
-  { term: "Penitência", def: "Arrependimento sincero dos pecados com desejo de mudança." },
-  { term: "Pentateuco", def: "Os cinco primeiros livros da Bíblia escritos por Moisés." },
-  { term: "Pentecostes", def: "Dia em que o Espírito Santo desceu sobre os discípulos." },
-  { term: "Perdão", def: "Ato de absolver alguém de uma ofensa; central na fé cristã." },
-  { term: "Perseguição", def: "Sofrimento por causa da fé em Cristo." },
+  { term: "Palavra de Deus", def: "A Bíblia Sagrada; também Jesus como Verbo." },
+  { term: "Parábola", def: "História de Jesus com ensinamento espiritual." },
+  { term: "Paraíso", def: "Lugar de felicidade eterna." },
+  { term: "Pastor", def: "Líder espiritual que cuida do rebanho de Deus." },
+  { term: "Paulo", def: "Apóstolo dos gentios." },
+  { term: "Paz", def: "Serenidade do relacionamento com Deus." },
+  { term: "Pecado", def: "Transgressão da lei divina." },
+  { term: "Pecado Original", def: "Primeira desobediência de Adão e Eva." },
+  { term: "Pedro", def: "Apóstolo líder, chamado de 'rocha'." },
+  { term: "Penitência", def: "Arrependimento sincero dos pecados." },
+  { term: "Pentateuco", def: "Os cinco primeiros livros da Bíblia." },
+  { term: "Pentecostes", def: "Dia em que o Espírito Santo desceu." },
+  { term: "Perdão", def: "Ato de absolver alguém; central na fé cristã." },
+  { term: "Perseguição", def: "Sofrimento por causa da fé." },
   { term: "Petição", def: "Pedido feito a Deus em oração." },
-  { term: "Piedade", def: "Devoção e reverência a Deus; vida de santidade." },
-  { term: "Profecia", def: "Mensagem de Deus transmitida por um profeta." },
+  { term: "Piedade", def: "Devoção e reverência a Deus." },
+  { term: "Profecia", def: "Mensagem de Deus por um profeta." },
   { term: "Profeta", def: "Pessoa chamada por Deus para transmitir Sua mensagem." },
   { term: "Promessa", def: "Compromisso de Deus de cumprir Sua palavra." },
-  { term: "Propiciação", def: "Sacrifício que satisfaz a justiça de Deus contra o pecado." },
-  { term: "Provérbios", def: "Livro de sabedoria com conselhos práticos para a vida." },
-  { term: "Providência", def: "Cuidado constante de Deus por Sua criação." },
-  { term: "Purificação", def: "Processo de limpeza espiritual dos pecados." },
-  { term: "Querubim", def: "Anjo de alta ordem que guarda a presença de Deus." },
-  { term: "Rabi", def: "Mestre; título dado a Jesus por seus seguidores." },
-  { term: "Raquel", def: "Esposa amada de Jacó, mãe de José e Benjamim." },
-  { term: "Redenção", def: "Ato de Deus de libertar a humanidade do pecado através de Jesus." },
-  { term: "Regeneração", def: "Novo nascimento espiritual operado pelo Espírito Santo." },
-  { term: "Reino de Deus", def: "Governo soberano de Deus sobre todas as coisas." },
-  { term: "Ressurreição", def: "Volta à vida; Jesus ressuscitou ao terceiro dia." },
-  { term: "Revelação", def: "Ato de Deus de Se fazer conhecer aos seres humanos." },
-  { term: "Romanos", def: "Carta de Paulo à igreja em Roma sobre a justificação pela fé." },
-  { term: "Rute", def: "Moabita fiel à sua sogra Noemi; ancestral do rei Davi." },
-  { term: "Sábado", def: "Dia de descanso consagrado a Deus, sétimo dia da semana." },
-  { term: "Sabedoria", def: "Conhecimento aplicado à vida segundo a vontade de Deus." },
-  { term: "Sacerdote", def: "Mediador entre Deus e o povo, oferecendo sacrifícios." },
-  { term: "Sacramento", def: "Ato sagrado instituído por Cristo como meio de graça." },
-  { term: "Sacrifício", def: "Oferta feita a Deus; Jesus é o sacrifício perfeito e definitivo." },
-  { term: "Saduceu", def: "Membro de grupo religioso judaico que negava a ressurreição." },
-  { term: "Salmos", def: "Livro de orações, louvores e cânticos a Deus." },
-  { term: "Salomão", def: "Rei sábio de Israel, filho de Davi, construtor do Templo." },
-  { term: "Salvação", def: "Livramento do pecado e da condenação eterna por meio de Cristo." },
-  { term: "Samaritano", def: "Habitante de Samaria; Jesus contou a parábola do bom samaritano." },
-  { term: "Samuel", def: "Profeta e juiz que ungiu os primeiros reis de Israel." },
-  { term: "Sangue", def: "Símbolo de vida e expiação; o sangue de Jesus purifica do pecado." },
-  { term: "Santidade", def: "Estado de pureza e separação para Deus." },
-  { term: "Santificação", def: "Processo de tornar-se mais semelhante a Cristo." },
-  { term: "Santo", def: "Separado para Deus; pessoa dedicada à vida cristã." },
-  { term: "Sara", def: "Esposa de Abraão, mãe de Isaque na velhice." },
-  { term: "Satanás", def: "O adversário; anjo caído que se opõe a Deus." },
-  { term: "Semeador", def: "Parábola de Jesus sobre diferentes respostas à Palavra de Deus." },
-  { term: "Sermão do Monte", def: "Ensino de Jesus sobre o Reino de Deus em Mateus 5-7." },
-  { term: "Servo", def: "Pessoa que serve a Deus e ao próximo com humildade." },
-  { term: "Sinagoga", def: "Local de reunião e ensino da Torá no judaísmo." },
+  { term: "Propiciação", def: "Sacrifício que satisfaz a justiça divina." },
+  { term: "Provérbios", def: "Livro de sabedoria com conselhos práticos." },
+  { term: "Providência", def: "Cuidado constante de Deus." },
+  { term: "Purificação", def: "Processo de limpeza espiritual." },
+  { term: "Querubim", def: "Anjo que guarda a presença de Deus." },
+  { term: "Rabi", def: "Mestre; título dado a Jesus." },
+  { term: "Raquel", def: "Esposa amada de Jacó." },
+  { term: "Redenção", def: "Libertação do pecado por Jesus." },
+  { term: "Regeneração", def: "Novo nascimento espiritual." },
+  { term: "Reino de Deus", def: "Governo soberano de Deus." },
+  { term: "Ressurreição", def: "Volta à vida; Jesus ressuscitou." },
+  { term: "Revelação", def: "Deus se faz conhecer aos homens." },
+  { term: "Romanos", def: "Carta sobre justificação pela fé." },
+  { term: "Rute", def: "Moabita fiel; ancestral de Davi." },
+  { term: "Sábado", def: "Dia de descanso consagrado." },
+  { term: "Sabedoria", def: "Conhecimento aplicado segundo Deus." },
+  { term: "Sacerdote", def: "Mediador entre Deus e o povo." },
+  { term: "Sacramento", def: "Ato sagrado instituído por Cristo." },
+  { term: "Sacrifício", def: "Oferta feita a Deus; Jesus é o sacrifício perfeito." },
+  { term: "Saduceu", def: "Grupo religioso que negava a ressurreição." },
+  { term: "Salmos", def: "Livro de orações e louvores." },
+  { term: "Salomão", def: "Rei sábio, construtor do Templo." },
+  { term: "Salvação", def: "Livramento do pecado por Cristo." },
+  { term: "Samaritano", def: "Habitante de Samaria; parábola do bom samaritano." },
+  { term: "Samuel", def: "Profeta e juiz que ungiu os primeiros reis." },
+  { term: "Sangue", def: "Símbolo de vida e expiação." },
+  { term: "Santidade", def: "Estado de pureza para Deus." },
+  { term: "Santificação", def: "Processo de tornar-se como Cristo." },
+  { term: "Santo", def: "Separado para Deus." },
+  { term: "Sara", def: "Esposa de Abraão, mãe de Isaque." },
+  { term: "Satanás", def: "O adversário; anjo caído." },
+  { term: "Semeador", def: "Parábola sobre respostas à Palavra." },
+  { term: "Sermão do Monte", def: "Ensino de Jesus em Mateus 5-7." },
+  { term: "Servo", def: "Pessoa que serve a Deus com humildade." },
+  { term: "Sinagoga", def: "Local de reunião e ensino." },
   { term: "Sofonias", def: "Profeta que anunciou o Dia do Senhor." },
-  { term: "Tabernáculo", def: "Tenda sagrada usada como santuário portátil no deserto." },
-  { term: "Tábuas da Lei", def: "Pedras onde Deus escreveu os Dez Mandamentos." },
-  { term: "Templo", def: "Casa de Deus em Jerusalém, construída por Salomão." },
-  { term: "Tentação", def: "Provação ou estímulo ao pecado; Jesus foi tentado mas não pecou." },
-  { term: "Tessalonicenses", def: "Cartas de Paulo à igreja em Tessalônica sobre a volta de Cristo." },
-  { term: "Testemunho", def: "Relato pessoal da ação de Deus na vida de alguém." },
-  { term: "Tiago", def: "Apóstolo; autor da epístola que ensina sobre fé e obras." },
-  { term: "Timóteo", def: "Jovem discípulo e companheiro de Paulo no ministério." },
-  { term: "Tito", def: "Companheiro de Paulo; carta sobre a organização da igreja." },
-  { term: "Torá", def: "Os cinco primeiros livros da Bíblia; a Lei de Moisés." },
-  { term: "Transfiguração", def: "Evento em que Jesus revelou Sua glória divina a Pedro, Tiago e João." },
-  { term: "Tribo", def: "Uma das doze divisões do povo de Israel." },
+  { term: "Tabernáculo", def: "Tenda sagrada usada no deserto." },
+  { term: "Tábuas da Lei", def: "Pedras com os Dez Mandamentos." },
+  { term: "Templo", def: "Casa de Deus em Jerusalém." },
+  { term: "Tentação", def: "Estímulo ao pecado; Jesus foi tentado mas não pecou." },
+  { term: "Tessalonicenses", def: "Cartas sobre a volta de Cristo." },
+  { term: "Testemunho", def: "Relato da ação de Deus na vida." },
+  { term: "Tiago", def: "Apóstolo; autor da epístola sobre fé e obras." },
+  { term: "Timóteo", def: "Jovem discípulo de Paulo." },
+  { term: "Tito", def: "Companheiro de Paulo." },
+  { term: "Torá", def: "Os cinco primeiros livros; a Lei de Moisés." },
+  { term: "Transfiguração", def: "Jesus revelou Sua glória divina." },
+  { term: "Tribo", def: "Uma das doze divisões de Israel." },
   { term: "Trindade", def: "Deus em três pessoas: Pai, Filho e Espírito Santo." },
-  { term: "Última Ceia", def: "Última refeição de Jesus com os discípulos antes da crucificação." },
-  { term: "Unção", def: "Derramar óleo como sinal de consagração e poder do Espírito Santo." },
-  { term: "Urim e Tumim", def: "Objetos usados pelo sumo sacerdote para consultar a vontade de Deus." },
-  { term: "Vaidade", def: "Busca por coisas passageiras; o Eclesiastes diz que tudo é vaidade." },
-  { term: "Verdade", def: "Jesus disse: 'Eu sou o Caminho, a Verdade e a Vida'." },
-  { term: "Vida Eterna", def: "Existência sem fim na presença de Deus, dada pela fé em Cristo." },
-  { term: "Videira", def: "Jesus disse: 'Eu sou a videira, vós sois os ramos'." },
-  { term: "Vigília", def: "Período de oração e adoração, geralmente noturno." },
-  { term: "Vinho", def: "Símbolo do sangue de Cristo na Santa Ceia." },
+  { term: "Última Ceia", def: "Última refeição de Jesus com os discípulos." },
+  { term: "Unção", def: "Derramar óleo como sinal de consagração." },
+  { term: "Urim e Tumim", def: "Objetos para consultar a vontade de Deus." },
+  { term: "Vaidade", def: "Busca por coisas passageiras." },
+  { term: "Verdade", def: "Jesus: 'Eu sou o Caminho, a Verdade e a Vida'." },
+  { term: "Vida Eterna", def: "Existência sem fim com Deus." },
+  { term: "Videira", def: "Jesus: 'Eu sou a videira, vós sois os ramos'." },
+  { term: "Vigília", def: "Período de oração, geralmente noturno." },
+  { term: "Vinho", def: "Símbolo do sangue de Cristo." },
   { term: "Voto", def: "Promessa solene feita a Deus." },
-  { term: "Zacarias", def: "Profeta que teve visões sobre a restauração de Israel." },
-  { term: "Zaqueu", def: "Cobrador de impostos que subiu numa árvore para ver Jesus." },
-  { term: "Zelo", def: "Fervor e dedicação intensa no serviço a Deus." },
-  { term: "Sião", def: "Monte em Jerusalém; símbolo da presença de Deus e do Seu povo." },
-  { term: "Ídolo", def: "Imagem ou objeto adorado no lugar do Deus verdadeiro." },
-  { term: "Impureza", def: "Estado de contaminação ritual ou moral." },
-  { term: "Iniquidade", def: "Maldade profunda; pecado grave contra Deus." },
+  { term: "Zacarias", def: "Profeta de visões de esperança." },
+  { term: "Zaqueu", def: "Cobrador que subiu numa árvore para ver Jesus." },
+  { term: "Zelo", def: "Fervor no serviço a Deus." },
+  { term: "Sião", def: "Monte em Jerusalém; presença de Deus." },
+  { term: "Ídolo", def: "Objeto adorado no lugar de Deus." },
+  { term: "Impureza", def: "Estado de contaminação moral." },
+  { term: "Iniquidade", def: "Maldade profunda contra Deus." },
   { term: "Inspiração", def: "Ação do Espírito Santo guiando os autores da Bíblia." },
-  { term: "Javé", def: "Nome pessoal de Deus revelado a Moisés; 'Eu Sou o que Sou'." },
-  { term: "Jezreel", def: "Vale fértil em Israel; local de batalhas importantes." },
-  { term: "Jordânia", def: "Região além do rio Jordão; terra de passagem para Israel." },
-  { term: "Justo", def: "Pessoa que vive de acordo com a vontade de Deus." },
-  { term: "Kenosis", def: "Esvaziamento de Cristo ao se tornar humano." },
-  { term: "Laodiceia", def: "Igreja morna criticada no Apocalipse por sua indiferença." },
-  { term: "Legião", def: "Grande número de demônios que possuíam um homem curado por Jesus." },
-  { term: "Leproso", def: "Pessoa com lepra; Jesus curou muitos leprosos." },
-  { term: "Libertação", def: "Livramento do poder do pecado e de forças espirituais malignas." },
-  { term: "Liturgia", def: "Forma de adoração comunitária estruturada." },
-  { term: "Ló", def: "Sobrinho de Abraão, resgatado antes da destruição de Sodoma." },
-  { term: "Macedônia", def: "Região onde Paulo plantou igrejas em Filipos e Tessalônica." },
-  { term: "Magnificat", def: "Cântico de Maria louvando a Deus pela vinda do Salvador." },
-  { term: "Malaquias", def: "Último profeta do Antigo Testamento; anunciou a vinda do mensageiro." },
-  { term: "Maldição", def: "Consequência da desobediência a Deus; oposto da bênção." },
-  { term: "Manaém", def: "Profeta e mestre na igreja de Antioquia." },
-  { term: "Manjedoura", def: "Cocho para alimentar animais onde Jesus foi colocado ao nascer." },
-  { term: "Maranata", def: "Expressão aramaica que significa 'O Senhor vem' ou 'Vem, Senhor'." },
-  { term: "Miriã", def: "Irmã de Moisés que liderou cânticos de louvor." },
-  { term: "Moabe", def: "Terra a leste do Mar Morto; origem de Rute." },
-  { term: "Monte Carmelo", def: "Montanha onde Elias confrontou os profetas de Baal." },
+  { term: "Javé", def: "Nome pessoal de Deus: 'Eu Sou o que Sou'." },
+  { term: "Justo", def: "Pessoa que vive conforme Deus." },
+  { term: "Laodiceia", def: "Igreja morna criticada no Apocalipse." },
+  { term: "Legião", def: "Grande número de demônios curados por Jesus." },
+  { term: "Leproso", def: "Pessoa com lepra; Jesus curou muitos." },
+  { term: "Libertação", def: "Livramento do poder do pecado." },
+  { term: "Ló", def: "Sobrinho de Abraão, resgatado de Sodoma." },
+  { term: "Magnificat", def: "Cântico de Maria louvando a Deus." },
+  { term: "Malaquias", def: "Último profeta do Antigo Testamento." },
+  { term: "Maldição", def: "Consequência da desobediência a Deus." },
+  { term: "Manjedoura", def: "Cocho onde Jesus foi colocado ao nascer." },
+  { term: "Maranata", def: "'O Senhor vem' ou 'Vem, Senhor'." },
+  { term: "Miriã", def: "Irmã de Moisés que liderou cânticos." },
+  { term: "Monte Carmelo", def: "Elias confrontou os profetas de Baal." },
   { term: "Monte das Oliveiras", def: "Monte próximo a Jerusalém associado a Jesus." },
-  { term: "Natal", def: "Celebração do nascimento de Jesus Cristo." },
-  { term: "Nardo", def: "Perfume caro derramado sobre Jesus por Maria." },
-  { term: "Nicodemos", def: "Fariseu que visitou Jesus à noite para aprender sobre o novo nascimento." },
-  { term: "Obadias", def: "Profeta que anunciou o julgamento contra Edom." },
-  { term: "Onésimo", def: "Escravo fugido convertido por Paulo; tema da carta a Filemom." },
+  { term: "Natal", def: "Celebração do nascimento de Jesus." },
+  { term: "Nardo", def: "Perfume caro derramado sobre Jesus." },
+  { term: "Nicodemos", def: "Fariseu que aprendeu sobre o novo nascimento." },
+  { term: "Obadias", def: "Profeta que anunciou julgamento contra Edom." },
+  { term: "Onésimo", def: "Escravo convertido por Paulo." },
   { term: "Onipotente", def: "Todo-poderoso; atributo de Deus." },
-  { term: "Onipresente", def: "Presente em todos os lugares; atributo de Deus." },
+  { term: "Onipresente", def: "Presente em todos os lugares." },
   { term: "Onisciente", def: "Que tudo sabe; atributo de Deus." },
-  { term: "Ovelha", def: "Símbolo dos seguidores de Deus; Jesus é o Bom Pastor." },
-  { term: "Palmeira", def: "Símbolo de vitória; ramos usados na entrada de Jesus em Jerusalém." },
-  { term: "Pão da Vida", def: "Título de Jesus: 'Eu sou o pão da vida'." },
-  { term: "Patriarca", def: "Pai fundador do povo de Israel: Abraão, Isaque, Jacó." },
-  { term: "Pecador", def: "Todo ser humano que transgride a lei de Deus." },
-  { term: "Pedra Angular", def: "Cristo como fundamento e sustentação da Igreja." },
-  { term: "Pentecostalismo", def: "Movimento que enfatiza os dons do Espírito Santo." },
-  { term: "Peregrino", def: "Viajante em busca de Deus; cristão neste mundo." },
-  { term: "Plenitude", def: "Totalidade; em Cristo habita toda a plenitude da divindade." },
-  { term: "Predestinação", def: "Plano soberano de Deus para a salvação." },
-  { term: "Pregação", def: "Proclamação da Palavra de Deus ao público." },
-  { term: "Presbítero", def: "Líder da igreja; ancião responsável pelo ensino e cuidado pastoral." },
-  { term: "Primogênito", def: "Primeiro filho; Jesus é o primogênito de toda a criação." },
-  { term: "Principado", def: "Poder espiritual; forças do mal mencionadas por Paulo." },
-  { term: "Queda", def: "A desobediência de Adão e Eva que trouxe o pecado ao mundo." },
-  { term: "Rabino", def: "Mestre da lei judaica; título de respeito." },
-  { term: "Raíz de Jessé", def: "Título messiânico de Jesus, descendente de Jessé, pai de Davi." },
-  { term: "Raptura", def: "Arrebatamento dos crentes ao encontro de Cristo nos ares." },
+  { term: "Ovelha", def: "Símbolo dos seguidores de Deus." },
+  { term: "Palmeira", def: "Símbolo de vitória na entrada de Jesus." },
+  { term: "Pão da Vida", def: "Título de Jesus." },
+  { term: "Patriarca", def: "Pai fundador: Abraão, Isaque, Jacó." },
+  { term: "Pecador", def: "Todo ser humano que transgride a lei." },
+  { term: "Pedra Angular", def: "Cristo como fundamento da Igreja." },
+  { term: "Peregrino", def: "Viajante em busca de Deus." },
+  { term: "Plenitude", def: "Em Cristo habita toda a plenitude." },
+  { term: "Pregação", def: "Proclamação da Palavra de Deus." },
+  { term: "Presbítero", def: "Líder e ancião da igreja." },
+  { term: "Primogênito", def: "Primeiro filho; Jesus é o primogênito." },
+  { term: "Queda", def: "Desobediência de Adão e Eva." },
+  { term: "Rabino", def: "Mestre da lei judaica." },
+  { term: "Raíz de Jessé", def: "Título messiânico de Jesus." },
   { term: "Rebeca", def: "Esposa de Isaque, mãe de Esaú e Jacó." },
-  { term: "Reconciliação", def: "Restauração do relacionamento entre Deus e a humanidade por Cristo." },
-  { term: "Reforma", def: "Movimento de renovação da igreja iniciado no século XVI." },
-  { term: "Remissão", def: "Perdão completo dos pecados pela obra de Cristo." },
-  { term: "Renúncia", def: "Abandono do pecado e do mundo para seguir a Cristo." },
-  { term: "Repouso", def: "Descanso em Deus; confiar em Sua provisão." },
-  { term: "Ressurreição dos Mortos", def: "Crença de que todos ressuscitarão no último dia." },
-  { term: "Retidão", def: "Vida reta e justa diante de Deus." },
-  { term: "Rio Jordão", def: "Rio principal de Israel onde Jesus foi batizado." },
-  { term: "Rocha", def: "Símbolo de Deus como refúgio e fundamento firme." },
-  { term: "Salmista", def: "Autor dos Salmos; principalmente o rei Davi." },
-  { term: "Samaritana", def: "Mulher com quem Jesus conversou no poço de Jacó." },
-  { term: "Sansão", def: "Juiz de Israel dotado de força sobrenatural." },
-  { term: "Sarça Ardente", def: "Arbusto em chamas de onde Deus falou com Moisés." },
-  { term: "Sarepta", def: "Cidade onde Elias foi sustentado por uma viúva." },
-  { term: "Serafim", def: "Anjo de seis asas que adora a Deus continuamente." },
-  { term: "Shekinah", def: "Presença gloriosa de Deus manifestada visivelmente." },
-  { term: "Silas", def: "Companheiro de Paulo em suas viagens missionárias." },
-  { term: "Simão", def: "Nome original de Pedro; também outros personagens bíblicos." },
-  { term: "Soberania", def: "Autoridade suprema de Deus sobre toda a criação." },
-  { term: "Sodoma", def: "Cidade destruída por Deus devido à sua grande maldade." },
-  { term: "Sumo Sacerdote", def: "Líder religioso máximo de Israel; Jesus é nosso Sumo Sacerdote." },
-  { term: "Tabor", def: "Monte associado à transfiguração de Jesus." },
-  { term: "Taça da Ira", def: "Símbolo do julgamento divino no Apocalipse." },
-  { term: "Talento", def: "Unidade de peso e moeda; parábola sobre usar os dons de Deus." },
-  { term: "Targum", def: "Tradução e interpretação aramaica das Escrituras." },
-  { term: "Teofania", def: "Aparição visível de Deus aos seres humanos." },
-  { term: "Terra Prometida", def: "Canaã, a terra que Deus prometeu dar a Abraão." },
-  { term: "Trigo", def: "Símbolo dos fiéis na parábola do trigo e do joio." },
-  { term: "Ungir", def: "Derramar óleo sobre alguém como sinal de escolha divina." },
-  { term: "Uriel", def: "Anjo mencionado em textos apócrifos como portador de luz." },
-  { term: "Vaticínio", def: "Profecia ou predição divina." },
-  { term: "Véu do Templo", def: "Cortina que separava o Santo dos Santos; rasgou-se na morte de Jesus." },
-  { term: "Verbo", def: "Título de Jesus: 'No princípio era o Verbo, e o Verbo era Deus'." },
-  { term: "Viúva de Naim", def: "Mãe cujo filho Jesus ressuscitou." },
-  { term: "Viúva Pobre", def: "Mulher que deu tudo o que tinha como oferta no Templo." },
-  { term: "Vocação", def: "Chamado de Deus para um propósito específico." },
-  { term: "Xenofobia", def: "Medo de estrangeiros; a Bíblia ensina acolher o estrangeiro." },
-  { term: "Yahweh", def: "Nome sagrado de Deus no Antigo Testamento." },
+  { term: "Reconciliação", def: "Restauração do relacionamento com Deus." },
+  { term: "Remissão", def: "Perdão completo dos pecados." },
+  { term: "Renúncia", def: "Abandono do pecado para seguir Cristo." },
+  { term: "Retidão", def: "Vida reta diante de Deus." },
+  { term: "Rio Jordão", def: "Rio principal onde Jesus foi batizado." },
+  { term: "Rocha", def: "Símbolo de Deus como refúgio." },
+  { term: "Salmista", def: "Autor dos Salmos; principalmente Davi." },
+  { term: "Samaritana", def: "Mulher que conversou com Jesus no poço." },
+  { term: "Sansão", def: "Juiz de força sobrenatural." },
+  { term: "Sarça Ardente", def: "Arbusto de onde Deus falou com Moisés." },
+  { term: "Serafim", def: "Anjo de seis asas que adora a Deus." },
+  { term: "Shekinah", def: "Presença gloriosa de Deus manifestada." },
+  { term: "Silas", def: "Companheiro de Paulo." },
+  { term: "Soberania", def: "Autoridade suprema de Deus." },
+  { term: "Sodoma", def: "Cidade destruída por grande maldade." },
+  { term: "Sumo Sacerdote", def: "Líder religioso máximo; Jesus é nosso Sumo Sacerdote." },
+  { term: "Talento", def: "Parábola sobre usar os dons de Deus." },
+  { term: "Teofania", def: "Aparição visível de Deus." },
+  { term: "Terra Prometida", def: "Canaã, prometida a Abraão." },
+  { term: "Ungir", def: "Derramar óleo como sinal de escolha divina." },
+  { term: "Véu do Templo", def: "Cortina que rasgou na morte de Jesus." },
+  { term: "Verbo", def: "Título de Jesus: 'No princípio era o Verbo'." },
+  { term: "Viúva Pobre", def: "Mulher que deu tudo como oferta." },
+  { term: "Vocação", def: "Chamado de Deus para um propósito." },
+  { term: "Yahweh", def: "Nome sagrado de Deus no AT." },
   { term: "Zebedeu", def: "Pai dos apóstolos Tiago e João." },
-  { term: "Zedequias", def: "Último rei de Judá antes do exílio babilônico." },
+  { term: "Adorar", def: "Prostrar-se diante de Deus com reverência." },
+  { term: "Agonia", def: "Sofrimento intenso de Jesus no Getsêmani." },
+  { term: "Altar de Bronze", def: "Onde se queimavam os sacrifícios no Tabernáculo." },
+  { term: "Ameaça", def: "Perigo que os cristãos enfrentam por sua fé." },
+  { term: "Ananias", def: "Discípulo que batizou Paulo em Damasco." },
+  { term: "Anticristo", def: "Opositor de Cristo nos últimos tempos." },
+  { term: "Apostasia", def: "Abandono da fé cristã." },
+  { term: "Árvore do Conhecimento", def: "Árvore proibida no Jardim do Éden." },
+  { term: "Asafe", def: "Levita e autor de vários Salmos." },
+  { term: "Balaão", def: "Profeta pagão que Deus usou para abençoar Israel." },
+  { term: "Barnabé", def: "Companheiro de Paulo nas primeiras viagens missionárias." },
+  { term: "Bartimeu", def: "Cego curado por Jesus em Jericó." },
+  { term: "Beelzebul", def: "Nome dado ao príncipe dos demônios." },
+  { term: "Benjamim", def: "Menor filho de Jacó e Raquel." },
+  { term: "Betesda", def: "Tanque em Jerusalém onde Jesus curou um paralítico." },
+  { term: "Caná", def: "Cidade onde Jesus fez o primeiro milagre." },
+  { term: "Cativeiro", def: "Período em que Israel esteve exilado na Babilônia." },
+  { term: "Centurião de Cafarnaum", def: "Soldado romano cuja fé impressionou Jesus." },
+  { term: "Dádiva", def: "Dom ou presente dado por Deus." },
+  { term: "Decreto", def: "Ordem divina que governa o curso da história." },
+  { term: "Delícias", def: "Prazeres que Deus oferece aos que O buscam." },
+  { term: "Edificar", def: "Construir espiritualmente; fortalecer a fé." },
+  { term: "Eleazar", def: "Filho de Arão, sucessor como sumo sacerdote." },
+  { term: "Enoque", def: "Homem que andou com Deus e foi arrebatado." },
+  { term: "Esaú", def: "Filho de Isaque que vendeu sua primogenitura." },
+  { term: "Estêvão", def: "Primeiro mártir cristão apedrejado por sua fé." },
+  { term: "Figueira", def: "Árvore simbólica; Jesus amaldiçoou uma sem frutos." },
+  { term: "Filisteus", def: "Povo inimigo de Israel." },
+  { term: "Fonte", def: "Símbolo de vida e renovação espiritual." },
+  { term: "Fortaleza", def: "Deus como refúgio e proteção." },
+  { term: "Gamaliel", def: "Mestre fariseu que aconselhou moderação com os apóstolos." },
+  { term: "Gideão", def: "Juiz que venceu os midianitas com 300 homens." },
+  { term: "Gólem", def: "Termo hebraico para algo informe; usado no Salmo 139." },
+  { term: "Hagar", def: "Serva de Sara, mãe de Ismael." },
+  { term: "Herança", def: "Bênção prometida por Deus aos Seus filhos." },
+  { term: "Hissopo", def: "Planta usada em rituais de purificação." },
+  { term: "Ímpio", def: "Pessoa que vive sem Deus." },
+  { term: "Inimigo", def: "Forças espirituais que se opõem ao povo de Deus." },
+  { term: "Ismael", def: "Filho de Abraão com Hagar." },
+  { term: "Jafé", def: "Filho de Noé; ancestral de muitas nações." },
+  { term: "Jessé", def: "Pai do rei Davi." },
+  { term: "Joabe", def: "General do exército de Davi." },
+  { term: "José de Arimateia", def: "Homem rico que cedeu seu túmulo para Jesus." },
+  { term: "Judeu", def: "Descendente de Judá; praticante do judaísmo." },
+  { term: "Jugo", def: "Instrumento de trabalho; Jesus oferece um jugo suave." },
+  { term: "Ladrão na Cruz", def: "Um dos dois crucificados com Jesus que se arrependeu." },
+  { term: "Lídia", def: "Primeira convertida na Europa; vendedora de púrpura." },
+  { term: "Madalena", def: "Outro nome para Maria Madalena." },
+  { term: "Mar Morto", def: "Lago salgado na região de Israel." },
+  { term: "Matias", def: "Apóstolo escolhido para substituir Judas." },
+  { term: "Misael", def: "Companheiro de Daniel na Babilônia." },
+  { term: "Mordecai", def: "Primo de Ester que a ajudou a salvar seu povo." },
+  { term: "Nabucodonosor", def: "Rei da Babilônia que conquistou Jerusalém." },
+  { term: "Natal", def: "Celebração do nascimento de Jesus Cristo." },
+  { term: "Nazareno", def: "Jesus, por ter crescido em Nazaré." },
+  { term: "Nuvem", def: "Símbolo da presença e guia de Deus." },
+  { term: "Oliveira", def: "Árvore sagrada; símbolo de paz e unção." },
+  { term: "Paracleto", def: "Consolador; título do Espírito Santo." },
+  { term: "Passagem", def: "Travessia; Deus abre caminhos para Seu povo." },
+  { term: "Peniel", def: "Lugar onde Jacó lutou com Deus." },
+  { term: "Pilar", def: "Coluna de sustentação; metáfora da fé firme." },
+  { term: "Praga", def: "Castigo divino enviado ao Egito." },
+  { term: "Príncipe da Paz", def: "Título messiânico de Jesus em Isaías." },
+  { term: "Puro", def: "Limpo diante de Deus; sem pecado." },
+  { term: "Rebanho", def: "O povo de Deus sob o cuidado do Pastor." },
+  { term: "Refúgio", def: "Lugar seguro na presença de Deus." },
+  { term: "Relíquia", def: "Objeto sagrado preservado por devoção." },
+  { term: "Remanescente", def: "Porção fiel do povo de Deus." },
+  { term: "Resgate", def: "Ato de libertar pagando um preço; Cristo nos resgatou." },
+  { term: "Salmão", def: "Ancestral de Davi na genealogia de Jesus." },
+  { term: "Selá", def: "Pausa meditativa nos Salmos." },
+  { term: "Sem", def: "Filho de Noé; ancestral dos semitas." },
+  { term: "Serpente", def: "Símbolo de Satanás; tentou Eva no Éden." },
+  { term: "Sinai", def: "Península onde Deus deu a Lei a Moisés." },
+  { term: "Tabita", def: "Discípula ressuscitada por Pedro; também chamada Dorcas." },
+  { term: "Tesouro", def: "Jesus ensinou a acumular tesouros no céu." },
+  { term: "Trono", def: "Assento de autoridade; Deus reina do Seu trono." },
+  { term: "Uva", def: "Fruto da videira; símbolo de abundância." },
+  { term: "Vigário", def: "Representante de Cristo na terra." },
+  { term: "Vinha", def: "Plantação de uvas; metáfora do povo de Deus." },
+  { term: "Zelo", def: "Fervor e dedicação intensa no serviço a Deus." },
 ];
 
 type Tab = "antigo" | "novo" | "dicionario";
@@ -427,6 +555,7 @@ export default function Biblia() {
   const [tab, setTab] = useState<Tab>("antigo");
   const [search, setSearch] = useState("");
   const [dictSearch, setDictSearch] = useState("");
+  const [selectedBook, setSelectedBook] = useState<string | null>(null);
 
   const filterBooks = (books: string[]) =>
     books.filter((b) => b.toLowerCase().includes(search.toLowerCase()));
@@ -436,37 +565,42 @@ export default function Biblia() {
         (d) =>
           d.term.toLowerCase().includes(dictSearch.toLowerCase()) ||
           d.def.toLowerCase().includes(dictSearch.toLowerCase())
-      ).slice(0, 20)
+      ).slice(0, 30)
     : [];
+
+  const tabs = [
+    { key: "antigo" as Tab, label: "Antigo Testamento", count: 39, icon: iconVT },
+    { key: "novo" as Tab, label: "Novo Testamento", count: 27, icon: iconNT },
+    { key: "dicionario" as Tab, label: "Dicionário Bíblico", count: dicionario.length, icon: iconDic },
+  ];
 
   return (
     <div className="min-h-screen py-6 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
       <div className="max-w-4xl mx-auto">
         <PageHeader title="Bíblia" subtitle="66 livros para explorar" icon={iconBiblia} />
 
-        {/* Tabs */}
-        <div className="flex gap-2 mb-6 flex-wrap">
-          {[
-            { key: "antigo" as Tab, label: "📜 Antigo Testamento", count: 39 },
-            { key: "novo" as Tab, label: "✝️ Novo Testamento", count: 27 },
-            { key: "dicionario" as Tab, label: "📖 Dicionário Bíblico", count: dicionario.length },
-          ].map((t) => (
+        {/* Tabs with icons */}
+        <div className="flex gap-3 mb-6 flex-wrap justify-center">
+          {tabs.map((t) => (
             <button
               key={t.key}
-              onClick={() => setTab(t.key)}
-              className={`px-4 py-2 rounded-full font-display text-sm font-bold transition-all ${
+              onClick={() => { setTab(t.key); setSelectedBook(null); }}
+              className={`flex flex-col items-center gap-1 p-2 rounded-2xl transition-all ${
                 tab === t.key
-                  ? "bg-primary text-primary-foreground shadow-lg scale-105"
-                  : "bg-popover text-foreground border border-border hover:border-primary/50"
+                  ? "bg-primary/10 border-2 border-primary shadow-lg scale-105"
+                  : "bg-popover border-2 border-border hover:border-primary/50"
               }`}
+              style={{ minWidth: 100 }}
             >
-              {t.label} ({t.count})
+              <img src={t.icon} alt={t.label} className="w-16 h-16 rounded-xl object-cover" />
+              <span className="font-display text-xs font-bold text-foreground text-center leading-tight">{t.label}</span>
+              <span className="text-[10px] text-muted-foreground">({t.count})</span>
             </button>
           ))}
         </div>
 
         {/* Search for books */}
-        {(tab === "antigo" || tab === "novo") && (
+        {(tab === "antigo" || tab === "novo") && !selectedBook && (
           <div className="relative mb-6">
             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg">🔍</span>
             <input
@@ -479,21 +613,47 @@ export default function Biblia() {
           </div>
         )}
 
-        {/* Content */}
-        {tab === "antigo" && (
+        {/* Book detail view */}
+        {selectedBook && (
+          <div className="bg-popover rounded-2xl p-6 shadow-lg border border-border mb-4">
+            <button
+              onClick={() => setSelectedBook(null)}
+              className="text-primary font-display text-sm font-bold mb-4 hover:underline"
+            >
+              ← Voltar
+            </button>
+            <h2 className="font-display text-2xl font-bold text-foreground mb-2">📖 {selectedBook}</h2>
+            <p className="font-body text-foreground leading-relaxed">
+              {bookSummaries[selectedBook] || "Conteúdo em breve..."}
+            </p>
+          </div>
+        )}
+
+        {/* Book grid */}
+        {tab === "antigo" && !selectedBook && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
             {filterBooks(antigoTestamento).map((book, i) => (
-              <div key={i} className="bg-popover rounded-2xl p-4 shadow-md hover:shadow-lg hover:scale-105 transition-all cursor-pointer border border-border">
+              <div
+                key={i}
+                onClick={() => setSelectedBook(book)}
+                className="bg-popover rounded-2xl p-4 shadow-md hover:shadow-lg hover:scale-105 transition-all cursor-pointer border border-border text-center"
+              >
+                <span className="text-2xl block mb-1">📜</span>
                 <span className="font-body text-sm text-foreground font-semibold">{book}</span>
               </div>
             ))}
           </div>
         )}
 
-        {tab === "novo" && (
+        {tab === "novo" && !selectedBook && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
             {filterBooks(novoTestamento).map((book, i) => (
-              <div key={i} className="bg-popover rounded-2xl p-4 shadow-md hover:shadow-lg hover:scale-105 transition-all cursor-pointer border border-border">
+              <div
+                key={i}
+                onClick={() => setSelectedBook(book)}
+                className="bg-popover rounded-2xl p-4 shadow-md hover:shadow-lg hover:scale-105 transition-all cursor-pointer border border-border text-center"
+              >
+                <span className="text-2xl block mb-1">✝️</span>
                 <span className="font-body text-sm text-foreground font-semibold">{book}</span>
               </div>
             ))}
@@ -502,12 +662,11 @@ export default function Biblia() {
 
         {tab === "dicionario" && (
           <div>
-            {/* Search only */}
             <div className="relative mb-6">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg">🔍</span>
               <input
                 type="text"
-                placeholder="Digite pelo menos 2 letras para buscar no dicionário..."
+                placeholder="Digite pelo menos 2 letras para buscar..."
                 value={dictSearch}
                 onChange={(e) => setDictSearch(e.target.value)}
                 className="w-full rounded-xl border border-border bg-background pl-12 pr-4 py-3 font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
@@ -519,13 +678,12 @@ export default function Biblia() {
                 <span className="text-6xl block mb-4">🔍</span>
                 <p className="font-display text-lg font-bold text-foreground">Use a lupa para buscar</p>
                 <p className="font-body text-sm text-muted-foreground mt-2">
-                  Digite o nome de uma palavra bíblica para encontrar sua definição.
-                  <br />O dicionário contém {dicionario.length} termos extraídos de toda a Bíblia.
+                  O dicionário contém {dicionario.length} termos extraídos de toda a Bíblia.
                 </p>
               </div>
             ) : filteredDict.length === 0 ? (
               <div className="text-center py-8">
-                <p className="font-body text-muted-foreground">Nenhum resultado encontrado para "{dictSearch}"</p>
+                <p className="font-body text-muted-foreground">Nenhum resultado para "{dictSearch}"</p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -535,9 +693,6 @@ export default function Biblia() {
                     <p className="font-body text-sm text-foreground mt-1">{d.def}</p>
                   </div>
                 ))}
-                {filteredDict.length === 20 && (
-                  <p className="font-body text-xs text-muted-foreground text-center">Mostrando os primeiros 20 resultados. Refine sua busca.</p>
-                )}
               </div>
             )}
           </div>
