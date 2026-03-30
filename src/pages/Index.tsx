@@ -12,7 +12,7 @@ const labelToRoute: Record<string, string> = {
   "PEDIDOS\nDE ORAÇÃO": "/pedidos-oracao",
   "ATIVIDADES": "/atividades",
   "HISTÓRIAS": "/historias",
-  "ÁLBUM": "/atividades?album=1",
+  "ÁLBUM": "/album",
 };
 
 export default function Index() {

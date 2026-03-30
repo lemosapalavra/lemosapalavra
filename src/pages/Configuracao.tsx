@@ -6,6 +6,8 @@ import FeedbackFooter from "@/components/FeedbackFooter";
 export default function Configuracao() {
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
+  const [sessionStart] = useState(Date.now());
+  const [elapsed, setElapsed] = useState(0);
   const [stats, setStats] = useState({
     totalVisits: 0,
     pedidos: 0,
@@ -25,7 +27,6 @@ export default function Configuracao() {
     const u = JSON.parse(stored);
     setUser(u);
 
-    // Gather statistics
     const pedidos = JSON.parse(localStorage.getItem("lemos_pedidos_v2") || "[]");
     const feedbacks = JSON.parse(localStorage.getItem("lemos_feedbacks") || "[]");
     const stickers = JSON.parse(localStorage.getItem("lemos_stickers") || "[]");
@@ -43,6 +44,20 @@ export default function Configuracao() {
     });
   }, [navigate]);
 
+  // Timer
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setElapsed(Math.floor((Date.now() - sessionStart) / 1000));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [sessionStart]);
+
+  const formatTime = (s: number) => {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return `${m}m ${sec}s`;
+  };
+
   const handleResetCoins = () => {
     if (!user) return;
     if (confirm("Tem certeza que deseja zerar as moedas?")) {
@@ -54,16 +69,30 @@ export default function Configuracao() {
   };
 
   const handleClearPedidos = () => {
-    if (confirm("Tem certeza que deseja apagar todos os pedidos de oração?")) {
+    if (confirm("Apagar todos os pedidos de oração?")) {
       localStorage.removeItem("lemos_pedidos_v2");
       setStats(s => ({ ...s, pedidos: 0 }));
     }
   };
 
   const handleClearFeedbacks = () => {
-    if (confirm("Tem certeza que deseja apagar todos os feedbacks?")) {
+    if (confirm("Apagar todos os feedbacks?")) {
       localStorage.removeItem("lemos_feedbacks");
       setStats(s => ({ ...s, feedbacks: 0 }));
+    }
+  };
+
+  const handleClearStickers = () => {
+    if (confirm("Apagar todas as figurinhas coletadas?")) {
+      localStorage.removeItem("lemos_stickers");
+      setStats(s => ({ ...s, stickers: 0 }));
+    }
+  };
+
+  const handleClearVisits = () => {
+    if (confirm("Zerar estatísticas de visitas?")) {
+      localStorage.removeItem("lemos_page_visits");
+      setStats(s => ({ ...s, pagesVisited: {}, totalVisits: 0 }));
     }
   };
 
@@ -73,8 +102,9 @@ export default function Configuracao() {
     { label: "Moedas", value: stats.coins, emoji: "🪙" },
     { label: "Figurinhas", value: `${stats.stickers}/250`, emoji: "📸" },
     { label: "Pedidos de Oração", value: stats.pedidos, emoji: "🙏" },
-    { label: "Feedbacks Enviados", value: stats.feedbacks, emoji: "💬" },
-    { label: "Última Visita", value: stats.lastVisit || "Hoje", emoji: "📅" },
+    { label: "Feedbacks", value: stats.feedbacks, emoji: "💬" },
+    { label: "Visitas Totais", value: stats.totalVisits, emoji: "👁️" },
+    { label: "Sessão Atual", value: formatTime(elapsed), emoji: "⏱️" },
   ];
 
   return (
@@ -101,6 +131,12 @@ export default function Configuracao() {
             <p><strong>Email:</strong> {user.email}</p>
             <p><strong>Função:</strong> {user.role || "Não definida"}</p>
             <p><strong>Nascimento:</strong> {user.birth || "Não informado"}</p>
+            <p><strong>Última Visita:</strong> {stats.lastVisit || "Hoje"}</p>
+            <p><strong>Tempo na Sessão:</strong> {formatTime(elapsed)}</p>
+            <p><strong>Navegador:</strong> {navigator.userAgent.split("(")[0]}</p>
+            <p><strong>Plataforma:</strong> {navigator.platform}</p>
+            <p><strong>Idioma:</strong> {navigator.language}</p>
+            <p><strong>Resolução:</strong> {window.screen.width}x{window.screen.height}</p>
           </div>
         </div>
 
@@ -112,7 +148,12 @@ export default function Configuracao() {
               {Object.entries(stats.pagesVisited).map(([page, count]) => (
                 <div key={page} className="flex items-center justify-between">
                   <span className="font-body text-sm text-foreground">{page}</span>
-                  <span className="font-display text-sm font-bold text-primary">{count as number}x</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-24 h-2 bg-muted rounded-full overflow-hidden">
+                      <div className="h-full bg-primary rounded-full" style={{ width: `${Math.min(100, (count as number) * 10)}%` }} />
+                    </div>
+                    <span className="font-display text-sm font-bold text-primary">{count as number}x</span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -121,16 +162,22 @@ export default function Configuracao() {
 
         {/* Actions */}
         <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
-          <h3 className="font-display text-lg font-bold text-foreground mb-3">🔧 Ações</h3>
+          <h3 className="font-display text-lg font-bold text-foreground mb-3">🔧 Ações de Gerenciamento</h3>
           <div className="space-y-2">
             <button onClick={handleResetCoins} className="w-full text-left px-4 py-3 rounded-xl border border-border bg-background hover:bg-destructive/10 transition-colors font-body text-sm text-foreground">
               🪙 Zerar moedas
             </button>
             <button onClick={handleClearPedidos} className="w-full text-left px-4 py-3 rounded-xl border border-border bg-background hover:bg-destructive/10 transition-colors font-body text-sm text-foreground">
-              🙏 Apagar todos os pedidos de oração
+              🙏 Apagar pedidos de oração
             </button>
             <button onClick={handleClearFeedbacks} className="w-full text-left px-4 py-3 rounded-xl border border-border bg-background hover:bg-destructive/10 transition-colors font-body text-sm text-foreground">
-              💬 Apagar todos os feedbacks
+              💬 Apagar feedbacks
+            </button>
+            <button onClick={handleClearStickers} className="w-full text-left px-4 py-3 rounded-xl border border-border bg-background hover:bg-destructive/10 transition-colors font-body text-sm text-foreground">
+              📸 Apagar figurinhas coletadas
+            </button>
+            <button onClick={handleClearVisits} className="w-full text-left px-4 py-3 rounded-xl border border-border bg-background hover:bg-destructive/10 transition-colors font-body text-sm text-foreground">
+              📊 Zerar estatísticas de visitas
             </button>
           </div>
         </div>
