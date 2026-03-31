@@ -8,7 +8,6 @@ import iconDevocionais from "@/assets/icon-devocionais.png";
 import iconPedidosOracao from "@/assets/icon-pedidos-oracao.png";
 import iconAlbum from "@/assets/icon-album.png";
 import iconLogin from "@/assets/icon-login.png";
-import iconUsuario from "@/assets/icon-usuario.png";
 
 interface OrbitItem {
   icon: string;
@@ -37,28 +36,22 @@ interface OrbitMenuProps {
   onItemClick?: (label: string) => void;
 }
 
-export default function OrbitMenu({ isAuthenticated, userName, userAvatar, onLoginClick, onLogout, onItemClick }: OrbitMenuProps) {
+export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }: OrbitMenuProps) {
   const radius = 240;
   const iconSize = 75;
 
   return (
     <div className="relative flex items-center justify-center" style={{ width: 600, height: 600 }}>
-      {/* Top: login or user */}
-      <div className="absolute -top-24 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-20">
-        {isAuthenticated ? (
-          <button onClick={onLogout} className="flex flex-col items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
-            <img src={userAvatar || iconUsuario} alt="Usuário" width={70} height={70} className="rounded-full shadow-lg border-2 border-primary/30" />
-            <span className="orbit-label text-secondary">Olá,</span>
-            <span className="orbit-label">{userName || "USUÁRIO"}</span>
-          </button>
-        ) : (
+      {/* Top center: login button (only when not authenticated) */}
+      {!isAuthenticated && (
+        <div className="absolute -top-24 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-20">
           <button onClick={onLoginClick} className="flex flex-col items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
             <img src={iconLogin} alt="Entrar" width={80} height={80} className="rounded-lg shadow-lg" />
             <span className="orbit-label text-secondary">Entre ou Cadastre-se</span>
             <span className="orbit-label font-extrabold text-xs">PARA ATIVAR O SITE</span>
           </button>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Central logo */}
       <div className="absolute z-10 flex flex-col items-center" style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
