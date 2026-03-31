@@ -39,6 +39,14 @@ const stickerNames = [
   "Cego Bartimeu", "Surdo-Mudo", "Mão Mirrada", "Orelha Restaurada", "Anjo Libertador", "Línguas de Fogo", "Nuvem de Glória", "Arco-Íris de Noé", "Cidade Celestial", "Novo Céu e Nova Terra",
 ];
 
+const rankingPrizes = [
+  { coins: 10, prize: "🌟 Estrela de Bronze", desc: "Primeiros passos na fé" },
+  { coins: 50, prize: "⭐ Estrela de Prata", desc: "Estudante dedicado" },
+  { coins: 100, prize: "🏅 Medalha de Ouro", desc: "Guerreiro da Palavra" },
+  { coins: 200, prize: "👑 Coroa Real", desc: "Mestre das Escrituras" },
+  { coins: 500, prize: "🎖️ Selo Divino", desc: "Embaixador do Reino" },
+];
+
 export default function Album() {
   const [selectedCategory, setSelectedCategory] = useState(0);
 
@@ -46,6 +54,12 @@ export default function Album() {
     try {
       return JSON.parse(localStorage.getItem("lemos_stickers") || "[]") as number[];
     } catch { return [] as number[]; }
+  }, []);
+
+  const userCoins = useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem("lemos_user") || "{}").coins || 0;
+    } catch { return 0; }
   }, []);
 
   const buySticker = () => {
@@ -135,6 +149,26 @@ export default function Album() {
               </div>
             );
           })}
+        </div>
+
+        {/* Ranking de Prêmios */}
+        <div className="mt-8 bg-popover rounded-2xl p-4 shadow-lg border border-border">
+          <h3 className="font-display text-lg font-bold text-foreground text-center mb-2">🏆 Ranking de Prêmios</h3>
+          <div className="space-y-2">
+            {rankingPrizes.map((r, i) => {
+              const earned = userCoins >= r.coins;
+              return (
+                <div key={i} className={`flex items-center gap-3 p-2 rounded-xl transition-all ${earned ? "bg-primary/10" : "opacity-40"}`}>
+                  <span className="text-2xl">{r.prize.split(" ")[0]}</span>
+                  <div className="flex-1">
+                    <p className="font-display text-sm font-bold text-foreground">{r.prize}</p>
+                    <p className="font-body text-xs text-muted-foreground">{r.desc} — {r.coins} moedas</p>
+                  </div>
+                  {earned && <span className="text-primary font-bold">✅</span>}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
       <FeedbackFooter />
