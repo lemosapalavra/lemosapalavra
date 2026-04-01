@@ -1,6 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
+import StickerPackAnimation, { StickerRarity, StickerResult } from "@/components/StickerPackAnimation";
 import iconAlbum from "@/assets/icon-album.png";
 
 const stickerCategories = [
@@ -47,12 +48,27 @@ const rankingPrizes = [
   { coins: 500, prize: "🎖️ Selo Divino", desc: "Embaixador do Reino" },
 ];
 
+// Rarity assignment: ~60% bronze, ~30% silver, ~10% gold
+function getStickerRarity(idx: number): StickerRarity {
+  if (idx % 10 === 0) return "ouro";
+  if (idx % 3 === 0) return "prata";
+  return "bronze";
+}
+
 export default function Album() {
   const [selectedCategory, setSelectedCategory] = useState(0);
+  const [packResult, setPackResult] = useState<StickerResult[] | null>(null);
+  const [, setForceUpdate] = useState(0);
 
   const collected = useMemo(() => {
     try {
       return JSON.parse(localStorage.getItem("lemos_stickers") || "[]") as number[];
+    } catch { return [] as number[]; }
+  }, []);
+
+  const repeats = useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem("lemos_repeats") || "[]") as number[];
     } catch { return [] as number[]; }
   }, []);
 
@@ -62,26 +78,62 @@ export default function Album() {
     } catch { return 0; }
   }, []);
 
-  const buySticker = () => {
+  const buyPack = useCallback(() => {
     const user = JSON.parse(localStorage.getItem("lemos_user") || "{}");
     const coins = user.coins || 0;
-    if (coins < 5) {
-      alert("Você precisa de pelo menos 5 moedinhas para comprar uma figurinha!");
+    if (coins < 10) {
+      alert("Você precisa de 10 moedinhas para comprar um pacotinho (3 figurinhas)!");
       return;
     }
-    const uncollected = stickerNames.map((_, i) => i).filter(i => !collected.includes(i));
-    if (uncollected.length === 0) {
-      alert("Parabéns! Você já tem todas as figurinhas! 🎉");
-      return;
+
+    const currentCollected = JSON.parse(localStorage.getItem("lemos_stickers") || "[]") as number[];
+    const currentRepeats = JSON.parse(localStorage.getItem("lemos_repeats") || "[]") as number[];
+    const results: StickerResult[] = [];
+
+    for (let n = 0; n < 3; n++) {
+      const allIndices = stickerNames.map((_, i) => i);
+      const uncollected = allIndices.filter(i => !currentCollected.includes(i));
+      
+      let chosenIdx: number;
+      // 80% chance of new sticker if available, 20% repeat
+      if (uncollected.length > 0 && Math.random() < 0.8) {
+        chosenIdx = uncollected[Math.floor(Math.random() * uncollected.length)];
+      } else {
+        chosenIdx = allIndices[Math.floor(Math.random() * allIndices.length)];
+      }
+
+      const isRepeat = currentCollected.includes(chosenIdx);
+      const catIdx = Math.floor(chosenIdx / 50);
+      const cat = stickerCategories[Math.min(catIdx, stickerCategories.length - 1)];
+      const emoji = cat.emojis[chosenIdx % cat.emojis.length];
+
+      if (!isRepeat) {
+        currentCollected.push(chosenIdx);
+      } else {
+        currentRepeats.push(chosenIdx);
+      }
+
+      results.push({
+        index: chosenIdx,
+        name: stickerNames[chosenIdx],
+        emoji,
+        rarity: getStickerRarity(chosenIdx),
+        isRepeat,
+      });
     }
-    const randomIdx = uncollected[Math.floor(Math.random() * uncollected.length)];
-    const newCollected = [...collected, randomIdx];
-    localStorage.setItem("lemos_stickers", JSON.stringify(newCollected));
-    user.coins = coins - 5;
+
+    localStorage.setItem("lemos_stickers", JSON.stringify(currentCollected));
+    localStorage.setItem("lemos_repeats", JSON.stringify(currentRepeats));
+    user.coins = coins - 10;
     localStorage.setItem("lemos_user", JSON.stringify(user));
-    alert(`Você ganhou a figurinha: ${stickerNames[randomIdx]}! 🎉`);
+    setPackResult(results);
+  }, []);
+
+  const closePack = useCallback(() => {
+    setPackResult(null);
+    setForceUpdate(v => v + 1);
     window.location.reload();
-  };
+  }, []);
 
   const getCategoryStickers = (catIdx: number) => {
     const start = catIdx * 50;
@@ -96,10 +148,15 @@ export default function Album() {
       <div className="max-w-4xl mx-auto">
         <PageHeader title="Álbum de Figurinhas" subtitle={`${collected.length} de ${stickerNames.length} coletadas`} icon={iconAlbum} />
 
-        <div className="flex gap-2 mb-4 flex-wrap">
-          <button onClick={buySticker} className="btn-cartoon px-4 py-2 text-sm">
-            🪙 Comprar Figurinha (5 moedas)
+        <div className="flex gap-2 mb-4 flex-wrap items-center">
+          <button onClick={buyPack} className="btn-cartoon px-4 py-2 text-sm">
+            🎁 Comprar Pacotinho (10 moedas = 3 figurinhas)
           </button>
+          {repeats.length > 0 && (
+            <span className="font-body text-sm text-muted-foreground bg-popover px-3 py-1 rounded-full border border-border">
+              📦 {repeats.length} repetidas para troca
+            </span>
+          )}
         </div>
 
         <div className="bg-background rounded-full h-4 mb-4 overflow-hidden border border-border">
@@ -131,17 +188,24 @@ export default function Album() {
             const isCollected = collected.includes(globalIdx);
             const cat = stickerCategories[selectedCategory];
             const emoji = cat.emojis[i % cat.emojis.length];
+            const rarity = getStickerRarity(globalIdx);
+            const rarityBorder = rarity === "ouro" ? "border-yellow-400" : rarity === "prata" ? "border-gray-300" : "border-amber-700/50";
 
             return (
               <div
                 key={globalIdx}
                 className={`aspect-square rounded-xl border-2 flex flex-col items-center justify-center text-center p-1 transition-all ${
                   isCollected
-                    ? "bg-popover border-primary/50 shadow-md"
+                    ? `bg-popover ${rarityBorder} shadow-md`
                     : "bg-muted/30 border-border opacity-40"
                 }`}
-                title={isCollected ? name : "???"}
+                title={isCollected ? `${name} (${rarity})` : "???"}
               >
+                {isCollected && (
+                  <span className={`text-[7px] font-bold uppercase ${
+                    rarity === "ouro" ? "text-yellow-500" : rarity === "prata" ? "text-gray-400" : "text-amber-700"
+                  }`}>{rarity === "ouro" ? "🥇" : rarity === "prata" ? "🥈" : "🥉"}</span>
+                )}
                 <span className="text-xl">{isCollected ? emoji : "❓"}</span>
                 <span className="text-[8px] font-display font-bold text-foreground leading-tight mt-0.5">
                   {isCollected ? name : `#${globalIdx + 1}`}
@@ -170,8 +234,32 @@ export default function Album() {
             })}
           </div>
         </div>
+
+        {/* Figurinhas repetidas */}
+        {repeats.length > 0 && (
+          <div className="mt-6 bg-popover rounded-2xl p-4 shadow-lg border border-border">
+            <h3 className="font-display text-lg font-bold text-foreground text-center mb-2">📦 Figurinhas para Troca</h3>
+            <div className="grid grid-cols-5 sm:grid-cols-8 gap-2">
+              {repeats.map((idx, i) => {
+                const catIdx = Math.floor(idx / 50);
+                const cat = stickerCategories[Math.min(catIdx, stickerCategories.length - 1)];
+                const emoji = cat.emojis[idx % cat.emojis.length];
+                return (
+                  <div key={i} className="aspect-square rounded-xl border-2 border-red-300 bg-red-50/30 flex flex-col items-center justify-center p-1">
+                    <span className="text-lg">{emoji}</span>
+                    <span className="text-[7px] font-display font-bold text-foreground">{stickerNames[idx]}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
       <FeedbackFooter />
+
+      {packResult && (
+        <StickerPackAnimation stickers={packResult} onClose={closePack} />
+      )}
     </div>
   );
 }
