@@ -15,6 +15,9 @@ const devos = [
 ];
 
 export default function Devocionais() {
+  // Daily devotional: rotate based on day of year
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
+  const todayIdx = dayOfYear % devos.length;
   const [selected, setSelected] = useState<number | null>(null);
 
   return (
