@@ -58,11 +58,11 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
         <img
           src={logoCentral}
           alt="Lemos a Palavra"
-          width={200}
-          height={200}
+          width={130}
+          height={130}
           className={`drop-shadow-xl transition-all duration-700 ${!isAuthenticated ? "grayscale opacity-70" : ""}`}
         />
-        <span className="font-display text-sm font-bold text-foreground mt-1 text-center leading-tight">Clubinho da Palavra</span>
+        <span className="font-display text-xs font-bold text-foreground mt-1 text-center leading-tight">Clubinho da Palavra</span>
       </div>
 
       {/* Orbiting icons */}
