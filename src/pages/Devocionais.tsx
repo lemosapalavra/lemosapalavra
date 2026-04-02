@@ -26,19 +26,37 @@ export default function Devocionais() {
         <PageHeader title="Devocionais" subtitle="Momentos com Deus todos os dias" icon={iconDevocionais} />
 
         {selected === null ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {devos.map((d, i) => (
-              <div
-                key={i}
-                onClick={() => setSelected(i)}
-                className="bg-popover rounded-2xl p-5 shadow-md hover:shadow-lg hover:scale-105 transition-all cursor-pointer border border-border"
-              >
-                <h3 className="font-display text-lg font-bold text-foreground">📖 {d.title}</h3>
-                <p className="text-primary font-body text-sm font-semibold mt-1">{d.verse}</p>
-                <p className="font-body text-sm text-muted-foreground mt-2 line-clamp-2">{d.text}</p>
-                <p className="font-body text-xs text-primary mt-2">Clique para ler →</p>
+          <div>
+            {/* Today's devotional highlight */}
+            <div 
+              onClick={() => setSelected(todayIdx)}
+              className="bg-primary/10 rounded-2xl p-5 shadow-lg border-2 border-primary mb-6 cursor-pointer hover:scale-[1.02] transition-all"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">🌅</span>
+                <span className="font-display text-xs font-bold text-primary uppercase">Devocional de Hoje</span>
               </div>
-            ))}
+              <h3 className="font-display text-lg font-bold text-foreground">📖 {devos[todayIdx].title}</h3>
+              <p className="text-primary font-body text-sm font-semibold mt-1">{devos[todayIdx].verse}</p>
+              <p className="font-body text-sm text-muted-foreground mt-2 line-clamp-2">{devos[todayIdx].text}</p>
+              <p className="font-body text-xs text-primary mt-2 font-bold">Toque para ler →</p>
+            </div>
+
+            <h3 className="font-display text-md font-bold text-foreground mb-3">📚 Todos os Devocionais</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {devos.map((d, i) => (
+                <div
+                  key={i}
+                  onClick={() => setSelected(i)}
+                  className={`bg-popover rounded-2xl p-5 shadow-md hover:shadow-lg hover:scale-105 transition-all cursor-pointer border ${i === todayIdx ? "border-primary" : "border-border"}`}
+                >
+                  <h3 className="font-display text-lg font-bold text-foreground">📖 {d.title}</h3>
+                  <p className="text-primary font-body text-sm font-semibold mt-1">{d.verse}</p>
+                  <p className="font-body text-sm text-muted-foreground mt-2 line-clamp-2">{d.text}</p>
+                  <p className="font-body text-xs text-primary mt-2">Clique para ler →</p>
+                </div>
+              ))}
+            </div>
           </div>
         ) : (
           <div className="bg-popover rounded-2xl p-6 shadow-lg border border-border">
