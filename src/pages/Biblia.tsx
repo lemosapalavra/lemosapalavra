@@ -2,9 +2,9 @@ import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import iconBiblia from "@/assets/icon-biblia.png";
-import iconVT from "@/assets/icon-velho-testamento.jpg";
-import iconNT from "@/assets/icon-novo-testamento.jpg";
-import iconDic from "@/assets/icon-dicionario.jpg";
+import iconVT from "@/assets/icon-velho-testamento.png";
+import iconNT from "@/assets/icon-novo-testamento.png";
+import iconDic from "@/assets/icon-dicionario.png";
 import { bookChapters, chapterThemes } from "@/data/bibleStructure";
 
 const antigoTestamento = [

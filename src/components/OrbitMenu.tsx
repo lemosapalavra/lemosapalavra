@@ -37,11 +37,11 @@ interface OrbitMenuProps {
 }
 
 export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }: OrbitMenuProps) {
-  const radius = 240;
-  const iconSize = 75;
+  const radius = 155;
+  const iconSize = 58;
 
   return (
-    <div className="relative flex items-center justify-center" style={{ width: 600, height: 600 }}>
+    <div className="relative flex items-center justify-center" style={{ width: 400, height: 400 }}>
       {/* Top center: login button (only when not authenticated) */}
       {!isAuthenticated && (
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-20">
@@ -58,11 +58,11 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
         <img
           src={logoCentral}
           alt="Lemos a Palavra"
-          width={200}
-          height={200}
+          width={130}
+          height={130}
           className={`drop-shadow-xl transition-all duration-700 ${!isAuthenticated ? "grayscale opacity-70" : ""}`}
         />
-        <span className="font-display text-sm font-bold text-foreground mt-1 text-center leading-tight">Clubinho da Palavra</span>
+        <span className="font-display text-xs font-bold text-foreground mt-1 text-center leading-tight">Clubinho da Palavra</span>
       </div>
 
       {/* Orbiting icons */}
