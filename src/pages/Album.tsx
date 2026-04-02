@@ -182,7 +182,7 @@ export default function Album() {
           ))}
         </div>
 
-        <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2">
+        <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 gap-3">
           {catStickers.map((name, i) => {
             const globalIdx = catStart + i;
             const isCollected = collected.includes(globalIdx);
@@ -194,7 +194,7 @@ export default function Album() {
             return (
               <div
                 key={globalIdx}
-                className={`aspect-square rounded-xl border-2 flex flex-col items-center justify-center text-center p-1 transition-all ${
+                className={`aspect-square rounded-xl border-2 flex flex-col items-center justify-center text-center p-2 transition-all ${
                   isCollected
                     ? `bg-popover ${rarityBorder} shadow-md`
                     : "bg-muted/30 border-border opacity-40"
@@ -202,12 +202,12 @@ export default function Album() {
                 title={isCollected ? `${name} (${rarity})` : "???"}
               >
                 {isCollected && (
-                  <span className={`text-[7px] font-bold uppercase ${
+                  <span className={`text-xs font-bold uppercase ${
                     rarity === "ouro" ? "text-yellow-500" : rarity === "prata" ? "text-gray-400" : "text-amber-700"
                   }`}>{rarity === "ouro" ? "🥇" : rarity === "prata" ? "🥈" : "🥉"}</span>
                 )}
-                <span className="text-xl">{isCollected ? emoji : "❓"}</span>
-                <span className="text-[8px] font-display font-bold text-foreground leading-tight mt-0.5">
+                <span className="text-3xl sm:text-4xl">{isCollected ? emoji : "❓"}</span>
+                <span className="text-[10px] sm:text-xs font-display font-bold text-foreground leading-tight mt-1">
                   {isCollected ? name : `#${globalIdx + 1}`}
                 </span>
               </div>
