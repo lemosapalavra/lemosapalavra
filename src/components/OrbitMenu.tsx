@@ -37,8 +37,8 @@ interface OrbitMenuProps {
 }
 
 export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }: OrbitMenuProps) {
-  const radius = 155;
-  const iconSize = 58;
+  const radius = 180;
+  const iconSize = 64;
 
   return (
     <div className="relative flex items-center justify-center" style={{ width: 400, height: 400 }}>
