@@ -37,11 +37,11 @@ interface OrbitMenuProps {
 }
 
 export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }: OrbitMenuProps) {
-  const radius = 155;
-  const iconSize = 58;
+  const radius = 180;
+  const iconSize = 64;
 
   return (
-    <div className="relative flex items-center justify-center" style={{ width: 400, height: 400 }}>
+    <div className="relative flex items-center justify-center" style={{ width: 440, height: 440 }}>
       {/* Top center: login button (only when not authenticated) */}
       {!isAuthenticated && (
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-20">
