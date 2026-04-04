@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { playCelebrationSound } from "@/utils/celebrationSound";
 
 interface CelebrationAnimationProps {
   show: boolean;

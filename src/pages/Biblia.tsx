@@ -114,8 +114,7 @@ const bookSummaries: Record<string, string> = {
   "Apocalipse": "Visões do fim: Jesus glorificado, juízo e novo céu.",
 };
 
-const dicionario: { term: string; def: string }[] = [
-  { term: "Aarão", def: "Irmão de Moisés, primeiro sumo sacerdote de Israel." },
+import { dicionarioBiblico as dicionario } from "@/data/bibleDictionary";
   { term: "Abba", def: "Palavra aramaica para 'Pai', usada por Jesus para se referir a Deus." },
   { term: "Abel", def: "Segundo filho de Adão e Eva, morto por seu irmão Caim." },
   { term: "Abençoar", def: "Invocar o favor divino sobre alguém ou algo." },
