@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import iconBiblia from "@/assets/icon-biblia.png";
@@ -26,6 +26,24 @@ const novoTestamento = [
   "Tiago", "1 Pedro", "2 Pedro", "1 João", "2 João",
   "3 João", "Judas", "Apocalipse",
 ];
+
+// Mapping from Portuguese book names to bible-api.com book IDs
+const bookIdMap: Record<string, string> = {
+  "Gênesis": "GEN", "Êxodo": "EXO", "Levítico": "LEV", "Números": "NUM", "Deuteronômio": "DEU",
+  "Josué": "JOS", "Juízes": "JDG", "Rute": "RUT", "1 Samuel": "1SA", "2 Samuel": "2SA",
+  "1 Reis": "1KI", "2 Reis": "2KI", "1 Crônicas": "1CH", "2 Crônicas": "2CH", "Esdras": "EZR",
+  "Neemias": "NEH", "Ester": "EST", "Jó": "JOB", "Salmos": "PSA", "Provérbios": "PRO",
+  "Eclesiastes": "ECC", "Cânticos": "SNG", "Isaías": "ISA", "Jeremias": "JER", "Lamentações": "LAM",
+  "Ezequiel": "EZK", "Daniel": "DAN", "Oséias": "HOS", "Joel": "JOL", "Amós": "AMO",
+  "Obadias": "OBA", "Jonas": "JON", "Miquéias": "MIC", "Naum": "NAM", "Habacuque": "HAB",
+  "Sofonias": "ZEP", "Ageu": "HAG", "Zacarias": "ZEC", "Malaquias": "MAL",
+  "Mateus": "MAT", "Marcos": "MRK", "Lucas": "LUK", "João": "JHN", "Atos": "ACT",
+  "Romanos": "ROM", "1 Coríntios": "1CO", "2 Coríntios": "2CO", "Gálatas": "GAL", "Efésios": "EPH",
+  "Filipenses": "PHP", "Colossenses": "COL", "1 Tessalonicenses": "1TH", "2 Tessalonicenses": "2TH",
+  "1 Timóteo": "1TI", "2 Timóteo": "2TI", "Tito": "TIT", "Filemom": "PHM", "Hebreus": "HEB",
+  "Tiago": "JAS", "1 Pedro": "1PE", "2 Pedro": "2PE", "1 João": "1JN", "2 João": "2JN",
+  "3 João": "3JN", "Judas": "JUD", "Apocalipse": "REV",
+};
 
 const bookSummaries: Record<string, string> = {
   "Gênesis": "O livro dos começos: criação do mundo, Adão e Eva, Noé, Abraão, Isaque, Jacó e José.",
@@ -271,119 +289,35 @@ const dicionario: { term: string; def: string }[] = [
   { term: "Rute", def: "Moabita fiel; ancestral do rei Davi." },
   { term: "Sábado", def: "Dia de descanso consagrado a Deus." },
   { term: "Sabedoria", def: "Conhecimento aplicado segundo a vontade de Deus." },
-  { term: "Sacerdote", def: "Mediador entre Deus e o povo." },
-  { term: "Sacrifício", def: "Oferta a Deus; Jesus é o sacrifício perfeito." },
-  { term: "Salmos", def: "Livro de orações e louvores a Deus." },
-  { term: "Salomão", def: "Rei sábio que construiu o Templo." },
-  { term: "Salvação", def: "Livramento do pecado pela graça de Cristo." },
-  { term: "Samuel", def: "Profeta e juiz que ungiu os primeiros reis." },
-  { term: "Sangue", def: "Símbolo de vida e expiação na Bíblia." },
-  { term: "Santidade", def: "Estado de pureza dedicada a Deus." },
-  { term: "Santificação", def: "Processo de tornar-se semelhante a Cristo." },
-  { term: "Sara", def: "Esposa de Abraão, mãe de Isaque." },
-  { term: "Satanás", def: "O adversário de Deus; anjo caído." },
-  { term: "Semeador", def: "Parábola sobre respostas à Palavra de Deus." },
-  { term: "Sermão do Monte", def: "Grande ensino de Jesus em Mateus 5-7." },
-  { term: "Servo", def: "Pessoa que serve a Deus com humildade." },
-  { term: "Sinagoga", def: "Local de reunião e ensino judaico." },
-  { term: "Tabernáculo", def: "Tenda sagrada de adoração no deserto." },
-  { term: "Tábuas da Lei", def: "Pedras com os Dez Mandamentos." },
-  { term: "Templo", def: "Casa de Deus em Jerusalém." },
-  { term: "Tentação", def: "Estímulo ao pecado; Jesus venceu toda tentação." },
+  { term: "Sacerdote", def: "Mediador entre o povo e Deus no Templo." },
+  { term: "Sacramento", def: "Sinal visível da graça invisível de Deus." },
+  { term: "Sacrifício", def: "Oferta a Deus; morte de Cristo pelos pecados." },
+  { term: "Sadoquita", def: "Grupo que não acreditava na ressurreição." },
+  { term: "Saduceu", def: "Líder religioso que negava a ressurreição." },
+  { term: "Salvação", def: "Livramento do pecado e da morte eterna." },
+  { term: "Samaritano", def: "Habitante de Samaria; Jesus contou a parábola do Bom Samaritano." },
+  { term: "Sangue", def: "Símbolo de vida e da expiação em Cristo." },
+  { term: "Santificação", def: "Processo de tornar-se santo pela ação do Espírito." },
+  { term: "Santo", def: "Separado para Deus; puro e consagrado." },
+  { term: "Sião", def: "Monte de Jerusalém; símbolo da morada de Deus." },
+  { term: "Tabernáculo", def: "Tenda sagrada onde Deus habitava entre Israel." },
+  { term: "Templo", def: "Lugar de adoração em Jerusalém." },
+  { term: "Tentação", def: "Provação para testar a fé." },
+  { term: "Testamento", def: "Aliança entre Deus e Seu povo." },
+  { term: "Transfiguração", def: "Jesus revelou Sua glória no monte." },
   { term: "Trindade", def: "Deus em três pessoas: Pai, Filho e Espírito Santo." },
-  { term: "Última Ceia", def: "Última refeição de Jesus com os discípulos." },
-  { term: "Unção", def: "Derramar óleo como sinal de consagração." },
+  { term: "Unção", def: "Consagração com óleo para serviço divino." },
   { term: "Verdade", def: "Jesus: 'Eu sou a Verdade'." },
-  { term: "Vida Eterna", def: "Existência sem fim com Deus." },
-  { term: "Videira", def: "Jesus: 'Eu sou a videira, vós sois os ramos'." },
-  { term: "Zacarias", def: "Profeta de visões messiânicas." },
-  { term: "Zaqueu", def: "Cobrador que subiu numa árvore para ver Jesus." },
-  { term: "Zelo", def: "Fervor e dedicação no serviço a Deus." },
-  { term: "Sião", def: "Monte em Jerusalém; presença de Deus." },
-  { term: "Javé", def: "Nome pessoal de Deus: 'Eu Sou o que Sou'." },
-  { term: "Laodiceia", def: "Igreja morna criticada no Apocalipse." },
-  { term: "Ló", def: "Sobrinho de Abraão, resgatado de Sodoma." },
-  { term: "Magnificat", def: "Cântico de Maria louvando a Deus." },
-  { term: "Maranata", def: "'O Senhor vem'; expressão de esperança." },
-  { term: "Nicodemos", def: "Fariseu que aprendeu sobre o novo nascimento." },
-  { term: "Oliveira", def: "Árvore sagrada; símbolo de paz e unção." },
-  { term: "Paracleto", def: "Consolador; título do Espírito Santo." },
-  { term: "Peniel", def: "Lugar onde Jacó lutou com Deus." },
-  { term: "Pão da Vida", def: "Título de Jesus como alimento espiritual." },
-  { term: "Pedra Angular", def: "Cristo como fundamento da Igreja." },
-  { term: "Príncipe da Paz", def: "Título messiânico de Jesus em Isaías." },
-  { term: "Rebanho", def: "O povo de Deus sob cuidado do Pastor." },
-  { term: "Refúgio", def: "Lugar seguro na presença de Deus." },
-  { term: "Remanescente", def: "Porção fiel do povo de Deus." },
-  { term: "Sarça Ardente", def: "Arbusto de onde Deus falou com Moisés." },
-  { term: "Serafim", def: "Anjo de seis asas que adora a Deus." },
-  { term: "Serpente", def: "Símbolo de Satanás; tentou Eva no Éden." },
-  { term: "Selá", def: "Pausa meditativa nos Salmos." },
-  { term: "Sumo Sacerdote", def: "Líder religioso máximo; Jesus é nosso Sumo Sacerdote." },
-  { term: "Teofania", def: "Aparição visível de Deus aos homens." },
-  { term: "Terra Prometida", def: "Canaã, prometida a Abraão e seus descendentes." },
-  { term: "Véu do Templo", def: "Cortina que rasgou na morte de Jesus." },
-  { term: "Verbo", def: "Título de Jesus: 'No princípio era o Verbo'." },
-  { term: "Yahweh", def: "Nome sagrado de Deus no Antigo Testamento." },
-  { term: "Enoque", def: "Homem que andou com Deus e foi arrebatado." },
-  { term: "Esaú", def: "Filho de Isaque que vendeu sua primogenitura." },
-  { term: "Estêvão", def: "Primeiro mártir cristão." },
-  { term: "Gideão", def: "Juiz que venceu midianitas com 300 homens." },
-  { term: "Hagar", def: "Serva de Sara, mãe de Ismael." },
-  { term: "Barnabé", def: "Companheiro de Paulo nas viagens missionárias." },
-  { term: "Bartimeu", def: "Cego curado por Jesus em Jericó." },
-  { term: "Benjamim", def: "Menor filho de Jacó e Raquel." },
-  { term: "Ananias", def: "Discípulo que batizou Paulo." },
-  { term: "Anticristo", def: "Opositor de Cristo nos últimos tempos." },
-  { term: "Apostasia", def: "Abandono da fé cristã." },
-  { term: "Balaão", def: "Profeta pagão usado por Deus para abençoar Israel." },
-  { term: "Gamaliel", def: "Mestre fariseu que aconselhou moderação." },
-  { term: "Ismael", def: "Filho de Abraão com Hagar." },
-  { term: "Jessé", def: "Pai do rei Davi." },
-  { term: "José de Arimateia", def: "Cedeu seu túmulo para Jesus." },
-  { term: "Lídia", def: "Primeira convertida na Europa." },
-  { term: "Mordecai", def: "Primo de Ester que ajudou a salvar seu povo." },
-  { term: "Nabucodonosor", def: "Rei da Babilônia que conquistou Jerusalém." },
-  { term: "Onésimo", def: "Escravo convertido por Paulo." },
-  { term: "Rebeca", def: "Esposa de Isaque, mãe de Esaú e Jacó." },
-  { term: "Sansão", def: "Juiz de força sobrenatural." },
-  { term: "Silas", def: "Companheiro de Paulo nas viagens." },
-  { term: "Tabita", def: "Discípula ressuscitada por Pedro." },
-  { term: "Miriã", def: "Irmã de Moisés que liderou cânticos." },
-  { term: "Nardo", def: "Perfume caro derramado sobre Jesus." },
-  { term: "Raquel", def: "Esposa amada de Jacó." },
-  { term: "Marta", def: "Irmã de Lázaro, conhecida pela hospitalidade." },
-  { term: "Matias", def: "Apóstolo que substituiu Judas." },
-  { term: "Filisteus", def: "Povo inimigo de Israel." },
-  { term: "Praga", def: "Castigo divino enviado ao Egito." },
-  { term: "Resgate", def: "Libertar pagando um preço; Cristo nos resgatou." },
-  { term: "Reconciliação", def: "Restauração do relacionamento com Deus." },
-  { term: "Vigília", def: "Período de oração noturna." },
-  { term: "Voto", def: "Promessa solene feita a Deus." },
-  { term: "Heresia", def: "Ensino contrário à fé cristã." },
-  { term: "Pecado Original", def: "Primeira desobediência de Adão e Eva." },
-  { term: "Soberania", def: "Autoridade suprema de Deus sobre tudo." },
-  { term: "Avivamento", def: "Renovação espiritual que traz vigor à fé." },
-  { term: "Meditação", def: "Reflexão profunda sobre a Palavra de Deus." },
-  { term: "Onipotente", def: "Todo-poderoso; atributo de Deus." },
-  { term: "Onipresente", def: "Presente em todos os lugares." },
-  { term: "Onisciente", def: "Que tudo sabe; atributo de Deus." },
-  { term: "Patriarca", def: "Pai fundador: Abraão, Isaque, Jacó." },
-  { term: "Peregrino", def: "Viajante em busca de Deus." },
-  { term: "Pregação", def: "Proclamação da Palavra de Deus." },
-  { term: "Primogênito", def: "Primeiro filho; Jesus é o primogênito da criação." },
-  { term: "Raíz de Jessé", def: "Título messiânico de Jesus." },
-  { term: "Hissopo", def: "Planta usada em rituais de purificação." },
-  { term: "Transfiguração", def: "Jesus revelou Sua glória divina no monte." },
-  { term: "Tribo", def: "Uma das doze divisões de Israel." },
-  { term: "Torá", def: "Os cinco primeiros livros; a Lei de Moisés." },
-  { term: "Monte Carmelo", def: "Elias confrontou profetas de Baal." },
-  { term: "Monte das Oliveiras", def: "Monte associado a Jesus em Jerusalém." },
-  { term: "Betesda", def: "Tanque onde Jesus curou um paralítico." },
-  { term: "Caná", def: "Cidade do primeiro milagre de Jesus." },
-  { term: "Sodoma", def: "Cidade destruída pela maldade." },
-  { term: "Nínive", def: "Capital da Assíria onde Jonas pregou." },
+  { term: "Vida Eterna", def: "Vida sem fim com Deus pela fé em Cristo." },
+  { term: "Vinha", def: "Símbolo de Israel; Jesus é a Videira Verdadeira." },
+  { term: "Vocação", def: "Chamado de Deus para servir." },
+  { term: "Zaqueu", def: "Publicano baixinho que subiu na árvore para ver Jesus." },
 ];
+
+interface Verse {
+  verse: number;
+  text: string;
+}
 
 type Tab = "antigo" | "novo" | "dicionario";
 
@@ -393,6 +327,52 @@ export default function Biblia() {
   const [dictSearch, setDictSearch] = useState("");
   const [selectedBook, setSelectedBook] = useState<string | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
+  const [verses, setVerses] = useState<Verse[]>([]);
+  const [loadingVerses, setLoadingVerses] = useState(false);
+  const [verseError, setVerseError] = useState<string | null>(null);
+  const [fontSize, setFontSize] = useState(16);
+
+  // Fetch verses from bible-api.com when chapter is selected
+  useEffect(() => {
+    if (!selectedBook || !selectedChapter) {
+      setVerses([]);
+      setVerseError(null);
+      return;
+    }
+
+    const bookId = bookIdMap[selectedBook];
+    if (!bookId) {
+      setVerseError("Livro não encontrado na API.");
+      return;
+    }
+
+    setLoadingVerses(true);
+    setVerseError(null);
+    setVerses([]);
+
+    fetch(`https://bible-api.com/data/almeida/${bookId}/${selectedChapter}`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`Erro ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        if (data.verses && Array.isArray(data.verses)) {
+          setVerses(
+            data.verses.map((v: { verse: number; text: string }) => ({
+              verse: v.verse,
+              text: v.text.trim(),
+            }))
+          );
+        } else {
+          setVerseError("Formato de resposta inesperado.");
+        }
+      })
+      .catch((err) => {
+        console.error("Erro ao buscar versículos:", err);
+        setVerseError("Não foi possível carregar os versículos. Verifique sua conexão.");
+      })
+      .finally(() => setLoadingVerses(false));
+  }, [selectedBook, selectedChapter]);
 
   const filterBooks = (books: string[]) =>
     books.filter((b) => b.toLowerCase().includes(search.toLowerCase()));
@@ -415,6 +395,20 @@ export default function Biblia() {
   const chapterTheme = selectedBook && selectedChapter
     ? chapterThemes[selectedBook]?.[selectedChapter]
     : null;
+
+  const goToNextChapter = () => {
+    if (selectedBook && selectedChapter && selectedChapter < totalChapters) {
+      setSelectedChapter(selectedChapter + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const goToPrevChapter = () => {
+    if (selectedBook && selectedChapter && selectedChapter > 1) {
+      setSelectedChapter(selectedChapter - 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   const renderBookGrid = (books: string[], emoji: string) => (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
@@ -471,32 +465,108 @@ export default function Biblia() {
           </div>
         )}
 
-        {/* Chapter view */}
+        {/* Chapter view with full verses */}
         {selectedBook && selectedChapter && (
-          <div className="bg-popover rounded-2xl p-6 shadow-lg border border-border mb-4">
+          <div className="bg-popover rounded-2xl p-5 sm:p-6 shadow-lg border border-border mb-4">
             <button
               onClick={() => setSelectedChapter(null)}
               className="text-primary font-display text-sm font-bold mb-4 hover:underline"
             >
               ← Voltar aos capítulos
             </button>
-            <h2 className="font-display text-2xl font-bold text-foreground mb-2">
+
+            <h2 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-1">
               📖 {selectedBook} — Capítulo {selectedChapter}
             </h2>
-            {chapterTheme ? (
-              <div className="bg-primary/5 rounded-xl p-4 mb-4 border border-primary/20">
-                <p className="font-body text-foreground leading-relaxed">{chapterTheme}</p>
-              </div>
-            ) : (
-              <div className="bg-muted/50 rounded-xl p-4 border border-border">
-                <p className="font-body text-muted-foreground text-sm text-center">
-                  📚 Conteúdo completo deste capítulo será adicionado em breve.
-                </p>
-                <p className="font-body text-muted-foreground text-xs text-center mt-2">
-                  Tradução Almeida Corrigida Fiel — domínio público
-                </p>
+
+            {/* Theme summary */}
+            {chapterTheme && (
+              <div className="bg-primary/5 rounded-xl p-3 mb-4 border border-primary/20">
+                <p className="font-body text-sm text-foreground/80 italic">{chapterTheme}</p>
               </div>
             )}
+
+            {/* Font size control */}
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-xs text-muted-foreground">Tamanho:</span>
+              <button
+                onClick={() => setFontSize((s) => Math.max(12, s - 2))}
+                className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-foreground font-bold hover:bg-muted/80"
+              >
+                A-
+              </button>
+              <span className="text-sm text-muted-foreground">{fontSize}px</span>
+              <button
+                onClick={() => setFontSize((s) => Math.min(28, s + 2))}
+                className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center text-foreground font-bold hover:bg-muted/80"
+              >
+                A+
+              </button>
+            </div>
+
+            {/* Verses */}
+            {loadingVerses && (
+              <div className="flex flex-col items-center justify-center py-12 gap-3">
+                <div className="w-10 h-10 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
+                <p className="text-sm text-muted-foreground">Carregando versículos...</p>
+              </div>
+            )}
+
+            {verseError && (
+              <div className="bg-destructive/10 rounded-xl p-4 border border-destructive/20 text-center">
+                <p className="text-sm text-destructive">{verseError}</p>
+                <button
+                  onClick={() => {
+                    // retry
+                    const ch = selectedChapter;
+                    setSelectedChapter(null);
+                    setTimeout(() => setSelectedChapter(ch), 100);
+                  }}
+                  className="mt-2 text-xs text-primary underline"
+                >
+                  Tentar novamente
+                </button>
+              </div>
+            )}
+
+            {!loadingVerses && !verseError && verses.length > 0 && (
+              <div className="space-y-2" style={{ fontSize: `${fontSize}px` }}>
+                {verses.map((v) => (
+                  <p key={v.verse} className="font-body text-foreground leading-relaxed">
+                    <span className="font-bold text-primary text-xs align-super mr-1">
+                      {v.verse}
+                    </span>
+                    {v.text}
+                  </p>
+                ))}
+              </div>
+            )}
+
+            {/* Chapter navigation */}
+            <div className="flex justify-between items-center mt-6 pt-4 border-t border-border">
+              <button
+                onClick={goToPrevChapter}
+                disabled={selectedChapter <= 1}
+                className="flex items-center gap-1 text-sm font-display font-bold text-primary disabled:text-muted-foreground disabled:cursor-not-allowed hover:underline"
+              >
+                ← Anterior
+              </button>
+              <span className="text-xs text-muted-foreground">
+                Cap. {selectedChapter} de {totalChapters}
+              </span>
+              <button
+                onClick={goToNextChapter}
+                disabled={selectedChapter >= totalChapters}
+                className="flex items-center gap-1 text-sm font-display font-bold text-primary disabled:text-muted-foreground disabled:cursor-not-allowed hover:underline"
+              >
+                Próximo →
+              </button>
+            </div>
+
+            {/* Translation credit */}
+            <p className="text-[10px] text-muted-foreground text-center mt-4">
+              Tradução João Ferreira de Almeida — Domínio Público — via bible-api.com
+            </p>
           </div>
         )}
 
@@ -518,22 +588,15 @@ export default function Biblia() {
               📑 Capítulos ({totalChapters})
             </h3>
             <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2">
-              {Array.from({ length: totalChapters }, (_, i) => i + 1).map((ch) => {
-                const hasTheme = chapterThemes[selectedBook]?.[ch];
-                return (
-                  <button
-                    key={ch}
-                    onClick={() => setSelectedChapter(ch)}
-                    className={`aspect-square rounded-xl border flex items-center justify-center font-display font-bold text-sm transition-all hover:scale-110 ${
-                      hasTheme
-                        ? "bg-primary/10 border-primary/30 text-primary hover:bg-primary/20"
-                        : "bg-background border-border text-foreground hover:bg-muted"
-                    }`}
-                  >
-                    {ch}
-                  </button>
-                );
-              })}
+              {Array.from({ length: totalChapters }, (_, i) => i + 1).map((ch) => (
+                <button
+                  key={ch}
+                  onClick={() => setSelectedChapter(ch)}
+                  className="aspect-square rounded-xl border flex items-center justify-center font-display font-bold text-sm transition-all hover:scale-110 bg-primary/10 border-primary/30 text-primary hover:bg-primary/20"
+                >
+                  {ch}
+                </button>
+              ))}
             </div>
           </div>
         )}
