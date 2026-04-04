@@ -25,6 +25,7 @@ export default function CelebrationAnimation({ show, message, coins, emoji = "ðŸ
 
   useEffect(() => {
     if (show) {
+      playCelebrationSound();
       const p: Particle[] = Array.from({ length: 40 }, (_, i) => ({
         id: i,
         emoji: confettiEmojis[Math.floor(Math.random() * confettiEmojis.length)],
