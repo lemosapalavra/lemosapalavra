@@ -57,9 +57,21 @@ export default function Historias() {
               <h2 className="font-display text-2xl font-bold text-white text-center drop-shadow-lg">{s.title}</h2>
               <p className="font-body text-sm text-white/80 text-center mt-1 mb-3">{s.desc}</p>
 
-              <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-5 max-h-[40vh] overflow-y-auto w-full">
-                <p className="font-body text-white text-sm whitespace-pre-line leading-relaxed">{s.story}</p>
-              </div>
+              {(s as any).videoId ? (
+                <div className="w-full rounded-2xl overflow-hidden shadow-2xl mb-2" style={{ aspectRatio: "16/9" }}>
+                  <iframe
+                    src={`https://www.youtube.com/embed/${(s as any).videoId}?rel=0`}
+                    title={s.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full border-0"
+                  />
+                </div>
+              ) : (
+                <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-5 max-h-[40vh] overflow-y-auto w-full">
+                  <p className="font-body text-white text-sm whitespace-pre-line leading-relaxed">{s.story}</p>
+                </div>
+              )}
             </div>
 
             <KwaiSideActions
