@@ -207,6 +207,7 @@ export default function Atividades() {
 
   // Connect-the-dots
   const [connectedDots, setConnectedDots] = useState<number[]>([]);
+  const [dotsIdx, setDotsIdx] = useState<number | null>(null);
 
   // Jigsaw puzzle
   const [jigsawIdx, setJigsawIdx] = useState(0);
