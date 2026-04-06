@@ -35,11 +35,71 @@ const wordSearchGrid = [
   ["M","O","I","S","E","S","W","X","Z"],
 ];
 
-const dotPoints = [
-  { x: 150, y: 30 }, { x: 180, y: 110 }, { x: 270, y: 110 },
-  { x: 200, y: 160 }, { x: 220, y: 250 }, { x: 150, y: 200 },
-  { x: 80, y: 250 }, { x: 100, y: 160 }, { x: 30, y: 110 },
-  { x: 120, y: 110 },
+const dotPuzzles = [
+  {
+    title: "Estrela de Belém", emoji: "⭐",
+    points: [
+      { x: 150, y: 30 }, { x: 180, y: 110 }, { x: 270, y: 110 },
+      { x: 200, y: 160 }, { x: 220, y: 250 }, { x: 150, y: 200 },
+      { x: 80, y: 250 }, { x: 100, y: 160 }, { x: 30, y: 110 },
+      { x: 120, y: 110 },
+    ],
+  },
+  {
+    title: "Cruz", emoji: "✝️",
+    points: [
+      { x: 150, y: 20 }, { x: 150, y: 80 }, { x: 90, y: 120 },
+      { x: 150, y: 120 }, { x: 210, y: 120 }, { x: 150, y: 160 },
+      { x: 150, y: 220 }, { x: 150, y: 260 },
+    ],
+  },
+  {
+    title: "Peixe (Ichthys)", emoji: "🐟",
+    points: [
+      { x: 40, y: 140 }, { x: 80, y: 100 }, { x: 140, y: 80 },
+      { x: 200, y: 90 }, { x: 250, y: 120 }, { x: 280, y: 150 },
+      { x: 250, y: 180 }, { x: 200, y: 200 }, { x: 140, y: 200 },
+      { x: 80, y: 180 },
+    ],
+  },
+  {
+    title: "Pomba da Paz", emoji: "🕊️",
+    points: [
+      { x: 150, y: 60 }, { x: 180, y: 50 }, { x: 210, y: 60 },
+      { x: 240, y: 40 }, { x: 250, y: 70 }, { x: 220, y: 90 },
+      { x: 260, y: 110 }, { x: 220, y: 120 }, { x: 200, y: 150 },
+      { x: 170, y: 170 }, { x: 140, y: 150 }, { x: 120, y: 110 },
+      { x: 130, y: 80 },
+    ],
+  },
+  {
+    title: "Coração", emoji: "❤️",
+    points: [
+      { x: 150, y: 250 }, { x: 100, y: 200 }, { x: 60, y: 150 },
+      { x: 50, y: 100 }, { x: 70, y: 60 }, { x: 110, y: 50 },
+      { x: 150, y: 70 }, { x: 190, y: 50 }, { x: 230, y: 60 },
+      { x: 250, y: 100 }, { x: 240, y: 150 }, { x: 200, y: 200 },
+    ],
+  },
+  {
+    title: "Arca de Noé", emoji: "🚢",
+    points: [
+      { x: 60, y: 180 }, { x: 100, y: 200 }, { x: 200, y: 200 },
+      { x: 260, y: 180 }, { x: 240, y: 150 }, { x: 200, y: 130 },
+      { x: 160, y: 100 }, { x: 160, y: 130 }, { x: 120, y: 130 },
+      { x: 80, y: 150 },
+    ],
+  },
+  {
+    title: "Cálice", emoji: "🏆",
+    points: [
+      { x: 100, y: 60 }, { x: 120, y: 100 }, { x: 130, y: 140 },
+      { x: 140, y: 170 }, { x: 150, y: 200 }, { x: 150, y: 230 },
+      { x: 120, y: 250 }, { x: 180, y: 250 }, { x: 150, y: 230 },
+      { x: 160, y: 170 }, { x: 170, y: 140 }, { x: 180, y: 100 },
+      { x: 200, y: 60 },
+    ],
+  },
 ];
 
 // Coloring: SVG biblical scenes with multiple regions
@@ -147,6 +207,7 @@ export default function Atividades() {
 
   // Connect-the-dots
   const [connectedDots, setConnectedDots] = useState<number[]>([]);
+  const [dotsIdx, setDotsIdx] = useState<number | null>(null);
 
   // Jigsaw puzzle
   const [jigsawIdx, setJigsawIdx] = useState(0);
@@ -246,12 +307,14 @@ export default function Atividades() {
 
   // === CONNECT THE DOTS ===
   const connectDot = (idx: number) => {
+    if (dotsIdx === null) return;
+    const points = dotPuzzles[dotsIdx].points;
     if (connectedDots.length === 0 && idx === 0) { setConnectedDots([0]); return; }
     if (connectedDots.length > 0 && idx === connectedDots.length) {
       const newDots = [...connectedDots, idx];
       setConnectedDots(newDots);
-      if (idx === dotPoints.length - 1) {
-        showCelebration("Você formou a Estrela de Belém!", 3, "⭐");
+      if (idx === points.length - 1) {
+        showCelebration(`Você completou "${dotPuzzles[dotsIdx].title}"!`, 3, dotPuzzles[dotsIdx].emoji);
       }
     }
   };
@@ -582,11 +645,35 @@ export default function Atividades() {
 
   // === CONNECT THE DOTS ===
   if (activeGame === "dots") {
+    if (dotsIdx === null) {
+      // Selection screen
+      return (
+        <div className="min-h-screen py-6 px-4" style={bgStyle}>
+          <div className="max-w-lg mx-auto">
+            <PageHeader title="Ligar os Pontos" subtitle="Escolha um desenho" icon={iconLigarPontos} />
+            {backBtn}
+            <div className="grid grid-cols-2 gap-4">
+              {dotPuzzles.map((p, i) => (
+                <div key={i} onClick={() => { setDotsIdx(i); setConnectedDots([]); }} className="bg-popover rounded-2xl p-5 shadow-md hover:shadow-lg hover:scale-105 transition-all cursor-pointer border border-border text-center">
+                  <span className="text-4xl block mb-2">{p.emoji}</span>
+                  <h3 className="font-display text-sm font-bold text-foreground">{p.title}</h3>
+                  <p className="font-body text-xs text-muted-foreground">{p.points.length} pontos</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <CelebrationAnimation show={celebration.show} message={celebration.message} coins={celebration.coins} emoji={celebration.emoji} onClose={closeCelebration} />
+        </div>
+      );
+    }
+
+    const currentDotPuzzle = dotPuzzles[dotsIdx];
+    const dotPoints = currentDotPuzzle.points;
     const isComplete = connectedDots.length === dotPoints.length;
     return (
       <div className="min-h-screen py-6 px-4" style={bgStyle}>
         <div className="max-w-lg mx-auto">
-          <PageHeader title="Ligar os Pontos" subtitle="Toque nos pontos em ordem" icon={iconLigarPontos} />
+          <PageHeader title="Ligar os Pontos" subtitle={currentDotPuzzle.title} icon={iconLigarPontos} />
           {backBtn}
           <div className="bg-white rounded-2xl p-4 shadow-lg border border-border flex justify-center">
             <svg viewBox="0 0 300 280" className="w-full max-w-[300px]">
@@ -611,7 +698,10 @@ export default function Atividades() {
               })}
             </svg>
           </div>
-          <button onClick={() => { setConnectedDots([]); }} className="btn-cartoon px-4 py-2 text-sm mt-4 block mx-auto">🔄 Recomeçar</button>
+          <div className="flex gap-2 mt-4 justify-center">
+            <button onClick={() => setConnectedDots([])} className="btn-cartoon px-4 py-2 text-sm">🔄 Recomeçar</button>
+            <button onClick={() => { setDotsIdx(null); setConnectedDots([]); }} className="btn-cartoon px-4 py-2 text-sm bg-muted text-foreground">📋 Outro Desenho</button>
+          </div>
         </div>
         <CelebrationAnimation show={celebration.show} message={celebration.message} coins={celebration.coins} emoji={celebration.emoji} onClose={closeCelebration} />
       </div>
@@ -633,7 +723,7 @@ export default function Atividades() {
                 else if (a.id === "coloring") { setColoringIdx(0); setShapeFills({}); setActiveGame("coloring"); }
                 else if (a.id === "wordsearch") { setFoundWords(new Set()); setSelectedCells([]); setActiveGame("wordsearch"); }
                 else if (a.id === "puzzle") { setJigsawTiles([]); setActiveGame("puzzle"); }
-                else if (a.id === "dots") { setConnectedDots([]); setActiveGame("dots"); }
+                else if (a.id === "dots") { setDotsIdx(null); setConnectedDots([]); setActiveGame("dots"); }
               }}
               className="bg-popover rounded-2xl p-4 shadow-md hover:shadow-lg hover:scale-105 transition-all cursor-pointer border border-border text-center"
             >
