@@ -307,12 +307,14 @@ export default function Atividades() {
 
   // === CONNECT THE DOTS ===
   const connectDot = (idx: number) => {
+    if (dotsIdx === null) return;
+    const points = dotPuzzles[dotsIdx].points;
     if (connectedDots.length === 0 && idx === 0) { setConnectedDots([0]); return; }
     if (connectedDots.length > 0 && idx === connectedDots.length) {
       const newDots = [...connectedDots, idx];
       setConnectedDots(newDots);
-      if (idx === dotPoints.length - 1) {
-        showCelebration("Você formou a Estrela de Belém!", 3, "⭐");
+      if (idx === points.length - 1) {
+        showCelebration(`Você completou "${dotPuzzles[dotsIdx].title}"!`, 3, dotPuzzles[dotsIdx].emoji);
       }
     }
   };
