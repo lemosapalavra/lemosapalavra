@@ -645,11 +645,35 @@ export default function Atividades() {
 
   // === CONNECT THE DOTS ===
   if (activeGame === "dots") {
+    if (dotsIdx === null) {
+      // Selection screen
+      return (
+        <div className="min-h-screen py-6 px-4" style={bgStyle}>
+          <div className="max-w-lg mx-auto">
+            <PageHeader title="Ligar os Pontos" subtitle="Escolha um desenho" icon={iconLigarPontos} />
+            {backBtn}
+            <div className="grid grid-cols-2 gap-4">
+              {dotPuzzles.map((p, i) => (
+                <div key={i} onClick={() => { setDotsIdx(i); setConnectedDots([]); }} className="bg-popover rounded-2xl p-5 shadow-md hover:shadow-lg hover:scale-105 transition-all cursor-pointer border border-border text-center">
+                  <span className="text-4xl block mb-2">{p.emoji}</span>
+                  <h3 className="font-display text-sm font-bold text-foreground">{p.title}</h3>
+                  <p className="font-body text-xs text-muted-foreground">{p.points.length} pontos</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <CelebrationAnimation show={celebration.show} message={celebration.message} coins={celebration.coins} emoji={celebration.emoji} onClose={closeCelebration} />
+        </div>
+      );
+    }
+
+    const currentDotPuzzle = dotPuzzles[dotsIdx];
+    const dotPoints = currentDotPuzzle.points;
     const isComplete = connectedDots.length === dotPoints.length;
     return (
       <div className="min-h-screen py-6 px-4" style={bgStyle}>
         <div className="max-w-lg mx-auto">
-          <PageHeader title="Ligar os Pontos" subtitle="Toque nos pontos em ordem" icon={iconLigarPontos} />
+          <PageHeader title="Ligar os Pontos" subtitle={currentDotPuzzle.title} icon={iconLigarPontos} />
           {backBtn}
           <div className="bg-white rounded-2xl p-4 shadow-lg border border-border flex justify-center">
             <svg viewBox="0 0 300 280" className="w-full max-w-[300px]">
@@ -674,7 +698,10 @@ export default function Atividades() {
               })}
             </svg>
           </div>
-          <button onClick={() => { setConnectedDots([]); }} className="btn-cartoon px-4 py-2 text-sm mt-4 block mx-auto">🔄 Recomeçar</button>
+          <div className="flex gap-2 mt-4 justify-center">
+            <button onClick={() => setConnectedDots([])} className="btn-cartoon px-4 py-2 text-sm">🔄 Recomeçar</button>
+            <button onClick={() => { setDotsIdx(null); setConnectedDots([]); }} className="btn-cartoon px-4 py-2 text-sm bg-muted text-foreground">📋 Outro Desenho</button>
+          </div>
         </div>
         <CelebrationAnimation show={celebration.show} message={celebration.message} coins={celebration.coins} emoji={celebration.emoji} onClose={closeCelebration} />
       </div>
