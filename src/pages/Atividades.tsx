@@ -723,7 +723,7 @@ export default function Atividades() {
                 else if (a.id === "coloring") { setColoringIdx(0); setShapeFills({}); setActiveGame("coloring"); }
                 else if (a.id === "wordsearch") { setFoundWords(new Set()); setSelectedCells([]); setActiveGame("wordsearch"); }
                 else if (a.id === "puzzle") { setJigsawTiles([]); setActiveGame("puzzle"); }
-                else if (a.id === "dots") { setConnectedDots([]); setActiveGame("dots"); }
+                else if (a.id === "dots") { setDotsIdx(null); setConnectedDots([]); setActiveGame("dots"); }
               }}
               className="bg-popover rounded-2xl p-4 shadow-md hover:shadow-lg hover:scale-105 transition-all cursor-pointer border border-border text-center"
             >
