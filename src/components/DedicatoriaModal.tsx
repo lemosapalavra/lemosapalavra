@@ -56,41 +56,41 @@ const dedicatoriaTexts = [
   },
 ];
 
-export default function DedicatoriaModal() {
-  const [open, setOpen] = useState(false);
+interface DedicatoriaModalProps {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: DedicatoriaModalProps = {}) {
+  const [internalOpen, setInternalOpen] = useState(false);
   const [revealed, setRevealed] = useState(0);
 
+  const isControlled = externalOpen !== undefined;
+  const open = isControlled ? externalOpen : internalOpen;
+
   const handleOpen = () => {
-    setOpen(true);
+    if (isControlled) {
+      onOpenChange?.(true);
+    } else {
+      setInternalOpen(true);
+    }
     setRevealed(0);
-    // Gradually reveal lines
     dedicatoriaTexts.forEach((_, i) => {
       setTimeout(() => setRevealed((prev) => Math.max(prev, i + 1)), 800 * (i + 1));
     });
   };
 
   const handleClose = () => {
-    setOpen(false);
+    if (isControlled) {
+      onOpenChange?.(false);
+    } else {
+      setInternalOpen(false);
+    }
     setRevealed(0);
   };
 
   return (
     <>
-      {/* Floating pulsing icon */}
-      <button
-        onClick={handleOpen}
-        className="fixed bottom-6 right-6 z-50 animate-pulse hover:animate-none hover:scale-110 transition-transform"
-        style={{
-          filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.35))",
-        }}
-        title="Dedicatória"
-      >
-        <img
-          src={iconDedicatoria}
-          alt="Dedicatória"
-          className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl"
-        />
-      </button>
 
       {/* Modal overlay */}
       {open && (
