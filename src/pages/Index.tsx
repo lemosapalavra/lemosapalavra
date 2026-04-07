@@ -89,6 +89,7 @@ export default function Index() {
       </div>
 
       <FeedbackFooter />
+      <DedicatoriaModal />
     </div>
   );
 }
