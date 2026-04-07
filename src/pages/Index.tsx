@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import OrbitMenu from "@/components/OrbitMenu";
 import FeedbackFooter from "@/components/FeedbackFooter";
+import DedicatoriaModal from "@/components/DedicatoriaModal";
 import iconUsuario from "@/assets/icon-usuario.png";
 
 const labelToRoute: Record<string, string> = {
@@ -88,6 +89,7 @@ export default function Index() {
       </div>
 
       <FeedbackFooter />
+      <DedicatoriaModal />
     </div>
   );
 }
