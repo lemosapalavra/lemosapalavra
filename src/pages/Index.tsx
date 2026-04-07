@@ -4,6 +4,7 @@ import OrbitMenu from "@/components/OrbitMenu";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import iconUsuario from "@/assets/icon-usuario.png";
+import iconDedicatoria from "@/assets/icon-dedicatoria.png";
 
 const labelToRoute: Record<string, string> = {
   "BÍBLIA": "/biblia",
@@ -19,6 +20,7 @@ const labelToRoute: Record<string, string> = {
 export default function Index() {
   const navigate = useNavigate();
   const [user, setUser] = useState<{ name: string; email: string; avatar?: string; coins?: number } | null>(null);
+  const [dedicatoriaOpen, setDedicatoriaOpen] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("lemos_user");
@@ -75,7 +77,7 @@ export default function Index() {
         </div>
       )}
 
-      <div className="flex-1 flex items-center justify-center">
+      <div className="flex-1 flex flex-col items-center justify-center">
         <div className="scale-[0.6] sm:scale-[0.7] md:scale-[0.85] lg:scale-100">
           <OrbitMenu
             isAuthenticated={!!user}
@@ -86,10 +88,26 @@ export default function Index() {
             onItemClick={handleItemClick}
           />
         </div>
+
+        {/* Dedicatória icon centered below orbit */}
+        <button
+          onClick={() => setDedicatoriaOpen(true)}
+          className="mt-4 animate-pulse hover:animate-none hover:scale-110 transition-transform"
+          style={{
+            filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.35))",
+          }}
+          title="Dedicatória"
+        >
+          <img
+            src={iconDedicatoria}
+            alt="Dedicatória"
+            className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl"
+          />
+        </button>
       </div>
 
       <FeedbackFooter />
-      <DedicatoriaModal />
+      <DedicatoriaModal open={dedicatoriaOpen} onOpenChange={setDedicatoriaOpen} />
     </div>
   );
 }
