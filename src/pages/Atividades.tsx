@@ -8,6 +8,9 @@ import iconMemoria from "@/assets/icon-memoria.png";
 import iconCacaPalavras from "@/assets/icon-cacapalavras.png";
 import iconQuebraCabeca from "@/assets/icon-quebracabeca.png";
 import iconLigarPontos from "@/assets/icon-ligarpontos.png";
+import iconColorir from "@/assets/icon-colorir.png";
+import icon7Erros from "@/assets/icon-7erros.png";
+import logoCentral from "@/assets/logo-central.png";
 
 const quizQuestions = [
   { q: "Quem construiu a arca?", options: ["Moisés", "Noé", "Abraão", "Davi"], correct: 1 },
@@ -218,12 +221,10 @@ export default function Atividades() {
   const jigsawCanvasRef = useRef<HTMLCanvasElement>(null);
 
   const activities = [
-    { title: "Quiz Bíblico", icon: iconQuiz, desc: "Teste seus conhecimentos", id: "quiz" },
-    { title: "Jogo da Memória", icon: iconMemoria, desc: "Exercite sua memória", id: "memory" },
-    { title: "Colorir", icon: iconQuiz, desc: "Pinte cenas bíblicas", id: "coloring" },
-    { title: "Caça-Palavras", icon: iconCacaPalavras, desc: "Encontre palavras bíblicas", id: "wordsearch" },
-    { title: "Quebra-Cabeça", icon: iconQuebraCabeca, desc: "Monte a cena bíblica", id: "puzzle" },
-    { title: "Ligar os Pontos", icon: iconLigarPontos, desc: "Descubra a estrela", id: "dots" },
+    { title: "Colorir", icon: iconColorir, desc: "Pinte cenas bíblicas", id: "coloring", angle: -90 },
+    { title: "Quiz Bíblico", icon: iconQuiz, desc: "Teste seus conhecimentos", id: "quiz", angle: 180 },
+    { title: "Memória", icon: iconMemoria, desc: "Exercite sua memória", id: "memory", angle: 0 },
+    { title: "7 Erros", icon: icon7Erros, desc: "Encontre as diferenças", id: "puzzle", angle: 90 },
   ];
 
   const awardCoins = (amount: number) => {
