@@ -724,27 +724,33 @@ export default function Atividades() {
             className="absolute z-10 drop-shadow-xl"
             style={{ width: 220, height: 220, top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
           />
-          {activities.map((a, i) => {
-            const angleRad = (a.angle * Math.PI) / 180;
-            const x = 270 + Math.cos(angleRad) * orbitRadius - orbitIconSize / 2;
-            const y = 270 + Math.sin(angleRad) * orbitRadius - orbitIconSize / 2;
-            return (
-              <div
-                key={i}
-                onClick={() => {
-                  if (a.id === "quiz") startQuiz();
-                  else if (a.id === "memory") startMemory();
-                  else if (a.id === "coloring") { setColoringIdx(0); setShapeFills({}); setActiveGame("coloring"); }
-                  else if (a.id === "puzzle") { setJigsawTiles([]); setActiveGame("puzzle"); }
-                }}
-                className="absolute cursor-pointer hover:scale-110 transition-transform text-center"
-                style={{ left: x, top: y, width: orbitIconSize }}
-              >
-                <img src={a.icon} alt={a.title} className="w-full h-auto drop-shadow-lg" loading="lazy" />
-                <p className="font-display text-xs font-bold text-foreground mt-1">{a.title}</p>
-              </div>
-            );
-          })}
+          <div className="orbit-container absolute inset-0">
+            {activities.map((a, i) => {
+              const angleRad = (a.angle * Math.PI) / 180;
+              const x = 270 + Math.cos(angleRad) * orbitRadius - orbitIconSize / 2;
+              const y = 270 + Math.sin(angleRad) * orbitRadius - orbitIconSize / 2;
+              return (
+                <div
+                  key={i}
+                  className="orbit-counter absolute"
+                  style={{ left: x, top: y, width: orbitIconSize }}
+                >
+                  <div
+                    onClick={() => {
+                      if (a.id === "quiz") startQuiz();
+                      else if (a.id === "memory") startMemory();
+                      else if (a.id === "coloring") { setColoringIdx(0); setShapeFills({}); setActiveGame("coloring"); }
+                      else if (a.id === "puzzle") { setJigsawTiles([]); setActiveGame("puzzle"); }
+                    }}
+                    className="cursor-pointer hover:scale-110 transition-transform text-center"
+                  >
+                    <img src={a.icon} alt={a.title} className="w-full h-auto drop-shadow-lg" loading="lazy" style={{ width: orbitIconSize, height: orbitIconSize, objectFit: "contain" }} />
+                    <p className="font-display text-xs font-bold text-foreground mt-1">{a.title}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
       <FeedbackFooter />
