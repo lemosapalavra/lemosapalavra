@@ -8,6 +8,9 @@ import iconMemoria from "@/assets/icon-memoria.png";
 import iconCacaPalavras from "@/assets/icon-cacapalavras.png";
 import iconQuebraCabeca from "@/assets/icon-quebracabeca.png";
 import iconLigarPontos from "@/assets/icon-ligarpontos.png";
+import iconColorir from "@/assets/icon-colorir.png";
+import icon7Erros from "@/assets/icon-7erros.png";
+import logoCentral from "@/assets/logo-central.png";
 
 const quizQuestions = [
   { q: "Quem construiu a arca?", options: ["Moisés", "Noé", "Abraão", "Davi"], correct: 1 },
@@ -218,12 +221,10 @@ export default function Atividades() {
   const jigsawCanvasRef = useRef<HTMLCanvasElement>(null);
 
   const activities = [
-    { title: "Quiz Bíblico", icon: iconQuiz, desc: "Teste seus conhecimentos", id: "quiz" },
-    { title: "Jogo da Memória", icon: iconMemoria, desc: "Exercite sua memória", id: "memory" },
-    { title: "Colorir", icon: iconQuiz, desc: "Pinte cenas bíblicas", id: "coloring" },
-    { title: "Caça-Palavras", icon: iconCacaPalavras, desc: "Encontre palavras bíblicas", id: "wordsearch" },
-    { title: "Quebra-Cabeça", icon: iconQuebraCabeca, desc: "Monte a cena bíblica", id: "puzzle" },
-    { title: "Ligar os Pontos", icon: iconLigarPontos, desc: "Descubra a estrela", id: "dots" },
+    { title: "Colorir", icon: iconColorir, desc: "Pinte cenas bíblicas", id: "coloring", angle: -90 },
+    { title: "Quiz Bíblico", icon: iconQuiz, desc: "Teste seus conhecimentos", id: "quiz", angle: 180 },
+    { title: "Memória", icon: iconMemoria, desc: "Exercite sua memória", id: "memory", angle: 0 },
+    { title: "7 Erros", icon: icon7Erros, desc: "Encontre as diferenças", id: "puzzle", angle: 90 },
   ];
 
   const awardCoins = (amount: number) => {
@@ -708,30 +709,42 @@ export default function Atividades() {
     );
   }
 
-  // === MAIN MENU ===
+  // === MAIN MENU (orbital layout) ===
+  const orbitRadius = 180;
+  const orbitIconSize = 110;
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-4xl mx-auto">
-        <PageHeader title="Atividades" subtitle="Aprenda brincando!" icon={iconAtividades} />
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          {activities.map((a, i) => (
-            <div
-              key={i}
-              onClick={() => {
-                if (a.id === "quiz") startQuiz();
-                else if (a.id === "memory") startMemory();
-                else if (a.id === "coloring") { setColoringIdx(0); setShapeFills({}); setActiveGame("coloring"); }
-                else if (a.id === "wordsearch") { setFoundWords(new Set()); setSelectedCells([]); setActiveGame("wordsearch"); }
-                else if (a.id === "puzzle") { setJigsawTiles([]); setActiveGame("puzzle"); }
-                else if (a.id === "dots") { setDotsIdx(null); setConnectedDots([]); setActiveGame("dots"); }
-              }}
-              className="bg-popover rounded-2xl p-4 shadow-md hover:shadow-lg hover:scale-105 transition-all cursor-pointer border border-border text-center"
-            >
-              <img src={a.icon} alt={a.title} className="w-20 h-20 mx-auto mb-2 rounded-xl" />
-              <h3 className="font-display text-sm font-bold text-foreground">{a.title}</h3>
-              <p className="font-body text-xs text-muted-foreground mt-1">{a.desc}</p>
-            </div>
-          ))}
+        <PageHeader title="Atividades Bíblicas" subtitle="Aprenda brincando!" icon={iconAtividades} />
+
+        <div className="relative mx-auto flex items-center justify-center" style={{ width: 540, height: 540, maxWidth: "100%" }}>
+          <img
+            src={logoCentral}
+            alt="Lemos a Palavra"
+            className="absolute z-10 drop-shadow-xl"
+            style={{ width: 220, height: 220, top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
+          />
+          {activities.map((a, i) => {
+            const angleRad = (a.angle * Math.PI) / 180;
+            const x = 270 + Math.cos(angleRad) * orbitRadius - orbitIconSize / 2;
+            const y = 270 + Math.sin(angleRad) * orbitRadius - orbitIconSize / 2;
+            return (
+              <div
+                key={i}
+                onClick={() => {
+                  if (a.id === "quiz") startQuiz();
+                  else if (a.id === "memory") startMemory();
+                  else if (a.id === "coloring") { setColoringIdx(0); setShapeFills({}); setActiveGame("coloring"); }
+                  else if (a.id === "puzzle") { setJigsawTiles([]); setActiveGame("puzzle"); }
+                }}
+                className="absolute cursor-pointer hover:scale-110 transition-transform text-center"
+                style={{ left: x, top: y, width: orbitIconSize }}
+              >
+                <img src={a.icon} alt={a.title} className="w-full h-auto drop-shadow-lg" loading="lazy" />
+                <p className="font-display text-xs font-bold text-foreground mt-1">{a.title}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
       <FeedbackFooter />

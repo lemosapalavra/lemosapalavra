@@ -17,14 +17,9 @@ interface OrbitItem {
 }
 
 const menuItems: OrbitItem[] = [
-  { icon: iconBiblia, label: "BÍBLIA", sublabel: "66 livros", angle: -90 },
-  { icon: iconLouvores, label: "LOUVORES", sublabel: "Adoração a Deus", angle: -45 },
-  { icon: iconMusicas, label: "MÚSICAS", sublabel: "Arte, Harmonia,\nMelodia e ritmo", angle: 0 },
-  { icon: iconDevocionais, label: "DEVOCIONAIS", angle: 45 },
-  { icon: iconPedidosOracao, label: "PEDIDOS\nDE ORAÇÃO", angle: 90 },
-  { icon: iconAtividades, label: "ATIVIDADES", angle: 135 },
-  { icon: iconHistorias, label: "HISTÓRIAS", angle: 180 },
-  { icon: iconAlbum, label: "ÁLBUM", sublabel: "Figurinhas\nBíblicas", angle: 225 },
+  { icon: iconHistorias, label: "HISTÓRIAS", angle: -90 },
+  { icon: iconAtividades, label: "ATIVIDADES", angle: 30 },
+  { icon: iconLouvores, label: "LOUVORES", sublabel: "Adoração a Deus", angle: 150 },
 ];
 
 interface OrbitMenuProps {
@@ -62,7 +57,6 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
           height={210}
           className={`drop-shadow-xl transition-all duration-700 ${!isAuthenticated ? "grayscale opacity-70" : ""}`}
         />
-        <span className="font-display text-sm font-bold text-foreground mt-1 text-center leading-tight">Clubinho da Palavra</span>
       </div>
 
       {/* Orbiting icons */}
