@@ -170,7 +170,7 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
                       {/* Aramaic text - fades out when translated */}
                       {item.aramaic && (
                         <p
-                          className="text-right text-base sm:text-lg leading-relaxed transition-all duration-1000"
+                          className="text-right text-base sm:text-lg leading-relaxed transition-all duration-1000 font-bold"
                           style={{
                             color: "#6b3a0a",
                             fontFamily: "serif",
@@ -187,7 +187,7 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
 
                       {/* Portuguese text - fades in magically */}
                       <p
-                        className="text-sm sm:text-base leading-relaxed whitespace-pre-line transition-all duration-1000"
+                        className="text-sm sm:text-base leading-relaxed whitespace-pre-line transition-all duration-1000 font-bold"
                         style={{
                           color: "#3d2b0f",
                           opacity: isTranslated ? 1 : 0,
