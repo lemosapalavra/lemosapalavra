@@ -42,21 +42,27 @@ export default function Louvores() {
             className="absolute z-10 drop-shadow-xl"
             style={{ width: 240, height: 240, top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
           />
-          {louvores.map((l, i) => {
-            const angleRad = (l.angle * Math.PI) / 180;
-            const x = 300 + Math.cos(angleRad) * radius - iconSize / 2;
-            const y = 300 + Math.sin(angleRad) * radius - iconSize / 2;
-            return (
-              <div
-                key={i}
-                onClick={() => setSelected(l)}
-                className="absolute cursor-pointer hover:scale-110 transition-transform text-center"
-                style={{ left: x, top: y, width: iconSize }}
-              >
-                <img src={l.icon} alt={l.title} className="w-full h-auto drop-shadow-lg" loading="lazy" />
-              </div>
-            );
-          })}
+          <div className="orbit-container absolute inset-0">
+            {louvores.map((l, i) => {
+              const angleRad = (l.angle * Math.PI) / 180;
+              const x = 300 + Math.cos(angleRad) * radius - iconSize / 2;
+              const y = 300 + Math.sin(angleRad) * radius - iconSize / 2;
+              return (
+                <div
+                  key={i}
+                  className="orbit-counter absolute"
+                  style={{ left: x, top: y, width: iconSize }}
+                >
+                  <div
+                    onClick={() => setSelected(l)}
+                    className="cursor-pointer hover:scale-110 transition-transform text-center"
+                  >
+                    <img src={l.icon} alt={l.title} className="drop-shadow-lg" loading="lazy" style={{ width: iconSize, height: iconSize, objectFit: "contain" }} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         <div className="text-center mt-6 space-y-2 max-w-2xl mx-auto">
