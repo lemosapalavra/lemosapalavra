@@ -1,77 +1,82 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
-import KwaiSideActions from "@/components/KwaiSideActions";
 import iconLouvores from "@/assets/icon-louvores.png";
+import logoCentral from "@/assets/logo-central.png";
+import louvorTudo from "@/assets/louvor-tudo.png";
+import louvorEterna from "@/assets/louvor-eterna.png";
+import louvorAleluia from "@/assets/louvor-aleluia.png";
+import louvorFiel from "@/assets/louvor-fiel.png";
+import louvorEspirito from "@/assets/louvor-espirito.png";
+import louvorPai from "@/assets/louvor-pai.png";
 
-const louvores = [
-  { title: "Deus é Bom", author: "Louvor Infantil", emoji: "😊", color: "from-yellow-400 to-orange-500", lyrics: "Deus é bom pra mim, Deus é bom pra mim!\nEle me ama, me protege,\nDeus é bom pra mim!\nNa escola, em casa, com meus amigos,\nDeus é bom pra mim!", likes: 234, duration: "3:00" },
-  { title: "Alegria no Senhor", author: "Adoração Kids", emoji: "😄", color: "from-pink-400 to-rose-500", lyrics: "A alegria do Senhor é a minha força!\nQuando eu estou triste, Ele me consola.\nQuando eu estou com medo, Ele me protege.\nA alegria do Senhor é a minha força!", likes: 345, duration: "2:45" },
-  { title: "Louvai ao Senhor", author: "Coral Infantil", emoji: "👏", color: "from-green-400 to-emerald-500", lyrics: "Louvai ao Senhor, todas as crianças!\nBatam palmas, cantem alto,\nLouvai ao Senhor com alegria!\nEle é o nosso Rei, Ele é o nosso Pai,\nLouvai ao Senhor com todo o coração!", likes: 278, duration: "3:15" },
-  { title: "Cantarei ao Rei", author: "Ministério Infantil", emoji: "👑", color: "from-purple-400 to-indigo-500", lyrics: "Cantarei ao Rei dos reis,\nAo Senhor dos senhores.\nCantarei ao Rei dos reis,\nPois Ele é digno de louvor!\nSanto, Santo, Santo é o Senhor!", likes: 189, duration: "2:30" },
-  { title: "Hosana nas Alturas", author: "Adoração", emoji: "🌟", color: "from-amber-400 to-yellow-500", lyrics: "Hosana, Hosana nas alturas!\nBendito é o que vem em nome do Senhor!\nHosana, Hosana nas alturas!\nToda a terra canta ao Senhor!", likes: 412, duration: "3:45" },
-  { title: "Grandioso és Tu", author: "Hino Clássico", emoji: "🙌", color: "from-sky-400 to-blue-500", lyrics: "Ó Senhor meu Deus, quando eu maravilhado\nFico a pensar nas obras de Tuas mãos,\nNo céu azul de estrelas pontilhado,\nO Teu poder mostrando a criação!\nEntão minh'alma canta a Ti, Senhor:\nQuão grande és Tu! Quão grande és Tu!", likes: 567, duration: "4:00" },
-  { title: "Eu me Rendo", author: "Adoração", emoji: "🙏", color: "from-indigo-400 to-violet-500", lyrics: "Eu me rendo aos Teus pés, ó Senhor,\nTodo meu ser é Teu.\nMinha vida, meus sonhos, meu coração,\nTudo entrego a Ti!\nUsa-me, Senhor, como quiser.", likes: 321, duration: "3:30" },
-  { title: "O Senhor é Meu Pastor", author: "Salmo 23", emoji: "🐑", color: "from-emerald-400 to-teal-500", lyrics: "O Senhor é meu pastor e nada me faltará.\nDeitar-me faz em verdes pastos,\nGuia-me mansamente a águas tranquilas.\nRefrigera a minha alma.\nAinda que eu ande pelo vale da sombra da morte,\nNão temerei mal algum, porque Tu estás comigo.", likes: 698, duration: "4:30" },
+interface Louvor {
+  title: string;
+  icon: string;
+  angle: number;
+  lyrics: string;
+}
+
+const louvores: Louvor[] = [
+  { title: "Te vejo em Tudo", icon: louvorTudo, angle: -90, lyrics: "Te vejo em tudo, Senhor!\nNo céu azul, no canto das aves,\nNo sorriso de uma criança,\nTe vejo em tudo, Senhor!" },
+  { title: "Palavra Eterna", icon: louvorEterna, angle: -150, lyrics: "Tua Palavra é eterna, Senhor,\nLâmpada para os meus pés,\nLuz para o meu caminho.\nTua Palavra é eterna!" },
+  { title: "Aleluia", icon: louvorAleluia, angle: -30, lyrics: "Aleluia, Aleluia!\nCristo ressuscitou!\nAleluia, Aleluia!\nA morte Ele venceu!" },
+  { title: "Ser Fiel", icon: louvorFiel, angle: 150, lyrics: "Quero ser fiel a Ti, Senhor,\nEm todo tempo e lugar.\nQuero seguir Teus passos,\nE no Teu amor habitar." },
+  { title: "Espírito Santo", icon: louvorEspirito, angle: 30, lyrics: "Espírito Santo, vem!\nEnche meu coração,\nDerrama Teu fogo em mim,\nEspírito Santo, vem!" },
+  { title: "Pai", icon: louvorPai, angle: 90, lyrics: "Pai, eu Te amo!\nPai, eu Te adoro!\nObrigado por me amar,\nPor cuidar de mim, Pai!" },
 ];
 
 export default function Louvores() {
-  const [liked, setLiked] = useState<Set<number>>(new Set());
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const toggleLike = (idx: number) => {
-    setLiked(prev => {
-      const next = new Set(prev);
-      if (next.has(idx)) next.delete(idx);
-      else next.add(idx);
-      return next;
-    });
-  };
+  const [selected, setSelected] = useState<Louvor | null>(null);
+  const radius = 220;
+  const iconSize = 130;
 
   return (
-    <div className="h-screen flex flex-col bg-black">
-      <div className="relative z-10">
-        <PageHeader title="Louvores" subtitle="Deslize para louvar" icon={iconLouvores} />
+    <div className="min-h-screen py-4 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
+      <div className="max-w-4xl mx-auto">
+        <PageHeader title="Louvores" subtitle="Toque em um louvor" icon={iconLouvores} />
+
+        <div className="relative mx-auto flex items-center justify-center" style={{ width: 600, height: 600, maxWidth: "100%" }}>
+          <img
+            src={logoCentral}
+            alt="Lemos a Palavra"
+            className="absolute z-10 drop-shadow-xl"
+            style={{ width: 240, height: 240, top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
+          />
+          {louvores.map((l, i) => {
+            const angleRad = (l.angle * Math.PI) / 180;
+            const x = 300 + Math.cos(angleRad) * radius - iconSize / 2;
+            const y = 300 + Math.sin(angleRad) * radius - iconSize / 2;
+            return (
+              <div
+                key={i}
+                onClick={() => setSelected(l)}
+                className="absolute cursor-pointer hover:scale-110 transition-transform text-center"
+                style={{ left: x, top: y, width: iconSize }}
+              >
+                <img src={l.icon} alt={l.title} className="w-full h-auto drop-shadow-lg" loading="lazy" />
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="text-center mt-6 space-y-2 max-w-2xl mx-auto">
+          <p className="font-display text-2xl font-bold text-primary">Convido você!</p>
+          <p className="font-body text-sm text-foreground">A acompanhar e compartilhar este projeto, assim você se torna parte desta missão.</p>
+          <p className="font-display text-base italic text-primary">"Porque a Palavra de Deus é viva e eficaz." (Hebreus 4:12)</p>
+          <p className="font-display text-lg font-bold text-foreground">Acreditem! Tenham fé na Palavra.</p>
+        </div>
       </div>
 
-      <div
-        ref={containerRef}
-        className="flex-1 overflow-y-scroll snap-y snap-mandatory"
-        style={{ scrollBehavior: "smooth" }}
-      >
-        {louvores.map((song, i) => (
-          <div key={i} className="snap-start h-[calc(100vh-80px)] relative flex items-center justify-center">
-            <div className={`absolute inset-0 bg-gradient-to-b ${song.color} opacity-90`} />
-
-            <div className="relative z-10 flex flex-col items-center px-6 max-w-lg mx-auto w-full">
-              <span className="text-7xl mb-3 drop-shadow-lg">{song.emoji}</span>
-              <h2 className="font-display text-3xl font-bold text-white text-center drop-shadow-lg">{song.title}</h2>
-              <p className="font-body text-sm text-white/70 mt-1">{song.author}</p>
-
-              <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 mt-6 max-h-[40vh] overflow-y-auto w-full">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-lg">🎵</span>
-                  <span className="font-display text-sm font-bold text-white/80">Letra do Louvor</span>
-                </div>
-                <p className="font-body text-white text-base whitespace-pre-line leading-relaxed">{song.lyrics}</p>
-              </div>
-            </div>
-
-            <KwaiSideActions
-              likes={song.likes}
-              isLiked={liked.has(i)}
-              onToggleLike={() => toggleLike(i)}
-              duration={song.duration}
-              coins={2}
-            />
-
-            {i < louvores.length - 1 && (
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 animate-bounce z-20">
-                <span className="text-white/60 text-sm font-body">↓ Deslize para mais</span>
-              </div>
-            )}
+      {selected && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={() => setSelected(null)}>
+          <div onClick={(e) => e.stopPropagation()} className="bg-popover rounded-2xl border-2 border-primary/30 max-w-md w-full p-6 shadow-2xl relative">
+            <button onClick={() => setSelected(null)} className="absolute top-3 right-3 w-8 h-8 rounded-full bg-primary text-primary-foreground font-bold hover:scale-110 transition-transform">✕</button>
+            <img src={selected.icon} alt={selected.title} className="w-32 h-32 mx-auto mb-3 drop-shadow-lg" />
+            <h2 className="font-display text-2xl font-bold text-center text-foreground mb-4">{selected.title}</h2>
+            <p className="font-body text-foreground whitespace-pre-line leading-relaxed text-center">{selected.lyrics}</p>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
