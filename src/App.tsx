@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import MysticBackground from "@/components/MysticBackground";
 import Index from "./pages/Index.tsx";
 import Login from "./pages/Login.tsx";
 import Biblia from "./pages/Biblia.tsx";
@@ -24,6 +25,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <MysticBackground />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
