@@ -59,7 +59,7 @@ export default function Index() {
             <p className="font-display text-sm font-bold text-foreground">{user.name}</p>
             <div className="flex items-center gap-1 justify-end">
               <span className="text-lg">🪙</span>
-              <span className="font-display text-sm font-bold text-primary">{user.coins || 0}</span>
+              <span className="font-display text-sm font-bold text-primary">{coins}</span>
             </div>
           </div>
           <img
