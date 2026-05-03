@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import OrbitMenu from "@/components/OrbitMenu";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
+import { useCoins, ensureInitialCoins, addCoins } from "@/hooks/useCoins";
 import iconUsuario from "@/assets/icon-usuario.png";
 import iconDedicatoria from "@/assets/icon-dedicatoria.png";
 
@@ -19,18 +20,19 @@ const labelToRoute: Record<string, string> = {
 
 export default function Index() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<{ name: string; email: string; avatar?: string; coins?: number } | null>(null);
+  const { coins } = useCoins();
+  const [user, setUser] = useState<{ name: string; email: string; avatar?: string } | null>(null);
   const [dedicatoriaOpen, setDedicatoriaOpen] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("lemos_user");
     if (stored) {
       const u = JSON.parse(stored);
+      ensureInitialCoins();
       const today = new Date().toDateString();
       const lastVisit = localStorage.getItem("lemos_last_visit");
       if (lastVisit !== today) {
-        u.coins = (u.coins || 0) + 2;
-        localStorage.setItem("lemos_user", JSON.stringify(u));
+        addCoins(2);
         localStorage.setItem("lemos_last_visit", today);
       }
       setUser(u);
@@ -59,7 +61,7 @@ export default function Index() {
             <p className="font-display text-sm font-bold text-foreground">{user.name}</p>
             <div className="flex items-center gap-1 justify-end">
               <span className="text-lg">🪙</span>
-              <span className="font-display text-sm font-bold text-primary">{user.coins || 0}</span>
+              <span className="font-display text-sm font-bold text-primary">{coins}</span>
             </div>
           </div>
           <img

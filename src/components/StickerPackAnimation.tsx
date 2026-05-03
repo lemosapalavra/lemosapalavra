@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export type StickerRarity = "bronze" | "prata" | "ouro";
+export type StickerRarity = "normal" | "rara" | "reliquia";
 
 export interface StickerResult {
   index: number;
@@ -16,9 +16,9 @@ interface StickerPackAnimationProps {
 }
 
 const rarityConfig = {
-  bronze: { label: "Bronze", border: "border-amber-700", bg: "bg-amber-900/20", glow: "shadow-amber-700/30", text: "text-amber-600", value: 1 },
-  prata: { label: "Prata", border: "border-gray-300", bg: "bg-gray-200/30", glow: "shadow-gray-300/40", text: "text-gray-500", value: 3 },
-  ouro: { label: "Ouro", border: "border-yellow-400", bg: "bg-yellow-400/20", glow: "shadow-yellow-400/50", text: "text-yellow-500", value: 5 },
+  normal: { label: "Normal", border: "border-slate-300", bg: "bg-slate-200/30", glow: "shadow-slate-400/30", text: "text-slate-500", value: 1 },
+  rara: { label: "Rara", border: "border-blue-400", bg: "bg-blue-400/20", glow: "shadow-blue-400/50", text: "text-blue-400", value: 3 },
+  reliquia: { label: "Relíquia", border: "border-yellow-400", bg: "bg-gradient-to-br from-yellow-400/30 to-orange-500/30", glow: "shadow-yellow-400/70", text: "text-yellow-400", value: 8 },
 };
 
 export default function StickerPackAnimation({ stickers, onClose }: StickerPackAnimationProps) {
