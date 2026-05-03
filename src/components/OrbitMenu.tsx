@@ -18,8 +18,10 @@ interface OrbitItem {
 
 const menuItems: OrbitItem[] = [
   { icon: iconHistorias, label: "HISTÓRIAS", angle: -90 },
-  { icon: iconAtividades, label: "ATIVIDADES", angle: 30 },
-  { icon: iconLouvores, label: "LOUVORES", sublabel: "Adoração a Deus", angle: 150 },
+  { icon: iconAtividades, label: "ATIVIDADES", angle: -18 },
+  { icon: iconLouvores, label: "LOUVORES", sublabel: "Adoração a Deus", angle: 54 },
+  { icon: iconAlbum, label: "ÁLBUM", sublabel: "Heróis da Fé", angle: 126 },
+  { icon: iconBiblia, label: "BÍBLIA", angle: 198 },
 ];
 
 interface OrbitMenuProps {
