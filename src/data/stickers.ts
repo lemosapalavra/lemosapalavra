@@ -26,7 +26,7 @@ function build(prefix: string, names: [string, string][]): Sticker[] {
   }));
 }
 
-const raw: Omit<Category, "stickers"> & { stickers: Sticker[] }[] = [
+const raw: Category[] = [
   {
     key: "criacao", name: "Criação", icon: "🌍", color: "from-sky-400 to-blue-600",
     stickers: build("c", [
