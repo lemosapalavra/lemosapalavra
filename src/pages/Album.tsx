@@ -146,17 +146,17 @@ export default function Album() {
         style={{ background: "linear-gradient(180deg, hsl(35,45%,88%), hsl(40,50%,82%))" }}
       >
         <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-4 sticky top-0 bg-amber-100/95 backdrop-blur py-2 -mx-4 px-4 rounded-b-2xl shadow">
+          <StandardHeader onHome={() => navigate("/")} coins={coins} />
+
+          <div className="flex items-center justify-between mb-4">
             <button
               onClick={() => setView("pages")}
-              className="flex items-center gap-2 font-display font-bold"
+              className="flex items-center gap-2 font-display font-bold bg-white/80 px-3 py-1.5 rounded-full shadow"
             >
               <ChevronLeft className="w-5 h-5" /> Álbum
             </button>
             <h1 className="font-display font-extrabold text-lg sm:text-xl">🔄 Sala de Trocas</h1>
-            <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border">
-              <span>🪙</span><span className="font-bold">{coins}</span>
-            </div>
+            <div className="w-20" />
           </div>
 
           <div className="bg-white/80 rounded-2xl p-4 mb-4 shadow border">
