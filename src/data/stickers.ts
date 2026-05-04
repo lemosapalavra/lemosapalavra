@@ -1,3 +1,8 @@
+import bgCriacao from "@/assets/album/criacao.png";
+import bgExodo from "@/assets/album/exodo.png";
+import bgIgreja from "@/assets/album/igreja.png";
+import bgApocalipse from "@/assets/album/apocalipse.png";
+
 export type Rarity = "normal" | "rara" | "reliquia";
 
 export interface Sticker {
@@ -12,6 +17,7 @@ export interface Category {
   name: string;
   icon: string;
   color: string;
+  bg?: string;
   stickers: Sticker[];
 }
 
