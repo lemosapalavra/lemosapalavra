@@ -5,6 +5,8 @@ import StickerPackAnimation, { StickerResult } from "@/components/StickerPackAni
 import { categories, allStickers, rarityBorder, rarityLabel, type Rarity, type Sticker } from "@/data/stickers";
 import { useCoins, ensureInitialCoins } from "@/hooks/useCoins";
 import albumCapa from "@/assets/album-capa.png";
+import iconInicio from "@/assets/icon-inicio.jpg";
+import iconUsuario from "@/assets/icon-usuario.png";
 
 const STICKERS_KEY = "lemos_stickers_v2";
 const PACK_COST = 3;
