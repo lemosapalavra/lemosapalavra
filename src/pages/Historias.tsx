@@ -61,14 +61,14 @@ export default function Historias() {
       );
     }
     return (
-      <div className="flex flex-wrap gap-3 justify-center">
+      <div className="flex flex-wrap gap-4 justify-center">
         {list.map((v) => {
           const isExploding = exploding?.key === v.key;
           return (
             <button
               key={v.key}
               onClick={() => handleClick(v)}
-              className={`group relative rounded-xl overflow-hidden shadow-lg border-2 border-primary/30 bg-black w-44 aspect-video hover:scale-105 transition-transform ${
+              className={`group relative rounded-2xl overflow-hidden shadow-lg border-2 border-primary/30 bg-black w-36 sm:w-40 aspect-[2/3] hover:scale-105 transition-transform ${
                 isExploding ? "fixed inset-0 w-full h-full z-50 rounded-none scale-100 transition-all duration-500 ease-out" : ""
               }`}
               style={isExploding ? { aspectRatio: "auto" } : undefined}
@@ -79,8 +79,8 @@ export default function Historias() {
                   <span className="text-2xl ml-0.5">▶️</span>
                 </div>
               </div>
-              <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
-                <p className="text-white font-display font-bold text-xs text-left truncate">{v.title}</p>
+              <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/90 to-transparent">
+                <p className="text-white font-display font-bold text-xs text-left leading-tight">{v.title}</p>
               </div>
             </button>
           );
