@@ -70,48 +70,12 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
 ];
 
 // Render Portuguese text supporting **bold**, *italic*, and __underline__ markers
-function renderRich(text: string, withDropCap = false) {
+function renderRich(text: string) {
   const tokens = text.split(/(\*\*[^*]+\*\*|__[^_]+__|\*[^*]+\*|\n)/g);
-  let dropCapApplied = !withDropCap;
-
-  const applyDropCap = (str: string, key: number) => {
-    if (dropCapApplied || !str) return <span key={key}>{str}</span>;
-    // Find first letter
-    const match = str.match(/^(\s*)(\S)(.*)$/s);
-    if (!match) return <span key={key}>{str}</span>;
-    dropCapApplied = true;
-    const [, leading, first, rest] = match;
-    return (
-      <span key={key}>
-        {leading}
-        <span
-          className="drop-cap"
-          style={{
-            float: "left",
-            fontFamily: "'UnifrakturCook', 'Cormorant Garamond', serif",
-            fontSize: "3.5em",
-            lineHeight: "0.85",
-            padding: "4px 8px 0 0",
-            color: "#7a2a05",
-            fontWeight: 700,
-            textShadow: "1px 2px 0 rgba(255,220,150,0.6), 0 2px 4px rgba(80,40,10,0.4)",
-          }}
-        >
-          {first}
-        </span>
-        {rest}
-      </span>
-    );
-  };
-
   return tokens.map((tok, i) => {
     if (tok === "\n") return <br key={i} />;
     if (tok.startsWith("**") && tok.endsWith("**")) {
-      const inner = tok.slice(2, -2);
-      if (!dropCapApplied) {
-        return <strong key={i} style={{ color: "#5a2a05" }}>{applyDropCap(inner, i)}</strong>;
-      }
-      return <strong key={i} style={{ color: "#5a2a05" }}>{inner}</strong>;
+      return <strong key={i} style={{ color: "#5a2a05" }}>{tok.slice(2, -2)}</strong>;
     }
     if (tok.startsWith("__") && tok.endsWith("__")) {
       return <span key={i} style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}>{tok.slice(2, -2)}</span>;
@@ -119,7 +83,7 @@ function renderRich(text: string, withDropCap = false) {
     if (tok.startsWith("*") && tok.endsWith("*") && tok.length > 2) {
       return <em key={i}>{tok.slice(1, -1)}</em>;
     }
-    return applyDropCap(tok, i);
+    return <span key={i}>{tok}</span>;
   });
 }
 
@@ -178,49 +142,33 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
             className="relative max-w-2xl w-full max-h-[90vh]"
             style={{ animation: "scrollOpen 0.9s ease-out forwards" }}
           >
-            {/* Parchment scroll with rolled edges */}
-            <div className="relative">
-              {/* Top rolled edge */}
+            {/* Parchment scroll background (image already includes rolled edges) */}
+            <div
+              className="relative"
+              style={{
+                backgroundImage: `url(${dedicatoriaBg})`,
+                backgroundSize: "100% 100%",
+                backgroundRepeat: "no-repeat",
+                filter: "drop-shadow(0 25px 35px rgba(0,0,0,0.55))",
+              }}
+            >
+              <button
+                onClick={handleClose}
+                className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center text-lg font-bold hover:scale-110 transition-transform z-20"
+                style={{ background: "#6b3a0a", color: "#f7e9c9", boxShadow: "0 2px 6px rgba(0,0,0,0.4)" }}
+                aria-label="Fechar"
+              >
+                ✕
+              </button>
+
+              {/* Inner content area sized to fit within the parchment (excluding rolled top/bottom of the image ~10% each) */}
               <div
-                className="h-6 rounded-t-full mx-2"
+                className="overflow-y-auto relative"
                 style={{
-                  background: "linear-gradient(180deg, #8b5a2b 0%, #b8860b 50%, #6b3a0a 100%)",
-                  boxShadow: "0 4px 8px rgba(0,0,0,0.4), inset 0 -2px 4px rgba(0,0,0,0.3)",
-                }}
-              />
-              <div
-                className="overflow-y-auto max-h-[78vh] p-6 sm:p-10 relative"
-                style={{
-                  backgroundColor: "#ecd7a8",
-                  backgroundImage: `url(${dedicatoriaBg})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  backgroundRepeat: "no-repeat",
-                  boxShadow:
-                    "inset 0 0 80px rgba(139,90,43,0.45), inset 0 0 12px rgba(80,40,10,0.5)",
-                  borderLeft: "3px solid #8b5a2b",
-                  borderRight: "3px solid #8b5a2b",
+                  maxHeight: "78vh",
+                  padding: "12% 10% 12% 10%",
                 }}
               >
-                {/* Faint stains for parchment realism */}
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0"
-                  style={{
-                    background:
-                      "radial-gradient(circle at 15% 20%, rgba(120,60,10,0.12), transparent 25%), radial-gradient(circle at 85% 70%, rgba(80,40,10,0.10), transparent 22%), radial-gradient(circle at 50% 90%, rgba(120,70,20,0.10), transparent 30%)",
-                  }}
-                />
-
-                <button
-                  onClick={handleClose}
-                  className="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center text-lg font-bold hover:scale-110 transition-transform z-20"
-                  style={{ background: "#6b3a0a", color: "#f7e9c9", boxShadow: "0 2px 6px rgba(0,0,0,0.4)" }}
-                  aria-label="Fechar"
-                >
-                  ✕
-                </button>
-
                 <div className="relative z-10">
                   <div className="text-center mb-6">
                     <h2
@@ -281,9 +229,7 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
                               textAlign: "justify",
                             }}
                           >
-                            <p style={{ overflow: "hidden" }}>
-                              {renderRich(item.pt, true)}
-                            </p>
+                            <p>{renderRich(item.pt)}</p>
                           </div>
                         </div>
                       );
@@ -297,14 +243,6 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
                   )}
                 </div>
               </div>
-              {/* Bottom rolled edge */}
-              <div
-                className="h-6 rounded-b-full mx-2"
-                style={{
-                  background: "linear-gradient(0deg, #8b5a2b 0%, #b8860b 50%, #6b3a0a 100%)",
-                  boxShadow: "0 -4px 8px rgba(0,0,0,0.4), inset 0 2px 4px rgba(0,0,0,0.3)",
-                }}
-              />
             </div>
           </div>
         </div>

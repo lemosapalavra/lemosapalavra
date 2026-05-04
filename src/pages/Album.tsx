@@ -5,6 +5,8 @@ import StickerPackAnimation, { StickerResult } from "@/components/StickerPackAni
 import { categories, allStickers, rarityBorder, rarityLabel, type Rarity, type Sticker } from "@/data/stickers";
 import { useCoins, ensureInitialCoins } from "@/hooks/useCoins";
 import albumCapa from "@/assets/album-capa.png";
+import iconInicio from "@/assets/icon-inicio.jpg";
+import iconUsuario from "@/assets/icon-usuario.png";
 
 const STICKERS_KEY = "lemos_stickers_v2";
 const PACK_COST = 3;
@@ -111,34 +113,27 @@ export default function Album() {
   if (view === "cover") {
     return (
       <div
-        className="fixed inset-0 z-40 flex flex-col items-center justify-center p-4"
+        className="fixed inset-0 z-40 flex flex-col p-4"
         style={{ background: "radial-gradient(ellipse at center, hsl(220,40%,15%), hsl(220,50%,8%))" }}
       >
-        <button
-          onClick={() => navigate("/")}
-          className="absolute top-4 left-4 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 flex items-center justify-center text-white transition z-10"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-        <div className="absolute top-4 right-4 flex items-center gap-2 bg-white/10 backdrop-blur px-4 py-2 rounded-full text-white border border-white/20 z-10">
-          <span className="text-2xl">🪙</span>
-          <span className="font-display font-bold text-lg">{coins}</span>
-        </div>
+        <StandardHeader onHome={() => navigate("/")} coins={coins} />
 
-        <div
-          onClick={() => setView("pages")}
-          className="relative cursor-pointer group max-w-md w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] border-4 border-amber-700/50 transition-transform hover:scale-[1.02] hover:rotate-1"
-        >
-          <img src={albumCapa} alt="Heróis da Fé" className="w-full h-full object-cover" />
-          <div className="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-amber-900/80 to-transparent" />
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/90 px-4 py-2 rounded-full font-display font-bold text-sm shadow-lg animate-pulse">
-            👆 Toque para abrir
+        <div className="flex-1 flex flex-col items-center justify-center">
+          <div
+            onClick={() => setView("pages")}
+            className="relative cursor-pointer group max-w-md w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] border-4 border-amber-700/50 transition-transform hover:scale-[1.02] hover:rotate-1"
+          >
+            <img src={albumCapa} alt="Heróis da Fé" className="w-full h-full object-cover" />
+            <div className="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-amber-900/80 to-transparent" />
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/90 px-4 py-2 rounded-full font-display font-bold text-sm shadow-lg animate-pulse">
+              👆 Toque para abrir
+            </div>
           </div>
-        </div>
 
-        <p className="mt-6 text-white/70 font-body text-sm text-center max-w-md">
-          Colecione mais de 120 figurinhas! Cada pacotinho tem <strong>5 figurinhas</strong> (1 rara + 1 especial).
-        </p>
+          <p className="mt-6 text-white/70 font-body text-sm text-center max-w-md">
+            Colecione mais de 120 figurinhas! Cada pacotinho tem <strong>5 figurinhas</strong> (1 rara + 1 especial).
+          </p>
+        </div>
       </div>
     );
   }
@@ -151,17 +146,17 @@ export default function Album() {
         style={{ background: "linear-gradient(180deg, hsl(35,45%,88%), hsl(40,50%,82%))" }}
       >
         <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-4 sticky top-0 bg-amber-100/95 backdrop-blur py-2 -mx-4 px-4 rounded-b-2xl shadow">
+          <StandardHeader onHome={() => navigate("/")} coins={coins} />
+
+          <div className="flex items-center justify-between mb-4">
             <button
               onClick={() => setView("pages")}
-              className="flex items-center gap-2 font-display font-bold"
+              className="flex items-center gap-2 font-display font-bold bg-white/80 px-3 py-1.5 rounded-full shadow"
             >
               <ChevronLeft className="w-5 h-5" /> Álbum
             </button>
             <h1 className="font-display font-extrabold text-lg sm:text-xl">🔄 Sala de Trocas</h1>
-            <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border">
-              <span>🪙</span><span className="font-bold">{coins}</span>
-            </div>
+            <div className="w-20" />
           </div>
 
           <div className="bg-white/80 rounded-2xl p-4 mb-4 shadow border">
@@ -231,7 +226,11 @@ export default function Album() {
       className="fixed inset-0 z-40 flex flex-col"
       style={{ background: "radial-gradient(ellipse at center, hsl(35,45%,82%), hsl(30,40%,55%))" }}
     >
-      {/* Top bar */}
+      {/* Standard header */}
+      <div className="px-3 pt-3 bg-amber-950/90">
+        <StandardHeader onHome={() => navigate("/")} coins={coins} variant="dark" />
+      </div>
+      {/* Sub-bar: Capa / título / Trocas */}
       <div className="flex items-center justify-between px-3 py-2 bg-amber-950/90 text-white shadow-lg z-10">
         <button
           onClick={() => setView("cover")}
@@ -243,29 +242,35 @@ export default function Album() {
           <div className="font-display font-extrabold text-sm sm:text-base">📖 Heróis da Fé</div>
           <div className="text-[10px] opacity-80">{totalOwned} / {allStickers.length} coletadas</div>
         </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setView("trade")}
-            className="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 px-2 sm:px-3 py-1.5 rounded-full font-display font-bold text-xs transition"
-            title="Trocas"
-          >
-            <Repeat className="w-4 h-4" /> <span className="hidden sm:inline">Trocas</span>
-          </button>
-          <div className="flex items-center gap-1 bg-white/15 px-2 py-1.5 rounded-full text-sm">
-            <span>🪙</span><span className="font-bold">{coins}</span>
-          </div>
-        </div>
+        <button
+          onClick={() => setView("trade")}
+          className="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 px-2 sm:px-3 py-1.5 rounded-full font-display font-bold text-xs transition"
+          title="Trocas"
+        >
+          <Repeat className="w-4 h-4" /> <span className="hidden sm:inline">Trocas</span>
+        </button>
       </div>
 
       {/* Page area */}
       <div className="flex-1 flex items-center justify-center p-2 sm:p-4 overflow-hidden" style={{ perspective: "1600px" }}>
         <div
-          className={`w-full max-w-5xl h-full max-h-[calc(100vh-140px)] ${
+          className={`w-full max-w-5xl h-full max-h-[calc(100vh-180px)] ${
             flipDir === "next" ? "animate-page-flip-next" : flipDir === "prev" ? "animate-page-flip-prev" : ""
           }`}
           style={{ transformStyle: "preserve-3d" }}
         >
-          <div className="bg-amber-900 rounded-2xl p-2 sm:p-4 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.6)] border-4 border-amber-950 h-full grid grid-cols-1 md:grid-cols-2 gap-1">
+          <div
+            className="bg-amber-900 rounded-2xl p-2 sm:p-4 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.6)] border-4 border-amber-950 h-full grid grid-cols-1 md:grid-cols-2 gap-1 relative overflow-hidden"
+            style={
+              cat.bg
+                ? {
+                    backgroundImage: `url(${cat.bg})`,
+                    backgroundSize: "100% 100%",
+                    backgroundRepeat: "no-repeat",
+                  }
+                : undefined
+            }
+          >
             {/* Left page */}
             <PageHalf
               side="left"
@@ -275,6 +280,7 @@ export default function Album() {
               pageNum={pageIdx * 2 + 1}
               stickers={cat.stickers.slice(0, 5)}
               owned={owned}
+              transparent={!!cat.bg}
             />
             {/* Right page */}
             <PageHalf
@@ -286,6 +292,7 @@ export default function Album() {
               stickers={cat.stickers.slice(5, 10)}
               owned={owned}
               progress={`${got}/${cat.stickers.length}`}
+              transparent={!!cat.bg}
             />
           </div>
         </div>
@@ -325,7 +332,7 @@ export default function Album() {
 }
 
 function PageHalf({
-  side, title, icon, color, pageNum, stickers, owned, progress,
+  side, title, icon, color, pageNum, stickers, owned, progress, transparent,
 }: {
   side: "left" | "right";
   title: string;
@@ -335,19 +342,39 @@ function PageHalf({
   stickers: Sticker[];
   owned: Owned;
   progress?: string;
+  transparent?: boolean;
 }) {
   return (
     <div
-      className={`bg-gradient-to-br from-amber-50 to-orange-100 rounded-xl p-3 sm:p-4 shadow-inner ${
+      className={`${
+        transparent
+          ? "bg-transparent"
+          : "bg-gradient-to-br from-amber-50 to-orange-100 shadow-inner"
+      } rounded-xl p-3 sm:p-4 ${
         side === "left" ? "border-r-2 border-amber-900/30" : "border-l-2 border-amber-900/30"
       } relative flex flex-col`}
     >
-      <div className="flex items-center justify-between mb-2">
-        <div className={`bg-gradient-to-r ${color} text-white px-3 py-1 rounded-full text-xs font-display font-bold flex items-center gap-1`}>
-          <span>{icon}</span><span>{title}</span>
+      {/* Title chip — only on left page when we have a spread background to avoid duplication */}
+      {(!transparent || side === "left") && (
+        <div className="flex items-center justify-between mb-2">
+          {!transparent && (
+            <div className={`bg-gradient-to-r ${color} text-white px-3 py-1 rounded-full text-xs font-display font-bold flex items-center gap-1`}>
+              <span>{icon}</span><span>{title}</span>
+            </div>
+          )}
+          {transparent && <div />}
+          {progress && (
+            <span className={`text-[10px] font-bold ${transparent ? "text-white drop-shadow bg-black/40 px-2 py-0.5 rounded-full" : "text-amber-900/70"}`}>
+              {progress}
+            </span>
+          )}
         </div>
-        {progress && <span className="text-[10px] font-bold text-amber-900/70">{progress}</span>}
-      </div>
+      )}
+      {transparent && side === "right" && progress && (
+        <div className="flex justify-end mb-2">
+          <span className="text-[10px] font-bold text-white drop-shadow bg-black/40 px-2 py-0.5 rounded-full">{progress}</span>
+        </div>
+      )}
       <div className="grid grid-cols-3 gap-2 flex-1 content-start">
         {stickers.map((s) => {
           const has = (owned[s.id] || 0) > 0;
@@ -357,14 +384,18 @@ function PageHalf({
               className={`aspect-[3/4] rounded-xl border-[3px] flex flex-col items-center justify-center p-1.5 text-center transition-all ${
                 has
                   ? `bg-gradient-to-br from-white to-amber-50 ${rarityBorder(s.rarity)} shadow-lg`
-                  : "bg-amber-100/50 border-dashed border-amber-700/30 opacity-50"
+                  : transparent
+                    ? "bg-white/15 backdrop-blur-[2px] border-white/60 opacity-90"
+                    : "bg-amber-100/50 border-dashed border-amber-700/30 opacity-50"
               }`}
             >
               <span className={`text-[8px] font-bold uppercase tracking-wide ${
-                s.rarity === "reliquia" ? "text-yellow-600" : s.rarity === "rara" ? "text-blue-600" : "text-slate-500"
+                s.rarity === "reliquia" ? "text-yellow-600" : s.rarity === "rara" ? "text-blue-600" : transparent ? "text-white" : "text-slate-500"
               }`}>{rarityLabel(s.rarity)}</span>
-              <span className="text-2xl sm:text-3xl my-1">{has ? s.emoji : "❓"}</span>
-              <span className="text-[9px] font-display font-bold text-foreground leading-tight">
+              <span className={`text-2xl sm:text-3xl my-1 ${!has && transparent ? "text-white drop-shadow-lg" : ""}`}>
+                {has ? s.emoji : "❓"}
+              </span>
+              <span className={`text-[9px] font-display font-bold leading-tight ${!has && transparent ? "text-white drop-shadow" : "text-foreground"}`}>
                 {has ? s.name : `#${s.id + 1}`}
               </span>
               {has && (owned[s.id] || 0) > 1 && (
@@ -374,7 +405,53 @@ function PageHalf({
           );
         })}
       </div>
-      <p className="text-center font-display font-bold text-amber-900/60 text-[10px] mt-2">— pág. {pageNum} —</p>
+      <p className={`text-center font-display font-bold text-[10px] mt-2 ${transparent ? "text-white/90 drop-shadow" : "text-amber-900/60"}`}>
+        — pág. {pageNum} —
+      </p>
+    </div>
+  );
+}
+
+function StandardHeader({ onHome, coins, variant = "light" }: { onHome: () => void; coins: number; variant?: "light" | "dark" }) {
+  const [user, setUser] = useState<{ name: string; avatar?: string } | null>(null);
+  useEffect(() => {
+    const stored = localStorage.getItem("lemos_user");
+    if (stored) {
+      try { setUser(JSON.parse(stored)); } catch { /* noop */ }
+    }
+  }, []);
+  const dark = variant === "dark";
+  return (
+    <div className="flex items-center justify-between mb-3">
+      <button
+        onClick={onHome}
+        className="flex flex-col items-center gap-1 hover:scale-110 transition-transform"
+        aria-label="Início"
+      >
+        <img src={iconInicio} alt="Início" className="w-12 h-12 rounded-2xl shadow-lg" />
+        <span className={`font-display text-[10px] font-bold ${dark ? "text-white" : "text-foreground"}`}>Início</span>
+      </button>
+
+      <div className="flex items-center gap-3">
+        <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border ${
+          dark ? "bg-white/15 border-white/20 text-white" : "bg-white/90 border-amber-700/30 text-foreground"
+        }`}>
+          <span className="text-lg">🪙</span>
+          <span className="font-display font-bold text-base">{coins}</span>
+        </div>
+        {user && (
+          <div className="flex items-center gap-2">
+            <div className="text-right hidden sm:block">
+              <p className={`font-display text-xs font-bold ${dark ? "text-white" : "text-foreground"}`}>{user.name}</p>
+            </div>
+            <img
+              src={user.avatar || iconUsuario}
+              alt={user.name}
+              className="w-10 h-10 rounded-full border-2 border-white/60 shadow-md"
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
