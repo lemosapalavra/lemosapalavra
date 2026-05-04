@@ -1,49 +1,50 @@
 import { useState, useEffect, useCallback } from "react";
 
-const dedicatoriaTexts = [
+// Each entry: aramaic line + Portuguese with **bold** markers preserved from the original PDF.
+const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   {
     aramaic: "ܗܢܐ ܦܘܪܫܢܐ ܐܬܝܠܕ ܡܢ ܣܘܟܝܐ ܫܪܝܪܐ ܕܢܚܘܐ ܚ̈ܝܐ ܘܝܘ̈ܠܦܢܐ ܕܝܫܘܥ",
-    pt: "Este projeto nasceu do desejo sincero de apresentar a vida, os ensinamentos e o caminho de Jesus de forma acessível, visual e fiel às Escrituras.",
+    pt: "Este projeto nasceu do desejo sincero de apresentar a **vida**, os ensinamentos e o caminho de **Jesus**, de forma acessível, visual e fiel às Escrituras.",
   },
   {
-    aramaic: "ܡܩܪܒ ܐܢܐ ܗܢܐ ܦܘܪܫܢܐ ܒܬܘܕܝܬܐ ܘܒܗܝܡܢܘܬܐ ܠܐܠܗܐ ܘܠܝܫܘܥ",
-    pt: "Dedico, este projeto, com GRATIDÃO e FÉ a Deus Todo-Poderoso e ao Menino Jesus, cujo amor transforma, cura e salva.",
+    aramaic: "ܡܩܪܒ ܐܢܐ ܗܢܐ ܦܘܪܫܢܐ ܒܬܘܕܝܬܐ ܘܒܗܝܡܢܘܬܐ",
+    pt: "Dedico, este projeto, com **GRATIDÃO** e **FÉ** à:",
   },
   {
-    aramaic: "ܗܘ ܕܣܡܟܢܝ ܒܥܩ̈ܬܐ ܘܕܒܪ ܦܣ̈ܥܬܝ ܘܚܝܠ ܠܒܝ",
-    pt: "Foi Ele quem me sustentou nas dificuldades, guiou meus passos e fortaleceu o meu coração.",
+    aramaic: "ܠܐܠܗܐ ܐܚܝܕ ܟܠ ܘܠܛܠܝܐ ܝܫܘܥ ܕܚܘܒܗ ܡܫܚܠܦ ܘܡܐܣܐ ܘܦܪܩ",
+    pt: "**Deus** Todo-Poderoso e ao Menino **Jesus**, cujo amor transforma, cura e salva. Foi ele quem me sustentou nas dificuldades, guiou meus passos e fortaleceu o meu coração.",
   },
   {
-    aramaic: "ܠܐܢܬܬܝ ܡܪܬܐ ܘܠܒܪܝ ܡܬܝ ܣܡ̈ܟܐ ܕܡܣܝܒܪܢܘܬܐ",
-    pt: "À minha esposa Marta e ao meu filho Matheus, sustentáculo de perseverança e esperança.",
+    aramaic: "ܠܐܢܬܬܝ ܡܪܬܐ ܘܠܒܪܝ ܡܬܝ ܣܡ̈ܟܐ ܕܡܣܝܒܪܢܘܬܐ ܘܕܣܒܪܐ",
+    pt: "À minha esposa **Marta** e ao meu filho **Matheus**, sustentáculo de perseverança e esperança.",
   },
   {
-    aramaic: "ܠܚܒܪܬܝ ܐܠܝܐܬ ܕܚܡܫܝܢ ܘܐܪܒܥ ܕܠܐ ܟܠܬ ܚܝ̈ܠܐ",
-    pt: "À minha amiga Eliete do 54, que sem medir esforços enfrentou caminhos difíceis para me socorrer em meu quinto AVC, e a seu marido Livaldo, instrumentos do cuidado e da providência divina.",
+    aramaic: "ܠܚܒܪܬܝ ܐܠܝܐܬ ܕܚܡܫܝܢ ܘܐܪܒܥ ܘܠܒܥܠܗ ܠܝܒܠܕܘ",
+    pt: "À minha amiga **Eliete** do 54, que sem medir esforços enfrentou caminhos difíceis para me socorrer em meu quinto AVC, e a seu marido **Livaldo**, instrumentos do cuidado e da providência divina.",
   },
   {
     aramaic: "ܠܫܪܒܬܐ ܕܠܝܡܘܣ ܘܐܡܝ ܒܐܝܩܪܐ ܡܪܬ ܪܝܓ̰ܐܢ ܘܚܬܝ ܡܪܝܣܐ",
-    pt: "À família Lemos, minha mãe de consideração Sra. Rejane, e minha irmã Marisa, pessoas que Deus levantou em meu caminho como instrumentos de apoio, cuidado e constância.",
+    pt: "À família **Lemos**, minha mãe de consideração Sra. **Rejane**, e minha irmã **Marisa**, são pessoas que **Deus** os levantou em meu caminho como instrumentos de apoio, cuidado e constância.",
   },
   {
-    aramaic: "ܘܠܐ ܛܥܐ ܐܢܐ ܠܗܘ ܕܗܘܐ ܠܝ ܐܒܐ ܫܪܝܪܐ ܡܪܝ ܐܪܠܝܢܕܘ",
-    pt: "Sem jamais esquecer daquele que foi para mim um verdadeiro pai por consideração, homem íntegro, sábio e pescador: Sr. Arlindo Francisco de Lemos (Arlindo de Jé), cuja inspiração continua viva e presente em minha caminhada.",
+    aramaic: "ܘܠܐ ܛܥܐ ܐܢܐ ܠܗܘ ܕܗܘܐ ܠܝ ܐܒܐ ܫܪܝܪܐ ܡܪܝ ܐܪܠܝܢܕܘ ܦܪܢܣܝܣܩܘ ܕܠܝܡܘܣ",
+    pt: "Não poderia esquecer daquele que foi para mim um verdadeiro pai por consideração, homem íntegro, sábio e pescador o Sr. **Arlindo Francisco de Lemos** (*Arlindo de Jé*), cuja inspiração continua viva e presente em minha caminhada.",
   },
   {
     aramaic: "ܐܠܗܐ ܢܛܪ ܠܗ ܒܫܠܡܗ",
     pt: "Que Deus o tenha em sua paz.",
   },
   {
-    aramaic: "ܡܘܕܐ ܐܢܐ ܐܦ ܠܐܝܠܝܢ ܕܠܐ ܝܕ̈ܥܐ ܠܥ̈ܝܢܝ ܐܣ̈ܘܬܐ ܘܡܫܡ̈ܫܢܬܐ",
-    pt: "Agradeço ainda àqueles que, anônimos aos meus olhos, Deus os colocou em meu caminho: médicos, enfermeiras, técnicos, anestesistas, instrumentistas e toda a estrutura hospitalar por onde passei.",
+    aramaic: "ܡܘܕܐ ܐܢܐ ܐܦ ܠܐܝܠܝܢ ܕܠܐ ܝܕ̈ܥܐ ܠܥ̈ܝܢܝ ܕܐܠܗܐ ܣܡ ܐܢܘܢ ܒܐܘܪܚܝ",
+    pt: "Agradeço ainda àqueles que, anônimos aos meus olhos, **Deus** os colocou em meu caminho: médicos, enfermeiras, técnicos, anestesistas, instrumentistas e a toda uma estrutura hospitalar por onde passei. Foi por meio dos quais o Senhor manifestou o seu amor e seu cuidado, para com os seus.",
   },
   {
     aramaic: "ܗܝܡܢܘ — ܐܠܗܐ ܗܘܐ!",
-    pt: "Acreditem, foi Deus!",
+    pt: "**Acreditem, foi Deus!**",
   },
   {
-    aramaic: "ܝܘܡܢܐ ܡܣܬܟܠ ܐܢܐ ܕܐܠܗܐ ܡܫܠܛ ܒܡܪܘܬܗ ܥܠ ܟܠ",
-    pt: "Hoje compreendo que Deus, em sua soberania, permite que pessoas entrem e saiam de nossas vidas, conforme o seu propósito, e não o meu.",
+    aramaic: "ܝܘܡܢܐ ܡܣܬܟܠ ܐܢܐ ܕܐܠܗܐ ܒܡܪܘܬܗ ܡܫܠܛ ܥܠ ܟܠ",
+    pt: "Hoje compreendo que **Deus**, em sua __soberania__, permite que pessoas entrem e saiam de nossas vidas, é conforme o seu propósito, e não ao meu.",
   },
   {
     aramaic: "ܒܚ̈ܝܝ ܥܒܪܬ ܒܢܣ̈ܝܘܢܐ ܘܐܘ̈ܠܨܢܐ ܘܦܘܪ̈ܩܢܐ ܕܠܐ ܡܨܝܐ",
@@ -51,11 +52,11 @@ const dedicatoriaTexts = [
   },
   {
     aramaic: "ܒܪܡ ܡܠܬܗ ܕܡܪܝܐ ܩܝܡܐ ܠܥܠܡ. ܐܡܪ ܕܟܠ ܗܠܝܢ ܢܥܒܪܘܢ",
-    pt: "Mas a Palavra do Senhor permanece firme. Disse que tudo isso passaria e falou ao meu coração, prometeu que iria me levantar e me abençoar.",
+    pt: "Mas a palavra do Senhor permanece firme. Disse que tudo isso passaria e falou ao meu coração, prometeu que iria me levantar e me abençoar.",
   },
   {
     aramaic: "ܟܠ ܝܘܡܐ ܚܕܬܐ ܗܘܐ ܣܗܕܘܬܐ ܚܝܬܐ ܕܚܘܒܗ ܒܝܫܘܥ ܡܫܝܚܐ",
-    pt: "Assim, cada novo dia de minha vida se torna um testemunho vivo do seu amor e do seu plano manifestado por meio de seu filho, Jesus Cristo.",
+    pt: "Assim, cada novo dia de minha vida se torna um __testemunho vivo__ do seu amor e do seu plano manifestado por meio de seu filho, Jesus Cristo.",
   },
   {
     aramaic: "ܠܐܠܗܐ ܟܠ ܐܝܩܪܐ ܘܟܠ ܬܫܒܘܚܬܐ ܗܫܐ ܘܠܥܠܡ ܥܠܡܝܢ. ܐܡܝܢ.",
@@ -63,9 +64,28 @@ const dedicatoriaTexts = [
   },
   {
     aramaic: "",
-    pt: "Marcelo Borbas — LEMOS a Palavra\nVisionário amante das Escrituras Sagradas",
+    pt: "**Marcello Borbas**\n*Visionário Amante das escrituras sagradas*",
   },
 ];
+
+// Render Portuguese text supporting **bold**, *italic*, and __underline__ markers
+function renderRich(text: string) {
+  // Split by tokens while keeping delimiters
+  const tokens = text.split(/(\*\*[^*]+\*\*|__[^_]+__|\*[^*]+\*|\n)/g);
+  return tokens.map((tok, i) => {
+    if (tok === "\n") return <br key={i} />;
+    if (tok.startsWith("**") && tok.endsWith("**")) {
+      return <strong key={i} style={{ color: "#5a2a05" }}>{tok.slice(2, -2)}</strong>;
+    }
+    if (tok.startsWith("__") && tok.endsWith("__")) {
+      return <span key={i} style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}>{tok.slice(2, -2)}</span>;
+    }
+    if (tok.startsWith("*") && tok.endsWith("*") && tok.length > 2) {
+      return <em key={i}>{tok.slice(1, -1)}</em>;
+    }
+    return <span key={i}>{tok}</span>;
+  });
+}
 
 interface DedicatoriaModalProps {
   open?: boolean;
@@ -74,7 +94,6 @@ interface DedicatoriaModalProps {
 
 export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: DedicatoriaModalProps = {}) {
   const [internalOpen, setInternalOpen] = useState(false);
-  // Phase: 0 = show aramaic, 1+ = translating line by line
   const [translatedCount, setTranslatedCount] = useState(0);
   const [allAramaicVisible, setAllAramaicVisible] = useState(false);
 
@@ -85,10 +104,8 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
     setTranslatedCount(0);
     setAllAramaicVisible(false);
 
-    // First show all aramaic lines fading in
     setTimeout(() => setAllAramaicVisible(true), 300);
 
-    // After 3 seconds, start translating one by one
     const startDelay = 3000;
     dedicatoriaTexts.forEach((_, i) => {
       setTimeout(() => {
@@ -117,99 +134,141 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
     <>
       {open && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
           onClick={handleClose}
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative mx-4 max-w-lg w-full max-h-[85vh] overflow-hidden"
-            style={{ animation: "scrollOpen 0.8s ease-out forwards" }}
+            className="relative max-w-2xl w-full max-h-[90vh]"
+            style={{ animation: "scrollOpen 0.9s ease-out forwards" }}
           >
-            <div
-              className="rounded-2xl border-4 overflow-y-auto max-h-[85vh] p-6 sm:p-8"
-              style={{
-                borderColor: "#b8860b",
-                background: "linear-gradient(180deg, #f5e6c8 0%, #e8d5a8 30%, #f0dbb8 60%, #e0c890 100%)",
-                boxShadow: "0 0 30px rgba(0,0,0,0.4), inset 0 0 40px rgba(139,90,43,0.15)",
-              }}
-            >
-              <button
-                onClick={handleClose}
-                className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold hover:scale-110 transition-transform z-10"
-                style={{ background: "#b8860b", color: "#fff" }}
+            {/* Parchment scroll with rolled edges */}
+            <div className="relative">
+              {/* Top rolled edge */}
+              <div
+                className="h-6 rounded-t-full mx-2"
+                style={{
+                  background: "linear-gradient(180deg, #8b5a2b 0%, #b8860b 50%, #6b3a0a 100%)",
+                  boxShadow: "0 4px 8px rgba(0,0,0,0.4), inset 0 -2px 4px rgba(0,0,0,0.3)",
+                }}
+              />
+              <div
+                className="overflow-y-auto max-h-[78vh] p-6 sm:p-10 relative"
+                style={{
+                  background:
+                    "radial-gradient(ellipse at top, #f7e9c9 0%, #ecd7a8 40%, #d9b97a 100%)",
+                  boxShadow:
+                    "inset 0 0 60px rgba(139,90,43,0.35), inset 0 0 8px rgba(80,40,10,0.4)",
+                  borderLeft: "3px solid #8b5a2b",
+                  borderRight: "3px solid #8b5a2b",
+                  backgroundImage: `
+                    radial-gradient(ellipse at top, rgba(247,233,201,0.6), transparent 70%),
+                    repeating-linear-gradient(90deg, transparent 0 40px, rgba(139,90,43,0.04) 40px 41px),
+                    repeating-linear-gradient(0deg, transparent 0 60px, rgba(80,40,10,0.03) 60px 61px)
+                  `,
+                }}
               >
-                ✕
-              </button>
+                {/* Faint stains for parchment realism */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    background:
+                      "radial-gradient(circle at 15% 20%, rgba(120,60,10,0.12), transparent 25%), radial-gradient(circle at 85% 70%, rgba(80,40,10,0.10), transparent 22%), radial-gradient(circle at 50% 90%, rgba(120,70,20,0.10), transparent 30%)",
+                  }}
+                />
 
-              <div className="text-center mb-6">
-                <h2
-                  className="text-2xl sm:text-3xl font-bold mb-1"
-                  style={{ color: "#5a3a1a", fontFamily: "serif" }}
+                <button
+                  onClick={handleClose}
+                  className="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center text-lg font-bold hover:scale-110 transition-transform z-20"
+                  style={{ background: "#6b3a0a", color: "#f7e9c9", boxShadow: "0 2px 6px rgba(0,0,0,0.4)" }}
+                  aria-label="Fechar"
                 >
-                  ✦ ܡܩܪܒܢܘܬܐ ✦
-                </h2>
-                <p className="text-xs italic" style={{ color: "#8b6914" }}>
-                  Dedicatória
-                </p>
-              </div>
+                  ✕
+                </button>
 
-              <div className="space-y-4">
-                {dedicatoriaTexts.map((item, i) => {
-                  const isTranslated = i < translatedCount;
-
-                  return (
-                    <div
-                      key={i}
-                      className="transition-all duration-700 relative"
-                      style={{
-                        opacity: allAramaicVisible ? 1 : 0,
-                        transform: allAramaicVisible ? "translateY(0)" : "translateY(15px)",
-                        transitionDelay: `${i * 80}ms`,
-                      }}
+                <div className="relative z-10">
+                  <div className="text-center mb-6">
+                    <h2
+                      className="text-2xl sm:text-3xl font-bold mb-1"
+                      style={{ color: "#5a2a05", fontFamily: "serif", letterSpacing: "0.05em" }}
                     >
-                      {/* Aramaic text - fades out when translated */}
-                      {item.aramaic && (
-                        <p
-                          className="text-right text-base sm:text-lg leading-relaxed transition-all duration-1000 font-bold"
+                      ✦ ܡܩܪܒܢܘܬܐ ✦
+                    </h2>
+                    <p className="text-xs italic tracking-wider" style={{ color: "#7a4a10" }}>
+                      Dedicatória
+                    </p>
+                    <div
+                      className="mx-auto mt-3 h-px w-2/3"
+                      style={{ background: "linear-gradient(90deg, transparent, #8b5a2b, transparent)" }}
+                    />
+                  </div>
+
+                  <div className="space-y-5">
+                    {dedicatoriaTexts.map((item, i) => {
+                      const isTranslated = i < translatedCount;
+
+                      return (
+                        <div
+                          key={i}
+                          className="transition-all duration-700 relative"
                           style={{
-                            color: "#6b3a0a",
-                            fontFamily: "serif",
-                            direction: "rtl",
-                            opacity: isTranslated ? 0 : 1,
-                            maxHeight: isTranslated ? 0 : "200px",
-                            overflow: "hidden",
-                            marginBottom: isTranslated ? 0 : "4px",
+                            opacity: allAramaicVisible ? 1 : 0,
+                            transform: allAramaicVisible ? "translateY(0)" : "translateY(15px)",
+                            transitionDelay: `${i * 80}ms`,
                           }}
                         >
-                          {item.aramaic}
-                        </p>
-                      )}
+                          {item.aramaic && (
+                            <p
+                              className="text-right text-base sm:text-lg leading-relaxed transition-all duration-1000 font-bold"
+                              style={{
+                                color: "#5a2a05",
+                                fontFamily: "'Noto Serif Hebrew', 'Times New Roman', serif",
+                                direction: "rtl",
+                                opacity: isTranslated ? 0 : 0.95,
+                                maxHeight: isTranslated ? 0 : "200px",
+                                overflow: "hidden",
+                                marginBottom: isTranslated ? 0 : "6px",
+                                textShadow: "0 1px 0 rgba(255,235,200,0.4)",
+                              }}
+                            >
+                              {item.aramaic}
+                            </p>
+                          )}
 
-                      {/* Portuguese text - fades in magically */}
-                      <p
-                        className="text-sm sm:text-base leading-relaxed whitespace-pre-line transition-all duration-1000 font-bold"
-                        style={{
-                          color: "#3d2b0f",
-                          opacity: isTranslated ? 1 : 0,
-                          maxHeight: isTranslated ? "300px" : 0,
-                          overflow: "hidden",
-                          filter: isTranslated ? "none" : "blur(8px)",
-                        }}
-                      >
-                        {item.pt}
-                      </p>
+                          <p
+                            className="text-sm sm:text-base leading-relaxed whitespace-pre-line transition-all duration-1000"
+                            style={{
+                              color: "#3d2208",
+                              fontFamily: "'Cormorant Garamond', 'Garamond', serif",
+                              opacity: isTranslated ? 1 : 0,
+                              maxHeight: isTranslated ? "400px" : 0,
+                              overflow: "hidden",
+                              filter: isTranslated ? "none" : "blur(8px)",
+                            }}
+                          >
+                            {renderRich(item.pt)}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {translatedCount >= dedicatoriaTexts.length && (
+                    <div className="text-center mt-6 text-2xl animate-fade-in">
+                      ✝️ 🕊️ ✝️
                     </div>
-                  );
-                })}
-              </div>
-
-              {translatedCount >= dedicatoriaTexts.length && (
-                <div
-                  className="text-center mt-6 text-2xl animate-fade-in"
-                >
-                  ✝️ 🕊️ ✝️
+                  )}
                 </div>
-              )}
+              </div>
+              {/* Bottom rolled edge */}
+              <div
+                className="h-6 rounded-b-full mx-2"
+                style={{
+                  background: "linear-gradient(0deg, #8b5a2b 0%, #b8860b 50%, #6b3a0a 100%)",
+                  boxShadow: "0 -4px 8px rgba(0,0,0,0.4), inset 0 2px 4px rgba(0,0,0,0.3)",
+                }}
+              />
             </div>
           </div>
         </div>
@@ -217,18 +276,9 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
 
       <style>{`
         @keyframes scrollOpen {
-          0% {
-            transform: scaleY(0.01) scaleX(0.6);
-            opacity: 0;
-          }
-          40% {
-            transform: scaleY(0.4) scaleX(0.8);
-            opacity: 0.7;
-          }
-          100% {
-            transform: scaleY(1) scaleX(1);
-            opacity: 1;
-          }
+          0% { transform: scaleY(0.01) scaleX(0.6); opacity: 0; }
+          40% { transform: scaleY(0.4) scaleX(0.85); opacity: 0.7; }
+          100% { transform: scaleY(1) scaleX(1); opacity: 1; }
         }
       `}</style>
     </>
