@@ -122,7 +122,7 @@ const raw: Category[] = [
     ]),
   },
   {
-    key: "apocalipse", name: "Apocalipse", icon: "🌅", color: "from-fuchsia-500 to-rose-600",
+    key: "apocalipse", name: "Apocalipse", icon: "🌅", color: "from-fuchsia-500 to-rose-600", bg: bgApocalipse,
     stickers: build("a", [
       ["Nova Jerusalém", "🏙️"], ["Cordeiro de Deus", "🐑"], ["Trono de Deus", "👑"],
       ["7 Selos", "🔏"], ["7 Trombetas", "🎺"], ["Anjos", "👼"],
