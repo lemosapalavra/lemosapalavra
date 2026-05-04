@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import dedicatoriaBg from "@/assets/dedicatoria-bg.png";
 
 // Each entry: aramaic line + Portuguese with **bold** markers preserved from the original PDF.
 const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
@@ -69,13 +70,48 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
 ];
 
 // Render Portuguese text supporting **bold**, *italic*, and __underline__ markers
-function renderRich(text: string) {
-  // Split by tokens while keeping delimiters
+function renderRich(text: string, withDropCap = false) {
   const tokens = text.split(/(\*\*[^*]+\*\*|__[^_]+__|\*[^*]+\*|\n)/g);
+  let dropCapApplied = !withDropCap;
+
+  const applyDropCap = (str: string, key: number) => {
+    if (dropCapApplied || !str) return <span key={key}>{str}</span>;
+    // Find first letter
+    const match = str.match(/^(\s*)(\S)(.*)$/s);
+    if (!match) return <span key={key}>{str}</span>;
+    dropCapApplied = true;
+    const [, leading, first, rest] = match;
+    return (
+      <span key={key}>
+        {leading}
+        <span
+          className="drop-cap"
+          style={{
+            float: "left",
+            fontFamily: "'UnifrakturCook', 'Cormorant Garamond', serif",
+            fontSize: "3.5em",
+            lineHeight: "0.85",
+            padding: "4px 8px 0 0",
+            color: "#7a2a05",
+            fontWeight: 700,
+            textShadow: "1px 2px 0 rgba(255,220,150,0.6), 0 2px 4px rgba(80,40,10,0.4)",
+          }}
+        >
+          {first}
+        </span>
+        {rest}
+      </span>
+    );
+  };
+
   return tokens.map((tok, i) => {
     if (tok === "\n") return <br key={i} />;
     if (tok.startsWith("**") && tok.endsWith("**")) {
-      return <strong key={i} style={{ color: "#5a2a05" }}>{tok.slice(2, -2)}</strong>;
+      const inner = tok.slice(2, -2);
+      if (!dropCapApplied) {
+        return <strong key={i} style={{ color: "#5a2a05" }}>{applyDropCap(inner, i)}</strong>;
+      }
+      return <strong key={i} style={{ color: "#5a2a05" }}>{inner}</strong>;
     }
     if (tok.startsWith("__") && tok.endsWith("__")) {
       return <span key={i} style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}>{tok.slice(2, -2)}</span>;
@@ -83,7 +119,7 @@ function renderRich(text: string) {
     if (tok.startsWith("*") && tok.endsWith("*") && tok.length > 2) {
       return <em key={i}>{tok.slice(1, -1)}</em>;
     }
-    return <span key={i}>{tok}</span>;
+    return applyDropCap(tok, i);
   });
 }
 
@@ -155,17 +191,15 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
               <div
                 className="overflow-y-auto max-h-[78vh] p-6 sm:p-10 relative"
                 style={{
-                  background:
-                    "radial-gradient(ellipse at top, #f7e9c9 0%, #ecd7a8 40%, #d9b97a 100%)",
+                  backgroundColor: "#ecd7a8",
+                  backgroundImage: `url(${dedicatoriaBg})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
                   boxShadow:
-                    "inset 0 0 60px rgba(139,90,43,0.35), inset 0 0 8px rgba(80,40,10,0.4)",
+                    "inset 0 0 80px rgba(139,90,43,0.45), inset 0 0 12px rgba(80,40,10,0.5)",
                   borderLeft: "3px solid #8b5a2b",
                   borderRight: "3px solid #8b5a2b",
-                  backgroundImage: `
-                    radial-gradient(ellipse at top, rgba(247,233,201,0.6), transparent 70%),
-                    repeating-linear-gradient(90deg, transparent 0 40px, rgba(139,90,43,0.04) 40px 41px),
-                    repeating-linear-gradient(0deg, transparent 0 60px, rgba(80,40,10,0.03) 60px 61px)
-                  `,
                 }}
               >
                 {/* Faint stains for parchment realism */}
@@ -236,19 +270,21 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
                             </p>
                           )}
 
-                          <p
-                            className="text-sm sm:text-base leading-relaxed whitespace-pre-line transition-all duration-1000"
+                          <div
+                            className="text-sm sm:text-base leading-relaxed whitespace-pre-line transition-all duration-1000 overflow-hidden"
                             style={{
                               color: "#3d2208",
                               fontFamily: "'Cormorant Garamond', 'Garamond', serif",
                               opacity: isTranslated ? 1 : 0,
-                              maxHeight: isTranslated ? "400px" : 0,
-                              overflow: "hidden",
+                              maxHeight: isTranslated ? "600px" : 0,
                               filter: isTranslated ? "none" : "blur(8px)",
+                              textAlign: "justify",
                             }}
                           >
-                            {renderRich(item.pt)}
-                          </p>
+                            <p style={{ overflow: "hidden" }}>
+                              {renderRich(item.pt, true)}
+                            </p>
+                          </div>
                         </div>
                       );
                     })}
@@ -275,6 +311,7 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
       )}
 
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Cormorant+Garamond:wght@400;600;700&display=swap');
         @keyframes scrollOpen {
           0% { transform: scaleY(0.01) scaleX(0.6); opacity: 0; }
           40% { transform: scaleY(0.4) scaleX(0.85); opacity: 0.7; }
