@@ -258,7 +258,7 @@ export default function Album() {
       </div>
 
       {/* Page area */}
-      <div className="flex-1 flex items-center justify-center p-2 sm:p-4 overflow-hidden perspective-[1600px]">
+      <div className="flex-1 flex items-center justify-center p-2 sm:p-4 overflow-hidden" style={{ perspective: "1600px" }}>
         <div
           className={`w-full max-w-5xl h-full max-h-[calc(100vh-140px)] ${
             flipDir === "next" ? "animate-page-flip-next" : flipDir === "prev" ? "animate-page-flip-prev" : ""
