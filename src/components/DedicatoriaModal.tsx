@@ -240,7 +240,7 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
                             className="text-lg sm:text-xl leading-[1.7] whitespace-pre-line transition-all duration-1000 overflow-hidden"
                             style={{
                               color: "#3d2208",
-                              fontFamily: "'EB Garamond', 'Cormorant Garamond', 'Book Antiqua', Garamond, serif",
+                              fontFamily: "'Calibri', 'Carlito', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
                               fontWeight: 500,
                               opacity: isTranslated ? 1 : 0,
                               maxHeight: isTranslated ? "800px" : 0,
