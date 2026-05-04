@@ -34,7 +34,7 @@ function build(prefix: string, names: [string, string][]): Sticker[] {
 
 const raw: Category[] = [
   {
-    key: "criacao", name: "Criação", icon: "🌍", color: "from-sky-400 to-blue-600",
+    key: "criacao", name: "Criação", icon: "🌍", color: "from-sky-400 to-blue-600", bg: bgCriacao,
     stickers: build("c", [
       ["Adão e Eva", "👫"], ["Jardim do Éden", "🌳"], ["Sétimo Dia", "🕊️"],
       ["Sol e Lua", "☀️"], ["Mar e Peixes", "🐟"], ["Aves do Céu", "🦅"],
@@ -50,7 +50,7 @@ const raw: Category[] = [
     ]),
   },
   {
-    key: "exodo", name: "Êxodo", icon: "🏔️", color: "from-red-400 to-rose-600",
+    key: "exodo", name: "Êxodo", icon: "🏔️", color: "from-red-400 to-rose-600", bg: bgExodo,
     stickers: build("e", [
       ["Moisés", "🧙"], ["Sarça Ardente", "🔥"], ["Mar Vermelho", "🌊"],
       ["Tábuas da Lei", "📜"], ["Maná", "🍞"], ["Faraó", "🤴"],
@@ -82,7 +82,7 @@ const raw: Category[] = [
     ]),
   },
   {
-    key: "igreja", name: "A Igreja", icon: "🔥", color: "from-orange-400 to-red-600",
+    key: "igreja", name: "A Igreja", icon: "🔥", color: "from-orange-400 to-red-600", bg: bgIgreja,
     stickers: build("ig", [
       ["Pentecostes", "🔥"], ["Pedro", "🗝️"], ["Paulo", "✉️"],
       ["Estêvão", "🌟"], ["Batismo", "💧"], ["Ceia do Senhor", "🍞"],
