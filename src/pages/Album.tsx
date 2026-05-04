@@ -113,34 +113,27 @@ export default function Album() {
   if (view === "cover") {
     return (
       <div
-        className="fixed inset-0 z-40 flex flex-col items-center justify-center p-4"
+        className="fixed inset-0 z-40 flex flex-col p-4"
         style={{ background: "radial-gradient(ellipse at center, hsl(220,40%,15%), hsl(220,50%,8%))" }}
       >
-        <button
-          onClick={() => navigate("/")}
-          className="absolute top-4 left-4 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 flex items-center justify-center text-white transition z-10"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-        <div className="absolute top-4 right-4 flex items-center gap-2 bg-white/10 backdrop-blur px-4 py-2 rounded-full text-white border border-white/20 z-10">
-          <span className="text-2xl">🪙</span>
-          <span className="font-display font-bold text-lg">{coins}</span>
-        </div>
+        <StandardHeader onHome={() => navigate("/")} coins={coins} />
 
-        <div
-          onClick={() => setView("pages")}
-          className="relative cursor-pointer group max-w-md w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] border-4 border-amber-700/50 transition-transform hover:scale-[1.02] hover:rotate-1"
-        >
-          <img src={albumCapa} alt="Heróis da Fé" className="w-full h-full object-cover" />
-          <div className="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-amber-900/80 to-transparent" />
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/90 px-4 py-2 rounded-full font-display font-bold text-sm shadow-lg animate-pulse">
-            👆 Toque para abrir
+        <div className="flex-1 flex flex-col items-center justify-center">
+          <div
+            onClick={() => setView("pages")}
+            className="relative cursor-pointer group max-w-md w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] border-4 border-amber-700/50 transition-transform hover:scale-[1.02] hover:rotate-1"
+          >
+            <img src={albumCapa} alt="Heróis da Fé" className="w-full h-full object-cover" />
+            <div className="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-amber-900/80 to-transparent" />
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/90 px-4 py-2 rounded-full font-display font-bold text-sm shadow-lg animate-pulse">
+              👆 Toque para abrir
+            </div>
           </div>
-        </div>
 
-        <p className="mt-6 text-white/70 font-body text-sm text-center max-w-md">
-          Colecione mais de 120 figurinhas! Cada pacotinho tem <strong>5 figurinhas</strong> (1 rara + 1 especial).
-        </p>
+          <p className="mt-6 text-white/70 font-body text-sm text-center max-w-md">
+            Colecione mais de 120 figurinhas! Cada pacotinho tem <strong>5 figurinhas</strong> (1 rara + 1 especial).
+          </p>
+        </div>
       </div>
     );
   }
