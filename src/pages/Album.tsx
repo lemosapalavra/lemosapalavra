@@ -332,7 +332,7 @@ export default function Album() {
 }
 
 function PageHalf({
-  side, title, icon, color, pageNum, stickers, owned, progress,
+  side, title, icon, color, pageNum, stickers, owned, progress, transparent,
 }: {
   side: "left" | "right";
   title: string;
@@ -342,19 +342,39 @@ function PageHalf({
   stickers: Sticker[];
   owned: Owned;
   progress?: string;
+  transparent?: boolean;
 }) {
   return (
     <div
-      className={`bg-gradient-to-br from-amber-50 to-orange-100 rounded-xl p-3 sm:p-4 shadow-inner ${
+      className={`${
+        transparent
+          ? "bg-transparent"
+          : "bg-gradient-to-br from-amber-50 to-orange-100 shadow-inner"
+      } rounded-xl p-3 sm:p-4 ${
         side === "left" ? "border-r-2 border-amber-900/30" : "border-l-2 border-amber-900/30"
       } relative flex flex-col`}
     >
-      <div className="flex items-center justify-between mb-2">
-        <div className={`bg-gradient-to-r ${color} text-white px-3 py-1 rounded-full text-xs font-display font-bold flex items-center gap-1`}>
-          <span>{icon}</span><span>{title}</span>
+      {/* Title chip — only on left page when we have a spread background to avoid duplication */}
+      {(!transparent || side === "left") && (
+        <div className="flex items-center justify-between mb-2">
+          {!transparent && (
+            <div className={`bg-gradient-to-r ${color} text-white px-3 py-1 rounded-full text-xs font-display font-bold flex items-center gap-1`}>
+              <span>{icon}</span><span>{title}</span>
+            </div>
+          )}
+          {transparent && <div />}
+          {progress && (
+            <span className={`text-[10px] font-bold ${transparent ? "text-white drop-shadow bg-black/40 px-2 py-0.5 rounded-full" : "text-amber-900/70"}`}>
+              {progress}
+            </span>
+          )}
         </div>
-        {progress && <span className="text-[10px] font-bold text-amber-900/70">{progress}</span>}
-      </div>
+      )}
+      {transparent && side === "right" && progress && (
+        <div className="flex justify-end mb-2">
+          <span className="text-[10px] font-bold text-white drop-shadow bg-black/40 px-2 py-0.5 rounded-full">{progress}</span>
+        </div>
+      )}
       <div className="grid grid-cols-3 gap-2 flex-1 content-start">
         {stickers.map((s) => {
           const has = (owned[s.id] || 0) > 0;
@@ -364,14 +384,18 @@ function PageHalf({
               className={`aspect-[3/4] rounded-xl border-[3px] flex flex-col items-center justify-center p-1.5 text-center transition-all ${
                 has
                   ? `bg-gradient-to-br from-white to-amber-50 ${rarityBorder(s.rarity)} shadow-lg`
-                  : "bg-amber-100/50 border-dashed border-amber-700/30 opacity-50"
+                  : transparent
+                    ? "bg-white/15 backdrop-blur-[2px] border-white/60 opacity-90"
+                    : "bg-amber-100/50 border-dashed border-amber-700/30 opacity-50"
               }`}
             >
               <span className={`text-[8px] font-bold uppercase tracking-wide ${
-                s.rarity === "reliquia" ? "text-yellow-600" : s.rarity === "rara" ? "text-blue-600" : "text-slate-500"
+                s.rarity === "reliquia" ? "text-yellow-600" : s.rarity === "rara" ? "text-blue-600" : transparent ? "text-white" : "text-slate-500"
               }`}>{rarityLabel(s.rarity)}</span>
-              <span className="text-2xl sm:text-3xl my-1">{has ? s.emoji : "❓"}</span>
-              <span className="text-[9px] font-display font-bold text-foreground leading-tight">
+              <span className={`text-2xl sm:text-3xl my-1 ${!has && transparent ? "text-white drop-shadow-lg" : ""}`}>
+                {has ? s.emoji : "❓"}
+              </span>
+              <span className={`text-[9px] font-display font-bold leading-tight ${!has && transparent ? "text-white drop-shadow" : "text-foreground"}`}>
                 {has ? s.name : `#${s.id + 1}`}
               </span>
               {has && (owned[s.id] || 0) > 1 && (
@@ -381,7 +405,53 @@ function PageHalf({
           );
         })}
       </div>
-      <p className="text-center font-display font-bold text-amber-900/60 text-[10px] mt-2">— pág. {pageNum} —</p>
+      <p className={`text-center font-display font-bold text-[10px] mt-2 ${transparent ? "text-white/90 drop-shadow" : "text-amber-900/60"}`}>
+        — pág. {pageNum} —
+      </p>
+    </div>
+  );
+}
+
+function StandardHeader({ onHome, coins, variant = "light" }: { onHome: () => void; coins: number; variant?: "light" | "dark" }) {
+  const [user, setUser] = useState<{ name: string; avatar?: string } | null>(null);
+  useEffect(() => {
+    const stored = localStorage.getItem("lemos_user");
+    if (stored) {
+      try { setUser(JSON.parse(stored)); } catch { /* noop */ }
+    }
+  }, []);
+  const dark = variant === "dark";
+  return (
+    <div className="flex items-center justify-between mb-3">
+      <button
+        onClick={onHome}
+        className="flex flex-col items-center gap-1 hover:scale-110 transition-transform"
+        aria-label="Início"
+      >
+        <img src={iconInicio} alt="Início" className="w-12 h-12 rounded-2xl shadow-lg" />
+        <span className={`font-display text-[10px] font-bold ${dark ? "text-white" : "text-foreground"}`}>Início</span>
+      </button>
+
+      <div className="flex items-center gap-3">
+        <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border ${
+          dark ? "bg-white/15 border-white/20 text-white" : "bg-white/90 border-amber-700/30 text-foreground"
+        }`}>
+          <span className="text-lg">🪙</span>
+          <span className="font-display font-bold text-base">{coins}</span>
+        </div>
+        {user && (
+          <div className="flex items-center gap-2">
+            <div className="text-right hidden sm:block">
+              <p className={`font-display text-xs font-bold ${dark ? "text-white" : "text-foreground"}`}>{user.name}</p>
+            </div>
+            <img
+              src={user.avatar || iconUsuario}
+              alt={user.name}
+              className="w-10 h-10 rounded-full border-2 border-white/60 shadow-md"
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
