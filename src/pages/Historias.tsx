@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import CategoryOrbit from "@/components/CategoryOrbit";
 import iconHistorias from "@/assets/icon-historias.png";
 
 type Video = { key: string; title: string; src: string };
@@ -95,16 +95,16 @@ export default function Historias() {
         <PageHeader title="Histórias Bíblicas" subtitle="Escolha uma história" icon={iconHistorias} />
       </div>
       <div className="flex-1 flex flex-col items-center px-4 py-6">
-        <Tabs value={tab} onValueChange={setTab} className="w-full max-w-3xl">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="criacao">A Criação</TabsTrigger>
-            <TabsTrigger value="jesus">Jesus</TabsTrigger>
-            <TabsTrigger value="moises">Moisés</TabsTrigger>
-          </TabsList>
-          <TabsContent value="criacao" className="mt-6">{renderList("criacao")}</TabsContent>
-          <TabsContent value="jesus" className="mt-6">{renderList("jesus")}</TabsContent>
-          <TabsContent value="moises" className="mt-6">{renderList("moises")}</TabsContent>
-        </Tabs>
+        <CategoryOrbit
+          activeKey={tab}
+          onSelect={setTab}
+          categories={[
+            { key: "criacao", label: "A Criação", emoji: "🌍" },
+            { key: "jesus", label: "Jesus", emoji: "✝️" },
+            { key: "moises", label: "Moisés", emoji: "📜" },
+          ]}
+        />
+        <div className="w-full max-w-3xl mt-6">{renderList(tab)}</div>
       </div>
     </div>
   );
