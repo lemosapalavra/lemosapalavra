@@ -2,14 +2,15 @@ import { useState, useEffect, useCallback } from "react";
 import dedicatoriaBg from "@/assets/dedicatoria-bg.png";
 
 // Each entry: aramaic line + Portuguese with **bold** markers preserved from the original PDF.
+// Use {{signature}} marker so we can render the name with a special font (Kaufmann BT).
 const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   {
     aramaic: "ܗܢܐ ܦܘܪܫܢܐ ܐܬܝܠܕ ܡܢ ܣܘܟܝܐ ܫܪܝܪܐ ܕܢܚܘܐ ܚ̈ܝܐ ܘܝܘ̈ܠܦܢܐ ܕܝܫܘܥ",
-    pt: "Este projeto nasceu do desejo sincero de apresentar a **vida**, os ensinamentos e o caminho de **Jesus**, de forma acessível, visual e fiel às Escrituras.",
+    pt: "Este é um projeto que nasceu do desejo sincero de apresentar a vida os ensinamentos e o caminho de **Jesus** de forma acessível visual e fiel às Escrituras.",
   },
   {
     aramaic: "ܡܩܪܒ ܐܢܐ ܗܢܐ ܦܘܪܫܢܐ ܒܬܘܕܝܬܐ ܘܒܗܝܡܢܘܬܐ",
-    pt: "Dedico, este projeto, com **GRATIDÃO** e **FÉ** à:",
+    pt: "Dedico este projeto com **GRATIDÃO** e **FÉ** á:",
   },
   {
     aramaic: "ܠܐܠܗܐ ܐܚܝܕ ܟܠ ܘܠܛܠܝܐ ܝܫܘܥ ܕܚܘܒܗ ܡܫܚܠܦ ܘܡܐܣܐ ܘܦܪܩ",
@@ -17,27 +18,27 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
   {
     aramaic: "ܠܐܢܬܬܝ ܡܪܬܐ ܘܠܒܪܝ ܡܬܝ ܣܡ̈ܟܐ ܕܡܣܝܒܪܢܘܬܐ ܘܕܣܒܪܐ",
-    pt: "À minha esposa **Marta** e ao meu filho **Matheus**, sustentáculo de perseverança e esperança.",
+    pt: "À minha esposa **Marta** e ao meu filho **Matheus** sustentáculo de perseverança e esperança.",
   },
   {
     aramaic: "ܠܚܒܪܬܝ ܐܠܝܐܬ ܕܚܡܫܝܢ ܘܐܪܒܥ ܘܠܒܥܠܗ ܠܝܒܠܕܘ",
-    pt: "À minha amiga **Eliete** do 54, que sem medir esforços enfrentou caminhos difíceis para me socorrer em meu quinto AVC, e a seu marido **Livaldo**, instrumentos do cuidado e da providência divina.",
+    pt: "À minha amiga **Eliete** do 54, que sem medir esforços enfrentou caminhos difíceis para me socorrer em meu quinto AVC e a seu marido **Livaldo**, instrumentos do cuidado e da providência divina.",
   },
   {
     aramaic: "ܠܫܪܒܬܐ ܕܠܝܡܘܣ ܘܐܡܝ ܒܐܝܩܪܐ ܡܪܬ ܪܝܓ̰ܐܢ ܘܚܬܝ ܡܪܝܣܐ",
-    pt: "À família **Lemos**, minha mãe de consideração Sra. **Rejane**, e minha irmã **Marisa**, são pessoas que **Deus** os levantou em meu caminho como instrumentos de apoio, cuidado e constância.",
+    pt: "À família **Lemos**, minha mãe de consideração Sra. **Maria Rejane**, e minha irmã **Marisa** pessoas que **Deus** levantou em meu caminho como instrumentos de apoio cuidado e de constância.",
   },
   {
     aramaic: "ܘܠܐ ܛܥܐ ܐܢܐ ܠܗܘ ܕܗܘܐ ܠܝ ܐܒܐ ܫܪܝܪܐ ܡܪܝ ܐܪܠܝܢܕܘ ܦܪܢܣܝܣܩܘ ܕܠܝܡܘܣ",
-    pt: "Não poderia esquecer daquele que foi para mim um verdadeiro pai por consideração, homem íntegro, sábio e pescador o Sr. **Arlindo Francisco de Lemos** (*Arlindo de Jé*), cuja inspiração continua viva e presente em minha caminhada.",
+    pt: "Não poderia esquecer daquele que foi para mim um verdadeiro pai por consideração, homem íntegro, sábio e pescador Sr. **Arlindo Francisco de Lemos** (*Arlindo de Jé*) cuja inspiração continua viva e presente em minha caminhada.",
   },
   {
     aramaic: "ܐܠܗܐ ܢܛܪ ܠܗ ܒܫܠܡܗ",
-    pt: "Que Deus o tenha em sua paz.",
+    pt: "Que **Deus** o tenha em sua paz.",
   },
   {
     aramaic: "ܡܘܕܐ ܐܢܐ ܐܦ ܠܐܝܠܝܢ ܕܠܐ ܝܕ̈ܥܐ ܠܥ̈ܝܢܝ ܕܐܠܗܐ ܣܡ ܐܢܘܢ ܒܐܘܪܚܝ",
-    pt: "Agradeço ainda àqueles que, anônimos aos meus olhos, **Deus** os colocou em meu caminho: médicos, enfermeiras, técnicos, anestesistas, instrumentistas e a toda uma estrutura hospitalar por onde passei. Foi por meio dos quais o Senhor manifestou o seu amor e seu cuidado, para com os seus.",
+    pt: "Agradeço ainda àqueles que, anônimos aos meus olhos **Deus** os colocou em meu caminho: médicos, enfermeiras, técnicos, anestesistas, instrumentistas e a toda uma estrutura hospitalar por onde passei. Foi por meio dos quais o Senhor manifestou seu amor e seu cuidado, para com os seus.",
   },
   {
     aramaic: "ܗܝܡܢܘ — ܐܠܗܐ ܗܘܐ!",
@@ -45,11 +46,11 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
   {
     aramaic: "ܝܘܡܢܐ ܡܣܬܟܠ ܐܢܐ ܕܐܠܗܐ ܒܡܪܘܬܗ ܡܫܠܛ ܥܠ ܟܠ",
-    pt: "Hoje compreendo que **Deus**, em sua __soberania__, permite que pessoas entrem e saiam de nossas vidas, é conforme o seu propósito, e não ao meu.",
+    pt: "Hoje compreendo que **Deus**, em sua **Soberania** permite que pessoas entrem e saiam de nossas vidas, é conforme o seu propósito, e não ao meu.",
   },
   {
     aramaic: "ܒܚ̈ܝܝ ܥܒܪܬ ܒܢܣ̈ܝܘܢܐ ܘܐܘ̈ܠܨܢܐ ܘܦܘܪ̈ܩܢܐ ܕܠܐ ܡܨܝܐ",
-    pt: "Em minha vida passei por muitas provações, tribulações e livramentos impossíveis de superar. Humanamente dizendo, nem era para eu ainda estar aqui.",
+    pt: "Em minha vida passei por muitas provações tribulações e livramentos impossíveis de superar. Humanamente dizendo: nem era para eu ainda estar aqui. Quem andou comigo sabe bem disso.",
   },
   {
     aramaic: "ܒܪܡ ܡܠܬܗ ܕܡܪܝܐ ܩܝܡܐ ܠܥܠܡ. ܐܡܪ ܕܟܠ ܗܠܝܢ ܢܥܒܪܘܢ",
@@ -57,15 +58,15 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
   {
     aramaic: "ܟܠ ܝܘܡܐ ܚܕܬܐ ܗܘܐ ܣܗܕܘܬܐ ܚܝܬܐ ܕܚܘܒܗ ܒܝܫܘܥ ܡܫܝܚܐ",
-    pt: "Assim, cada novo dia de minha vida se torna um __testemunho vivo__ do seu amor e do seu plano manifestado por meio de seu filho, Jesus Cristo.",
+    pt: "Hoje, a cada novo dia de minha vida se torna um **testemunho vivo** do amor e do seu plano manifestado por meio de seu filho, **Jesus Cristo**.",
   },
   {
     aramaic: "ܠܐܠܗܐ ܟܠ ܐܝܩܪܐ ܘܟܠ ܬܫܒܘܚܬܐ ܗܫܐ ܘܠܥܠܡ ܥܠܡܝܢ. ܐܡܝܢ.",
-    pt: "A Deus, toda a honra e toda glória, agora e para sempre. Amém.",
+    pt: "A **Deus**, toda a honra e toda glória, agora e para sempre. **Amém.**",
   },
   {
     aramaic: "",
-    pt: "**Marcello Borbas**\n*Visionário Amante das escrituras sagradas*",
+    pt: "{{signature}}Marcello Borbas{{/signature}}\n*Visionário Amante das escrituras sagradas*",
   },
 ];
 
