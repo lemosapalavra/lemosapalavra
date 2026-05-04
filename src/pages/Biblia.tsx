@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
+import CategoryOrbit from "@/components/CategoryOrbit";
 import iconBiblia from "@/assets/icon-biblia.png";
 import iconVT from "@/assets/icon-velho-testamento.png";
 import iconNT from "@/assets/icon-novo-testamento.png";
@@ -233,25 +234,21 @@ export default function Biblia() {
       <div className="max-w-4xl mx-auto">
         <PageHeader title="Bíblia" subtitle="66 livros para explorar" icon={iconBiblia} />
 
-        {/* Tabs */}
-        <div className="flex gap-3 mb-6 flex-wrap justify-center">
-          {tabs.map((t) => (
-            <button
-              key={t.key}
-              onClick={() => { setTab(t.key); setSelectedBook(null); setSelectedChapter(null); }}
-              className={`flex flex-col items-center gap-1 p-2 rounded-2xl transition-all ${
-                tab === t.key
-                  ? "bg-primary/10 border-2 border-primary shadow-lg scale-105"
-                  : "bg-popover border-2 border-border hover:border-primary/50"
-              }`}
-              style={{ minWidth: 100 }}
-            >
-              <img src={t.icon} alt={t.label} className="w-16 h-16 rounded-xl object-cover" />
-              <span className="font-display text-xs font-bold text-foreground text-center leading-tight">{t.label}</span>
-              <span className="text-[10px] text-muted-foreground">({t.count})</span>
-            </button>
-          ))}
-        </div>
+        {/* Orbital category selector */}
+        {!selectedBook && (
+          <div className="mb-4">
+            <CategoryOrbit
+              activeKey={tab}
+              onSelect={(k) => { setTab(k as Tab); setSelectedBook(null); setSelectedChapter(null); }}
+              categories={tabs.map((t) => ({
+                key: t.key,
+                label: t.label,
+                icon: t.icon,
+                sublabel: `(${t.count})`,
+              }))}
+            />
+          </div>
+        )}
 
         {/* Search */}
         {(tab === "antigo" || tab === "novo") && !selectedBook && (
