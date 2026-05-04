@@ -172,12 +172,12 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
                 <div className="relative z-10">
                   <div className="text-center mb-6">
                     <h2
-                      className="text-2xl sm:text-3xl font-bold mb-1"
-                      style={{ color: "#5a2a05", fontFamily: "serif", letterSpacing: "0.05em" }}
+                      className="text-3xl sm:text-4xl font-bold mb-1"
+                      style={{ color: "#5a2a05", fontFamily: "'EB Garamond', serif", letterSpacing: "0.05em" }}
                     >
                       ✦ ܡܩܪܒܢܘܬܐ ✦
                     </h2>
-                    <p className="text-xs italic tracking-wider" style={{ color: "#7a4a10" }}>
+                    <p className="text-base italic tracking-wider" style={{ color: "#7a4a10", fontFamily: "'EB Garamond', serif" }}>
                       Dedicatória
                     </p>
                     <div
@@ -202,7 +202,7 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
                         >
                           {item.aramaic && (
                             <p
-                              className="text-right text-base sm:text-lg leading-relaxed transition-all duration-1000 font-bold"
+                              className="text-right text-xl sm:text-2xl leading-relaxed transition-all duration-1000 font-bold"
                               style={{
                                 color: "#5a2a05",
                                 fontFamily: "'Noto Serif Hebrew', 'Times New Roman', serif",
@@ -219,12 +219,13 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
                           )}
 
                           <div
-                            className="text-sm sm:text-base leading-relaxed whitespace-pre-line transition-all duration-1000 overflow-hidden"
+                            className="text-lg sm:text-xl leading-[1.7] whitespace-pre-line transition-all duration-1000 overflow-hidden"
                             style={{
                               color: "#3d2208",
-                              fontFamily: "'Cormorant Garamond', 'Garamond', serif",
+                              fontFamily: "'EB Garamond', 'Cormorant Garamond', 'Book Antiqua', Garamond, serif",
+                              fontWeight: 500,
                               opacity: isTranslated ? 1 : 0,
-                              maxHeight: isTranslated ? "600px" : 0,
+                              maxHeight: isTranslated ? "800px" : 0,
                               filter: isTranslated ? "none" : "blur(8px)",
                               textAlign: "justify",
                             }}
@@ -249,7 +250,7 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
       )}
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Cormorant+Garamond:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:wght@400;600;700&display=swap');
         @keyframes scrollOpen {
           0% { transform: scaleY(0.01) scaleX(0.6); opacity: 0; }
           40% { transform: scaleY(0.4) scaleX(0.85); opacity: 0.7; }
