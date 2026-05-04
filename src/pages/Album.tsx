@@ -226,7 +226,11 @@ export default function Album() {
       className="fixed inset-0 z-40 flex flex-col"
       style={{ background: "radial-gradient(ellipse at center, hsl(35,45%,82%), hsl(30,40%,55%))" }}
     >
-      {/* Top bar */}
+      {/* Standard header */}
+      <div className="px-3 pt-3 bg-amber-950/90">
+        <StandardHeader onHome={() => navigate("/")} coins={coins} variant="dark" />
+      </div>
+      {/* Sub-bar: Capa / título / Trocas */}
       <div className="flex items-center justify-between px-3 py-2 bg-amber-950/90 text-white shadow-lg z-10">
         <button
           onClick={() => setView("cover")}
@@ -238,29 +242,35 @@ export default function Album() {
           <div className="font-display font-extrabold text-sm sm:text-base">📖 Heróis da Fé</div>
           <div className="text-[10px] opacity-80">{totalOwned} / {allStickers.length} coletadas</div>
         </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setView("trade")}
-            className="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 px-2 sm:px-3 py-1.5 rounded-full font-display font-bold text-xs transition"
-            title="Trocas"
-          >
-            <Repeat className="w-4 h-4" /> <span className="hidden sm:inline">Trocas</span>
-          </button>
-          <div className="flex items-center gap-1 bg-white/15 px-2 py-1.5 rounded-full text-sm">
-            <span>🪙</span><span className="font-bold">{coins}</span>
-          </div>
-        </div>
+        <button
+          onClick={() => setView("trade")}
+          className="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 px-2 sm:px-3 py-1.5 rounded-full font-display font-bold text-xs transition"
+          title="Trocas"
+        >
+          <Repeat className="w-4 h-4" /> <span className="hidden sm:inline">Trocas</span>
+        </button>
       </div>
 
       {/* Page area */}
       <div className="flex-1 flex items-center justify-center p-2 sm:p-4 overflow-hidden" style={{ perspective: "1600px" }}>
         <div
-          className={`w-full max-w-5xl h-full max-h-[calc(100vh-140px)] ${
+          className={`w-full max-w-5xl h-full max-h-[calc(100vh-180px)] ${
             flipDir === "next" ? "animate-page-flip-next" : flipDir === "prev" ? "animate-page-flip-prev" : ""
           }`}
           style={{ transformStyle: "preserve-3d" }}
         >
-          <div className="bg-amber-900 rounded-2xl p-2 sm:p-4 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.6)] border-4 border-amber-950 h-full grid grid-cols-1 md:grid-cols-2 gap-1">
+          <div
+            className="bg-amber-900 rounded-2xl p-2 sm:p-4 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.6)] border-4 border-amber-950 h-full grid grid-cols-1 md:grid-cols-2 gap-1 relative overflow-hidden"
+            style={
+              cat.bg
+                ? {
+                    backgroundImage: `url(${cat.bg})`,
+                    backgroundSize: "100% 100%",
+                    backgroundRepeat: "no-repeat",
+                  }
+                : undefined
+            }
+          >
             {/* Left page */}
             <PageHalf
               side="left"
@@ -270,6 +280,7 @@ export default function Album() {
               pageNum={pageIdx * 2 + 1}
               stickers={cat.stickers.slice(0, 5)}
               owned={owned}
+              transparent={!!cat.bg}
             />
             {/* Right page */}
             <PageHalf
@@ -281,6 +292,7 @@ export default function Album() {
               stickers={cat.stickers.slice(5, 10)}
               owned={owned}
               progress={`${got}/${cat.stickers.length}`}
+              transparent={!!cat.bg}
             />
           </div>
         </div>
