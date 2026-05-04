@@ -70,48 +70,12 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
 ];
 
 // Render Portuguese text supporting **bold**, *italic*, and __underline__ markers
-function renderRich(text: string, withDropCap = false) {
+function renderRich(text: string) {
   const tokens = text.split(/(\*\*[^*]+\*\*|__[^_]+__|\*[^*]+\*|\n)/g);
-  let dropCapApplied = !withDropCap;
-
-  const applyDropCap = (str: string, key: number) => {
-    if (dropCapApplied || !str) return <span key={key}>{str}</span>;
-    // Find first letter
-    const match = str.match(/^(\s*)(\S)(.*)$/s);
-    if (!match) return <span key={key}>{str}</span>;
-    dropCapApplied = true;
-    const [, leading, first, rest] = match;
-    return (
-      <span key={key}>
-        {leading}
-        <span
-          className="drop-cap"
-          style={{
-            float: "left",
-            fontFamily: "'UnifrakturCook', 'Cormorant Garamond', serif",
-            fontSize: "3.5em",
-            lineHeight: "0.85",
-            padding: "4px 8px 0 0",
-            color: "#7a2a05",
-            fontWeight: 700,
-            textShadow: "1px 2px 0 rgba(255,220,150,0.6), 0 2px 4px rgba(80,40,10,0.4)",
-          }}
-        >
-          {first}
-        </span>
-        {rest}
-      </span>
-    );
-  };
-
   return tokens.map((tok, i) => {
     if (tok === "\n") return <br key={i} />;
     if (tok.startsWith("**") && tok.endsWith("**")) {
-      const inner = tok.slice(2, -2);
-      if (!dropCapApplied) {
-        return <strong key={i} style={{ color: "#5a2a05" }}>{applyDropCap(inner, i)}</strong>;
-      }
-      return <strong key={i} style={{ color: "#5a2a05" }}>{inner}</strong>;
+      return <strong key={i} style={{ color: "#5a2a05" }}>{tok.slice(2, -2)}</strong>;
     }
     if (tok.startsWith("__") && tok.endsWith("__")) {
       return <span key={i} style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}>{tok.slice(2, -2)}</span>;
@@ -119,7 +83,7 @@ function renderRich(text: string, withDropCap = false) {
     if (tok.startsWith("*") && tok.endsWith("*") && tok.length > 2) {
       return <em key={i}>{tok.slice(1, -1)}</em>;
     }
-    return applyDropCap(tok, i);
+    return <span key={i}>{tok}</span>;
   });
 }
 
