@@ -246,7 +246,7 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
                             }}
                           >
                             <p style={{ overflow: "hidden" }}>
-                              {renderRich(item.pt, true)}
+                              {renderRich(item.pt)}
                             </p>
                           </div>
                         </div>
