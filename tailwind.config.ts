@@ -76,10 +76,43 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "page-flip-next": {
+          "0%": { transform: "perspective(1600px) rotateY(0deg)", transformOrigin: "left center" },
+          "100%": { transform: "perspective(1600px) rotateY(-170deg)", transformOrigin: "left center" },
+        },
+        "page-flip-prev": {
+          "0%": { transform: "perspective(1600px) rotateY(170deg)", transformOrigin: "right center" },
+          "100%": { transform: "perspective(1600px) rotateY(0deg)", transformOrigin: "right center" },
+        },
+        "tear-left": {
+          "0%": { transform: "translate(0,0) rotate(0deg)", opacity: "1" },
+          "100%": { transform: "translate(-120%, 30%) rotate(-25deg)", opacity: "0" },
+        },
+        "tear-right": {
+          "0%": { transform: "translate(0,0) rotate(0deg)", opacity: "1" },
+          "100%": { transform: "translate(120%, 30%) rotate(25deg)", opacity: "0" },
+        },
+        "shake-tear": {
+          "0%,100%": { transform: "translateX(0) rotate(0)" },
+          "20%": { transform: "translateX(-6px) rotate(-2deg)" },
+          "40%": { transform: "translateX(6px) rotate(2deg)" },
+          "60%": { transform: "translateX(-4px) rotate(-1deg)" },
+          "80%": { transform: "translateX(4px) rotate(1deg)" },
+        },
+        "shadow-pulse": {
+          "0%,100%": { filter: "drop-shadow(0 8px 14px rgba(0,0,0,.45))", transform: "scale(1)" },
+          "50%": { filter: "drop-shadow(0 14px 22px rgba(0,0,0,.65))", transform: "scale(1.06)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "page-flip-next": "page-flip-next 0.7s ease-in-out forwards",
+        "page-flip-prev": "page-flip-prev 0.7s ease-in-out forwards",
+        "tear-left": "tear-left 0.7s ease-in forwards",
+        "tear-right": "tear-right 0.7s ease-in forwards",
+        "shake-tear": "shake-tear 0.5s ease-in-out",
+        "shadow-pulse": "shadow-pulse 2s ease-in-out infinite",
       },
     },
   },

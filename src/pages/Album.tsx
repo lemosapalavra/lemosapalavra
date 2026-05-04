@@ -1,12 +1,12 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Repeat } from "lucide-react";
 import StickerPackAnimation, { StickerResult } from "@/components/StickerPackAnimation";
-import { categories, allStickers, rarityBorder, rarityLabel, type Rarity } from "@/data/stickers";
+import { categories, allStickers, rarityBorder, rarityLabel, type Rarity, type Sticker } from "@/data/stickers";
 import { useCoins, ensureInitialCoins } from "@/hooks/useCoins";
 import albumCapa from "@/assets/album-capa.png";
 
-const STICKERS_KEY = "lemos_stickers_v2"; // map of id -> count
+const STICKERS_KEY = "lemos_stickers_v2";
 const PACK_COST = 3;
 
 type Owned = Record<number, number>;
@@ -18,72 +18,116 @@ function writeOwned(o: Owned) {
   localStorage.setItem(STICKERS_KEY, JSON.stringify(o));
 }
 
-function rollRarity(): Rarity {
-  const r = Math.random();
-  if (r < 0.05) return "reliquia";
-  if (r < 0.30) return "rara";
-  return "normal";
+// Daily seed → rotates pool order so every day a different mix appears
+function dailySeed(): number {
+  const d = new Date();
+  return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+}
+function seededRand(seed: number) {
+  let x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+function shuffleDaily<T>(arr: T[], salt: number): T[] {
+  const seed = dailySeed() + salt;
+  return [...arr]
+    .map((v, i) => ({ v, k: seededRand(seed + i * 13) }))
+    .sort((a, b) => a.k - b.k)
+    .map((x) => x.v);
 }
 
-function pickSticker(rarity: Rarity) {
-  const pool = allStickers.filter((s) => s.rarity === rarity);
-  return pool[Math.floor(Math.random() * pool.length)] || allStickers[0];
+function pickRandom<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
 }
+
+// Build a 5-sticker pack: 1 reliquia + 1 rara + 3 normais (daily-rotated pools)
+function buildPack(): { sticker: Sticker; rarity: Rarity }[] {
+  const reliquias = shuffleDaily(allStickers.filter((s) => s.rarity === "reliquia"), 1);
+  const raras = shuffleDaily(allStickers.filter((s) => s.rarity === "rara"), 2);
+  const normais = shuffleDaily(allStickers.filter((s) => s.rarity === "normal"), 3);
+
+  const result: { sticker: Sticker; rarity: Rarity }[] = [];
+  result.push({ sticker: pickRandom(reliquias.slice(0, Math.max(8, reliquias.length))), rarity: "reliquia" });
+  result.push({ sticker: pickRandom(raras), rarity: "rara" });
+  for (let i = 0; i < 3; i++) result.push({ sticker: pickRandom(normais), rarity: "normal" });
+  return result;
+}
+
+type View = "cover" | "pages" | "trade";
 
 export default function Album() {
   const navigate = useNavigate();
   const { coins, spendCoins } = useCoins();
-  const [view, setView] = useState<"cover" | "categories" | "spread">("cover");
-  const [catIdx, setCatIdx] = useState(0);
+  const [view, setView] = useState<View>("cover");
+  const [pageIdx, setPageIdx] = useState(0); // index into categories
   const [packResult, setPackResult] = useState<StickerResult[] | null>(null);
   const [owned, setOwned] = useState<Owned>(readOwned());
-  const [flipping, setFlipping] = useState(false);
+  const [flipDir, setFlipDir] = useState<"next" | "prev" | null>(null);
 
   useEffect(() => { ensureInitialCoins(); }, []);
 
-  const totalOwned = useMemo(() => Object.keys(owned).filter((k) => owned[+k] > 0).length, [owned]);
+  const totalOwned = useMemo(
+    () => Object.keys(owned).filter((k) => owned[+k] > 0).length,
+    [owned]
+  );
+
+  const repeats = useMemo(() => {
+    return Object.entries(owned)
+      .filter(([, c]) => (c || 0) > 1)
+      .map(([id, c]) => {
+        const s = allStickers.find((x) => x.id === +id)!;
+        return { sticker: s, count: c - 1 };
+      })
+      .filter((x) => x.sticker);
+  }, [owned]);
+
+  const missing = useMemo(() => allStickers.filter((s) => !owned[s.id]), [owned]);
 
   const buyPack = useCallback(() => {
     if (!spendCoins(PACK_COST)) return;
-    const results: StickerResult[] = [];
+    const pack = buildPack();
     const next = { ...readOwned() };
-    for (let i = 0; i < 3; i++) {
-      const r = rollRarity();
-      const s = pickSticker(r);
-      const isRepeat = (next[s.id] || 0) > 0;
-      next[s.id] = (next[s.id] || 0) + 1;
-      results.push({ index: s.id, name: s.name, emoji: s.emoji, rarity: r, isRepeat });
-    }
+    const results: StickerResult[] = pack.map(({ sticker, rarity }) => {
+      const isRepeat = (next[sticker.id] || 0) > 0;
+      next[sticker.id] = (next[sticker.id] || 0) + 1;
+      return { index: sticker.id, name: sticker.name, emoji: sticker.emoji, rarity, isRepeat };
+    });
     writeOwned(next);
     setOwned(next);
     setPackResult(results);
   }, [spendCoins]);
 
-  const flipTo = (target: "cover" | "categories" | "spread", newCat?: number) => {
-    setFlipping(true);
+  const goToPage = (idx: number, dir: "next" | "prev") => {
+    setFlipDir(dir);
     setTimeout(() => {
-      if (newCat !== undefined) setCatIdx(newCat);
-      setView(target);
-      setFlipping(false);
-    }, 350);
+      setPageIdx(idx);
+      setFlipDir(null);
+    }, 700);
   };
+
+  const next = () => goToPage((pageIdx + 1) % categories.length, "next");
+  const prev = () => goToPage((pageIdx - 1 + categories.length) % categories.length, "prev");
 
   // ============= COVER =============
   if (view === "cover") {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4 relative" style={{ background: "radial-gradient(ellipse at center, hsl(220,40%,15%), hsl(220,50%,8%))" }}>
-        <button onClick={() => navigate("/")} className="absolute top-4 left-4 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 flex items-center justify-center text-white transition">
+      <div
+        className="fixed inset-0 z-40 flex flex-col items-center justify-center p-4"
+        style={{ background: "radial-gradient(ellipse at center, hsl(220,40%,15%), hsl(220,50%,8%))" }}
+      >
+        <button
+          onClick={() => navigate("/")}
+          className="absolute top-4 left-4 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 flex items-center justify-center text-white transition z-10"
+        >
           <ArrowLeft className="w-6 h-6" />
         </button>
-        <div className="absolute top-4 right-4 flex items-center gap-2 bg-white/10 backdrop-blur px-4 py-2 rounded-full text-white border border-white/20">
+        <div className="absolute top-4 right-4 flex items-center gap-2 bg-white/10 backdrop-blur px-4 py-2 rounded-full text-white border border-white/20 z-10">
           <span className="text-2xl">🪙</span>
           <span className="font-display font-bold text-lg">{coins}</span>
         </div>
 
         <div
-          onClick={() => flipTo("categories")}
+          onClick={() => setView("pages")}
           className="relative cursor-pointer group max-w-md w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] border-4 border-amber-700/50 transition-transform hover:scale-[1.02] hover:rotate-1"
-          style={{ transformOrigin: "left center" }}
         >
           <img src={albumCapa} alt="Heróis da Fé" className="w-full h-full object-cover" />
           <div className="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-amber-900/80 to-transparent" />
@@ -93,144 +137,244 @@ export default function Album() {
         </div>
 
         <p className="mt-6 text-white/70 font-body text-sm text-center max-w-md">
-          Colecione mais de 120 figurinhas dos Heróis da Fé! Compre pacotinhos por <strong>3 moedas</strong>.
+          Colecione mais de 120 figurinhas! Cada pacotinho tem <strong>5 figurinhas</strong> (1 rara + 1 especial).
         </p>
       </div>
     );
   }
 
-  // ============= CATEGORIES INDEX =============
-  if (view === "categories") {
+  // ============= TRADE =============
+  if (view === "trade") {
     return (
-      <div className={`min-h-screen p-4 transition-all duration-300 ${flipping ? "opacity-0 scale-95" : "opacity-100"}`} style={{ background: "linear-gradient(180deg, hsl(35,45%,88%), hsl(40,50%,82%))" }}>
+      <div
+        className="fixed inset-0 z-40 overflow-y-auto p-4"
+        style={{ background: "linear-gradient(180deg, hsl(35,45%,88%), hsl(40,50%,82%))" }}
+      >
         <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-4">
-            <button onClick={() => flipTo("cover")} className="flex items-center gap-2 text-foreground font-display font-bold">
-              <ChevronLeft className="w-5 h-5" /> Capa
+          <div className="flex items-center justify-between mb-4 sticky top-0 bg-amber-100/95 backdrop-blur py-2 -mx-4 px-4 rounded-b-2xl shadow">
+            <button
+              onClick={() => setView("pages")}
+              className="flex items-center gap-2 font-display font-bold"
+            >
+              <ChevronLeft className="w-5 h-5" /> Álbum
             </button>
-            <h1 className="font-display font-extrabold text-xl text-foreground">Heróis da Fé</h1>
-            <div className="flex items-center gap-2 bg-popover px-3 py-1.5 rounded-full border border-border">
+            <h1 className="font-display font-extrabold text-lg sm:text-xl">🔄 Sala de Trocas</h1>
+            <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border">
               <span>🪙</span><span className="font-bold">{coins}</span>
             </div>
           </div>
 
-          <div className="bg-popover/80 rounded-2xl p-4 mb-4 shadow-md border border-border flex items-center gap-3">
-            <div className="flex-1">
-              <p className="font-display font-bold text-foreground">Coletadas: {totalOwned} / {allStickers.length}</p>
-              <div className="bg-background rounded-full h-3 mt-1 overflow-hidden">
-                <div className="bg-gradient-to-r from-amber-400 to-orange-500 h-full transition-all" style={{ width: `${(totalOwned / allStickers.length) * 100}%` }} />
-              </div>
-            </div>
-            <button onClick={buyPack} disabled={coins < PACK_COST} className="bg-gradient-to-br from-amber-500 to-orange-600 disabled:from-gray-400 disabled:to-gray-500 text-white font-display font-bold px-4 py-3 rounded-xl shadow-lg hover:scale-105 transition disabled:cursor-not-allowed disabled:opacity-60">
-              🎁 Pacotinho<br/><span className="text-xs">3 🪙</span>
-            </button>
+          <div className="bg-white/80 rounded-2xl p-4 mb-4 shadow border">
+            <p className="font-display font-bold text-foreground mb-1">📦 Suas repetidas para trocar</p>
+            <p className="text-xs text-muted-foreground font-body">
+              Estas são as figurinhas que você tem em duplicata. Outros colecionadores procuram suas faltantes — proponha trocas!
+            </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-            {categories.map((c, i) => {
-              const got = c.stickers.filter((s) => (owned[s.id] || 0) > 0).length;
-              return (
-                <button
-                  key={c.key}
-                  onClick={() => flipTo("spread", i)}
-                  className={`bg-gradient-to-br ${c.color} rounded-2xl p-4 text-white shadow-xl hover:scale-105 transition aspect-square flex flex-col items-center justify-center gap-2 border-2 border-white/30`}
+          {repeats.length === 0 ? (
+            <div className="rounded-2xl border-2 border-dashed border-amber-700/30 p-8 text-center bg-white/40">
+              <p className="font-body text-muted-foreground">
+                Você ainda não tem figurinhas repetidas. Abra mais pacotinhos!
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 mb-6">
+              {repeats.map(({ sticker, count }) => (
+                <div
+                  key={sticker.id}
+                  className={`bg-white rounded-xl p-2 border-[3px] ${rarityBorder(sticker.rarity)} shadow-md text-center`}
                 >
-                  <span className="text-4xl">{c.icon}</span>
-                  <span className="font-display font-bold text-sm text-center leading-tight">{c.name}</span>
-                  <span className="text-xs bg-black/30 px-2 py-0.5 rounded-full">{got}/{c.stickers.length}</span>
-                </button>
-              );
-            })}
+                  <div className="text-3xl">{sticker.emoji}</div>
+                  <div className="font-display font-bold text-[11px] leading-tight mt-1">{sticker.name}</div>
+                  <div className="text-[9px] text-muted-foreground uppercase">{rarityLabel(sticker.rarity)}</div>
+                  <div className="mt-1 inline-flex items-center gap-1 bg-red-500/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                    ×{count}
+                  </div>
+                  <button className="mt-2 w-full text-[10px] font-display font-bold bg-gradient-to-br from-emerald-500 to-teal-600 text-white py-1 rounded-md hover:scale-105 transition">
+                    Oferecer
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="bg-white/80 rounded-2xl p-4 shadow border">
+            <p className="font-display font-bold text-foreground mb-2">🎯 Suas faltantes ({missing.length})</p>
+            {missing.length === 0 ? (
+              <p className="font-body text-sm text-emerald-700">🎉 Você completou o álbum!</p>
+            ) : (
+              <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 max-h-64 overflow-y-auto">
+                {missing.map((s) => (
+                  <div key={s.id} className="bg-amber-100 rounded-lg p-2 border border-dashed border-amber-700/40 text-center opacity-80">
+                    <div className="text-xl">❓</div>
+                    <div className="text-[9px] font-bold leading-tight">{s.name}</div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
+
+          <p className="text-center text-xs text-muted-foreground font-body mt-4">
+            💡 Em breve: encontrar usuários com as figurinhas que você precisa.
+          </p>
         </div>
-        {packResult && <StickerPackAnimation stickers={packResult} onClose={() => setPackResult(null)} />}
       </div>
     );
   }
 
-  // ============= SPREAD (2 pages) =============
-  const cat = categories[catIdx];
-  const leftPage = cat.stickers.slice(0, 5);
-  const rightPage = cat.stickers.slice(5, 10);
-
-  const renderSticker = (s: typeof cat.stickers[number]) => {
-    const got = (owned[s.id] || 0) > 0;
-    return (
-      <div
-        key={s.id}
-        className={`aspect-[3/4] rounded-xl border-[3px] flex flex-col items-center justify-center p-2 text-center transition-all ${
-          got
-            ? `bg-gradient-to-br from-white to-amber-50 ${rarityBorder(s.rarity)} shadow-lg`
-            : "bg-amber-100/50 border-dashed border-amber-700/30 opacity-50"
-        }`}
-      >
-        <span className={`text-[9px] font-bold uppercase tracking-wide ${
-          s.rarity === "reliquia" ? "text-yellow-600" : s.rarity === "rara" ? "text-blue-600" : "text-slate-500"
-        }`}>{rarityLabel(s.rarity)}</span>
-        <span className="text-3xl sm:text-4xl my-1">{got ? s.emoji : "❓"}</span>
-        <span className="text-[10px] font-display font-bold text-foreground leading-tight">
-          {got ? s.name : `#${s.id + 1}`}
-        </span>
-        {got && (owned[s.id] || 0) > 1 && (
-          <span className="text-[9px] mt-0.5 bg-red-500/80 text-white px-1.5 rounded-full">×{owned[s.id]}</span>
-        )}
-      </div>
-    );
-  };
+  // ============= PAGES (fullscreen flip) =============
+  const cat = categories[pageIdx];
+  const got = cat.stickers.filter((s) => (owned[s.id] || 0) > 0).length;
 
   return (
-    <div className={`min-h-screen p-2 sm:p-4 transition-all duration-300 ${flipping ? "opacity-0 scale-95" : "opacity-100"}`} style={{ background: "radial-gradient(ellipse at center, hsl(35,45%,82%), hsl(30,40%,65%))" }}>
-      <div className="max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-3">
-          <button onClick={() => flipTo("categories")} className="flex items-center gap-2 bg-popover px-3 py-2 rounded-full font-display font-bold shadow">
-            <ChevronLeft className="w-4 h-4" /> Categorias
-          </button>
-          <h2 className="font-display font-extrabold text-lg sm:text-2xl text-foreground bg-white/70 px-4 py-1 rounded-full shadow">
-            {cat.icon} {cat.name}
-          </h2>
-          <div className="flex items-center gap-1 bg-popover px-3 py-2 rounded-full">
-            <span>🪙</span><span className="font-bold text-sm">{coins}</span>
-          </div>
+    <div
+      className="fixed inset-0 z-40 flex flex-col"
+      style={{ background: "radial-gradient(ellipse at center, hsl(35,45%,82%), hsl(30,40%,55%))" }}
+    >
+      {/* Top bar */}
+      <div className="flex items-center justify-between px-3 py-2 bg-amber-950/90 text-white shadow-lg z-10">
+        <button
+          onClick={() => setView("cover")}
+          className="flex items-center gap-1 bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-full font-display font-bold text-sm transition"
+        >
+          <ArrowLeft className="w-4 h-4" /> Capa
+        </button>
+        <div className="text-center">
+          <div className="font-display font-extrabold text-sm sm:text-base">📖 Heróis da Fé</div>
+          <div className="text-[10px] opacity-80">{totalOwned} / {allStickers.length} coletadas</div>
         </div>
-
-        {/* Open book spread */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 bg-amber-900 rounded-2xl p-2 sm:p-4 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.5)] border-4 border-amber-950">
-          <div className="bg-gradient-to-br from-amber-50 to-orange-100 rounded-xl p-3 sm:p-4 shadow-inner border-r-2 border-amber-900/30 relative">
-            <p className="text-center font-display font-bold text-amber-900/70 text-xs mb-2">— Página {catIdx * 2 + 1} —</p>
-            <div className="grid grid-cols-3 sm:grid-cols-3 gap-2">
-              {leftPage.map(renderSticker)}
-              <div className="aspect-[3/4]" /> <div className="aspect-[3/4]" />
-            </div>
-          </div>
-          <div className="bg-gradient-to-bl from-amber-50 to-orange-100 rounded-xl p-3 sm:p-4 shadow-inner border-l-2 border-amber-900/30 relative">
-            <p className="text-center font-display font-bold text-amber-900/70 text-xs mb-2">— Página {catIdx * 2 + 2} —</p>
-            <div className="grid grid-cols-3 sm:grid-cols-3 gap-2">
-              {rightPage.map(renderSticker)}
-              <div className="aspect-[3/4]" /> <div className="aspect-[3/4]" />
-            </div>
-          </div>
-        </div>
-
-        {/* Navigation between categories */}
-        <div className="flex items-center justify-between mt-4 gap-2">
+        <div className="flex items-center gap-2">
           <button
-            onClick={() => flipTo("spread", (catIdx - 1 + categories.length) % categories.length)}
-            className="bg-popover px-4 py-2 rounded-full font-display font-bold flex items-center gap-1 shadow hover:scale-105 transition"
+            onClick={() => setView("trade")}
+            className="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 px-2 sm:px-3 py-1.5 rounded-full font-display font-bold text-xs transition"
+            title="Trocas"
           >
-            <ChevronLeft className="w-4 h-4" /> {categories[(catIdx - 1 + categories.length) % categories.length].name}
+            <Repeat className="w-4 h-4" /> <span className="hidden sm:inline">Trocas</span>
           </button>
-          <button onClick={buyPack} disabled={coins < PACK_COST} className="bg-gradient-to-br from-amber-500 to-orange-600 disabled:opacity-50 text-white font-display font-bold px-5 py-2 rounded-full shadow-lg hover:scale-105 transition">
-            🎁 Pacotinho (3 🪙)
-          </button>
-          <button
-            onClick={() => flipTo("spread", (catIdx + 1) % categories.length)}
-            className="bg-popover px-4 py-2 rounded-full font-display font-bold flex items-center gap-1 shadow hover:scale-105 transition"
-          >
-            {categories[(catIdx + 1) % categories.length].name} <ChevronRight className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-1 bg-white/15 px-2 py-1.5 rounded-full text-sm">
+            <span>🪙</span><span className="font-bold">{coins}</span>
+          </div>
         </div>
       </div>
-      {packResult && <StickerPackAnimation stickers={packResult} onClose={() => { setPackResult(null); setOwned(readOwned()); }} />}
+
+      {/* Page area */}
+      <div className="flex-1 flex items-center justify-center p-2 sm:p-4 overflow-hidden" style={{ perspective: "1600px" }}>
+        <div
+          className={`w-full max-w-5xl h-full max-h-[calc(100vh-140px)] ${
+            flipDir === "next" ? "animate-page-flip-next" : flipDir === "prev" ? "animate-page-flip-prev" : ""
+          }`}
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          <div className="bg-amber-900 rounded-2xl p-2 sm:p-4 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.6)] border-4 border-amber-950 h-full grid grid-cols-1 md:grid-cols-2 gap-1">
+            {/* Left page */}
+            <PageHalf
+              side="left"
+              title={cat.name}
+              icon={cat.icon}
+              color={cat.color}
+              pageNum={pageIdx * 2 + 1}
+              stickers={cat.stickers.slice(0, 5)}
+              owned={owned}
+            />
+            {/* Right page */}
+            <PageHalf
+              side="right"
+              title={cat.name}
+              icon={cat.icon}
+              color={cat.color}
+              pageNum={pageIdx * 2 + 2}
+              stickers={cat.stickers.slice(5, 10)}
+              owned={owned}
+              progress={`${got}/${cat.stickers.length}`}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom navigation */}
+      <div className="flex items-center justify-between gap-2 px-3 py-2 bg-amber-950/90 z-10">
+        <button
+          onClick={prev}
+          className="bg-white/90 px-3 py-2 rounded-full font-display font-bold flex items-center gap-1 shadow hover:scale-105 transition text-sm"
+        >
+          <ChevronLeft className="w-4 h-4" /> <span className="hidden sm:inline">Anterior</span>
+        </button>
+        <button
+          onClick={buyPack}
+          disabled={coins < PACK_COST}
+          className="bg-gradient-to-br from-amber-400 to-orange-600 disabled:opacity-50 text-white font-display font-bold px-4 sm:px-6 py-2 rounded-full shadow-lg hover:scale-105 transition text-sm animate-shadow-pulse"
+        >
+          🎁 Pacotinho (3 🪙)
+        </button>
+        <button
+          onClick={next}
+          className="bg-white/90 px-3 py-2 rounded-full font-display font-bold flex items-center gap-1 shadow hover:scale-105 transition text-sm"
+        >
+          <span className="hidden sm:inline">Próxima</span> <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+
+      {packResult && (
+        <StickerPackAnimation
+          stickers={packResult}
+          onClose={() => { setPackResult(null); setOwned(readOwned()); }}
+        />
+      )}
+    </div>
+  );
+}
+
+function PageHalf({
+  side, title, icon, color, pageNum, stickers, owned, progress,
+}: {
+  side: "left" | "right";
+  title: string;
+  icon: string;
+  color: string;
+  pageNum: number;
+  stickers: Sticker[];
+  owned: Owned;
+  progress?: string;
+}) {
+  return (
+    <div
+      className={`bg-gradient-to-br from-amber-50 to-orange-100 rounded-xl p-3 sm:p-4 shadow-inner ${
+        side === "left" ? "border-r-2 border-amber-900/30" : "border-l-2 border-amber-900/30"
+      } relative flex flex-col`}
+    >
+      <div className="flex items-center justify-between mb-2">
+        <div className={`bg-gradient-to-r ${color} text-white px-3 py-1 rounded-full text-xs font-display font-bold flex items-center gap-1`}>
+          <span>{icon}</span><span>{title}</span>
+        </div>
+        {progress && <span className="text-[10px] font-bold text-amber-900/70">{progress}</span>}
+      </div>
+      <div className="grid grid-cols-3 gap-2 flex-1 content-start">
+        {stickers.map((s) => {
+          const has = (owned[s.id] || 0) > 0;
+          return (
+            <div
+              key={s.id}
+              className={`aspect-[3/4] rounded-xl border-[3px] flex flex-col items-center justify-center p-1.5 text-center transition-all ${
+                has
+                  ? `bg-gradient-to-br from-white to-amber-50 ${rarityBorder(s.rarity)} shadow-lg`
+                  : "bg-amber-100/50 border-dashed border-amber-700/30 opacity-50"
+              }`}
+            >
+              <span className={`text-[8px] font-bold uppercase tracking-wide ${
+                s.rarity === "reliquia" ? "text-yellow-600" : s.rarity === "rara" ? "text-blue-600" : "text-slate-500"
+              }`}>{rarityLabel(s.rarity)}</span>
+              <span className="text-2xl sm:text-3xl my-1">{has ? s.emoji : "❓"}</span>
+              <span className="text-[9px] font-display font-bold text-foreground leading-tight">
+                {has ? s.name : `#${s.id + 1}`}
+              </span>
+              {has && (owned[s.id] || 0) > 1 && (
+                <span className="text-[8px] mt-0.5 bg-red-500/80 text-white px-1.5 rounded-full">×{owned[s.id]}</span>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <p className="text-center font-display font-bold text-amber-900/60 text-[10px] mt-2">— pág. {pageNum} —</p>
     </div>
   );
 }
