@@ -70,11 +70,28 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
 ];
 
-// Render Portuguese text supporting **bold**, *italic*, and __underline__ markers
+// Render Portuguese text supporting **bold**, *italic*, __underline__, and {{signature}}...{{/signature}} markers
 function renderRich(text: string) {
-  const tokens = text.split(/(\*\*[^*]+\*\*|__[^_]+__|\*[^*]+\*|\n)/g);
+  const tokens = text.split(/(\{\{signature\}\}[^]*?\{\{\/signature\}\}|\*\*[^*]+\*\*|__[^_]+__|\*[^*]+\*|\n)/g);
   return tokens.map((tok, i) => {
     if (tok === "\n") return <br key={i} />;
+    if (tok.startsWith("{{signature}}") && tok.endsWith("{{/signature}}")) {
+      const name = tok.slice("{{signature}}".length, -"{{/signature}}".length);
+      return (
+        <span
+          key={i}
+          style={{
+            fontFamily: "'Kaufmann BT', 'Kaufmann', 'Allura', 'Pinyon Script', cursive",
+            fontSize: "1.9em",
+            color: "#5a2a05",
+            display: "inline-block",
+            lineHeight: 1.2,
+          }}
+        >
+          {name}
+        </span>
+      );
+    }
     if (tok.startsWith("**") && tok.endsWith("**")) {
       return <strong key={i} style={{ color: "#5a2a05" }}>{tok.slice(2, -2)}</strong>;
     }
