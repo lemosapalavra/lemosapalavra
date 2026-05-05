@@ -3,6 +3,8 @@ import { ArrowLeft } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import iconHistorias from "@/assets/icon-historias.png";
 import logoCentral from "@/assets/logo-central.png";
+import iconCriacao from "@/assets/historia-criacao.jpg";
+import iconBatalha from "@/assets/historia-batalha-anjos.jpg";
 
 interface Historia {
   title: string;
@@ -12,8 +14,8 @@ interface Historia {
 }
 
 const historias: Historia[] = [
-  { title: "A Criação", icon: "🌍", angle: -90, src: "/videos/a-criacao.mp4" },
-  { title: "A Batalha dos Anjos", icon: "⚔️", angle: 90, src: "/videos/batalha-dos-anjos.mp4" },
+  { title: "A Criação", icon: iconCriacao, angle: -90, src: "/videos/a-criacao.mp4" },
+  { title: "A Batalha dos Anjos", icon: iconBatalha, angle: 90, src: "/videos/batalha-dos-anjos.mp4" },
 ];
 
 export default function Historias() {
@@ -61,13 +63,13 @@ export default function Historias() {
                     onClick={() => setPlaying(h)}
                     className="cursor-pointer hover:scale-110 transition-transform text-center"
                   >
-                    <div
-                      className="rounded-full bg-gradient-to-br from-primary/90 to-accent/90 flex items-center justify-center drop-shadow-lg mx-auto"
-                      style={{ width: iconSize, height: iconSize }}
-                    >
-                      <span style={{ fontSize: 64 }}>{h.icon}</span>
-                    </div>
-                    <p className="font-display font-bold text-foreground mt-1 text-sm drop-shadow">{h.title}</p>
+                    <img
+                      src={h.icon}
+                      alt={h.title}
+                      loading="lazy"
+                      className="drop-shadow-lg rounded-full mx-auto"
+                      style={{ width: iconSize, height: iconSize, objectFit: "cover" }}
+                    />
                   </div>
                 </div>
               );
