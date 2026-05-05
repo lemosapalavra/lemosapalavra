@@ -77,7 +77,18 @@ export default function Louvores() {
                     onClick={() => (l.video ? setPlaying(l) : setSelected(l))}
                     className="cursor-pointer hover:scale-110 transition-transform text-center"
                   >
-                    <img src={l.icon} alt={l.title} className="drop-shadow-lg" loading="lazy" style={{ width: iconSize, height: iconSize, objectFit: "contain" }} />
+                    {l.video ? (
+                      <video
+                        src={`${l.video}#t=0.1`}
+                        preload="metadata"
+                        muted
+                        playsInline
+                        className="drop-shadow-lg rounded-full"
+                        style={{ width: iconSize, height: iconSize, objectFit: "cover" }}
+                      />
+                    ) : (
+                      <img src={l.icon} alt={l.title} className="drop-shadow-lg" loading="lazy" style={{ width: iconSize, height: iconSize, objectFit: "contain" }} />
+                    )}
                   </div>
                 </div>
               );
