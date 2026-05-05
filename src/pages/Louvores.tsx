@@ -16,12 +16,13 @@ interface Louvor {
   angle: number;
   lyrics: string;
   video?: string;
+  poster?: string;
 }
 
 const louvores: Louvor[] = [
   { title: "Te vejo em Tudo", icon: louvorTudo, angle: -90, lyrics: "Te vejo em tudo, Senhor!\nNo céu azul, no canto das aves,\nNo sorriso de uma criança,\nTe vejo em tudo, Senhor!" },
-  { title: "Palavra Eterna", icon: louvorEterna, angle: -150, lyrics: "Tua Palavra é eterna, Senhor,\nLâmpada para os meus pés,\nLuz para o meu caminho.\nTua Palavra é eterna!", video: "/videos/palavra-eterna.mp4" },
-  { title: "Aleluia", icon: louvorAleluia, angle: -30, lyrics: "Aleluia, Aleluia!\nCristo ressuscitou!\nAleluia, Aleluia!\nA morte Ele venceu!", video: "/videos/aleluia.mp4" },
+  { title: "Palavra Eterna", icon: louvorEterna, angle: -150, lyrics: "Tua Palavra é eterna, Senhor,\nLâmpada para os meus pés,\nLuz para o meu caminho.\nTua Palavra é eterna!", video: "/videos/palavra-eterna.mp4", poster: "/videos/palavra-eterna-poster.jpg" },
+  { title: "Aleluia", icon: louvorAleluia, angle: -30, lyrics: "Aleluia, Aleluia!\nCristo ressuscitou!\nAleluia, Aleluia!\nA morte Ele venceu!", video: "/videos/aleluia.mp4", poster: "/videos/aleluia-poster.jpg" },
   { title: "Ser Fiel", icon: louvorFiel, angle: 150, lyrics: "Quero ser fiel a Ti, Senhor,\nEm todo tempo e lugar.\nQuero seguir Teus passos,\nE no Teu amor habitar." },
   { title: "Espírito Santo", icon: louvorEspirito, angle: 30, lyrics: "Espírito Santo, vem!\nEnche meu coração,\nDerrama Teu fogo em mim,\nEspírito Santo, vem!" },
   { title: "Pai", icon: louvorPai, angle: 90, lyrics: "Pai, eu Te amo!\nPai, eu Te adoro!\nObrigado por me amar,\nPor cuidar de mim, Pai!" },
