@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ArrowLeft } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import iconLouvores from "@/assets/icon-louvores.png";
 import logoCentral from "@/assets/logo-central.png";
@@ -14,12 +15,13 @@ interface Louvor {
   icon: string;
   angle: number;
   lyrics: string;
+  video?: string;
 }
 
 const louvores: Louvor[] = [
   { title: "Te vejo em Tudo", icon: louvorTudo, angle: -90, lyrics: "Te vejo em tudo, Senhor!\nNo céu azul, no canto das aves,\nNo sorriso de uma criança,\nTe vejo em tudo, Senhor!" },
   { title: "Palavra Eterna", icon: louvorEterna, angle: -150, lyrics: "Tua Palavra é eterna, Senhor,\nLâmpada para os meus pés,\nLuz para o meu caminho.\nTua Palavra é eterna!" },
-  { title: "Aleluia", icon: louvorAleluia, angle: -30, lyrics: "Aleluia, Aleluia!\nCristo ressuscitou!\nAleluia, Aleluia!\nA morte Ele venceu!" },
+  { title: "Aleluia", icon: louvorAleluia, angle: -30, lyrics: "Aleluia, Aleluia!\nCristo ressuscitou!\nAleluia, Aleluia!\nA morte Ele venceu!", video: "/videos/aleluia.mp4" },
   { title: "Ser Fiel", icon: louvorFiel, angle: 150, lyrics: "Quero ser fiel a Ti, Senhor,\nEm todo tempo e lugar.\nQuero seguir Teus passos,\nE no Teu amor habitar." },
   { title: "Espírito Santo", icon: louvorEspirito, angle: 30, lyrics: "Espírito Santo, vem!\nEnche meu coração,\nDerrama Teu fogo em mim,\nEspírito Santo, vem!" },
   { title: "Pai", icon: louvorPai, angle: 90, lyrics: "Pai, eu Te amo!\nPai, eu Te adoro!\nObrigado por me amar,\nPor cuidar de mim, Pai!" },
@@ -27,8 +29,26 @@ const louvores: Louvor[] = [
 
 export default function Louvores() {
   const [selected, setSelected] = useState<Louvor | null>(null);
+  const [playing, setPlaying] = useState<Louvor | null>(null);
   const radius = 220;
   const iconSize = 130;
+
+  if (playing?.video) {
+    return (
+      <div className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-in fade-in zoom-in duration-300">
+        <button
+          onClick={() => setPlaying(null)}
+          className="absolute top-4 left-4 z-10 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white transition"
+          title="Voltar"
+        >
+          <ArrowLeft className="w-6 h-6" />
+        </button>
+        <video src={playing.video} controls autoPlay playsInline className="w-full h-full object-contain">
+          Seu navegador não suporta vídeo.
+        </video>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen py-4 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
@@ -54,7 +74,7 @@ export default function Louvores() {
                   style={{ left: x, top: y, width: iconSize }}
                 >
                   <div
-                    onClick={() => setSelected(l)}
+                    onClick={() => (l.video ? setPlaying(l) : setSelected(l))}
                     className="cursor-pointer hover:scale-110 transition-transform text-center"
                   >
                     <img src={l.icon} alt={l.title} className="drop-shadow-lg" loading="lazy" style={{ width: iconSize, height: iconSize, objectFit: "contain" }} />
