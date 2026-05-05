@@ -1,32 +1,25 @@
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
-import CategoryOrbit from "@/components/CategoryOrbit";
 import iconHistorias from "@/assets/icon-historias.png";
+import logoCentral from "@/assets/logo-central.png";
 
-type Video = { key: string; title: string; src: string };
+interface Historia {
+  title: string;
+  icon: string;
+  angle: number;
+  src: string;
+}
 
-const videos: Record<string, Video[]> = {
-  criacao: [
-    { key: "a-criacao", title: "A Criação do Mundo", src: "/videos/a-criacao.mp4" },
-    { key: "batalha-anjos", title: "A Batalha dos Anjos", src: "/videos/batalha-dos-anjos.mp4" },
-  ],
-  jesus: [],
-  moises: [],
-};
+const historias: Historia[] = [
+  { title: "A Criação", icon: "🌍", angle: -90, src: "/videos/a-criacao.mp4" },
+  { title: "A Batalha dos Anjos", icon: "⚔️", angle: 90, src: "/videos/batalha-dos-anjos.mp4" },
+];
 
 export default function Historias() {
-  const [tab, setTab] = useState("criacao");
-  const [playing, setPlaying] = useState<Video | null>(null);
-  const [exploding, setExploding] = useState<Video | null>(null);
-
-  const handleClick = (v: Video) => {
-    setExploding(v);
-    setTimeout(() => {
-      setPlaying(v);
-      setExploding(null);
-    }, 400);
-  };
+  const [playing, setPlaying] = useState<Historia | null>(null);
+  const radius = 220;
+  const iconSize = 130;
 
   if (playing) {
     return (
@@ -38,73 +31,49 @@ export default function Historias() {
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
-        <video
-          src={playing.src}
-          controls
-          autoPlay
-          playsInline
-          className="w-full h-full object-contain"
-        >
+        <video src={playing.src} controls autoPlay playsInline className="w-full h-full object-contain">
           Seu navegador não suporta vídeo.
         </video>
       </div>
     );
   }
 
-  const renderList = (cat: string) => {
-    const list = videos[cat];
-    if (!list?.length) {
-      return (
-        <div className="rounded-2xl border-2 border-dashed border-primary/30 p-12 text-center">
-          <p className="text-muted-foreground text-lg font-body">Em breve novos vídeos.</p>
-        </div>
-      );
-    }
-    return (
-      <div className="flex flex-wrap gap-4 justify-center">
-        {list.map((v) => {
-          const isExploding = exploding?.key === v.key;
-          return (
-            <button
-              key={v.key}
-              onClick={() => handleClick(v)}
-              className={`group relative rounded-2xl overflow-hidden shadow-lg border-2 border-primary/30 bg-black w-36 sm:w-40 aspect-[2/3] hover:scale-105 transition-transform ${
-                isExploding ? "fixed inset-0 w-full h-full z-50 rounded-none scale-100 transition-all duration-500 ease-out" : ""
-              }`}
-              style={isExploding ? { aspectRatio: "auto" } : undefined}
-            >
-              <video src={v.src} className="w-full h-full object-cover opacity-80 group-hover:opacity-100" muted preload="metadata" />
-              <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition">
-                <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center shadow-xl">
-                  <span className="text-2xl ml-0.5">▶️</span>
-                </div>
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/90 to-transparent">
-                <p className="text-white font-display font-bold text-xs text-left leading-tight">{v.title}</p>
-              </div>
-            </button>
-          );
-        })}
-      </div>
-    );
-  };
-
   return (
-    <div className="min-h-screen flex flex-col bg-black">
-      <div className="relative z-10">
+    <div className="min-h-screen py-4 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
+      <div className="max-w-4xl mx-auto">
         <PageHeader title="Histórias Bíblicas" subtitle="Escolha uma história" icon={iconHistorias} />
-      </div>
-      <div className="flex-1 flex flex-col items-center px-4 py-6">
-        <CategoryOrbit
-          activeKey={tab}
-          onSelect={setTab}
-          categories={[
-            { key: "criacao", label: "A Criação", emoji: "🌍" },
-            { key: "jesus", label: "Jesus", emoji: "✝️" },
-            { key: "moises", label: "Moisés", emoji: "📜" },
-          ]}
-        />
-        <div className="w-full max-w-3xl mt-6">{renderList(tab)}</div>
+
+        <div className="relative mx-auto flex items-center justify-center" style={{ width: 600, height: 600, maxWidth: "100%" }}>
+          <img
+            src={logoCentral}
+            alt="Lemos a Palavra"
+            className="absolute z-10 drop-shadow-xl"
+            style={{ width: 240, height: 240, top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
+          />
+          <div className="orbit-container absolute inset-0">
+            {historias.map((h, i) => {
+              const angleRad = (h.angle * Math.PI) / 180;
+              const x = 300 + Math.cos(angleRad) * radius - iconSize / 2;
+              const y = 300 + Math.sin(angleRad) * radius - iconSize / 2;
+              return (
+                <div key={i} className="orbit-counter absolute" style={{ left: x, top: y, width: iconSize }}>
+                  <div
+                    onClick={() => setPlaying(h)}
+                    className="cursor-pointer hover:scale-110 transition-transform text-center"
+                  >
+                    <div
+                      className="rounded-full bg-gradient-to-br from-primary/90 to-accent/90 flex items-center justify-center drop-shadow-lg mx-auto"
+                      style={{ width: iconSize, height: iconSize }}
+                    >
+                      <span style={{ fontSize: 64 }}>{h.icon}</span>
+                    </div>
+                    <p className="font-display font-bold text-foreground mt-1 text-sm drop-shadow">{h.title}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );
