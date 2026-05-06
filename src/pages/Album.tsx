@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ChevronLeft, ChevronRight, Repeat } from "lucide-react";
+import { ArrowLeft, ChevronLeft, Repeat } from "lucide-react";
 import StickerPackAnimation, { StickerResult } from "@/components/StickerPackAnimation";
 import { categories, allStickers, rarityBorder, rarityLabel, type Rarity, type Sticker } from "@/data/stickers";
 import { useCoins, ensureInitialCoins } from "@/hooks/useCoins";
@@ -60,10 +60,8 @@ export default function Album() {
   const navigate = useNavigate();
   const { coins, spendCoins } = useCoins();
   const [view, setView] = useState<View>("cover");
-  const [pageIdx, setPageIdx] = useState(0); // index into categories
   const [packResult, setPackResult] = useState<StickerResult[] | null>(null);
   const [owned, setOwned] = useState<Owned>(readOwned());
-  const [flipDir, setFlipDir] = useState<"next" | "prev" | null>(null);
 
   useEffect(() => { ensureInitialCoins(); }, []);
 
@@ -97,17 +95,6 @@ export default function Album() {
     setOwned(next);
     setPackResult(results);
   }, [spendCoins]);
-
-  const goToPage = (idx: number, dir: "next" | "prev") => {
-    setFlipDir(dir);
-    setTimeout(() => {
-      setPageIdx(idx);
-      setFlipDir(null);
-    }, 700);
-  };
-
-  const next = () => goToPage((pageIdx + 1) % categories.length, "next");
-  const prev = () => goToPage((pageIdx - 1 + categories.length) % categories.length, "prev");
 
   // ============= COVER =============
   if (view === "cover") {
