@@ -710,8 +710,8 @@ export default function Atividades() {
   }
 
   // === MAIN MENU (orbital layout) ===
-  const orbitRadius = 180;
-  const orbitIconSize = 110;
+  const orbitRadius = 210;
+  const orbitIconSize = 90;
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-4xl mx-auto">

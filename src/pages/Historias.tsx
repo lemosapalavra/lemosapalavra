@@ -20,8 +20,8 @@ const historias: Historia[] = [
 
 export default function Historias() {
   const [playing, setPlaying] = useState<Historia | null>(null);
-  const radius = 220;
-  const iconSize = 130;
+  const radius = 210;
+  const iconSize = 90;
 
   if (playing) {
     return (
@@ -67,7 +67,7 @@ export default function Historias() {
                       src={h.icon}
                       alt={h.title}
                       loading="lazy"
-                      className="drop-shadow-lg rounded-full mx-auto"
+                      className="drop-shadow-lg rounded-full border-2 border-primary/30 shadow-lg mx-auto"
                       style={{ width: iconSize, height: iconSize, objectFit: "cover" }}
                     />
                   </div>

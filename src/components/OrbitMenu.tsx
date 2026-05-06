@@ -34,8 +34,8 @@ interface OrbitMenuProps {
 }
 
 export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }: OrbitMenuProps) {
-  const radius = 220;
-  const iconSize = 68;
+  const radius = 210;
+  const iconSize = 90;
 
   return (
     <div className="relative flex items-center justify-center" style={{ width: 540, height: 540 }}>
@@ -99,6 +99,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                     width={iconSize}
                     height={iconSize}
                     loading="lazy"
+                    style={{ objectFit: "cover" }}
                     className={`rounded-full shadow-lg border-2 border-primary/30 ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
                   />
                   <span className="orbit-label whitespace-pre-line text-xs">{item.label}</span>

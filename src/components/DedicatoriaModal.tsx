@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import dedicatoriaBg from "@/assets/dedicatoria-bg.png";
+import dedicatoriaBg from "@/assets/pergaminho.png";
 
 // Each entry: aramaic line + Portuguese with **bold** markers preserved from the original PDF.
 // Use {{signature}} marker so we can render the name with a special font (Kaufmann BT).
