@@ -2,6 +2,7 @@ import bgCriacao from "@/assets/album/criacao.png";
 import bgExodo from "@/assets/album/exodo.png";
 import bgIgreja from "@/assets/album/igreja.png";
 import bgApocalipse from "@/assets/album/apocalipse.png";
+import bgPatriarcas from "@/assets/album/patriarcas.png";
 
 export type Rarity = "normal" | "rara" | "reliquia";
 
@@ -42,7 +43,7 @@ const raw: Category[] = [
     ]),
   },
   {
-    key: "patriarcas", name: "Patriarcas", icon: "⛺", color: "from-amber-400 to-orange-600",
+    key: "patriarcas", name: "Patriarcas", icon: "⛺", color: "from-amber-400 to-orange-600", bg: bgPatriarcas,
     stickers: build("p", [
       ["Abraão", "🧔"], ["Sara", "👵"], ["Isaque", "👨"],
       ["Jacó", "👴"], ["Esaú", "🏹"], ["José do Egito", "👑"],
