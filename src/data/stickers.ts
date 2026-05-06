@@ -22,10 +22,10 @@ export interface Category {
   stickers: Sticker[];
 }
 
-// Helper: build 10 stickers per category. Distribution: 7 normais, 2 raras, 1 relíquia
+// Helper: build 8 stickers per category. Distribution: 5 normais, 2 raras, 1 relíquia
 function build(prefix: string, names: [string, string][]): Sticker[] {
   // names: [name, emoji]
-  return names.slice(0, 10).map((n, i) => ({
+  return names.slice(0, 8).map((n, i) => ({
     id: 0, // assigned later
     name: n[0],
     emoji: n[1],
