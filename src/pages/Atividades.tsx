@@ -710,14 +710,14 @@ export default function Atividades() {
   }
 
   // === MAIN MENU (orbital layout) ===
-  const orbitRadius = 180;
-  const orbitIconSize = 110;
+  const orbitRadius = 210;
+  const orbitIconSize = 90;
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-4xl mx-auto">
         <PageHeader title="Atividades Bíblicas" subtitle="Aprenda brincando!" icon={iconAtividades} />
 
-        <div className="relative mx-auto flex items-center justify-center" style={{ width: 540, height: 540, maxWidth: "100%" }}>
+        <div className="relative mx-auto flex items-center justify-center" style={{ width: 600, height: 600, maxWidth: "100%" }}>
           <img
             src={logoCentral}
             alt="Lemos a Palavra"
@@ -727,8 +727,8 @@ export default function Atividades() {
           <div className="orbit-container absolute inset-0">
             {activities.map((a, i) => {
               const angleRad = (a.angle * Math.PI) / 180;
-              const x = 270 + Math.cos(angleRad) * orbitRadius - orbitIconSize / 2;
-              const y = 270 + Math.sin(angleRad) * orbitRadius - orbitIconSize / 2;
+              const x = 300 + Math.cos(angleRad) * orbitRadius - orbitIconSize / 2;
+              const y = 300 + Math.sin(angleRad) * orbitRadius - orbitIconSize / 2;
               return (
                 <div
                   key={i}
@@ -744,7 +744,7 @@ export default function Atividades() {
                     }}
                     className="cursor-pointer hover:scale-110 transition-transform text-center"
                   >
-                    <img src={a.icon} alt={a.title} className="w-full h-auto drop-shadow-lg" loading="lazy" style={{ width: orbitIconSize, height: orbitIconSize, objectFit: "contain" }} />
+                    <img src={a.icon} alt={a.title} className="drop-shadow-lg rounded-full border-2 border-primary/30 shadow-lg mx-auto" loading="lazy" style={{ width: orbitIconSize, height: orbitIconSize, objectFit: "cover" }} />
                     <p className="font-display text-xs font-bold text-foreground mt-1">{a.title}</p>
                   </div>
                 </div>

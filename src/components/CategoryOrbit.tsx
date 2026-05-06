@@ -26,9 +26,9 @@ export default function CategoryOrbit({
   categories,
   activeKey,
   onSelect,
-  size = 460,
-  iconSize = 96,
-  logoSize = 170,
+  size = 540,
+  iconSize = 90,
+  logoSize = 180,
 }: CategoryOrbitProps) {
   const radius = size / 2 - iconSize / 2 - 6;
   const center = size / 2;

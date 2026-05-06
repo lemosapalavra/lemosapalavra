@@ -31,8 +31,8 @@ const louvores: Louvor[] = [
 export default function Louvores() {
   const [selected, setSelected] = useState<Louvor | null>(null);
   const [playing, setPlaying] = useState<Louvor | null>(null);
-  const radius = 220;
-  const iconSize = 130;
+  const radius = 210;
+  const iconSize = 90;
 
   if (playing?.video) {
     return (
@@ -78,28 +78,13 @@ export default function Louvores() {
                     onClick={() => (l.video ? setPlaying(l) : setSelected(l))}
                     className="cursor-pointer hover:scale-110 transition-transform text-center"
                   >
-                    {l.video ? (
-                      l.poster ? (
-                        <img
-                          src={l.poster}
-                          alt={l.title}
-                          loading="lazy"
-                          className="drop-shadow-lg rounded-full"
-                          style={{ width: iconSize, height: iconSize, objectFit: "cover" }}
-                        />
-                      ) : (
-                        <video
-                          src={`${l.video}#t=0.1`}
-                          preload="metadata"
-                          muted
-                          playsInline
-                          className="drop-shadow-lg rounded-full"
-                          style={{ width: iconSize, height: iconSize, objectFit: "cover" }}
-                        />
-                      )
-                    ) : (
-                      <img src={l.icon} alt={l.title} className="drop-shadow-lg" loading="lazy" style={{ width: iconSize, height: iconSize, objectFit: "contain" }} />
-                    )}
+                    <img
+                      src={l.poster || l.icon}
+                      alt={l.title}
+                      loading="lazy"
+                      className="drop-shadow-lg rounded-full border-2 border-primary/30 shadow-lg mx-auto"
+                      style={{ width: iconSize, height: iconSize, objectFit: "cover" }}
+                    />
                   </div>
                 </div>
               );
