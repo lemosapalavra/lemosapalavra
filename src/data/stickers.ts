@@ -1,8 +1,10 @@
-import bgCriacao from "@/assets/album/criacao.png";
+import bgCriacao1 from "@/assets/album/criacao-1.png";
+import bgCriacao2 from "@/assets/album/criacao-2.png";
+import bgPatriarcas1 from "@/assets/album/patriarcas-1.png";
+import bgPatriarcas2 from "@/assets/album/patriarcas-2.png";
 import bgExodo from "@/assets/album/exodo.png";
 import bgIgreja from "@/assets/album/igreja.png";
 import bgApocalipse from "@/assets/album/apocalipse.png";
-import bgPatriarcas from "@/assets/album/patriarcas.png";
 
 export type Rarity = "normal" | "rara" | "reliquia";
 
