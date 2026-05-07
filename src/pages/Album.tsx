@@ -315,20 +315,6 @@ export default function Album() {
           disabled={leftIdx + 2 >= totalPages}
           className="bg-amber-900/90 disabled:opacity-30 text-white font-display font-bold px-4 py-2 rounded-full shadow flex items-center gap-1"
         >
-          <ChevronLeft className="w-4 h-4" /> Anterior
-        </button>
-        <button
-          onClick={buyPack}
-          disabled={coins < PACK_COST}
-          className="bg-gradient-to-br from-amber-400 to-orange-600 disabled:opacity-50 text-white font-display font-bold px-5 py-2.5 rounded-full shadow-2xl hover:scale-105 transition text-sm animate-shadow-pulse"
-        >
-          🎁 Pacotinho (3 🪙)
-        </button>
-        <button
-          onClick={goNext}
-          disabled={pageIdx === totalPages - 1}
-          className="bg-amber-900/90 disabled:opacity-30 text-white font-display font-bold px-4 py-2 rounded-full shadow flex items-center gap-1"
-        >
           Próxima <ChevronLeft className="w-4 h-4 rotate-180" />
         </button>
       </div>
