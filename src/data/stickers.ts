@@ -1,8 +1,10 @@
-import bgCriacao from "@/assets/album/criacao.png";
+import bgCriacao1 from "@/assets/album/criacao-1.png";
+import bgCriacao2 from "@/assets/album/criacao-2.png";
+import bgPatriarcas1 from "@/assets/album/patriarcas-1.png";
+import bgPatriarcas2 from "@/assets/album/patriarcas-2.png";
 import bgExodo from "@/assets/album/exodo.png";
 import bgIgreja from "@/assets/album/igreja.png";
 import bgApocalipse from "@/assets/album/apocalipse.png";
-import bgPatriarcas from "@/assets/album/patriarcas.png";
 
 export type Rarity = "normal" | "rara" | "reliquia";
 
@@ -18,15 +20,19 @@ export interface Category {
   name: string;
   icon: string;
   color: string;
-  bg?: string;
+  /** Backgrounds per page (index 0 = page 1, index 1 = page 2). */
+  bgs?: (string | undefined)[];
   stickers: Sticker[];
 }
 
-// Helper: build 8 stickers per category. Distribution: 5 normais, 2 raras, 1 relíquia
-function build(prefix: string, names: [string, string][]): Sticker[] {
-  // names: [name, emoji]
-  return names.slice(0, 8).map((n, i) => ({
-    id: 0, // assigned later
+// 16 stickers per category (2 pages × 8). Distribution across the 16:
+// page 1: 1 relíquia + 2 raras + 5 normais ; page 2: 8 normais
+function build(names: [string, string][]): Sticker[] {
+  const padded = [...names];
+  // pad to 16 with repeats if needed
+  while (padded.length < 16) padded.push(names[padded.length % names.length]);
+  return padded.slice(0, 16).map((n, i) => ({
+    id: 0,
     name: n[0],
     emoji: n[1],
     rarity: i === 0 ? "reliquia" : i <= 2 ? "rara" : "normal",
@@ -35,99 +41,120 @@ function build(prefix: string, names: [string, string][]): Sticker[] {
 
 const raw: Category[] = [
   {
-    key: "criacao", name: "Criação", icon: "🌍", color: "from-sky-400 to-blue-600", bg: bgCriacao,
-    stickers: build("c", [
+    key: "criacao", name: "Criação", icon: "🌍", color: "from-sky-400 to-blue-600",
+    bgs: [bgCriacao1, bgCriacao2],
+    stickers: build([
       ["Adão e Eva", "👫"], ["Jardim do Éden", "🌳"], ["Sétimo Dia", "🕊️"],
       ["Sol e Lua", "☀️"], ["Mar e Peixes", "🐟"], ["Aves do Céu", "🦅"],
-      ["Animais da Terra", "🦁"], ["Plantas e Flores", "🌷"], ["Estrelas", "⭐"], ["Espírito sobre as Águas", "💨"],
+      ["Animais da Terra", "🦁"], ["Plantas e Flores", "🌷"],
+      ["Estrelas", "⭐"], ["Espírito sobre as Águas", "💨"], ["Galáxias", "🌌"],
+      ["Rios e Mares", "🌊"], ["Montanhas", "⛰️"], ["Frutos da Terra", "🍎"],
+      ["Anjos da Criação", "👼"], ["Descanso de Deus", "😴"],
     ]),
   },
   {
-    key: "patriarcas", name: "Patriarcas", icon: "⛺", color: "from-amber-400 to-orange-600", bg: bgPatriarcas,
-    stickers: build("p", [
+    key: "patriarcas", name: "Patriarcas", icon: "⛺", color: "from-amber-400 to-orange-600",
+    bgs: [bgPatriarcas1, bgPatriarcas2],
+    stickers: build([
       ["Abraão", "🧔"], ["Sara", "👵"], ["Isaque", "👨"],
       ["Jacó", "👴"], ["Esaú", "🏹"], ["José do Egito", "👑"],
-      ["Rebeca", "👰"], ["Raquel", "💍"], ["Lia", "👩"], ["Os 12 Filhos", "✨"],
+      ["Rebeca", "👰"], ["Raquel", "💍"],
+      ["Lia", "👩"], ["Os 12 Filhos", "✨"], ["Tendas", "⛺"],
+      ["Rebanhos", "🐑"], ["Promessa de Deus", "🌈"], ["Altar de Pedras", "🪨"],
+      ["Estrelas do Céu", "⭐"], ["Caminho de Canaã", "🐪"],
     ]),
   },
   {
-    key: "exodo", name: "Êxodo", icon: "🏔️", color: "from-red-400 to-rose-600", bg: bgExodo,
-    stickers: build("e", [
+    key: "exodo", name: "Êxodo", icon: "🏔️", color: "from-red-400 to-rose-600",
+    bgs: [bgExodo, undefined],
+    stickers: build([
       ["Moisés", "🧙"], ["Sarça Ardente", "🔥"], ["Mar Vermelho", "🌊"],
       ["Tábuas da Lei", "📜"], ["Maná", "🍞"], ["Faraó", "🤴"],
-      ["Vara de Moisés", "🦯"], ["Coluna de Fogo", "🔥"], ["Tabernáculo", "⛺"], ["Arca da Aliança", "📦"],
+      ["Vara de Moisés", "🦯"], ["Coluna de Fogo", "🔥"],
+      ["Tabernáculo", "⛺"], ["Arca da Aliança", "📦"],
     ]),
   },
   {
     key: "milagres", name: "Milagres", icon: "🐟", color: "from-cyan-400 to-teal-600",
-    stickers: build("m", [
+    stickers: build([
       ["Multiplicação dos Pães", "🍞"], ["Água em Vinho", "🍷"], ["Cura do Cego", "👁️"],
       ["Lázaro Ressuscita", "✨"], ["Tempestade Acalmada", "⛵"], ["Andar sobre as Águas", "💧"],
-      ["Pesca Milagrosa", "🎣"], ["Cura do Paralítico", "🧎"], ["Os 10 Leprosos", "🙏"], ["Filha de Jairo", "👧"],
+      ["Pesca Milagrosa", "🎣"], ["Cura do Paralítico", "🧎"],
+      ["Os 10 Leprosos", "🙏"], ["Filha de Jairo", "👧"],
     ]),
   },
   {
     key: "reis", name: "Reis", icon: "👑", color: "from-yellow-400 to-amber-600",
-    stickers: build("r", [
+    stickers: build([
       ["Davi", "🎵"], ["Salomão", "👑"], ["Saul", "⚔️"],
       ["Davi e Golias", "🪨"], ["Templo de Salomão", "🏛️"], ["Trono Real", "🪑"],
-      ["Coroa de Ouro", "👑"], ["Cetro Real", "🔱"], ["Rainha de Sabá", "👸"], ["Harpa de Davi", "🎼"],
+      ["Coroa de Ouro", "👑"], ["Cetro Real", "🔱"],
+      ["Rainha de Sabá", "👸"], ["Harpa de Davi", "🎼"],
     ]),
   },
   {
     key: "ensinamentos", name: "Ensinamentos de Jesus", icon: "❤️", color: "from-pink-400 to-rose-600",
-    stickers: build("j", [
+    stickers: build([
       ["Sermão do Monte", "⛰️"], ["Bem-Aventuranças", "💖"], ["Pai Nosso", "🙏"],
       ["Bom Samaritano", "🤝"], ["Filho Pródigo", "🤗"], ["Ovelha Perdida", "🐑"],
-      ["Semeador", "🌱"], ["Pérola Preciosa", "🦪"], ["Talentos", "💰"], ["Reino dos Céus", "☁️"],
+      ["Semeador", "🌱"], ["Pérola Preciosa", "🦪"],
+      ["Talentos", "💰"], ["Reino dos Céus", "☁️"],
     ]),
   },
   {
-    key: "igreja", name: "A Igreja", icon: "🔥", color: "from-orange-400 to-red-600", bg: bgIgreja,
-    stickers: build("ig", [
+    key: "igreja", name: "A Igreja", icon: "🔥", color: "from-orange-400 to-red-600",
+    bgs: [bgIgreja, undefined],
+    stickers: build([
       ["Pentecostes", "🔥"], ["Pedro", "🗝️"], ["Paulo", "✉️"],
       ["Estêvão", "🌟"], ["Batismo", "💧"], ["Ceia do Senhor", "🍞"],
-      ["Cenáculo", "🏠"], ["Conversão de Paulo", "⚡"], ["Igreja Primitiva", "⛪"], ["Diáconos", "🤲"],
+      ["Cenáculo", "🏠"], ["Conversão de Paulo", "⚡"],
+      ["Igreja Primitiva", "⛪"], ["Diáconos", "🤲"],
     ]),
   },
   {
     key: "personagens", name: "Personagens Bíblicos", icon: "👥", color: "from-purple-400 to-indigo-600",
-    stickers: build("pe", [
+    stickers: build([
       ["Jesus Cristo", "✝️"], ["Maria", "💙"], ["José", "🪚"],
       ["João Batista", "🐫"], ["Maria Madalena", "💐"], ["Marta", "🍲"],
-      ["Lázaro", "🤍"], ["Zaqueu", "🌳"], ["Nicodemos", "🌙"], ["Centurião", "🛡️"],
+      ["Lázaro", "🤍"], ["Zaqueu", "🌳"],
+      ["Nicodemos", "🌙"], ["Centurião", "🛡️"],
     ]),
   },
   {
     key: "lugares", name: "Lugares", icon: "📍", color: "from-emerald-400 to-green-600",
-    stickers: build("l", [
+    stickers: build([
       ["Jerusalém", "🏛️"], ["Belém", "⭐"], ["Nazaré", "🏘️"],
       ["Mar da Galileia", "🌊"], ["Rio Jordão", "🏞️"], ["Monte das Oliveiras", "🌳"],
-      ["Calvário", "✝️"], ["Tumba Vazia", "🕊️"], ["Getsêmani", "🌿"], ["Cafarnaum", "🏠"],
+      ["Calvário", "✝️"], ["Tumba Vazia", "🕊️"],
+      ["Getsêmani", "🌿"], ["Cafarnaum", "🏠"],
     ]),
   },
   {
     key: "versiculos", name: "Versículos", icon: "📖", color: "from-violet-400 to-purple-600",
-    stickers: build("v", [
+    stickers: build([
       ["João 3:16", "💝"], ["Salmo 23", "🐑"], ["Filipenses 4:13", "💪"],
       ["Romanos 8:28", "🤲"], ["Provérbios 3:5", "🙇"], ["Mateus 6:33", "👑"],
-      ["Isaías 41:10", "🦅"], ["Salmo 91", "🛡️"], ["Jeremias 29:11", "🌈"], ["1 Coríntios 13", "❤️"],
+      ["Isaías 41:10", "🦅"], ["Salmo 91", "🛡️"],
+      ["Jeremias 29:11", "🌈"], ["1 Coríntios 13", "❤️"],
     ]),
   },
   {
     key: "profetas", name: "Profetas", icon: "📜", color: "from-stone-400 to-amber-700",
-    stickers: build("pr", [
+    stickers: build([
       ["Isaías", "📜"], ["Jeremias", "😢"], ["Ezequiel", "👁️"],
       ["Daniel", "🦁"], ["Jonas", "🐳"], ["Elias", "🔥"],
-      ["Eliseu", "🪔"], ["Oséias", "💔"], ["Amós", "🐏"], ["Miqueias", "⚖️"],
+      ["Eliseu", "🪔"], ["Oséias", "💔"],
+      ["Amós", "🐏"], ["Miqueias", "⚖️"],
     ]),
   },
   {
-    key: "apocalipse", name: "Apocalipse", icon: "🌅", color: "from-fuchsia-500 to-rose-600", bg: bgApocalipse,
-    stickers: build("a", [
+    key: "apocalipse", name: "Apocalipse", icon: "🌅", color: "from-fuchsia-500 to-rose-600",
+    bgs: [bgApocalipse, undefined],
+    stickers: build([
       ["Nova Jerusalém", "🏙️"], ["Cordeiro de Deus", "🐑"], ["Trono de Deus", "👑"],
       ["7 Selos", "🔏"], ["7 Trombetas", "🎺"], ["Anjos", "👼"],
-      ["Livro da Vida", "📖"], ["Árvore da Vida", "🌳"], ["Mar de Vidro", "💎"], ["Aleluia", "✨"],
+      ["Livro da Vida", "📖"], ["Árvore da Vida", "🌳"],
+      ["Mar de Vidro", "💎"], ["Aleluia", "✨"],
     ]),
   },
 ];
