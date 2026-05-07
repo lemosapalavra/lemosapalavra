@@ -204,17 +204,35 @@ export default function Album() {
     );
   }
 
-  // ============= PAGES (vertical scroll, one independent page per category) =============
+  // ============= PAGES (book-flip, 2 pages per category, 8 stickers each) =============
+  // Build flat page list: each category contributes 2 pages
+  const pages = useMemo(() => {
+    const arr: { cat: typeof categories[number]; stickers: Sticker[]; bg?: string; pageInCat: 1 | 2; globalIdx: number }[] = [];
+    let g = 0;
+    for (const cat of categories) {
+      arr.push({ cat, stickers: cat.stickers.slice(0, 8), bg: cat.bgs?.[0], pageInCat: 1, globalIdx: g++ });
+      arr.push({ cat, stickers: cat.stickers.slice(8, 16), bg: cat.bgs?.[1], pageInCat: 2, globalIdx: g++ });
+    }
+    return arr;
+  }, []);
+
+  const [pageIdx, setPageIdx] = useState(0);
+  const [flipDir, setFlipDir] = useState<"next" | "prev" | null>(null);
+  const totalPages = pages.length;
+  const goNext = () => { if (pageIdx < totalPages - 1) { setFlipDir("next"); setTimeout(() => { setPageIdx((p) => p + 1); setFlipDir(null); }, 450); } };
+  const goPrev = () => { if (pageIdx > 0) { setFlipDir("prev"); setTimeout(() => { setPageIdx((p) => p - 1); setFlipDir(null); }, 450); } };
+
+  const current = pages[pageIdx];
+  const gotInPage = current.stickers.filter((s) => (owned[s.id] || 0) > 0).length;
+
   return (
     <div
       className="fixed inset-0 z-40 flex flex-col"
       style={{ background: "radial-gradient(ellipse at center, hsl(35,45%,82%), hsl(30,40%,55%))" }}
     >
-      {/* Standard header */}
       <div className="px-3 pt-3 bg-amber-950/90">
         <StandardHeader onHome={() => navigate("/")} coins={coins} variant="dark" />
       </div>
-      {/* Sub-bar */}
       <div className="flex items-center justify-between px-3 py-2 bg-amber-950/90 text-white shadow-lg z-10">
         <button
           onClick={() => setView("cover")}
@@ -235,30 +253,46 @@ export default function Album() {
         </button>
       </div>
 
-      {/* Vertical scroll: each category = one independent page */}
-      <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-6 pb-24">
-        {categories.map((cat, idx) => {
-          const got = cat.stickers.filter((s) => (owned[s.id] || 0) > 0).length;
-          return (
-            <AlbumPage
-              key={cat.key}
-              cat={cat}
-              pageNum={idx + 1}
-              owned={owned}
-              progress={`${got}/${cat.stickers.length}`}
-            />
-          );
-        })}
+      {/* Book area */}
+      <div className="flex-1 flex items-center justify-center p-3 sm:p-4 overflow-hidden" style={{ perspective: "2000px" }}>
+        <div className="relative w-full max-w-md aspect-[3/4]">
+          <AlbumPage
+            key={current.globalIdx}
+            cat={current.cat}
+            stickers={current.stickers}
+            bg={current.bg}
+            owned={owned}
+            progress={`${gotInPage}/${current.stickers.length}`}
+            pageNum={current.globalIdx + 1}
+            totalPages={totalPages}
+            pageInCat={current.pageInCat}
+            flipDir={flipDir}
+          />
+        </div>
       </div>
 
-      {/* Floating bottom: pacotinho */}
-      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20">
+      {/* Nav arrows */}
+      <div className="flex items-center justify-between px-4 pb-4 gap-3">
+        <button
+          onClick={goPrev}
+          disabled={pageIdx === 0}
+          className="bg-amber-900/90 disabled:opacity-30 text-white font-display font-bold px-4 py-2 rounded-full shadow flex items-center gap-1"
+        >
+          <ChevronLeft className="w-4 h-4" /> Anterior
+        </button>
         <button
           onClick={buyPack}
           disabled={coins < PACK_COST}
-          className="bg-gradient-to-br from-amber-400 to-orange-600 disabled:opacity-50 text-white font-display font-bold px-6 py-3 rounded-full shadow-2xl hover:scale-105 transition text-sm animate-shadow-pulse"
+          className="bg-gradient-to-br from-amber-400 to-orange-600 disabled:opacity-50 text-white font-display font-bold px-5 py-2.5 rounded-full shadow-2xl hover:scale-105 transition text-sm animate-shadow-pulse"
         >
           🎁 Pacotinho (3 🪙)
+        </button>
+        <button
+          onClick={goNext}
+          disabled={pageIdx === totalPages - 1}
+          className="bg-amber-900/90 disabled:opacity-30 text-white font-display font-bold px-4 py-2 rounded-full shadow flex items-center gap-1"
+        >
+          Próxima <ChevronLeft className="w-4 h-4 rotate-180" />
         </button>
       </div>
 
@@ -273,30 +307,40 @@ export default function Album() {
 }
 
 function AlbumPage({
-  cat, pageNum, owned, progress,
+  cat, stickers, bg, owned, progress, pageNum, totalPages, pageInCat, flipDir,
 }: {
   cat: typeof categories[number];
-  pageNum: number;
+  stickers: Sticker[];
+  bg?: string;
   owned: Owned;
   progress: string;
+  pageNum: number;
+  totalPages: number;
+  pageInCat: 1 | 2;
+  flipDir: "next" | "prev" | null;
 }) {
+  const flipClass =
+    flipDir === "next" ? "animate-[pageFlipNext_0.45s_ease-in-out_forwards]" :
+    flipDir === "prev" ? "animate-[pageFlipPrev_0.45s_ease-in-out_forwards]" : "";
   return (
-    <div className="max-w-3xl mx-auto bg-amber-900 rounded-2xl p-2 sm:p-3 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.6)] border-4 border-amber-950 relative overflow-hidden">
-      {/* Background image at 30% opacity */}
-      {cat.bg && (
+    <div
+      className={`absolute inset-0 bg-amber-900 rounded-2xl p-2 sm:p-3 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.6)] border-4 border-amber-950 overflow-hidden origin-left ${flipClass}`}
+      style={{ transformStyle: "preserve-3d" }}
+    >
+      {bg && (
         <div
           aria-hidden
           className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: `url(${cat.bg})`,
+            backgroundImage: `url(${bg})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             opacity: 0.3,
           }}
         />
       )}
-      <div className="relative">
-        <div className="flex items-center justify-between mb-3 px-2 pt-1">
+      <div className="relative h-full flex flex-col">
+        <div className="flex items-center justify-between mb-2 px-1">
           <div className={`bg-gradient-to-r ${cat.color} text-white px-3 py-1 rounded-full text-xs font-display font-bold flex items-center gap-1 shadow`}>
             <span>{cat.icon}</span><span>{cat.name}</span>
           </div>
@@ -304,8 +348,8 @@ function AlbumPage({
             {progress}
           </span>
         </div>
-        <div className="grid grid-cols-4 gap-2 px-2">
-          {cat.stickers.map((s) => {
+        <div className="grid grid-cols-2 gap-2 px-1 flex-1 content-start">
+          {stickers.map((s) => {
             const has = (owned[s.id] || 0) > 0;
             return (
               <div
@@ -319,10 +363,10 @@ function AlbumPage({
                 <span className={`text-[8px] font-bold uppercase tracking-wide ${
                   s.rarity === "reliquia" ? "text-yellow-600" : s.rarity === "rara" ? "text-blue-600" : has ? "text-slate-500" : "text-white"
                 }`}>{rarityLabel(s.rarity)}</span>
-                <span className={`text-2xl sm:text-3xl my-1 ${!has ? "text-white drop-shadow-lg" : ""}`}>
+                <span className={`text-3xl sm:text-4xl my-1 ${!has ? "text-white drop-shadow-lg" : ""}`}>
                   {has ? s.emoji : "❓"}
                 </span>
-                <span className={`text-[9px] font-display font-bold leading-tight ${!has ? "text-white drop-shadow" : "text-foreground"}`}>
+                <span className={`text-[10px] font-display font-bold leading-tight ${!has ? "text-white drop-shadow" : "text-foreground"}`}>
                   {has ? s.name : `#${s.id + 1}`}
                 </span>
                 {has && (owned[s.id] || 0) > 1 && (
@@ -333,7 +377,7 @@ function AlbumPage({
           })}
         </div>
         <p className="text-center font-display font-bold text-[11px] mt-2 text-white/90 drop-shadow">
-          — pág. {pageNum} —
+          — pág. {pageNum} de {totalPages} (parte {pageInCat}/2) —
         </p>
       </div>
     </div>
