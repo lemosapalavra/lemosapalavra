@@ -82,6 +82,18 @@ export default function Album() {
 
   const missing = useMemo(() => allStickers.filter((s) => !owned[s.id]), [owned]);
 
+  const pages = useMemo(() => {
+    const arr: { cat: typeof categories[number]; stickers: Sticker[]; bg?: string; pageInCat: 1 | 2; globalIdx: number }[] = [];
+    let g = 0;
+    for (const cat of categories) {
+      arr.push({ cat, stickers: cat.stickers.slice(0, 8), bg: cat.bgs?.[0], pageInCat: 1, globalIdx: g++ });
+      arr.push({ cat, stickers: cat.stickers.slice(8, 16), bg: cat.bgs?.[1], pageInCat: 2, globalIdx: g++ });
+    }
+    return arr;
+  }, []);
+  const [pageIdx, setPageIdx] = useState(0);
+  const [flipDir, setFlipDir] = useState<"next" | "prev" | null>(null);
+
   const buyPack = useCallback(() => {
     if (!spendCoins(PACK_COST)) return;
     const pack = buildPack();
