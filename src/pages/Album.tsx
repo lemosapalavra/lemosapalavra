@@ -217,11 +217,16 @@ export default function Album() {
   }
 
   const totalPages = pages.length;
-  const goNext = () => { if (pageIdx < totalPages - 1) { setFlipDir("next"); setTimeout(() => { setPageIdx((p) => p + 1); setFlipDir(null); }, 450); } };
-  const goPrev = () => { if (pageIdx > 0) { setFlipDir("prev"); setTimeout(() => { setPageIdx((p) => p - 1); setFlipDir(null); }, 450); } };
+  // Snap to even index so we always show a left/right spread
+  const leftIdx = pageIdx - (pageIdx % 2);
+  const rightIdx = leftIdx + 1;
+  const goNext = () => { if (leftIdx + 2 < totalPages) { setFlipDir("next"); setTimeout(() => { setPageIdx(leftIdx + 2); setFlipDir(null); }, 450); } };
+  const goPrev = () => { if (leftIdx - 2 >= 0) { setFlipDir("prev"); setTimeout(() => { setPageIdx(leftIdx - 2); setFlipDir(null); }, 450); } };
 
-  const current = pages[pageIdx];
-  const gotInPage = current.stickers.filter((s) => (owned[s.id] || 0) > 0).length;
+  const leftPage = pages[leftIdx];
+  const rightPage = pages[rightIdx];
+  const gotInLeft = leftPage ? leftPage.stickers.filter((s) => (owned[s.id] || 0) > 0).length : 0;
+  const gotInRight = rightPage ? rightPage.stickers.filter((s) => (owned[s.id] || 0) > 0).length : 0;
 
   return (
     <div
@@ -251,21 +256,41 @@ export default function Album() {
         </button>
       </div>
 
-      {/* Book area */}
+      {/* Book area - two-page spread */}
       <div className="flex-1 flex items-center justify-center p-3 sm:p-4 overflow-hidden" style={{ perspective: "2000px" }}>
-        <div className="relative w-full max-w-md aspect-[3/4]">
-          <AlbumPage
-            key={current.globalIdx}
-            cat={current.cat}
-            stickers={current.stickers}
-            bg={current.bg}
-            owned={owned}
-            progress={`${gotInPage}/${current.stickers.length}`}
-            pageNum={current.globalIdx + 1}
-            totalPages={totalPages}
-            pageInCat={current.pageInCat}
-            flipDir={flipDir}
-          />
+        <div className="relative w-full max-w-4xl flex gap-2 sm:gap-3">
+          {leftPage && (
+            <div className="relative flex-1 aspect-[3/4]">
+              <AlbumPage
+                key={leftPage.globalIdx}
+                cat={leftPage.cat}
+                stickers={leftPage.stickers}
+                bg={leftPage.bg}
+                owned={owned}
+                progress={`${gotInLeft}/${leftPage.stickers.length}`}
+                pageNum={leftPage.globalIdx + 1}
+                totalPages={totalPages}
+                pageInCat={leftPage.pageInCat}
+                flipDir={flipDir}
+              />
+            </div>
+          )}
+          {rightPage && (
+            <div className="relative flex-1 aspect-[3/4]">
+              <AlbumPage
+                key={rightPage.globalIdx}
+                cat={rightPage.cat}
+                stickers={rightPage.stickers}
+                bg={rightPage.bg}
+                owned={owned}
+                progress={`${gotInRight}/${rightPage.stickers.length}`}
+                pageNum={rightPage.globalIdx + 1}
+                totalPages={totalPages}
+                pageInCat={rightPage.pageInCat}
+                flipDir={flipDir}
+              />
+            </div>
+          )}
         </div>
       </div>
 
@@ -273,7 +298,7 @@ export default function Album() {
       <div className="flex items-center justify-between px-4 pb-4 gap-3">
         <button
           onClick={goPrev}
-          disabled={pageIdx === 0}
+          disabled={leftIdx === 0}
           className="bg-amber-900/90 disabled:opacity-30 text-white font-display font-bold px-4 py-2 rounded-full shadow flex items-center gap-1"
         >
           <ChevronLeft className="w-4 h-4" /> Anterior
@@ -287,7 +312,7 @@ export default function Album() {
         </button>
         <button
           onClick={goNext}
-          disabled={pageIdx === totalPages - 1}
+          disabled={leftIdx + 2 >= totalPages}
           className="bg-amber-900/90 disabled:opacity-30 text-white font-display font-bold px-4 py-2 rounded-full shadow flex items-center gap-1"
         >
           Próxima <ChevronLeft className="w-4 h-4 rotate-180" />
