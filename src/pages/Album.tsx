@@ -216,20 +216,6 @@ export default function Album() {
     );
   }
 
-  // ============= PAGES (book-flip, 2 pages per category, 8 stickers each) =============
-  // Build flat page list: each category contributes 2 pages
-  const pages = useMemo(() => {
-    const arr: { cat: typeof categories[number]; stickers: Sticker[]; bg?: string; pageInCat: 1 | 2; globalIdx: number }[] = [];
-    let g = 0;
-    for (const cat of categories) {
-      arr.push({ cat, stickers: cat.stickers.slice(0, 8), bg: cat.bgs?.[0], pageInCat: 1, globalIdx: g++ });
-      arr.push({ cat, stickers: cat.stickers.slice(8, 16), bg: cat.bgs?.[1], pageInCat: 2, globalIdx: g++ });
-    }
-    return arr;
-  }, []);
-
-  const [pageIdx, setPageIdx] = useState(0);
-  const [flipDir, setFlipDir] = useState<"next" | "prev" | null>(null);
   const totalPages = pages.length;
   const goNext = () => { if (pageIdx < totalPages - 1) { setFlipDir("next"); setTimeout(() => { setPageIdx((p) => p + 1); setFlipDir(null); }, 450); } };
   const goPrev = () => { if (pageIdx > 0) { setFlipDir("prev"); setTimeout(() => { setPageIdx((p) => p - 1); setFlipDir(null); }, 450); } };
