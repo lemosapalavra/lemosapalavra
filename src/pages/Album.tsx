@@ -217,11 +217,16 @@ export default function Album() {
   }
 
   const totalPages = pages.length;
-  const goNext = () => { if (pageIdx < totalPages - 1) { setFlipDir("next"); setTimeout(() => { setPageIdx((p) => p + 1); setFlipDir(null); }, 450); } };
-  const goPrev = () => { if (pageIdx > 0) { setFlipDir("prev"); setTimeout(() => { setPageIdx((p) => p - 1); setFlipDir(null); }, 450); } };
+  // Snap to even index so we always show a left/right spread
+  const leftIdx = pageIdx - (pageIdx % 2);
+  const rightIdx = leftIdx + 1;
+  const goNext = () => { if (leftIdx + 2 < totalPages) { setFlipDir("next"); setTimeout(() => { setPageIdx(leftIdx + 2); setFlipDir(null); }, 450); } };
+  const goPrev = () => { if (leftIdx - 2 >= 0) { setFlipDir("prev"); setTimeout(() => { setPageIdx(leftIdx - 2); setFlipDir(null); }, 450); } };
 
-  const current = pages[pageIdx];
-  const gotInPage = current.stickers.filter((s) => (owned[s.id] || 0) > 0).length;
+  const leftPage = pages[leftIdx];
+  const rightPage = pages[rightIdx];
+  const gotInLeft = leftPage ? leftPage.stickers.filter((s) => (owned[s.id] || 0) > 0).length : 0;
+  const gotInRight = rightPage ? rightPage.stickers.filter((s) => (owned[s.id] || 0) > 0).length : 0;
 
   return (
     <div
