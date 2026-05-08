@@ -363,44 +363,41 @@ function AlbumPage({
         />
       )}
       <div className="relative h-full flex flex-col">
-        <div className="flex items-center justify-between mb-2 px-1">
-          <div className={`bg-gradient-to-r ${cat.color} text-white px-3 py-1 rounded-full text-xs font-display font-bold flex items-center gap-1 shadow`}>
-            <span>{cat.icon}</span><span>{cat.name}</span>
-          </div>
-          <span className="text-[11px] font-bold text-white drop-shadow bg-black/50 px-2 py-0.5 rounded-full">
+        <div className="flex items-center justify-end mb-1 px-1">
+          <span className="text-[10px] font-bold text-white drop-shadow bg-black/50 px-2 py-0.5 rounded-full">
             {progress}
           </span>
         </div>
-        <div className="grid grid-cols-2 gap-2 px-1 flex-1 content-start">
+        <div className="grid grid-cols-4 gap-1.5 px-1 flex-1 content-start">
           {stickers.map((s) => {
             const has = (owned[s.id] || 0) > 0;
             return (
               <div
                 key={s.id}
-                className={`aspect-[3/4] rounded-xl border-[3px] flex flex-col items-center justify-center p-1.5 text-center transition-all ${
+                className={`aspect-[3/4] rounded-lg border-2 flex flex-col items-center justify-center p-1 text-center transition-all ${
                   has
-                    ? `bg-gradient-to-br from-white to-amber-50 ${rarityBorder(s.rarity)} shadow-lg`
+                    ? `bg-gradient-to-br from-white to-amber-50 ${rarityBorder(s.rarity)} shadow`
                     : "bg-white/20 backdrop-blur-[2px] border-white/60"
                 }`}
               >
-                <span className={`text-[8px] font-bold uppercase tracking-wide ${
+                <span className={`text-[6px] font-bold uppercase tracking-wide leading-none ${
                   s.rarity === "reliquia" ? "text-yellow-600" : s.rarity === "rara" ? "text-blue-600" : has ? "text-slate-500" : "text-white"
                 }`}>{rarityLabel(s.rarity)}</span>
-                <span className={`text-3xl sm:text-4xl my-1 ${!has ? "text-white drop-shadow-lg" : ""}`}>
+                <span className={`text-lg sm:text-xl my-0.5 ${!has ? "text-white drop-shadow-lg" : ""}`}>
                   {has ? s.emoji : "❓"}
                 </span>
-                <span className={`text-[10px] font-display font-bold leading-tight ${!has ? "text-white drop-shadow" : "text-foreground"}`}>
+                <span className={`text-[7px] font-display font-bold leading-tight ${!has ? "text-white drop-shadow" : "text-foreground"}`}>
                   {has ? s.name : `#${s.id + 1}`}
                 </span>
                 {has && (owned[s.id] || 0) > 1 && (
-                  <span className="text-[8px] mt-0.5 bg-red-500/80 text-white px-1.5 rounded-full">×{owned[s.id]}</span>
+                  <span className="text-[7px] mt-0.5 bg-red-500/80 text-white px-1 rounded-full leading-none">×{owned[s.id]}</span>
                 )}
               </div>
             );
           })}
         </div>
-        <p className="text-center font-display font-bold text-[11px] mt-2 text-white/90 drop-shadow">
-          — pág. {pageNum} de {totalPages} (parte {pageInCat}/2) —
+        <p className="text-center font-display font-bold text-[10px] mt-1 text-white/90 drop-shadow">
+          pág. {pageNum} de {totalPages}
         </p>
       </div>
     </div>
