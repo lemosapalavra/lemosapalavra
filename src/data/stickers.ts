@@ -2,7 +2,12 @@ import bgCriacao1 from "@/assets/album/criacao-1.png";
 import bgCriacao2 from "@/assets/album/criacao-2.png";
 import bgPatriarcas1 from "@/assets/album/patriarcas-1.png";
 import bgPatriarcas2 from "@/assets/album/patriarcas-2.png";
-import bgExodo from "@/assets/album/exodo.png";
+import bgExodo1 from "@/assets/album/exodo-1.png";
+import bgExodo2 from "@/assets/album/exodo-2.png";
+import bgMilagres1 from "@/assets/album/milagres-1.png";
+import bgMilagres2 from "@/assets/album/milagres-2.png";
+import bgReis1 from "@/assets/album/reis-1.png";
+import bgReis2 from "@/assets/album/reis-2.png";
 import bgIgreja from "@/assets/album/igreja.png";
 import bgApocalipse from "@/assets/album/apocalipse.png";
 
@@ -66,7 +71,7 @@ const raw: Category[] = [
   },
   {
     key: "exodo", name: "Êxodo", icon: "🏔️", color: "from-red-400 to-rose-600",
-    bgs: [bgExodo, undefined],
+    bgs: [bgExodo1, bgExodo2],
     stickers: build([
       ["Moisés", "🧙"], ["Sarça Ardente", "🔥"], ["Mar Vermelho", "🌊"],
       ["Tábuas da Lei", "📜"], ["Maná", "🍞"], ["Faraó", "🤴"],
@@ -76,6 +81,7 @@ const raw: Category[] = [
   },
   {
     key: "milagres", name: "Milagres", icon: "🐟", color: "from-cyan-400 to-teal-600",
+    bgs: [bgMilagres1, bgMilagres2],
     stickers: build([
       ["Multiplicação dos Pães", "🍞"], ["Água em Vinho", "🍷"], ["Cura do Cego", "👁️"],
       ["Lázaro Ressuscita", "✨"], ["Tempestade Acalmada", "⛵"], ["Andar sobre as Águas", "💧"],
@@ -85,6 +91,7 @@ const raw: Category[] = [
   },
   {
     key: "reis", name: "Reis", icon: "👑", color: "from-yellow-400 to-amber-600",
+    bgs: [bgReis1, bgReis2],
     stickers: build([
       ["Davi", "🎵"], ["Salomão", "👑"], ["Saul", "⚔️"],
       ["Davi e Golias", "🪨"], ["Templo de Salomão", "🏛️"], ["Trono Real", "🪑"],
