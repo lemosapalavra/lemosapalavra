@@ -368,7 +368,7 @@ function AlbumPage({
             {progress}
           </span>
         </div>
-        <div className="grid grid-cols-4 gap-1.5 px-1 flex-1 content-start">
+        <div className="grid grid-cols-4 gap-1.5 px-1 flex-1 content-center items-center">
           {stickers.map((s) => {
             const has = (owned[s.id] || 0) > 0;
             return (
