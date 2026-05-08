@@ -85,9 +85,22 @@ export default function Album() {
   const pages = useMemo(() => {
     const arr: { cat: typeof categories[number]; stickers: Sticker[]; bg?: string; pageInCat: 1 | 2; globalIdx: number }[] = [];
     let g = 0;
+    // Stable per-category shuffle so layout is random but consistent across renders
+    const hashSeed = (s: string) => {
+      let h = 2166136261;
+      for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+      return h >>> 0;
+    };
+    const shuffleStable = <T,>(arr: T[], seed: number): T[] => {
+      return [...arr]
+        .map((v, i) => ({ v, k: seededRand(seed + i * 31) }))
+        .sort((a, b) => a.k - b.k)
+        .map((x) => x.v);
+    };
     for (const cat of categories) {
-      arr.push({ cat, stickers: cat.stickers.slice(0, 8), bg: cat.bgs?.[0], pageInCat: 1, globalIdx: g++ });
-      arr.push({ cat, stickers: cat.stickers.slice(8, 16), bg: cat.bgs?.[1], pageInCat: 2, globalIdx: g++ });
+      const shuffled = shuffleStable(cat.stickers, hashSeed(cat.key));
+      arr.push({ cat, stickers: shuffled.slice(0, 8), bg: cat.bgs?.[0], pageInCat: 1, globalIdx: g++ });
+      arr.push({ cat, stickers: shuffled.slice(8, 16), bg: cat.bgs?.[1], pageInCat: 2, globalIdx: g++ });
     }
     return arr;
   }, []);
@@ -363,8 +376,11 @@ function AlbumPage({
         />
       )}
       <div className="relative h-full flex flex-col">
-        <div className="flex items-center justify-end mb-1 px-1">
-          <span className="text-[10px] font-bold text-white drop-shadow bg-black/50 px-2 py-0.5 rounded-full">
+        <div className="flex items-center justify-between mb-1 px-1 gap-1">
+          <span className="text-[11px] font-display font-extrabold text-white drop-shadow bg-black/55 px-2 py-0.5 rounded-full truncate">
+            {cat.icon} {cat.name}
+          </span>
+          <span className="text-[10px] font-bold text-white drop-shadow bg-black/50 px-2 py-0.5 rounded-full shrink-0">
             {progress}
           </span>
         </div>
@@ -383,7 +399,7 @@ function AlbumPage({
                 <span className={`text-[6px] font-bold uppercase tracking-wide leading-none ${
                   s.rarity === "reliquia" ? "text-yellow-600" : s.rarity === "rara" ? "text-blue-600" : has ? "text-slate-500" : "text-white"
                 }`}>{rarityLabel(s.rarity)}</span>
-                <span className={`text-lg sm:text-xl my-0.5 ${!has ? "text-white drop-shadow-lg" : ""}`}>
+                <span className={`text-xl my-0.5 ${!has ? "text-white drop-shadow-lg" : ""}`}>
                   {has ? s.emoji : "❓"}
                 </span>
                 <span className={`text-[7px] font-display font-bold leading-tight ${!has ? "text-white drop-shadow" : "text-foreground"}`}>
