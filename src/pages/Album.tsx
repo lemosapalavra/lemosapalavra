@@ -167,7 +167,7 @@ export default function Album() {
             >
               <ChevronLeft className="w-5 h-5" /> Álbum
             </button>
-            <h1 className="font-display font-extrabold text-lg sm:text-xl">🔄 Sala de Trocas</h1>
+            <h1 className="font-display font-extrabold text-xl">🔄 Sala de Trocas</h1>
             <div className="w-20" />
           </div>
 
@@ -257,7 +257,7 @@ export default function Album() {
           <ArrowLeft className="w-4 h-4" /> Capa
         </button>
         <div className="text-center">
-          <div className="font-display font-extrabold text-sm sm:text-base">📖 Heróis da Fé</div>
+          <div className="font-display font-extrabold text-base">📖 Heróis da Fé</div>
           <div className="text-[10px] opacity-80">{totalOwned} / {allStickers.length} coletadas</div>
         </div>
         <button
