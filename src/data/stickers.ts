@@ -8,7 +8,12 @@ import bgMilagres1 from "@/assets/album/milagres-1.png";
 import bgMilagres2 from "@/assets/album/milagres-2.png";
 import bgReis1 from "@/assets/album/reis-1.png";
 import bgReis2 from "@/assets/album/reis-2.png";
-import bgIgreja from "@/assets/album/igreja.png";
+import bgIgreja1 from "@/assets/album/igreja-1.png";
+import bgIgreja2 from "@/assets/album/igreja-2.png";
+import bgEnsinamentos1 from "@/assets/album/ensinamentos-1.png";
+import bgEnsinamentos2 from "@/assets/album/ensinamentos-2.png";
+import bgLugares1 from "@/assets/album/lugares-1.png";
+import bgLugares2 from "@/assets/album/lugares-2.png";
 import bgApocalipse from "@/assets/album/apocalipse.png";
 
 export type Rarity = "normal" | "rara" | "reliquia";
