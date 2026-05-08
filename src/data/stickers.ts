@@ -106,6 +106,7 @@ const raw: Category[] = [
   },
   {
     key: "ensinamentos", name: "Ensinamentos de Jesus", icon: "❤️", color: "from-pink-400 to-rose-600",
+    bgs: [bgEnsinamentos1, bgEnsinamentos2],
     stickers: build([
       ["Sermão do Monte", "⛰️"], ["Bem-Aventuranças", "💖"], ["Pai Nosso", "🙏"],
       ["Bom Samaritano", "🤝"], ["Filho Pródigo", "🤗"], ["Ovelha Perdida", "🐑"],
@@ -115,7 +116,7 @@ const raw: Category[] = [
   },
   {
     key: "igreja", name: "A Igreja", icon: "🔥", color: "from-orange-400 to-red-600",
-    bgs: [bgIgreja, undefined],
+    bgs: [bgIgreja1, bgIgreja2],
     stickers: build([
       ["Pentecostes", "🔥"], ["Pedro", "🗝️"], ["Paulo", "✉️"],
       ["Estêvão", "🌟"], ["Batismo", "💧"], ["Ceia do Senhor", "🍞"],
@@ -134,6 +135,7 @@ const raw: Category[] = [
   },
   {
     key: "lugares", name: "Lugares", icon: "📍", color: "from-emerald-400 to-green-600",
+    bgs: [bgLugares1, bgLugares2],
     stickers: build([
       ["Jerusalém", "🏛️"], ["Belém", "⭐"], ["Nazaré", "🏘️"],
       ["Mar da Galileia", "🌊"], ["Rio Jordão", "🏞️"], ["Monte das Oliveiras", "🌳"],
