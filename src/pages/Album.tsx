@@ -364,9 +364,10 @@ function AlbumPage({
           loading="eager"
           decoding="async"
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-          style={{ opacity: 0.6 }}
+          style={{ opacity: 0.35 }}
         />
       )}
+      <div className="absolute inset-0 bg-amber-50/40 pointer-events-none" />
       <div className="relative h-full flex flex-col">
         <div className="flex items-center justify-between mb-1 px-1 gap-1">
           <span className="text-[11px] font-display font-extrabold text-white drop-shadow bg-black/55 px-2 py-0.5 rounded-full truncate">
