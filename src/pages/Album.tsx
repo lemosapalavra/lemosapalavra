@@ -364,15 +364,14 @@ function AlbumPage({
       style={{ transformStyle: "preserve-3d" }}
     >
       {bg && (
-        <div
+        <img
           aria-hidden
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: `url(${bg})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            opacity: 0.3,
-          }}
+          src={bg}
+          alt=""
+          loading="eager"
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+          style={{ opacity: 0.6 }}
         />
       )}
       <div className="relative h-full flex flex-col">
