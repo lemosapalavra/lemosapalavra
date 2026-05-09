@@ -376,17 +376,41 @@ function AlbumPage({
             {progress}
           </span>
         </div>
-        <div className="grid grid-cols-4 gap-1.5 px-1 flex-1 content-center items-center">
-          {stickers.map((s) => {
+        <div className="relative flex-1 mx-1 mt-1">
+          {stickers.map((s, i) => {
             const has = (owned[s.id] || 0) > 0;
+            // 4x2 jittered grid in the area below the header (top 18% → 96%)
+            const cols = 4, rows = 2;
+            const areaTop = 18, areaH = 78, areaLeft = 1, areaW = 98;
+            const cellW = areaW / cols;       // ~24.5%
+            const cellH = areaH / rows;       // ~39%
+            const stickerW = 19;              // % of page width
+            const stickerH = 27;              // % of page height
+            const c = i % cols;
+            const r = Math.floor(i / cols);
+            const slackX = cellW - stickerW;
+            const slackY = cellH - stickerH;
+            const seed = pageNum * 1000 + i;
+            const jx = (seededRand(seed * 7.13) - 0.5) * slackX * 0.95;
+            const jy = (seededRand(seed * 3.71 + 11) - 0.5) * slackY * 0.95;
+            const left = areaLeft + c * cellW + slackX / 2 + jx;
+            const top = areaTop + r * cellH + slackY / 2 + jy;
+            const rot = (seededRand(seed * 1.91 + 5) - 0.5) * 10; // -5°..+5°
             return (
               <div
                 key={s.id}
-                className={`aspect-[3/4] rounded-lg border-2 flex flex-col items-center justify-center p-1 text-center transition-all ${
+                className={`absolute rounded-lg border-2 flex flex-col items-center justify-center p-1 text-center transition-all ${
                   has
                     ? `bg-gradient-to-br from-white to-amber-50 ${rarityBorder(s.rarity)} shadow`
                     : "bg-white/20 backdrop-blur-[2px] border-white/60"
                 }`}
+                style={{
+                  left: `${left}%`,
+                  top: `${top}%`,
+                  width: `${stickerW}%`,
+                  height: `${stickerH}%`,
+                  transform: `rotate(${rot}deg)`,
+                }}
               >
                 <span className={`text-[6px] font-bold uppercase tracking-wide leading-none ${
                   s.rarity === "reliquia" ? "text-yellow-600" : s.rarity === "rara" ? "text-blue-600" : has ? "text-slate-500" : "text-white"
