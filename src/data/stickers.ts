@@ -19,6 +19,9 @@ import bgApocalipse2 from "@/assets/album/apocalipse-2.png";
 import bgPersonagens1 from "@/assets/album/personagens-1.png";
 import bgPersonagens2 from "@/assets/album/personagens-2.png";
 import bgProfetas1 from "@/assets/album/profetas-1.png";
+import bgProfetas2 from "@/assets/album/profetas-2.png";
+import bgVersiculos1 from "@/assets/album/versiculos-1.png";
+import bgVersiculos2 from "@/assets/album/versiculos-2.png";
 
 export type Rarity = "normal" | "rara" | "reliquia";
 
@@ -150,6 +153,7 @@ const raw: Category[] = [
   },
   {
     key: "versiculos", name: "Versículos", icon: "📖", color: "from-violet-400 to-purple-600",
+    bgs: [bgVersiculos1, bgVersiculos2],
     stickers: build([
       ["João 3:16", "💝"], ["Salmo 23", "🐑"], ["Filipenses 4:13", "💪"],
       ["Romanos 8:28", "🤲"], ["Provérbios 3:5", "🙇"], ["Mateus 6:33", "👑"],
@@ -159,7 +163,7 @@ const raw: Category[] = [
   },
   {
     key: "profetas", name: "Profetas", icon: "📜", color: "from-stone-400 to-amber-700",
-    bgs: [bgProfetas1, undefined],
+    bgs: [bgProfetas1, bgProfetas2],
     stickers: build([
       ["Isaías", "📜"], ["Jeremias", "😢"], ["Ezequiel", "👁️"],
       ["Daniel", "🦁"], ["Jonas", "🐳"], ["Elias", "🔥"],

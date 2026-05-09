@@ -65,6 +65,11 @@ export default function Album() {
 
   useEffect(() => { ensureInitialCoins(); }, []);
 
+  // Preload all album backgrounds upfront so page flips are instant
+  useEffect(() => {
+    categories.forEach((c) => c.bgs?.forEach((b) => { if (b) { const i = new Image(); i.src = b; } }));
+  }, []);
+
   const totalOwned = useMemo(
     () => Object.keys(owned).filter((k) => owned[+k] > 0).length,
     [owned]
@@ -364,15 +369,14 @@ function AlbumPage({
       style={{ transformStyle: "preserve-3d" }}
     >
       {bg && (
-        <div
+        <img
           aria-hidden
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: `url(${bg})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            opacity: 0.3,
-          }}
+          src={bg}
+          alt=""
+          loading="eager"
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+          style={{ opacity: 0.6 }}
         />
       )}
       <div className="relative h-full flex flex-col">
