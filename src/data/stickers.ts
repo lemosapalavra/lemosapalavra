@@ -163,7 +163,7 @@ const raw: Category[] = [
   },
   {
     key: "profetas", name: "Profetas", icon: "📜", color: "from-stone-400 to-amber-700",
-    bgs: [bgProfetas1, undefined],
+    bgs: [bgProfetas1, bgProfetas2],
     stickers: build([
       ["Isaías", "📜"], ["Jeremias", "😢"], ["Ezequiel", "👁️"],
       ["Daniel", "🦁"], ["Jonas", "🐳"], ["Elias", "🔥"],
