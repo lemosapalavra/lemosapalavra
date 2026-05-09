@@ -152,6 +152,7 @@ const raw: Category[] = [
     ]),
   },
   {
+    key: "versiculos", name: "Versículos", icon: "📖", color: "from-violet-400 to-purple-600",
     bgs: [bgVersiculos1, bgVersiculos2],
     stickers: build([
       ["João 3:16", "💝"], ["Salmo 23", "🐑"], ["Filipenses 4:13", "💪"],
