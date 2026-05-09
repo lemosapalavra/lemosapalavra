@@ -65,6 +65,11 @@ export default function Album() {
 
   useEffect(() => { ensureInitialCoins(); }, []);
 
+  // Preload all album backgrounds upfront so page flips are instant
+  useEffect(() => {
+    categories.forEach((c) => c.bgs?.forEach((b) => { if (b) { const i = new Image(); i.src = b; } }));
+  }, []);
+
   const totalOwned = useMemo(
     () => Object.keys(owned).filter((k) => owned[+k] > 0).length,
     [owned]
