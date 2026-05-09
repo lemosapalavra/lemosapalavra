@@ -90,22 +90,10 @@ export default function Album() {
   const pages = useMemo(() => {
     const arr: { cat: typeof categories[number]; stickers: Sticker[]; bg?: string; pageInCat: 1 | 2; globalIdx: number }[] = [];
     let g = 0;
-    // Stable per-category shuffle so layout is random but consistent across renders
-    const hashSeed = (s: string) => {
-      let h = 2166136261;
-      for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
-      return h >>> 0;
-    };
-    const shuffleStable = <T,>(arr: T[], seed: number): T[] => {
-      return [...arr]
-        .map((v, i) => ({ v, k: seededRand(seed + i * 31) }))
-        .sort((a, b) => a.k - b.k)
-        .map((x) => x.v);
-    };
+    // Keep stickers in numeric order; layout is scattered visually (see AlbumPage)
     for (const cat of categories) {
-      const shuffled = shuffleStable(cat.stickers, hashSeed(cat.key));
-      arr.push({ cat, stickers: shuffled.slice(0, 8), bg: cat.bgs?.[0], pageInCat: 1, globalIdx: g++ });
-      arr.push({ cat, stickers: shuffled.slice(8, 16), bg: cat.bgs?.[1], pageInCat: 2, globalIdx: g++ });
+      arr.push({ cat, stickers: cat.stickers.slice(0, 8), bg: cat.bgs?.[0], pageInCat: 1, globalIdx: g++ });
+      arr.push({ cat, stickers: cat.stickers.slice(8, 16), bg: cat.bgs?.[1], pageInCat: 2, globalIdx: g++ });
     }
     return arr;
   }, []);
@@ -388,17 +376,41 @@ function AlbumPage({
             {progress}
           </span>
         </div>
-        <div className="grid grid-cols-4 gap-1.5 px-1 flex-1 content-center items-center">
-          {stickers.map((s) => {
+        <div className="relative flex-1 mx-1 mt-1">
+          {stickers.map((s, i) => {
             const has = (owned[s.id] || 0) > 0;
+            // 4x2 jittered grid in the area below the header (top 18% → 96%)
+            const cols = 4, rows = 2;
+            const areaTop = 18, areaH = 78, areaLeft = 1, areaW = 98;
+            const cellW = areaW / cols;       // ~24.5%
+            const cellH = areaH / rows;       // ~39%
+            const stickerW = 19;              // % of page width
+            const stickerH = 27;              // % of page height
+            const c = i % cols;
+            const r = Math.floor(i / cols);
+            const slackX = cellW - stickerW;
+            const slackY = cellH - stickerH;
+            const seed = pageNum * 1000 + i;
+            const jx = (seededRand(seed * 7.13) - 0.5) * slackX * 0.95;
+            const jy = (seededRand(seed * 3.71 + 11) - 0.5) * slackY * 0.95;
+            const left = areaLeft + c * cellW + slackX / 2 + jx;
+            const top = areaTop + r * cellH + slackY / 2 + jy;
+            const rot = (seededRand(seed * 1.91 + 5) - 0.5) * 10; // -5°..+5°
             return (
               <div
                 key={s.id}
-                className={`aspect-[3/4] rounded-lg border-2 flex flex-col items-center justify-center p-1 text-center transition-all ${
+                className={`absolute rounded-lg border-2 flex flex-col items-center justify-center p-1 text-center transition-all ${
                   has
                     ? `bg-gradient-to-br from-white to-amber-50 ${rarityBorder(s.rarity)} shadow`
                     : "bg-white/20 backdrop-blur-[2px] border-white/60"
                 }`}
+                style={{
+                  left: `${left}%`,
+                  top: `${top}%`,
+                  width: `${stickerW}%`,
+                  height: `${stickerH}%`,
+                  transform: `rotate(${rot}deg)`,
+                }}
               >
                 <span className={`text-[6px] font-bold uppercase tracking-wide leading-none ${
                   s.rarity === "reliquia" ? "text-yellow-600" : s.rarity === "rara" ? "text-blue-600" : has ? "text-slate-500" : "text-white"
