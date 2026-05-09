@@ -90,22 +90,10 @@ export default function Album() {
   const pages = useMemo(() => {
     const arr: { cat: typeof categories[number]; stickers: Sticker[]; bg?: string; pageInCat: 1 | 2; globalIdx: number }[] = [];
     let g = 0;
-    // Stable per-category shuffle so layout is random but consistent across renders
-    const hashSeed = (s: string) => {
-      let h = 2166136261;
-      for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
-      return h >>> 0;
-    };
-    const shuffleStable = <T,>(arr: T[], seed: number): T[] => {
-      return [...arr]
-        .map((v, i) => ({ v, k: seededRand(seed + i * 31) }))
-        .sort((a, b) => a.k - b.k)
-        .map((x) => x.v);
-    };
+    // Keep stickers in numeric order; layout is scattered visually (see AlbumPage)
     for (const cat of categories) {
-      const shuffled = shuffleStable(cat.stickers, hashSeed(cat.key));
-      arr.push({ cat, stickers: shuffled.slice(0, 8), bg: cat.bgs?.[0], pageInCat: 1, globalIdx: g++ });
-      arr.push({ cat, stickers: shuffled.slice(8, 16), bg: cat.bgs?.[1], pageInCat: 2, globalIdx: g++ });
+      arr.push({ cat, stickers: cat.stickers.slice(0, 8), bg: cat.bgs?.[0], pageInCat: 1, globalIdx: g++ });
+      arr.push({ cat, stickers: cat.stickers.slice(8, 16), bg: cat.bgs?.[1], pageInCat: 2, globalIdx: g++ });
     }
     return arr;
   }, []);
