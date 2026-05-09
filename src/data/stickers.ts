@@ -19,6 +19,9 @@ import bgApocalipse2 from "@/assets/album/apocalipse-2.png";
 import bgPersonagens1 from "@/assets/album/personagens-1.png";
 import bgPersonagens2 from "@/assets/album/personagens-2.png";
 import bgProfetas1 from "@/assets/album/profetas-1.png";
+import bgProfetas2 from "@/assets/album/profetas-2.png";
+import bgVersiculos1 from "@/assets/album/versiculos-1.png";
+import bgVersiculos2 from "@/assets/album/versiculos-2.png";
 
 export type Rarity = "normal" | "rara" | "reliquia";
 
