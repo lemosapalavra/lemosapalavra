@@ -23,6 +23,11 @@ import bgProfetas2 from "@/assets/album/profetas-2.webp";
 import bgVersiculos1 from "@/assets/album/versiculos-1.webp";
 import bgVersiculos2 from "@/assets/album/versiculos-2.webp";
 
+// Personagens sticker artwork (16 cropped from attachment)
+const personagensImgs = Object.values(
+  import.meta.glob("@/assets/album/personagens-stickers/*.webp", { eager: true, import: "default" })
+) as string[];
+
 export type Rarity = "normal" | "rara" | "reliquia";
 
 export interface Sticker {
@@ -30,6 +35,7 @@ export interface Sticker {
   name: string;
   emoji: string;
   rarity: Rarity;
+  image?: string;
 }
 
 export interface Category {
@@ -44,15 +50,15 @@ export interface Category {
 
 // 16 stickers per category (2 pages × 8). Distribution across the 16:
 // page 1: 1 relíquia + 2 raras + 5 normais ; page 2: 8 normais
-function build(names: [string, string][]): Sticker[] {
+function build(names: [string, string][], images?: string[]): Sticker[] {
   const padded = [...names];
-  // pad to 16 with repeats if needed
   while (padded.length < 16) padded.push(names[padded.length % names.length]);
   return padded.slice(0, 16).map((n, i) => ({
     id: 0,
     name: n[0],
     emoji: n[1],
     rarity: i === 0 ? "reliquia" : i <= 2 ? "rara" : "normal",
+    image: images?.[i],
   }));
 }
 
@@ -135,11 +141,13 @@ const raw: Category[] = [
     key: "personagens", name: "Personagens Bíblicos", icon: "👥", color: "from-purple-400 to-indigo-600",
     bgs: [bgPersonagens1, bgPersonagens2],
     stickers: build([
-      ["Jesus Cristo", "✝️"], ["Maria", "💙"], ["José", "🪚"],
-      ["João Batista", "🐫"], ["Maria Madalena", "💐"], ["Marta", "🍲"],
-      ["Lázaro", "🤍"], ["Zaqueu", "🌳"],
-      ["Nicodemos", "🌙"], ["Centurião", "🛡️"],
-    ]),
+      ["Ana", "🙏"], ["Eli", "👴"], ["Absalão", "🧒"],
+      ["Salomão", "👑"], ["Isaías", "📜"], ["Jeremias", "✍️"],
+      ["Ezequiel", "📖"], ["Daniel", "🦁"],
+      ["Sansão", "💪"], ["Rute", "🌾"], ["Daniel jovem", "🌟"],
+      ["Estêvão", "🕊️"], ["José do Egito", "🌅"], ["José e o Sonho", "💭"],
+      ["Faraó", "🏛️"], ["Rainha Ester", "👸"],
+    ], personagensImgs),
   },
   {
     key: "lugares", name: "Lugares", icon: "📍", color: "from-emerald-400 to-green-600",
