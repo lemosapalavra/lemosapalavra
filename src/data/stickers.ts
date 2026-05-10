@@ -50,15 +50,15 @@ export interface Category {
 
 // 16 stickers per category (2 pages × 8). Distribution across the 16:
 // page 1: 1 relíquia + 2 raras + 5 normais ; page 2: 8 normais
-function build(names: [string, string][]): Sticker[] {
+function build(names: [string, string][], images?: string[]): Sticker[] {
   const padded = [...names];
-  // pad to 16 with repeats if needed
   while (padded.length < 16) padded.push(names[padded.length % names.length]);
   return padded.slice(0, 16).map((n, i) => ({
     id: 0,
     name: n[0],
     emoji: n[1],
     rarity: i === 0 ? "reliquia" : i <= 2 ? "rara" : "normal",
+    image: images?.[i],
   }));
 }
 
