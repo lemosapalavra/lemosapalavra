@@ -23,6 +23,11 @@ import bgProfetas2 from "@/assets/album/profetas-2.webp";
 import bgVersiculos1 from "@/assets/album/versiculos-1.webp";
 import bgVersiculos2 from "@/assets/album/versiculos-2.webp";
 
+// Personagens sticker artwork (16 cropped from attachment)
+const personagensImgs = Object.values(
+  import.meta.glob("@/assets/album/personagens-stickers/*.webp", { eager: true, import: "default" })
+) as string[];
+
 export type Rarity = "normal" | "rara" | "reliquia";
 
 export interface Sticker {
@@ -30,6 +35,7 @@ export interface Sticker {
   name: string;
   emoji: string;
   rarity: Rarity;
+  image?: string;
 }
 
 export interface Category {
