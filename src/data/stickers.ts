@@ -141,11 +141,13 @@ const raw: Category[] = [
     key: "personagens", name: "Personagens Bíblicos", icon: "👥", color: "from-purple-400 to-indigo-600",
     bgs: [bgPersonagens1, bgPersonagens2],
     stickers: build([
-      ["Jesus Cristo", "✝️"], ["Maria", "💙"], ["José", "🪚"],
-      ["João Batista", "🐫"], ["Maria Madalena", "💐"], ["Marta", "🍲"],
-      ["Lázaro", "🤍"], ["Zaqueu", "🌳"],
-      ["Nicodemos", "🌙"], ["Centurião", "🛡️"],
-    ]),
+      ["Ana", "🙏"], ["Eli", "👴"], ["Absalão", "🧒"],
+      ["Salomão", "👑"], ["Isaías", "📜"], ["Jeremias", "✍️"],
+      ["Ezequiel", "📖"], ["Daniel", "🦁"],
+      ["Sansão", "💪"], ["Rute", "🌾"], ["Daniel jovem", "🌟"],
+      ["Estêvão", "🕊️"], ["José do Egito", "🌅"], ["José e o Sonho", "💭"],
+      ["Faraó", "🏛️"], ["Rainha Ester", "👸"],
+    ], personagensImgs),
   },
   {
     key: "lugares", name: "Lugares", icon: "📍", color: "from-emerald-400 to-green-600",
