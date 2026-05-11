@@ -23,7 +23,13 @@ import bgProfetas2 from "@/assets/album/profetas-2.webp";
 import bgVersiculos1 from "@/assets/album/versiculos-1.webp";
 import bgVersiculos2 from "@/assets/album/versiculos-2.webp";
 
-// Personagens sticker artwork (16 cropped from attachment)
+// Cropped sticker artwork from attachments (16 each)
+const heroisImgs = Object.values(
+  import.meta.glob("@/assets/album/herois-stickers/*.webp", { eager: true, import: "default" })
+) as string[];
+const historiasImgs = Object.values(
+  import.meta.glob("@/assets/album/historias-stickers/*.webp", { eager: true, import: "default" })
+) as string[];
 const personagensImgs = Object.values(
   import.meta.glob("@/assets/album/personagens-stickers/*.webp", { eager: true, import: "default" })
 ) as string[];
@@ -36,6 +42,7 @@ export interface Sticker {
   emoji: string;
   rarity: Rarity;
   image?: string;
+  reference?: string;
 }
 
 export interface Category {
@@ -43,20 +50,20 @@ export interface Category {
   name: string;
   icon: string;
   color: string;
-  /** Backgrounds per page (index 0 = page 1, index 1 = page 2). */
   bgs?: (string | undefined)[];
   stickers: Sticker[];
 }
 
-// 16 stickers per category (2 pages × 8). Distribution across the 16:
-// page 1: 1 relíquia + 2 raras + 5 normais ; page 2: 8 normais
-function build(names: [string, string][], images?: string[]): Sticker[] {
-  const padded = [...names];
-  while (padded.length < 16) padded.push(names[padded.length % names.length]);
+type Entry = [name: string, emoji: string, reference?: string];
+
+function build(items: Entry[], images?: string[]): Sticker[] {
+  const padded = [...items];
+  while (padded.length < 16) padded.push(items[padded.length % items.length]);
   return padded.slice(0, 16).map((n, i) => ({
     id: 0,
     name: n[0],
     emoji: n[1],
+    reference: n[2],
     rarity: i === 0 ? "reliquia" : i <= 2 ? "rara" : "normal",
     image: images?.[i],
   }));
@@ -64,134 +71,187 @@ function build(names: [string, string][], images?: string[]): Sticker[] {
 
 const raw: Category[] = [
   {
+    key: "herois", name: "Heróis da Fé", icon: "🦸", color: "from-yellow-400 to-amber-600",
+    bgs: [bgPersonagens1, bgPersonagens2],
+    stickers: build([
+      ["Jesus", "✝️", "Mateus 1:21"],
+      ["Davi", "🎵", "1 Samuel 17"],
+      ["Moisés", "📜", "Êxodo 3"],
+      ["Rute", "🌾", "Rute 1:16"],
+      ["Josué", "⚔️", "Josué 1:9"],
+      ["Maria", "🕊️", "Lucas 1:38"],
+      ["Ester", "👑", "Ester 4:14"],
+      ["Paulo", "✉️", "Atos 9"],
+      ["Noé", "🌈", "Gênesis 6-9"],
+      ["Samuel", "🪔", "1 Samuel 3"],
+      ["Daniel", "🦁", "Daniel 6"],
+      ["Lázaro", "✨", "João 11"],
+      ["Bartimeu", "👁️", "Marcos 10:46-52"],
+      ["João Batista", "🌿", "Mateus 3"],
+      ["Zaqueu", "🌳", "Lucas 19:1-10"],
+      ["Noemi", "💞", "Rute 1"],
+    ], heroisImgs),
+  },
+  {
+    key: "historias", name: "Histórias Bíblicas", icon: "📖", color: "from-sky-400 to-blue-700",
+    bgs: [bgCriacao1, bgCriacao2],
+    stickers: build([
+      ["Criação", "🌍", "Gênesis 1"],
+      ["Arca de Noé", "🚢", "Gênesis 6-9"],
+      ["Abraão e Isaque", "🔥", "Gênesis 22"],
+      ["José do Egito", "👑", "Gênesis 37-50"],
+      ["Moisés e o Mar", "🌊", "Êxodo 14"],
+      ["Jonas e o Peixe", "🐳", "Jonas 1-2"],
+      ["Natividade", "👶", "Lucas 2"],
+      ["Travessia do Mar Vermelho", "💧", "Êxodo 14"],
+      ["A Torre de Babel", "🏯", "Gênesis 11"],
+      ["Débora e Baraque", "⚔️", "Juízes 4"],
+      ["Davi e Golias", "🪨", "1 Samuel 17"],
+      ["A Entrada em Jerusalém", "🌿", "Mateus 21"],
+      ["A Última Ceia", "🍞", "Lucas 22"],
+      ["A Crucificação", "✝️", "João 19"],
+      ["A Ressurreição", "🌅", "Mateus 28"],
+      ["Pentecostes", "🔥", "Atos 2"],
+    ], historiasImgs),
+  },
+  {
+    key: "personagens", name: "Personagens", icon: "👥", color: "from-emerald-400 to-green-600",
+    bgs: [bgPersonagens1, bgPersonagens2],
+    stickers: build([
+      ["Ana", "🙏", "1 Samuel 1"],
+      ["Eli", "👴", "1 Samuel 3"],
+      ["Absalão", "🧒", "2 Samuel 18"],
+      ["Salomão", "👑", "1 Reis 3"],
+      ["Isaías", "📜", "Isaías 6"],
+      ["Jeremias", "✍️", "Jeremias 1"],
+      ["Ezequiel", "📖", "Ezequiel 1"],
+      ["Daniel", "🦁", "Daniel 6"],
+      ["Sansão", "💪", "Juízes 13-16"],
+      ["Rute", "🌾", "Rute 1"],
+      ["Daniel jovem", "🌟", "Daniel 1"],
+      ["Estêvão", "🕊️", "Atos 7"],
+      ["José do Egito", "🌅", "Gênesis 41"],
+      ["José e o Sonho", "💭", "Gênesis 37"],
+      ["Faraó", "🏛️", "Êxodo 5"],
+      ["Rainha Ester", "👸", "Ester 4"],
+    ], personagensImgs),
+  },
+  {
     key: "criacao", name: "Criação", icon: "🌍", color: "from-sky-400 to-blue-600",
     bgs: [bgCriacao1, bgCriacao2],
     stickers: build([
-      ["Adão e Eva", "👫"], ["Jardim do Éden", "🌳"], ["Sétimo Dia", "🕊️"],
-      ["Sol e Lua", "☀️"], ["Mar e Peixes", "🐟"], ["Aves do Céu", "🦅"],
-      ["Animais da Terra", "🦁"], ["Plantas e Flores", "🌷"],
-      ["Estrelas", "⭐"], ["Espírito sobre as Águas", "💨"], ["Galáxias", "🌌"],
-      ["Rios e Mares", "🌊"], ["Montanhas", "⛰️"], ["Frutos da Terra", "🍎"],
-      ["Anjos da Criação", "👼"], ["Descanso de Deus", "😴"],
+      ["Adão e Eva", "👫", "Gênesis 2"], ["Jardim do Éden", "🌳", "Gênesis 2:8"], ["Sétimo Dia", "🕊️", "Gênesis 2:2"],
+      ["Sol e Lua", "☀️", "Gênesis 1:16"], ["Mar e Peixes", "🐟", "Gênesis 1:21"], ["Aves do Céu", "🦅", "Gênesis 1:20"],
+      ["Animais da Terra", "🦁", "Gênesis 1:24"], ["Plantas e Flores", "🌷", "Gênesis 1:11"],
+      ["Estrelas", "⭐", "Gênesis 1:16"], ["Espírito sobre as Águas", "💨", "Gênesis 1:2"], ["Galáxias", "🌌", "Salmos 19:1"],
+      ["Rios e Mares", "🌊", "Gênesis 1:10"], ["Montanhas", "⛰️", "Salmos 95:4"], ["Frutos da Terra", "🍎", "Gênesis 1:29"],
+      ["Anjos da Criação", "👼", "Jó 38:7"], ["Descanso de Deus", "😴", "Gênesis 2:3"],
     ]),
   },
   {
     key: "patriarcas", name: "Patriarcas", icon: "⛺", color: "from-amber-400 to-orange-600",
     bgs: [bgPatriarcas1, bgPatriarcas2],
     stickers: build([
-      ["Abraão", "🧔"], ["Sara", "👵"], ["Isaque", "👨"],
-      ["Jacó", "👴"], ["Esaú", "🏹"], ["José do Egito", "👑"],
-      ["Rebeca", "👰"], ["Raquel", "💍"],
-      ["Lia", "👩"], ["Os 12 Filhos", "✨"], ["Tendas", "⛺"],
-      ["Rebanhos", "🐑"], ["Promessa de Deus", "🌈"], ["Altar de Pedras", "🪨"],
-      ["Estrelas do Céu", "⭐"], ["Caminho de Canaã", "🐪"],
+      ["Abraão", "🧔", "Gênesis 12"], ["Sara", "👵", "Gênesis 18"], ["Isaque", "👨", "Gênesis 21"],
+      ["Jacó", "👴", "Gênesis 28"], ["Esaú", "🏹", "Gênesis 25"], ["José do Egito", "👑", "Gênesis 37"],
+      ["Rebeca", "👰", "Gênesis 24"], ["Raquel", "💍", "Gênesis 29"],
+      ["Lia", "👩", "Gênesis 29"], ["Os 12 Filhos", "✨", "Gênesis 49"], ["Tendas", "⛺", "Hebreus 11:9"],
+      ["Rebanhos", "🐑", "Gênesis 30"], ["Promessa de Deus", "🌈", "Gênesis 15"], ["Altar de Pedras", "🪨", "Gênesis 28:18"],
+      ["Estrelas do Céu", "⭐", "Gênesis 15:5"], ["Caminho de Canaã", "🐪", "Gênesis 12:5"],
     ]),
   },
   {
     key: "exodo", name: "Êxodo", icon: "🏔️", color: "from-red-400 to-rose-600",
     bgs: [bgExodo1, bgExodo2],
     stickers: build([
-      ["Moisés", "🧙"], ["Sarça Ardente", "🔥"], ["Mar Vermelho", "🌊"],
-      ["Tábuas da Lei", "📜"], ["Maná", "🍞"], ["Faraó", "🤴"],
-      ["Vara de Moisés", "🦯"], ["Coluna de Fogo", "🔥"],
-      ["Tabernáculo", "⛺"], ["Arca da Aliança", "📦"],
+      ["Moisés", "🧙", "Êxodo 2"], ["Sarça Ardente", "🔥", "Êxodo 3"], ["Mar Vermelho", "🌊", "Êxodo 14"],
+      ["Tábuas da Lei", "📜", "Êxodo 20"], ["Maná", "🍞", "Êxodo 16"], ["Faraó", "🤴", "Êxodo 5"],
+      ["Vara de Moisés", "🦯", "Êxodo 4"], ["Coluna de Fogo", "🔥", "Êxodo 13:21"],
+      ["Tabernáculo", "⛺", "Êxodo 26"], ["Arca da Aliança", "📦", "Êxodo 25"],
     ]),
   },
   {
     key: "milagres", name: "Milagres", icon: "🐟", color: "from-cyan-400 to-teal-600",
     bgs: [bgMilagres1, bgMilagres2],
     stickers: build([
-      ["Multiplicação dos Pães", "🍞"], ["Água em Vinho", "🍷"], ["Cura do Cego", "👁️"],
-      ["Lázaro Ressuscita", "✨"], ["Tempestade Acalmada", "⛵"], ["Andar sobre as Águas", "💧"],
-      ["Pesca Milagrosa", "🎣"], ["Cura do Paralítico", "🧎"],
-      ["Os 10 Leprosos", "🙏"], ["Filha de Jairo", "👧"],
+      ["Multiplicação dos Pães", "🍞", "João 6"], ["Água em Vinho", "🍷", "João 2"], ["Cura do Cego", "👁️", "João 9"],
+      ["Lázaro Ressuscita", "✨", "João 11"], ["Tempestade Acalmada", "⛵", "Marcos 4"], ["Andar sobre as Águas", "💧", "Mateus 14"],
+      ["Pesca Milagrosa", "🎣", "Lucas 5"], ["Cura do Paralítico", "🧎", "Marcos 2"],
+      ["Os 10 Leprosos", "🙏", "Lucas 17"], ["Filha de Jairo", "👧", "Marcos 5"],
     ]),
   },
   {
     key: "reis", name: "Reis", icon: "👑", color: "from-yellow-400 to-amber-600",
     bgs: [bgReis1, bgReis2],
     stickers: build([
-      ["Davi", "🎵"], ["Salomão", "👑"], ["Saul", "⚔️"],
-      ["Davi e Golias", "🪨"], ["Templo de Salomão", "🏛️"], ["Trono Real", "🪑"],
-      ["Coroa de Ouro", "👑"], ["Cetro Real", "🔱"],
-      ["Rainha de Sabá", "👸"], ["Harpa de Davi", "🎼"],
+      ["Davi", "🎵", "1 Samuel 16"], ["Salomão", "👑", "1 Reis 3"], ["Saul", "⚔️", "1 Samuel 9"],
+      ["Davi e Golias", "🪨", "1 Samuel 17"], ["Templo de Salomão", "🏛️", "1 Reis 6"], ["Trono Real", "🪑", "1 Reis 10"],
+      ["Coroa de Ouro", "👑", "Salmos 21:3"], ["Cetro Real", "🔱", "Ester 5:2"],
+      ["Rainha de Sabá", "👸", "1 Reis 10"], ["Harpa de Davi", "🎼", "1 Samuel 16:23"],
     ]),
   },
   {
     key: "ensinamentos", name: "Ensinamentos de Jesus", icon: "❤️", color: "from-pink-400 to-rose-600",
     bgs: [bgEnsinamentos1, bgEnsinamentos2],
     stickers: build([
-      ["Sermão do Monte", "⛰️"], ["Bem-Aventuranças", "💖"], ["Pai Nosso", "🙏"],
-      ["Bom Samaritano", "🤝"], ["Filho Pródigo", "🤗"], ["Ovelha Perdida", "🐑"],
-      ["Semeador", "🌱"], ["Pérola Preciosa", "🦪"],
-      ["Talentos", "💰"], ["Reino dos Céus", "☁️"],
+      ["Sermão do Monte", "⛰️", "Mateus 5"], ["Bem-Aventuranças", "💖", "Mateus 5:3-12"], ["Pai Nosso", "🙏", "Mateus 6:9"],
+      ["Bom Samaritano", "🤝", "Lucas 10:25"], ["Filho Pródigo", "🤗", "Lucas 15:11"], ["Ovelha Perdida", "🐑", "Lucas 15:4"],
+      ["Semeador", "🌱", "Mateus 13"], ["Pérola Preciosa", "🦪", "Mateus 13:45"],
+      ["Talentos", "💰", "Mateus 25:14"], ["Reino dos Céus", "☁️", "Mateus 13:31"],
     ]),
   },
   {
     key: "igreja", name: "A Igreja", icon: "🔥", color: "from-orange-400 to-red-600",
     bgs: [bgIgreja1, bgIgreja2],
     stickers: build([
-      ["Pentecostes", "🔥"], ["Pedro", "🗝️"], ["Paulo", "✉️"],
-      ["Estêvão", "🌟"], ["Batismo", "💧"], ["Ceia do Senhor", "🍞"],
-      ["Cenáculo", "🏠"], ["Conversão de Paulo", "⚡"],
-      ["Igreja Primitiva", "⛪"], ["Diáconos", "🤲"],
+      ["Pentecostes", "🔥", "Atos 2"], ["Pedro", "🗝️", "Mateus 16:18"], ["Paulo", "✉️", "Atos 9"],
+      ["Estêvão", "🌟", "Atos 7"], ["Batismo", "💧", "Atos 2:38"], ["Ceia do Senhor", "🍞", "1 Coríntios 11"],
+      ["Cenáculo", "🏠", "Atos 1:13"], ["Conversão de Paulo", "⚡", "Atos 9"],
+      ["Igreja Primitiva", "⛪", "Atos 2:42"], ["Diáconos", "🤲", "Atos 6"],
     ]),
-  },
-  {
-    key: "personagens", name: "Personagens Bíblicos", icon: "👥", color: "from-purple-400 to-indigo-600",
-    bgs: [bgPersonagens1, bgPersonagens2],
-    stickers: build([
-      ["Ana", "🙏"], ["Eli", "👴"], ["Absalão", "🧒"],
-      ["Salomão", "👑"], ["Isaías", "📜"], ["Jeremias", "✍️"],
-      ["Ezequiel", "📖"], ["Daniel", "🦁"],
-      ["Sansão", "💪"], ["Rute", "🌾"], ["Daniel jovem", "🌟"],
-      ["Estêvão", "🕊️"], ["José do Egito", "🌅"], ["José e o Sonho", "💭"],
-      ["Faraó", "🏛️"], ["Rainha Ester", "👸"],
-    ], personagensImgs),
   },
   {
     key: "lugares", name: "Lugares", icon: "📍", color: "from-emerald-400 to-green-600",
     bgs: [bgLugares1, bgLugares2],
     stickers: build([
-      ["Jerusalém", "🏛️"], ["Belém", "⭐"], ["Nazaré", "🏘️"],
-      ["Mar da Galileia", "🌊"], ["Rio Jordão", "🏞️"], ["Monte das Oliveiras", "🌳"],
-      ["Calvário", "✝️"], ["Tumba Vazia", "🕊️"],
-      ["Getsêmani", "🌿"], ["Cafarnaum", "🏠"],
+      ["Jerusalém", "🏛️", "Salmos 122"], ["Belém", "⭐", "Lucas 2:4"], ["Nazaré", "🏘️", "Lucas 1:26"],
+      ["Mar da Galileia", "🌊", "Mateus 4:18"], ["Rio Jordão", "🏞️", "Mateus 3:13"], ["Monte das Oliveiras", "🌳", "Lucas 22:39"],
+      ["Calvário", "✝️", "Lucas 23:33"], ["Tumba Vazia", "🕊️", "Mateus 28"],
+      ["Getsêmani", "🌿", "Mateus 26:36"], ["Cafarnaum", "🏠", "Mateus 4:13"],
     ]),
   },
   {
     key: "versiculos", name: "Versículos", icon: "📖", color: "from-violet-400 to-purple-600",
     bgs: [bgVersiculos1, bgVersiculos2],
     stickers: build([
-      ["João 3:16", "💝"], ["Salmo 23", "🐑"], ["Filipenses 4:13", "💪"],
-      ["Romanos 8:28", "🤲"], ["Provérbios 3:5", "🙇"], ["Mateus 6:33", "👑"],
-      ["Isaías 41:10", "🦅"], ["Salmo 91", "🛡️"],
-      ["Jeremias 29:11", "🌈"], ["1 Coríntios 13", "❤️"],
+      ["João 3:16", "💝", "João 3:16"], ["Salmo 23", "🐑", "Salmos 23"], ["Filipenses 4:13", "💪", "Filipenses 4:13"],
+      ["Romanos 8:28", "🤲", "Romanos 8:28"], ["Provérbios 3:5", "🙇", "Provérbios 3:5"], ["Mateus 6:33", "👑", "Mateus 6:33"],
+      ["Isaías 41:10", "🦅", "Isaías 41:10"], ["Salmo 91", "🛡️", "Salmos 91"],
+      ["Jeremias 29:11", "🌈", "Jeremias 29:11"], ["1 Coríntios 13", "❤️", "1 Coríntios 13"],
     ]),
   },
   {
     key: "profetas", name: "Profetas", icon: "📜", color: "from-stone-400 to-amber-700",
     bgs: [bgProfetas1, bgProfetas2],
     stickers: build([
-      ["Isaías", "📜"], ["Jeremias", "😢"], ["Ezequiel", "👁️"],
-      ["Daniel", "🦁"], ["Jonas", "🐳"], ["Elias", "🔥"],
-      ["Eliseu", "🪔"], ["Oséias", "💔"],
-      ["Amós", "🐏"], ["Miqueias", "⚖️"],
+      ["Isaías", "📜", "Isaías 6"], ["Jeremias", "😢", "Jeremias 1"], ["Ezequiel", "👁️", "Ezequiel 1"],
+      ["Daniel", "🦁", "Daniel 6"], ["Jonas", "🐳", "Jonas 1"], ["Elias", "🔥", "1 Reis 18"],
+      ["Eliseu", "🪔", "2 Reis 2"], ["Oséias", "💔", "Oséias 1"],
+      ["Amós", "🐏", "Amós 1"], ["Miqueias", "⚖️", "Miqueias 6:8"],
     ]),
   },
   {
     key: "apocalipse", name: "Apocalipse", icon: "🌅", color: "from-fuchsia-500 to-rose-600",
     bgs: [bgApocalipse1, bgApocalipse2],
     stickers: build([
-      ["Nova Jerusalém", "🏙️"], ["Cordeiro de Deus", "🐑"], ["Trono de Deus", "👑"],
-      ["7 Selos", "🔏"], ["7 Trombetas", "🎺"], ["Anjos", "👼"],
-      ["Livro da Vida", "📖"], ["Árvore da Vida", "🌳"],
-      ["Mar de Vidro", "💎"], ["Aleluia", "✨"],
+      ["Nova Jerusalém", "🏙️", "Apocalipse 21"], ["Cordeiro de Deus", "🐑", "Apocalipse 5"], ["Trono de Deus", "👑", "Apocalipse 4"],
+      ["7 Selos", "🔏", "Apocalipse 5-8"], ["7 Trombetas", "🎺", "Apocalipse 8-11"], ["Anjos", "👼", "Apocalipse 7"],
+      ["Livro da Vida", "📖", "Apocalipse 20:12"], ["Árvore da Vida", "🌳", "Apocalipse 22:2"],
+      ["Mar de Vidro", "💎", "Apocalipse 4:6"], ["Aleluia", "✨", "Apocalipse 19"],
     ]),
   },
 ];
 
-// Assign global ids
 let nextId = 0;
 export const categories: Category[] = raw.map((c) => ({
   ...c,

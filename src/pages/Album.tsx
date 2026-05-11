@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ChevronLeft, Repeat } from "lucide-react";
+import { ArrowLeft, ChevronLeft, Repeat, X } from "lucide-react";
 import StickerPackAnimation, { StickerResult } from "@/components/StickerPackAnimation";
 import AramaicBackdrop from "@/components/AramaicBackdrop";
 import { categories, allStickers, rarityBorder, rarityLabel, type Rarity, type Sticker } from "@/data/stickers";
@@ -29,10 +29,7 @@ function seededRand(seed: number) {
 }
 function shuffleDaily<T>(arr: T[], salt: number): T[] {
   const seed = dailySeed() + salt;
-  return [...arr]
-    .map((v, i) => ({ v, k: seededRand(seed + i * 13) }))
-    .sort((a, b) => a.k - b.k)
-    .map((x) => x.v);
+  return [...arr].map((v, i) => ({ v, k: seededRand(seed + i * 13) })).sort((a, b) => a.k - b.k).map((x) => x.v);
 }
 function pickRandom<T>(arr: T[]): T { return arr[Math.floor(Math.random() * arr.length)]; }
 
@@ -49,12 +46,12 @@ function buildPack(): { sticker: Sticker; rarity: Rarity }[] {
 
 type View = "cover" | "pages" | "trade";
 
-// Page kinds inside the book
 type BookPage =
-  | { kind: "info" }                                                    // contracapa interna
+  | { kind: "info" }
   | { kind: "category"; cat: typeof categories[number]; stickers: Sticker[]; bg?: string; pageInCat: 1 | 2 }
-  | { kind: "map" }                                                     // mapa de distribuição
-  | { kind: "back" };                                                   // contracapa final
+  | { kind: "map" }
+  | { kind: "back" }
+  | { kind: "blank" };
 
 export default function Album() {
   const navigate = useNavigate();
@@ -62,31 +59,25 @@ export default function Album() {
   const [view, setView] = useState<View>("cover");
   const [packResult, setPackResult] = useState<StickerResult[] | null>(null);
   const [owned, setOwned] = useState<Owned>(readOwned());
+  const [selected, setSelected] = useState<Sticker | null>(null);
 
   useEffect(() => { ensureInitialCoins(); }, []);
-
   useEffect(() => {
     categories.forEach((c) => c.bgs?.forEach((b) => { if (b) { const i = new Image(); i.src = b; } }));
   }, []);
 
   const totalOwned = useMemo(
-    () => Object.keys(owned).filter((k) => owned[+k] > 0).length,
-    [owned]
+    () => Object.keys(owned).filter((k) => owned[+k] > 0).length, [owned]
   );
 
-  const repeats = useMemo(() => {
-    return Object.entries(owned)
-      .filter(([, c]) => (c || 0) > 1)
-      .map(([id, c]) => {
-        const s = allStickers.find((x) => x.id === +id)!;
-        return { sticker: s, count: c - 1 };
-      })
-      .filter((x) => x.sticker);
-  }, [owned]);
+  const repeats = useMemo(() => Object.entries(owned).filter(([, c]) => (c || 0) > 1).map(([id, c]) => {
+    const s = allStickers.find((x) => x.id === +id)!;
+    return { sticker: s, count: c - 1 };
+  }).filter((x) => x.sticker), [owned]);
 
   const missing = useMemo(() => allStickers.filter((s) => !owned[s.id]), [owned]);
 
-  // Build linear page list: [info, ...categoryPages*2, map, back]
+  // Build pages, then PAD to even count so spreads render correctly
   const pages = useMemo<BookPage[]>(() => {
     const arr: BookPage[] = [{ kind: "info" }];
     for (const cat of categories) {
@@ -95,49 +86,46 @@ export default function Album() {
     }
     arr.push({ kind: "map" });
     arr.push({ kind: "back" });
+    if (arr.length % 2 !== 0) arr.push({ kind: "blank" });
     return arr;
   }, []);
 
-  const [pageIdx, setPageIdx] = useState(0);
+  // spreadIdx points to the LEFT page index of the current spread (always even)
+  const [spreadIdx, setSpreadIdx] = useState(0);
   const [flipDir, setFlipDir] = useState<"next" | "prev" | null>(null);
   const [flipping, setFlipping] = useState(false);
+  const totalSpreads = Math.ceil(pages.length / 2);
 
   const goNext = useCallback(() => {
-    if (flipping || pageIdx >= pages.length - 1) return;
-    setFlipping(true);
-    setFlipDir("next");
+    if (flipping || spreadIdx >= pages.length - 2) return;
+    setFlipping(true); setFlipDir("next");
     setTimeout(() => {
-      setPageIdx((i) => Math.min(i + 1, pages.length - 1));
+      setSpreadIdx((i) => Math.min(i + 2, pages.length - 2));
       setFlipDir(null);
       setTimeout(() => setFlipping(false), 50);
-    }, 380);
-  }, [flipping, pageIdx, pages.length]);
+    }, 520);
+  }, [flipping, spreadIdx, pages.length]);
 
   const goPrev = useCallback(() => {
-    if (flipping || pageIdx <= 0) return;
-    setFlipping(true);
-    setFlipDir("prev");
+    if (flipping || spreadIdx <= 0) return;
+    setFlipping(true); setFlipDir("prev");
     setTimeout(() => {
-      setPageIdx((i) => Math.max(i - 1, 0));
+      setSpreadIdx((i) => Math.max(i - 2, 0));
       setFlipDir(null);
       setTimeout(() => setFlipping(false), 50);
-    }, 380);
-  }, [flipping, pageIdx]);
+    }, 520);
+  }, [flipping, spreadIdx]);
 
-  // Swipe handling
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const onTouchStart = (e: React.TouchEvent) => {
-    const t = e.touches[0];
-    touchStart.current = { x: t.clientX, y: t.clientY };
+    const t = e.touches[0]; touchStart.current = { x: t.clientX, y: t.clientY };
   };
   const onTouchEnd = (e: React.TouchEvent) => {
     if (!touchStart.current) return;
     const t = e.changedTouches[0];
     const dx = t.clientX - touchStart.current.x;
     const dy = t.clientY - touchStart.current.y;
-    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
-      if (dx < 0) goNext(); else goPrev();
-    }
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { if (dx < 0) goNext(); else goPrev(); }
     touchStart.current = null;
   };
 
@@ -150,9 +138,7 @@ export default function Album() {
       next[sticker.id] = (next[sticker.id] || 0) + 1;
       return { index: sticker.id, name: sticker.name, emoji: sticker.emoji, rarity, isRepeat };
     });
-    writeOwned(next);
-    setOwned(next);
-    setPackResult(results);
+    writeOwned(next); setOwned(next); setPackResult(results);
   }, [spendCoins]);
 
   // ============= COVER =============
@@ -162,7 +148,7 @@ export default function Album() {
         style={{ background: "radial-gradient(ellipse at center, hsl(220,40%,15%), hsl(220,50%,8%))" }}>
         <StandardHeader onHome={() => navigate("/")} coins={coins} />
         <div className="flex-1 flex flex-col items-center justify-center">
-          <div onClick={() => { setPageIdx(0); setView("pages"); }}
+          <div onClick={() => { setSpreadIdx(0); setView("pages"); }}
             className="relative cursor-pointer group max-w-md w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] border-4 border-amber-700/50 transition-transform hover:scale-[1.02] hover:rotate-1">
             <img src={albumCapa} alt="Heróis da Fé" className="w-full h-full object-cover" />
             <div className="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-amber-900/80 to-transparent" />
@@ -171,7 +157,7 @@ export default function Album() {
             </div>
           </div>
           <p className="mt-6 text-white/70 font-body text-sm text-center max-w-md">
-            Colecione mais de 120 figurinhas! Cada pacotinho tem <strong>5 figurinhas</strong> (1 relíquia + 1 rara + 3 normais).
+            Colecione mais de 200 figurinhas! Cada pacotinho tem <strong>5 figurinhas</strong> (1 relíquia + 1 rara + 3 normais).
           </p>
         </div>
       </div>
@@ -238,14 +224,18 @@ export default function Album() {
     );
   }
 
-  // ============= BOOK (single page, full screen, flip) =============
-  const totalPages = pages.length;
-  const current = pages[pageIdx];
+  // ============= BOOK (2-page spread, flipsnack-style) =============
+  const leftPage = pages[spreadIdx];
+  const rightPage = pages[spreadIdx + 1];
+  const currentSpread = Math.floor(spreadIdx / 2) + 1;
 
-  const flipClass =
-    flipDir === "next" ? "animate-[pageOutNext_0.38s_ease-in_forwards]" :
-    flipDir === "prev" ? "animate-[pageOutPrev_0.38s_ease-in_forwards]" :
-    "animate-[pageInNext_0.32s_ease-out]";
+  // The right page flips out (next) or in (prev)
+  const flipRightClass =
+    flipDir === "next" ? "animate-[pageOutNext_0.52s_ease-in_forwards]" :
+    flipDir === "prev" ? "animate-[pageInPrev_0.52s_ease-out]" :
+    "";
+  const flipLeftClass =
+    flipDir === "prev" ? "animate-[pageOutPrev_0.52s_ease-in_forwards]" : "";
 
   return (
     <div className="fixed inset-0 z-40 flex flex-col"
@@ -268,46 +258,53 @@ export default function Album() {
         </button>
       </div>
 
-      {/* Single page area, full width */}
+      {/* Spread area — 2 pages side-by-side */}
       <div
         className="flex-1 flex items-stretch justify-center p-2 sm:p-4 overflow-hidden select-none"
-        style={{ perspective: "2400px" }}
+        style={{ perspective: "2800px" }}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
-        <div className="relative w-full max-w-3xl h-full">
+        <div className="relative w-full max-w-6xl h-full flex items-stretch justify-center">
+          {/* LEFT PAGE */}
           <div
-            key={pageIdx}
-            className={`absolute inset-0 origin-left ${flipClass}`}
+            key={`L-${spreadIdx}`}
+            className={`relative flex-1 max-w-[50%] origin-right ${flipLeftClass}`}
             style={{ transformStyle: "preserve-3d", backfaceVisibility: "hidden" }}
             onClick={(e) => {
-              // Tap right half = next, left half = prev (only if not on a button)
-              if ((e.target as HTMLElement).closest("button,a")) return;
-              const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-              const isRight = e.clientX - rect.left > rect.width / 2;
-              isRight ? goNext() : goPrev();
+              if ((e.target as HTMLElement).closest("button,a,[data-sticker]")) return;
+              goPrev();
             }}
           >
-            <PageShell>
-              {current.kind === "info" && <InfoPage />}
-              {current.kind === "map" && <MapPage owned={owned} />}
-              {current.kind === "back" && <BackCoverPage />}
-              {current.kind === "category" && (
-                <CategoryPage
-                  cat={current.cat}
-                  stickers={current.stickers}
-                  bg={current.bg}
-                  owned={owned}
-                  pageInCat={current.pageInCat}
-                />
-              )}
+            <PageShell side="left">
+              {renderPage(leftPage, owned, (s) => (owned[s.id] || 0) > 0 && setSelected(s))}
             </PageShell>
+          </div>
+
+          {/* Center binding shadow */}
+          <div className="w-1 bg-gradient-to-b from-amber-950/80 via-amber-900 to-amber-950/80 shadow-[inset_0_0_8px_rgba(0,0,0,0.6)] z-10" />
+
+          {/* RIGHT PAGE */}
+          <div
+            key={`R-${spreadIdx}`}
+            className={`relative flex-1 max-w-[50%] origin-left ${flipRightClass}`}
+            style={{ transformStyle: "preserve-3d", backfaceVisibility: "hidden" }}
+            onClick={(e) => {
+              if ((e.target as HTMLElement).closest("button,a,[data-sticker]")) return;
+              goNext();
+            }}
+          >
+            <PageShell side="right">
+              {renderPage(rightPage, owned, (s) => (owned[s.id] || 0) > 0 && setSelected(s))}
+            </PageShell>
+            {/* corner curl hint */}
+            <div className="pointer-events-none absolute bottom-0 right-0 w-10 h-10 bg-gradient-to-tl from-amber-50/60 via-amber-200/30 to-transparent rounded-tl-2xl" />
           </div>
         </div>
       </div>
 
       <div className="flex items-center justify-between px-4 pb-4 gap-3">
-        <button onClick={goPrev} disabled={pageIdx === 0}
+        <button onClick={goPrev} disabled={spreadIdx === 0}
           className="bg-amber-900/90 disabled:opacity-30 text-white font-display font-bold px-4 py-2 rounded-full shadow flex items-center gap-1">
           <ChevronLeft className="w-4 h-4" /> Anterior
         </button>
@@ -316,9 +313,9 @@ export default function Album() {
             className="bg-gradient-to-br from-amber-400 to-orange-600 disabled:opacity-50 text-white font-display font-bold px-5 py-2.5 rounded-full shadow-2xl hover:scale-105 transition text-sm">
             🎁 Pacotinho (3 🪙)
           </button>
-          <div className="mt-1 text-[10px] opacity-70">pág. {pageIdx + 1} de {totalPages}</div>
+          <div className="mt-1 text-[10px] opacity-70">spread {currentSpread} de {totalSpreads}</div>
         </div>
-        <button onClick={goNext} disabled={pageIdx >= totalPages - 1}
+        <button onClick={goNext} disabled={spreadIdx >= pages.length - 2}
           className="bg-amber-900/90 disabled:opacity-30 text-white font-display font-bold px-4 py-2 rounded-full shadow flex items-center gap-1">
           Próxima <ChevronLeft className="w-4 h-4 rotate-180" />
         </button>
@@ -330,15 +327,68 @@ export default function Album() {
           onClose={() => { setPackResult(null); setOwned(readOwned()); }}
         />
       )}
+
+      {selected && <StickerDetailModal sticker={selected} owned={owned[selected.id] || 0} onClose={() => setSelected(null)} />}
+    </div>
+  );
+}
+
+function renderPage(p: BookPage | undefined, owned: Owned, onStickerClick: (s: Sticker) => void) {
+  if (!p) return null;
+  if (p.kind === "info") return <InfoPage />;
+  if (p.kind === "map") return <MapPage owned={owned} />;
+  if (p.kind === "back") return <BackCoverPage />;
+  if (p.kind === "blank") return <div className="w-full h-full" />;
+  return <CategoryPage cat={p.cat} stickers={p.stickers} bg={p.bg} owned={owned} pageInCat={p.pageInCat} onStickerClick={onStickerClick} />;
+}
+
+/* -------- Sticker Detail Modal -------- */
+function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; owned: number; onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-[60] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 animate-[pageInNext_0.32s_ease-out]"
+      onClick={onClose}>
+      <div className="relative max-w-md w-full bg-gradient-to-br from-amber-50 to-amber-100 rounded-3xl shadow-2xl border-4 border-amber-700/40 p-5 sm:p-6 text-amber-950"
+        onClick={(e) => e.stopPropagation()}>
+        <button onClick={onClose} aria-label="Fechar"
+          className="absolute top-3 right-3 bg-amber-900/90 hover:bg-amber-800 text-white rounded-full w-9 h-9 flex items-center justify-center shadow">
+          <X className="w-5 h-5" />
+        </button>
+        <div className={`mx-auto rounded-2xl overflow-hidden border-[6px] ${rarityBorder(sticker.rarity)} shadow-2xl bg-white aspect-[2/3] max-w-[280px]`}>
+          {sticker.image ? (
+            <img src={sticker.image} alt={sticker.name} className="w-full h-full object-cover" />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-7xl">{sticker.emoji}</div>
+          )}
+        </div>
+        <h3 className="mt-4 text-center font-display font-extrabold text-2xl">{sticker.name}</h3>
+        <div className="flex items-center justify-center gap-2 mt-1">
+          <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-gradient-to-r ${
+            sticker.rarity === "reliquia" ? "from-yellow-300 to-amber-500 text-amber-900" :
+            sticker.rarity === "rara" ? "from-blue-300 to-indigo-400 text-indigo-900" :
+            "from-slate-200 to-slate-400 text-slate-800"
+          }`}>{rarityLabel(sticker.rarity)}</span>
+          {owned > 1 && (
+            <span className="text-[10px] font-bold bg-red-500 text-white px-2 py-0.5 rounded-full">×{owned}</span>
+          )}
+        </div>
+        {sticker.reference && (
+          <div className="mt-4 bg-amber-900/90 text-amber-50 rounded-xl px-4 py-3 text-center shadow-inner">
+            <div className="text-[10px] uppercase tracking-widest opacity-70 font-display">Referência Bíblica</div>
+            <div className="font-display font-extrabold text-lg mt-0.5">📖 {sticker.reference}</div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
 /* -------- Shared shells -------- */
 
-function PageShell({ children }: { children: React.ReactNode }) {
+function PageShell({ children, side }: { children: React.ReactNode; side: "left" | "right" }) {
   return (
-    <div className="relative w-full h-full bg-amber-900 rounded-2xl shadow-[0_20px_50px_-10px_rgba(0,0,0,0.6)] border-4 border-amber-950 overflow-hidden">
+    <div className={`relative w-full h-full bg-amber-900 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.6)] border-4 border-amber-950 overflow-hidden ${
+      side === "left" ? "rounded-l-2xl border-r-0" : "rounded-r-2xl border-l-0"
+    }`}>
       <AramaicBackdrop />
       <div className="relative w-full h-full p-3 sm:p-4">{children}</div>
     </div>
@@ -350,9 +400,7 @@ function PageShell({ children }: { children: React.ReactNode }) {
 function InfoPage() {
   return (
     <div className="relative w-full h-full flex flex-col items-center text-center text-amber-950">
-      <h2 className="font-display font-extrabold text-2xl sm:text-3xl mb-2 drop-shadow">
-        📖 Heróis da Fé
-      </h2>
+      <h2 className="font-display font-extrabold text-2xl sm:text-3xl mb-2 drop-shadow">📖 Heróis da Fé</h2>
       <p className="font-display font-bold text-sm opacity-80 mb-4">Álbum de figurinhas bíblicas</p>
       <div className="bg-amber-50/80 backdrop-blur-sm rounded-xl p-4 max-w-lg shadow-lg border border-amber-700/30 text-left space-y-2 text-sm font-body">
         <p><strong>Como colecionar:</strong> abra pacotinhos com suas moedas 🪙. Cada pacote traz 5 figurinhas — 1 relíquia, 1 rara e 3 normais.</p>
@@ -361,7 +409,7 @@ function InfoPage() {
           <span className="ml-1 inline-block px-2 rounded bg-blue-200 text-blue-900 font-bold">Rara</span>
           <span className="ml-1 inline-block px-2 rounded bg-slate-200 text-slate-900 font-bold">Normal</span>
         </p>
-        <p><strong>Repetidas:</strong> use a sala de trocas para completar mais rápido.</p>
+        <p><strong>Toque na figurinha</strong> para ver a referência bíblica e a arte completa.</p>
         <p><strong>Total:</strong> {categories.length} categorias × 16 figurinhas = <strong>{categories.length * 16}</strong> figurinhas.</p>
       </div>
       <p className="mt-auto text-xs opacity-70 font-display">Toque na lateral direita ➡️ para virar a página</p>
@@ -374,7 +422,7 @@ function MapPage({ owned }: { owned: Owned }) {
     <div className="relative w-full h-full flex flex-col text-amber-950">
       <h2 className="font-display font-extrabold text-xl sm:text-2xl text-center mb-3 drop-shadow">🗺️ Mapa de Distribuição</h2>
       <div className="flex-1 overflow-y-auto bg-amber-50/80 backdrop-blur-sm rounded-xl p-3 border border-amber-700/30 shadow-lg">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 gap-2">
           {categories.map((c) => {
             const got = c.stickers.filter((s) => (owned[s.id] || 0) > 0).length;
             const pct = Math.round((got / c.stickers.length) * 100);
@@ -413,22 +461,23 @@ function BackCoverPage() {
 }
 
 function CategoryPage({
-  cat, stickers, bg, owned, pageInCat,
+  cat, stickers, bg, owned, pageInCat, onStickerClick,
 }: {
   cat: typeof categories[number];
   stickers: Sticker[];
   bg?: string;
   owned: Owned;
   pageInCat: 1 | 2;
+  onStickerClick: (s: Sticker) => void;
 }) {
   return (
     <div className="relative w-full h-full">
       {bg && (
         <img aria-hidden src={bg} alt="" loading="eager" decoding="async"
           className="absolute inset-0 w-full h-full object-cover pointer-events-none rounded-xl"
-          style={{ opacity: 0.28 }} />
+          style={{ opacity: 0.32 }} />
       )}
-      <div className="absolute inset-0 bg-amber-50/30 pointer-events-none rounded-xl" />
+      <div className="absolute inset-0 bg-amber-50/25 pointer-events-none rounded-xl" />
       <div className="relative h-full flex flex-col">
         <div className="flex items-center justify-between mb-2 px-1 gap-1">
           <span className="text-[12px] sm:text-sm font-display font-extrabold text-white drop-shadow bg-black/55 px-3 py-1 rounded-full truncate">
@@ -439,7 +488,6 @@ function CategoryPage({
           </span>
         </div>
 
-        {/* Scattered sticker layout: 4x2 jittered */}
         <div className="relative flex-1 mt-1">
           {stickers.map((s, i) => {
             const has = (owned[s.id] || 0) > 0;
@@ -447,8 +495,7 @@ function CategoryPage({
             const areaTop = 2, areaH = 96, areaLeft = 1, areaW = 98;
             const cellW = areaW / cols;
             const cellH = areaH / rows;
-            const stickerW = 21;
-            const stickerH = 42;
+            const stickerW = 21, stickerH = 42;
             const c = i % cols;
             const r = Math.floor(i / cols);
             const slackX = cellW - stickerW;
@@ -461,9 +508,11 @@ function CategoryPage({
             const rot = (seededRand(seed * 1.91 + 5) - 0.5) * 8;
 
             return (
-              <div key={s.id}
+              <button key={s.id} type="button" data-sticker
+                onClick={(e) => { e.stopPropagation(); onStickerClick(s); }}
+                disabled={!has}
                 className={`absolute rounded-lg overflow-hidden flex flex-col items-center justify-end transition-all ${
-                  has ? `border-[3px] ${rarityBorder(s.rarity)} shadow-lg bg-gradient-to-br from-white to-amber-50` : "border-2 border-white/50"
+                  has ? `border-[3px] ${rarityBorder(s.rarity)} shadow-lg bg-gradient-to-br from-white to-amber-50 cursor-pointer hover:scale-110 hover:z-30` : "border-2 border-white/50"
                 }`}
                 style={{
                   left: `${left}%`, top: `${top}%`,
@@ -495,7 +544,7 @@ function CategoryPage({
                 {has && (owned[s.id] || 0) > 1 && (
                   <span className="absolute top-0.5 right-0.5 z-20 text-[9px] bg-red-500/90 text-white px-1 rounded-full leading-none">×{owned[s.id]}</span>
                 )}
-              </div>
+              </button>
             );
           })}
         </div>
