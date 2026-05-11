@@ -3,6 +3,7 @@ import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import CategoryOrbit from "@/components/CategoryOrbit";
 import iconBiblia from "@/assets/icon-biblia.png";
+import pergaminhoBg from "@/assets/pergaminho-bg.png";
 import iconVT from "@/assets/icon-velho-testamento.png";
 import iconNT from "@/assets/icon-novo-testamento.png";
 import iconDic from "@/assets/icon-dicionario.png";
@@ -266,7 +267,15 @@ export default function Biblia() {
 
         {/* Chapter view with full verses */}
         {selectedBook && selectedChapter && (
-          <div className="bg-popover rounded-2xl p-5 sm:p-6 shadow-lg border border-border mb-4">
+          <div
+            className="relative rounded-2xl p-6 sm:p-10 shadow-2xl border border-amber-900/30 mb-4"
+            style={{
+              backgroundImage: `url(${pergaminhoBg})`,
+              backgroundSize: "100% 100%",
+              backgroundRepeat: "no-repeat",
+              minHeight: "600px",
+              color: "hsl(25 50% 22%)",
+            }}>
             <button
               onClick={() => setSelectedChapter(null)}
               className="text-primary font-display text-sm font-bold mb-4 hover:underline"
