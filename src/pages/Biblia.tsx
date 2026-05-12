@@ -268,14 +268,16 @@ export default function Biblia() {
         {/* Chapter view with full verses */}
         {selectedBook && selectedChapter && (
           <div
-            className="relative rounded-2xl p-6 sm:p-10 shadow-2xl border border-amber-900/30 mb-4"
+            className="relative rounded-2xl shadow-2xl border border-amber-900/30 mb-4 mx-[-1rem] sm:mx-[-2rem]"
             style={{
               backgroundImage: `url(${pergaminhoBg})`,
               backgroundSize: "100% 100%",
               backgroundRepeat: "no-repeat",
               minHeight: "600px",
               color: "hsl(25 50% 22%)",
+              padding: "clamp(2.5rem, 6vw, 5rem) clamp(1.25rem, 5vw, 4rem)",
             }}>
+
             <button
               onClick={() => setSelectedChapter(null)}
               className="text-primary font-display text-sm font-bold mb-4 hover:underline"
