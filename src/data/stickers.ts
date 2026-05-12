@@ -23,16 +23,20 @@ import bgProfetas2 from "@/assets/album/profetas-2.webp";
 import bgVersiculos1 from "@/assets/album/versiculos-1.webp";
 import bgVersiculos2 from "@/assets/album/versiculos-2.webp";
 
-// Cropped sticker artwork from attachments (16 each)
-const heroisImgs = Object.values(
-  import.meta.glob("@/assets/album/herois-stickers/*.webp", { eager: true, import: "default" })
-) as string[];
-const historiasImgs = Object.values(
-  import.meta.glob("@/assets/album/historias-stickers/*.webp", { eager: true, import: "default" })
-) as string[];
-const personagensImgs = Object.values(
-  import.meta.glob("@/assets/album/personagens-stickers/*.webp", { eager: true, import: "default" })
-) as string[];
+// Cropped sticker artwork (16 each, sorted by filename)
+function loadSet(glob: Record<string, string>): string[] {
+  return Object.entries(glob)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([, v]) => v);
+}
+const heroisImgs = loadSet(import.meta.glob("@/assets/album/herois-stickers/*.webp", { eager: true, import: "default" }) as Record<string, string>);
+const historiasImgs = loadSet(import.meta.glob("@/assets/album/historias-stickers/*.webp", { eager: true, import: "default" }) as Record<string, string>);
+const personagensImgs = loadSet(import.meta.glob("@/assets/album/personagens-stickers/*.webp", { eager: true, import: "default" }) as Record<string, string>);
+const profetasImgs = loadSet(import.meta.glob("@/assets/album/profetas-stickers/*.webp", { eager: true, import: "default" }) as Record<string, string>);
+const milagresImgs = loadSet(import.meta.glob("@/assets/album/milagres-stickers/*.webp", { eager: true, import: "default" }) as Record<string, string>);
+const lugaresImgs = loadSet(import.meta.glob("@/assets/album/lugares-stickers/*.webp", { eager: true, import: "default" }) as Record<string, string>);
+const objetosImgs = loadSet(import.meta.glob("@/assets/album/objetos-stickers/*.webp", { eager: true, import: "default" }) as Record<string, string>);
+const extrasImgs = loadSet(import.meta.glob("@/assets/album/extras-stickers/*.webp", { eager: true, import: "default" }) as Record<string, string>);
 
 export type Rarity = "normal" | "rara" | "reliquia";
 
@@ -70,6 +74,92 @@ function build(items: Entry[], images?: string[]): Sticker[] {
 }
 
 const raw: Category[] = [
+  {
+    key: "personagens", name: "Personagens", icon: "👥", color: "from-emerald-400 to-green-600",
+    bgs: [bgPersonagens1, bgPersonagens2],
+    stickers: build([
+      ["Ana", "🙏", "1 Samuel 1"],
+      ["Eli", "👴", "1 Samuel 3"],
+      ["Absalão", "🧒", "2 Samuel 18"],
+      ["Salomão", "👑", "1 Reis 3"],
+      ["Isaías", "📜", "Isaías 6"],
+      ["Jeremias", "✍️", "Jeremias 1"],
+      ["Ezequiel", "📖", "Ezequiel 1"],
+      ["Daniel", "🦁", "Daniel 6"],
+      ["Sansão", "💪", "Juízes 13-16"],
+      ["Rute", "🌾", "Rute 1"],
+      ["Daniel jovem", "🌟", "Daniel 1"],
+      ["Estêvão", "🕊️", "Atos 7"],
+      ["José do Egito", "🌅", "Gênesis 41"],
+      ["José e o Sonho", "💭", "Gênesis 37"],
+      ["Faraó", "🏛️", "Êxodo 5"],
+      ["Rainha Ester", "👸", "Ester 4"],
+    ], personagensImgs),
+  },
+  {
+    key: "profetas", name: "Profetas", icon: "📜", color: "from-stone-400 to-amber-700",
+    bgs: [bgProfetas1, bgProfetas2],
+    stickers: build([
+      ["Elias", "🔥", "1 Reis 18"], ["Eliseu", "🪔", "2 Reis 2"], ["Isaías", "📜", "Isaías 6"],
+      ["Jeremias", "😢", "Jeremias 1"], ["Ezequiel", "👁️", "Ezequiel 1"], ["Daniel", "🦁", "Daniel 6"],
+      ["Oséias", "💔", "Oséias 1"], ["Amós", "🐏", "Amós 1"],
+      ["Miquéias", "⚖️", "Miqueias 6:8"], ["Naum", "🌪️", "Naum 1"], ["Habacuque", "🙏", "Habacuque 2:4"],
+      ["Sofonias", "🌄", "Sofonias 3"], ["Ageu", "🏛️", "Ageu 1"], ["Zacarias", "🐎", "Zacarias 9"],
+      ["Malaquias", "✉️", "Malaquias 3"], ["Joel", "🌬️", "Joel 2"],
+    ], profetasImgs),
+  },
+  {
+    key: "milagres", name: "Milagres", icon: "✨", color: "from-cyan-400 to-teal-600",
+    bgs: [bgMilagres1, bgMilagres2],
+    stickers: build([
+      ["Água em Vinho", "🍷", "João 2"], ["Cura do Cego", "👁️", "João 9"], ["Cura do Paralítico", "🧎", "Marcos 2"],
+      ["Tempestade Acalmada", "⛵", "Marcos 4"], ["Multiplicação dos Pães", "🍞", "João 6"], ["Andou sobre as Águas", "💧", "Mateus 14"],
+      ["Cura do Servo", "⚔️", "Mateus 8:5"], ["Cura do Leproso", "🙏", "Mateus 8:2"],
+      ["Filha de Jairo", "👧", "Marcos 5"], ["Libertação do Endemoninhado", "🕊️", "Marcos 5:1"],
+      ["Pesca Milagrosa", "🎣", "Lucas 5"], ["Figueira Seca", "🌳", "Mateus 21:19"],
+      ["Cura da Hemorragia", "💖", "Marcos 5:25"], ["Nascimento de Isaque", "👶", "Gênesis 21"],
+      ["Ressurreição de Lázaro", "✨", "João 11"], ["Ascensão de Elias", "🔥", "2 Reis 2:11"],
+    ], milagresImgs),
+  },
+  {
+    key: "lugares", name: "Lugares Sagrados", icon: "📍", color: "from-emerald-400 to-green-600",
+    bgs: [bgLugares1, bgLugares2],
+    stickers: build([
+      ["Tabernáculo", "⛺", "Êxodo 26"], ["Templo de Salomão", "🏛️", "1 Reis 6"], ["Jerusalém", "🕌", "Salmos 122"],
+      ["Rio Jordão", "🏞️", "Mateus 3:13"], ["Monte Sinai", "⛰️", "Êxodo 19"], ["Nazaré", "🏘️", "Lucas 1:26"],
+      ["Mar da Galileia", "🌊", "Mateus 4:18"], ["Túmulo Vazio", "🪦", "Mateus 28"],
+      ["Monte do Templo", "🕍", "2 Crônicas 3"], ["Monte das Oliveiras", "🌳", "Lucas 22:39"],
+      ["Cafarnaum", "🏠", "Mateus 4:13"], ["Tanque de Betesda", "💧", "João 5:2"],
+      ["Gruta de Elias", "🕯️", "1 Reis 19"], ["Cesareia Marítima", "🏛️", "Atos 10"],
+      ["Fortaleza Antônia", "🏰", "Atos 21:34"], ["Estrada de Damasco", "🛣️", "Atos 9"],
+    ], lugaresImgs),
+  },
+  {
+    key: "objetos", name: "Objetos Sagrados", icon: "📿", color: "from-yellow-400 to-amber-700",
+    bgs: [bgPatriarcas1, bgPatriarcas2],
+    stickers: build([
+      ["Tábuas da Lei", "📜", "Êxodo 20"], ["Rolo da Lei", "📖", "Deuteronômio 31"], ["Arca da Aliança", "📦", "Êxodo 25"],
+      ["Menorá", "🕎", "Êxodo 25:31"], ["Altar de Incenso", "🔥", "Êxodo 30"], ["Bastão de Moisés", "🦯", "Êxodo 4"],
+      ["Jarro de Maná", "🏺", "Êxodo 16"], ["Coroa Real", "👑", "Salmos 21:3"],
+      ["Espada do Espírito", "⚔️", "Efésios 6:17"], ["Harpa de Davi", "🎼", "1 Samuel 16:23"],
+      ["Anel do Pacto", "💍", "Lucas 15:22"], ["Peitoral do Sumo Sacerdote", "💎", "Êxodo 28"],
+      ["Shofar", "📯", "Josué 6"], ["Turíbulo", "🪔", "Levítico 16"],
+      ["Bolsa de Moedas", "💰", "Mateus 26:15"], ["Pães da Proposição", "🍞", "Êxodo 25:30"],
+    ], objetosImgs),
+  },
+  {
+    key: "extras", name: "Extras", icon: "🎁", color: "from-fuchsia-400 to-pink-600",
+    bgs: [bgVersiculos1, bgVersiculos2],
+    stickers: build([
+      ["Pergaminhos", "📜", "Jeremias 36"], ["Escrevas", "✍️", "Esdras 7"], ["Poço Antigo", "💧", "Gênesis 24"],
+      ["Barco Antigo", "⛵", "Marcos 4"], ["Camelo", "🐪", "Gênesis 24:64"], ["Ovelhas", "🐑", "Salmos 23"],
+      ["Figueira", "🌳", "Marcos 11:13"], ["Lâmpada a Óleo", "🪔", "Mateus 25:1"],
+      ["Cesto e Jarros", "🧺", "João 2:6"], ["Moeda Antiga", "🪙", "Mateus 22:19"],
+      ["Portão da Cidade", "🚪", "Rute 4:1"], ["Barraca de Mercado", "🛖", "Neemias 13:16"],
+      ["Instrumento Musical", "🎵", "Salmos 150"], ["Panela de Barro", "🍲", "2 Reis 4:38"],
+      ["Soldado Romano", "🛡️", "Mateus 27:27"], ["Caminho no Deserto", "🏜️", "Isaías 40:3"],
+    ], extrasImgs),
+  },
   {
     key: "herois", name: "Heróis da Fé", icon: "🦸", color: "from-yellow-400 to-amber-600",
     bgs: [bgPersonagens1, bgPersonagens2],
@@ -115,28 +205,6 @@ const raw: Category[] = [
     ], historiasImgs),
   },
   {
-    key: "personagens", name: "Personagens", icon: "👥", color: "from-emerald-400 to-green-600",
-    bgs: [bgPersonagens1, bgPersonagens2],
-    stickers: build([
-      ["Ana", "🙏", "1 Samuel 1"],
-      ["Eli", "👴", "1 Samuel 3"],
-      ["Absalão", "🧒", "2 Samuel 18"],
-      ["Salomão", "👑", "1 Reis 3"],
-      ["Isaías", "📜", "Isaías 6"],
-      ["Jeremias", "✍️", "Jeremias 1"],
-      ["Ezequiel", "📖", "Ezequiel 1"],
-      ["Daniel", "🦁", "Daniel 6"],
-      ["Sansão", "💪", "Juízes 13-16"],
-      ["Rute", "🌾", "Rute 1"],
-      ["Daniel jovem", "🌟", "Daniel 1"],
-      ["Estêvão", "🕊️", "Atos 7"],
-      ["José do Egito", "🌅", "Gênesis 41"],
-      ["José e o Sonho", "💭", "Gênesis 37"],
-      ["Faraó", "🏛️", "Êxodo 5"],
-      ["Rainha Ester", "👸", "Ester 4"],
-    ], personagensImgs),
-  },
-  {
     key: "criacao", name: "Criação", icon: "🌍", color: "from-sky-400 to-blue-600",
     bgs: [bgCriacao1, bgCriacao2],
     stickers: build([
@@ -171,16 +239,6 @@ const raw: Category[] = [
     ]),
   },
   {
-    key: "milagres", name: "Milagres", icon: "🐟", color: "from-cyan-400 to-teal-600",
-    bgs: [bgMilagres1, bgMilagres2],
-    stickers: build([
-      ["Multiplicação dos Pães", "🍞", "João 6"], ["Água em Vinho", "🍷", "João 2"], ["Cura do Cego", "👁️", "João 9"],
-      ["Lázaro Ressuscita", "✨", "João 11"], ["Tempestade Acalmada", "⛵", "Marcos 4"], ["Andar sobre as Águas", "💧", "Mateus 14"],
-      ["Pesca Milagrosa", "🎣", "Lucas 5"], ["Cura do Paralítico", "🧎", "Marcos 2"],
-      ["Os 10 Leprosos", "🙏", "Lucas 17"], ["Filha de Jairo", "👧", "Marcos 5"],
-    ]),
-  },
-  {
     key: "reis", name: "Reis", icon: "👑", color: "from-yellow-400 to-amber-600",
     bgs: [bgReis1, bgReis2],
     stickers: build([
@@ -211,16 +269,6 @@ const raw: Category[] = [
     ]),
   },
   {
-    key: "lugares", name: "Lugares", icon: "📍", color: "from-emerald-400 to-green-600",
-    bgs: [bgLugares1, bgLugares2],
-    stickers: build([
-      ["Jerusalém", "🏛️", "Salmos 122"], ["Belém", "⭐", "Lucas 2:4"], ["Nazaré", "🏘️", "Lucas 1:26"],
-      ["Mar da Galileia", "🌊", "Mateus 4:18"], ["Rio Jordão", "🏞️", "Mateus 3:13"], ["Monte das Oliveiras", "🌳", "Lucas 22:39"],
-      ["Calvário", "✝️", "Lucas 23:33"], ["Tumba Vazia", "🕊️", "Mateus 28"],
-      ["Getsêmani", "🌿", "Mateus 26:36"], ["Cafarnaum", "🏠", "Mateus 4:13"],
-    ]),
-  },
-  {
     key: "versiculos", name: "Versículos", icon: "📖", color: "from-violet-400 to-purple-600",
     bgs: [bgVersiculos1, bgVersiculos2],
     stickers: build([
@@ -228,16 +276,6 @@ const raw: Category[] = [
       ["Romanos 8:28", "🤲", "Romanos 8:28"], ["Provérbios 3:5", "🙇", "Provérbios 3:5"], ["Mateus 6:33", "👑", "Mateus 6:33"],
       ["Isaías 41:10", "🦅", "Isaías 41:10"], ["Salmo 91", "🛡️", "Salmos 91"],
       ["Jeremias 29:11", "🌈", "Jeremias 29:11"], ["1 Coríntios 13", "❤️", "1 Coríntios 13"],
-    ]),
-  },
-  {
-    key: "profetas", name: "Profetas", icon: "📜", color: "from-stone-400 to-amber-700",
-    bgs: [bgProfetas1, bgProfetas2],
-    stickers: build([
-      ["Isaías", "📜", "Isaías 6"], ["Jeremias", "😢", "Jeremias 1"], ["Ezequiel", "👁️", "Ezequiel 1"],
-      ["Daniel", "🦁", "Daniel 6"], ["Jonas", "🐳", "Jonas 1"], ["Elias", "🔥", "1 Reis 18"],
-      ["Eliseu", "🪔", "2 Reis 2"], ["Oséias", "💔", "Oséias 1"],
-      ["Amós", "🐏", "Amós 1"], ["Miqueias", "⚖️", "Miqueias 6:8"],
     ]),
   },
   {

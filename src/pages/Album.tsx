@@ -47,10 +47,8 @@ function buildPack(): { sticker: Sticker; rarity: Rarity }[] {
 type View = "cover" | "pages" | "trade";
 
 type BookPage =
-  | { kind: "info" }
   | { kind: "category"; cat: typeof categories[number]; stickers: Sticker[]; bg?: string; pageInCat: 1 | 2 }
   | { kind: "map" }
-  | { kind: "back" }
   | { kind: "blank" };
 
 export default function Album() {
@@ -79,13 +77,12 @@ export default function Album() {
 
   // Build pages, then PAD to even count so spreads render correctly
   const pages = useMemo<BookPage[]>(() => {
-    const arr: BookPage[] = [{ kind: "info" }];
+    const arr: BookPage[] = [];
     for (const cat of categories) {
       arr.push({ kind: "category", cat, stickers: cat.stickers.slice(0, 8), bg: cat.bgs?.[0], pageInCat: 1 });
       arr.push({ kind: "category", cat, stickers: cat.stickers.slice(8, 16), bg: cat.bgs?.[1], pageInCat: 2 });
     }
     arr.push({ kind: "map" });
-    arr.push({ kind: "back" });
     if (arr.length % 2 !== 0) arr.push({ kind: "blank" });
     return arr;
   }, []);
@@ -335,49 +332,40 @@ export default function Album() {
 
 function renderPage(p: BookPage | undefined, owned: Owned, onStickerClick: (s: Sticker) => void) {
   if (!p) return null;
-  if (p.kind === "info") return <InfoPage />;
   if (p.kind === "map") return <MapPage owned={owned} />;
-  if (p.kind === "back") return <BackCoverPage />;
   if (p.kind === "blank") return <div className="w-full h-full" />;
   return <CategoryPage cat={p.cat} stickers={p.stickers} bg={p.bg} owned={owned} pageInCat={p.pageInCat} onStickerClick={onStickerClick} />;
 }
 
-/* -------- Sticker Detail Modal -------- */
+/* -------- Sticker Detail Modal — fullscreen image only -------- */
 function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; owned: number; onClose: () => void }) {
   return (
-    <div className="fixed inset-0 z-[60] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 animate-[pageInNext_0.32s_ease-out]"
-      onClick={onClose}>
-      <div className="relative max-w-md w-full bg-gradient-to-br from-amber-50 to-amber-100 rounded-3xl shadow-2xl border-4 border-amber-700/40 p-5 sm:p-6 text-amber-950"
-        onClick={(e) => e.stopPropagation()}>
-        <button onClick={onClose} aria-label="Fechar"
-          className="absolute top-3 right-3 bg-amber-900/90 hover:bg-amber-800 text-white rounded-full w-9 h-9 flex items-center justify-center shadow">
-          <X className="w-5 h-5" />
-        </button>
-        <div className={`mx-auto rounded-2xl overflow-hidden border-[6px] ${rarityBorder(sticker.rarity)} shadow-2xl bg-white aspect-[2/3] max-w-[280px]`}>
-          {sticker.image ? (
-            <img src={sticker.image} alt={sticker.name} className="w-full h-full object-cover" />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-7xl">{sticker.emoji}</div>
-          )}
-        </div>
-        <h3 className="mt-4 text-center font-display font-extrabold text-2xl">{sticker.name}</h3>
-        <div className="flex items-center justify-center gap-2 mt-1">
-          <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-gradient-to-r ${
-            sticker.rarity === "reliquia" ? "from-yellow-300 to-amber-500 text-amber-900" :
-            sticker.rarity === "rara" ? "from-blue-300 to-indigo-400 text-indigo-900" :
-            "from-slate-200 to-slate-400 text-slate-800"
-          }`}>{rarityLabel(sticker.rarity)}</span>
-          {owned > 1 && (
-            <span className="text-[10px] font-bold bg-red-500 text-white px-2 py-0.5 rounded-full">×{owned}</span>
-          )}
-        </div>
-        {sticker.reference && (
-          <div className="mt-4 bg-amber-900/90 text-amber-50 rounded-xl px-4 py-3 text-center shadow-inner">
-            <div className="text-[10px] uppercase tracking-widest opacity-70 font-display">Referência Bíblica</div>
-            <div className="font-display font-extrabold text-lg mt-0.5">📖 {sticker.reference}</div>
-          </div>
+    <div
+      className="fixed inset-0 z-[60] bg-black/[0.99] flex items-center justify-center p-4 animate-[pageInNext_0.32s_ease-out]"
+      onClick={onClose}
+    >
+      <button
+        onClick={onClose}
+        aria-label="Fechar"
+        className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-white rounded-full w-11 h-11 flex items-center justify-center shadow-lg backdrop-blur-sm z-10"
+      >
+        <X className="w-6 h-6" />
+      </button>
+      <div className="relative w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+        {sticker.image ? (
+          <img
+            src={sticker.image}
+            alt={sticker.name}
+            className="max-w-full max-h-full object-contain drop-shadow-2xl"
+            style={{ maxHeight: "92vh" }}
+          />
+        ) : (
+          <div className="text-[200px]">{sticker.emoji}</div>
         )}
       </div>
+      {owned > 1 && (
+        <span className="absolute top-4 left-4 z-10 text-xs bg-red-500 text-white px-3 py-1 rounded-full font-bold shadow">×{owned}</span>
+      )}
     </div>
   );
 }
@@ -397,25 +385,7 @@ function PageShell({ children, side }: { children: React.ReactNode; side: "left"
 
 /* -------- Page bodies -------- */
 
-function InfoPage() {
-  return (
-    <div className="relative w-full h-full flex flex-col items-center text-center text-amber-950">
-      <h2 className="font-display font-extrabold text-2xl sm:text-3xl mb-2 drop-shadow">📖 Heróis da Fé</h2>
-      <p className="font-display font-bold text-sm opacity-80 mb-4">Álbum de figurinhas bíblicas</p>
-      <div className="bg-amber-50/80 backdrop-blur-sm rounded-xl p-4 max-w-lg shadow-lg border border-amber-700/30 text-left space-y-2 text-sm font-body">
-        <p><strong>Como colecionar:</strong> abra pacotinhos com suas moedas 🪙. Cada pacote traz 5 figurinhas — 1 relíquia, 1 rara e 3 normais.</p>
-        <p><strong>Raridades:</strong>
-          <span className="ml-1 inline-block px-2 rounded bg-yellow-200 text-yellow-900 font-bold">Relíquia</span>
-          <span className="ml-1 inline-block px-2 rounded bg-blue-200 text-blue-900 font-bold">Rara</span>
-          <span className="ml-1 inline-block px-2 rounded bg-slate-200 text-slate-900 font-bold">Normal</span>
-        </p>
-        <p><strong>Toque na figurinha</strong> para ver a referência bíblica e a arte completa.</p>
-        <p><strong>Total:</strong> {categories.length} categorias × 16 figurinhas = <strong>{categories.length * 16}</strong> figurinhas.</p>
-      </div>
-      <p className="mt-auto text-xs opacity-70 font-display">Toque na lateral direita ➡️ para virar a página</p>
-    </div>
-  );
-}
+/* InfoPage and BackCoverPage removed — album starts directly on category page 1 */
 
 function MapPage({ owned }: { owned: Owned }) {
   return (
@@ -445,20 +415,7 @@ function MapPage({ owned }: { owned: Owned }) {
   );
 }
 
-function BackCoverPage() {
-  return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center text-center text-amber-950">
-      <div className="bg-amber-50/80 backdrop-blur-sm rounded-2xl p-6 max-w-md shadow-xl border border-amber-700/30">
-        <div className="text-5xl mb-3">✨</div>
-        <h2 className="font-display font-extrabold text-2xl mb-2">Que sua fé cresça com cada figurinha!</h2>
-        <p className="font-body text-sm opacity-80">
-          Este álbum é um convite para conhecer as histórias e personagens da Palavra. Continue colecionando e compartilhando!
-        </p>
-        <p className="mt-4 font-display font-bold text-sm">— Lemos a Palavra</p>
-      </div>
-    </div>
-  );
-}
+function BackCoverPage() { return null; }
 
 function CategoryPage({
   cat, stickers, bg, owned, pageInCat, onStickerClick,
@@ -477,72 +434,47 @@ function CategoryPage({
           className="absolute inset-0 w-full h-full object-cover pointer-events-none rounded-xl"
           style={{ opacity: 0.32 }} />
       )}
-      <div className="absolute inset-0 bg-amber-50/25 pointer-events-none rounded-xl" />
-      <div className="relative h-full flex flex-col">
-        <div className="flex items-center justify-between mb-2 px-1 gap-1">
-          <span className="text-[12px] sm:text-sm font-display font-extrabold text-white drop-shadow bg-black/55 px-3 py-1 rounded-full truncate">
-            {cat.icon} {cat.name}
-          </span>
-          <span className="text-[11px] font-bold text-white drop-shadow bg-black/50 px-2 py-0.5 rounded-full shrink-0">
-            {stickers.filter((s) => (owned[s.id] || 0) > 0).length}/{stickers.length}
-          </span>
-        </div>
-
-        <div className="relative flex-1 mt-1">
+      <div className="absolute inset-0 bg-amber-50/20 pointer-events-none rounded-xl" />
+      <div className="relative h-full p-2 sm:p-3">
+        <div className="grid grid-cols-4 grid-rows-2 gap-2 sm:gap-3 h-full">
           {stickers.map((s, i) => {
             const has = (owned[s.id] || 0) > 0;
-            const cols = 4, rows = 2;
-            const areaTop = 2, areaH = 96, areaLeft = 1, areaW = 98;
-            const cellW = areaW / cols;
-            const cellH = areaH / rows;
-            const stickerW = 21, stickerH = 42;
-            const c = i % cols;
-            const r = Math.floor(i / cols);
-            const slackX = cellW - stickerW;
-            const slackY = cellH - stickerH;
-            const seed = (cat.key.length * 1000) + (pageInCat * 137) + i;
-            const jx = (seededRand(seed * 7.13) - 0.5) * slackX * 0.9;
-            const jy = (seededRand(seed * 3.71 + 11) - 0.5) * slackY * 0.9;
-            const left = areaLeft + c * cellW + slackX / 2 + jx;
-            const top = areaTop + r * cellH + slackY / 2 + jy;
-            const rot = (seededRand(seed * 1.91 + 5) - 0.5) * 8;
-
+            const number = String(i + 1 + (pageInCat === 2 ? 8 : 0)).padStart(2, "0");
             return (
-              <button key={s.id} type="button" data-sticker
+              <button
+                key={s.id}
+                type="button"
+                data-sticker
                 onClick={(e) => { e.stopPropagation(); onStickerClick(s); }}
                 disabled={!has}
-                className={`absolute rounded-lg overflow-hidden flex flex-col items-center justify-end transition-all ${
-                  has ? `border-[3px] ${rarityBorder(s.rarity)} shadow-lg bg-gradient-to-br from-white to-amber-50 cursor-pointer hover:scale-110 hover:z-30` : "border-2 border-white/50"
+                className={`relative w-full h-full rounded-lg overflow-hidden transition-all ${
+                  has
+                    ? `border-[3px] ${rarityBorder(s.rarity)} shadow-lg cursor-pointer hover:scale-[1.06] hover:z-30 bg-gradient-to-br from-white/40 to-amber-50/30`
+                    : "border-2 border-dashed border-white/40 bg-black/10"
                 }`}
-                style={{
-                  left: `${left}%`, top: `${top}%`,
-                  width: `${stickerW}%`, height: `${stickerH}%`,
-                  transform: `rotate(${rot}deg)`,
-                }}>
+              >
                 {s.image ? (
-                  <img src={s.image} alt={has ? s.name : "Figurinha não coletada"}
+                  <img
+                    src={s.image}
+                    alt={has ? s.name : "Figurinha não coletada"}
                     className="absolute inset-0 w-full h-full object-cover"
                     style={{ opacity: has ? 1 : 0.01 }}
-                    loading="lazy" decoding="async" />
+                    loading="lazy"
+                    decoding="async"
+                  />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <span className={`text-3xl ${has ? "" : "opacity-[0.01]"}`}>{s.emoji}</span>
                   </div>
                 )}
                 {!has && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/15">
-                    <span className="text-3xl text-white/80 drop-shadow">❓</span>
-                  </div>
-                )}
-                {has && (
-                  <div className="relative z-10 w-full bg-gradient-to-t from-black/75 to-transparent px-1 pb-0.5 pt-3 text-center">
-                    <span className="text-[9px] font-display font-extrabold text-white leading-tight block truncate">
-                      {String(i + 1 + (pageInCat === 2 ? 8 : 0)).padStart(2, "0")} {s.name}
-                    </span>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white/70">
+                    <span className="text-2xl drop-shadow">❓</span>
+                    <span className="text-[10px] font-display font-bold mt-1 drop-shadow">{number}</span>
                   </div>
                 )}
                 {has && (owned[s.id] || 0) > 1 && (
-                  <span className="absolute top-0.5 right-0.5 z-20 text-[9px] bg-red-500/90 text-white px-1 rounded-full leading-none">×{owned[s.id]}</span>
+                  <span className="absolute top-1 right-1 z-20 text-[9px] bg-red-500/90 text-white px-1.5 rounded-full leading-none font-bold">×{owned[s.id]}</span>
                 )}
               </button>
             );
