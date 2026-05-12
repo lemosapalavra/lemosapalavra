@@ -337,42 +337,35 @@ function renderPage(p: BookPage | undefined, owned: Owned, onStickerClick: (s: S
   return <CategoryPage cat={p.cat} stickers={p.stickers} bg={p.bg} owned={owned} pageInCat={p.pageInCat} onStickerClick={onStickerClick} />;
 }
 
-/* -------- Sticker Detail Modal -------- */
+/* -------- Sticker Detail Modal — fullscreen image only -------- */
 function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; owned: number; onClose: () => void }) {
   return (
-    <div className="fixed inset-0 z-[60] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 animate-[pageInNext_0.32s_ease-out]"
-      onClick={onClose}>
-      <div className="relative max-w-md w-full bg-gradient-to-br from-amber-50 to-amber-100 rounded-3xl shadow-2xl border-4 border-amber-700/40 p-5 sm:p-6 text-amber-950"
-        onClick={(e) => e.stopPropagation()}>
-        <button onClick={onClose} aria-label="Fechar"
-          className="absolute top-3 right-3 bg-amber-900/90 hover:bg-amber-800 text-white rounded-full w-9 h-9 flex items-center justify-center shadow">
-          <X className="w-5 h-5" />
-        </button>
-        <div className={`mx-auto rounded-2xl overflow-hidden border-[6px] ${rarityBorder(sticker.rarity)} shadow-2xl bg-white aspect-[2/3] max-w-[280px]`}>
-          {sticker.image ? (
-            <img src={sticker.image} alt={sticker.name} className="w-full h-full object-cover" />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-7xl">{sticker.emoji}</div>
-          )}
-        </div>
-        <h3 className="mt-4 text-center font-display font-extrabold text-2xl">{sticker.name}</h3>
-        <div className="flex items-center justify-center gap-2 mt-1">
-          <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-gradient-to-r ${
-            sticker.rarity === "reliquia" ? "from-yellow-300 to-amber-500 text-amber-900" :
-            sticker.rarity === "rara" ? "from-blue-300 to-indigo-400 text-indigo-900" :
-            "from-slate-200 to-slate-400 text-slate-800"
-          }`}>{rarityLabel(sticker.rarity)}</span>
-          {owned > 1 && (
-            <span className="text-[10px] font-bold bg-red-500 text-white px-2 py-0.5 rounded-full">×{owned}</span>
-          )}
-        </div>
-        {sticker.reference && (
-          <div className="mt-4 bg-amber-900/90 text-amber-50 rounded-xl px-4 py-3 text-center shadow-inner">
-            <div className="text-[10px] uppercase tracking-widest opacity-70 font-display">Referência Bíblica</div>
-            <div className="font-display font-extrabold text-lg mt-0.5">📖 {sticker.reference}</div>
-          </div>
+    <div
+      className="fixed inset-0 z-[60] bg-black/[0.99] flex items-center justify-center p-4 animate-[pageInNext_0.32s_ease-out]"
+      onClick={onClose}
+    >
+      <button
+        onClick={onClose}
+        aria-label="Fechar"
+        className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-white rounded-full w-11 h-11 flex items-center justify-center shadow-lg backdrop-blur-sm z-10"
+      >
+        <X className="w-6 h-6" />
+      </button>
+      <div className="relative w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+        {sticker.image ? (
+          <img
+            src={sticker.image}
+            alt={sticker.name}
+            className="max-w-full max-h-full object-contain drop-shadow-2xl"
+            style={{ maxHeight: "92vh" }}
+          />
+        ) : (
+          <div className="text-[200px]">{sticker.emoji}</div>
         )}
       </div>
+      {owned > 1 && (
+        <span className="absolute top-4 left-4 z-10 text-xs bg-red-500 text-white px-3 py-1 rounded-full font-bold shadow">×{owned}</span>
+      )}
     </div>
   );
 }
