@@ -47,10 +47,8 @@ function buildPack(): { sticker: Sticker; rarity: Rarity }[] {
 type View = "cover" | "pages" | "trade";
 
 type BookPage =
-  | { kind: "info" }
   | { kind: "category"; cat: typeof categories[number]; stickers: Sticker[]; bg?: string; pageInCat: 1 | 2 }
   | { kind: "map" }
-  | { kind: "back" }
   | { kind: "blank" };
 
 export default function Album() {
@@ -79,13 +77,12 @@ export default function Album() {
 
   // Build pages, then PAD to even count so spreads render correctly
   const pages = useMemo<BookPage[]>(() => {
-    const arr: BookPage[] = [{ kind: "info" }];
+    const arr: BookPage[] = [];
     for (const cat of categories) {
       arr.push({ kind: "category", cat, stickers: cat.stickers.slice(0, 8), bg: cat.bgs?.[0], pageInCat: 1 });
       arr.push({ kind: "category", cat, stickers: cat.stickers.slice(8, 16), bg: cat.bgs?.[1], pageInCat: 2 });
     }
     arr.push({ kind: "map" });
-    arr.push({ kind: "back" });
     if (arr.length % 2 !== 0) arr.push({ kind: "blank" });
     return arr;
   }, []);
@@ -335,9 +332,7 @@ export default function Album() {
 
 function renderPage(p: BookPage | undefined, owned: Owned, onStickerClick: (s: Sticker) => void) {
   if (!p) return null;
-  if (p.kind === "info") return <InfoPage />;
   if (p.kind === "map") return <MapPage owned={owned} />;
-  if (p.kind === "back") return <BackCoverPage />;
   if (p.kind === "blank") return <div className="w-full h-full" />;
   return <CategoryPage cat={p.cat} stickers={p.stickers} bg={p.bg} owned={owned} pageInCat={p.pageInCat} onStickerClick={onStickerClick} />;
 }
