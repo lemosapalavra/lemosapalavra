@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ArrowLeft } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import iconLouvores from "@/assets/icon-louvores.png";
@@ -31,15 +31,27 @@ const louvores: Louvor[] = [
 export default function Louvores() {
   const [selected, setSelected] = useState<Louvor | null>(null);
   const [playing, setPlaying] = useState<Louvor | null>(null);
+  const playerRef = useRef<HTMLDivElement>(null);
   const radius = 210;
   const iconSize = 90;
 
+  useEffect(() => {
+    if (playing?.video && playerRef.current) {
+      const el = playerRef.current as any;
+      const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+      req?.call(el).catch(() => {});
+    }
+    return () => {
+      if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+    };
+  }, [playing]);
+
   if (playing?.video) {
     return (
-      <div className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-in fade-in zoom-in duration-300">
+      <div ref={playerRef} className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-in fade-in zoom-in duration-300">
         <button
           onClick={() => setPlaying(null)}
-          className="absolute top-4 left-4 z-10 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white transition"
+          className="absolute top-4 left-4 z-20 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white transition"
           title="Voltar"
         >
           <ArrowLeft className="w-6 h-6" />
