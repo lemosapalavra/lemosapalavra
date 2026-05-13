@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ArrowLeft } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import iconLouvores from "@/assets/icon-louvores.png";
