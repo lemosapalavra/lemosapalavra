@@ -23,7 +23,7 @@ const historias: Historia[] = [
     title: "A Criação",
     icon: iconCriacao,
     angle: -90,
-    src: `https://docs.google.com/document/d/${CRIACAO_ID}/preview`,
+    src: `https://docs.google.com/videos/d/${CRIACAO_ID}/preview`,
     embed: true,
   },
   { title: "A Batalha dos Anjos", icon: iconBatalha, angle: 30, src: "/videos/batalha-dos-anjos.mp4" },
