@@ -38,15 +38,27 @@ const historias: Historia[] = [
 
 export default function Historias() {
   const [playing, setPlaying] = useState<Historia | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const radius = 210;
   const iconSize = 90;
 
+  useEffect(() => {
+    if (playing && containerRef.current) {
+      const el = containerRef.current as any;
+      const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+      req?.call(el).catch(() => {});
+    }
+    return () => {
+      if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+    };
+  }, [playing]);
+
   if (playing) {
     return (
-      <div className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-in fade-in zoom-in duration-300">
+      <div ref={containerRef} className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-in fade-in zoom-in duration-300">
         <button
           onClick={() => setPlaying(null)}
-          className="absolute top-4 left-4 z-10 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white transition"
+          className="absolute top-4 left-4 z-20 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white transition"
           title="Voltar"
         >
           <ArrowLeft className="w-6 h-6" />
@@ -55,7 +67,7 @@ export default function Historias() {
           <iframe
             src={playing.src}
             className="w-full h-full"
-            allow="autoplay; encrypted-media"
+            allow="autoplay; encrypted-media; fullscreen"
             allowFullScreen
             title={playing.title}
           />
