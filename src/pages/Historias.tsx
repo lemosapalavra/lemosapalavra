@@ -16,9 +16,16 @@ interface Historia {
 }
 
 const DRIVE_ID = "18H9e4yUmtF1HiuOkEkd3wVpPDWfACJyN";
+const CRIACAO_ID = "1WeVGy9ZS0pdITH6GyiExxfJMEBRe7Yk_ZxPm9vUz5c0";
 
 const historias: Historia[] = [
-  { title: "A Criação", icon: iconCriacao, angle: -90, src: "/videos/a-criacao.mp4" },
+  {
+    title: "A Criação",
+    icon: iconCriacao,
+    angle: -90,
+    src: `https://docs.google.com/document/d/${CRIACAO_ID}/preview`,
+    embed: true,
+  },
   { title: "A Batalha dos Anjos", icon: iconBatalha, angle: 30, src: "/videos/batalha-dos-anjos.mp4" },
   {
     title: "A Palavra Viva",
