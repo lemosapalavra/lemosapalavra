@@ -5,17 +5,28 @@ import iconHistorias from "@/assets/icon-historias.png";
 import logoCentral from "@/assets/logo-central.png";
 import iconCriacao from "@/assets/historia-criacao.jpg";
 import iconBatalha from "@/assets/historia-batalha-anjos.jpg";
+import iconNova from "@/assets/historia-nova.png";
 
 interface Historia {
   title: string;
   icon: string;
   angle: number;
   src: string;
+  embed?: boolean;
 }
+
+const DRIVE_ID = "18H9e4yUmtF1HiuOkEkd3wVpPDWfACJyN";
 
 const historias: Historia[] = [
   { title: "A Criação", icon: iconCriacao, angle: -90, src: "/videos/a-criacao.mp4" },
-  { title: "A Batalha dos Anjos", icon: iconBatalha, angle: 90, src: "/videos/batalha-dos-anjos.mp4" },
+  { title: "A Batalha dos Anjos", icon: iconBatalha, angle: 30, src: "/videos/batalha-dos-anjos.mp4" },
+  {
+    title: "A Palavra Viva",
+    icon: iconNova,
+    angle: 150,
+    src: `https://drive.google.com/file/d/${DRIVE_ID}/preview`,
+    embed: true,
+  },
 ];
 
 export default function Historias() {
@@ -33,9 +44,19 @@ export default function Historias() {
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
-        <video src={playing.src} controls autoPlay playsInline className="w-full h-full object-contain">
-          Seu navegador não suporta vídeo.
-        </video>
+        {playing.embed ? (
+          <iframe
+            src={playing.src}
+            className="w-full h-full"
+            allow="autoplay; encrypted-media"
+            allowFullScreen
+            title={playing.title}
+          />
+        ) : (
+          <video src={playing.src} controls autoPlay playsInline className="w-full h-full object-contain">
+            Seu navegador não suporta vídeo.
+          </video>
+        )}
       </div>
     );
   }
@@ -67,9 +88,10 @@ export default function Historias() {
                       src={h.icon}
                       alt={h.title}
                       loading="lazy"
-                      className="drop-shadow-lg rounded-full border-2 border-primary/30 shadow-lg mx-auto"
+                      className="drop-shadow-lg rounded-full border-2 border-primary/30 shadow-lg mx-auto bg-white"
                       style={{ width: iconSize, height: iconSize, objectFit: "cover" }}
                     />
+                    <p className="mt-1 text-xs font-bold text-primary drop-shadow">{h.title}</p>
                   </div>
                 </div>
               );
