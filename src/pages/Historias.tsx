@@ -60,19 +60,13 @@ export default function Historias() {
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
-        {playing.embed ? (
-          <iframe
-            src={playing.src}
-            className="w-full h-full"
-            allow="autoplay; encrypted-media; fullscreen"
-            allowFullScreen
-            title={playing.title}
-          />
-        ) : (
-          <video src={playing.src} controls autoPlay playsInline className="w-full h-full object-contain">
-            Seu navegador não suporta vídeo.
-          </video>
-        )}
+        <iframe
+          src={playing.src}
+          className="w-full h-full"
+          allow="autoplay; encrypted-media; fullscreen"
+          allowFullScreen
+          title={playing.title}
+        />
       </div>
     );
   }
