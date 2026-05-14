@@ -435,8 +435,8 @@ function CategoryPage({
           style={{ opacity: 0.32 }} />
       )}
       <div className="absolute inset-0 bg-amber-50/20 pointer-events-none rounded-xl" />
-      <div className="relative h-full p-2 sm:p-3">
-        <div className="grid grid-cols-4 grid-rows-2 gap-2 sm:gap-3 h-full">
+      <div className="relative h-full p-2 sm:p-3 flex items-center justify-center">
+        <div className="grid grid-cols-4 gap-2 sm:gap-3 w-full" style={{ gridTemplateRows: "repeat(2, minmax(0, 1fr))" }}>
           {stickers.map((s, i) => {
             const has = (owned[s.id] || 0) > 0;
             const number = String(i + 1 + (pageInCat === 2 ? 8 : 0)).padStart(2, "0");
@@ -447,10 +447,10 @@ function CategoryPage({
                 data-sticker
                 onClick={(e) => { e.stopPropagation(); onStickerClick(s); }}
                 disabled={!has}
-                className={`relative w-full h-full rounded-lg overflow-hidden transition-all ${
+                className={`relative w-full rounded-2xl overflow-hidden transition-all aspect-[2/3] ${
                   has
-                    ? `border-[3px] ${rarityBorder(s.rarity)} shadow-lg cursor-pointer hover:scale-[1.06] hover:z-30 bg-gradient-to-br from-white/40 to-amber-50/30`
-                    : "border-2 border-dashed border-white/40 bg-black/10"
+                    ? "border-[3px] border-amber-400 ring-1 ring-amber-200/60 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.6)] cursor-pointer hover:scale-[1.06] hover:z-30 bg-black"
+                    : "border-2 border-dashed border-white/40 bg-black/20"
                 }`}
               >
                 {s.image ? (
