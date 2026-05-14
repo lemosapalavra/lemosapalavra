@@ -3,9 +3,12 @@ import { ArrowLeft } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import iconHistorias from "@/assets/icon-historias.png";
 import logoCentral from "@/assets/logo-central.png";
-import iconCriacao from "@/assets/historia-criacao.jpg";
-import iconBatalha from "@/assets/historia-batalha-anjos.jpg";
+import iconCriacao from "@/assets/historia-criacao.png";
+import iconBatalha from "@/assets/historia-batalha-anjos.png";
 import iconNova from "@/assets/historia-nova.png";
+import iconMoises1 from "@/assets/historia-moises-1.png";
+import iconMoises2 from "@/assets/historia-moises-2.png";
+import iconMoises3 from "@/assets/historia-moises-3.png";
 
 interface Historia {
   title: string;
@@ -23,9 +26,9 @@ const rawHistorias: Omit<Historia, "angle">[] = [
   { title: "Adão e Eva — Parte II", icon: iconNova, src: BUNNY("95eed0a7-d4ee-42cd-8838-a11a378e5be9") },
   { title: "Noé e a Arca — Parte I", icon: iconNova, src: BUNNY("f390899d-48ba-4f8b-8bff-5da2a9e0bb06") },
   { title: "Noé e a Arca — Parte II", icon: iconNova, src: BUNNY("8beb646a-746b-42fd-8be5-f6acdd11a522") },
-  { title: "Moisés — Parte I", icon: iconNova, src: BUNNY("3a7dcf5f-6f4b-41a1-9af5-5353e7a5eea0") },
-  { title: "Moisés — Parte II", icon: iconNova, src: BUNNY("902b0a08-13a9-4bb7-9050-714971012c16") },
-  { title: "Moisés — Parte III", icon: iconNova, src: BUNNY("50392cc2-49d4-45c4-bd69-c2edf55be14d") },
+  { title: "Moisés — Parte I", icon: iconMoises1, src: BUNNY("3a7dcf5f-6f4b-41a1-9af5-5353e7a5eea0") },
+  { title: "Moisés — Parte II", icon: iconMoises2, src: BUNNY("902b0a08-13a9-4bb7-9050-714971012c16") },
+  { title: "Moisés — Parte III", icon: iconMoises3, src: BUNNY("50392cc2-49d4-45c4-bd69-c2edf55be14d") },
 ];
 
 const historias: Historia[] = rawHistorias.map((h, i, arr) => ({
