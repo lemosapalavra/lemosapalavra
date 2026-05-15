@@ -457,7 +457,7 @@ function CategoryPage({
                   <img
                     src={s.image}
                     alt={has ? s.name : "Figurinha não coletada"}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-contain p-1"
                     style={{ opacity: has ? 1 : 0.01 }}
                     loading="lazy"
                     decoding="async"
