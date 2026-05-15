@@ -143,7 +143,9 @@ export default function Historias() {
                       className="drop-shadow-lg rounded-full border-2 border-primary/30 shadow-lg mx-auto bg-white"
                       style={{ width: iconSize, height: iconSize, objectFit: "cover" }}
                     />
-                    <p className="mt-1 text-xs font-bold text-primary drop-shadow">{it.title}</p>
+                    {openFolder && (
+                      <p className="mt-1 text-xs font-bold text-primary drop-shadow">{it.title}</p>
+                    )}
                   </div>
                 </div>
               );
