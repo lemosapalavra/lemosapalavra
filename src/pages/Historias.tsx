@@ -14,6 +14,8 @@ import iconNoe2 from "@/assets/historia-noe-2.png";
 import iconMoises1 from "@/assets/historia-moises-1.png";
 import iconMoises2 from "@/assets/historia-moises-2.png";
 import iconMoises3 from "@/assets/historia-moises-3.png";
+import iconDaviGolias from "@/assets/historia-davi-golias.png";
+import icon10Mandamentos from "@/assets/historia-10-mandamentos.png";
 
 interface Video {
   title: string;
@@ -51,8 +53,8 @@ const folders: Folder[] = [
     videos: [
       { title: "A Criação", icon: iconCriacao, src: BUNNY("2889e4ae-7f95-4bbb-be0f-ccc9e094477c") },
       { title: "A Batalha dos Anjos", icon: iconBatalha, src: BUNNY("c46984a1-dcf7-45f9-95bd-e479beae1851") },
-      { title: "Filme 3", icon: iconFilmes, src: BUNNY("3ced4ec8-0858-4daf-a883-aff21ae614f1") },
-      { title: "Filme 4", icon: iconFilmes, src: BUNNY("e355453e-4890-4215-9f27-6741ee1760cb") },
+      { title: "Davi e Golias", icon: iconDaviGolias, src: BUNNY("3ced4ec8-0858-4daf-a883-aff21ae614f1") },
+      { title: "Os Dez Mandamentos", icon: icon10Mandamentos, src: BUNNY("e355453e-4890-4215-9f27-6741ee1760cb") },
     ],
   },
 ];
