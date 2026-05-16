@@ -81,7 +81,6 @@ export default function Album() {
     for (const cat of categories) {
       arr.push({ kind: "category", cat, stickers: cat.stickers.slice(0, 8), bg: cat.bgs?.[0], pageInCat: 1 });
     }
-    arr.push({ kind: "map" });
     if (arr.length % 2 !== 0) arr.push({ kind: "blank" });
     return arr;
   }, []);
