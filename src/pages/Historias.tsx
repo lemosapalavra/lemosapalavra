@@ -120,37 +120,24 @@ export default function Historias() {
           </button>
         )}
 
-        <div className="relative mx-auto flex items-center justify-center" style={{ width: 600, height: 600, maxWidth: "100%" }}>
-          <img
-            src={logoCentral}
-            alt="Lemos a Palavra"
-            className="absolute z-10 drop-shadow-xl"
-            style={{ width: 240, height: 240, top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
-          />
-          <div className="orbit-container absolute inset-0">
-            {items.map((it, i) => {
-              const angle = -90 + (360 / items.length) * i;
-              const angleRad = (angle * Math.PI) / 180;
-              const x = 300 + Math.cos(angleRad) * radius - iconSize / 2;
-              const y = 300 + Math.sin(angleRad) * radius - iconSize / 2;
-              return (
-                <div key={i} className="orbit-counter absolute" style={{ left: x, top: y, width: iconSize }}>
-                  <div onClick={it.onClick} className="cursor-pointer hover:scale-110 transition-transform text-center">
-                    <img
-                      src={it.icon}
-                      alt={it.title}
-                      loading="lazy"
-                      className="drop-shadow-lg rounded-full border-2 border-primary/30 shadow-lg mx-auto bg-white"
-                      style={{ width: iconSize, height: iconSize, objectFit: "cover" }}
-                    />
-                    {openFolder && (
-                      <p className="mt-1 text-xs font-bold text-primary drop-shadow">{it.title}</p>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6 py-4">
+          {items.map((it, i) => (
+            <button
+              key={i}
+              onClick={it.onClick}
+              className="flex flex-col items-center gap-2 hover:scale-105 transition-transform"
+            >
+              <img
+                src={it.icon}
+                alt={it.title}
+                loading="lazy"
+                className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-primary/30 shadow-lg bg-white object-cover"
+              />
+              <p className="text-xs sm:text-sm font-bold text-primary text-center leading-tight drop-shadow">
+                {it.title}
+              </p>
+            </button>
+          ))}
         </div>
       </div>
     </div>
