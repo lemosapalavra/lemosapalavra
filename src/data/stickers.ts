@@ -62,13 +62,13 @@ type Entry = [name: string, emoji: string, reference?: string];
 
 function build(items: Entry[], images?: string[]): Sticker[] {
   const padded = [...items];
-  while (padded.length < 16) padded.push(items[padded.length % items.length]);
-  return padded.slice(0, 16).map((n, i) => ({
+  while (padded.length < 8) padded.push(items[padded.length % items.length]);
+  return padded.slice(0, 8).map((n, i) => ({
     id: 0,
     name: n[0],
     emoji: n[1],
     reference: n[2],
-    rarity: i === 0 ? "reliquia" : i <= 2 ? "rara" : "normal",
+    rarity: i === 0 ? "reliquia" : i <= 1 ? "rara" : "normal",
     image: images?.[i],
   }));
 }
