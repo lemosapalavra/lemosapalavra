@@ -126,7 +126,7 @@ export default function Album() {
   if (view === "cover") {
     return (
       <div className="fixed inset-0 z-40 flex flex-col p-4"
-        style={{ background: "radial-gradient(ellipse at center, hsl(220,40%,15%), hsl(220,50%,8%))" }}>
+        style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
         <StandardHeader onHome={() => navigate("/")} coins={coins} />
       <div className="flex-1 flex flex-col items-center justify-center">
           <div onClick={() => { setPageIdx(0); setView("pages"); }}
