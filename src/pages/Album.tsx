@@ -75,41 +75,27 @@ export default function Album() {
 
   const missing = useMemo(() => allStickers.filter((s) => !owned[s.id]), [owned]);
 
-  // Build pages, then PAD to even count so spreads render correctly
+  // One page per category
   const pages = useMemo<BookPage[]>(() => {
-    const arr: BookPage[] = [];
-    for (const cat of categories) {
-      arr.push({ kind: "category", cat, stickers: cat.stickers.slice(0, 8), bg: cat.bgs?.[0], pageInCat: 1 });
-    }
-    if (arr.length % 2 !== 0) arr.push({ kind: "blank" });
-    return arr;
+    return categories.map((cat) => ({
+      kind: "category" as const,
+      cat,
+      stickers: cat.stickers.slice(0, 8),
+      bg: cat.bgs?.[0],
+      pageInCat: 1 as const,
+    }));
   }, []);
 
-  // spreadIdx points to the LEFT page index of the current spread (always even)
-  const [spreadIdx, setSpreadIdx] = useState(0);
-  const [flipDir, setFlipDir] = useState<"next" | "prev" | null>(null);
-  const [flipping, setFlipping] = useState(false);
-  const totalSpreads = Math.ceil(pages.length / 2);
+  const [pageIdx, setPageIdx] = useState(0);
+  const totalPages = pages.length;
 
   const goNext = useCallback(() => {
-    if (flipping || spreadIdx >= pages.length - 2) return;
-    setFlipping(true); setFlipDir("next");
-    setTimeout(() => {
-      setSpreadIdx((i) => Math.min(i + 2, pages.length - 2));
-      setFlipDir(null);
-      setTimeout(() => setFlipping(false), 50);
-    }, 520);
-  }, [flipping, spreadIdx, pages.length]);
+    setPageIdx((i) => Math.min(i + 1, pages.length - 1));
+  }, [pages.length]);
 
   const goPrev = useCallback(() => {
-    if (flipping || spreadIdx <= 0) return;
-    setFlipping(true); setFlipDir("prev");
-    setTimeout(() => {
-      setSpreadIdx((i) => Math.max(i - 2, 0));
-      setFlipDir(null);
-      setTimeout(() => setFlipping(false), 50);
-    }, 520);
-  }, [flipping, spreadIdx]);
+    setPageIdx((i) => Math.max(i - 1, 0));
+  }, []);
 
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const onTouchStart = (e: React.TouchEvent) => {
@@ -142,8 +128,8 @@ export default function Album() {
       <div className="fixed inset-0 z-40 flex flex-col p-4"
         style={{ background: "radial-gradient(ellipse at center, hsl(220,40%,15%), hsl(220,50%,8%))" }}>
         <StandardHeader onHome={() => navigate("/")} coins={coins} />
-        <div className="flex-1 flex flex-col items-center justify-center">
-          <div onClick={() => { setSpreadIdx(0); setView("pages"); }}
+      <div className="flex-1 flex flex-col items-center justify-center">
+          <div onClick={() => { setPageIdx(0); setView("pages"); }}
             className="relative cursor-pointer group max-w-md w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] border-4 border-amber-700/50 transition-transform hover:scale-[1.02] hover:rotate-1">
             <img src={albumCapa} alt="Heróis da Fé" className="w-full h-full object-cover" />
             <div className="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-amber-900/80 to-transparent" />
@@ -219,32 +205,25 @@ export default function Album() {
     );
   }
 
-  // ============= BOOK (2-page spread, flipsnack-style) =============
-  const leftPage = pages[spreadIdx];
-  const rightPage = pages[spreadIdx + 1];
-  const currentSpread = Math.floor(spreadIdx / 2) + 1;
-
-  // The right page flips out (next) or in (prev)
-  const flipRightClass =
-    flipDir === "next" ? "animate-[pageOutNext_0.52s_ease-in_forwards]" :
-    flipDir === "prev" ? "animate-[pageInPrev_0.52s_ease-out]" :
-    "";
-  const flipLeftClass =
-    flipDir === "prev" ? "animate-[pageOutPrev_0.52s_ease-in_forwards]" : "";
+  // ============= BOOK (single page per category) =============
+  const currentPage = pages[pageIdx];
+  const currentCatName = currentPage?.kind === "category" ? currentPage.cat.name : "";
 
   return (
     <div className="fixed inset-0 z-40 flex flex-col"
-      style={{ background: "radial-gradient(ellipse at center, hsl(35,45%,82%), hsl(30,40%,55%))" }}>
-      <div className="px-3 pt-3 bg-amber-950/90">
-        <StandardHeader onHome={() => navigate("/")} coins={coins} variant="dark" />
+      style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
+      <div className="px-3 pt-3">
+        <StandardHeader onHome={() => navigate("/")} coins={coins} />
       </div>
       <div className="flex items-center justify-between px-3 py-2 bg-amber-950/90 text-white shadow-lg z-10">
         <button onClick={() => setView("cover")}
           className="flex items-center gap-1 bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-full font-display font-bold text-sm transition">
           <ArrowLeft className="w-4 h-4" /> Capa
         </button>
-        <div className="text-center">
-          <div className="font-display font-extrabold text-base">📖 Heróis da Fé</div>
+        <div className="text-center min-w-0 px-2">
+          <div className="font-display font-extrabold text-sm sm:text-base truncate">
+            📖 Heróis da Fé{currentCatName ? ` — ${currentCatName}` : ""}
+          </div>
           <div className="text-[10px] opacity-80">{totalOwned} / {allStickers.length} coletadas</div>
         </div>
         <button onClick={() => setView("trade")}
@@ -253,53 +232,23 @@ export default function Album() {
         </button>
       </div>
 
-      {/* Spread area — 2 pages side-by-side */}
+      {/* Single page area */}
       <div
         className="flex-1 flex items-stretch justify-center p-2 sm:p-4 overflow-hidden select-none"
-        style={{ perspective: "2800px" }}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
-        <div className="relative w-full max-w-6xl h-full flex items-stretch justify-center">
-          {/* LEFT PAGE */}
-          <div
-            key={`L-${spreadIdx}`}
-            className={`relative flex-1 max-w-[50%] origin-right ${flipLeftClass}`}
-            style={{ transformStyle: "preserve-3d", backfaceVisibility: "hidden" }}
-            onClick={(e) => {
-              if ((e.target as HTMLElement).closest("button,a,[data-sticker]")) return;
-              goPrev();
-            }}
-          >
+        <div className="relative w-full max-w-2xl flex items-stretch justify-center">
+          <div className="relative flex-1">
             <PageShell side="left">
-              {renderPage(leftPage, owned, (s) => (owned[s.id] || 0) > 0 && setSelected(s))}
+              {renderPage(currentPage, owned, (s) => (owned[s.id] || 0) > 0 && setSelected(s))}
             </PageShell>
-          </div>
-
-          {/* Center binding shadow */}
-          <div className="w-1 bg-gradient-to-b from-amber-950/80 via-amber-900 to-amber-950/80 shadow-[inset_0_0_8px_rgba(0,0,0,0.6)] z-10" />
-
-          {/* RIGHT PAGE */}
-          <div
-            key={`R-${spreadIdx}`}
-            className={`relative flex-1 max-w-[50%] origin-left ${flipRightClass}`}
-            style={{ transformStyle: "preserve-3d", backfaceVisibility: "hidden" }}
-            onClick={(e) => {
-              if ((e.target as HTMLElement).closest("button,a,[data-sticker]")) return;
-              goNext();
-            }}
-          >
-            <PageShell side="right">
-              {renderPage(rightPage, owned, (s) => (owned[s.id] || 0) > 0 && setSelected(s))}
-            </PageShell>
-            {/* corner curl hint */}
-            <div className="pointer-events-none absolute bottom-0 right-0 w-10 h-10 bg-gradient-to-tl from-amber-50/60 via-amber-200/30 to-transparent rounded-tl-2xl" />
           </div>
         </div>
       </div>
 
       <div className="flex items-center justify-between px-4 pb-4 gap-3">
-        <button onClick={goPrev} disabled={spreadIdx === 0}
+        <button onClick={goPrev} disabled={pageIdx === 0}
           className="bg-amber-900/90 disabled:opacity-30 text-white font-display font-bold px-4 py-2 rounded-full shadow flex items-center gap-1">
           <ChevronLeft className="w-4 h-4" /> Anterior
         </button>
@@ -308,9 +257,9 @@ export default function Album() {
             className="bg-gradient-to-br from-amber-400 to-orange-600 disabled:opacity-50 text-white font-display font-bold px-5 py-2.5 rounded-full shadow-2xl hover:scale-105 transition text-sm">
             🎁 Pacotinho (3 🪙)
           </button>
-          <div className="mt-1 text-[10px] opacity-70">spread {currentSpread} de {totalSpreads}</div>
+          <div className="mt-1 text-[10px] opacity-70">página {pageIdx + 1} de {totalPages}</div>
         </div>
-        <button onClick={goNext} disabled={spreadIdx >= pages.length - 2}
+        <button onClick={goNext} disabled={pageIdx >= pages.length - 1}
           className="bg-amber-900/90 disabled:opacity-30 text-white font-display font-bold px-4 py-2 rounded-full shadow flex items-center gap-1">
           Próxima <ChevronLeft className="w-4 h-4 rotate-180" />
         </button>
