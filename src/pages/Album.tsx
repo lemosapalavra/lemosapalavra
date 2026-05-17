@@ -137,7 +137,7 @@ export default function Album() {
               👆 Toque para abrir
             </div>
           </div>
-          <p className="mt-6 text-white/70 font-body text-sm text-center max-w-md">
+          <p className="mt-6 text-foreground/80 font-body text-sm text-center max-w-md">
             Colecione mais de 200 figurinhas! Cada pacotinho tem <strong>5 figurinhas</strong> (1 relíquia + 1 rara + 3 normais).
           </p>
         </div>
