@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import iconLouvores from "@/assets/icon-louvores.png";
+import logoCentral from "@/assets/logo-central.png";
 import louvorTudo from "@/assets/louvor-tudo.png";
 import louvorEterna from "@/assets/palavra-eterna-cover.jpg";
 import louvorAleluia from "@/assets/aleluia-cover.jpg";
