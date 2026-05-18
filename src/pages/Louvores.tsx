@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import iconLouvores from "@/assets/icon-louvores.png";
+import logoCentral from "@/assets/logo-central.png";
 import louvorTudo from "@/assets/louvor-tudo.png";
 import louvorEterna from "@/assets/palavra-eterna-cover.jpg";
 import louvorAleluia from "@/assets/aleluia-cover.jpg";
@@ -31,24 +32,52 @@ export default function Louvores() {
       <div className="max-w-4xl mx-auto">
         <PageHeader title="Louvores" subtitle="Toque em um louvor" icon={iconLouvores} />
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6 py-4">
-          {louvores.map((l, i) => (
-            <button
-              key={i}
-              onClick={() => setSelected(l)}
-              className="flex flex-col items-center gap-2 hover:scale-105 transition-transform"
-            >
-              <img
-                src={l.icon}
-                alt={l.title}
-                loading="lazy"
-                className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-primary/30 shadow-lg bg-white object-cover"
-              />
-              <p className="text-xs sm:text-sm font-bold text-primary text-center leading-tight drop-shadow">
-                {l.title}
-              </p>
-            </button>
-          ))}
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 py-4">
+          <div className="flex flex-col items-center gap-5 sm:gap-6">
+            {louvores.slice(0, Math.ceil(louvores.length / 2)).map((l, i) => (
+              <button
+                key={i}
+                onClick={() => setSelected(l)}
+                className="flex flex-col items-center gap-2 hover:scale-105 transition-transform"
+              >
+                <img
+                  src={l.icon}
+                  alt={l.title}
+                  loading="lazy"
+                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-primary/30 shadow-lg bg-white object-cover"
+                />
+                <p className="text-xs sm:text-sm font-bold text-primary text-center leading-tight drop-shadow">
+                  {l.title}
+                </p>
+              </button>
+            ))}
+          </div>
+
+          <img
+            src={logoCentral}
+            alt="Lemos a Palavra"
+            className="w-32 sm:w-48 md:w-56 drop-shadow-xl"
+          />
+
+          <div className="flex flex-col items-center gap-5 sm:gap-6">
+            {louvores.slice(Math.ceil(louvores.length / 2)).map((l, i) => (
+              <button
+                key={i}
+                onClick={() => setSelected(l)}
+                className="flex flex-col items-center gap-2 hover:scale-105 transition-transform"
+              >
+                <img
+                  src={l.icon}
+                  alt={l.title}
+                  loading="lazy"
+                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-primary/30 shadow-lg bg-white object-cover"
+                />
+                <p className="text-xs sm:text-sm font-bold text-primary text-center leading-tight drop-shadow">
+                  {l.title}
+                </p>
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="text-center mt-6 space-y-2 max-w-2xl mx-auto">

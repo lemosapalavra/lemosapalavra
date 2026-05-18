@@ -717,41 +717,47 @@ export default function Atividades() {
       <div className="max-w-4xl mx-auto">
         <PageHeader title="Atividades Bíblicas" subtitle="Aprenda brincando!" icon={iconAtividades} />
 
-        <div className="relative mx-auto flex items-center justify-center" style={{ width: 600, height: 600, maxWidth: "100%" }}>
-          <img
-            src={logoCentral}
-            alt="Lemos a Palavra"
-            className="absolute z-10 drop-shadow-xl"
-            style={{ width: 220, height: 220, top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
-          />
-          <div className="orbit-container absolute inset-0">
-            {activities.map((a, i) => {
-              const angleRad = (a.angle * Math.PI) / 180;
-              const x = 300 + Math.cos(angleRad) * orbitRadius - orbitIconSize / 2;
-              const y = 300 + Math.sin(angleRad) * orbitRadius - orbitIconSize / 2;
-              return (
-                <div
-                  key={i}
-                  className="orbit-counter absolute"
-                  style={{ left: x, top: y, width: orbitIconSize }}
-                >
-                  <div
-                    onClick={() => {
-                      if (a.id === "quiz") startQuiz();
-                      else if (a.id === "memory") startMemory();
-                      else if (a.id === "coloring") { setColoringIdx(0); setShapeFills({}); setActiveGame("coloring"); }
-                      else if (a.id === "puzzle") { setJigsawTiles([]); setActiveGame("puzzle"); }
-                    }}
-                    className="cursor-pointer hover:scale-110 transition-transform text-center"
-                  >
-                    <img src={a.icon} alt={a.title} className="drop-shadow-lg rounded-full border-2 border-primary/30 shadow-lg mx-auto" loading="lazy" style={{ width: orbitIconSize, height: orbitIconSize, objectFit: "cover" }} />
-                    <p className="font-display text-xs font-bold text-foreground mt-1">{a.title}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        {(() => {
+          const mid = Math.ceil(activities.length / 2);
+          const leftAct = activities.slice(0, mid);
+          const rightAct = activities.slice(mid);
+          const handleClick = (id: string) => {
+            if (id === "quiz") startQuiz();
+            else if (id === "memory") startMemory();
+            else if (id === "coloring") { setColoringIdx(0); setShapeFills({}); setActiveGame("coloring"); }
+            else if (id === "puzzle") { setJigsawTiles([]); setActiveGame("puzzle"); }
+          };
+          const renderAct = (a: typeof activities[number], i: number) => (
+            <div
+              key={i}
+              onClick={() => handleClick(a.id)}
+              className="cursor-pointer hover:scale-110 transition-transform text-center flex flex-col items-center"
+            >
+              <img
+                src={a.icon}
+                alt={a.title}
+                loading="lazy"
+                className="rounded-full border-2 border-primary/30 shadow-lg drop-shadow-lg w-24 h-24 sm:w-28 sm:h-28 object-cover bg-white"
+              />
+              <p className="font-display text-xs font-bold text-foreground mt-1">{a.title}</p>
+            </div>
+          );
+          return (
+            <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 mt-6">
+              <div className="flex flex-col items-center gap-5 sm:gap-6">
+                {leftAct.map(renderAct)}
+              </div>
+              <img
+                src={logoCentral}
+                alt="Lemos a Palavra"
+                className="w-32 sm:w-48 md:w-56 drop-shadow-xl"
+              />
+              <div className="flex flex-col items-center gap-5 sm:gap-6">
+                {rightAct.map(renderAct)}
+              </div>
+            </div>
+          );
+        })()}
       </div>
       <FeedbackFooter />
     </div>
