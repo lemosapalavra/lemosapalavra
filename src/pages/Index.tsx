@@ -14,7 +14,8 @@ const labelToRoute: Record<string, string> = {
   "DEVOCIONAIS": "/devocionais",
   "PEDIDOS\nDE ORAÇÃO": "/pedidos-oracao",
   "ATIVIDADES": "/atividades",
-  "HISTÓRIAS": "/historias",
+  "SÉRIES\nBÍBLICAS": "/series",
+  "FILMES\nBÍBLICOS": "/filmes",
   "ÁLBUM": "/album",
 };
 

@@ -1,7 +1,8 @@
 import logoCentral from "@/assets/logo-central.png";
 import iconBiblia from "@/assets/icon-biblia.png";
 import iconLouvores from "@/assets/icon-louvores.png";
-import iconHistorias from "@/assets/icon-historias.png";
+import iconSeries from "@/assets/icon-series.png";
+import iconFilmes from "@/assets/icon-filmes.png";
 import iconAtividades from "@/assets/icon-atividades.png";
 import iconAlbum from "@/assets/icon-album.png";
 import iconLogin from "@/assets/icon-login.png";
@@ -13,12 +14,13 @@ interface MenuItem {
 }
 
 const leftItems: MenuItem[] = [
-  { icon: iconHistorias, label: "HISTÓRIAS" },
+  { icon: iconSeries, label: "SÉRIES\nBÍBLICAS" },
+  { icon: iconFilmes, label: "FILMES\nBÍBLICOS" },
   { icon: iconLouvores, label: "LOUVORES", sublabel: "Adoração a Deus" },
-  { icon: iconBiblia, label: "BÍBLIA" },
 ];
 
 const rightItems: MenuItem[] = [
+  { icon: iconBiblia, label: "BÍBLIA" },
   { icon: iconAtividades, label: "ATIVIDADES" },
   { icon: iconAlbum, label: "ÁLBUM", sublabel: "Heróis da Fé" },
 ];
