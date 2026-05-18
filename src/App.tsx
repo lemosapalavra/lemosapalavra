@@ -36,7 +36,8 @@ const App = () => (
           <Route path="/devocionais" element={<Devocionais />} />
           <Route path="/pedidos-oracao" element={<PedidosOracao />} />
           <Route path="/atividades" element={<Atividades />} />
-          <Route path="/historias" element={<Historias />} />
+          <Route path="/series" element={<Series />} />
+          <Route path="/filmes" element={<Filmes />} />
           <Route path="/album" element={<Album />} />
           <Route path="/config" element={<Configuracao />} />
           <Route path="*" element={<NotFound />} />
