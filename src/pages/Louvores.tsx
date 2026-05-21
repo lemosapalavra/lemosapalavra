@@ -8,6 +8,7 @@ import louvorAleluia from "@/assets/aleluia-cover.jpg";
 import louvorFiel from "@/assets/ser-fiel-cover.jpg";
 import louvorEspirito from "@/assets/louvor-espirito.png";
 import louvorPai from "@/assets/louvor-pai.png";
+import louvorPlaylists from "@/assets/louvor-playlists.png";
 
 interface Louvor {
   title: string;
@@ -22,6 +23,7 @@ const louvores: Louvor[] = [
   { title: "Ser Fiel", icon: louvorFiel, lyrics: "Quero ser fiel a Ti, Senhor,\nEm todo tempo e lugar.\nQuero seguir Teus passos,\nE no Teu amor habitar." },
   { title: "Espírito Santo", icon: louvorEspirito, lyrics: "Espírito Santo, vem!\nEnche meu coração,\nDerrama Teu fogo em mim,\nEspírito Santo, vem!" },
   { title: "Pai", icon: louvorPai, lyrics: "Pai, eu Te amo!\nPai, eu Te adoro!\nObrigado por me amar,\nPor cuidar de mim, Pai!" },
+  { title: "Playlists Temáticas", icon: louvorPlaylists, lyrics: "Em breve: playlists temáticas para cada momento da sua jornada de fé." },
 ];
 
 export default function Louvores() {
