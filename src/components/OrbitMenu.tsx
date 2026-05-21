@@ -16,7 +16,7 @@ interface MenuItem {
 const leftItems: MenuItem[] = [
   { icon: iconSeries, label: "SÉRIES\nBÍBLICAS" },
   { icon: iconFilmes, label: "FILMES\nBÍBLICOS" },
-  { icon: iconLouvores, label: "LOUVORES", sublabel: "Adoração a Deus" },
+  { icon: iconLouvores, label: "MÚSICAS", sublabel: "Adoração a Deus" },
 ];
 
 const rightItems: MenuItem[] = [
