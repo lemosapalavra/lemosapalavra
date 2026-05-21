@@ -1,34 +1,89 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { ArrowLeft } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import iconLouvores from "@/assets/icon-louvores.png";
 import logoCentral from "@/assets/logo-central.png";
-import louvorTudo from "@/assets/louvor-tudo.png";
-import louvorEterna from "@/assets/palavra-eterna-cover.jpg";
-import louvorAleluia from "@/assets/aleluia-cover.jpg";
-import louvorFiel from "@/assets/ser-fiel-cover.jpg";
-import louvorEspirito from "@/assets/louvor-espirito.png";
-import louvorPai from "@/assets/louvor-pai.png";
-import louvorPlaylists from "@/assets/louvor-playlists.png";
 
 interface Louvor {
   title: string;
-  icon: string;
-  videoUrl?: string;
-  lyrics?: string;
+  src: string;
+  thumb: string;
 }
 
+const EMBED = (lib: string, id: string, autoplay = false) =>
+  `https://iframe.mediadelivery.net/embed/${lib}/${id}?autoplay=${autoplay}&preload=true&muted=${!autoplay}`;
+const THUMB = (lib: string, id: string) =>
+  `https://iframe.mediadelivery.net/embed/${lib}/${id}?autoplay=false&preload=true&muted=true`;
+
 const louvores: Louvor[] = [
-  { title: "Do meu Jeito", icon: louvorTudo, videoUrl: "https://iframe.mediadelivery.net/embed/660719/6400db8d-69e9-4b99-8c19-9a512f714662?autoplay=true" },
-  { title: "Palavra Eterna", icon: louvorEterna, videoUrl: "https://iframe.mediadelivery.net/embed/660653/49bd5ac8-4537-45f6-9b25-d8af4da7d099?autoplay=true" },
-  { title: "Graça Aleluia", icon: louvorAleluia, videoUrl: "https://iframe.mediadelivery.net/embed/660653/ae17b103-e921-4ebb-bb23-2ae690c2e5a5?autoplay=true" },
-  { title: "Sou Fiel", icon: louvorFiel, videoUrl: "https://iframe.mediadelivery.net/embed/660653/2336364c-8169-4926-ac1a-1fc6baa6a0c5?autoplay=true" },
-  { title: "Espírito Santo", icon: louvorEspirito, videoUrl: "https://iframe.mediadelivery.net/embed/660653/ed00cfd9-9b30-4803-bf53-8070ec0b5be9?autoplay=true" },
-  { title: "Pai e Filho", icon: louvorPai, videoUrl: "https://iframe.mediadelivery.net/embed/660719/c1358bec-0118-4db8-8b34-8dce8c765fe2?autoplay=true" },
-  { title: "Um de Nós", icon: louvorPlaylists, videoUrl: "https://iframe.mediadelivery.net/embed/660719/4a4cfdb3-e26c-4dc9-9363-f045feca99be?autoplay=true" },
+  { title: "Do meu Jeito", src: EMBED("660719", "6400db8d-69e9-4b99-8c19-9a512f714662", true), thumb: THUMB("660719", "6400db8d-69e9-4b99-8c19-9a512f714662") },
+  { title: "Palavra Eterna", src: EMBED("660653", "49bd5ac8-4537-45f6-9b25-d8af4da7d099", true), thumb: THUMB("660653", "49bd5ac8-4537-45f6-9b25-d8af4da7d099") },
+  { title: "Graça Aleluia", src: EMBED("660653", "ae17b103-e921-4ebb-bb23-2ae690c2e5a5", true), thumb: THUMB("660653", "ae17b103-e921-4ebb-bb23-2ae690c2e5a5") },
+  { title: "Sou Fiel", src: EMBED("660653", "2336364c-8169-4926-ac1a-1fc6baa6a0c5", true), thumb: THUMB("660653", "2336364c-8169-4926-ac1a-1fc6baa6a0c5") },
+  { title: "Espírito Santo", src: EMBED("660653", "ed00cfd9-9b30-4803-bf53-8070ec0b5be9", true), thumb: THUMB("660653", "ed00cfd9-9b30-4803-bf53-8070ec0b5be9") },
+  { title: "Pai e Filho", src: EMBED("660719", "c1358bec-0118-4db8-8b34-8dce8c765fe2", true), thumb: THUMB("660719", "c1358bec-0118-4db8-8b34-8dce8c765fe2") },
+  { title: "Um de Nós", src: EMBED("660719", "4a4cfdb3-e26c-4dc9-9363-f045feca99be", true), thumb: THUMB("660719", "4a4cfdb3-e26c-4dc9-9363-f045feca99be") },
 ];
 
 export default function Louvores() {
-  const [selected, setSelected] = useState<Louvor | null>(null);
+  const [playing, setPlaying] = useState<Louvor | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (playing && containerRef.current) {
+      const el = containerRef.current as any;
+      const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+      req?.call(el).catch(() => {});
+    }
+    return () => {
+      if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+    };
+  }, [playing]);
+
+  if (playing) {
+    return (
+      <div ref={containerRef} className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-in fade-in zoom-in duration-300">
+        <button
+          onClick={() => setPlaying(null)}
+          className="absolute top-4 left-4 z-20 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white transition"
+          title="Voltar"
+        >
+          <ArrowLeft className="w-6 h-6" />
+        </button>
+        <iframe
+          src={playing.src}
+          className="w-full h-full"
+          allow="autoplay; encrypted-media; fullscreen"
+          allowFullScreen
+          title={playing.title}
+        />
+      </div>
+    );
+  }
+
+  const renderItem = (l: Louvor, i: number) => (
+    <button
+      key={i}
+      onClick={() => setPlaying(l)}
+      className="flex flex-col items-center gap-2 hover:scale-105 transition-transform group"
+    >
+      <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-primary/30 shadow-lg bg-black">
+        <iframe
+          src={l.thumb}
+          className="absolute -inset-4 w-[calc(100%+2rem)] h-[calc(100%+2rem)] pointer-events-none"
+          tabIndex={-1}
+          aria-hidden
+          title={`Capa ${l.title}`}
+        />
+        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
+      </div>
+      <p className="text-xs sm:text-sm font-bold text-primary text-center leading-tight drop-shadow max-w-[120px]">
+        {l.title}
+      </p>
+    </button>
+  );
+
+  const mid = Math.ceil(louvores.length / 2);
 
   return (
     <div className="min-h-screen py-4 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
@@ -37,49 +92,13 @@ export default function Louvores() {
 
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 py-4">
           <div className="flex flex-col items-center gap-5 sm:gap-6">
-            {louvores.slice(0, Math.ceil(louvores.length / 2)).map((l, i) => (
-              <button
-                key={i}
-                onClick={() => setSelected(l)}
-                className="flex flex-col items-center gap-2 hover:scale-105 transition-transform"
-              >
-                <img
-                  src={l.icon}
-                  alt={l.title}
-                  loading="lazy"
-                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-primary/30 shadow-lg bg-white object-cover"
-                />
-                <p className="text-xs sm:text-sm font-bold text-primary text-center leading-tight drop-shadow">
-                  {l.title}
-                </p>
-              </button>
-            ))}
+            {louvores.slice(0, mid).map(renderItem)}
           </div>
 
-          <img
-            src={logoCentral}
-            alt="Lemos a Palavra"
-            className="w-32 sm:w-48 md:w-56 drop-shadow-xl"
-          />
+          <img src={logoCentral} alt="Lemos a Palavra" className="w-32 sm:w-48 md:w-56 drop-shadow-xl" />
 
           <div className="flex flex-col items-center gap-5 sm:gap-6">
-            {louvores.slice(Math.ceil(louvores.length / 2)).map((l, i) => (
-              <button
-                key={i}
-                onClick={() => setSelected(l)}
-                className="flex flex-col items-center gap-2 hover:scale-105 transition-transform"
-              >
-                <img
-                  src={l.icon}
-                  alt={l.title}
-                  loading="lazy"
-                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-primary/30 shadow-lg bg-white object-cover"
-                />
-                <p className="text-xs sm:text-sm font-bold text-primary text-center leading-tight drop-shadow">
-                  {l.title}
-                </p>
-              </button>
-            ))}
+            {louvores.slice(mid).map(renderItem)}
           </div>
         </div>
 
@@ -90,28 +109,6 @@ export default function Louvores() {
           <p className="font-display text-lg font-bold text-foreground">Acreditem! Tenham fé na Palavra.</p>
         </div>
       </div>
-
-      {selected && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4" onClick={() => setSelected(null)}>
-          <div onClick={(e) => e.stopPropagation()} className="bg-popover rounded-2xl border-2 border-primary/30 max-w-3xl w-full p-4 shadow-2xl relative">
-            <button onClick={() => setSelected(null)} className="absolute -top-3 -right-3 w-9 h-9 rounded-full bg-primary text-primary-foreground font-bold hover:scale-110 transition-transform z-10 shadow-lg">✕</button>
-            <h2 className="font-display text-xl sm:text-2xl font-bold text-center text-foreground mb-3">{selected.title}</h2>
-            {selected.videoUrl ? (
-              <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
-                <iframe
-                  src={selected.videoUrl}
-                  loading="lazy"
-                  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
-                  allowFullScreen
-                  className="absolute inset-0 w-full h-full rounded-lg border-0"
-                />
-              </div>
-            ) : (
-              <p className="font-body text-foreground whitespace-pre-line leading-relaxed text-center">{selected.lyrics}</p>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
