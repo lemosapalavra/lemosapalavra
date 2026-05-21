@@ -32,7 +32,7 @@ export default function Louvores() {
   return (
     <div className="min-h-screen py-4 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
       <div className="max-w-4xl mx-auto">
-        <PageHeader title="Louvores" subtitle="Toque em um louvor" icon={iconLouvores} />
+        <PageHeader title="Músicas" subtitle="Toque em uma música" icon={iconLouvores} />
 
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 py-4">
           <div className="flex flex-col items-center gap-5 sm:gap-6">
