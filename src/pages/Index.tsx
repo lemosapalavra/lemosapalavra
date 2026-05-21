@@ -9,8 +9,7 @@ import iconDedicatoria from "@/assets/icon-dedicatoria.png";
 
 const labelToRoute: Record<string, string> = {
   "BÍBLIA": "/biblia",
-  "LOUVORES": "/louvores",
-  "MÚSICAS": "/musicas",
+  "MÚSICAS": "/louvores",
   "DEVOCIONAIS": "/devocionais",
   "PEDIDOS\nDE ORAÇÃO": "/pedidos-oracao",
   "ATIVIDADES": "/atividades",

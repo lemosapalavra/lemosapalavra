@@ -238,19 +238,29 @@ export default function Biblia() {
           Tradução: João Ferreira de Almeida
         </p>
 
-        {/* Orbital category selector */}
+        {/* Category selector: icons above central logo */}
         {!selectedBook && (
-          <div className="mb-4">
-            <CategoryOrbit
-              activeKey={tab}
-              onSelect={(k) => { setTab(k as Tab); setSelectedBook(null); setSelectedChapter(null); }}
-              categories={tabs.map((t) => ({
-                key: t.key,
-                label: t.label,
-                icon: t.icon,
-                sublabel: `(${t.count})`,
-              }))}
-            />
+          <div className="mb-6 flex flex-col items-center gap-4">
+            <div className="flex items-start justify-center gap-4 sm:gap-8">
+              {tabs.map((t) => (
+                <button
+                  key={t.key}
+                  onClick={() => { setTab(t.key); setSelectedBook(null); setSelectedChapter(null); }}
+                  className={`flex flex-col items-center gap-1 transition-transform hover:scale-110 ${tab === t.key ? "scale-110" : ""}`}
+                >
+                  <img
+                    src={t.icon}
+                    alt={t.label}
+                    className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 shadow-lg bg-white object-cover ${tab === t.key ? "border-primary" : "border-primary/30"}`}
+                  />
+                  <span className="text-[10px] sm:text-xs font-bold text-primary text-center leading-tight max-w-[80px]">
+                    {t.label}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground">({t.count})</span>
+                </button>
+              ))}
+            </div>
+            <img src={iconBiblia} alt="Bíblia" className="w-28 sm:w-36 drop-shadow-xl" />
           </div>
         )}
 
