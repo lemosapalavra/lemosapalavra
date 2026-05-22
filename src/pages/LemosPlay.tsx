@@ -2,12 +2,13 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Play, Info, ChevronLeft, ChevronRight, ArrowLeft, X } from "lucide-react";
 import { seriesVideos, filmesVideos, type BibleVideo } from "@/data/bibleVideos";
-import logoCentral from "@/assets/logo-central.png";
+import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 
 const EMBED = (lib: string, id: string, autoplay = false) =>
   `https://iframe.mediadelivery.net/embed/${lib}/${id}?autoplay=${autoplay}&preload=true&muted=${!autoplay}`;
 
 interface PlayItem {
+  id: string;
   title: string;
   src: string;
   thumb?: string;
@@ -16,26 +17,36 @@ interface PlayItem {
 }
 
 const louvoresPlay: PlayItem[] = [
-  { title: "Do meu Jeito", src: EMBED("660719", "6400db8d-69e9-4b99-8c19-9a512f714662", true), thumb: EMBED("660719", "6400db8d-69e9-4b99-8c19-9a512f714662"), category: "Música" },
-  { title: "Palavra Eterna", src: EMBED("660653", "49bd5ac8-4537-45f6-9b25-d8af4da7d099", true), thumb: EMBED("660653", "49bd5ac8-4537-45f6-9b25-d8af4da7d099"), category: "Música" },
-  { title: "Graça Aleluia", src: EMBED("660653", "ae17b103-e921-4ebb-bb23-2ae690c2e5a5", true), thumb: EMBED("660653", "ae17b103-e921-4ebb-bb23-2ae690c2e5a5"), category: "Música" },
-  { title: "Sou Fiel", src: EMBED("660653", "2336364c-8169-4926-ac1a-1fc6baa6a0c5", true), thumb: EMBED("660653", "2336364c-8169-4926-ac1a-1fc6baa6a0c5"), category: "Música" },
-  { title: "Espírito Santo", src: EMBED("660653", "ed00cfd9-9b30-4803-bf53-8070ec0b5be9", true), thumb: EMBED("660653", "ed00cfd9-9b30-4803-bf53-8070ec0b5be9"), category: "Música" },
-  { title: "Pai e Filho", src: EMBED("660719", "c1358bec-0118-4db8-8b34-8dce8c765fe2", true), thumb: EMBED("660719", "c1358bec-0118-4db8-8b34-8dce8c765fe2"), category: "Música" },
-  { title: "Um de Nós", src: EMBED("660719", "4a4cfdb3-e26c-4dc9-9363-f045feca99be", true), thumb: EMBED("660719", "4a4cfdb3-e26c-4dc9-9363-f045feca99be"), category: "Música" },
+  { id: "m1", title: "Do meu Jeito", src: EMBED("660719", "6400db8d-69e9-4b99-8c19-9a512f714662", true), thumb: EMBED("660719", "6400db8d-69e9-4b99-8c19-9a512f714662"), category: "Música" },
+  { id: "m2", title: "Palavra Eterna", src: EMBED("660653", "49bd5ac8-4537-45f6-9b25-d8af4da7d099", true), thumb: EMBED("660653", "49bd5ac8-4537-45f6-9b25-d8af4da7d099"), category: "Música" },
+  { id: "m3", title: "Graça Aleluia", src: EMBED("660653", "ae17b103-e921-4ebb-bb23-2ae690c2e5a5", true), thumb: EMBED("660653", "ae17b103-e921-4ebb-bb23-2ae690c2e5a5"), category: "Música" },
+  { id: "m4", title: "Sou Fiel", src: EMBED("660653", "2336364c-8169-4926-ac1a-1fc6baa6a0c5", true), thumb: EMBED("660653", "2336364c-8169-4926-ac1a-1fc6baa6a0c5"), category: "Música" },
+  { id: "m5", title: "Espírito Santo", src: EMBED("660653", "ed00cfd9-9b30-4803-bf53-8070ec0b5be9", true), thumb: EMBED("660653", "ed00cfd9-9b30-4803-bf53-8070ec0b5be9"), category: "Música" },
+  { id: "m6", title: "Pai e Filho", src: EMBED("660719", "c1358bec-0118-4db8-8b34-8dce8c765fe2", true), thumb: EMBED("660719", "c1358bec-0118-4db8-8b34-8dce8c765fe2"), category: "Música" },
+  { id: "m7", title: "Um de Nós", src: EMBED("660719", "4a4cfdb3-e26c-4dc9-9363-f045feca99be", true), thumb: EMBED("660719", "4a4cfdb3-e26c-4dc9-9363-f045feca99be"), category: "Música" },
 ];
 
-const toPlay = (v: BibleVideo, category: string): PlayItem => ({
+const toPlay = (v: BibleVideo, category: string, prefix: string, i: number): PlayItem => ({
+  id: `${prefix}${i}`,
   title: v.title,
   src: v.src,
   poster: v.icon,
   category,
 });
 
-const filmesPlay = filmesVideos.map((v) => toPlay(v, "Filme"));
-const seriesPlay = seriesVideos.map((v) => toPlay(v, "Série"));
+const filmesPlay = filmesVideos.map((v, i) => toPlay(v, "Filme", "f", i));
+const seriesPlay = seriesVideos.map((v, i) => toPlay(v, "Série", "s", i));
 
-function Row({ title, items, onPlay }: { title: string; items: PlayItem[]; onPlay: (item: PlayItem) => void }) {
+const PROGRESS_KEY = "lemosplay:progress";
+
+type ProgressMap = Record<string, { t: number; d: number; updated: number }>;
+
+const loadProgress = (): ProgressMap => {
+  try { return JSON.parse(localStorage.getItem(PROGRESS_KEY) || "{}"); } catch { return {}; }
+};
+const saveProgress = (p: ProgressMap) => localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
+
+function Row({ title, items, onPlay, progress }: { title: string; items: PlayItem[]; onPlay: (item: PlayItem) => void; progress: ProgressMap }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const scrollBy = (dx: number) => scrollerRef.current?.scrollBy({ left: dx, behavior: "smooth" });
 
@@ -55,29 +66,38 @@ function Row({ title, items, onPlay }: { title: string; items: PlayItem[]; onPla
           className="flex gap-2 overflow-x-auto scroll-smooth px-4 sm:px-12 pb-3"
           style={{ scrollbarWidth: "none" }}
         >
-          {items.map((item, i) => (
-            <button
-              key={i}
-              onClick={() => onPlay(item)}
-              className="relative shrink-0 w-[200px] sm:w-[280px] aspect-video rounded overflow-hidden bg-zinc-900 hover:scale-105 hover:z-10 hover:ring-2 hover:ring-white transition-all duration-200 group/card"
-            >
-              {item.poster ? (
-                <img src={item.poster} alt={item.title} className="w-full h-full object-cover" loading="lazy" />
-              ) : item.thumb ? (
-                <iframe
-                  src={item.thumb}
-                  className="absolute inset-0 w-full h-full pointer-events-none scale-150"
-                  tabIndex={-1}
-                  aria-hidden
-                  title={item.title}
-                />
-              ) : null}
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-3 opacity-0 group-hover/card:opacity-100 transition-opacity">
-                <p className="text-white font-bold text-sm text-left">{item.title}</p>
-                <p className="text-zinc-300 text-xs text-left">{item.category}</p>
-              </div>
-            </button>
-          ))}
+          {items.map((item) => {
+            const p = progress[item.id];
+            const pct = p && p.d > 0 ? Math.min(100, Math.round((p.t / p.d) * 100)) : 0;
+            return (
+              <button
+                key={item.id}
+                onClick={() => onPlay(item)}
+                className="relative shrink-0 w-[200px] sm:w-[280px] aspect-video rounded overflow-hidden bg-zinc-900 hover:scale-105 hover:z-10 hover:ring-2 hover:ring-white transition-all duration-200 group/card"
+              >
+                {item.poster ? (
+                  <img src={item.poster} alt={item.title} className="w-full h-full object-cover" loading="lazy" />
+                ) : item.thumb ? (
+                  <iframe
+                    src={item.thumb}
+                    className="absolute inset-0 w-full h-full pointer-events-none scale-150"
+                    tabIndex={-1}
+                    aria-hidden
+                    title={item.title}
+                  />
+                ) : null}
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-3 pb-4">
+                  <p className="text-white font-bold text-sm text-left line-clamp-1">{item.title}</p>
+                  <p className="text-zinc-300 text-xs text-left">{item.category}</p>
+                </div>
+                {pct > 0 && (
+                  <div className="absolute bottom-0 inset-x-0 h-1 bg-white/20">
+                    <div className="h-full" style={{ width: `${pct}%`, background: "#e50914" }} />
+                  </div>
+                )}
+              </button>
+            );
+          })}
         </div>
         <button
           onClick={() => scrollBy(600)}
@@ -91,29 +111,79 @@ function Row({ title, items, onPlay }: { title: string; items: PlayItem[]; onPla
   );
 }
 
+const allItems: PlayItem[] = [...filmesPlay, ...seriesPlay, ...louvoresPlay];
+
 export default function LemosPlay() {
   const navigate = useNavigate();
   const [playing, setPlaying] = useState<PlayItem | null>(null);
-  const playerRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState<ProgressMap>(() => loadProgress());
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  const hero = useMemo(() => filmesPlay[0] ?? seriesPlay[0] ?? louvoresPlay[0], []);
+  // Build resume URL with start time
+  const playSrc = useMemo(() => {
+    if (!playing) return "";
+    const p = progress[playing.id];
+    const start = p && p.d > 0 && p.t > 5 && p.t < p.d - 10 ? Math.floor(p.t) : 0;
+    const sep = playing.src.includes("?") ? "&" : "?";
+    return start > 0 ? `${playing.src}${sep}t=${start}` : playing.src;
+  }, [playing]);
 
+  // Listen to Bunny player.js postMessage events to track progress
   useEffect(() => {
-    if (playing && playerRef.current) {
-      const el = playerRef.current as any;
-      const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
-      req?.call(el).catch(() => {});
-    }
+    if (!playing) return;
+    const currentId = playing.id;
+
+    const subscribe = () => {
+      const win = iframeRef.current?.contentWindow;
+      if (!win) return;
+      ["timeupdate", "ended", "play", "ready"].forEach((evt) => {
+        win.postMessage(JSON.stringify({ method: "addEventListener", value: evt }), "*");
+      });
+    };
+
+    const onLoad = () => setTimeout(subscribe, 500);
+    iframeRef.current?.addEventListener("load", onLoad);
+
+    const onMsg = (e: MessageEvent) => {
+      if (typeof e.data !== "string") return;
+      try {
+        const data = JSON.parse(e.data);
+        if (data.event === "timeupdate" && data.value) {
+          const t = Number(data.value.seconds);
+          const d = Number(data.value.duration);
+          if (!isNaN(t) && !isNaN(d) && d > 0) {
+            setProgress((prev) => {
+              const next = { ...prev, [currentId]: { t, d, updated: Date.now() } };
+              saveProgress(next);
+              return next;
+            });
+          }
+        }
+      } catch {}
+    };
+    window.addEventListener("message", onMsg);
     return () => {
-      if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+      window.removeEventListener("message", onMsg);
+      iframeRef.current?.removeEventListener("load", onLoad);
     };
   }, [playing]);
+
+  // Continue watching: items with progress between 5% and 95%
+  const continueItems = useMemo(() => {
+    return Object.entries(progress)
+      .filter(([, p]) => p.d > 0 && p.t / p.d > 0.02 && p.t / p.d < 0.95)
+      .sort((a, b) => b[1].updated - a[1].updated)
+      .map(([id]) => allItems.find((x) => x.id === id))
+      .filter((x): x is PlayItem => !!x);
+  }, [progress]);
+
+  const hero = filmesPlay[0] ?? seriesPlay[0] ?? louvoresPlay[0];
 
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Top bar */}
       <header className="fixed top-0 inset-x-0 z-40 bg-gradient-to-b from-black/90 to-transparent">
-        <div className="flex items-center justify-between px-4 sm:px-12 py-4">
+        <div className="flex items-center justify-between px-4 sm:px-12 py-3">
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate("/")}
@@ -122,12 +192,7 @@ export default function LemosPlay() {
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
-            <div className="flex items-center gap-2">
-              <img src={logoCentral} alt="Lemos a Palavra" className="w-10 h-10 rounded-full" />
-              <span className="font-display text-xl sm:text-3xl font-extrabold tracking-tight" style={{ color: "#e50914" }}>
-                LemosPlay
-              </span>
-            </div>
+            <img src={lemosPlayLogo} alt="Lemos Play" className="h-14 sm:h-20 w-auto drop-shadow-xl" />
           </div>
           <nav className="hidden sm:flex items-center gap-6 text-sm font-semibold text-zinc-200">
             <a href="#filmes" className="hover:text-white">Filmes</a>
@@ -168,18 +233,21 @@ export default function LemosPlay() {
 
       {/* Rows */}
       <div className="-mt-20 sm:-mt-32 relative z-10 pb-16">
-        <div id="filmes"><Row title="Filmes Bíblicos" items={filmesPlay} onPlay={setPlaying} /></div>
-        <div id="series"><Row title="Séries Bíblicas" items={seriesPlay} onPlay={setPlaying} /></div>
-        <div id="musicas"><Row title="Músicas" items={louvoresPlay} onPlay={setPlaying} /></div>
+        {continueItems.length > 0 && (
+          <Row title="Continuar assistindo" items={continueItems} onPlay={setPlaying} progress={progress} />
+        )}
+        <div id="filmes"><Row title="Filmes Bíblicos" items={filmesPlay} onPlay={setPlaying} progress={progress} /></div>
+        <div id="series"><Row title="Séries Bíblicas" items={seriesPlay} onPlay={setPlaying} progress={progress} /></div>
+        <div id="musicas"><Row title="Músicas" items={louvoresPlay} onPlay={setPlaying} progress={progress} /></div>
       </div>
 
       <footer className="text-center text-zinc-500 text-xs pb-8 px-4">
-        LemosPlay · Conteúdo cristão para toda a família · © Lemos a Palavra
+        Lemos Play · Conteúdo cristão para toda a família · © Lemos a Palavra
       </footer>
 
       {/* Player */}
       {playing && (
-        <div ref={playerRef} className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+        <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
           <button
             onClick={() => setPlaying(null)}
             className="absolute top-4 right-4 z-20 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white"
@@ -188,9 +256,10 @@ export default function LemosPlay() {
             <X className="w-6 h-6" />
           </button>
           <iframe
-            src={playing.src}
-            className="w-full h-full"
-            allow="autoplay; encrypted-media; fullscreen"
+            ref={iframeRef}
+            src={playSrc}
+            className="absolute inset-0 w-full h-full border-0"
+            allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
             allowFullScreen
             title={playing.title}
           />
