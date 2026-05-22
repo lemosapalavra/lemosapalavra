@@ -2,6 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { ArrowLeft } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import iconLouvores from "@/assets/icon-louvores.png";
+import iconLouvoresCat from "@/assets/icon-louvores-cat.png";
+import iconPlaylists from "@/assets/icon-playlists.png";
+import iconMusicais from "@/assets/icon-musicais.png";
 import logoCentral from "@/assets/logo-central.png";
 
 interface Louvor {
@@ -25,8 +28,17 @@ const louvores: Louvor[] = [
   { title: "Um de Nós", src: EMBED("660719", "4a4cfdb3-e26c-4dc9-9363-f045feca99be", true), thumb: THUMB("660719", "4a4cfdb3-e26c-4dc9-9363-f045feca99be") },
 ];
 
+type Tab = "louvores" | "playlists" | "musicais";
+
+const tabs: { id: Tab; label: string; icon: string }[] = [
+  { id: "louvores", label: "Louvores", icon: iconLouvoresCat },
+  { id: "playlists", label: "Playlists", icon: iconPlaylists },
+  { id: "musicais", label: "Musicais", icon: iconMusicais },
+];
+
 export default function Louvores() {
   const [playing, setPlaying] = useState<Louvor | null>(null);
+  const [tab, setTab] = useState<Tab>("louvores");
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -88,19 +100,57 @@ export default function Louvores() {
   return (
     <div className="min-h-screen py-4 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
       <div className="max-w-4xl mx-auto">
-        <PageHeader title="Músicas" subtitle="Toque em uma música" icon={iconLouvores} />
+        <PageHeader title="Músicas" subtitle="Escolha uma categoria" icon={iconLouvores} />
 
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 py-4">
-          <div className="flex flex-col items-center gap-5 sm:gap-6">
-            {louvores.slice(0, mid).map(renderItem)}
-          </div>
-
-          <img src={logoCentral} alt="Lemos a Palavra" className="w-32 sm:w-48 md:w-56 drop-shadow-xl" />
-
-          <div className="flex flex-col items-center gap-5 sm:gap-6">
-            {louvores.slice(mid).map(renderItem)}
-          </div>
+        {/* Top category icons */}
+        <div className="flex items-center justify-center gap-6 sm:gap-10 my-6">
+          {tabs.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              className={`flex flex-col items-center gap-2 transition-transform hover:scale-110 ${
+                tab === t.id ? "scale-110" : "opacity-70"
+              }`}
+            >
+              <img
+                src={t.icon}
+                alt={t.label}
+                className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 shadow-xl bg-white object-cover ${
+                  tab === t.id ? "border-primary" : "border-primary/30"
+                }`}
+              />
+              <span className="font-display font-bold text-sm sm:text-base text-primary">{t.label}</span>
+            </button>
+          ))}
         </div>
+
+        {tab === "louvores" && (
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 py-4">
+            <div className="flex flex-col items-center gap-5 sm:gap-6">
+              {louvores.slice(0, mid).map(renderItem)}
+            </div>
+            <img src={logoCentral} alt="Lemos a Palavra" className="w-32 sm:w-48 md:w-56 drop-shadow-xl" />
+            <div className="flex flex-col items-center gap-5 sm:gap-6">
+              {louvores.slice(mid).map(renderItem)}
+            </div>
+          </div>
+        )}
+
+        {tab === "playlists" && (
+          <div className="text-center py-12">
+            <img src={iconPlaylists} alt="Playlists" className="w-32 h-32 mx-auto mb-4 rounded-full shadow-xl" />
+            <p className="font-display text-2xl font-bold text-primary">Playlists Temáticas</p>
+            <p className="font-body text-foreground/80 mt-2">Em breve: playlists para cada momento da sua jornada de fé.</p>
+          </div>
+        )}
+
+        {tab === "musicais" && (
+          <div className="text-center py-12">
+            <img src={iconMusicais} alt="Musicais" className="w-32 h-32 mx-auto mb-4 rounded-full shadow-xl" />
+            <p className="font-display text-2xl font-bold text-primary">Musicais</p>
+            <p className="font-body text-foreground/80 mt-2">Em breve: musicais bíblicos para toda a família.</p>
+          </div>
+        )}
 
         <div className="text-center mt-6 space-y-2 max-w-2xl mx-auto">
           <p className="font-display text-2xl font-bold text-primary">Convido você!</p>
