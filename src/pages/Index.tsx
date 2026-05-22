@@ -6,6 +6,7 @@ import DedicatoriaModal from "@/components/DedicatoriaModal";
 import { useCoins, ensureInitialCoins, addCoins } from "@/hooks/useCoins";
 import iconUsuario from "@/assets/icon-usuario.png";
 import iconDedicatoria from "@/assets/icon-dedicatoria.png";
+import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 
 const labelToRoute: Record<string, string> = {
   "BÍBLIA": "/biblia",
@@ -109,11 +110,15 @@ export default function Index() {
           {user && (
             <button
               onClick={() => navigate("/lemosplay")}
-              className="hover:scale-110 transition-transform px-5 py-3 rounded-2xl font-display font-extrabold text-white shadow-xl tracking-wide"
-              style={{ background: "linear-gradient(135deg, #e50914, #b00610)" }}
-              title="LemosPlay"
+              className="hover:scale-110 transition-transform"
+              style={{ filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.35))" }}
+              title="Lemos Play"
             >
-              ▶ LemosPlay
+              <img
+                src={lemosPlayLogo}
+                alt="Lemos Play"
+                className="w-20 h-20 sm:w-24 sm:h-24 object-contain"
+              />
             </button>
           )}
         </div>
