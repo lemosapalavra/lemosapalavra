@@ -39,18 +39,27 @@ const tabs: { id: Tab; label: string; icon: string }[] = [
 export default function Louvores() {
   const [playing, setPlaying] = useState<Louvor | null>(null);
   const [tab, setTab] = useState<Tab>("louvores");
-  const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (playing && containerRef.current) {
-      const el = containerRef.current as any;
-      const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
-      req?.call(el).catch(() => {});
-    }
-    return () => {
-      if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
-    };
-  }, [playing]);
+  if (playing) {
+    return (
+      <div className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-in fade-in zoom-in duration-300">
+        <button
+          onClick={() => setPlaying(null)}
+          className="absolute top-4 left-4 z-20 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white transition"
+          title="Voltar"
+        >
+          <ArrowLeft className="w-6 h-6" />
+        </button>
+        <iframe
+          src={playing.src}
+          className="absolute inset-0 w-full h-full border-0"
+          allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+          allowFullScreen
+          title={playing.title}
+        />
+      </div>
+    );
+  }
 
   if (playing) {
     return (
