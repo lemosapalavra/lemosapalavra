@@ -17,6 +17,7 @@ export interface BibleVideo {
 }
 
 const BUNNY = (id: string) => `https://iframe.mediadelivery.net/embed/660536/${id}?autoplay=true`;
+export { BUNNY };
 
 export const seriesVideos: BibleVideo[] = [
   { title: "Adão e Eva — Parte I", icon: iconAdaoEva1, src: BUNNY("2e91578e-033a-41ee-925e-e7c8263761f5") },

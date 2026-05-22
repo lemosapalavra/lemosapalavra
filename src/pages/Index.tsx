@@ -91,21 +91,32 @@ export default function Index() {
           />
         </div>
 
-        {/* Dedicatória icon centered below orbit */}
-        <button
-          onClick={() => setDedicatoriaOpen(true)}
-          className="mt-4 animate-pulse hover:animate-none hover:scale-110 transition-transform"
-          style={{
-            filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.35))",
-          }}
-          title="Dedicatória"
-        >
-          <img
-            src={iconDedicatoria}
-            alt="Dedicatória"
-            className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl"
-          />
-        </button>
+        {/* Dedicatória + LemosPlay icons centered below orbit */}
+        <div className="mt-4 flex items-center gap-4">
+          <button
+            onClick={() => setDedicatoriaOpen(true)}
+            className="animate-pulse hover:animate-none hover:scale-110 transition-transform"
+            style={{ filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.35))" }}
+            title="Dedicatória"
+          >
+            <img
+              src={iconDedicatoria}
+              alt="Dedicatória"
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl"
+            />
+          </button>
+
+          {user && (
+            <button
+              onClick={() => navigate("/lemosplay")}
+              className="hover:scale-110 transition-transform px-5 py-3 rounded-2xl font-display font-extrabold text-white shadow-xl tracking-wide"
+              style={{ background: "linear-gradient(135deg, #e50914, #b00610)" }}
+              title="LemosPlay"
+            >
+              ▶ LemosPlay
+            </button>
+          )}
+        </div>
       </div>
 
       <FeedbackFooter />
