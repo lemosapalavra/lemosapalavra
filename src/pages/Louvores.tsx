@@ -61,26 +61,6 @@ export default function Louvores() {
     );
   }
 
-  if (playing) {
-    return (
-      <div ref={containerRef} className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-in fade-in zoom-in duration-300">
-        <button
-          onClick={() => setPlaying(null)}
-          className="absolute top-4 left-4 z-20 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white transition"
-          title="Voltar"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-        <iframe
-          src={playing.src}
-          className="w-full h-full"
-          allow="autoplay; encrypted-media; fullscreen"
-          allowFullScreen
-          title={playing.title}
-        />
-      </div>
-    );
-  }
 
   const renderItem = (l: Louvor, i: number) => (
     <button
