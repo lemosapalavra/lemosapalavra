@@ -6,6 +6,7 @@ import DedicatoriaModal from "@/components/DedicatoriaModal";
 import { useCoins, ensureInitialCoins, addCoins } from "@/hooks/useCoins";
 import iconUsuario from "@/assets/icon-usuario.png";
 import iconDedicatoria from "@/assets/icon-dedicatoria.png";
+import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 
 const labelToRoute: Record<string, string> = {
   "BÍBLIA": "/biblia",
