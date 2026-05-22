@@ -15,6 +15,7 @@ import Atividades from "./pages/Atividades.tsx";
 import Series from "./pages/Series.tsx";
 import Filmes from "./pages/Filmes.tsx";
 import Album from "./pages/Album.tsx";
+import LemosPlay from "./pages/LemosPlay.tsx";
 import Configuracao from "./pages/Configuracao.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/filmes" element={<Filmes />} />
           <Route path="/album" element={<Album />} />
           <Route path="/config" element={<Configuracao />} />
+          <Route path="/lemosplay" element={<LemosPlay />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
