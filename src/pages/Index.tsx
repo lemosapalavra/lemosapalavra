@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import OrbitMenu from "@/components/OrbitMenu";
-import FeedbackFooter from "@/components/FeedbackFooter";
+// header/footer removed for a cleaner home
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import { useCoins, ensureInitialCoins, addCoins } from "@/hooks/useCoins";
-import iconUsuario from "@/assets/icon-usuario.png";
+
 import iconDedicatoria from "@/assets/icon-dedicatoria.png";
 import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 
@@ -52,48 +52,31 @@ export default function Index() {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center overflow-hidden relative"
+      className="min-h-screen flex flex-col items-center justify-center overflow-hidden relative"
       style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}
     >
-      {/* Top right: user info + config gear */}
+      {/* Discrete config button (only when authenticated) */}
       {user && (
-        <div className="absolute top-4 right-4 z-30 flex items-center gap-2 bg-popover/90 rounded-2xl px-4 py-2 shadow-lg border border-border">
-          <div className="text-right">
-            <p className="font-display text-sm font-bold text-foreground">{user.name}</p>
-            <div className="flex items-center gap-1 justify-end">
-              <span className="text-lg">🪙</span>
-              <span className="font-display text-sm font-bold text-primary">{coins}</span>
-            </div>
-          </div>
-          <img
-            src={user.avatar || iconUsuario}
-            alt={user.name}
-            className="w-12 h-12 rounded-full border-2 border-primary/30 shadow-md"
-          />
-          <button
-            onClick={() => navigate("/config")}
-            className="ml-1 w-8 h-8 rounded-full bg-muted/50 flex items-center justify-center hover:bg-muted transition-colors"
-            title="Configurações"
-          >
-            ⚙️
-          </button>
-        </div>
+        <button
+          onClick={() => navigate("/config")}
+          className="absolute top-3 right-3 z-30 w-10 h-10 rounded-full bg-white/60 hover:bg-white shadow flex items-center justify-center transition"
+          title="Configurações"
+        >
+          ⚙️
+        </button>
       )}
 
-      <div className="flex-1 flex flex-col items-center justify-center">
-        <div className="scale-[0.6] sm:scale-[0.7] md:scale-[0.85] lg:scale-100">
-          <OrbitMenu
-            isAuthenticated={!!user}
-            userName={user?.name}
-            userAvatar={user?.avatar}
-            onLoginClick={() => navigate("/login")}
-            onLogout={handleLogout}
-            onItemClick={handleItemClick}
-          />
-        </div>
+      <div className="flex-1 flex flex-col items-center justify-center w-full py-4">
+        <OrbitMenu
+          isAuthenticated={!!user}
+          userName={user?.name}
+          userAvatar={user?.avatar}
+          onLoginClick={() => navigate("/login")}
+          onLogout={handleLogout}
+          onItemClick={handleItemClick}
+        />
 
-        {/* Dedicatória + LemosPlay icons centered below orbit */}
-        <div className="mt-4 flex items-center gap-4">
+        <div className="mt-6 flex items-center gap-5">
           <button
             onClick={() => setDedicatoriaOpen(true)}
             className="animate-pulse hover:animate-none hover:scale-110 transition-transform"
@@ -103,7 +86,7 @@ export default function Index() {
             <img
               src={iconDedicatoria}
               alt="Dedicatória"
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl"
+              className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl"
             />
           </button>
 
@@ -117,14 +100,13 @@ export default function Index() {
               <img
                 src={lemosPlayLogo}
                 alt="Lemos Play"
-                className="w-20 h-20 sm:w-24 sm:h-24 object-contain"
+                className="w-24 h-24 sm:w-28 sm:h-28 object-contain"
               />
             </button>
           )}
         </div>
       </div>
 
-      <FeedbackFooter />
       <DedicatoriaModal open={dedicatoriaOpen} onOpenChange={setDedicatoriaOpen} />
     </div>
   );

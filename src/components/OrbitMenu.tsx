@@ -4,7 +4,7 @@ import iconLouvores from "@/assets/icon-louvores.png";
 import iconAtividades from "@/assets/icon-atividades.png";
 import iconAlbum from "@/assets/icon-album.png";
 import iconDevocionais from "@/assets/icon-devocionais.png";
-import iconPedidos from "@/assets/icon-pedidos.png";
+import iconPedidos from "@/assets/icon-pedidos-oracao.png";
 import iconLogin from "@/assets/icon-login.png";
 
 interface MenuItem {
