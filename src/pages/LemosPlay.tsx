@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Play, Info, ChevronLeft, ChevronRight, ArrowLeft, X } from "lucide-react";
-import { seriesVideos, filmesVideos, type BibleVideo } from "@/data/bibleVideos";
+import { seriesVideos, filmesVideos, seriesGroups, type BibleVideo, type BibleVideoGroup } from "@/data/bibleVideos";
 import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 
 const EMBED = (lib: string, id: string, autoplay = false) =>
@@ -17,13 +17,13 @@ interface PlayItem {
 }
 
 const louvoresPlay: PlayItem[] = [
-  { id: "m1", title: "Do meu Jeito", src: EMBED("660719", "6400db8d-69e9-4b99-8c19-9a512f714662", true), thumb: EMBED("660719", "6400db8d-69e9-4b99-8c19-9a512f714662"), category: "Música" },
-  { id: "m2", title: "Palavra Eterna", src: EMBED("660653", "49bd5ac8-4537-45f6-9b25-d8af4da7d099", true), thumb: EMBED("660653", "49bd5ac8-4537-45f6-9b25-d8af4da7d099"), category: "Música" },
-  { id: "m3", title: "Graça Aleluia", src: EMBED("660653", "ae17b103-e921-4ebb-bb23-2ae690c2e5a5", true), thumb: EMBED("660653", "ae17b103-e921-4ebb-bb23-2ae690c2e5a5"), category: "Música" },
-  { id: "m4", title: "Sou Fiel", src: EMBED("660653", "2336364c-8169-4926-ac1a-1fc6baa6a0c5", true), thumb: EMBED("660653", "2336364c-8169-4926-ac1a-1fc6baa6a0c5"), category: "Música" },
-  { id: "m5", title: "Espírito Santo", src: EMBED("660653", "ed00cfd9-9b30-4803-bf53-8070ec0b5be9", true), thumb: EMBED("660653", "ed00cfd9-9b30-4803-bf53-8070ec0b5be9"), category: "Música" },
-  { id: "m6", title: "Pai e Filho", src: EMBED("660719", "c1358bec-0118-4db8-8b34-8dce8c765fe2", true), thumb: EMBED("660719", "c1358bec-0118-4db8-8b34-8dce8c765fe2"), category: "Música" },
-  { id: "m7", title: "Um de Nós", src: EMBED("660719", "4a4cfdb3-e26c-4dc9-9363-f045feca99be", true), thumb: EMBED("660719", "4a4cfdb3-e26c-4dc9-9363-f045feca99be"), category: "Música" },
+  { id: "lv1", title: "Espírito Santo", src: EMBED("660653", "ed00cfd9-9b30-4803-bf53-8070ec0b5be9", true), thumb: EMBED("660653", "ed00cfd9-9b30-4803-bf53-8070ec0b5be9"), category: "Louvor" },
+  { id: "lv2", title: "Sou Fiel", src: EMBED("660653", "2336364c-8169-4926-ac1a-1fc6baa6a0c5", true), thumb: EMBED("660653", "2336364c-8169-4926-ac1a-1fc6baa6a0c5"), category: "Louvor" },
+  { id: "lv3", title: "Graça Aleluia", src: EMBED("660653", "ae17b103-e921-4ebb-bb23-2ae690c2e5a5", true), thumb: EMBED("660653", "ae17b103-e921-4ebb-bb23-2ae690c2e5a5"), category: "Louvor" },
+  { id: "lv4", title: "Palavra Eterna", src: EMBED("660653", "49bd5ac8-4537-45f6-9b25-d8af4da7d099", true), thumb: EMBED("660653", "49bd5ac8-4537-45f6-9b25-d8af4da7d099"), category: "Louvor" },
+  { id: "lv5", title: "Do meu Jeito", src: EMBED("660719", "6400db8d-69e9-4b99-8c19-9a512f714662", true), thumb: EMBED("660719", "6400db8d-69e9-4b99-8c19-9a512f714662"), category: "Louvor" },
+  { id: "lv6", title: "Pai e Filho", src: EMBED("660719", "c1358bec-0118-4db8-8b34-8dce8c765fe2", true), thumb: EMBED("660719", "c1358bec-0118-4db8-8b34-8dce8c765fe2"), category: "Louvor" },
+  { id: "lv7", title: "Um de Nós", src: EMBED("660719", "4a4cfdb3-e26c-4dc9-9363-f045feca99be", true), thumb: EMBED("660719", "4a4cfdb3-e26c-4dc9-9363-f045feca99be"), category: "Louvor" },
 ];
 
 const toPlay = (v: BibleVideo, category: string, prefix: string, i: number): PlayItem => ({
