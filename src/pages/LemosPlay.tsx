@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Play, Info, ChevronLeft, ChevronRight, ArrowLeft, X } from "lucide-react";
-import { seriesVideos, filmesVideos, seriesGroups, type BibleVideo, type BibleVideoGroup } from "@/data/bibleVideos";
+import { seriesVideos, filmesVideos, seriesGroups, type BibleVideo } from "@/data/bibleVideos";
 import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 
 const EMBED = (lib: string, id: string, autoplay = false) =>
