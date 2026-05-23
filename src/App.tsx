@@ -8,12 +8,9 @@ import Index from "./pages/Index.tsx";
 import Login from "./pages/Login.tsx";
 import Biblia from "./pages/Biblia.tsx";
 import Louvores from "./pages/Louvores.tsx";
-import Musicas from "./pages/Musicas.tsx";
 import Devocionais from "./pages/Devocionais.tsx";
 import PedidosOracao from "./pages/PedidosOracao.tsx";
 import Atividades from "./pages/Atividades.tsx";
-import Series from "./pages/Series.tsx";
-import Filmes from "./pages/Filmes.tsx";
 import Album from "./pages/Album.tsx";
 import LemosPlay from "./pages/LemosPlay.tsx";
 import Configuracao from "./pages/Configuracao.tsx";
@@ -33,12 +30,9 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/biblia" element={<Biblia />} />
           <Route path="/louvores" element={<Louvores />} />
-          <Route path="/musicas" element={<Musicas />} />
           <Route path="/devocionais" element={<Devocionais />} />
           <Route path="/pedidos-oracao" element={<PedidosOracao />} />
           <Route path="/atividades" element={<Atividades />} />
-          <Route path="/series" element={<Series />} />
-          <Route path="/filmes" element={<Filmes />} />
           <Route path="/album" element={<Album />} />
           <Route path="/config" element={<Configuracao />} />
           <Route path="/lemosplay" element={<LemosPlay />} />
