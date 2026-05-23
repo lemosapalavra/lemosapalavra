@@ -9,6 +9,8 @@ import iconMoises2 from "@/assets/historia-moises-2.png";
 import iconMoises3 from "@/assets/historia-moises-3.png";
 import iconDaviGolias from "@/assets/historia-davi-golias.png";
 import icon10Mandamentos from "@/assets/historia-10-mandamentos.png";
+import grupoAdaoEva from "@/assets/grupo-adao-eva.png";
+import grupoMoises from "@/assets/grupo-moises.png";
 
 export interface BibleVideo {
   title: string;
