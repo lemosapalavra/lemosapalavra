@@ -19,13 +19,10 @@ const THUMB = (lib: string, id: string) =>
   `https://iframe.mediadelivery.net/embed/${lib}/${id}?autoplay=false&preload=true&muted=true`;
 
 const louvores: Louvor[] = [
-  { title: "Do meu Jeito", src: EMBED("660719", "6400db8d-69e9-4b99-8c19-9a512f714662", true), thumb: THUMB("660719", "6400db8d-69e9-4b99-8c19-9a512f714662") },
-  { title: "Palavra Eterna", src: EMBED("660653", "49bd5ac8-4537-45f6-9b25-d8af4da7d099", true), thumb: THUMB("660653", "49bd5ac8-4537-45f6-9b25-d8af4da7d099") },
-  { title: "Graça Aleluia", src: EMBED("660653", "ae17b103-e921-4ebb-bb23-2ae690c2e5a5", true), thumb: THUMB("660653", "ae17b103-e921-4ebb-bb23-2ae690c2e5a5") },
-  { title: "Sou Fiel", src: EMBED("660653", "2336364c-8169-4926-ac1a-1fc6baa6a0c5", true), thumb: THUMB("660653", "2336364c-8169-4926-ac1a-1fc6baa6a0c5") },
   { title: "Espírito Santo", src: EMBED("660653", "ed00cfd9-9b30-4803-bf53-8070ec0b5be9", true), thumb: THUMB("660653", "ed00cfd9-9b30-4803-bf53-8070ec0b5be9") },
-  { title: "Pai e Filho", src: EMBED("660719", "c1358bec-0118-4db8-8b34-8dce8c765fe2", true), thumb: THUMB("660719", "c1358bec-0118-4db8-8b34-8dce8c765fe2") },
-  { title: "Um de Nós", src: EMBED("660719", "4a4cfdb3-e26c-4dc9-9363-f045feca99be", true), thumb: THUMB("660719", "4a4cfdb3-e26c-4dc9-9363-f045feca99be") },
+  { title: "Sou Fiel", src: EMBED("660653", "2336364c-8169-4926-ac1a-1fc6baa6a0c5", true), thumb: THUMB("660653", "2336364c-8169-4926-ac1a-1fc6baa6a0c5") },
+  { title: "Graça Aleluia", src: EMBED("660653", "ae17b103-e921-4ebb-bb23-2ae690c2e5a5", true), thumb: THUMB("660653", "ae17b103-e921-4ebb-bb23-2ae690c2e5a5") },
+  { title: "Palavra Eterna", src: EMBED("660653", "49bd5ac8-4537-45f6-9b25-d8af4da7d099", true), thumb: THUMB("660653", "49bd5ac8-4537-45f6-9b25-d8af4da7d099") },
 ];
 
 type Tab = "louvores" | "playlists" | "musicais";

@@ -1,10 +1,10 @@
 import logoCentral from "@/assets/logo-central.png";
 import iconBiblia from "@/assets/icon-biblia.png";
 import iconLouvores from "@/assets/icon-louvores.png";
-import iconSeries from "@/assets/icon-series.png";
-import iconFilmes from "@/assets/icon-filmes.png";
 import iconAtividades from "@/assets/icon-atividades.png";
 import iconAlbum from "@/assets/icon-album.png";
+import iconDevocionais from "@/assets/icon-devocionais.png";
+import iconPedidos from "@/assets/icon-pedidos-oracao.png";
 import iconLogin from "@/assets/icon-login.png";
 
 interface MenuItem {
@@ -14,15 +14,15 @@ interface MenuItem {
 }
 
 const leftItems: MenuItem[] = [
-  { icon: iconSeries, label: "SÉRIES\nBÍBLICAS" },
-  { icon: iconFilmes, label: "FILMES\nBÍBLICOS" },
+  { icon: iconBiblia, label: "BÍBLIA" },
   { icon: iconLouvores, label: "MÚSICAS", sublabel: "Adoração a Deus" },
+  { icon: iconAtividades, label: "ATIVIDADES" },
 ];
 
 const rightItems: MenuItem[] = [
-  { icon: iconBiblia, label: "BÍBLIA" },
-  { icon: iconAtividades, label: "ATIVIDADES" },
   { icon: iconAlbum, label: "ÁLBUM", sublabel: "Heróis da Fé" },
+  { icon: iconDevocionais, label: "DEVOCIONAIS" },
+  { icon: iconPedidos, label: "PEDIDOS\nDE ORAÇÃO" },
 ];
 
 interface OrbitMenuProps {
@@ -35,7 +35,7 @@ interface OrbitMenuProps {
 }
 
 export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }: OrbitMenuProps) {
-  const iconSize = 90;
+  const iconSize = 130;
 
   const renderItem = (item: MenuItem, i: number) => (
     <div
@@ -50,9 +50,9 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
         height={iconSize}
         loading="lazy"
         style={{ objectFit: "cover" }}
-        className={`rounded-full shadow-lg border-2 border-primary/30 ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
+        className={`rounded-full shadow-xl border-2 border-primary/30 ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
       />
-      <span className="orbit-label whitespace-pre-line text-xs text-center">{item.label}</span>
+      <span className="orbit-label whitespace-pre-line text-sm text-center font-bold">{item.label}</span>
       {item.sublabel && (
         <span className="orbit-sublabel whitespace-pre-line text-center">{item.sublabel}</span>
       )}
@@ -60,8 +60,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
   );
 
   return (
-    <div className="relative flex flex-col items-center" style={{ width: 540 }}>
-      {/* Top center: login button (only when not authenticated) */}
+    <div className="relative flex flex-col items-center" style={{ width: "min(95vw, 780px)" }}>
       {!isAuthenticated && (
         <div className="mb-2 flex flex-col items-center gap-1 z-20">
           <button onClick={onLoginClick} className="flex flex-col items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
@@ -72,21 +71,20 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
         </div>
       )}
 
-      {/* Fixed grid: left column | logo | right column */}
-      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-6 sm:gap-10">
-        <div className="flex flex-col items-center gap-6">
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-8 sm:gap-14">
+        <div className="flex flex-col items-center gap-8">
           {leftItems.map(renderItem)}
         </div>
 
         <img
           src={logoCentral}
           alt="Lemos a Palavra"
-          width={210}
-          height={210}
-          className={`drop-shadow-xl transition-all duration-700 ${!isAuthenticated ? "grayscale opacity-70" : ""}`}
+          width={320}
+          height={320}
+          className={`drop-shadow-2xl transition-all duration-700 w-[220px] sm:w-[280px] md:w-[320px] ${!isAuthenticated ? "grayscale opacity-70" : ""}`}
         />
 
-        <div className="flex flex-col items-center gap-6">
+        <div className="flex flex-col items-center gap-8">
           {rightItems.map(renderItem)}
         </div>
       </div>
