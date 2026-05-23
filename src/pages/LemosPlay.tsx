@@ -111,11 +111,20 @@ function Row({ title, items, onPlay, progress }: { title: string; items: PlayIte
   );
 }
 
-const allItems: PlayItem[] = [...filmesPlay, ...seriesPlay, ...louvoresPlay];
+const seriesGroupItems = seriesGroups.map((g, i) => ({
+  id: `sg${i}`,
+  title: g.title,
+  poster: g.icon,
+  category: "Série",
+  videos: g.videos.map((v, j) => toPlay(v, "Série", `sg${i}_`, j)),
+}));
+
+const allItems: PlayItem[] = [...filmesPlay, ...seriesPlay, ...louvoresPlay, ...seriesGroupItems.flatMap(g => g.videos)];
 
 export default function LemosPlay() {
   const navigate = useNavigate();
   const [playing, setPlaying] = useState<PlayItem | null>(null);
+  const [openGroup, setOpenGroup] = useState<(typeof seriesGroupItems)[number] | null>(null);
   const [progress, setProgress] = useState<ProgressMap>(() => loadProgress());
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -197,7 +206,7 @@ export default function LemosPlay() {
           <nav className="hidden sm:flex items-center gap-6 text-sm font-semibold text-zinc-200">
             <a href="#filmes" className="hover:text-white">Filmes</a>
             <a href="#series" className="hover:text-white">Séries</a>
-            <a href="#musicas" className="hover:text-white">Músicas</a>
+            <a href="#louvores" className="hover:text-white">Louvores</a>
           </nav>
         </div>
       </header>
@@ -237,13 +246,68 @@ export default function LemosPlay() {
           <Row title="Continuar assistindo" items={continueItems} onPlay={setPlaying} progress={progress} />
         )}
         <div id="filmes"><Row title="Filmes Bíblicos" items={filmesPlay} onPlay={setPlaying} progress={progress} /></div>
-        <div id="series"><Row title="Séries Bíblicas" items={seriesPlay} onPlay={setPlaying} progress={progress} /></div>
-        <div id="musicas"><Row title="Músicas" items={louvoresPlay} onPlay={setPlaying} progress={progress} /></div>
+        <div id="series">
+          <Row
+            title="Séries Bíblicas"
+            items={seriesGroupItems.map((g) => ({ id: g.id, title: g.title, poster: g.poster, src: "", category: g.category }))}
+            onPlay={(item) => {
+              const g = seriesGroupItems.find((x) => x.id === item.id);
+              if (g) setOpenGroup(g);
+            }}
+            progress={progress}
+          />
+        </div>
+        <div id="louvores"><Row title="Louvores" items={louvoresPlay} onPlay={setPlaying} progress={progress} /></div>
       </div>
 
       <footer className="text-center text-zinc-500 text-xs pb-8 px-4">
         Lemos Play · Conteúdo cristão para toda a família · © Lemos a Palavra
       </footer>
+
+      {/* Group selector modal */}
+      {openGroup && (
+        <div className="fixed inset-0 z-40 bg-black/85 backdrop-blur flex items-center justify-center p-4" onClick={() => setOpenGroup(null)}>
+          <div className="bg-zinc-900 rounded-xl max-w-3xl w-full p-6 relative" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={() => setOpenGroup(null)}
+              className="absolute top-3 right-3 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center"
+              title="Fechar"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <div className="flex items-center gap-4 mb-5">
+              <img src={openGroup.poster} alt={openGroup.title} className="w-20 h-20 rounded-lg object-cover" />
+              <div>
+                <h3 className="text-2xl font-extrabold text-white">{openGroup.title}</h3>
+                <p className="text-zinc-400 text-sm">{openGroup.videos.length} episódios</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {openGroup.videos.map((v) => {
+                const p = progress[v.id];
+                const pct = p && p.d > 0 ? Math.min(100, Math.round((p.t / p.d) * 100)) : 0;
+                return (
+                  <button
+                    key={v.id}
+                    onClick={() => { setPlaying(v); setOpenGroup(null); }}
+                    className="relative aspect-video rounded-lg overflow-hidden bg-zinc-800 hover:ring-2 hover:ring-white transition"
+                  >
+                    {v.poster && <img src={v.poster} alt={v.title} className="w-full h-full object-cover" />}
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-2">
+                      <p className="text-white text-xs font-bold text-left line-clamp-2">{v.title}</p>
+                    </div>
+                    {pct > 0 && (
+                      <div className="absolute bottom-0 inset-x-0 h-1 bg-white/20">
+                        <div className="h-full" style={{ width: `${pct}%`, background: "#e50914" }} />
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Player */}
       {playing && (
