@@ -1,11 +1,10 @@
 import logoCentral from "@/assets/logo-central.png";
-import iconBiblia from "@/assets/icon-biblia.png";
-import iconLouvores from "@/assets/icon-louvores.png";
 import iconAtividades from "@/assets/icon-atividades.png";
 import iconAlbum from "@/assets/icon-album.png";
 import iconDevocionais from "@/assets/icon-devocionais.png";
 import iconPedidos from "@/assets/icon-pedidos-oracao.png";
 import iconLogin from "@/assets/icon-login.png";
+import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 
 interface MenuItem {
   icon: string;
@@ -14,8 +13,7 @@ interface MenuItem {
 }
 
 const leftItems: MenuItem[] = [
-  { icon: iconBiblia, label: "BÍBLIA" },
-  { icon: iconLouvores, label: "MÚSICAS", sublabel: "Adoração a Deus" },
+  { icon: lemosPlayLogo, label: "LEMOS PLAY", sublabel: "Filmes, Séries e Músicas" },
   { icon: iconAtividades, label: "ATIVIDADES" },
 ];
 

@@ -6,16 +6,12 @@ import DedicatoriaModal from "@/components/DedicatoriaModal";
 import { useCoins, ensureInitialCoins, addCoins } from "@/hooks/useCoins";
 
 import iconDedicatoria from "@/assets/icon-dedicatoria.png";
-import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 
 const labelToRoute: Record<string, string> = {
-  "BÍBLIA": "/biblia",
-  "MÚSICAS": "/louvores",
+  "LEMOS PLAY": "/lemosplay",
   "DEVOCIONAIS": "/devocionais",
   "PEDIDOS\nDE ORAÇÃO": "/pedidos-oracao",
   "ATIVIDADES": "/atividades",
-  "SÉRIES\nBÍBLICAS": "/series",
-  "FILMES\nBÍBLICOS": "/filmes",
   "ÁLBUM": "/album",
 };
 
@@ -76,7 +72,7 @@ export default function Index() {
           onItemClick={handleItemClick}
         />
 
-        <div className="mt-6 flex items-center gap-5">
+        <div className="mt-6 flex items-center justify-center">
           <button
             onClick={() => setDedicatoriaOpen(true)}
             className="animate-pulse hover:animate-none hover:scale-110 transition-transform"
@@ -89,21 +85,6 @@ export default function Index() {
               className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl"
             />
           </button>
-
-          {user && (
-            <button
-              onClick={() => navigate("/lemosplay")}
-              className="hover:scale-110 transition-transform"
-              style={{ filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.35))" }}
-              title="Lemos Play"
-            >
-              <img
-                src={lemosPlayLogo}
-                alt="Lemos Play"
-                className="w-24 h-24 sm:w-28 sm:h-28 object-contain"
-              />
-            </button>
-          )}
         </div>
       </div>
 
