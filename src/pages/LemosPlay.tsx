@@ -206,7 +206,7 @@ export default function LemosPlay() {
           <nav className="hidden sm:flex items-center gap-6 text-sm font-semibold text-zinc-200">
             <a href="#filmes" className="hover:text-white">Filmes</a>
             <a href="#series" className="hover:text-white">Séries</a>
-            <a href="#louvores" className="hover:text-white">Louvores</a>
+            <a href="#musicas" className="hover:text-white">Músicas</a>
           </nav>
         </div>
       </header>
