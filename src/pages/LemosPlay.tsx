@@ -190,20 +190,12 @@ export default function LemosPlay() {
 
   return (
     <div className="min-h-screen bg-black text-white">
+      <PageHeader />
       {/* Top bar */}
-      <header className="fixed top-0 inset-x-0 z-40 bg-gradient-to-b from-black/90 to-transparent">
-        <div className="flex items-center justify-between px-4 sm:px-12 py-3">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate("/")}
-              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center"
-              title="Voltar"
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </button>
-            <img src={lemosPlayLogo} alt="Lemos Play" className="h-14 sm:h-20 w-auto drop-shadow-xl" />
-          </div>
-          <nav className="hidden sm:flex items-center gap-6 text-sm font-semibold text-zinc-200">
+      <header className="fixed top-0 inset-x-0 z-30 bg-gradient-to-b from-black/90 to-transparent pointer-events-none">
+        <div className="flex items-center justify-between px-4 sm:px-12 py-3 pl-20">
+          <img src={lemosPlayLogo} alt="Lemos Play" className="h-14 sm:h-20 w-auto drop-shadow-xl pointer-events-auto" />
+          <nav className="hidden sm:flex items-center gap-6 text-sm font-semibold text-zinc-200 pointer-events-auto">
             <a href="#filmes" className="hover:text-white">Filmes</a>
             <a href="#series" className="hover:text-white">Séries</a>
             <a href="#musicas" className="hover:text-white">Músicas</a>
