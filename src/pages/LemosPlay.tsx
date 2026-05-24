@@ -122,7 +122,7 @@ const seriesGroupItems = seriesGroups.map((g, i) => ({
 const allItems: PlayItem[] = [...filmesPlay, ...seriesPlay, ...louvoresPlay, ...seriesGroupItems.flatMap(g => g.videos)];
 
 export default function LemosPlay() {
-  const navigate = useNavigate();
+  // navigation handled by PageHeader
   const [playing, setPlaying] = useState<PlayItem | null>(null);
   const [openGroup, setOpenGroup] = useState<(typeof seriesGroupItems)[number] | null>(null);
   const [progress, setProgress] = useState<ProgressMap>(() => loadProgress());
