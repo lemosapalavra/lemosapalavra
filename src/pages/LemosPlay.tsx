@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { Play, Info, ChevronLeft, ChevronRight, ArrowLeft, X } from "lucide-react";
+import { Play, Info, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { seriesVideos, filmesVideos, seriesGroups, type BibleVideo } from "@/data/bibleVideos";
 import lemosPlayLogo from "@/assets/lemos-play-logo.png";
+import PageHeader from "@/components/PageHeader";
 
 const EMBED = (lib: string, id: string, autoplay = false) =>
   `https://iframe.mediadelivery.net/embed/${lib}/${id}?autoplay=${autoplay}&preload=true&muted=${!autoplay}`;
