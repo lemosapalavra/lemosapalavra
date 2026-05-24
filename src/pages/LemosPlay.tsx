@@ -252,9 +252,6 @@ export default function LemosPlay() {
         <div id="musicas"><Row title="Músicas" items={louvoresPlay} onPlay={setPlaying} progress={progress} /></div>
       </div>
 
-      <footer className="text-center text-zinc-500 text-xs pb-8 px-4">
-        Lemos Play · Conteúdo cristão para toda a família · © Lemos a Palavra
-      </footer>
 
       {/* Group selector modal */}
       {openGroup && (
