@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { Play, Info, ChevronLeft, ChevronRight, ArrowLeft, X } from "lucide-react";
+import { Play, Info, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { seriesVideos, filmesVideos, seriesGroups, type BibleVideo } from "@/data/bibleVideos";
 import lemosPlayLogo from "@/assets/lemos-play-logo.png";
+import PageHeader from "@/components/PageHeader";
 
 const EMBED = (lib: string, id: string, autoplay = false) =>
   `https://iframe.mediadelivery.net/embed/${lib}/${id}?autoplay=${autoplay}&preload=true&muted=${!autoplay}`;
@@ -122,7 +122,7 @@ const seriesGroupItems = seriesGroups.map((g, i) => ({
 const allItems: PlayItem[] = [...filmesPlay, ...seriesPlay, ...louvoresPlay, ...seriesGroupItems.flatMap(g => g.videos)];
 
 export default function LemosPlay() {
-  const navigate = useNavigate();
+  // navigation handled by PageHeader
   const [playing, setPlaying] = useState<PlayItem | null>(null);
   const [openGroup, setOpenGroup] = useState<(typeof seriesGroupItems)[number] | null>(null);
   const [progress, setProgress] = useState<ProgressMap>(() => loadProgress());
@@ -190,20 +190,12 @@ export default function LemosPlay() {
 
   return (
     <div className="min-h-screen bg-black text-white">
+      <PageHeader />
       {/* Top bar */}
-      <header className="fixed top-0 inset-x-0 z-40 bg-gradient-to-b from-black/90 to-transparent">
-        <div className="flex items-center justify-between px-4 sm:px-12 py-3">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate("/")}
-              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center"
-              title="Voltar"
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </button>
-            <img src={lemosPlayLogo} alt="Lemos Play" className="h-14 sm:h-20 w-auto drop-shadow-xl" />
-          </div>
-          <nav className="hidden sm:flex items-center gap-6 text-sm font-semibold text-zinc-200">
+      <header className="fixed top-0 inset-x-0 z-30 bg-gradient-to-b from-black/90 to-transparent pointer-events-none">
+        <div className="flex items-center justify-between px-4 sm:px-12 py-3 pl-20">
+          <img src={lemosPlayLogo} alt="Lemos Play" className="h-14 sm:h-20 w-auto drop-shadow-xl pointer-events-auto" />
+          <nav className="hidden sm:flex items-center gap-6 text-sm font-semibold text-zinc-200 pointer-events-auto">
             <a href="#filmes" className="hover:text-white">Filmes</a>
             <a href="#series" className="hover:text-white">Séries</a>
             <a href="#musicas" className="hover:text-white">Músicas</a>
@@ -260,9 +252,6 @@ export default function LemosPlay() {
         <div id="musicas"><Row title="Músicas" items={louvoresPlay} onPlay={setPlaying} progress={progress} /></div>
       </div>
 
-      <footer className="text-center text-zinc-500 text-xs pb-8 px-4">
-        Lemos Play · Conteúdo cristão para toda a família · © Lemos a Palavra
-      </footer>
 
       {/* Group selector modal */}
       {openGroup && (
