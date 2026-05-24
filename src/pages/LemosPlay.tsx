@@ -257,7 +257,7 @@ export default function LemosPlay() {
             progress={progress}
           />
         </div>
-        <div id="louvores"><Row title="Louvores" items={louvoresPlay} onPlay={setPlaying} progress={progress} /></div>
+        <div id="musicas"><Row title="Músicas" items={louvoresPlay} onPlay={setPlaying} progress={progress} /></div>
       </div>
 
       <footer className="text-center text-zinc-500 text-xs pb-8 px-4">
