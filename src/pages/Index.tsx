@@ -6,16 +6,12 @@ import DedicatoriaModal from "@/components/DedicatoriaModal";
 import { useCoins, ensureInitialCoins, addCoins } from "@/hooks/useCoins";
 
 import iconDedicatoria from "@/assets/icon-dedicatoria.png";
-import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 
 const labelToRoute: Record<string, string> = {
-  "BÍBLIA": "/biblia",
-  "MÚSICAS": "/louvores",
+  "LEMOS PLAY": "/lemosplay",
   "DEVOCIONAIS": "/devocionais",
   "PEDIDOS\nDE ORAÇÃO": "/pedidos-oracao",
   "ATIVIDADES": "/atividades",
-  "SÉRIES\nBÍBLICAS": "/series",
-  "FILMES\nBÍBLICOS": "/filmes",
   "ÁLBUM": "/album",
 };
 
