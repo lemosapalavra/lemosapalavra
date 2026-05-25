@@ -429,9 +429,13 @@ function CategoryPage({
                     <span className="text-[10px] font-display font-bold mt-1 drop-shadow">{number}</span>
                   </div>
                 )}
+                {has && (
+                  <span className="absolute bottom-1 left-1 z-20 text-[10px] bg-black/70 text-amber-200 px-1.5 rounded-md leading-tight font-display font-bold">{number}</span>
+                )}
                 {has && (owned[s.id] || 0) > 1 && (
                   <span className="absolute top-1 right-1 z-20 text-[9px] bg-red-500/90 text-white px-1.5 rounded-full leading-none font-bold">×{owned[s.id]}</span>
                 )}
+
               </button>
             );
           })}
