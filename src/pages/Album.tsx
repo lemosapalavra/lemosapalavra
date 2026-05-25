@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import PageHeader from "@/components/PageHeader";
+
 import { ArrowLeft, ChevronLeft, Repeat, X } from "lucide-react";
 import StickerPackAnimation, { StickerResult } from "@/components/StickerPackAnimation";
 import AramaicBackdrop from "@/components/AramaicBackdrop";
@@ -75,19 +77,28 @@ export default function Album() {
 
   const missing = useMemo(() => allStickers.filter((s) => !owned[s.id]), [owned]);
 
-  // One page per category
-  const pages = useMemo<BookPage[]>(() => {
-    return categories.map((cat) => ({
-      kind: "category" as const,
-      cat,
-      stickers: cat.stickers.slice(0, 8),
-      bg: cat.bgs?.[0],
-      pageInCat: 1 as const,
-    }));
+  // One page per category, with cumulative global startIndex for numbering
+  const pages = useMemo<(BookPage & { startIndex: number })[]>(() => {
+    let running = 0;
+    return categories.map((cat) => {
+      const stickers = cat.stickers.slice(0, 8);
+      const page = {
+        kind: "category" as const,
+        cat,
+        stickers,
+        bg: cat.bgs?.[0],
+        pageInCat: 1 as const,
+        startIndex: running,
+      };
+      running += stickers.length;
+      return page;
+    });
   }, []);
 
   const [pageIdx, setPageIdx] = useState(0);
   const totalPages = pages.length;
+
+
 
   const goNext = useCallback(() => {
     setPageIdx((i) => Math.min(i + 1, pages.length - 1));
@@ -122,28 +133,22 @@ export default function Album() {
     writeOwned(next); setOwned(next); setPackResult(results);
   }, [spendCoins]);
 
-  // ============= COVER =============
+  // ============= COVER (fullscreen) =============
   if (view === "cover") {
     return (
-      <div className="fixed inset-0 z-40 flex flex-col p-4"
-        style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
-        <StandardHeader onHome={() => navigate("/")} coins={coins} />
-      <div className="flex-1 flex flex-col items-center justify-center">
-          <div onClick={() => { setPageIdx(0); setView("pages"); }}
-            className="relative cursor-pointer group max-w-md w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] border-4 border-amber-700/50 transition-transform hover:scale-[1.02] hover:rotate-1">
-            <img src={albumCapa} alt="Heróis da Fé" className="w-full h-full object-cover" />
-            <div className="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-amber-900/80 to-transparent" />
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/90 px-4 py-2 rounded-full font-display font-bold text-sm shadow-lg animate-pulse">
-              👆 Toque para abrir
-            </div>
-          </div>
-          <p className="mt-6 text-foreground/80 font-body text-sm text-center max-w-md">
-            Colecione mais de 200 figurinhas! Cada pacotinho tem <strong>5 figurinhas</strong> (1 relíquia + 1 rara + 3 normais).
-          </p>
+      <div
+        onClick={() => { setPageIdx(0); setView("pages"); }}
+        className="fixed inset-0 z-40 cursor-pointer bg-black"
+      >
+        <PageHeader />
+        <img src={albumCapa} alt="Heróis da Fé" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white/90 px-5 py-2.5 rounded-full font-display font-bold text-base shadow-2xl animate-pulse">
+          👆 Toque para abrir
         </div>
       </div>
     );
   }
+
 
   // ============= TRADE =============
   if (view === "trade") {
@@ -242,6 +247,7 @@ export default function Album() {
           <div className="relative flex-1">
             <PageShell side="left">
               {renderPage(currentPage, owned, (s) => (owned[s.id] || 0) > 0 && setSelected(s))}
+
             </PageShell>
           </div>
         </div>
@@ -277,12 +283,13 @@ export default function Album() {
   );
 }
 
-function renderPage(p: BookPage | undefined, owned: Owned, onStickerClick: (s: Sticker) => void) {
+function renderPage(p: (BookPage & { startIndex?: number }) | undefined, owned: Owned, onStickerClick: (s: Sticker) => void) {
   if (!p) return null;
   if (p.kind === "map") return <MapPage owned={owned} />;
   if (p.kind === "blank") return <div className="w-full h-full" />;
-  return <CategoryPage cat={p.cat} stickers={p.stickers} bg={p.bg} owned={owned} pageInCat={p.pageInCat} onStickerClick={onStickerClick} />;
+  return <CategoryPage cat={p.cat} stickers={p.stickers} bg={p.bg} owned={owned} pageInCat={p.pageInCat} startIndex={p.startIndex ?? 0} onStickerClick={onStickerClick} />;
 }
+
 
 /* -------- Sticker Detail Modal — fullscreen image only -------- */
 function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; owned: number; onClose: () => void }) {
@@ -365,13 +372,14 @@ function MapPage({ owned }: { owned: Owned }) {
 function BackCoverPage() { return null; }
 
 function CategoryPage({
-  cat, stickers, bg, owned, pageInCat, onStickerClick,
+  cat, stickers, bg, owned, pageInCat, startIndex, onStickerClick,
 }: {
   cat: typeof categories[number];
   stickers: Sticker[];
   bg?: string;
   owned: Owned;
   pageInCat: 1 | 2;
+  startIndex: number;
   onStickerClick: (s: Sticker) => void;
 }) {
   return (
@@ -386,7 +394,8 @@ function CategoryPage({
         <div className="grid grid-cols-4 gap-2 sm:gap-3 w-full" style={{ gridTemplateRows: "repeat(2, minmax(0, 1fr))" }}>
           {stickers.map((s, i) => {
             const has = (owned[s.id] || 0) > 0;
-            const number = String(i + 1 + (pageInCat === 2 ? 8 : 0)).padStart(2, "0");
+            const number = String(startIndex + i + 1).padStart(2, "0");
+
             return (
               <button
                 key={s.id}
@@ -420,9 +429,13 @@ function CategoryPage({
                     <span className="text-[10px] font-display font-bold mt-1 drop-shadow">{number}</span>
                   </div>
                 )}
+                {has && (
+                  <span className="absolute bottom-1 left-1 z-20 text-[10px] bg-black/70 text-amber-200 px-1.5 rounded-md leading-tight font-display font-bold">{number}</span>
+                )}
                 {has && (owned[s.id] || 0) > 1 && (
                   <span className="absolute top-1 right-1 z-20 text-[9px] bg-red-500/90 text-white px-1.5 rounded-full leading-none font-bold">×{owned[s.id]}</span>
                 )}
+
               </button>
             );
           })}

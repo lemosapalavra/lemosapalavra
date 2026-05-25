@@ -709,57 +709,70 @@ export default function Atividades() {
     );
   }
 
-  // === MAIN MENU (orbital layout) ===
-  const orbitRadius = 210;
-  const orbitIconSize = 90;
+  // === MAIN MENU (orbital pentagram layout) ===
+  const SPIN_DURATION = "120s";
+  const handleClick = (id: string) => {
+    if (id === "quiz") startQuiz();
+    else if (id === "memory") startMemory();
+    else if (id === "coloring") { setColoringIdx(0); setShapeFills({}); setActiveGame("coloring"); }
+    else if (id === "puzzle") { setJigsawTiles([]); setActiveGame("puzzle"); }
+  };
   return (
-    <div className="min-h-screen py-6 px-4" style={bgStyle}>
-      <div className="max-w-4xl mx-auto">
-        <PageHeader title="Atividades Bíblicas" subtitle="Aprenda brincando!" icon={iconAtividades} />
-
-        {(() => {
-          const mid = Math.ceil(activities.length / 2);
-          const leftAct = activities.slice(0, mid);
-          const rightAct = activities.slice(mid);
-          const handleClick = (id: string) => {
-            if (id === "quiz") startQuiz();
-            else if (id === "memory") startMemory();
-            else if (id === "coloring") { setColoringIdx(0); setShapeFills({}); setActiveGame("coloring"); }
-            else if (id === "puzzle") { setJigsawTiles([]); setActiveGame("puzzle"); }
-          };
-          const renderAct = (a: typeof activities[number], i: number) => (
-            <div
-              key={i}
-              onClick={() => handleClick(a.id)}
-              className="cursor-pointer hover:scale-110 transition-transform text-center flex flex-col items-center"
-            >
-              <img
-                src={a.icon}
-                alt={a.title}
-                loading="lazy"
-                className="rounded-full border-2 border-primary/30 shadow-lg drop-shadow-lg w-24 h-24 sm:w-28 sm:h-28 object-cover bg-white"
-              />
-              <p className="font-display text-xs font-bold text-foreground mt-1">{a.title}</p>
-            </div>
-          );
-          return (
-            <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 mt-6">
-              <div className="flex flex-col items-center gap-5 sm:gap-6">
-                {leftAct.map(renderAct)}
+    <div className="min-h-screen flex flex-col items-center justify-center px-4" style={bgStyle}>
+      <PageHeader />
+      <div
+        className="relative"
+        style={{
+          width: "min(92vw, 720px)",
+          height: "min(92vw, 720px)",
+          ["--orbit-radius" as any]: "min(38vw, 300px)",
+        }}
+      >
+        <div
+          className="absolute inset-0"
+          style={{ animation: `orbit-spin ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}
+        >
+          {activities.map((a, i) => {
+            const angle = (360 / activities.length) * i - 90;
+            return (
+              <div
+                key={a.id}
+                className="absolute top-1/2 left-1/2"
+                style={{
+                  transform: `translate(-50%, -50%) rotate(${angle}deg) translate(var(--orbit-radius)) rotate(${-angle}deg)`,
+                }}
+              >
+                <div style={{ animation: `orbit-spin-reverse ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}>
+                  <button
+                    type="button"
+                    onClick={() => handleClick(a.id)}
+                    className="flex flex-col items-center gap-1 cursor-pointer hover:scale-110 transition-transform"
+                  >
+                    <img
+                      src={a.icon}
+                      alt={a.title}
+                      loading="lazy"
+                      className="rounded-full border-2 border-primary/30 shadow-xl bg-white object-cover w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px]"
+                    />
+                    <span className="font-display text-xs sm:text-sm font-bold text-foreground text-center leading-tight">{a.title}</span>
+                  </button>
+                </div>
               </div>
-              <img
-                src={logoCentral}
-                alt="Lemos a Palavra"
-                className="w-32 sm:w-48 md:w-56 drop-shadow-xl"
-              />
-              <div className="flex flex-col items-center gap-5 sm:gap-6">
-                {rightAct.map(renderAct)}
-              </div>
-            </div>
-          );
-        })()}
+            );
+          })}
+        </div>
+        <img
+          src={logoCentral}
+          alt="Lemos a Palavra"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-2xl w-[180px] sm:w-[230px] md:w-[280px]"
+        />
       </div>
-      <FeedbackFooter />
+      <style>{`
+        @keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes orbit-spin-reverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+      `}</style>
+      <CelebrationAnimation show={celebration.show} message={celebration.message} coins={celebration.coins} emoji={celebration.emoji} onClose={closeCelebration} />
     </div>
   );
 }
+
