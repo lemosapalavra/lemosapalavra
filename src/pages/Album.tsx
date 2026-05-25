@@ -247,6 +247,7 @@ export default function Album() {
           <div className="relative flex-1">
             <PageShell side="left">
               {renderPage(currentPage, owned, (s) => (owned[s.id] || 0) > 0 && setSelected(s))}
+
             </PageShell>
           </div>
         </div>
