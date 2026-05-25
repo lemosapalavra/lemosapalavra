@@ -283,12 +283,13 @@ export default function Album() {
   );
 }
 
-function renderPage(p: BookPage | undefined, owned: Owned, onStickerClick: (s: Sticker) => void) {
+function renderPage(p: (BookPage & { startIndex?: number }) | undefined, owned: Owned, onStickerClick: (s: Sticker) => void) {
   if (!p) return null;
   if (p.kind === "map") return <MapPage owned={owned} />;
   if (p.kind === "blank") return <div className="w-full h-full" />;
-  return <CategoryPage cat={p.cat} stickers={p.stickers} bg={p.bg} owned={owned} pageInCat={p.pageInCat} onStickerClick={onStickerClick} />;
+  return <CategoryPage cat={p.cat} stickers={p.stickers} bg={p.bg} owned={owned} pageInCat={p.pageInCat} startIndex={p.startIndex ?? 0} onStickerClick={onStickerClick} />;
 }
+
 
 /* -------- Sticker Detail Modal — fullscreen image only -------- */
 function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; owned: number; onClose: () => void }) {
