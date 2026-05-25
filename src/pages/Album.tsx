@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import PageHeader from "@/components/PageHeader";
+
 import { ArrowLeft, ChevronLeft, Repeat, X } from "lucide-react";
 import StickerPackAnimation, { StickerResult } from "@/components/StickerPackAnimation";
 import AramaicBackdrop from "@/components/AramaicBackdrop";
