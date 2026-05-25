@@ -131,28 +131,22 @@ export default function Album() {
     writeOwned(next); setOwned(next); setPackResult(results);
   }, [spendCoins]);
 
-  // ============= COVER =============
+  // ============= COVER (fullscreen) =============
   if (view === "cover") {
     return (
-      <div className="fixed inset-0 z-40 flex flex-col p-4"
-        style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
-        <StandardHeader onHome={() => navigate("/")} coins={coins} />
-      <div className="flex-1 flex flex-col items-center justify-center">
-          <div onClick={() => { setPageIdx(0); setView("pages"); }}
-            className="relative cursor-pointer group max-w-md w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] border-4 border-amber-700/50 transition-transform hover:scale-[1.02] hover:rotate-1">
-            <img src={albumCapa} alt="Heróis da Fé" className="w-full h-full object-cover" />
-            <div className="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-amber-900/80 to-transparent" />
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/90 px-4 py-2 rounded-full font-display font-bold text-sm shadow-lg animate-pulse">
-              👆 Toque para abrir
-            </div>
-          </div>
-          <p className="mt-6 text-foreground/80 font-body text-sm text-center max-w-md">
-            Colecione mais de 200 figurinhas! Cada pacotinho tem <strong>5 figurinhas</strong> (1 relíquia + 1 rara + 3 normais).
-          </p>
+      <div
+        onClick={() => { setPageIdx(0); setView("pages"); }}
+        className="fixed inset-0 z-40 cursor-pointer bg-black"
+      >
+        <PageHeader />
+        <img src={albumCapa} alt="Heróis da Fé" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white/90 px-5 py-2.5 rounded-full font-display font-bold text-base shadow-2xl animate-pulse">
+          👆 Toque para abrir
         </div>
       </div>
     );
   }
+
 
   // ============= TRADE =============
   if (view === "trade") {
