@@ -75,19 +75,26 @@ export default function Album() {
 
   const missing = useMemo(() => allStickers.filter((s) => !owned[s.id]), [owned]);
 
-  // One page per category
-  const pages = useMemo<BookPage[]>(() => {
-    return categories.map((cat) => ({
-      kind: "category" as const,
-      cat,
-      stickers: cat.stickers.slice(0, 8),
-      bg: cat.bgs?.[0],
-      pageInCat: 1 as const,
-    }));
+  // One page per category, with cumulative global startIndex for numbering
+  const pages = useMemo<(BookPage & { startIndex: number })[]>(() => {
+    let running = 0;
+    return categories.map((cat) => {
+      const stickers = cat.stickers.slice(0, 8);
+      const page = {
+        kind: "category" as const,
+        cat,
+        stickers,
+        bg: cat.bgs?.[0],
+        pageInCat: 1 as const,
+        startIndex: running,
+      };
+      running += stickers.length;
+      return page;
+    });
   }, []);
 
-  const [pageIdx, setPageIdx] = useState(0);
   const totalPages = pages.length;
+
 
   const goNext = useCallback(() => {
     setPageIdx((i) => Math.min(i + 1, pages.length - 1));
