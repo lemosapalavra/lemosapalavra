@@ -372,13 +372,14 @@ function MapPage({ owned }: { owned: Owned }) {
 function BackCoverPage() { return null; }
 
 function CategoryPage({
-  cat, stickers, bg, owned, pageInCat, onStickerClick,
+  cat, stickers, bg, owned, pageInCat, startIndex, onStickerClick,
 }: {
   cat: typeof categories[number];
   stickers: Sticker[];
   bg?: string;
   owned: Owned;
   pageInCat: 1 | 2;
+  startIndex: number;
   onStickerClick: (s: Sticker) => void;
 }) {
   return (
@@ -393,7 +394,8 @@ function CategoryPage({
         <div className="grid grid-cols-4 gap-2 sm:gap-3 w-full" style={{ gridTemplateRows: "repeat(2, minmax(0, 1fr))" }}>
           {stickers.map((s, i) => {
             const has = (owned[s.id] || 0) > 0;
-            const number = String(i + 1 + (pageInCat === 2 ? 8 : 0)).padStart(2, "0");
+            const number = String(startIndex + i + 1).padStart(2, "0");
+
             return (
               <button
                 key={s.id}
