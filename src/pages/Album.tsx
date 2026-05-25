@@ -93,7 +93,9 @@ export default function Album() {
     });
   }, []);
 
+  const [pageIdx, setPageIdx] = useState(0);
   const totalPages = pages.length;
+
 
 
   const goNext = useCallback(() => {
