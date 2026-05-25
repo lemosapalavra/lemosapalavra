@@ -199,9 +199,11 @@ export default function LemosPlay() {
             <a href="#filmes" className="hover:text-white">Filmes</a>
             <a href="#series" className="hover:text-white">Séries</a>
             <a href="#musicas" className="hover:text-white">Músicas</a>
+            <a href="#louvores" className="hover:text-white">Louvores</a>
           </nav>
         </div>
       </header>
+
 
       {/* Hero */}
       <section className="relative h-[70vh] sm:h-[85vh] w-full overflow-hidden">
@@ -249,8 +251,10 @@ export default function LemosPlay() {
             progress={progress}
           />
         </div>
-        <div id="musicas"><Row title="Músicas" items={louvoresPlay} onPlay={setPlaying} progress={progress} /></div>
+        <div id="musicas"><Row title="Músicas" items={louvoresPlay.slice(4)} onPlay={setPlaying} progress={progress} /></div>
+        <div id="louvores"><Row title="Louvores" items={louvoresPlay.slice(0, 4)} onPlay={setPlaying} progress={progress} /></div>
       </div>
+
 
 
       {/* Group selector modal */}
