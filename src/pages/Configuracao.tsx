@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
+import { useIsAdmin, setAdminMode } from "@/hooks/useIsAdmin";
+
 
 export default function Configuracao() {
   const navigate = useNavigate();
@@ -159,6 +161,9 @@ export default function Configuracao() {
             </div>
           </div>
         )}
+
+        {/* Admin mode */}
+        <AdminModeToggle />
 
         {/* Actions */}
         <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
