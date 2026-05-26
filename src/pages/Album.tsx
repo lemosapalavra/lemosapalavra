@@ -51,7 +51,9 @@ type View = "cover" | "pages" | "trade";
 type BookPage =
   | { kind: "category"; cat: typeof categories[number]; stickers: Sticker[]; bg?: string; pageInCat: 1 | 2 }
   | { kind: "map" }
+  | { kind: "backcover" }
   | { kind: "blank" };
+
 
 export default function Album() {
   const navigate = useNavigate();
@@ -77,10 +79,11 @@ export default function Album() {
 
   const missing = useMemo(() => allStickers.filter((s) => !owned[s.id]), [owned]);
 
-  // One page per category, with cumulative global startIndex for numbering
+  // One page per category, with cumulative global startIndex for numbering.
+  // A final "backcover" page summarises the album.
   const pages = useMemo<(BookPage & { startIndex: number })[]>(() => {
     let running = 0;
-    return categories.map((cat) => {
+    const catPages = categories.map((cat) => {
       const stickers = cat.stickers.slice(0, 8);
       const page = {
         kind: "category" as const,
@@ -93,7 +96,9 @@ export default function Album() {
       running += stickers.length;
       return page;
     });
+    return [...catPages, { kind: "backcover" as const, startIndex: running }];
   }, []);
+
 
   const [pageIdx, setPageIdx] = useState(0);
   const totalPages = pages.length;
@@ -286,9 +291,11 @@ export default function Album() {
 function renderPage(p: (BookPage & { startIndex?: number }) | undefined, owned: Owned, onStickerClick: (s: Sticker) => void) {
   if (!p) return null;
   if (p.kind === "map") return <MapPage owned={owned} />;
+  if (p.kind === "backcover") return <BackCoverPage owned={owned} />;
   if (p.kind === "blank") return <div className="w-full h-full" />;
   return <CategoryPage cat={p.cat} stickers={p.stickers} bg={p.bg} owned={owned} pageInCat={p.pageInCat} startIndex={p.startIndex ?? 0} onStickerClick={onStickerClick} />;
 }
+
 
 
 /* -------- Sticker Detail Modal — fullscreen image only -------- */
@@ -369,7 +376,109 @@ function MapPage({ owned }: { owned: Owned }) {
   );
 }
 
-function BackCoverPage() { return null; }
+function BackCoverPage({ owned }: { owned: Owned }) {
+  const total = allStickers.length;
+  const collected = allStickers.filter((s) => (owned[s.id] || 0) > 0);
+  const missing = allStickers.filter((s) => !(owned[s.id] || 0));
+  const repeats = Object.entries(owned)
+    .filter(([, c]) => (c || 0) > 1)
+    .map(([id, c]) => ({ s: allStickers.find((x) => x.id === +id)!, c: c - 1 }))
+    .filter((x) => x.s);
+  const repeatCount = repeats.reduce((a, x) => a + x.c, 0);
+  const pct = Math.round((collected.length / total) * 100);
+
+  let globalIdx = 0;
+  return (
+    <div className="relative w-full h-full overflow-y-auto text-amber-950">
+      <div className="p-2 sm:p-3">
+        <h2 className="font-display font-extrabold text-xl sm:text-2xl text-center mb-2 drop-shadow">📕 Contracapa do Álbum</h2>
+        <p className="text-center text-xs sm:text-sm text-amber-900 mb-3 italic">Heróis da Fé — sua coleção sagrada</p>
+
+        {/* Stats */}
+        <div className="grid grid-cols-4 gap-2 mb-3">
+          <Stat label="Total" value={total} emoji="📚" />
+          <Stat label="Coletadas" value={collected.length} emoji="✅" />
+          <Stat label="Faltantes" value={missing.length} emoji="🎯" />
+          <Stat label="Repetidas" value={repeatCount} emoji="🔁" />
+        </div>
+
+        <div className="bg-white/80 rounded-xl p-2 mb-3 border border-amber-700/30">
+          <div className="flex items-center justify-between text-[11px] font-bold mb-1">
+            <span>Progresso</span><span>{pct}%</span>
+          </div>
+          <div className="h-2 bg-amber-200 rounded-full overflow-hidden">
+            <div className="h-full bg-gradient-to-r from-amber-400 to-orange-600" style={{ width: `${pct}%` }} />
+          </div>
+        </div>
+
+        {/* Rules */}
+        <div className="bg-amber-50/90 rounded-xl p-3 mb-3 border border-amber-700/30 text-[11px] sm:text-xs leading-relaxed">
+          <p className="font-display font-extrabold mb-1.5 text-sm">🎁 Como ganhar figurinhas</p>
+          <ul className="space-y-1 list-disc pl-4">
+            <li>A cada <strong>atividade</strong> concluída você ganha 🪙 moedas.</li>
+            <li>Assistir um <strong>filme, série ou vídeo</strong> também rende moedas.</li>
+            <li>Ler um <strong>versículo, devocional</strong> ou trecho da <strong>Bíblia</strong> dá moedas.</li>
+            <li>Com <strong>3 🪙 moedas</strong> você compra um <strong>pacotinho</strong> com 5 figurinhas.</li>
+            <li>Cada pacote vem com 1 <strong>Relíquia</strong>, 1 <strong>Rara</strong> e 3 <strong>Normais</strong>.</li>
+            <li>Figurinhas <strong>repetidas</strong> podem ser trocadas na <em>Sala de Trocas</em>.</li>
+          </ul>
+        </div>
+
+        {/* Detailed list per category */}
+        <div className="bg-white/80 rounded-xl p-3 border border-amber-700/30">
+          <p className="font-display font-extrabold text-sm mb-2">📋 Numeração completa</p>
+          <div className="space-y-3">
+            {categories.map((c) => {
+              const items = c.stickers.map((s) => {
+                const n = String(++globalIdx).padStart(2, "0");
+                const count = owned[s.id] || 0;
+                return { s, n, count };
+              });
+              const got = items.filter((x) => x.count > 0).length;
+              return (
+                <div key={c.key}>
+                  <div className="flex items-center justify-between text-[11px] font-display font-bold mb-1">
+                    <span>{c.icon} {c.name}</span>
+                    <span className="text-amber-700">{got}/{c.stickers.length}</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-1">
+                    {items.map(({ s, n, count }) => {
+                      const status = count === 0 ? "missing" : count > 1 ? "repeat" : "ok";
+                      const bg = status === "ok" ? "bg-emerald-100" : status === "repeat" ? "bg-amber-100" : "bg-red-100/60";
+                      const dot = status === "ok" ? "✅" : status === "repeat" ? `🔁×${count - 1}` : "❌";
+                      return (
+                        <div key={s.id} className={`${bg} rounded px-1.5 py-0.5 flex items-center gap-1 text-[10px]`}>
+                          <span className="font-mono font-bold">{n}</span>
+                          <span className="truncate flex-1">{s.name}</span>
+                          <span className="shrink-0">{dot}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="text-center mt-3 text-[10px] text-amber-800/80 italic">
+          ✝️ Cresça na fé colecionando os Heróis da Bíblia ✝️
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Stat({ label, value, emoji }: { label: string; value: number; emoji: string }) {
+  return (
+    <div className="bg-white/85 rounded-lg p-1.5 text-center border border-amber-700/30">
+      <div className="text-base leading-none">{emoji}</div>
+      <div className="font-display font-extrabold text-sm tabular-nums">{value}</div>
+      <div className="text-[9px] uppercase tracking-wide text-amber-700">{label}</div>
+    </div>
+  );
+}
+
 
 function CategoryPage({
   cat, stickers, bg, owned, pageInCat, startIndex, onStickerClick,
