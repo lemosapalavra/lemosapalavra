@@ -1,25 +1,7 @@
+import { useEffect, useState } from "react";
 import logoCentral from "@/assets/logo-central.png";
-import iconAtividades from "@/assets/icon-atividades.png";
-import iconAlbum from "@/assets/icon-album.png";
-import iconDevocionais from "@/assets/icon-devocionais.png";
-import iconPedidos from "@/assets/icon-pedidos-oracao.png";
 import iconLogin from "@/assets/icon-login.png";
-import lemosPlayLogo from "@/assets/lemos-play-logo.png";
-
-interface MenuItem {
-  icon: string;
-  label: string;
-  sublabel?: string;
-}
-
-// Pentagram order (clockwise starting from top vertex)
-const items: MenuItem[] = [
-  { icon: lemosPlayLogo, label: "LEMOS PLAY", sublabel: "Filmes, Séries e Músicas" },
-  { icon: iconAlbum, label: "ÁLBUM", sublabel: "Heróis da Fé" },
-  { icon: iconDevocionais, label: "DEVOCIONAIS" },
-  { icon: iconPedidos, label: "PEDIDOS\nDE ORAÇÃO" },
-  { icon: iconAtividades, label: "ATIVIDADES" },
-];
+import { loadOrbit, type OrbitItem } from "@/data/orbitConfig";
 
 interface OrbitMenuProps {
   isAuthenticated: boolean;
@@ -30,11 +12,18 @@ interface OrbitMenuProps {
   onItemClick?: (label: string) => void;
 }
 
-const SPIN_DURATION = "120s"; // very slow
+const SPIN_DURATION = "120s";
 
 export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }: OrbitMenuProps) {
   const iconSize = 120;
-  // Responsive container; radius derived from container size via CSS var
+  const [items, setItems] = useState<OrbitItem[]>(() => loadOrbit());
+
+  useEffect(() => {
+    const h = () => setItems(loadOrbit());
+    window.addEventListener("lemos_orbit_change", h);
+    return () => window.removeEventListener("lemos_orbit_change", h);
+  }, []);
+
   return (
     <div className="relative flex flex-col items-center" style={{ width: "min(95vw, 780px)" }}>
       {!isAuthenticated && (
@@ -52,36 +41,22 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
         style={{
           width: "min(92vw, 720px)",
           height: "min(92vw, 720px)",
-          // CSS var used for orbit radius
           ["--orbit-radius" as any]: "min(38vw, 300px)",
         }}
       >
-        {/* Rotating orbit ring */}
         <div
           className="absolute inset-0"
-          style={{
-            animation: `orbit-spin ${SPIN_DURATION} linear infinite`,
-            transformOrigin: "50% 50%",
-          }}
+          style={{ animation: `orbit-spin ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}
         >
           {items.map((item, i) => {
-            const angle = (360 / items.length) * i - 90; // start at top
+            const angle = (360 / items.length) * i - 90;
             return (
               <div
-                key={item.label}
+                key={item.label + i}
                 className="absolute top-1/2 left-1/2"
-                style={{
-                  // Place vertex on pentagram, then counter-rotate so item stays upright
-                  transform: `translate(-50%, -50%) rotate(${angle}deg) translate(var(--orbit-radius)) rotate(${-angle}deg)`,
-                }}
+                style={{ transform: `translate(-50%, -50%) rotate(${angle}deg) translate(var(--orbit-radius)) rotate(${-angle}deg)` }}
               >
-                {/* Counter-spin wrapper to keep icons always horizontal */}
-                <div
-                  style={{
-                    animation: `orbit-spin-reverse ${SPIN_DURATION} linear infinite`,
-                    transformOrigin: "50% 50%",
-                  }}
-                >
+                <div style={{ animation: `orbit-spin-reverse ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}>
                   <button
                     type="button"
                     onClick={() => isAuthenticated && onItemClick?.(item.label)}
@@ -111,7 +86,6 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
           })}
         </div>
 
-        {/* Central static logo */}
         <img
           src={logoCentral}
           alt="Lemos a Palavra"
