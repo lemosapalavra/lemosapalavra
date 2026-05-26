@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
+import { useIsAdmin, setAdminMode } from "@/hooks/useIsAdmin";
+
 
 export default function Configuracao() {
   const navigate = useNavigate();
@@ -160,6 +162,9 @@ export default function Configuracao() {
           </div>
         )}
 
+        {/* Admin mode */}
+        <AdminModeToggle />
+
         {/* Actions */}
         <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
           <h3 className="font-display text-lg font-bold text-foreground mb-3">🔧 Ações de Gerenciamento</h3>
@@ -186,3 +191,24 @@ export default function Configuracao() {
     </div>
   );
 }
+
+function AdminModeToggle() {
+  const admin = useIsAdmin();
+  return (
+    <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
+      <h3 className="font-display text-lg font-bold text-foreground mb-2">🔐 Modo Administrador</h3>
+      <p className="text-xs text-muted-foreground mb-3">
+        Quando ativo, ícones de engrenagem aparecem na página inicial e no Lemos Play permitindo editar conteúdo. Visível apenas neste dispositivo.
+      </p>
+      <button
+        onClick={() => setAdminMode(!admin)}
+        className={`px-4 py-2 rounded-xl font-display font-bold text-sm transition ${
+          admin ? "bg-emerald-600 text-white hover:bg-emerald-700" : "bg-zinc-200 text-foreground hover:bg-zinc-300"
+        }`}
+      >
+        {admin ? "✓ Modo Administrador ativo (clique para desativar)" : "Ativar Modo Administrador"}
+      </button>
+    </div>
+  );
+}
+
