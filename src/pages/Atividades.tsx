@@ -574,13 +574,14 @@ function MemoryGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
             const isMatched = matched.includes(i);
             return (
               <button key={i} onClick={() => flip(i)}
-                className={`aspect-square rounded-xl flex items-center justify-center border-2 transition-all duration-300 ${
+                className={`aspect-square rounded-xl flex items-center justify-center border-2 transition-all duration-300 overflow-hidden ${
                   isMatched ? "bg-green-100 border-green-400 scale-95" :
                   visible ? "bg-primary/10 border-primary scale-105" :
-                  "bg-popover border-border hover:border-primary/50 hover:scale-105 active:scale-95"
-                }`}
-                style={{ fontSize: cfg.cols >= 6 ? "1.5rem" : "2rem" }}>
-                {visible ? c : "❓"}
+                  "bg-gradient-to-br from-primary/80 to-accent/80 border-border hover:scale-105 active:scale-95"
+                }`}>
+                {visible
+                  ? <img src={c} alt="" loading="lazy" className="w-full h-full object-contain p-1" />
+                  : <span className="text-white text-2xl font-display font-extrabold drop-shadow">?</span>}
               </button>
             );
           })}
