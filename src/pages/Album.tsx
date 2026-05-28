@@ -547,3 +547,178 @@ function StandardHeader({ onHome, coins, variant = "light" }: { onHome: () => vo
     </div>
   );
 }
+
+/* ============================================================
+   TRADE PANEL — Sala de Trocas funcional
+   O usuário oferece uma figurinha repetida e escolhe uma
+   faltante para receber (troca simulada com a comunidade).
+============================================================ */
+function TradePanel({
+  owned, repeats, missing, coins, onBack, onHome, onTrade,
+}: {
+  owned: Owned;
+  repeats: { sticker: Sticker; count: number }[];
+  missing: Sticker[];
+  coins: number;
+  onBack: () => void;
+  onHome: () => void;
+  onTrade: (give: Sticker, get: Sticker) => void;
+}) {
+  const [offer, setOffer] = useState<Sticker | null>(null);
+  const [confirm, setConfirm] = useState<{ give: Sticker; get: Sticker } | null>(null);
+  const [done, setDone] = useState<{ give: Sticker; get: Sticker } | null>(null);
+
+  return (
+    <div
+      className="fixed inset-0 z-40 overflow-y-auto p-4"
+      style={{ background: "linear-gradient(180deg, hsl(35,45%,88%), hsl(40,50%,82%))" }}
+    >
+      <div className="max-w-4xl mx-auto">
+        <StandardHeader onHome={onHome} coins={coins} />
+        <div className="flex items-center justify-between mb-4">
+          <button onClick={onBack}
+            className="flex items-center gap-2 font-display font-bold bg-white/80 px-3 py-1.5 rounded-full shadow">
+            <ChevronLeft className="w-5 h-5" /> Álbum
+          </button>
+          <h1 className="font-display font-extrabold text-xl">🔄 Sala de Trocas</h1>
+          <div className="w-20" />
+        </div>
+
+        <div className="bg-white/85 rounded-2xl p-4 mb-4 shadow border">
+          <p className="font-display font-bold text-foreground mb-1">📦 Como funciona</p>
+          <p className="text-xs text-muted-foreground font-body leading-relaxed">
+            Escolha uma <strong>figurinha repetida</strong> para oferecer, depois escolha
+            uma <strong>figurinha faltante</strong> que deseja receber. A comunidade
+            aceita sua proposta instantaneamente e a troca é registrada no seu álbum.
+          </p>
+        </div>
+
+        {/* Repetidas para oferecer */}
+        <h2 className="font-display font-extrabold text-base mb-2">🎁 Suas figurinhas repetidas</h2>
+        {repeats.length === 0 ? (
+          <div className="rounded-2xl border-2 border-dashed border-amber-700/30 p-8 text-center bg-white/40 mb-4">
+            <p className="font-body text-muted-foreground">Você ainda não tem figurinhas repetidas. Abra mais pacotinhos!</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 mb-6">
+            {repeats.map(({ sticker, count }) => {
+              const selected = offer?.id === sticker.id;
+              return (
+                <button
+                  key={sticker.id}
+                  onClick={() => setOffer(selected ? null : sticker)}
+                  className={`bg-white rounded-xl p-2 border-[3px] ${selected ? "border-emerald-500 ring-2 ring-emerald-300" : rarityBorder(sticker.rarity)} shadow-md text-center transition hover:scale-105`}
+                >
+                  {sticker.image
+                    ? <img src={sticker.image} alt={sticker.name} className="w-full aspect-square object-contain" loading="lazy" />
+                    : <div className="text-3xl">{sticker.emoji}</div>}
+                  <div className="font-display font-bold text-[11px] leading-tight mt-1">{sticker.name}</div>
+                  <div className="text-[9px] text-muted-foreground uppercase">{rarityLabel(sticker.rarity)}</div>
+                  <div className="mt-1 inline-flex items-center gap-1 bg-red-500/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">×{count}</div>
+                  <div className="mt-2 w-full text-[10px] font-display font-bold py-1 rounded-md text-white" style={{ background: selected ? "#059669" : "linear-gradient(to bottom right,#10b981,#0d9488)" }}>
+                    {selected ? "✓ Selecionada" : "Oferecer"}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Faltantes para receber */}
+        <h2 className="font-display font-extrabold text-base mb-2">🎯 Figurinhas que faltam no seu álbum ({missing.length})</h2>
+        {missing.length === 0 ? (
+          <div className="bg-emerald-100 rounded-2xl p-6 text-center border border-emerald-300">
+            <p className="font-display font-bold text-emerald-800 text-lg">🎉 Você completou o álbum!</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
+            {missing.map((s) => {
+              const canTrade = !!offer;
+              return (
+                <button
+                  key={s.id}
+                  disabled={!canTrade}
+                  onClick={() => offer && setConfirm({ give: offer, get: s })}
+                  className={`bg-amber-50 rounded-lg p-2 border border-dashed text-center transition ${canTrade ? "border-amber-700 hover:bg-amber-100 hover:scale-105 cursor-pointer" : "border-amber-700/40 opacity-70 cursor-not-allowed"}`}
+                >
+                  <div className="text-xl">{canTrade ? "🔄" : "❓"}</div>
+                  <div className="text-[9px] font-bold leading-tight">{s.name}</div>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {!offer && repeats.length > 0 && missing.length > 0 && (
+          <p className="text-center text-xs text-muted-foreground font-body mt-4 italic">
+            👆 Primeiro selecione uma figurinha repetida para oferecer.
+          </p>
+        )}
+      </div>
+
+      {/* Confirmation modal */}
+      {confirm && (
+        <div
+          className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
+          onClick={() => setConfirm(null)}
+        >
+          <div className="bg-white rounded-2xl p-5 max-w-md w-full shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <h3 className="font-display font-extrabold text-lg text-center mb-3">Confirmar Troca?</h3>
+            <div className="flex items-center justify-around mb-4">
+              <div className="text-center">
+                <div className="text-[10px] text-muted-foreground font-bold mb-1">VOCÊ OFERECE</div>
+                {confirm.give.image
+                  ? <img src={confirm.give.image} alt="" className="w-20 h-20 object-contain mx-auto" />
+                  : <div className="text-5xl">{confirm.give.emoji}</div>}
+                <div className="text-xs font-bold mt-1">{confirm.give.name}</div>
+              </div>
+              <div className="text-3xl">↔️</div>
+              <div className="text-center">
+                <div className="text-[10px] text-muted-foreground font-bold mb-1">VOCÊ RECEBE</div>
+                {confirm.get.image
+                  ? <img src={confirm.get.image} alt="" className="w-20 h-20 object-contain mx-auto" />
+                  : <div className="text-5xl">{confirm.get.emoji}</div>}
+                <div className="text-xs font-bold mt-1">{confirm.get.name}</div>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <button onClick={() => setConfirm(null)}
+                className="flex-1 py-2 rounded-full bg-muted font-display font-bold text-sm">Cancelar</button>
+              <button
+                onClick={() => {
+                  onTrade(confirm.give, confirm.get);
+                  setDone(confirm);
+                  setOffer(null);
+                  setConfirm(null);
+                }}
+                className="flex-1 py-2 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-display font-bold text-sm shadow"
+              >
+                ✓ Trocar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success toast */}
+      {done && (
+        <div
+          className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4"
+          onClick={() => setDone(null)}
+        >
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl text-center" onClick={(e) => e.stopPropagation()}>
+            <div className="text-5xl mb-2">🎉</div>
+            <h3 className="font-display font-extrabold text-lg mb-2">Troca realizada!</h3>
+            <p className="text-sm font-body text-muted-foreground mb-4">
+              Você recebeu <strong>{done.get.name}</strong> e enviou <strong>{done.give.name}</strong>.
+            </p>
+            <button onClick={() => setDone(null)}
+              className="px-6 py-2 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 text-white font-display font-bold shadow">
+              Continuar
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
