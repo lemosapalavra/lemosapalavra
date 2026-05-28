@@ -73,10 +73,24 @@ const quizCategories = [
    MEMÓRIA — inspirado em paciencia.co/memoria
    3 níveis de dificuldade + cronômetro + movimentos
 ========================================================= */
+// Memory uses real biblical sticker images from our album.
+import mem01 from "@/assets/album/herois-stickers/01.webp";
+import mem02 from "@/assets/album/herois-stickers/02.webp";
+import mem03 from "@/assets/album/herois-stickers/03.webp";
+import mem04 from "@/assets/album/herois-stickers/04.webp";
+import mem05 from "@/assets/album/herois-stickers/05.webp";
+import mem06 from "@/assets/album/herois-stickers/06.webp";
+import mem07 from "@/assets/album/herois-stickers/07.webp";
+import mem08 from "@/assets/album/herois-stickers/08.webp";
+import mem09 from "@/assets/album/herois-stickers/09.webp";
+import mem10 from "@/assets/album/herois-stickers/10.webp";
+import mem11 from "@/assets/album/herois-stickers/11.webp";
+import mem12 from "@/assets/album/herois-stickers/12.webp";
+const memoryImages = [mem01, mem02, mem03, mem04, mem05, mem06, mem07, mem08, mem09, mem10, mem11, mem12];
 const memorySets = {
-  facil: ["🐑", "🕊️", "🐟", "🦁", "⭐", "🌈"],         // 6 pares = 4x3
-  medio: ["🐑", "🕊️", "🐟", "🦁", "⭐", "🌈", "🔥", "💧"], // 8 pares = 4x4
-  dificil: ["🐑", "🕊️", "🐟", "🦁", "⭐", "🌈", "🔥", "💧", "🌿", "👑", "🍞", "✝️"], // 12 pares = 6x4
+  facil:   memoryImages.slice(0, 6),
+  medio:   memoryImages.slice(0, 8),
+  dificil: memoryImages.slice(0, 12),
 };
 const memoryConfig = {
   facil: { cols: 4, label: "Fácil (12 cartas)", coins: 2 },
@@ -85,86 +99,68 @@ const memoryConfig = {
 };
 
 /* =========================================================
-   7 ERROS — inspirado em escolagames.com.br/jogos/jogo-dos-7-erros
-   Duas cenas SVG; clique nas diferenças da imagem da direita.
+   7 ERROS — usando nossas próprias imagens bíblicas
+   Foto original (topo) + cópia com emojis extras (baixo).
+   Coordenadas em % (0..100) para responsividade.
 ========================================================= */
-type SpotScene = {
-  title: string;
-  bg: string;        // gradient css
-  emoji: string;
-  // base elements rendered in both
-  base: { type: "circle" | "rect" | "text"; props: Record<string, any>; content?: string }[];
-  // elements only in the LEFT (original) — what's been REMOVED on the right
-  removed: { x: number; y: number; r: number; type: "circle" | "rect" | "text"; props: Record<string, any>; content?: string }[];
-  // elements only on the RIGHT (added/changed) — these are the clickable differences
-  diffs: { x: number; y: number; r: number; type: "circle" | "rect" | "text"; props: Record<string, any>; content?: string }[];
-};
+type SpotDiff = { x: number; y: number; r: number; emoji: string; size: number };
+type SpotScene = { title: string; emoji: string; image: string; diffs: SpotDiff[] };
 
 const spotScenes: SpotScene[] = [
   {
     title: "A Arca de Noé",
     emoji: "🚢",
-    bg: "linear-gradient(180deg,#9be7ff 0%,#56c1ff 60%,#1976d2 100%)",
-    base: [
-      { type: "circle", props: { cx: 320, cy: 50, r: 25, fill: "#FFD54F" } }, // sol
-      { type: "rect", props: { x: 0, y: 230, width: 400, height: 70, fill: "#1565c0" } }, // mar
-      { type: "rect", props: { x: 110, y: 150, width: 200, height: 80, fill: "#795548" } }, // casco
-      { type: "rect", props: { x: 160, y: 100, width: 100, height: 50, fill: "#a1887f" } }, // cabine
-      { type: "text", props: { x: 200, y: 285, fill: "#fff", fontSize: 12, textAnchor: "middle", fontWeight: "bold" }, content: "Arca de Noé" },
-    ],
-    removed: [],
+    image: imgNoe,
     diffs: [
-      { x: 60, y: 60, r: 18, type: "text", props: { x: 60, y: 70, fontSize: 28 }, content: "☁️" },
-      { x: 200, y: 80, r: 12, type: "circle", props: { cx: 200, cy: 80, r: 8, fill: "#fff" } }, // pomba
-      { x: 130, y: 175, r: 12, type: "rect", props: { x: 122, y: 165, width: 16, height: 20, fill: "#FFEB3B" } }, // janela amarela
-      { x: 290, y: 175, r: 12, type: "rect", props: { x: 282, y: 165, width: 16, height: 20, fill: "#FFEB3B" } }, // janela amarela
-      { x: 360, y: 270, r: 14, type: "text", props: { x: 360, y: 278, fontSize: 22 }, content: "🐟" },
-      { x: 30, y: 270, r: 14, type: "text", props: { x: 30, y: 278, fontSize: 22 }, content: "🐠" },
-      { x: 200, y: 130, r: 12, type: "rect", props: { x: 195, y: 120, width: 10, height: 30, fill: "#5d4037" } }, // mastro extra
+      { x: 10, y: 12, r: 8, emoji: "☁️", size: 28 },
+      { x: 82, y: 10, r: 8, emoji: "🕊️", size: 26 },
+      { x: 48, y: 18, r: 7, emoji: "⭐", size: 24 },
+      { x: 18, y: 78, r: 8, emoji: "🐟", size: 26 },
+      { x: 88, y: 82, r: 8, emoji: "🐠", size: 26 },
+      { x: 50, y: 90, r: 7, emoji: "🌊", size: 26 },
+      { x: 70, y: 50, r: 8, emoji: "🦒", size: 28 },
     ],
   },
   {
-    title: "O Bom Pastor",
-    emoji: "🐑",
-    bg: "linear-gradient(180deg,#bbe1fa 0%,#c8e6c9 55%,#81c784 100%)",
-    base: [
-      { type: "circle", props: { cx: 330, cy: 50, r: 28, fill: "#FFB300" } },
-      { type: "rect", props: { x: 0, y: 220, width: 400, height: 80, fill: "#66bb6a" } },
-      { type: "rect", props: { x: 180, y: 110, width: 50, height: 90, fill: "#8d6e63" } }, // pastor corpo
-      { type: "circle", props: { cx: 205, cy: 95, r: 18, fill: "#ffcc80" } }, // cabeça
-      { type: "rect", props: { x: 235, y: 80, width: 4, height: 130, fill: "#5d4037" } }, // cajado
-      { type: "text", props: { x: 200, y: 285, fill: "#1b5e20", fontSize: 12, textAnchor: "middle", fontWeight: "bold" }, content: "O Bom Pastor" },
-    ],
-    removed: [],
+    title: "Davi e Golias",
+    emoji: "⚔️",
+    image: imgDavi,
     diffs: [
-      { x: 70, y: 230, r: 16, type: "text", props: { x: 70, y: 240, fontSize: 26 }, content: "🐑" },
-      { x: 130, y: 240, r: 16, type: "text", props: { x: 130, y: 250, fontSize: 26 }, content: "🐑" },
-      { x: 300, y: 240, r: 16, type: "text", props: { x: 300, y: 250, fontSize: 26 }, content: "🐑" },
-      { x: 50, y: 60, r: 16, type: "text", props: { x: 50, y: 70, fontSize: 24 }, content: "🦋" },
-      { x: 130, y: 70, r: 16, type: "text", props: { x: 130, y: 80, fontSize: 22 }, content: "🌸" },
-      { x: 360, y: 200, r: 16, type: "text", props: { x: 360, y: 210, fontSize: 24 }, content: "🌳" },
-      { x: 205, y: 95, r: 12, type: "circle", props: { cx: 205, cy: 82, r: 6, fill: "#FFD700" } }, // auréola
+      { x: 14, y: 14, r: 8, emoji: "☀️", size: 30 },
+      { x: 86, y: 12, r: 7, emoji: "🦅", size: 26 },
+      { x: 50, y: 10, r: 7, emoji: "✨", size: 22 },
+      { x: 22, y: 88, r: 8, emoji: "🌿", size: 26 },
+      { x: 78, y: 86, r: 8, emoji: "🪨", size: 26 },
+      { x: 40, y: 92, r: 7, emoji: "🐑", size: 26 },
+      { x: 62, y: 50, r: 7, emoji: "👑", size: 26 },
     ],
   },
   {
-    title: "O Nascimento de Jesus",
-    emoji: "👶",
-    bg: "linear-gradient(180deg,#0d1b3d 0%,#1a237e 50%,#3949ab 100%)",
-    base: [
-      { type: "rect", props: { x: 100, y: 150, width: 200, height: 130, fill: "#6d4c41" } }, // estábulo
-      { type: "rect", props: { x: 160, y: 200, width: 80, height: 50, fill: "#ffa726" } }, // manjedoura
-      { type: "circle", props: { cx: 200, cy: 215, r: 12, fill: "#ffe0b2" } }, // bebê
-      { type: "text", props: { x: 200, y: 290, fill: "#fff", fontSize: 12, textAnchor: "middle", fontWeight: "bold" }, content: "Nascimento de Jesus" },
-    ],
-    removed: [],
+    title: "Moisés e o Mar Vermelho",
+    emoji: "🌊",
+    image: imgMoises,
     diffs: [
-      { x: 200, y: 70, r: 22, type: "text", props: { x: 200, y: 85, fontSize: 36 }, content: "⭐" },
-      { x: 60, y: 50, r: 12, type: "text", props: { x: 60, y: 58, fontSize: 18 }, content: "✨" },
-      { x: 340, y: 80, r: 12, type: "text", props: { x: 340, y: 88, fontSize: 18 }, content: "✨" },
-      { x: 130, y: 175, r: 14, type: "text", props: { x: 130, y: 185, fontSize: 24 }, content: "🐑" },
-      { x: 270, y: 175, r: 14, type: "text", props: { x: 270, y: 185, fontSize: 24 }, content: "🐂" },
-      { x: 50, y: 250, r: 16, type: "text", props: { x: 50, y: 262, fontSize: 28 }, content: "👑" },
-      { x: 350, y: 250, r: 16, type: "text", props: { x: 350, y: 262, fontSize: 28 }, content: "🎁" },
+      { x: 12, y: 12, r: 8, emoji: "⚡", size: 28 },
+      { x: 88, y: 14, r: 8, emoji: "☁️", size: 28 },
+      { x: 50, y: 8,  r: 7, emoji: "🕊️", size: 24 },
+      { x: 18, y: 82, r: 8, emoji: "🐟", size: 26 },
+      { x: 82, y: 84, r: 8, emoji: "🐠", size: 26 },
+      { x: 48, y: 92, r: 7, emoji: "🌊", size: 22 },
+      { x: 70, y: 40, r: 7, emoji: "✨", size: 22 },
+    ],
+  },
+  {
+    title: "A Criação",
+    emoji: "🌍",
+    image: imgCriacao,
+    diffs: [
+      { x: 14, y: 12, r: 8, emoji: "🌟", size: 26 },
+      { x: 86, y: 16, r: 8, emoji: "☄️", size: 28 },
+      { x: 50, y: 6,  r: 7, emoji: "🌙", size: 24 },
+      { x: 22, y: 86, r: 8, emoji: "🌸", size: 26 },
+      { x: 78, y: 88, r: 8, emoji: "🦋", size: 26 },
+      { x: 50, y: 92, r: 7, emoji: "🌿", size: 26 },
+      { x: 64, y: 48, r: 7, emoji: "🐦", size: 22 },
     ],
   },
 ];
@@ -578,13 +574,14 @@ function MemoryGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
             const isMatched = matched.includes(i);
             return (
               <button key={i} onClick={() => flip(i)}
-                className={`aspect-square rounded-xl flex items-center justify-center border-2 transition-all duration-300 ${
+                className={`aspect-square rounded-xl flex items-center justify-center border-2 transition-all duration-300 overflow-hidden ${
                   isMatched ? "bg-green-100 border-green-400 scale-95" :
                   visible ? "bg-primary/10 border-primary scale-105" :
-                  "bg-popover border-border hover:border-primary/50 hover:scale-105 active:scale-95"
-                }`}
-                style={{ fontSize: cfg.cols >= 6 ? "1.5rem" : "2rem" }}>
-                {visible ? c : "❓"}
+                  "bg-gradient-to-br from-primary/80 to-accent/80 border-border hover:scale-105 active:scale-95"
+                }`}>
+                {visible
+                  ? <img src={c} alt="" loading="lazy" className="w-full h-full object-contain p-1" />
+                  : <span className="text-white text-2xl font-display font-extrabold drop-shadow">?</span>}
               </button>
             );
           })}
@@ -595,7 +592,7 @@ function MemoryGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
   );
 }
 
-/* ---------- SPOT THE DIFFERENCE (7 ERROS) ---------- */
+/* ---------- SPOT THE DIFFERENCE (7 ERROS) — usa nossas imagens ---------- */
 function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
   const [sceneIdx, setSceneIdx] = useState(0);
   const [found, setFound] = useState<number[]>([]);
@@ -607,30 +604,50 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
 
   const reset = (i: number) => { setSceneIdx(i); setFound([]); setMisses(0); };
 
-  const handleClick = (e: React.MouseEvent<SVGSVGElement>) => {
-    const svg = e.currentTarget;
-    const pt = svg.createSVGPoint();
-    pt.x = e.clientX; pt.y = e.clientY;
-    const cursorPt = pt.matrixTransform(svg.getScreenCTM()!.inverse());
-    const hit = scene.diffs.findIndex((d, i) => !found.includes(i) && Math.hypot(d.x - cursorPt.x, d.y - cursorPt.y) <= d.r + 6);
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const box = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - box.left) / box.width) * 100;
+    const y = ((e.clientY - box.top) / box.height) * 100;
+    const hit = scene.diffs.findIndex((d, i) =>
+      !found.includes(i) && Math.hypot(d.x - x, d.y - y) <= d.r + 2
+    );
     if (hit >= 0) {
       const nf = [...found, hit];
       setFound(nf);
-      if (nf.length === total) {
-        celebrate(`Você encontrou todas as ${total} diferenças!`, 5, "🔍");
-      }
+      if (nf.length === total) celebrate(`Você encontrou todas as ${total} diferenças!`, 5, "🔍");
     } else {
       setMisses((m) => m + 1);
       setShakeKey((k) => k + 1);
     }
   };
 
-  const renderEl = (el: any, key: string) => {
-    if (el.type === "circle") return <circle key={key} {...el.props} />;
-    if (el.type === "rect") return <rect key={key} {...el.props} />;
-    if (el.type === "text") return <text key={key} {...el.props}>{el.content}</text>;
-    return null;
-  };
+  const SceneImage = ({ withDiffs, onSceneClick }: { withDiffs: boolean; onSceneClick?: (e: React.MouseEvent<HTMLDivElement>) => void }) => (
+    <div
+      onClick={onSceneClick}
+      className={`relative w-full aspect-[4/3] rounded-2xl overflow-hidden border-2 ${withDiffs ? "border-primary/60 cursor-pointer" : "border-border"} shadow-lg bg-black select-none`}
+    >
+      <img src={scene.image} alt={scene.title} className="absolute inset-0 w-full h-full object-cover pointer-events-none" />
+      {withDiffs && scene.diffs.map((d, i) => (
+        <span
+          key={i}
+          aria-hidden
+          className="absolute pointer-events-none drop-shadow-lg"
+          style={{ left: `${d.x}%`, top: `${d.y}%`, fontSize: d.size, transform: "translate(-50%,-50%)" }}
+        >{d.emoji}</span>
+      ))}
+      {withDiffs && found.map((i) => {
+        const d = scene.diffs[i];
+        return (
+          <span
+            key={`mark-${i}`}
+            aria-hidden
+            className="absolute pointer-events-none rounded-full border-[3px] border-red-500 animate-pulse"
+            style={{ left: `${d.x}%`, top: `${d.y}%`, width: `${d.r * 2}%`, paddingBottom: `${d.r * 2}%`, transform: "translate(-50%,-50%)" }}
+          />
+        );
+      })}
+    </div>
+  );
 
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
@@ -644,25 +661,10 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
         </div>
 
         <div className="space-y-3" key={shakeKey}>
-          <p className="text-xs text-center font-body text-muted-foreground">Cena original (acima) ⬇ Encontre as diferenças na cena abaixo</p>
-
-          {/* Original (top) */}
-          <div className="rounded-2xl shadow-lg border-2 border-border overflow-hidden">
-            <svg viewBox="0 0 400 300" className="w-full block" style={{ background: scene.bg }}>
-              {scene.base.map((e, i) => renderEl(e, `orig-${i}`))}
-            </svg>
-          </div>
-
-          {/* Modified (bottom) — clickable */}
-          <div className={`rounded-2xl shadow-lg border-2 border-primary/50 overflow-hidden ${misses > 0 ? "animate-[shake_0.4s]" : ""}`}>
-            <svg viewBox="0 0 400 300" className="w-full block cursor-pointer" style={{ background: scene.bg }} onClick={handleClick}>
-              {scene.base.map((e, i) => renderEl(e, `mod-${i}`))}
-              {scene.diffs.map((d, i) => renderEl(d, `diff-${i}`))}
-              {found.map((i) => (
-                <circle key={`mark-${i}`} cx={scene.diffs[i].x} cy={scene.diffs[i].y} r={scene.diffs[i].r + 4}
-                  fill="none" stroke="#FF1744" strokeWidth="3" strokeDasharray="4 2" />
-              ))}
-            </svg>
+          <p className="text-xs text-center font-body text-muted-foreground">📷 Cena original (acima) — encontre os {total} itens extras na cena abaixo</p>
+          <SceneImage withDiffs={false} />
+          <div className={misses > 0 ? "animate-[shake_0.4s]" : ""}>
+            <SceneImage withDiffs onSceneClick={handleClick} />
           </div>
         </div>
 
