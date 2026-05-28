@@ -577,7 +577,7 @@ function MemoryGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
   );
 }
 
-/* ---------- SPOT THE DIFFERENCE (7 ERROS) ---------- */
+/* ---------- SPOT THE DIFFERENCE (7 ERROS) — usa nossas imagens ---------- */
 function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
   const [sceneIdx, setSceneIdx] = useState(0);
   const [found, setFound] = useState<number[]>([]);
@@ -589,30 +589,50 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
 
   const reset = (i: number) => { setSceneIdx(i); setFound([]); setMisses(0); };
 
-  const handleClick = (e: React.MouseEvent<SVGSVGElement>) => {
-    const svg = e.currentTarget;
-    const pt = svg.createSVGPoint();
-    pt.x = e.clientX; pt.y = e.clientY;
-    const cursorPt = pt.matrixTransform(svg.getScreenCTM()!.inverse());
-    const hit = scene.diffs.findIndex((d, i) => !found.includes(i) && Math.hypot(d.x - cursorPt.x, d.y - cursorPt.y) <= d.r + 6);
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const box = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - box.left) / box.width) * 100;
+    const y = ((e.clientY - box.top) / box.height) * 100;
+    const hit = scene.diffs.findIndex((d, i) =>
+      !found.includes(i) && Math.hypot(d.x - x, d.y - y) <= d.r + 2
+    );
     if (hit >= 0) {
       const nf = [...found, hit];
       setFound(nf);
-      if (nf.length === total) {
-        celebrate(`Você encontrou todas as ${total} diferenças!`, 5, "🔍");
-      }
+      if (nf.length === total) celebrate(`Você encontrou todas as ${total} diferenças!`, 5, "🔍");
     } else {
       setMisses((m) => m + 1);
       setShakeKey((k) => k + 1);
     }
   };
 
-  const renderEl = (el: any, key: string) => {
-    if (el.type === "circle") return <circle key={key} {...el.props} />;
-    if (el.type === "rect") return <rect key={key} {...el.props} />;
-    if (el.type === "text") return <text key={key} {...el.props}>{el.content}</text>;
-    return null;
-  };
+  const SceneImage = ({ withDiffs, onSceneClick }: { withDiffs: boolean; onSceneClick?: (e: React.MouseEvent<HTMLDivElement>) => void }) => (
+    <div
+      onClick={onSceneClick}
+      className={`relative w-full aspect-[4/3] rounded-2xl overflow-hidden border-2 ${withDiffs ? "border-primary/60 cursor-pointer" : "border-border"} shadow-lg bg-black select-none`}
+    >
+      <img src={scene.image} alt={scene.title} className="absolute inset-0 w-full h-full object-cover pointer-events-none" />
+      {withDiffs && scene.diffs.map((d, i) => (
+        <span
+          key={i}
+          aria-hidden
+          className="absolute pointer-events-none drop-shadow-lg"
+          style={{ left: `${d.x}%`, top: `${d.y}%`, fontSize: d.size, transform: "translate(-50%,-50%)" }}
+        >{d.emoji}</span>
+      ))}
+      {withDiffs && found.map((i) => {
+        const d = scene.diffs[i];
+        return (
+          <span
+            key={`mark-${i}`}
+            aria-hidden
+            className="absolute pointer-events-none rounded-full border-[3px] border-red-500 animate-pulse"
+            style={{ left: `${d.x}%`, top: `${d.y}%`, width: `${d.r * 2}%`, paddingBottom: `${d.r * 2}%`, transform: "translate(-50%,-50%)" }}
+          />
+        );
+      })}
+    </div>
+  );
 
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
@@ -626,25 +646,10 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
         </div>
 
         <div className="space-y-3" key={shakeKey}>
-          <p className="text-xs text-center font-body text-muted-foreground">Cena original (acima) ⬇ Encontre as diferenças na cena abaixo</p>
-
-          {/* Original (top) */}
-          <div className="rounded-2xl shadow-lg border-2 border-border overflow-hidden">
-            <svg viewBox="0 0 400 300" className="w-full block" style={{ background: scene.bg }}>
-              {scene.base.map((e, i) => renderEl(e, `orig-${i}`))}
-            </svg>
-          </div>
-
-          {/* Modified (bottom) — clickable */}
-          <div className={`rounded-2xl shadow-lg border-2 border-primary/50 overflow-hidden ${misses > 0 ? "animate-[shake_0.4s]" : ""}`}>
-            <svg viewBox="0 0 400 300" className="w-full block cursor-pointer" style={{ background: scene.bg }} onClick={handleClick}>
-              {scene.base.map((e, i) => renderEl(e, `mod-${i}`))}
-              {scene.diffs.map((d, i) => renderEl(d, `diff-${i}`))}
-              {found.map((i) => (
-                <circle key={`mark-${i}`} cx={scene.diffs[i].x} cy={scene.diffs[i].y} r={scene.diffs[i].r + 4}
-                  fill="none" stroke="#FF1744" strokeWidth="3" strokeDasharray="4 2" />
-              ))}
-            </svg>
+          <p className="text-xs text-center font-body text-muted-foreground">📷 Cena original (acima) — encontre os {total} itens extras na cena abaixo</p>
+          <SceneImage withDiffs={false} />
+          <div className={misses > 0 ? "animate-[shake_0.4s]" : ""}>
+            <SceneImage withDiffs onSceneClick={handleClick} />
           </div>
         </div>
 
