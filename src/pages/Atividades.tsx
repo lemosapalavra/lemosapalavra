@@ -73,10 +73,24 @@ const quizCategories = [
    MEMÓRIA — inspirado em paciencia.co/memoria
    3 níveis de dificuldade + cronômetro + movimentos
 ========================================================= */
+// Memory uses real biblical sticker images from our album.
+import mem01 from "@/assets/album/herois-stickers/01.webp";
+import mem02 from "@/assets/album/herois-stickers/02.webp";
+import mem03 from "@/assets/album/herois-stickers/03.webp";
+import mem04 from "@/assets/album/herois-stickers/04.webp";
+import mem05 from "@/assets/album/herois-stickers/05.webp";
+import mem06 from "@/assets/album/herois-stickers/06.webp";
+import mem07 from "@/assets/album/herois-stickers/07.webp";
+import mem08 from "@/assets/album/herois-stickers/08.webp";
+import mem09 from "@/assets/album/herois-stickers/09.webp";
+import mem10 from "@/assets/album/herois-stickers/10.webp";
+import mem11 from "@/assets/album/herois-stickers/11.webp";
+import mem12 from "@/assets/album/herois-stickers/12.webp";
+const memoryImages = [mem01, mem02, mem03, mem04, mem05, mem06, mem07, mem08, mem09, mem10, mem11, mem12];
 const memorySets = {
-  facil: ["🐑", "🕊️", "🐟", "🦁", "⭐", "🌈"],         // 6 pares = 4x3
-  medio: ["🐑", "🕊️", "🐟", "🦁", "⭐", "🌈", "🔥", "💧"], // 8 pares = 4x4
-  dificil: ["🐑", "🕊️", "🐟", "🦁", "⭐", "🌈", "🔥", "💧", "🌿", "👑", "🍞", "✝️"], // 12 pares = 6x4
+  facil:   memoryImages.slice(0, 6),
+  medio:   memoryImages.slice(0, 8),
+  dificil: memoryImages.slice(0, 12),
 };
 const memoryConfig = {
   facil: { cols: 4, label: "Fácil (12 cartas)", coins: 2 },
