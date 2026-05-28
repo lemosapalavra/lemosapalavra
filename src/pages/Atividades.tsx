@@ -85,86 +85,68 @@ const memoryConfig = {
 };
 
 /* =========================================================
-   7 ERROS — inspirado em escolagames.com.br/jogos/jogo-dos-7-erros
-   Duas cenas SVG; clique nas diferenças da imagem da direita.
+   7 ERROS — usando nossas próprias imagens bíblicas
+   Foto original (topo) + cópia com emojis extras (baixo).
+   Coordenadas em % (0..100) para responsividade.
 ========================================================= */
-type SpotScene = {
-  title: string;
-  bg: string;        // gradient css
-  emoji: string;
-  // base elements rendered in both
-  base: { type: "circle" | "rect" | "text"; props: Record<string, any>; content?: string }[];
-  // elements only in the LEFT (original) — what's been REMOVED on the right
-  removed: { x: number; y: number; r: number; type: "circle" | "rect" | "text"; props: Record<string, any>; content?: string }[];
-  // elements only on the RIGHT (added/changed) — these are the clickable differences
-  diffs: { x: number; y: number; r: number; type: "circle" | "rect" | "text"; props: Record<string, any>; content?: string }[];
-};
+type SpotDiff = { x: number; y: number; r: number; emoji: string; size: number };
+type SpotScene = { title: string; emoji: string; image: string; diffs: SpotDiff[] };
 
 const spotScenes: SpotScene[] = [
   {
     title: "A Arca de Noé",
     emoji: "🚢",
-    bg: "linear-gradient(180deg,#9be7ff 0%,#56c1ff 60%,#1976d2 100%)",
-    base: [
-      { type: "circle", props: { cx: 320, cy: 50, r: 25, fill: "#FFD54F" } }, // sol
-      { type: "rect", props: { x: 0, y: 230, width: 400, height: 70, fill: "#1565c0" } }, // mar
-      { type: "rect", props: { x: 110, y: 150, width: 200, height: 80, fill: "#795548" } }, // casco
-      { type: "rect", props: { x: 160, y: 100, width: 100, height: 50, fill: "#a1887f" } }, // cabine
-      { type: "text", props: { x: 200, y: 285, fill: "#fff", fontSize: 12, textAnchor: "middle", fontWeight: "bold" }, content: "Arca de Noé" },
-    ],
-    removed: [],
+    image: imgNoe,
     diffs: [
-      { x: 60, y: 60, r: 18, type: "text", props: { x: 60, y: 70, fontSize: 28 }, content: "☁️" },
-      { x: 200, y: 80, r: 12, type: "circle", props: { cx: 200, cy: 80, r: 8, fill: "#fff" } }, // pomba
-      { x: 130, y: 175, r: 12, type: "rect", props: { x: 122, y: 165, width: 16, height: 20, fill: "#FFEB3B" } }, // janela amarela
-      { x: 290, y: 175, r: 12, type: "rect", props: { x: 282, y: 165, width: 16, height: 20, fill: "#FFEB3B" } }, // janela amarela
-      { x: 360, y: 270, r: 14, type: "text", props: { x: 360, y: 278, fontSize: 22 }, content: "🐟" },
-      { x: 30, y: 270, r: 14, type: "text", props: { x: 30, y: 278, fontSize: 22 }, content: "🐠" },
-      { x: 200, y: 130, r: 12, type: "rect", props: { x: 195, y: 120, width: 10, height: 30, fill: "#5d4037" } }, // mastro extra
+      { x: 10, y: 12, r: 8, emoji: "☁️", size: 28 },
+      { x: 82, y: 10, r: 8, emoji: "🕊️", size: 26 },
+      { x: 48, y: 18, r: 7, emoji: "⭐", size: 24 },
+      { x: 18, y: 78, r: 8, emoji: "🐟", size: 26 },
+      { x: 88, y: 82, r: 8, emoji: "🐠", size: 26 },
+      { x: 50, y: 90, r: 7, emoji: "🌊", size: 26 },
+      { x: 70, y: 50, r: 8, emoji: "🦒", size: 28 },
     ],
   },
   {
-    title: "O Bom Pastor",
-    emoji: "🐑",
-    bg: "linear-gradient(180deg,#bbe1fa 0%,#c8e6c9 55%,#81c784 100%)",
-    base: [
-      { type: "circle", props: { cx: 330, cy: 50, r: 28, fill: "#FFB300" } },
-      { type: "rect", props: { x: 0, y: 220, width: 400, height: 80, fill: "#66bb6a" } },
-      { type: "rect", props: { x: 180, y: 110, width: 50, height: 90, fill: "#8d6e63" } }, // pastor corpo
-      { type: "circle", props: { cx: 205, cy: 95, r: 18, fill: "#ffcc80" } }, // cabeça
-      { type: "rect", props: { x: 235, y: 80, width: 4, height: 130, fill: "#5d4037" } }, // cajado
-      { type: "text", props: { x: 200, y: 285, fill: "#1b5e20", fontSize: 12, textAnchor: "middle", fontWeight: "bold" }, content: "O Bom Pastor" },
-    ],
-    removed: [],
+    title: "Davi e Golias",
+    emoji: "⚔️",
+    image: imgDavi,
     diffs: [
-      { x: 70, y: 230, r: 16, type: "text", props: { x: 70, y: 240, fontSize: 26 }, content: "🐑" },
-      { x: 130, y: 240, r: 16, type: "text", props: { x: 130, y: 250, fontSize: 26 }, content: "🐑" },
-      { x: 300, y: 240, r: 16, type: "text", props: { x: 300, y: 250, fontSize: 26 }, content: "🐑" },
-      { x: 50, y: 60, r: 16, type: "text", props: { x: 50, y: 70, fontSize: 24 }, content: "🦋" },
-      { x: 130, y: 70, r: 16, type: "text", props: { x: 130, y: 80, fontSize: 22 }, content: "🌸" },
-      { x: 360, y: 200, r: 16, type: "text", props: { x: 360, y: 210, fontSize: 24 }, content: "🌳" },
-      { x: 205, y: 95, r: 12, type: "circle", props: { cx: 205, cy: 82, r: 6, fill: "#FFD700" } }, // auréola
+      { x: 14, y: 14, r: 8, emoji: "☀️", size: 30 },
+      { x: 86, y: 12, r: 7, emoji: "🦅", size: 26 },
+      { x: 50, y: 10, r: 7, emoji: "✨", size: 22 },
+      { x: 22, y: 88, r: 8, emoji: "🌿", size: 26 },
+      { x: 78, y: 86, r: 8, emoji: "🪨", size: 26 },
+      { x: 40, y: 92, r: 7, emoji: "🐑", size: 26 },
+      { x: 62, y: 50, r: 7, emoji: "👑", size: 26 },
     ],
   },
   {
-    title: "O Nascimento de Jesus",
-    emoji: "👶",
-    bg: "linear-gradient(180deg,#0d1b3d 0%,#1a237e 50%,#3949ab 100%)",
-    base: [
-      { type: "rect", props: { x: 100, y: 150, width: 200, height: 130, fill: "#6d4c41" } }, // estábulo
-      { type: "rect", props: { x: 160, y: 200, width: 80, height: 50, fill: "#ffa726" } }, // manjedoura
-      { type: "circle", props: { cx: 200, cy: 215, r: 12, fill: "#ffe0b2" } }, // bebê
-      { type: "text", props: { x: 200, y: 290, fill: "#fff", fontSize: 12, textAnchor: "middle", fontWeight: "bold" }, content: "Nascimento de Jesus" },
-    ],
-    removed: [],
+    title: "Moisés e o Mar Vermelho",
+    emoji: "🌊",
+    image: imgMoises,
     diffs: [
-      { x: 200, y: 70, r: 22, type: "text", props: { x: 200, y: 85, fontSize: 36 }, content: "⭐" },
-      { x: 60, y: 50, r: 12, type: "text", props: { x: 60, y: 58, fontSize: 18 }, content: "✨" },
-      { x: 340, y: 80, r: 12, type: "text", props: { x: 340, y: 88, fontSize: 18 }, content: "✨" },
-      { x: 130, y: 175, r: 14, type: "text", props: { x: 130, y: 185, fontSize: 24 }, content: "🐑" },
-      { x: 270, y: 175, r: 14, type: "text", props: { x: 270, y: 185, fontSize: 24 }, content: "🐂" },
-      { x: 50, y: 250, r: 16, type: "text", props: { x: 50, y: 262, fontSize: 28 }, content: "👑" },
-      { x: 350, y: 250, r: 16, type: "text", props: { x: 350, y: 262, fontSize: 28 }, content: "🎁" },
+      { x: 12, y: 12, r: 8, emoji: "⚡", size: 28 },
+      { x: 88, y: 14, r: 8, emoji: "☁️", size: 28 },
+      { x: 50, y: 8,  r: 7, emoji: "🕊️", size: 24 },
+      { x: 18, y: 82, r: 8, emoji: "🐟", size: 26 },
+      { x: 82, y: 84, r: 8, emoji: "🐠", size: 26 },
+      { x: 48, y: 92, r: 7, emoji: "🌊", size: 22 },
+      { x: 70, y: 40, r: 7, emoji: "✨", size: 22 },
+    ],
+  },
+  {
+    title: "A Criação",
+    emoji: "🌍",
+    image: imgCriacao,
+    diffs: [
+      { x: 14, y: 12, r: 8, emoji: "🌟", size: 26 },
+      { x: 86, y: 16, r: 8, emoji: "☄️", size: 28 },
+      { x: 50, y: 6,  r: 7, emoji: "🌙", size: 24 },
+      { x: 22, y: 86, r: 8, emoji: "🌸", size: 26 },
+      { x: 78, y: 88, r: 8, emoji: "🦋", size: 26 },
+      { x: 50, y: 92, r: 7, emoji: "🌿", size: 26 },
+      { x: 64, y: 48, r: 7, emoji: "🐦", size: 22 },
     ],
   },
 ];
