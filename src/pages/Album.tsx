@@ -158,60 +158,21 @@ export default function Album() {
   // ============= TRADE =============
   if (view === "trade") {
     return (
-      <div className="fixed inset-0 z-40 overflow-y-auto p-4"
-        style={{ background: "linear-gradient(180deg, hsl(35,45%,88%), hsl(40,50%,82%))" }}>
-        <div className="max-w-4xl mx-auto">
-          <StandardHeader onHome={() => navigate("/")} coins={coins} />
-          <div className="flex items-center justify-between mb-4">
-            <button onClick={() => setView("pages")}
-              className="flex items-center gap-2 font-display font-bold bg-white/80 px-3 py-1.5 rounded-full shadow">
-              <ChevronLeft className="w-5 h-5" /> Álbum
-            </button>
-            <h1 className="font-display font-extrabold text-xl">🔄 Sala de Trocas</h1>
-            <div className="w-20" />
-          </div>
-          <div className="bg-white/80 rounded-2xl p-4 mb-4 shadow border">
-            <p className="font-display font-bold text-foreground mb-1">📦 Suas repetidas para trocar</p>
-            <p className="text-xs text-muted-foreground font-body">
-              Estas são as figurinhas que você tem em duplicata. Outros colecionadores procuram suas faltantes — proponha trocas!
-            </p>
-          </div>
-          {repeats.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-amber-700/30 p-8 text-center bg-white/40">
-              <p className="font-body text-muted-foreground">Você ainda não tem figurinhas repetidas. Abra mais pacotinhos!</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 mb-6">
-              {repeats.map(({ sticker, count }) => (
-                <div key={sticker.id} className={`bg-white rounded-xl p-2 border-[3px] ${rarityBorder(sticker.rarity)} shadow-md text-center`}>
-                  <div className="text-3xl">{sticker.emoji}</div>
-                  <div className="font-display font-bold text-[11px] leading-tight mt-1">{sticker.name}</div>
-                  <div className="text-[9px] text-muted-foreground uppercase">{rarityLabel(sticker.rarity)}</div>
-                  <div className="mt-1 inline-flex items-center gap-1 bg-red-500/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">×{count}</div>
-                  <button className="mt-2 w-full text-[10px] font-display font-bold bg-gradient-to-br from-emerald-500 to-teal-600 text-white py-1 rounded-md hover:scale-105 transition">
-                    Oferecer
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-          <div className="bg-white/80 rounded-2xl p-4 shadow border">
-            <p className="font-display font-bold text-foreground mb-2">🎯 Suas faltantes ({missing.length})</p>
-            {missing.length === 0 ? (
-              <p className="font-body text-sm text-emerald-700">🎉 Você completou o álbum!</p>
-            ) : (
-              <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 max-h-64 overflow-y-auto">
-                {missing.map((s) => (
-                  <div key={s.id} className="bg-amber-100 rounded-lg p-2 border border-dashed border-amber-700/40 text-center opacity-80">
-                    <div className="text-xl">❓</div>
-                    <div className="text-[9px] font-bold leading-tight">{s.name}</div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+      <TradePanel
+        owned={owned}
+        repeats={repeats}
+        missing={missing}
+        onBack={() => setView("pages")}
+        onHome={() => navigate("/")}
+        coins={coins}
+        onTrade={(give, get) => {
+          const next = { ...readOwned() };
+          next[give.id] = Math.max(0, (next[give.id] || 0) - 1);
+          next[get.id] = (next[get.id] || 0) + 1;
+          writeOwned(next);
+          setOwned(next);
+        }}
+      />
     );
   }
 
