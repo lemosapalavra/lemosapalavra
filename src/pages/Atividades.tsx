@@ -231,6 +231,7 @@ const coloringScenes = [
   },
   {
     title: "A Estrela de Belém",
+    refImage: imgCriacao,
     regions: [
       { id: "night", d: "M0,0 L400,0 L400,300 L0,300 Z", label: "Céu noturno" },
       { id: "star", d: "M200,20 L210,60 L250,60 L218,85 L228,120 L200,98 L172,120 L182,85 L150,60 L190,60 Z", label: "Estrela" },
@@ -241,6 +242,7 @@ const coloringScenes = [
   },
   {
     title: "Jonas e a Baleia",
+    refImage: imgMoises,
     regions: [
       { id: "sky", d: "M0,0 L400,0 L400,120 L0,120 Z", label: "Céu" },
       { id: "sea", d: "M0,120 Q100,100 200,120 Q300,140 400,120 L400,300 L0,300 Z", label: "Mar" },
