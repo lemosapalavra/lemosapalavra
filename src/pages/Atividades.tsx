@@ -199,6 +199,7 @@ const spotScenes: SpotScene[] = [
 const coloringScenes = [
   {
     title: "A Arca de Noé",
+    refImage: imgNoe,
     regions: [
       { id: "sky", d: "M0,0 L400,0 L400,120 Q200,80 0,120 Z", label: "Céu" },
       { id: "rainbow1", d: "M50,30 Q200,0 350,30 Q200,10 50,30 Z", label: "Arco-íris" },
@@ -214,6 +215,7 @@ const coloringScenes = [
   },
   {
     title: "O Bom Pastor",
+    refImage: imgDavi,
     regions: [
       { id: "sky", d: "M0,0 L400,0 L400,100 Q200,130 0,100 Z", label: "Céu" },
       { id: "sun", d: "M320,40 A30,30 0 1,1 320,41 Z", label: "Sol" },
