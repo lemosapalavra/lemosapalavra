@@ -163,6 +163,34 @@ const spotScenes: SpotScene[] = [
       { x: 64, y: 48, r: 7, emoji: "🐦", size: 22 },
     ],
   },
+  {
+    title: "Adão e Eva no Éden",
+    emoji: "🌳",
+    image: imgAdaoEva,
+    diffs: [
+      { x: 12, y: 14, r: 8, emoji: "🍎", size: 26 },
+      { x: 85, y: 12, r: 8, emoji: "🐍", size: 26 },
+      { x: 50, y: 8, r: 7, emoji: "🌞", size: 26 },
+      { x: 20, y: 85, r: 8, emoji: "🦌", size: 26 },
+      { x: 80, y: 88, r: 8, emoji: "🐇", size: 26 },
+      { x: 48, y: 92, r: 7, emoji: "🌺", size: 24 },
+      { x: 65, y: 50, r: 7, emoji: "🦋", size: 24 },
+    ],
+  },
+  {
+    title: "Os 10 Mandamentos",
+    emoji: "📜",
+    image: imgMandamentos,
+    diffs: [
+      { x: 12, y: 10, r: 8, emoji: "⚡", size: 28 },
+      { x: 88, y: 12, r: 8, emoji: "☁️", size: 28 },
+      { x: 50, y: 8, r: 7, emoji: "🔥", size: 26 },
+      { x: 18, y: 80, r: 8, emoji: "🪨", size: 26 },
+      { x: 82, y: 82, r: 8, emoji: "🌿", size: 24 },
+      { x: 50, y: 92, r: 7, emoji: "✨", size: 26 },
+      { x: 70, y: 45, r: 7, emoji: "🕊️", size: 24 },
+    ],
+  },
 ];
 
 /* =========================================================
@@ -171,6 +199,7 @@ const spotScenes: SpotScene[] = [
 const coloringScenes = [
   {
     title: "A Arca de Noé",
+    refImage: imgNoe,
     regions: [
       { id: "sky", d: "M0,0 L400,0 L400,120 Q200,80 0,120 Z", label: "Céu" },
       { id: "rainbow1", d: "M50,30 Q200,0 350,30 Q200,10 50,30 Z", label: "Arco-íris" },
@@ -186,6 +215,7 @@ const coloringScenes = [
   },
   {
     title: "O Bom Pastor",
+    refImage: imgDavi,
     regions: [
       { id: "sky", d: "M0,0 L400,0 L400,100 Q200,130 0,100 Z", label: "Céu" },
       { id: "sun", d: "M320,40 A30,30 0 1,1 320,41 Z", label: "Sol" },
@@ -203,6 +233,7 @@ const coloringScenes = [
   },
   {
     title: "A Estrela de Belém",
+    refImage: imgCriacao,
     regions: [
       { id: "night", d: "M0,0 L400,0 L400,300 L0,300 Z", label: "Céu noturno" },
       { id: "star", d: "M200,20 L210,60 L250,60 L218,85 L228,120 L200,98 L172,120 L182,85 L150,60 L190,60 Z", label: "Estrela" },
@@ -213,6 +244,7 @@ const coloringScenes = [
   },
   {
     title: "Jonas e a Baleia",
+    refImage: imgMoises,
     regions: [
       { id: "sky", d: "M0,0 L400,0 L400,120 L0,120 Z", label: "Céu" },
       { id: "sea", d: "M0,120 Q100,100 200,120 Q300,140 400,120 L400,300 L0,300 Z", label: "Mar" },
@@ -730,19 +762,35 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
             className="px-3 py-1.5 rounded-full font-display text-xs font-bold bg-popover border border-border text-foreground hover:border-primary">🗑️ Limpar</button>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 shadow-lg border border-border flex justify-center">
-          <svg viewBox="0 0 400 300" className="w-full max-w-[400px]">
-            {scene.regions.map((r) => (
-              <path key={r.id} d={r.d}
-                fill={fills[`${idx}-${r.id}`] || "#f5f5f5"}
-                stroke="#444" strokeWidth="1.5"
-                className="cursor-pointer hover:opacity-80 transition-opacity"
-                onClick={() => fill(`${idx}-${r.id}`)}>
-                <title>{r.label}</title>
-              </path>
-            ))}
-          </svg>
+        <div className="relative bg-white rounded-2xl p-4 shadow-lg border border-border">
+          {/* Mini reference image (colored) — shows the user which colors to use */}
+          {(scene as any).refImage && (
+            <div className="absolute top-2 right-2 z-10 flex flex-col items-center bg-popover/95 rounded-xl border-2 border-primary/60 shadow-lg p-1.5 w-24 sm:w-28">
+              <span className="text-[9px] font-display font-bold text-primary uppercase tracking-wide mb-1">Modelo</span>
+              <img
+                src={(scene as any).refImage}
+                alt={`Referência ${scene.title}`}
+                className="w-full aspect-square object-cover rounded-md"
+                loading="lazy"
+                draggable={false}
+              />
+            </div>
+          )}
+          <div className="flex justify-center">
+            <svg viewBox="0 0 400 300" className="w-full max-w-[400px]">
+              {scene.regions.map((r) => (
+                <path key={r.id} d={r.d}
+                  fill={fills[`${idx}-${r.id}`] || "#ffffff"}
+                  stroke="#222" strokeWidth="2"
+                  className="cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={() => fill(`${idx}-${r.id}`)}>
+                  <title>{r.label}</title>
+                </path>
+              ))}
+            </svg>
+          </div>
         </div>
+
 
         <div className="flex gap-2 mt-4 justify-center flex-wrap">
           {coloringScenes.map((s, i) => (
