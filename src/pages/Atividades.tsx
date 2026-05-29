@@ -762,19 +762,35 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
             className="px-3 py-1.5 rounded-full font-display text-xs font-bold bg-popover border border-border text-foreground hover:border-primary">🗑️ Limpar</button>
         </div>
 
-        <div className="bg-white rounded-2xl p-4 shadow-lg border border-border flex justify-center">
-          <svg viewBox="0 0 400 300" className="w-full max-w-[400px]">
-            {scene.regions.map((r) => (
-              <path key={r.id} d={r.d}
-                fill={fills[`${idx}-${r.id}`] || "#f5f5f5"}
-                stroke="#444" strokeWidth="1.5"
-                className="cursor-pointer hover:opacity-80 transition-opacity"
-                onClick={() => fill(`${idx}-${r.id}`)}>
-                <title>{r.label}</title>
-              </path>
-            ))}
-          </svg>
+        <div className="relative bg-white rounded-2xl p-4 shadow-lg border border-border">
+          {/* Mini reference image (colored) — shows the user which colors to use */}
+          {(scene as any).refImage && (
+            <div className="absolute top-2 right-2 z-10 flex flex-col items-center bg-popover/95 rounded-xl border-2 border-primary/60 shadow-lg p-1.5 w-24 sm:w-28">
+              <span className="text-[9px] font-display font-bold text-primary uppercase tracking-wide mb-1">Modelo</span>
+              <img
+                src={(scene as any).refImage}
+                alt={`Referência ${scene.title}`}
+                className="w-full aspect-square object-cover rounded-md"
+                loading="lazy"
+                draggable={false}
+              />
+            </div>
+          )}
+          <div className="flex justify-center">
+            <svg viewBox="0 0 400 300" className="w-full max-w-[400px]">
+              {scene.regions.map((r) => (
+                <path key={r.id} d={r.d}
+                  fill={fills[`${idx}-${r.id}`] || "#ffffff"}
+                  stroke="#222" strokeWidth="2"
+                  className="cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={() => fill(`${idx}-${r.id}`)}>
+                  <title>{r.label}</title>
+                </path>
+              ))}
+            </svg>
+          </div>
         </div>
+
 
         <div className="flex gap-2 mt-4 justify-center flex-wrap">
           {coloringScenes.map((s, i) => (
