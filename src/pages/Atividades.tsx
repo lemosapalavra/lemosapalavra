@@ -163,6 +163,34 @@ const spotScenes: SpotScene[] = [
       { x: 64, y: 48, r: 7, emoji: "🐦", size: 22 },
     ],
   },
+  {
+    title: "Adão e Eva no Éden",
+    emoji: "🌳",
+    image: imgAdaoEva,
+    diffs: [
+      { x: 12, y: 14, r: 8, emoji: "🍎", size: 26 },
+      { x: 85, y: 12, r: 8, emoji: "🐍", size: 26 },
+      { x: 50, y: 8, r: 7, emoji: "🌞", size: 26 },
+      { x: 20, y: 85, r: 8, emoji: "🦌", size: 26 },
+      { x: 80, y: 88, r: 8, emoji: "🐇", size: 26 },
+      { x: 48, y: 92, r: 7, emoji: "🌺", size: 24 },
+      { x: 65, y: 50, r: 7, emoji: "🦋", size: 24 },
+    ],
+  },
+  {
+    title: "Os 10 Mandamentos",
+    emoji: "📜",
+    image: imgMandamentos,
+    diffs: [
+      { x: 12, y: 10, r: 8, emoji: "⚡", size: 28 },
+      { x: 88, y: 12, r: 8, emoji: "☁️", size: 28 },
+      { x: 50, y: 8, r: 7, emoji: "🔥", size: 26 },
+      { x: 18, y: 80, r: 8, emoji: "🪨", size: 26 },
+      { x: 82, y: 82, r: 8, emoji: "🌿", size: 24 },
+      { x: 50, y: 92, r: 7, emoji: "✨", size: 26 },
+      { x: 70, y: 45, r: 7, emoji: "🕊️", size: 24 },
+    ],
+  },
 ];
 
 /* =========================================================
