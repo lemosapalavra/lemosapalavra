@@ -470,37 +470,42 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
             <div className="h-2 w-full bg-muted rounded-full overflow-hidden mb-4">
               <div className="h-full bg-gradient-to-r from-primary to-pink-400 transition-all" style={{ width: `${progress}%` }} />
             </div>
-            <div className="bg-popover rounded-2xl p-6 shadow-lg border border-border">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-xs font-display font-bold bg-primary/15 text-primary px-2 py-0.5 rounded-full">
-                  {cur.cat === "AT" ? "Antigo Testamento" : cur.cat === "NT" ? "Novo Testamento" : "Bíblia Geral"}
-                </span>
-                <span className="text-xs text-muted-foreground">Acertos: {score} 🪙</span>
-              </div>
-              <h3 className="font-display text-lg font-bold text-foreground mb-4">{cur.q}</h3>
-              <div className="space-y-2">
-                {cur.options.map((opt, i) => {
-                  let cls = "w-full text-left px-4 py-3 rounded-xl border-2 transition-all font-body text-foreground ";
-                  if (answered !== null) {
-                    if (i === cur.correct) cls += "border-green-500 bg-green-100 text-green-800 font-bold scale-[1.02]";
-                    else if (i === answered) cls += "border-red-500 bg-red-100 text-red-800";
-                    else cls += "border-border bg-background opacity-50";
-                  } else cls += "border-border bg-background hover:border-primary hover:bg-primary/10 active:scale-[0.98]";
-                  return (
-                    <button key={i} onClick={() => answer(i)} disabled={answered !== null} className={cls}>
-                      {answered !== null && i === cur.correct && <span className="mr-2">✅</span>}
-                      {answered !== null && i === answered && i !== cur.correct && <span className="mr-2">❌</span>}
-                      {opt}
-                    </button>
-                  );
-                })}
-              </div>
-              {answered !== null && (
-                <div className="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 rounded-lg animate-fade-in">
-                  <p className="text-xs font-display font-bold text-blue-900 mb-1">📖 Referência</p>
-                  <p className="text-sm font-body text-blue-900">{cur.ref}</p>
+            <div className="bg-gradient-to-br from-white via-amber-50 to-pink-50 rounded-3xl p-6 shadow-2xl border-[3px] border-amber-200 relative overflow-hidden">
+              <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-gradient-to-br from-amber-300/40 to-pink-300/40 blur-2xl pointer-events-none" />
+              <div className="absolute -bottom-12 -left-12 w-40 h-40 rounded-full bg-gradient-to-br from-sky-300/40 to-purple-300/40 blur-2xl pointer-events-none" />
+              <div className="relative">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-2xl drop-shadow">{cur.cat === "AT" ? "📜" : cur.cat === "NT" ? "✨" : "📖"}</span>
+                  <span className="text-xs font-display font-bold bg-gradient-to-r from-amber-500 to-pink-500 text-white px-3 py-1 rounded-full shadow">
+                    {cur.cat === "AT" ? "Antigo Testamento" : cur.cat === "NT" ? "Novo Testamento" : "Bíblia Geral"}
+                  </span>
+                  <span className="ml-auto text-xs text-amber-700 font-bold">🪙 {score}</span>
                 </div>
-              )}
+                <h3 className="font-display text-xl font-extrabold text-foreground mb-4 leading-snug drop-shadow-sm">{cur.q}</h3>
+                <div className="space-y-2">
+                  {cur.options.map((opt, i) => {
+                    let cls = "w-full text-left px-4 py-3 rounded-2xl border-[3px] transition-all font-body font-semibold text-foreground ";
+                    if (answered !== null) {
+                      if (i === cur.correct) cls += "border-green-500 bg-green-100 text-green-800 font-bold scale-[1.02] shadow-lg";
+                      else if (i === answered) cls += "border-red-500 bg-red-100 text-red-800";
+                      else cls += "border-border bg-background opacity-50";
+                    } else cls += "border-amber-200 bg-white hover:border-pink-400 hover:bg-pink-50 active:scale-[0.98] shadow-sm";
+                    return (
+                      <button key={i} onClick={() => answer(i)} disabled={answered !== null} className={cls}>
+                        {answered !== null && i === cur.correct && <span className="mr-2">✅</span>}
+                        {answered !== null && i === answered && i !== cur.correct && <span className="mr-2">❌</span>}
+                        {opt}
+                      </button>
+                    );
+                  })}
+                </div>
+                {answered !== null && (
+                  <div className="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 rounded-lg animate-fade-in">
+                    <p className="text-xs font-display font-bold text-blue-900 mb-1">📖 Referência</p>
+                    <p className="text-sm font-body text-blue-900">{cur.ref}</p>
+                  </div>
+                )}
+              </div>
             </div>
           </>
         )}
@@ -606,14 +611,19 @@ function MemoryGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
             const isMatched = matched.includes(i);
             return (
               <button key={i} onClick={() => flip(i)}
-                className={`aspect-square rounded-xl flex items-center justify-center border-2 transition-all duration-300 overflow-hidden ${
-                  isMatched ? "bg-green-100 border-green-400 scale-95" :
-                  visible ? "bg-primary/10 border-primary scale-105" :
-                  "bg-gradient-to-br from-primary/80 to-accent/80 border-border hover:scale-105 active:scale-95"
+                className={`aspect-square rounded-2xl flex items-center justify-center border-[3px] transition-all duration-300 overflow-hidden ${
+                  isMatched ? "bg-green-100 border-green-400 scale-95 ring-2 ring-green-300" :
+                  visible ? "bg-white border-primary scale-105 shadow-lg" :
+                  "bg-gradient-to-br from-amber-400 via-pink-400 to-fuchsia-500 border-amber-200 hover:scale-105 active:scale-95 shadow-md"
                 }`}>
                 {visible
-                  ? <img src={c} alt="" loading="lazy" className="w-full h-full object-contain p-1" />
-                  : <span className="text-white text-2xl font-display font-extrabold drop-shadow">?</span>}
+                  ? <img src={c} alt="" loading="lazy" className="w-full h-full object-contain p-1.5" />
+                  : (
+                    <div className="relative w-full h-full flex items-center justify-center">
+                      <div className="absolute inset-2 rounded-xl bg-white/15 border-2 border-white/40" />
+                      <span className="relative text-3xl drop-shadow-lg">✝️</span>
+                    </div>
+                  )}
               </button>
             );
           })}
@@ -720,26 +730,74 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
   );
 }
 
-/* ---------- COLORING ---------- */
+/* ---------- COLORING — pinta sobre o contorno da imagem real ---------- */
 function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
   const [idx, setIdx] = useState(0);
   const [color, setColor] = useState(colorPalette[0]);
-  const [fills, setFills] = useState<Record<string, string>>({});
-  const [history, setHistory] = useState<Record<string, string>[]>([]);
-
+  const [brush, setBrush] = useState(22);
+  const [strokes, setStrokes] = useState<number>(0);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const drawing = useRef(false);
+  const lastPt = useRef<{ x: number; y: number } | null>(null);
   const scene = coloringScenes[idx];
-  const allFilled = scene.regions.every((r) => fills[`${idx}-${r.id}`]);
 
-  const fill = (key: string) => {
-    setHistory((h) => [...h, { ...fills }]);
-    setFills((p) => ({ ...p, [key]: color }));
+  // Reset canvas when scene changes
+  useEffect(() => {
+    const c = canvasRef.current;
+    if (!c) return;
+    const ctx = c.getContext("2d");
+    if (ctx) ctx.clearRect(0, 0, c.width, c.height);
+    setStrokes(0);
+  }, [idx]);
+
+  const getPt = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    const c = canvasRef.current!;
+    const r = c.getBoundingClientRect();
+    return {
+      x: ((e.clientX - r.left) / r.width) * c.width,
+      y: ((e.clientY - r.top) / r.height) * c.height,
+    };
   };
-  const undo = () => {
-    if (history.length === 0) return;
-    setFills(history[history.length - 1]);
-    setHistory((h) => h.slice(0, -1));
+  const paintAt = (x: number, y: number) => {
+    const ctx = canvasRef.current?.getContext("2d");
+    if (!ctx) return;
+    ctx.fillStyle = color;
+    ctx.strokeStyle = color;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.lineWidth = brush;
+    if (lastPt.current) {
+      ctx.beginPath();
+      ctx.moveTo(lastPt.current.x, lastPt.current.y);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+    } else {
+      ctx.beginPath();
+      ctx.arc(x, y, brush / 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    lastPt.current = { x, y };
   };
-  const clear = () => { setHistory((h) => [...h, { ...fills }]); setFills({}); };
+  const onDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    drawing.current = true;
+    lastPt.current = null;
+    const p = getPt(e);
+    paintAt(p.x, p.y);
+    setStrokes((s) => s + 1);
+  };
+  const onMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!drawing.current) return;
+    const p = getPt(e);
+    paintAt(p.x, p.y);
+  };
+  const onUp = () => { drawing.current = false; lastPt.current = null; };
+
+  const clear = () => {
+    const c = canvasRef.current;
+    if (!c) return;
+    c.getContext("2d")?.clearRect(0, 0, c.width, c.height);
+    setStrokes(0);
+  };
 
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
@@ -747,6 +805,7 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
         <PageHeader title="Colorir" subtitle={scene.title} icon={iconColorir} />
         <button onClick={onBack} className="mb-4 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
 
+        {/* Palette */}
         <div className="flex gap-1.5 mb-3 flex-wrap justify-center bg-popover/60 rounded-xl p-2">
           {colorPalette.map((c, i) => (
             <button key={i} onClick={() => setColor(c)}
@@ -755,43 +814,56 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
           ))}
         </div>
 
-        <div className="flex gap-2 mb-3 justify-center">
-          <button onClick={undo} disabled={history.length === 0}
-            className="px-3 py-1.5 rounded-full font-display text-xs font-bold bg-popover border border-border text-foreground hover:border-primary disabled:opacity-40">↩️ Desfazer</button>
-          <button onClick={clear}
-            className="px-3 py-1.5 rounded-full font-display text-xs font-bold bg-popover border border-border text-foreground hover:border-primary">🗑️ Limpar</button>
+        {/* Brush + actions */}
+        <div className="flex gap-3 items-center justify-center mb-3 bg-popover/60 rounded-xl p-2">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-display font-bold">Pincel</span>
+            <input type="range" min={6} max={60} value={brush} onChange={(e) => setBrush(+e.target.value)} className="accent-primary" />
+            <span className="text-xs font-mono w-7 text-right">{brush}</span>
+          </div>
+          <button onClick={clear} className="px-3 py-1.5 rounded-full font-display text-xs font-bold bg-popover border border-border text-foreground hover:border-primary">🗑️ Limpar</button>
         </div>
 
-        <div className="relative bg-white rounded-2xl p-4 shadow-lg border border-border">
-          {/* Mini reference image (colored) — shows the user which colors to use */}
-          {(scene as any).refImage && (
-            <div className="absolute top-2 right-2 z-10 flex flex-col items-center bg-popover/95 rounded-xl border-2 border-primary/60 shadow-lg p-1.5 w-24 sm:w-28">
-              <span className="text-[9px] font-display font-bold text-primary uppercase tracking-wide mb-1">Modelo</span>
-              <img
-                src={(scene as any).refImage}
-                alt={`Referência ${scene.title}`}
-                className="w-full aspect-square object-cover rounded-md"
-                loading="lazy"
-                draggable={false}
-              />
-            </div>
-          )}
-          <div className="flex justify-center">
-            <svg viewBox="0 0 400 300" className="w-full max-w-[400px]">
-              {scene.regions.map((r) => (
-                <path key={r.id} d={r.d}
-                  fill={fills[`${idx}-${r.id}`] || "#ffffff"}
-                  stroke="#222" strokeWidth="2"
-                  className="cursor-pointer hover:opacity-80 transition-opacity"
-                  onClick={() => fill(`${idx}-${r.id}`)}>
-                  <title>{r.label}</title>
-                </path>
-              ))}
+        {/* Canvas + outline overlay + mini reference */}
+        <div className="relative bg-white rounded-2xl p-3 shadow-lg border border-border">
+          {/* mini colored reference */}
+          <div className="absolute top-2 right-2 z-20 flex flex-col items-center bg-popover/95 rounded-xl border-2 border-primary/60 shadow-lg p-1.5 w-20 sm:w-24">
+            <span className="text-[9px] font-display font-bold text-primary uppercase tracking-wide mb-1">Modelo</span>
+            <img src={scene.refImage} alt={`Referência ${scene.title}`} className="w-full aspect-square object-cover rounded-md" loading="lazy" draggable={false} />
+          </div>
+
+          <div className="relative w-full aspect-[4/3] mx-auto overflow-hidden rounded-xl bg-white touch-none" style={{ maxWidth: 520 }}>
+            {/* Paint layer */}
+            <canvas
+              ref={canvasRef}
+              width={800}
+              height={600}
+              onPointerDown={onDown}
+              onPointerMove={onMove}
+              onPointerUp={onUp}
+              onPointerLeave={onUp}
+              className="absolute inset-0 w-full h-full cursor-crosshair"
+              style={{ touchAction: "none" }}
+            />
+            {/* Line-art outline of the SAME image as the thumbnail, painted with multiply so user's color shows through */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <filter id={`outline-${idx}`} x="0" y="0" width="100%" height="100%" colorInterpolationFilters="sRGB">
+                  <feColorMatrix type="matrix" values="0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0 0 0 1 0" />
+                  <feConvolveMatrix order="3" preserveAlpha="true" kernelMatrix="-1 -1 -1 -1 8 -1 -1 -1 -1" />
+                  <feComponentTransfer>
+                    <feFuncR type="linear" slope="-3" intercept="1" />
+                    <feFuncG type="linear" slope="-3" intercept="1" />
+                    <feFuncB type="linear" slope="-3" intercept="1" />
+                  </feComponentTransfer>
+                </filter>
+              </defs>
+              <image href={scene.refImage} x="0" y="0" width="800" height="600" preserveAspectRatio="xMidYMid slice" filter={`url(#outline-${idx})`} style={{ mixBlendMode: "multiply" }} />
             </svg>
           </div>
         </div>
 
-
+        {/* Scene picker */}
         <div className="flex gap-2 mt-4 justify-center flex-wrap">
           {coloringScenes.map((s, i) => (
             <button key={i} onClick={() => setIdx(i)}
@@ -801,7 +873,7 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
           ))}
         </div>
 
-        {allFilled && (
+        {strokes >= 6 && (
           <div className="text-center mt-4">
             <button onClick={() => celebrate(`"${scene.title}" pintado!`, 3, "🎨")}
               className="btn-cartoon px-6 py-3 text-sm">✨ Finalizar e ganhar 3 🪙</button>
@@ -809,7 +881,7 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
         )}
 
         <p className="text-center text-xs text-muted-foreground font-body mt-3">
-          💡 Pinte todas as regiões para receber suas moedinhas!
+          💡 Use a miniatura colorida como referência e pinte sobre o contorno!
         </p>
       </div>
       <CelebrationAnimation {...celebration} onClose={closeCelebration} />

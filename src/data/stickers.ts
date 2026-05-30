@@ -13,7 +13,7 @@ import bgPersonagens1 from "@/assets/album/personagens-1.webp";
 import bgProfetas1 from "@/assets/album/profetas-1.webp";
 import bgVersiculos1 from "@/assets/album/versiculos-1.webp";
 
-// Cropped sticker artwork (16 each, sorted by filename)
+// Cropped sticker artwork (sorted by filename)
 function loadSet(glob: Record<string, string>): string[] {
   return Object.entries(glob)
     .sort(([a], [b]) => a.localeCompare(b))
@@ -50,15 +50,16 @@ export interface Category {
 
 type Entry = [name: string, emoji: string, reference?: string];
 
-// Last entry is the "rare/special/golden" of the category.
+// 8 per category. Last = "reliquia" (especial dourada), penúltima = "rara", restantes = "normal".
 function build(items: Entry[], images?: string[]): Sticker[] {
   const last = items.length - 1;
+  const penult = items.length - 2;
   return items.map((n, i) => ({
     id: 0,
     name: n[0],
     emoji: n[1],
     reference: n[2],
-    rarity: i === last ? "reliquia" : "normal",
+    rarity: i === last ? "reliquia" : i === penult ? "rara" : "normal",
     image: images?.[i],
   }));
 }
@@ -102,6 +103,7 @@ const raw: Category[] = [
       ["Água em Vinho", "🍷", "João 2"],
       ["Ressurreição de Lázaro", "✨", "João 11"],
       ["Jesus Anda Sobre as Águas", "💧", "Mateus 14"],
+      ["Cura dos Dez Leprosos", "🙌", "Lucas 17"],
       ["O Poder de Jesus", "🌟", "Marcos 5"],
     ], milagresImgs),
   },
@@ -113,6 +115,8 @@ const raw: Category[] = [
       ["O Filho Pródigo", "🤗", "Lucas 15:11"],
       ["A Ovelha Perdida", "🐑", "Lucas 15:4"],
       ["O Semeador", "🌱", "Mateus 13"],
+      ["O Tesouro Escondido", "💰", "Mateus 13:44"],
+      ["As Dez Virgens", "🕯️", "Mateus 25"],
       ["A Casa na Rocha", "🏠", "Mateus 7:24"],
       ["Jesus Ensinando ao Povo", "📜", "Mateus 5"],
     ], historiasImgs),
@@ -127,6 +131,7 @@ const raw: Category[] = [
       ["O Cordeiro", "🐑", "João 1:29"],
       ["A Pomba da Paz", "🕊️", "Gênesis 8:11"],
       ["O Jumentinho de Jesus", "🐴", "Mateus 21"],
+      ["Os Corvos de Elias", "🦅", "1 Reis 17"],
       ["A Grande Arca", "🚢", "Gênesis 6"],
     ], extrasImgs),
   },
@@ -137,6 +142,7 @@ const raw: Category[] = [
       ["O Nascimento de Jesus", "👶", "Lucas 2"],
       ["A Estrela de Belém", "⭐", "Mateus 2"],
       ["Os Pastores e os Anjos", "👼", "Lucas 2:8"],
+      ["Os Reis Magos", "👑", "Mateus 2:11"],
       ["Entrada Triunfal", "🌿", "Mateus 21"],
       ["A Última Ceia", "🍞", "Lucas 22"],
       ["A Ressurreição", "🌅", "Mateus 28"],
@@ -152,6 +158,8 @@ const raw: Category[] = [
       ["Coral de Anjos", "👼", "Lucas 2:13"],
       ["Música para Jesus", "🎶", "Salmos 150"],
       ["Dançando de Alegria", "💃", "2 Samuel 6:14"],
+      ["Trombetas de Jericó", "📯", "Josué 6"],
+      ["Coração que Louva", "💖", "Salmos 9:1"],
       ["Louvor Celestial", "🎺", "Apocalipse 5:9"],
     ], objetosImgs),
   },
@@ -163,6 +171,8 @@ const raw: Category[] = [
       ["O Senhor é Meu Pastor", "🐑", "Salmos 23"],
       ["Tudo Posso", "💪", "Filipenses 4:13"],
       ["Jesus me Ama", "💖", "João 3:16"],
+      ["Não Temas", "🛡️", "Isaías 41:10"],
+      ["Confia no Senhor", "🙏", "Provérbios 3:5"],
       ["Seja Forte e Corajoso", "🦁", "Josué 1:9"],
       ["Versículo de Ouro", "✨", "João 3:16"],
     ], personagensImgs),
@@ -176,6 +186,8 @@ const raw: Category[] = [
       ["Samuel no Templo", "🕯️", "1 Samuel 3"],
       ["Josué e Jericó", "📯", "Josué 6"],
       ["Gideão Guerreiro", "⚔️", "Juízes 7"],
+      ["Rute e Noemi", "🌾", "Rute 1"],
+      ["Eliseu e o Azeite", "🫒", "2 Reis 4"],
       ["Profetas de Deus", "📜", "Hebreus 1:1"],
     ], profetasImgs),
   },
@@ -188,6 +200,8 @@ const raw: Category[] = [
       ["Paulo Missionário", "✉️", "Atos 9"],
       ["Maria e o Anjo", "👼", "Lucas 1:26"],
       ["Os Discípulos", "👥", "Mateus 10"],
+      ["Estêvão Mártir", "🌟", "Atos 7"],
+      ["Lídia Comerciante", "💜", "Atos 16"],
       ["Os Seguidores de Jesus", "✝️", "Atos 1"],
     ], personagensImgs),
   },
@@ -199,6 +213,9 @@ const raw: Category[] = [
       ["Paulo no Navio", "⛵", "Atos 27"],
       ["Viagens Missionárias", "🗺️", "Atos 13"],
       ["Pregando para Multidões", "📢", "Atos 2"],
+      ["Filipe e o Etíope", "📖", "Atos 8"],
+      ["Barnabé Encorajador", "🤲", "Atos 11"],
+      ["A Igreja de Antioquia", "⛪", "Atos 11:26"],
       ["Levando a Palavra", "📖", "Mateus 28:19"],
     ], lugaresImgs),
   },
@@ -210,6 +227,9 @@ const raw: Category[] = [
       ["O Céu Glorioso", "☁️", "Apocalipse 21"],
       ["Anjos Adorando", "👼", "Apocalipse 5:11"],
       ["A Nova Jerusalém", "🏙️", "Apocalipse 21:2"],
+      ["O Cordeiro de Deus", "🐑", "Apocalipse 5:6"],
+      ["Os 24 Anciãos", "📜", "Apocalipse 4:4"],
+      ["Rio da Vida", "💧", "Apocalipse 22:1"],
       ["Trono de Deus", "✨", "Apocalipse 4"],
     ], heroisImgs),
   },

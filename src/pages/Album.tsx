@@ -33,16 +33,25 @@ function shuffleDaily<T>(arr: T[], salt: number): T[] {
   const seed = dailySeed() + salt;
   return [...arr].map((v, i) => ({ v, k: seededRand(seed + i * 13) })).sort((a, b) => a.k - b.k).map((x) => x.v);
 }
-function pickRandom<T>(arr: T[]): T { return arr[Math.floor(Math.random() * arr.length)]; }
+function pickRandom<T>(arr: T[], fallback?: T[]): T | undefined {
+  const src = arr.length ? arr : (fallback || []);
+  if (!src.length) return undefined;
+  return src[Math.floor(Math.random() * src.length)];
+}
 
 function buildPack(): { sticker: Sticker; rarity: Rarity }[] {
   const reliquias = shuffleDaily(allStickers.filter((s) => s.rarity === "reliquia"), 1);
   const raras = shuffleDaily(allStickers.filter((s) => s.rarity === "rara"), 2);
   const normais = shuffleDaily(allStickers.filter((s) => s.rarity === "normal"), 3);
   const result: { sticker: Sticker; rarity: Rarity }[] = [];
-  result.push({ sticker: pickRandom(reliquias), rarity: "reliquia" });
-  result.push({ sticker: pickRandom(raras), rarity: "rara" });
-  for (let i = 0; i < 3; i++) result.push({ sticker: pickRandom(normais), rarity: "normal" });
+  const rel = pickRandom(reliquias, normais);
+  if (rel) result.push({ sticker: rel, rarity: "reliquia" });
+  const rar = pickRandom(raras, normais);
+  if (rar) result.push({ sticker: rar, rarity: "rara" });
+  for (let i = 0; i < 3; i++) {
+    const n = pickRandom(normais, allStickers);
+    if (n) result.push({ sticker: n, rarity: "normal" });
+  }
   return result;
 }
 
