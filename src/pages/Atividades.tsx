@@ -470,37 +470,42 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
             <div className="h-2 w-full bg-muted rounded-full overflow-hidden mb-4">
               <div className="h-full bg-gradient-to-r from-primary to-pink-400 transition-all" style={{ width: `${progress}%` }} />
             </div>
-            <div className="bg-popover rounded-2xl p-6 shadow-lg border border-border">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-xs font-display font-bold bg-primary/15 text-primary px-2 py-0.5 rounded-full">
-                  {cur.cat === "AT" ? "Antigo Testamento" : cur.cat === "NT" ? "Novo Testamento" : "Bíblia Geral"}
-                </span>
-                <span className="text-xs text-muted-foreground">Acertos: {score} 🪙</span>
-              </div>
-              <h3 className="font-display text-lg font-bold text-foreground mb-4">{cur.q}</h3>
-              <div className="space-y-2">
-                {cur.options.map((opt, i) => {
-                  let cls = "w-full text-left px-4 py-3 rounded-xl border-2 transition-all font-body text-foreground ";
-                  if (answered !== null) {
-                    if (i === cur.correct) cls += "border-green-500 bg-green-100 text-green-800 font-bold scale-[1.02]";
-                    else if (i === answered) cls += "border-red-500 bg-red-100 text-red-800";
-                    else cls += "border-border bg-background opacity-50";
-                  } else cls += "border-border bg-background hover:border-primary hover:bg-primary/10 active:scale-[0.98]";
-                  return (
-                    <button key={i} onClick={() => answer(i)} disabled={answered !== null} className={cls}>
-                      {answered !== null && i === cur.correct && <span className="mr-2">✅</span>}
-                      {answered !== null && i === answered && i !== cur.correct && <span className="mr-2">❌</span>}
-                      {opt}
-                    </button>
-                  );
-                })}
-              </div>
-              {answered !== null && (
-                <div className="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 rounded-lg animate-fade-in">
-                  <p className="text-xs font-display font-bold text-blue-900 mb-1">📖 Referência</p>
-                  <p className="text-sm font-body text-blue-900">{cur.ref}</p>
+            <div className="bg-gradient-to-br from-white via-amber-50 to-pink-50 rounded-3xl p-6 shadow-2xl border-[3px] border-amber-200 relative overflow-hidden">
+              <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-gradient-to-br from-amber-300/40 to-pink-300/40 blur-2xl pointer-events-none" />
+              <div className="absolute -bottom-12 -left-12 w-40 h-40 rounded-full bg-gradient-to-br from-sky-300/40 to-purple-300/40 blur-2xl pointer-events-none" />
+              <div className="relative">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-2xl drop-shadow">{cur.cat === "AT" ? "📜" : cur.cat === "NT" ? "✨" : "📖"}</span>
+                  <span className="text-xs font-display font-bold bg-gradient-to-r from-amber-500 to-pink-500 text-white px-3 py-1 rounded-full shadow">
+                    {cur.cat === "AT" ? "Antigo Testamento" : cur.cat === "NT" ? "Novo Testamento" : "Bíblia Geral"}
+                  </span>
+                  <span className="ml-auto text-xs text-amber-700 font-bold">🪙 {score}</span>
                 </div>
-              )}
+                <h3 className="font-display text-xl font-extrabold text-foreground mb-4 leading-snug drop-shadow-sm">{cur.q}</h3>
+                <div className="space-y-2">
+                  {cur.options.map((opt, i) => {
+                    let cls = "w-full text-left px-4 py-3 rounded-2xl border-[3px] transition-all font-body font-semibold text-foreground ";
+                    if (answered !== null) {
+                      if (i === cur.correct) cls += "border-green-500 bg-green-100 text-green-800 font-bold scale-[1.02] shadow-lg";
+                      else if (i === answered) cls += "border-red-500 bg-red-100 text-red-800";
+                      else cls += "border-border bg-background opacity-50";
+                    } else cls += "border-amber-200 bg-white hover:border-pink-400 hover:bg-pink-50 active:scale-[0.98] shadow-sm";
+                    return (
+                      <button key={i} onClick={() => answer(i)} disabled={answered !== null} className={cls}>
+                        {answered !== null && i === cur.correct && <span className="mr-2">✅</span>}
+                        {answered !== null && i === answered && i !== cur.correct && <span className="mr-2">❌</span>}
+                        {opt}
+                      </button>
+                    );
+                  })}
+                </div>
+                {answered !== null && (
+                  <div className="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 rounded-lg animate-fade-in">
+                    <p className="text-xs font-display font-bold text-blue-900 mb-1">📖 Referência</p>
+                    <p className="text-sm font-body text-blue-900">{cur.ref}</p>
+                  </div>
+                )}
+              </div>
             </div>
           </>
         )}
