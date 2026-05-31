@@ -42,7 +42,10 @@ export default function Devocionais() {
               <h3 className="font-display text-lg font-bold text-foreground">📖 {devos[todayIdx].title}</h3>
               <p className="text-primary font-body text-sm font-semibold mt-1">{devos[todayIdx].verse}</p>
               <p className="font-body text-sm text-muted-foreground mt-2 line-clamp-2">{devos[todayIdx].text}</p>
-              <p className="font-body text-xs text-primary mt-2 font-bold">Toque para ler →</p>
+              <div className="flex items-center justify-between mt-2">
+                <p className="font-body text-xs text-primary font-bold">Toque para ler →</p>
+                <CoinBadge amount={DEVO_COINS + 1} size="xs" label="ao ler" />
+              </div>
             </div>
 
             <h3 className="font-display text-md font-bold text-foreground mb-3">📚 Todos os Devocionais</h3>
