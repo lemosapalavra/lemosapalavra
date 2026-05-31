@@ -207,67 +207,21 @@ const spotScenes: SpotScene[] = [
 ];
 
 /* =========================================================
-   COLORIR — cenas SVG (mantém + undo + mais cores)
+   COLORIR — usa nossos próprios desenhos só de contorno.
+   10 imagens no total; sorteia 4 por dia (alternando dia a dia).
 ========================================================= */
-const coloringScenes = [
-  {
-    title: "A Arca de Noé",
-    refImage: imgNoe,
-    regions: [
-      { id: "sky", d: "M0,0 L400,0 L400,120 Q200,80 0,120 Z", label: "Céu" },
-      { id: "rainbow1", d: "M50,30 Q200,0 350,30 Q200,10 50,30 Z", label: "Arco-íris" },
-      { id: "rainbow2", d: "M60,40 Q200,10 340,40 Q200,20 60,40 Z", label: "Arco-íris" },
-      { id: "rainbow3", d: "M70,50 Q200,20 330,50 Q200,30 70,50 Z", label: "Arco-íris" },
-      { id: "water", d: "M0,200 Q100,180 200,200 Q300,220 400,200 L400,300 L0,300 Z", label: "Água" },
-      { id: "boat", d: "M80,160 L320,160 L280,220 L120,220 Z", label: "Arca" },
-      { id: "cabin", d: "M140,120 L260,120 L260,160 L140,160 Z", label: "Cabine" },
-      { id: "roof", d: "M130,120 L200,80 L270,120 Z", label: "Telhado" },
-      { id: "window1", d: "M160,130 L190,130 L190,150 L160,150 Z", label: "Janela" },
-      { id: "window2", d: "M210,130 L240,130 L240,150 L210,150 Z", label: "Janela" },
-    ],
-  },
-  {
-    title: "O Bom Pastor",
-    refImage: imgDavi,
-    regions: [
-      { id: "sky", d: "M0,0 L400,0 L400,100 Q200,130 0,100 Z", label: "Céu" },
-      { id: "sun", d: "M320,40 A30,30 0 1,1 320,41 Z", label: "Sol" },
-      { id: "grass", d: "M0,180 Q200,160 400,180 L400,300 L0,300 Z", label: "Grama" },
-      { id: "hill1", d: "M0,180 Q100,120 200,180 Z", label: "Colina" },
-      { id: "hill2", d: "M200,180 Q300,130 400,180 Z", label: "Colina" },
-      { id: "body", d: "M180,110 L220,110 L230,200 L170,200 Z", label: "Túnica" },
-      { id: "head", d: "M190,80 A15,18 0 1,1 210,80 A15,18 0 1,1 190,80 Z", label: "Cabeça" },
-      { id: "sheep1", d: "M100,195 Q110,180 120,195 Q110,205 100,195 Z", label: "Ovelha" },
-      { id: "sheep2", d: "M140,200 Q150,185 160,200 Q150,210 140,200 Z", label: "Ovelha" },
-      { id: "sheep3", d: "M270,195 Q280,180 290,195 Q280,205 270,195 Z", label: "Ovelha" },
-      { id: "tree", d: "M50,120 Q70,80 90,120 Q70,100 50,120 Z", label: "Árvore" },
-      { id: "trunk", d: "M65,120 L75,160 L65,160 L65,120 Z", label: "Tronco" },
-    ],
-  },
-  {
-    title: "A Estrela de Belém",
-    refImage: imgCriacao,
-    regions: [
-      { id: "night", d: "M0,0 L400,0 L400,300 L0,300 Z", label: "Céu noturno" },
-      { id: "star", d: "M200,20 L210,60 L250,60 L218,85 L228,120 L200,98 L172,120 L182,85 L150,60 L190,60 Z", label: "Estrela" },
-      { id: "stable", d: "M120,160 L280,160 L300,280 L100,280 Z", label: "Estábulo" },
-      { id: "roof2", d: "M100,160 L200,100 L300,160 Z", label: "Telhado" },
-      { id: "manger", d: "M170,220 L230,220 L240,260 L160,260 Z", label: "Manjedoura" },
-    ],
-  },
-  {
-    title: "Jonas e a Baleia",
-    refImage: imgMoises,
-    regions: [
-      { id: "sky", d: "M0,0 L400,0 L400,120 L0,120 Z", label: "Céu" },
-      { id: "sea", d: "M0,120 Q100,100 200,120 Q300,140 400,120 L400,300 L0,300 Z", label: "Mar" },
-      { id: "whale", d: "M60,160 Q200,100 340,180 Q300,240 200,250 Q100,240 60,160 Z", label: "Baleia" },
-      { id: "eye", d: "M120,170 A8,8 0 1,1 120,171 Z", label: "Olho" },
-      { id: "jonas", d: "M270,195 L290,195 L290,225 L270,225 Z", label: "Jonas" },
-      { id: "cloud1", d: "M50,30 Q80,10 110,30 Q80,40 50,30 Z", label: "Nuvem" },
-      { id: "cloud2", d: "M250,20 Q280,5 310,20 Q280,30 250,20 Z", label: "Nuvem" },
-    ],
-  },
+type ColoringPic = { id: string; title: string; img: string };
+const coloringCatalog: ColoringPic[] = [
+  { id: "abraao",          title: "Abraão",                  img: colorAbraao },
+  { id: "abraao-cordeiro", title: "Abraão e o Cordeiro",     img: colorAbraaoCordeiro },
+  { id: "adao-eva",        title: "Adão e Eva",              img: colorAdaoEva },
+  { id: "arca-noe",        title: "A Arca de Noé",           img: colorArcaNoe },
+  { id: "cesta-milagre",   title: "A Cesta do Milagre",      img: colorCestaMilagre },
+  { id: "daniel",          title: "Daniel na Cova dos Leões",img: colorDaniel },
+  { id: "davi-arpa",       title: "Davi e a Harpa",          img: colorDaviArpa },
+  { id: "davi-golias",     title: "Davi e Golias",           img: colorDaviGolias },
+  { id: "davi-orando",     title: "Davi Orando",             img: colorDaviOrando },
+  { id: "davi-ovelha",     title: "Davi e a Ovelhinha",      img: colorDaviOvelha },
 ];
 
 const colorPalette = [
