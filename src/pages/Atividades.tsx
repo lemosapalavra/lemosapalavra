@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import PageHeader from "@/components/PageHeader";
 import CelebrationAnimation from "@/components/CelebrationAnimation";
+import CoinBadge from "@/components/CoinBadge";
 import iconQuiz from "@/assets/icon-quiz.png";
 import iconMemoria from "@/assets/icon-memoria.png";
 import iconQuebraCabeca from "@/assets/icon-quebracabeca.png";
@@ -17,6 +18,18 @@ import imgMoises from "@/assets/historia-moises-1.png";
 import imgMoises2 from "@/assets/historia-moises-2.png";
 import imgMandamentos from "@/assets/historia-10-mandamentos.png";
 import imgAdaoEva from "@/assets/historia-adao-eva-1.png";
+
+// COLORIR — desenhos só de contorno (uploads do usuário)
+import colorAbraao from "@/assets/colorir/abraao.jpg";
+import colorAbraaoCordeiro from "@/assets/colorir/abraao-cordeiro.jpg";
+import colorAdaoEva from "@/assets/colorir/adao-eva.jpg";
+import colorArcaNoe from "@/assets/colorir/arca-noe.jpg";
+import colorCestaMilagre from "@/assets/colorir/cesta-milagre.jpg";
+import colorDaniel from "@/assets/colorir/daniel.jpg";
+import colorDaviArpa from "@/assets/colorir/davi-arpa.jpg";
+import colorDaviGolias from "@/assets/colorir/davi-golias.jpg";
+import colorDaviOrando from "@/assets/colorir/davi-orando.jpg";
+import colorDaviOvelha from "@/assets/colorir/davi-ovelha.jpg";
 
 /* =========================================================
    QUIZ BÍBLICO — 30+ perguntas, categorias e explicações
