@@ -324,6 +324,7 @@ export default function Atividades() {
                     <img src={a.icon} alt={a.title} loading="lazy"
                       className="rounded-full border-2 border-primary/30 shadow-xl bg-white object-cover w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px]" />
                     <span className="font-display text-xs sm:text-sm font-bold text-foreground text-center leading-tight">{a.title}</span>
+                    <CoinBadge amount={a.coins} size="xs" />
                   </button>
                 </div>
               </div>
