@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
+import CoinBadge from "@/components/CoinBadge";
 import iconLouvores from "@/assets/icon-louvores.png";
 import iconLouvoresCat from "@/assets/icon-louvores-cat.png";
 import iconPlaylists from "@/assets/icon-playlists.png";
