@@ -75,6 +75,24 @@ const quizBank: QuizQ[] = [
   { cat: "GERAL", q: "Qual o fruto do Espírito que vem primeiro?", options: ["Paz", "Alegria", "Amor", "Bondade"], correct: 2, ref: "Gálatas 5:22." },
 ];
 
+/* Helper: choose a biblical illustration for a quiz question based on keywords */
+function quizImageFor(q: string, cat: string): string {
+  const s = q.toLowerCase();
+  if (/no[ée]|arca|dilúvio/.test(s)) return imgNoe;
+  if (/davi|gol[ií]as|gigante/.test(s)) return imgDavi;
+  if (/mois[ée]s|fara[óo]|mar vermelho|sinai|mandamento/.test(s)) return /mandamento/.test(s) ? imgMandamentos : imgMoises;
+  if (/cria[çc][ãa]o|princ[ií]pio|verbo|gênesis|genesis/.test(s)) return imgCriacao;
+  if (/ad[ãa]o|eva|[ée]den|serpente|jardim/.test(s)) return imgAdaoEva;
+  if (/abra[ãa]o|sara|isaque|f[ée] do pai/.test(s)) return imgAdaoEva;
+  if (/jonas|peixe|baleia/.test(s)) return imgNoe2;
+  if (/sans[ãa]o|cabelo/.test(s)) return imgDavi;
+  if (/jos[ée]|sonh|fara[óo]/.test(s)) return imgMoises2;
+  if (/daniel|le[õo]es|cova/.test(s)) return imgMandamentos;
+  if (/salom[ãa]o|sabedoria|rei/.test(s)) return imgMandamentos;
+  if (/jesus|cristo|bel[ée]m|natal|jo[ãa]o batista|disc[ií]pulo|pedro|paulo|judas|ressurrei|p[ãa]es|milagre|caminho/.test(s)) return imgCriacao;
+  return cat === "NT" ? imgCriacao : imgMandamentos;
+}
+
 const quizCategories = [
   { id: "ALL", label: "🎯 Tudo", color: "from-purple-400 to-pink-400" },
   { id: "AT", label: "📜 Antigo Testamento", color: "from-amber-400 to-orange-500" },
