@@ -697,8 +697,16 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
   );
 }
 
-/* ---------- COLORING — pinta sobre o contorno da imagem real ---------- */
+/* ---------- COLORING — desenhos só de contorno, 4 por dia, alternando ---------- */
 function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
+  // 4 desenhos do dia (rotacionam dia a dia, sem repetir no mesmo conjunto)
+  const dailyPics = useMemo(() => {
+    const d = dayOfYear();
+    const total = coloringCatalog.length;
+    const start = (d * 4) % total;
+    return Array.from({ length: 4 }, (_, k) => coloringCatalog[(start + k) % total]);
+  }, []);
+
   const [idx, setIdx] = useState(0);
   const [color, setColor] = useState(colorPalette[0]);
   const [brush, setBrush] = useState(22);
@@ -706,7 +714,7 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const drawing = useRef(false);
   const lastPt = useRef<{ x: number; y: number } | null>(null);
-  const scene = coloringScenes[idx];
+  const scene = dailyPics[idx];
 
   // Reset canvas when scene changes
   useEffect(() => {
@@ -772,6 +780,12 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
         <PageHeader title="Colorir" subtitle={scene.title} icon={iconColorir} />
         <button onClick={onBack} className="mb-4 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
 
+        <div className="text-center mb-3">
+          <span className="inline-flex items-center gap-2 text-xs font-display font-bold bg-amber-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">
+            🎨 Desenhos do dia · {new Date().toLocaleDateString("pt-BR", { day: "numeric", month: "long" })}
+          </span>
+        </div>
+
         {/* Palette */}
         <div className="flex gap-1.5 mb-3 flex-wrap justify-center bg-popover/60 rounded-xl p-2">
           {colorPalette.map((c, i) => (
@@ -791,20 +805,14 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
           <button onClick={clear} className="px-3 py-1.5 rounded-full font-display text-xs font-bold bg-popover border border-border text-foreground hover:border-primary">🗑️ Limpar</button>
         </div>
 
-        {/* Canvas + outline overlay + mini reference */}
+        {/* Canvas with outline drawing on top */}
         <div className="relative bg-white rounded-2xl p-3 shadow-lg border border-border">
-          {/* mini colored reference */}
-          <div className="absolute top-2 right-2 z-20 flex flex-col items-center bg-popover/95 rounded-xl border-2 border-primary/60 shadow-lg p-1.5 w-20 sm:w-24">
-            <span className="text-[9px] font-display font-bold text-primary uppercase tracking-wide mb-1">Modelo</span>
-            <img src={scene.refImage} alt={`Referência ${scene.title}`} className="w-full aspect-square object-cover rounded-md" loading="lazy" draggable={false} />
-          </div>
-
-          <div className="relative w-full aspect-[4/3] mx-auto overflow-hidden rounded-xl bg-white touch-none" style={{ maxWidth: 520 }}>
-            {/* Paint layer */}
+          <div className="relative w-full aspect-[3/4] mx-auto overflow-hidden rounded-xl bg-white touch-none" style={{ maxWidth: 480 }}>
+            {/* Paint layer (below) */}
             <canvas
               ref={canvasRef}
-              width={800}
-              height={600}
+              width={600}
+              height={800}
               onPointerDown={onDown}
               onPointerMove={onMove}
               onPointerUp={onUp}
@@ -812,43 +820,39 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
               className="absolute inset-0 w-full h-full cursor-crosshair"
               style={{ touchAction: "none" }}
             />
-            {/* Line-art outline of the SAME image as the thumbnail, painted with multiply so user's color shows through */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
-              <defs>
-                <filter id={`outline-${idx}`} x="0" y="0" width="100%" height="100%" colorInterpolationFilters="sRGB">
-                  <feColorMatrix type="matrix" values="0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0 0 0 1 0" />
-                  <feConvolveMatrix order="3" preserveAlpha="true" kernelMatrix="-1 -1 -1 -1 8 -1 -1 -1 -1" />
-                  <feComponentTransfer>
-                    <feFuncR type="linear" slope="-3" intercept="1" />
-                    <feFuncG type="linear" slope="-3" intercept="1" />
-                    <feFuncB type="linear" slope="-3" intercept="1" />
-                  </feComponentTransfer>
-                </filter>
-              </defs>
-              <image href={scene.refImage} x="0" y="0" width="800" height="600" preserveAspectRatio="xMidYMid slice" filter={`url(#outline-${idx})`} style={{ mixBlendMode: "multiply" }} />
-            </svg>
+            {/* Outline image on top with multiply blend, so paint shows underneath the black lines */}
+            <img
+              src={scene.img}
+              alt={scene.title}
+              draggable={false}
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
+              style={{ mixBlendMode: "multiply" }}
+            />
           </div>
         </div>
 
-        {/* Scene picker */}
-        <div className="flex gap-2 mt-4 justify-center flex-wrap">
-          {coloringScenes.map((s, i) => (
-            <button key={i} onClick={() => setIdx(i)}
-              className={`px-3 py-1.5 rounded-full font-display text-xs font-bold ${idx === i ? "bg-primary text-primary-foreground" : "bg-popover border border-border text-foreground"}`}>
-              {s.title}
+        {/* Today's pictures picker (4 per day) */}
+        <div className="grid grid-cols-4 gap-2 mt-4">
+          {dailyPics.map((s, i) => (
+            <button key={s.id} onClick={() => setIdx(i)}
+              className={`rounded-xl overflow-hidden border-2 transition-all bg-white ${idx === i ? "border-primary scale-105 shadow-lg" : "border-border hover:border-primary/50"}`}
+              title={s.title}>
+              <img src={s.img} alt={s.title} className="w-full aspect-square object-contain p-1" loading="lazy" />
+              <span className="block text-[10px] font-display font-bold text-foreground px-1 pb-1 truncate">{s.title}</span>
             </button>
           ))}
         </div>
 
-        {strokes >= 6 && (
-          <div className="text-center mt-4">
+        <div className="flex flex-col items-center gap-2 mt-4">
+          <CoinBadge amount={3} size="md" label="ao finalizar" />
+          {strokes >= 6 && (
             <button onClick={() => celebrate(`"${scene.title}" pintado!`, 3, "🎨")}
-              className="btn-cartoon px-6 py-3 text-sm">✨ Finalizar e ganhar 3 🪙</button>
-          </div>
-        )}
+              className="btn-cartoon px-6 py-3 text-sm">✨ Finalizar e ganhar moedinhas</button>
+          )}
+        </div>
 
         <p className="text-center text-xs text-muted-foreground font-body mt-3">
-          💡 Use a miniatura colorida como referência e pinte sobre o contorno!
+          💡 4 desenhos novos a cada dia — pinte sobre o contorno usando as cores acima!
         </p>
       </div>
       <CelebrationAnimation {...celebration} onClose={closeCelebration} />
