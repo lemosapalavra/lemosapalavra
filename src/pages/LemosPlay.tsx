@@ -67,7 +67,10 @@ function Row({ title, items, onPlay, progress }: { title: string; items: PlayIte
                 )}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-3 pb-4">
                   <p className="text-white font-bold text-sm text-left line-clamp-1">{item.title}</p>
-                  <p className="text-zinc-300 text-xs text-left">{item.category}</p>
+                  <div className="flex items-center justify-between mt-0.5">
+                    <p className="text-zinc-300 text-xs text-left">{item.category}</p>
+                    <CoinBadge amount={COIN_REWARDS[item.category] ?? 3} size="xs" />
+                  </div>
                 </div>
                 {pct > 0 && (
                   <div className="absolute bottom-0 inset-x-0 h-1 bg-white/20">
