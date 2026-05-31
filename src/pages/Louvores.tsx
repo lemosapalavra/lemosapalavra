@@ -79,6 +79,7 @@ export default function Louvores() {
       <p className="text-xs sm:text-sm font-bold text-primary text-center leading-tight drop-shadow max-w-[120px]">
         {l.title}
       </p>
+      <CoinBadge amount={3} size="xs" />
     </button>
   );
 
