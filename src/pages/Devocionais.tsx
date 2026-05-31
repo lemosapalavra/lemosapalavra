@@ -59,7 +59,10 @@ export default function Devocionais() {
                   <h3 className="font-display text-lg font-bold text-foreground">📖 {d.title}</h3>
                   <p className="text-primary font-body text-sm font-semibold mt-1">{d.verse}</p>
                   <p className="font-body text-sm text-muted-foreground mt-2 line-clamp-2">{d.text}</p>
-                  <p className="font-body text-xs text-primary mt-2">Clique para ler →</p>
+                  <div className="flex items-center justify-between mt-2">
+                    <p className="font-body text-xs text-primary">Clique para ler →</p>
+                    <CoinBadge amount={DEVO_COINS} size="xs" />
+                  </div>
                 </div>
               ))}
             </div>
