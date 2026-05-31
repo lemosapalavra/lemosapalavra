@@ -447,12 +447,29 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
                   <span className="text-xs font-display font-bold bg-gradient-to-r from-amber-500 to-pink-500 text-white px-3 py-1 rounded-full shadow">
                     {cur.cat === "AT" ? "Antigo Testamento" : cur.cat === "NT" ? "Novo Testamento" : "Bíblia Geral"}
                   </span>
-                  <span className="ml-auto text-xs text-amber-700 font-bold">🪙 {score}</span>
+                  <span className="ml-auto"><CoinBadge amount={score} size="xs" /></span>
                 </div>
-                <h3 className="font-display text-xl font-extrabold text-foreground mb-4 leading-snug drop-shadow-sm">{cur.q}</h3>
+
+                {/* Question illustration (keyword-matched biblical scene) */}
+                <div className="flex justify-center mb-3">
+                  <div className="relative w-32 h-32 sm:w-36 sm:h-36 rounded-2xl overflow-hidden bg-gradient-to-br from-sky-100 to-amber-100 border-[3px] border-white shadow-lg ring-2 ring-amber-300/60">
+                    <img src={quizImageFor(cur.q, cur.cat)} alt="" className="w-full h-full object-cover" />
+                    <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/30 to-transparent" />
+                    <span className="absolute bottom-1 right-2 text-2xl drop-shadow-lg">{cur.cat === "AT" ? "📜" : cur.cat === "NT" ? "✝️" : "📖"}</span>
+                  </div>
+                </div>
+
+                <h3 className="font-display text-xl font-extrabold text-foreground mb-4 leading-snug drop-shadow-sm text-center">{cur.q}</h3>
                 <div className="space-y-2">
                   {cur.options.map((opt, i) => {
-                    let cls = "w-full text-left px-4 py-3 rounded-2xl border-[3px] transition-all font-body font-semibold text-foreground ";
+                    const letter = ["A", "B", "C", "D"][i];
+                    const letterColors = [
+                      "bg-rose-400",
+                      "bg-sky-400",
+                      "bg-amber-400",
+                      "bg-emerald-400",
+                    ];
+                    let cls = "w-full text-left px-3 py-3 rounded-2xl border-[3px] transition-all font-body font-semibold text-foreground flex items-center gap-3 ";
                     if (answered !== null) {
                       if (i === cur.correct) cls += "border-green-500 bg-green-100 text-green-800 font-bold scale-[1.02] shadow-lg";
                       else if (i === answered) cls += "border-red-500 bg-red-100 text-red-800";
@@ -460,16 +477,19 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
                     } else cls += "border-amber-200 bg-white hover:border-pink-400 hover:bg-pink-50 active:scale-[0.98] shadow-sm";
                     return (
                       <button key={i} onClick={() => answer(i)} disabled={answered !== null} className={cls}>
-                        {answered !== null && i === cur.correct && <span className="mr-2">✅</span>}
-                        {answered !== null && i === answered && i !== cur.correct && <span className="mr-2">❌</span>}
-                        {opt}
+                        <span className={`shrink-0 w-9 h-9 rounded-full ${letterColors[i]} text-white font-display font-extrabold text-lg flex items-center justify-center shadow-md ring-2 ring-white`}>
+                          {letter}
+                        </span>
+                        <span className="flex-1">{opt}</span>
+                        {answered !== null && i === cur.correct && <span className="text-2xl">🙌</span>}
+                        {answered !== null && i === answered && i !== cur.correct && <span className="text-2xl">😅</span>}
                       </button>
                     );
                   })}
                 </div>
                 {answered !== null && (
-                  <div className="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 rounded-lg animate-fade-in">
-                    <p className="text-xs font-display font-bold text-blue-900 mb-1">📖 Referência</p>
+                  <div className="mt-4 p-3 bg-gradient-to-r from-sky-50 to-blue-50 border-l-4 border-blue-400 rounded-lg animate-fade-in">
+                    <p className="text-xs font-display font-bold text-blue-900 mb-1 flex items-center gap-1">✝️ Palavra de Deus</p>
                     <p className="text-sm font-body text-blue-900">{cur.ref}</p>
                   </div>
                 )}
