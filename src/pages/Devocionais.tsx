@@ -1,7 +1,10 @@
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
+import CoinBadge from "@/components/CoinBadge";
 import iconDevocionais from "@/assets/icon-devocionais.png";
+
+const DEVO_COINS = 2;
 
 const devos = [
   { title: "Deus me Ama", verse: "João 3:16", text: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.", reflection: "Deus nos ama de um jeito tão grande que enviou Jesus para nos salvar. Quando você se sentir sozinho, lembre-se: Deus te ama mais do que qualquer pessoa neste mundo!", prayer: "Querido Deus, obrigado por me amar tanto. Ajude-me a sentir Seu amor todos os dias. Amém." },
@@ -39,7 +42,10 @@ export default function Devocionais() {
               <h3 className="font-display text-lg font-bold text-foreground">📖 {devos[todayIdx].title}</h3>
               <p className="text-primary font-body text-sm font-semibold mt-1">{devos[todayIdx].verse}</p>
               <p className="font-body text-sm text-muted-foreground mt-2 line-clamp-2">{devos[todayIdx].text}</p>
-              <p className="font-body text-xs text-primary mt-2 font-bold">Toque para ler →</p>
+              <div className="flex items-center justify-between mt-2">
+                <p className="font-body text-xs text-primary font-bold">Toque para ler →</p>
+                <CoinBadge amount={DEVO_COINS + 1} size="xs" label="ao ler" />
+              </div>
             </div>
 
             <h3 className="font-display text-md font-bold text-foreground mb-3">📚 Todos os Devocionais</h3>
@@ -53,7 +59,10 @@ export default function Devocionais() {
                   <h3 className="font-display text-lg font-bold text-foreground">📖 {d.title}</h3>
                   <p className="text-primary font-body text-sm font-semibold mt-1">{d.verse}</p>
                   <p className="font-body text-sm text-muted-foreground mt-2 line-clamp-2">{d.text}</p>
-                  <p className="font-body text-xs text-primary mt-2">Clique para ler →</p>
+                  <div className="flex items-center justify-between mt-2">
+                    <p className="font-body text-xs text-primary">Clique para ler →</p>
+                    <CoinBadge amount={DEVO_COINS} size="xs" />
+                  </div>
                 </div>
               ))}
             </div>

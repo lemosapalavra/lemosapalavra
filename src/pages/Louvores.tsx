@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
+import CoinBadge from "@/components/CoinBadge";
 import iconLouvores from "@/assets/icon-louvores.png";
 import iconLouvoresCat from "@/assets/icon-louvores-cat.png";
 import iconPlaylists from "@/assets/icon-playlists.png";
@@ -78,6 +79,7 @@ export default function Louvores() {
       <p className="text-xs sm:text-sm font-bold text-primary text-center leading-tight drop-shadow max-w-[120px]">
         {l.title}
       </p>
+      <CoinBadge amount={3} size="xs" />
     </button>
   );
 

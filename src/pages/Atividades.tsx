@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import PageHeader from "@/components/PageHeader";
 import CelebrationAnimation from "@/components/CelebrationAnimation";
+import CoinBadge from "@/components/CoinBadge";
 import iconQuiz from "@/assets/icon-quiz.png";
 import iconMemoria from "@/assets/icon-memoria.png";
 import iconQuebraCabeca from "@/assets/icon-quebracabeca.png";
@@ -17,6 +18,18 @@ import imgMoises from "@/assets/historia-moises-1.png";
 import imgMoises2 from "@/assets/historia-moises-2.png";
 import imgMandamentos from "@/assets/historia-10-mandamentos.png";
 import imgAdaoEva from "@/assets/historia-adao-eva-1.png";
+
+// COLORIR — desenhos só de contorno (uploads do usuário)
+import colorAbraao from "@/assets/colorir/abraao.jpg";
+import colorAbraaoCordeiro from "@/assets/colorir/abraao-cordeiro.jpg";
+import colorAdaoEva from "@/assets/colorir/adao-eva.jpg";
+import colorArcaNoe from "@/assets/colorir/arca-noe.jpg";
+import colorCestaMilagre from "@/assets/colorir/cesta-milagre.jpg";
+import colorDaniel from "@/assets/colorir/daniel.jpg";
+import colorDaviArpa from "@/assets/colorir/davi-arpa.jpg";
+import colorDaviGolias from "@/assets/colorir/davi-golias.jpg";
+import colorDaviOrando from "@/assets/colorir/davi-orando.jpg";
+import colorDaviOvelha from "@/assets/colorir/davi-ovelha.jpg";
 
 /* =========================================================
    QUIZ BÍBLICO — 30+ perguntas, categorias e explicações
@@ -61,6 +74,24 @@ const quizBank: QuizQ[] = [
   { cat: "GERAL", q: "'No princípio era o ___': complete.", options: ["Amor", "Verbo", "Mundo", "Espírito"], correct: 1, ref: "João 1:1." },
   { cat: "GERAL", q: "Qual o fruto do Espírito que vem primeiro?", options: ["Paz", "Alegria", "Amor", "Bondade"], correct: 2, ref: "Gálatas 5:22." },
 ];
+
+/* Helper: choose a biblical illustration for a quiz question based on keywords */
+function quizImageFor(q: string, cat: string): string {
+  const s = q.toLowerCase();
+  if (/no[ée]|arca|dilúvio/.test(s)) return imgNoe;
+  if (/davi|gol[ií]as|gigante/.test(s)) return imgDavi;
+  if (/mois[ée]s|fara[óo]|mar vermelho|sinai|mandamento/.test(s)) return /mandamento/.test(s) ? imgMandamentos : imgMoises;
+  if (/cria[çc][ãa]o|princ[ií]pio|verbo|gênesis|genesis/.test(s)) return imgCriacao;
+  if (/ad[ãa]o|eva|[ée]den|serpente|jardim/.test(s)) return imgAdaoEva;
+  if (/abra[ãa]o|sara|isaque|f[ée] do pai/.test(s)) return imgAdaoEva;
+  if (/jonas|peixe|baleia/.test(s)) return imgNoe2;
+  if (/sans[ãa]o|cabelo/.test(s)) return imgDavi;
+  if (/jos[ée]|sonh|fara[óo]/.test(s)) return imgMoises2;
+  if (/daniel|le[õo]es|cova/.test(s)) return imgMandamentos;
+  if (/salom[ãa]o|sabedoria|rei/.test(s)) return imgMandamentos;
+  if (/jesus|cristo|bel[ée]m|natal|jo[ãa]o batista|disc[ií]pulo|pedro|paulo|judas|ressurrei|p[ãa]es|milagre|caminho/.test(s)) return imgCriacao;
+  return cat === "NT" ? imgCriacao : imgMandamentos;
+}
 
 const quizCategories = [
   { id: "ALL", label: "🎯 Tudo", color: "from-purple-400 to-pink-400" },
@@ -194,67 +225,21 @@ const spotScenes: SpotScene[] = [
 ];
 
 /* =========================================================
-   COLORIR — cenas SVG (mantém + undo + mais cores)
+   COLORIR — usa nossos próprios desenhos só de contorno.
+   10 imagens no total; sorteia 4 por dia (alternando dia a dia).
 ========================================================= */
-const coloringScenes = [
-  {
-    title: "A Arca de Noé",
-    refImage: imgNoe,
-    regions: [
-      { id: "sky", d: "M0,0 L400,0 L400,120 Q200,80 0,120 Z", label: "Céu" },
-      { id: "rainbow1", d: "M50,30 Q200,0 350,30 Q200,10 50,30 Z", label: "Arco-íris" },
-      { id: "rainbow2", d: "M60,40 Q200,10 340,40 Q200,20 60,40 Z", label: "Arco-íris" },
-      { id: "rainbow3", d: "M70,50 Q200,20 330,50 Q200,30 70,50 Z", label: "Arco-íris" },
-      { id: "water", d: "M0,200 Q100,180 200,200 Q300,220 400,200 L400,300 L0,300 Z", label: "Água" },
-      { id: "boat", d: "M80,160 L320,160 L280,220 L120,220 Z", label: "Arca" },
-      { id: "cabin", d: "M140,120 L260,120 L260,160 L140,160 Z", label: "Cabine" },
-      { id: "roof", d: "M130,120 L200,80 L270,120 Z", label: "Telhado" },
-      { id: "window1", d: "M160,130 L190,130 L190,150 L160,150 Z", label: "Janela" },
-      { id: "window2", d: "M210,130 L240,130 L240,150 L210,150 Z", label: "Janela" },
-    ],
-  },
-  {
-    title: "O Bom Pastor",
-    refImage: imgDavi,
-    regions: [
-      { id: "sky", d: "M0,0 L400,0 L400,100 Q200,130 0,100 Z", label: "Céu" },
-      { id: "sun", d: "M320,40 A30,30 0 1,1 320,41 Z", label: "Sol" },
-      { id: "grass", d: "M0,180 Q200,160 400,180 L400,300 L0,300 Z", label: "Grama" },
-      { id: "hill1", d: "M0,180 Q100,120 200,180 Z", label: "Colina" },
-      { id: "hill2", d: "M200,180 Q300,130 400,180 Z", label: "Colina" },
-      { id: "body", d: "M180,110 L220,110 L230,200 L170,200 Z", label: "Túnica" },
-      { id: "head", d: "M190,80 A15,18 0 1,1 210,80 A15,18 0 1,1 190,80 Z", label: "Cabeça" },
-      { id: "sheep1", d: "M100,195 Q110,180 120,195 Q110,205 100,195 Z", label: "Ovelha" },
-      { id: "sheep2", d: "M140,200 Q150,185 160,200 Q150,210 140,200 Z", label: "Ovelha" },
-      { id: "sheep3", d: "M270,195 Q280,180 290,195 Q280,205 270,195 Z", label: "Ovelha" },
-      { id: "tree", d: "M50,120 Q70,80 90,120 Q70,100 50,120 Z", label: "Árvore" },
-      { id: "trunk", d: "M65,120 L75,160 L65,160 L65,120 Z", label: "Tronco" },
-    ],
-  },
-  {
-    title: "A Estrela de Belém",
-    refImage: imgCriacao,
-    regions: [
-      { id: "night", d: "M0,0 L400,0 L400,300 L0,300 Z", label: "Céu noturno" },
-      { id: "star", d: "M200,20 L210,60 L250,60 L218,85 L228,120 L200,98 L172,120 L182,85 L150,60 L190,60 Z", label: "Estrela" },
-      { id: "stable", d: "M120,160 L280,160 L300,280 L100,280 Z", label: "Estábulo" },
-      { id: "roof2", d: "M100,160 L200,100 L300,160 Z", label: "Telhado" },
-      { id: "manger", d: "M170,220 L230,220 L240,260 L160,260 Z", label: "Manjedoura" },
-    ],
-  },
-  {
-    title: "Jonas e a Baleia",
-    refImage: imgMoises,
-    regions: [
-      { id: "sky", d: "M0,0 L400,0 L400,120 L0,120 Z", label: "Céu" },
-      { id: "sea", d: "M0,120 Q100,100 200,120 Q300,140 400,120 L400,300 L0,300 Z", label: "Mar" },
-      { id: "whale", d: "M60,160 Q200,100 340,180 Q300,240 200,250 Q100,240 60,160 Z", label: "Baleia" },
-      { id: "eye", d: "M120,170 A8,8 0 1,1 120,171 Z", label: "Olho" },
-      { id: "jonas", d: "M270,195 L290,195 L290,225 L270,225 Z", label: "Jonas" },
-      { id: "cloud1", d: "M50,30 Q80,10 110,30 Q80,40 50,30 Z", label: "Nuvem" },
-      { id: "cloud2", d: "M250,20 Q280,5 310,20 Q280,30 250,20 Z", label: "Nuvem" },
-    ],
-  },
+type ColoringPic = { id: string; title: string; img: string };
+const coloringCatalog: ColoringPic[] = [
+  { id: "abraao",          title: "Abraão",                  img: colorAbraao },
+  { id: "abraao-cordeiro", title: "Abraão e o Cordeiro",     img: colorAbraaoCordeiro },
+  { id: "adao-eva",        title: "Adão e Eva",              img: colorAdaoEva },
+  { id: "arca-noe",        title: "A Arca de Noé",           img: colorArcaNoe },
+  { id: "cesta-milagre",   title: "A Cesta do Milagre",      img: colorCestaMilagre },
+  { id: "daniel",          title: "Daniel na Cova dos Leões",img: colorDaniel },
+  { id: "davi-arpa",       title: "Davi e a Harpa",          img: colorDaviArpa },
+  { id: "davi-golias",     title: "Davi e Golias",           img: colorDaviGolias },
+  { id: "davi-orando",     title: "Davi Orando",             img: colorDaviOrando },
+  { id: "davi-ovelha",     title: "Davi e a Ovelhinha",      img: colorDaviOvelha },
 ];
 
 const colorPalette = [
@@ -304,11 +289,11 @@ export default function Atividades() {
   const closeCelebration = () => setCelebration({ show: false, message: "", coins: 0, emoji: "🏆" });
 
   const activities = [
-    { title: "Quiz Bíblico", icon: iconQuiz, id: "quiz" },
-    { title: "Memória", icon: iconMemoria, id: "memory" },
-    { title: "7 Erros", icon: icon7Erros, id: "spot" },
-    { title: "Colorir", icon: iconColorir, id: "coloring" },
-    { title: "Quebra-Cabeça", icon: iconQuebraCabeca, id: "jigsaw" },
+    { title: "Quiz Bíblico",   icon: iconQuiz,         id: "quiz",     coins: 5  },
+    { title: "Memória",        icon: iconMemoria,      id: "memory",   coins: 7  },
+    { title: "7 Erros",        icon: icon7Erros,       id: "spot",     coins: 5  },
+    { title: "Colorir",        icon: iconColorir,      id: "coloring", coins: 3  },
+    { title: "Quebra-Cabeça",  icon: iconQuebraCabeca, id: "jigsaw",   coins: 10 },
   ];
 
   const bgStyle = { background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" };
@@ -357,6 +342,7 @@ export default function Atividades() {
                     <img src={a.icon} alt={a.title} loading="lazy"
                       className="rounded-full border-2 border-primary/30 shadow-xl bg-white object-cover w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px]" />
                     <span className="font-display text-xs sm:text-sm font-bold text-foreground text-center leading-tight">{a.title}</span>
+                    <CoinBadge amount={a.coins} size="xs" />
                   </button>
                 </div>
               </div>
@@ -479,12 +465,29 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
                   <span className="text-xs font-display font-bold bg-gradient-to-r from-amber-500 to-pink-500 text-white px-3 py-1 rounded-full shadow">
                     {cur.cat === "AT" ? "Antigo Testamento" : cur.cat === "NT" ? "Novo Testamento" : "Bíblia Geral"}
                   </span>
-                  <span className="ml-auto text-xs text-amber-700 font-bold">🪙 {score}</span>
+                  <span className="ml-auto"><CoinBadge amount={score} size="xs" /></span>
                 </div>
-                <h3 className="font-display text-xl font-extrabold text-foreground mb-4 leading-snug drop-shadow-sm">{cur.q}</h3>
+
+                {/* Question illustration (keyword-matched biblical scene) */}
+                <div className="flex justify-center mb-3">
+                  <div className="relative w-32 h-32 sm:w-36 sm:h-36 rounded-2xl overflow-hidden bg-gradient-to-br from-sky-100 to-amber-100 border-[3px] border-white shadow-lg ring-2 ring-amber-300/60">
+                    <img src={quizImageFor(cur.q, cur.cat)} alt="" className="w-full h-full object-cover" />
+                    <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/30 to-transparent" />
+                    <span className="absolute bottom-1 right-2 text-2xl drop-shadow-lg">{cur.cat === "AT" ? "📜" : cur.cat === "NT" ? "✝️" : "📖"}</span>
+                  </div>
+                </div>
+
+                <h3 className="font-display text-xl font-extrabold text-foreground mb-4 leading-snug drop-shadow-sm text-center">{cur.q}</h3>
                 <div className="space-y-2">
                   {cur.options.map((opt, i) => {
-                    let cls = "w-full text-left px-4 py-3 rounded-2xl border-[3px] transition-all font-body font-semibold text-foreground ";
+                    const letter = ["A", "B", "C", "D"][i];
+                    const letterColors = [
+                      "bg-rose-400",
+                      "bg-sky-400",
+                      "bg-amber-400",
+                      "bg-emerald-400",
+                    ];
+                    let cls = "w-full text-left px-3 py-3 rounded-2xl border-[3px] transition-all font-body font-semibold text-foreground flex items-center gap-3 ";
                     if (answered !== null) {
                       if (i === cur.correct) cls += "border-green-500 bg-green-100 text-green-800 font-bold scale-[1.02] shadow-lg";
                       else if (i === answered) cls += "border-red-500 bg-red-100 text-red-800";
@@ -492,16 +495,19 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
                     } else cls += "border-amber-200 bg-white hover:border-pink-400 hover:bg-pink-50 active:scale-[0.98] shadow-sm";
                     return (
                       <button key={i} onClick={() => answer(i)} disabled={answered !== null} className={cls}>
-                        {answered !== null && i === cur.correct && <span className="mr-2">✅</span>}
-                        {answered !== null && i === answered && i !== cur.correct && <span className="mr-2">❌</span>}
-                        {opt}
+                        <span className={`shrink-0 w-9 h-9 rounded-full ${letterColors[i]} text-white font-display font-extrabold text-lg flex items-center justify-center shadow-md ring-2 ring-white`}>
+                          {letter}
+                        </span>
+                        <span className="flex-1">{opt}</span>
+                        {answered !== null && i === cur.correct && <span className="text-2xl">🙌</span>}
+                        {answered !== null && i === answered && i !== cur.correct && <span className="text-2xl">😅</span>}
                       </button>
                     );
                   })}
                 </div>
                 {answered !== null && (
-                  <div className="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 rounded-lg animate-fade-in">
-                    <p className="text-xs font-display font-bold text-blue-900 mb-1">📖 Referência</p>
+                  <div className="mt-4 p-3 bg-gradient-to-r from-sky-50 to-blue-50 border-l-4 border-blue-400 rounded-lg animate-fade-in">
+                    <p className="text-xs font-display font-bold text-blue-900 mb-1 flex items-center gap-1">✝️ Palavra de Deus</p>
                     <p className="text-sm font-body text-blue-900">{cur.ref}</p>
                   </div>
                 )}
@@ -730,8 +736,16 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
   );
 }
 
-/* ---------- COLORING — pinta sobre o contorno da imagem real ---------- */
+/* ---------- COLORING — desenhos só de contorno, 4 por dia, alternando ---------- */
 function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
+  // 4 desenhos do dia (rotacionam dia a dia, sem repetir no mesmo conjunto)
+  const dailyPics = useMemo(() => {
+    const d = dayOfYear();
+    const total = coloringCatalog.length;
+    const start = (d * 4) % total;
+    return Array.from({ length: 4 }, (_, k) => coloringCatalog[(start + k) % total]);
+  }, []);
+
   const [idx, setIdx] = useState(0);
   const [color, setColor] = useState(colorPalette[0]);
   const [brush, setBrush] = useState(22);
@@ -739,7 +753,7 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const drawing = useRef(false);
   const lastPt = useRef<{ x: number; y: number } | null>(null);
-  const scene = coloringScenes[idx];
+  const scene = dailyPics[idx];
 
   // Reset canvas when scene changes
   useEffect(() => {
@@ -805,6 +819,12 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
         <PageHeader title="Colorir" subtitle={scene.title} icon={iconColorir} />
         <button onClick={onBack} className="mb-4 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
 
+        <div className="text-center mb-3">
+          <span className="inline-flex items-center gap-2 text-xs font-display font-bold bg-amber-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">
+            🎨 Desenhos do dia · {new Date().toLocaleDateString("pt-BR", { day: "numeric", month: "long" })}
+          </span>
+        </div>
+
         {/* Palette */}
         <div className="flex gap-1.5 mb-3 flex-wrap justify-center bg-popover/60 rounded-xl p-2">
           {colorPalette.map((c, i) => (
@@ -824,20 +844,14 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
           <button onClick={clear} className="px-3 py-1.5 rounded-full font-display text-xs font-bold bg-popover border border-border text-foreground hover:border-primary">🗑️ Limpar</button>
         </div>
 
-        {/* Canvas + outline overlay + mini reference */}
+        {/* Canvas with outline drawing on top */}
         <div className="relative bg-white rounded-2xl p-3 shadow-lg border border-border">
-          {/* mini colored reference */}
-          <div className="absolute top-2 right-2 z-20 flex flex-col items-center bg-popover/95 rounded-xl border-2 border-primary/60 shadow-lg p-1.5 w-20 sm:w-24">
-            <span className="text-[9px] font-display font-bold text-primary uppercase tracking-wide mb-1">Modelo</span>
-            <img src={scene.refImage} alt={`Referência ${scene.title}`} className="w-full aspect-square object-cover rounded-md" loading="lazy" draggable={false} />
-          </div>
-
-          <div className="relative w-full aspect-[4/3] mx-auto overflow-hidden rounded-xl bg-white touch-none" style={{ maxWidth: 520 }}>
-            {/* Paint layer */}
+          <div className="relative w-full aspect-[3/4] mx-auto overflow-hidden rounded-xl bg-white touch-none" style={{ maxWidth: 480 }}>
+            {/* Paint layer (below) */}
             <canvas
               ref={canvasRef}
-              width={800}
-              height={600}
+              width={600}
+              height={800}
               onPointerDown={onDown}
               onPointerMove={onMove}
               onPointerUp={onUp}
@@ -845,43 +859,39 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
               className="absolute inset-0 w-full h-full cursor-crosshair"
               style={{ touchAction: "none" }}
             />
-            {/* Line-art outline of the SAME image as the thumbnail, painted with multiply so user's color shows through */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
-              <defs>
-                <filter id={`outline-${idx}`} x="0" y="0" width="100%" height="100%" colorInterpolationFilters="sRGB">
-                  <feColorMatrix type="matrix" values="0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0  0 0 0 1 0" />
-                  <feConvolveMatrix order="3" preserveAlpha="true" kernelMatrix="-1 -1 -1 -1 8 -1 -1 -1 -1" />
-                  <feComponentTransfer>
-                    <feFuncR type="linear" slope="-3" intercept="1" />
-                    <feFuncG type="linear" slope="-3" intercept="1" />
-                    <feFuncB type="linear" slope="-3" intercept="1" />
-                  </feComponentTransfer>
-                </filter>
-              </defs>
-              <image href={scene.refImage} x="0" y="0" width="800" height="600" preserveAspectRatio="xMidYMid slice" filter={`url(#outline-${idx})`} style={{ mixBlendMode: "multiply" }} />
-            </svg>
+            {/* Outline image on top with multiply blend, so paint shows underneath the black lines */}
+            <img
+              src={scene.img}
+              alt={scene.title}
+              draggable={false}
+              className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
+              style={{ mixBlendMode: "multiply" }}
+            />
           </div>
         </div>
 
-        {/* Scene picker */}
-        <div className="flex gap-2 mt-4 justify-center flex-wrap">
-          {coloringScenes.map((s, i) => (
-            <button key={i} onClick={() => setIdx(i)}
-              className={`px-3 py-1.5 rounded-full font-display text-xs font-bold ${idx === i ? "bg-primary text-primary-foreground" : "bg-popover border border-border text-foreground"}`}>
-              {s.title}
+        {/* Today's pictures picker (4 per day) */}
+        <div className="grid grid-cols-4 gap-2 mt-4">
+          {dailyPics.map((s, i) => (
+            <button key={s.id} onClick={() => setIdx(i)}
+              className={`rounded-xl overflow-hidden border-2 transition-all bg-white ${idx === i ? "border-primary scale-105 shadow-lg" : "border-border hover:border-primary/50"}`}
+              title={s.title}>
+              <img src={s.img} alt={s.title} className="w-full aspect-square object-contain p-1" loading="lazy" />
+              <span className="block text-[10px] font-display font-bold text-foreground px-1 pb-1 truncate">{s.title}</span>
             </button>
           ))}
         </div>
 
-        {strokes >= 6 && (
-          <div className="text-center mt-4">
+        <div className="flex flex-col items-center gap-2 mt-4">
+          <CoinBadge amount={3} size="md" label="ao finalizar" />
+          {strokes >= 6 && (
             <button onClick={() => celebrate(`"${scene.title}" pintado!`, 3, "🎨")}
-              className="btn-cartoon px-6 py-3 text-sm">✨ Finalizar e ganhar 3 🪙</button>
-          </div>
-        )}
+              className="btn-cartoon px-6 py-3 text-sm">✨ Finalizar e ganhar moedinhas</button>
+          )}
+        </div>
 
         <p className="text-center text-xs text-muted-foreground font-body mt-3">
-          💡 Use a miniatura colorida como referência e pinte sobre o contorno!
+          💡 4 desenhos novos a cada dia — pinte sobre o contorno usando as cores acima!
         </p>
       </div>
       <CelebrationAnimation {...celebration} onClose={closeCelebration} />

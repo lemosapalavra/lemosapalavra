@@ -3,8 +3,17 @@ import { Play, Info, ChevronLeft, ChevronRight, X, Settings } from "lucide-react
 import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 import PageHeader from "@/components/PageHeader";
 import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
+import CoinBadge from "@/components/CoinBadge";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { loadConfig, type PlayEntry, type SeriesGroupCfg } from "@/data/lemosPlayConfig";
+
+// Coin reward per category when finishing/watching content
+const COIN_REWARDS: Record<string, number> = {
+  Filme: 8,
+  Série: 5,
+  Música: 3,
+  Louvor: 3,
+};
 
 interface PlayItem {
   id: string;
@@ -58,7 +67,10 @@ function Row({ title, items, onPlay, progress }: { title: string; items: PlayIte
                 )}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-3 pb-4">
                   <p className="text-white font-bold text-sm text-left line-clamp-1">{item.title}</p>
-                  <p className="text-zinc-300 text-xs text-left">{item.category}</p>
+                  <div className="flex items-center justify-between mt-0.5">
+                    <p className="text-zinc-300 text-xs text-left">{item.category}</p>
+                    <CoinBadge amount={COIN_REWARDS[item.category] ?? 3} size="xs" />
+                  </div>
                 </div>
                 {pct > 0 && (
                   <div className="absolute bottom-0 inset-x-0 h-1 bg-white/20">
