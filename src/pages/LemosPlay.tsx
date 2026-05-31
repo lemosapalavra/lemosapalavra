@@ -3,8 +3,17 @@ import { Play, Info, ChevronLeft, ChevronRight, X, Settings } from "lucide-react
 import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 import PageHeader from "@/components/PageHeader";
 import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
+import CoinBadge from "@/components/CoinBadge";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { loadConfig, type PlayEntry, type SeriesGroupCfg } from "@/data/lemosPlayConfig";
+
+// Coin reward per category when finishing/watching content
+const COIN_REWARDS: Record<string, number> = {
+  Filme: 8,
+  Série: 5,
+  Música: 3,
+  Louvor: 3,
+};
 
 interface PlayItem {
   id: string;
