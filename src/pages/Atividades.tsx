@@ -323,20 +323,20 @@ export default function Atividades() {
     <div className="min-h-screen flex flex-col items-center justify-center px-4" style={bgStyle}>
       <PageHeader />
       <div
-        className="relative"
+        className="relative orbit-area"
         style={{
           width: "min(92vw, 720px)",
           height: "min(92vw, 720px)",
           ["--orbit-radius" as any]: "min(38vw, 300px)",
         }}
       >
-        <div className="absolute inset-0" style={{ animation: `orbit-spin ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}>
+        <div className="absolute inset-0 orbit-anim" style={{ animation: `orbit-spin ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}>
           {activities.map((a, i) => {
             const angle = (360 / activities.length) * i - 90;
             return (
               <div key={a.id} className="absolute top-1/2 left-1/2"
                 style={{ transform: `translate(-50%, -50%) rotate(${angle}deg) translate(var(--orbit-radius)) rotate(${-angle}deg)` }}>
-                <div style={{ animation: `orbit-spin-reverse ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}>
+                <div className="orbit-anim" style={{ animation: `orbit-spin-reverse ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}>
                   <button type="button" onClick={() => setActiveGame(a.id)}
                     className="flex flex-col items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
                     <img src={a.icon} alt={a.title} loading="lazy"
@@ -355,6 +355,9 @@ export default function Atividades() {
       <style>{`
         @keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes orbit-spin-reverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+        .orbit-area:hover .orbit-anim,
+        .orbit-area:focus-within .orbit-anim,
+        .orbit-area:active .orbit-anim { animation-play-state: paused !important; }
       `}</style>
       <CelebrationAnimation show={celebration.show} message={celebration.message} coins={celebration.coins} emoji={celebration.emoji} onClose={closeCelebration} />
     </div>
