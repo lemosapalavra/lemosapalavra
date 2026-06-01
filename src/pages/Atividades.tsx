@@ -719,7 +719,8 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-2xl mx-auto">
         <PageHeader title="Jogo dos 7 Erros" subtitle={scene.title} icon={icon7Erros} />
-        <button onClick={onBack} className="mb-4 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
+        <button onClick={onBack} className="mb-3 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
+        <DailyBanner emoji="🔍" text="Cenas selecionadas para hoje — amanhã chegam novas!" />
 
         <div className="flex justify-around mb-3 bg-popover rounded-xl py-2 shadow border border-border text-sm">
           <span className="font-display"><b className="text-primary">{found.length}</b>/{total} encontradas</span>
