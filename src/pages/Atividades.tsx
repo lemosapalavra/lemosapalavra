@@ -412,7 +412,8 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
       <div className="min-h-screen py-6 px-4" style={bgStyle}>
         <div className="max-w-lg mx-auto">
           <PageHeader title="Quiz Bíblico" subtitle="Escolha uma categoria" icon={iconQuiz} />
-          <button onClick={onBack} className="mb-4 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
+          <button onClick={onBack} className="mb-3 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
+          <DailyBanner emoji="🧠" text="Perguntas de hoje — amanhã vêm novas!" />
           <div className="grid gap-3">
             {quizCategories.map((c) => (
               <button key={c.id} onClick={() => startCategory(c.id)}
