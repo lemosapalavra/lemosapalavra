@@ -50,6 +50,13 @@ export default function PedidosOracao() {
     localStorage.setItem("lemos_pedidos_v2", JSON.stringify(updated));
     setTexto("");
     setTipoSelecionado("");
+    toast({
+      title: "🙏 Oração registrada!",
+      description: "Seu pedido foi guardado no seu mural pessoal abaixo. Deus ouve cada palavra do seu coração.",
+    });
+    setTimeout(() => {
+      document.getElementById("mural-oracoes")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 200);
   };
 
   const getTipoLabel = (id: string) => tiposOracao.find((t) => t.id === id)?.label || id;
