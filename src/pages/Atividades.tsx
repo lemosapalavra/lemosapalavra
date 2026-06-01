@@ -990,7 +990,9 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
       <div className="min-h-screen py-6 px-4" style={bgStyle}>
         <div className="max-w-lg mx-auto">
           <PageHeader title="Quebra-Cabeça" subtitle="Escolha um puzzle" icon={iconQuebraCabeca} />
-          <button onClick={onBack} className="mb-4 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
+          <button onClick={onBack} className="mb-3 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
+          <DailyBanner emoji="🧩" text="Puzzle do dia — amanhã chega uma nova imagem bíblica!" />
+
 
           {/* Daily puzzle */}
           <div className="bg-gradient-to-r from-amber-400 via-orange-400 to-pink-400 rounded-2xl p-1 shadow-xl mb-5">
