@@ -24,51 +24,79 @@ export default function Devocionais() {
   const [selected, setSelected] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen py-6 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
+    <div
+      className="min-h-screen py-6 px-4"
+      style={{ background: "linear-gradient(180deg, hsl(48,100%,92%), hsl(200,90%,90%) 60%, hsl(330,80%,94%))" }}
+    >
       <div className="max-w-4xl mx-auto">
         <PageHeader title="Devocionais" subtitle="Momentos com Deus todos os dias" icon={iconDevocionais} />
 
         {selected === null ? (
           <div>
+            {/* Friendly intro */}
+            <div className="text-center mb-5">
+              <div className="text-5xl mb-1 animate-bounce">✝️</div>
+              <h2 className="font-display font-extrabold text-2xl text-amber-900 drop-shadow">
+                Oi, amiguinho! 🌟
+              </h2>
+              <p className="font-body text-sm text-amber-800 max-w-md mx-auto">
+                Vamos passar um tempinho com Jesus hoje? Cada devocional tem uma <b>história, uma palavra de Deus e uma oração</b> só para você!
+              </p>
+            </div>
+
             {/* Today's devotional highlight */}
-            <div 
+            <div
               onClick={() => setSelected(todayIdx)}
-              className="bg-primary/10 rounded-2xl p-5 shadow-lg border-2 border-primary mb-6 cursor-pointer hover:scale-[1.02] transition-all"
+              className="relative overflow-hidden rounded-3xl border-[3px] border-amber-300 bg-gradient-to-br from-amber-100 via-yellow-50 to-orange-100 p-5 shadow-xl mb-6 cursor-pointer hover:scale-[1.02] transition-all"
             >
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">🌅</span>
-                <span className="font-display text-xs font-bold text-primary uppercase">Devocional de Hoje</span>
-              </div>
-              <h3 className="font-display text-lg font-bold text-foreground">📖 {devos[todayIdx].title}</h3>
-              <p className="text-primary font-body text-sm font-semibold mt-1">{devos[todayIdx].verse}</p>
-              <p className="font-body text-sm text-muted-foreground mt-2 line-clamp-2">{devos[todayIdx].text}</p>
-              <div className="flex items-center justify-between mt-2">
-                <p className="font-body text-xs text-primary font-bold">Toque para ler →</p>
-                <CoinBadge amount={DEVO_COINS + 1} size="xs" label="ao ler" />
+              <div className="absolute -top-8 -right-8 text-9xl opacity-20 select-none">🌅</div>
+              <div className="relative">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-2xl">🌅</span>
+                  <span className="font-display text-xs font-extrabold bg-amber-500 text-white px-3 py-1 rounded-full uppercase shadow">Devocional de hoje</span>
+                </div>
+                <h3 className="font-display text-2xl font-extrabold text-amber-950">{devos[todayIdx].title}</h3>
+                <p className="font-display text-amber-700 text-sm font-bold mt-1">📜 {devos[todayIdx].verse}</p>
+                <p className="font-body text-sm text-amber-900/90 mt-2 line-clamp-2 italic">"{devos[todayIdx].text}"</p>
+                <div className="flex items-center justify-between mt-3">
+                  <p className="font-display text-xs text-amber-800 font-bold">👆 Toque para ler agora →</p>
+                  <CoinBadge amount={DEVO_COINS + 1} size="xs" label="ao ler" />
+                </div>
               </div>
             </div>
 
-            <h3 className="font-display text-md font-bold text-foreground mb-3">📚 Todos os Devocionais</h3>
+            <h3 className="font-display text-md font-extrabold text-amber-900 mb-3 flex items-center gap-2">
+              📚 Todos os devocionais
+            </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {devos.map((d, i) => (
                 <div
                   key={i}
                   onClick={() => setSelected(i)}
-                  className={`bg-popover rounded-2xl p-5 shadow-md hover:shadow-lg hover:scale-105 transition-all cursor-pointer border ${i === todayIdx ? "border-primary" : "border-border"}`}
+                  className={`rounded-2xl p-5 shadow-md hover:shadow-xl hover:scale-[1.03] transition-all cursor-pointer border-2 bg-gradient-to-br ${
+                    i === todayIdx
+                      ? "from-amber-100 to-orange-100 border-amber-400"
+                      : "from-white to-sky-50 border-sky-200"
+                  }`}
                 >
-                  <h3 className="font-display text-lg font-bold text-foreground">📖 {d.title}</h3>
-                  <p className="text-primary font-body text-sm font-semibold mt-1">{d.verse}</p>
-                  <p className="font-body text-sm text-muted-foreground mt-2 line-clamp-2">{d.text}</p>
-                  <div className="flex items-center justify-between mt-2">
-                    <p className="font-body text-xs text-primary">Clique para ler →</p>
-                    <CoinBadge amount={DEVO_COINS} size="xs" />
+                  <div className="flex items-start gap-2">
+                    <span className="text-3xl">{i % 4 === 0 ? "🕊️" : i % 4 === 1 ? "✨" : i % 4 === 2 ? "🌈" : "💛"}</span>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-display text-lg font-extrabold text-foreground">{d.title}</h3>
+                      <p className="font-display text-primary text-xs font-bold mt-0.5">📜 {d.verse}</p>
+                      <p className="font-body text-xs text-muted-foreground mt-1.5 line-clamp-2 italic">"{d.text}"</p>
+                      <div className="flex items-center justify-between mt-2">
+                        <p className="font-display text-xs text-primary font-bold">Toque para ler →</p>
+                        <CoinBadge amount={DEVO_COINS} size="xs" />
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
         ) : (
-          <div className="bg-popover rounded-2xl p-6 shadow-lg border border-border">
+          <div className="rounded-3xl p-6 shadow-xl border-[3px] border-amber-300 bg-gradient-to-br from-amber-50 via-white to-sky-50">
             <button
               onClick={() => setSelected(null)}
               className="text-primary font-display text-sm font-bold mb-4 hover:underline"
@@ -76,23 +104,28 @@ export default function Devocionais() {
               ← Voltar aos devocionais
             </button>
 
-            <h2 className="font-display text-2xl font-bold text-foreground mb-1">📖 {devos[selected].title}</h2>
-            <p className="text-primary font-display text-lg font-semibold mb-4">{devos[selected].verse}</p>
-
-            <div className="bg-accent/20 rounded-xl p-4 mb-4">
-              <h4 className="font-display text-sm font-bold text-foreground mb-2">📜 Versículo</h4>
-              <p className="font-body text-foreground italic leading-relaxed">{devos[selected].text}</p>
+            <div className="text-center mb-4">
+              <div className="text-5xl mb-1">{selected % 4 === 0 ? "🕊️" : selected % 4 === 1 ? "✨" : selected % 4 === 2 ? "🌈" : "💛"}</div>
+              <h2 className="font-display text-2xl font-extrabold text-amber-950">{devos[selected].title}</h2>
+              <p className="text-amber-700 font-display text-base font-bold mt-1">📜 {devos[selected].verse}</p>
             </div>
 
-            <div className="bg-primary/10 rounded-xl p-4 mb-4">
-              <h4 className="font-display text-sm font-bold text-foreground mb-2">💭 Reflexão</h4>
-              <p className="font-body text-foreground leading-relaxed">{devos[selected].reflection}</p>
+            <div className="bg-gradient-to-r from-amber-100 to-yellow-100 rounded-2xl p-4 mb-3 border-2 border-amber-200">
+              <h4 className="font-display text-sm font-extrabold text-amber-900 mb-2 flex items-center gap-1">📜 A Palavra de Deus</h4>
+              <p className="font-body text-amber-950 italic leading-relaxed">"{devos[selected].text}"</p>
             </div>
 
-            <div className="bg-secondary/10 rounded-xl p-4">
-              <h4 className="font-display text-sm font-bold text-foreground mb-2">🙏 Oração</h4>
-              <p className="font-body text-foreground italic leading-relaxed">{devos[selected].prayer}</p>
+            <div className="bg-gradient-to-r from-sky-100 to-blue-100 rounded-2xl p-4 mb-3 border-2 border-sky-200">
+              <h4 className="font-display text-sm font-extrabold text-sky-900 mb-2 flex items-center gap-1">💭 Para pensar</h4>
+              <p className="font-body text-sky-950 leading-relaxed">{devos[selected].reflection}</p>
             </div>
+
+            <div className="bg-gradient-to-r from-pink-100 to-rose-100 rounded-2xl p-4 border-2 border-pink-200">
+              <h4 className="font-display text-sm font-extrabold text-pink-900 mb-2 flex items-center gap-1">🙏 Vamos orar juntos</h4>
+              <p className="font-body text-pink-950 italic leading-relaxed">{devos[selected].prayer}</p>
+            </div>
+
+            <p className="text-center text-xs font-body text-amber-700 italic mt-4">✝️ Que Deus abençoe seu dia! ✝️</p>
           </div>
         )}
       </div>

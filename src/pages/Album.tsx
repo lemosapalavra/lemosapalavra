@@ -155,7 +155,12 @@ export default function Album() {
         className="fixed inset-0 z-40 cursor-pointer bg-black"
       >
         <PageHeader />
-        <img src={albumCapa} alt="Heróis da Fé" className="absolute inset-0 w-full h-full object-cover" />
+        <img
+          src={albumCapa}
+          alt="Heróis da Fé"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ objectPosition: "center 18%" }}
+        />
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white/90 px-5 py-2.5 rounded-full font-display font-bold text-base shadow-2xl animate-pulse">
           👆 Toque para abrir
         </div>
@@ -492,7 +497,7 @@ function CategoryPage({
                   <img
                     src={s.image}
                     alt={has ? s.name : "Figurinha não coletada"}
-                    className="absolute inset-0 w-full h-full object-contain p-1"
+                    className="absolute inset-0 w-full h-full object-cover"
                     style={{ opacity: has ? 1 : 0.01 }}
                     loading="lazy"
                     decoding="async"

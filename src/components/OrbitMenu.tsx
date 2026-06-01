@@ -37,7 +37,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
       )}
 
       <div
-        className="relative"
+        className="relative orbit-area"
         style={{
           width: "min(92vw, 720px)",
           height: "min(92vw, 720px)",
@@ -45,7 +45,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
         }}
       >
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 orbit-anim"
           style={{ animation: `orbit-spin ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}
         >
           {items.map((item, i) => {
@@ -56,7 +56,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                 className="absolute top-1/2 left-1/2"
                 style={{ transform: `translate(-50%, -50%) rotate(${angle}deg) translate(var(--orbit-radius)) rotate(${-angle}deg)` }}
               >
-                <div style={{ animation: `orbit-spin-reverse ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}>
+                <div className="orbit-anim" style={{ animation: `orbit-spin-reverse ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}>
                   <button
                     type="button"
                     onClick={() => isAuthenticated && onItemClick?.(item.label)}
@@ -98,6 +98,9 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
       <style>{`
         @keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes orbit-spin-reverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+        .orbit-area:hover .orbit-anim,
+        .orbit-area:focus-within .orbit-anim,
+        .orbit-area:active .orbit-anim { animation-play-state: paused !important; }
       `}</style>
     </div>
   );

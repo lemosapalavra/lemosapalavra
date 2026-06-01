@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
+import { toast } from "@/hooks/use-toast";
 import iconPedidos from "@/assets/icon-pedidos-oracao.png";
 
 const tiposOracao = [
@@ -49,6 +50,13 @@ export default function PedidosOracao() {
     localStorage.setItem("lemos_pedidos_v2", JSON.stringify(updated));
     setTexto("");
     setTipoSelecionado("");
+    toast({
+      title: "🙏 Oração registrada!",
+      description: "Seu pedido foi guardado no seu mural pessoal abaixo. Deus ouve cada palavra do seu coração.",
+    });
+    setTimeout(() => {
+      document.getElementById("mural-oracoes")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 200);
   };
 
   const getTipoLabel = (id: string) => tiposOracao.find((t) => t.id === id)?.label || id;
@@ -58,6 +66,15 @@ export default function PedidosOracao() {
     <div className="min-h-screen py-6 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
       <div className="max-w-4xl mx-auto">
         <PageHeader title="Pedidos de Oração" subtitle="Ore e compartilhe seus pedidos" icon={iconPedidos} />
+
+        <div className="rounded-2xl bg-gradient-to-r from-sky-100 via-amber-50 to-pink-100 border-2 border-sky-200 p-4 mb-5 shadow text-center">
+          <p className="font-display font-extrabold text-sky-900 text-base">🌟 Para onde vão suas orações?</p>
+          <p className="font-body text-sm text-sky-900/90 mt-1 leading-relaxed">
+            Suas orações são guardadas com carinho no seu <b>mural pessoal</b> (logo abaixo do formulário).
+            Elas ficam salvas no seu aparelho para que você possa <b>orar novamente</b> e acompanhar
+            o que pediu a Deus. 🙏 Acima de tudo, <b>o Pai do Céu já está ouvindo</b> cada palavra do seu coração.
+          </p>
+        </div>
 
         <form onSubmit={handleAdd} className="bg-popover rounded-2xl p-6 shadow-lg border border-border mb-8">
           <p className="font-display text-lg font-bold text-foreground mb-1">👤 {userName || "Usuário"}</p>
@@ -96,7 +113,11 @@ export default function PedidosOracao() {
           <button type="submit" className="btn-cartoon px-6 py-3 w-full">🙏 Enviar Oração</button>
         </form>
 
-        <div className="space-y-3">
+        <div id="mural-oracoes" className="space-y-3">
+          <h2 className="font-display font-extrabold text-lg text-foreground flex items-center gap-2 mb-1">
+            📜 Seu mural de orações
+            <span className="text-xs font-body font-normal text-muted-foreground">({pedidos.length})</span>
+          </h2>
           {pedidos.length === 0 && (
             <p className="text-center text-muted-foreground font-body py-8">Nenhum pedido ainda. Escreva o seu primeiro! 🙏</p>
           )}
