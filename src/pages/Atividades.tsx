@@ -739,9 +739,8 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
   );
 }
 
-/* ---------- COLORING — desenhos só de contorno, 4 por dia, alternando ---------- */
+/* ---------- COLORING — clique para pintar (flood-fill), 4 por dia ---------- */
 function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
-  // 4 desenhos do dia (rotacionam dia a dia, sem repetir no mesmo conjunto)
   const dailyPics = useMemo(() => {
     const d = dayOfYear();
     const total = coloringCatalog.length;
@@ -751,69 +750,98 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
 
   const [idx, setIdx] = useState(0);
   const [color, setColor] = useState(colorPalette[0]);
-  const [brush, setBrush] = useState(22);
-  const [strokes, setStrokes] = useState<number>(0);
+  const [fills, setFills] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const drawing = useRef(false);
-  const lastPt = useRef<{ x: number; y: number } | null>(null);
+  const maskRef = useRef<Uint8Array | null>(null);
+  const sizeRef = useRef<{ w: number; h: number }>({ w: 600, h: 800 });
   const scene = dailyPics[idx];
 
-  // Reset canvas when scene changes
+  // Load outline image into hidden canvas to build a "wall" mask (dark pixels).
   useEffect(() => {
     const c = canvasRef.current;
     if (!c) return;
     const ctx = c.getContext("2d");
-    if (ctx) ctx.clearRect(0, 0, c.width, c.height);
-    setStrokes(0);
-  }, [idx]);
-
-  const getPt = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    const c = canvasRef.current!;
-    const r = c.getBoundingClientRect();
-    return {
-      x: ((e.clientX - r.left) / r.width) * c.width,
-      y: ((e.clientY - r.top) / r.height) * c.height,
-    };
-  };
-  const paintAt = (x: number, y: number) => {
-    const ctx = canvasRef.current?.getContext("2d");
     if (!ctx) return;
-    ctx.fillStyle = color;
-    ctx.strokeStyle = color;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    ctx.lineWidth = brush;
-    if (lastPt.current) {
-      ctx.beginPath();
-      ctx.moveTo(lastPt.current.x, lastPt.current.y);
-      ctx.lineTo(x, y);
-      ctx.stroke();
-    } else {
-      ctx.beginPath();
-      ctx.arc(x, y, brush / 2, 0, Math.PI * 2);
-      ctx.fill();
+    ctx.clearRect(0, 0, c.width, c.height);
+    setFills(0);
+
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      // Fit image into canvas keeping aspect ratio; record actual draw bounds
+      const cw = c.width, ch = c.height;
+      const ir = img.width / img.height;
+      const cr = cw / ch;
+      let dw = cw, dh = ch, dx = 0, dy = 0;
+      if (ir > cr) { dh = cw / ir; dy = (ch - dh) / 2; } else { dw = ch * ir; dx = (cw - dw) / 2; }
+      // Draw outline into offscreen to compute mask
+      const off = document.createElement("canvas");
+      off.width = cw; off.height = ch;
+      const octx = off.getContext("2d")!;
+      octx.fillStyle = "#ffffff";
+      octx.fillRect(0, 0, cw, ch);
+      octx.drawImage(img, dx, dy, dw, dh);
+      const data = octx.getImageData(0, 0, cw, ch).data;
+      const mask = new Uint8Array(cw * ch);
+      for (let i = 0, j = 0; i < data.length; i += 4, j++) {
+        // 1 = wall (dark outline), 0 = paintable
+        const lum = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        mask[j] = lum < 110 ? 1 : 0;
+      }
+      maskRef.current = mask;
+      sizeRef.current = { w: cw, h: ch };
+    };
+    img.src = scene.img;
+  }, [idx, scene.img]);
+
+  const hexToRgb = (hex: string): [number, number, number] => {
+    const h = hex.replace("#", "");
+    const n = parseInt(h.length === 3 ? h.split("").map((c) => c + c).join("") : h, 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  };
+
+  const floodFill = (sx: number, sy: number) => {
+    const c = canvasRef.current;
+    const mask = maskRef.current;
+    if (!c || !mask) return;
+    const ctx = c.getContext("2d")!;
+    const { w, h } = sizeRef.current;
+    if (sx < 0 || sy < 0 || sx >= w || sy >= h) return;
+    if (mask[sy * w + sx]) return; // clicked on outline
+    const img = ctx.getImageData(0, 0, w, h);
+    const data = img.data;
+    const [r, g, b] = hexToRgb(color);
+    const visited = new Uint8Array(w * h);
+    const stack: number[] = [sx, sy];
+    while (stack.length) {
+      const y = stack.pop()!;
+      const x = stack.pop()!;
+      if (x < 0 || y < 0 || x >= w || y >= h) continue;
+      const idxM = y * w + x;
+      if (visited[idxM] || mask[idxM]) continue;
+      visited[idxM] = 1;
+      const p = idxM * 4;
+      data[p] = r; data[p + 1] = g; data[p + 2] = b; data[p + 3] = 255;
+      stack.push(x + 1, y, x - 1, y, x, y + 1, x, y - 1);
     }
-    lastPt.current = { x, y };
+    ctx.putImageData(img, 0, 0);
+    setFills((n) => n + 1);
   };
-  const onDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    drawing.current = true;
-    lastPt.current = null;
-    const p = getPt(e);
-    paintAt(p.x, p.y);
-    setStrokes((s) => s + 1);
+
+  const onCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const c = canvasRef.current;
+    if (!c) return;
+    const r = c.getBoundingClientRect();
+    const x = Math.floor(((e.clientX - r.left) / r.width) * c.width);
+    const y = Math.floor(((e.clientY - r.top) / r.height) * c.height);
+    floodFill(x, y);
   };
-  const onMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (!drawing.current) return;
-    const p = getPt(e);
-    paintAt(p.x, p.y);
-  };
-  const onUp = () => { drawing.current = false; lastPt.current = null; };
 
   const clear = () => {
     const c = canvasRef.current;
     if (!c) return;
     c.getContext("2d")?.clearRect(0, 0, c.width, c.height);
-    setStrokes(0);
+    setFills(0);
   };
 
   return (
@@ -822,47 +850,40 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
         <PageHeader title="Colorir" subtitle={scene.title} icon={iconColorir} />
         <button onClick={onBack} className="mb-4 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
 
-        <div className="text-center mb-3">
+        <div className="text-center mb-3 space-y-1">
           <span className="inline-flex items-center gap-2 text-xs font-display font-bold bg-amber-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">
-            🎨 Desenhos do dia · {new Date().toLocaleDateString("pt-BR", { day: "numeric", month: "long" })}
+            🎨 Desenhos de hoje · {new Date().toLocaleDateString("pt-BR", { day: "numeric", month: "long" })}
           </span>
+          <p className="text-[11px] text-muted-foreground font-body italic">
+            ⏳ Amanhã haverá <b>novos desenhos diferentes</b> para colorir!
+          </p>
         </div>
 
         {/* Palette */}
         <div className="flex gap-1.5 mb-3 flex-wrap justify-center bg-popover/60 rounded-xl p-2">
           {colorPalette.map((c, i) => (
             <button key={i} onClick={() => setColor(c)}
-              className={`w-9 h-9 rounded-full border-2 transition-all ${color === c ? "border-foreground scale-125 shadow-lg" : "border-border"}`}
+              className={`w-9 h-9 rounded-full border-2 transition-all ${color === c ? "border-foreground scale-125 shadow-lg ring-2 ring-amber-300" : "border-border"}`}
               style={{ background: c }} aria-label={`Cor ${c}`} />
           ))}
         </div>
 
-        {/* Brush + actions */}
         <div className="flex gap-3 items-center justify-center mb-3 bg-popover/60 rounded-xl p-2">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-display font-bold">Pincel</span>
-            <input type="range" min={6} max={60} value={brush} onChange={(e) => setBrush(+e.target.value)} className="accent-primary" />
-            <span className="text-xs font-mono w-7 text-right">{brush}</span>
-          </div>
+          <span className="text-xs font-display font-bold">🪣 Toque na área para pintar</span>
           <button onClick={clear} className="px-3 py-1.5 rounded-full font-display text-xs font-bold bg-popover border border-border text-foreground hover:border-primary">🗑️ Limpar</button>
         </div>
 
         {/* Canvas with outline drawing on top */}
         <div className="relative bg-white rounded-2xl p-3 shadow-lg border border-border">
-          <div className="relative w-full aspect-[3/4] mx-auto overflow-hidden rounded-xl bg-white touch-none" style={{ maxWidth: 480 }}>
-            {/* Paint layer (below) */}
+          <div className="relative w-full aspect-[3/4] mx-auto overflow-hidden rounded-xl bg-white" style={{ maxWidth: 480 }}>
             <canvas
               ref={canvasRef}
               width={600}
               height={800}
-              onPointerDown={onDown}
-              onPointerMove={onMove}
-              onPointerUp={onUp}
-              onPointerLeave={onUp}
-              className="absolute inset-0 w-full h-full cursor-crosshair"
-              style={{ touchAction: "none" }}
+              onClick={onCanvasClick}
+              className="absolute inset-0 w-full h-full cursor-pointer"
             />
-            {/* Outline image on top with multiply blend, so paint shows underneath the black lines */}
+            {/* Outline image on top with multiply blend */}
             <img
               src={scene.img}
               alt={scene.title}
@@ -887,14 +908,14 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
 
         <div className="flex flex-col items-center gap-2 mt-4">
           <CoinBadge amount={3} size="md" label="ao finalizar" />
-          {strokes >= 6 && (
+          {fills >= 3 && (
             <button onClick={() => celebrate(`"${scene.title}" pintado!`, 3, "🎨")}
               className="btn-cartoon px-6 py-3 text-sm">✨ Finalizar e ganhar moedinhas</button>
           )}
         </div>
 
         <p className="text-center text-xs text-muted-foreground font-body mt-3">
-          💡 4 desenhos novos a cada dia — pinte sobre o contorno usando as cores acima!
+          💡 Escolha uma cor e <b>clique em cada parte do desenho</b> para pintar automaticamente!
         </p>
       </div>
       <CelebrationAnimation {...celebration} onClose={closeCelebration} />
