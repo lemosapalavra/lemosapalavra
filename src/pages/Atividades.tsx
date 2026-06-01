@@ -366,6 +366,19 @@ export default function Atividades() {
 
 /* ============= GAME WRAPPERS ============= */
 
+function DailyBanner({ emoji, text }: { emoji: string; text: string }) {
+  const today = new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" });
+  return (
+    <div className="mb-4 rounded-2xl bg-gradient-to-r from-amber-100 via-yellow-50 to-amber-100 border-2 border-amber-300 px-3 py-2 text-center shadow-sm">
+      <div className="flex items-center justify-center gap-2 text-xs sm:text-sm font-display font-bold text-amber-900">
+        <span className="text-lg">{emoji}</span>
+        <span>Atividades de hoje · {today}</span>
+      </div>
+      <p className="text-[11px] font-body text-amber-800/80 italic mt-0.5">⏳ {text}</p>
+    </div>
+  );
+}
+
 type GameProps = {
   onBack: () => void;
   celebrate: (m: string, c: number, e?: string) => void;
