@@ -113,7 +113,11 @@ export default function PedidosOracao() {
           <button type="submit" className="btn-cartoon px-6 py-3 w-full">🙏 Enviar Oração</button>
         </form>
 
-        <div className="space-y-3">
+        <div id="mural-oracoes" className="space-y-3">
+          <h2 className="font-display font-extrabold text-lg text-foreground flex items-center gap-2 mb-1">
+            📜 Seu mural de orações
+            <span className="text-xs font-body font-normal text-muted-foreground">({pedidos.length})</span>
+          </h2>
           {pedidos.length === 0 && (
             <p className="text-center text-muted-foreground font-body py-8">Nenhum pedido ainda. Escreva o seu primeiro! 🙏</p>
           )}
