@@ -474,6 +474,15 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
               <div className="h-full bg-gradient-to-r from-primary to-pink-400 transition-all" style={{ width: `${progress}%` }} />
             </div>
             <div className="bg-gradient-to-br from-white via-amber-50 to-pink-50 rounded-3xl p-6 shadow-2xl border-[3px] border-amber-200 relative overflow-hidden">
+              {/* Background biblical illustration at 25% opacity */}
+              <img
+                src={quizImageFor(cur.q, cur.cat)}
+                alt=""
+                aria-hidden
+                className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                style={{ opacity: 0.25 }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-white/40 to-white/70 pointer-events-none" />
               <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-gradient-to-br from-amber-300/40 to-pink-300/40 blur-2xl pointer-events-none" />
               <div className="absolute -bottom-12 -left-12 w-40 h-40 rounded-full bg-gradient-to-br from-sky-300/40 to-purple-300/40 blur-2xl pointer-events-none" />
               <div className="relative">
@@ -635,13 +644,13 @@ function MemoryGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
             const isMatched = matched.includes(i);
             return (
               <button key={i} onClick={() => flip(i)}
-                className={`aspect-square rounded-2xl flex items-center justify-center border-[3px] transition-all duration-300 overflow-hidden ${
-                  isMatched ? "bg-green-100 border-green-400 scale-95 ring-2 ring-green-300" :
-                  visible ? "bg-white border-primary scale-105 shadow-lg" :
-                  "bg-gradient-to-br from-amber-400 via-pink-400 to-fuchsia-500 border-amber-200 hover:scale-105 active:scale-95 shadow-md"
+                className={`aspect-square rounded-2xl flex items-center justify-center transition-all duration-300 overflow-hidden ${
+                  isMatched ? "ring-2 ring-green-400 scale-95" :
+                  visible ? "scale-105 shadow-lg" :
+                  "bg-gradient-to-br from-amber-400 via-pink-400 to-fuchsia-500 border-[3px] border-amber-200 hover:scale-105 active:scale-95 shadow-md"
                 }`}>
                 {visible
-                  ? <img src={c} alt="" loading="lazy" className="w-full h-full object-contain p-1.5" />
+                  ? <img src={c} alt="" loading="lazy" className="w-full h-full object-cover" />
                   : (
                     <div className="relative w-full h-full flex items-center justify-center">
                       <div className="absolute inset-2 rounded-xl bg-white/15 border-2 border-white/40" />
