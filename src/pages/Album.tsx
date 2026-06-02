@@ -487,10 +487,10 @@ function CategoryPage({
                 data-sticker
                 onClick={(e) => { e.stopPropagation(); onStickerClick(s); }}
                 disabled={!has}
-                className={`relative w-full rounded-2xl overflow-hidden transition-all aspect-[2/3] ${
+                className={`relative w-full rounded-xl overflow-hidden transition-all aspect-[2/3] ${
                   has
-                    ? "border-[3px] border-amber-400 ring-1 ring-amber-200/60 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.6)] cursor-pointer hover:scale-[1.06] hover:z-30 bg-black"
-                    : "border-2 border-dashed border-white/40 bg-black/20"
+                    ? "shadow-[0_8px_20px_-6px_rgba(0,0,0,0.6)] cursor-pointer hover:scale-[1.06] hover:z-30 bg-black"
+                    : "bg-black/30"
                 }`}
               >
                 {s.image ? (

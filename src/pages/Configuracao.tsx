@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import { useIsAdmin, setAdminMode } from "@/hooks/useIsAdmin";
+import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
+import IndexAdminPanel from "@/components/IndexAdminPanel";
 
 
 export default function Configuracao() {
@@ -194,6 +196,8 @@ export default function Configuracao() {
 
 function AdminModeToggle() {
   const admin = useIsAdmin();
+  const [playOpen, setPlayOpen] = useState(false);
+  const [indexOpen, setIndexOpen] = useState(false);
   return (
     <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
       <h3 className="font-display text-lg font-bold text-foreground mb-2">🔐 Modo Administrador</h3>
@@ -208,6 +212,27 @@ function AdminModeToggle() {
       >
         {admin ? "✓ Modo Administrador ativo (clique para desativar)" : "Ativar Modo Administrador"}
       </button>
+
+      {admin && (
+        <div className="mt-4 pt-4 border-t border-border space-y-2">
+          <p className="text-xs font-display font-bold text-foreground">⚡ Atalhos do Administrador</p>
+          <button
+            onClick={() => setPlayOpen(true)}
+            className="w-full text-left px-4 py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-700 text-white font-display font-bold text-sm shadow hover:scale-[1.01] transition"
+          >
+            🎬 Editar Lemos Play (URLs, capas, reordenar)
+          </button>
+          <button
+            onClick={() => setIndexOpen(true)}
+            className="w-full text-left px-4 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-white font-display font-bold text-sm shadow hover:scale-[1.01] transition"
+          >
+            🏠 Editar Página Inicial (menu orbital)
+          </button>
+        </div>
+      )}
+
+      <LemosPlayAdminPanel open={playOpen} onClose={() => setPlayOpen(false)} />
+      <IndexAdminPanel open={indexOpen} onClose={() => setIndexOpen(false)} />
     </div>
   );
 }

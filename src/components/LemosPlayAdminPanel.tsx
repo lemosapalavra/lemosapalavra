@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { X, Plus, Trash2, RotateCcw, Save } from "lucide-react";
+import { X, Plus, Trash2, RotateCcw, Save, ArrowUp, ArrowDown, Pencil, ExternalLink } from "lucide-react";
 import { LemosPlayConfig, PlayEntry, SeriesGroupCfg, defaultConfig, loadConfig, resetConfig, saveConfig } from "@/data/lemosPlayConfig";
 
 type Tab = "filmes" | "series" | "musicas" | "louvores";
@@ -116,22 +116,53 @@ function PlayList({ items, onChange }: { items: PlayEntry[]; onChange: (v: PlayE
   const add = () => onChange([...items, { id: newId(), title: "Novo vídeo", src: "" }]);
   const remove = (id: string) => onChange(items.filter((x) => x.id !== id));
   const patch = (id: string, p: Partial<PlayEntry>) => onChange(items.map((x) => (x.id === id ? { ...x, ...p } : x)));
+  const move = (idx: number, dir: -1 | 1) => {
+    const j = idx + dir;
+    if (j < 0 || j >= items.length) return;
+    const next = [...items];
+    [next[idx], next[j]] = [next[j], next[idx]];
+    onChange(next);
+  };
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   return (
     <div className="space-y-2">
-      {items.map((it, idx) => (
-        <div key={it.id} className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs text-zinc-500 font-mono">#{String(idx + 1).padStart(2, "0")}</span>
-            <input value={it.title} onChange={(e) => patch(it.id, { title: e.target.value })} placeholder="Título" className={inputCls + " flex-1"} />
-            <button onClick={() => remove(it.id)} className="w-9 h-9 rounded bg-red-900/40 hover:bg-red-900/70 flex items-center justify-center" title="Remover">
-              <Trash2 className="w-4 h-4 text-red-300" />
-            </button>
+      {items.map((it, idx) => {
+        const editing = editingId === it.id;
+        return (
+          <div key={it.id} className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs text-zinc-500 font-mono w-8">#{String(idx + 1).padStart(2, "0")}</span>
+              <input value={it.title} onChange={(e) => patch(it.id, { title: e.target.value })} placeholder="Título" className={inputCls + " flex-1"} />
+              <button onClick={() => move(idx, -1)} disabled={idx === 0} className="w-9 h-9 rounded bg-zinc-800 hover:bg-zinc-700 disabled:opacity-30 flex items-center justify-center" title="Mover para cima">
+                <ArrowUp className="w-4 h-4" />
+              </button>
+              <button onClick={() => move(idx, 1)} disabled={idx === items.length - 1} className="w-9 h-9 rounded bg-zinc-800 hover:bg-zinc-700 disabled:opacity-30 flex items-center justify-center" title="Mover para baixo">
+                <ArrowDown className="w-4 h-4" />
+              </button>
+              <button onClick={() => setEditingId(editing ? null : it.id)} className={`w-9 h-9 rounded flex items-center justify-center ${editing ? "bg-amber-600 hover:bg-amber-700" : "bg-zinc-800 hover:bg-zinc-700"}`} title="Editar URL e capa">
+                <Pencil className="w-4 h-4" />
+              </button>
+              {it.src && (
+                <a href={it.src} target="_blank" rel="noreferrer" className="w-9 h-9 rounded bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center" title="Abrir URL">
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              )}
+              <button onClick={() => remove(it.id)} className="w-9 h-9 rounded bg-red-900/40 hover:bg-red-900/70 flex items-center justify-center" title="Remover">
+                <Trash2 className="w-4 h-4 text-red-300" />
+              </button>
+            </div>
+            {editing && (
+              <div className="space-y-2 pt-2 border-t border-zinc-800">
+                <label className="block text-[11px] text-zinc-400">URL do vídeo</label>
+                <input value={it.src} onChange={(e) => patch(it.id, { src: e.target.value })} placeholder="https://iframe.mediadelivery.net/embed/... ou YouTube embed" className={inputCls} />
+                <label className="block text-[11px] text-zinc-400">URL da capa / ícone (opcional)</label>
+                <input value={it.poster ?? ""} onChange={(e) => patch(it.id, { poster: e.target.value })} placeholder="https://..." className={inputCls} />
+              </div>
+            )}
           </div>
-          <input value={it.src} onChange={(e) => patch(it.id, { src: e.target.value })} placeholder="URL do vídeo (iframe Bunny / YouTube embed)" className={inputCls + " mb-2"} />
-          <input value={it.poster ?? ""} onChange={(e) => patch(it.id, { poster: e.target.value })} placeholder="URL da capa (opcional)" className={inputCls} />
-        </div>
-      ))}
+        );
+      })}
       <button onClick={add} className="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-zinc-700 hover:border-red-600 hover:text-red-400 rounded-lg text-sm text-zinc-400 transition">
         <Plus className="w-4 h-4" /> Adicionar vídeo
       </button>
@@ -148,13 +179,26 @@ function SeriesEditor({ groups, onChange }: { groups: SeriesGroupCfg[]; onChange
   };
   const patchGroup = (id: string, p: Partial<SeriesGroupCfg>) =>
     onChange(groups.map((g) => (g.id === id ? { ...g, ...p } : g)));
+  const moveGroup = (idx: number, dir: -1 | 1) => {
+    const j = idx + dir;
+    if (j < 0 || j >= groups.length) return;
+    const next = [...groups];
+    [next[idx], next[j]] = [next[j], next[idx]];
+    onChange(next);
+  };
 
   return (
     <div className="space-y-3">
-      {groups.map((g) => (
+      {groups.map((g, gi) => (
         <div key={g.id} className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
           <div className="flex items-center gap-2 mb-2">
             <input value={g.title} onChange={(e) => patchGroup(g.id, { title: e.target.value })} placeholder="Nome da série" className={inputCls + " flex-1 font-bold"} />
+            <button onClick={() => moveGroup(gi, -1)} disabled={gi === 0} className="w-9 h-9 rounded bg-zinc-800 hover:bg-zinc-700 disabled:opacity-30 flex items-center justify-center" title="Mover série para cima">
+              <ArrowUp className="w-4 h-4" />
+            </button>
+            <button onClick={() => moveGroup(gi, 1)} disabled={gi === groups.length - 1} className="w-9 h-9 rounded bg-zinc-800 hover:bg-zinc-700 disabled:opacity-30 flex items-center justify-center" title="Mover série para baixo">
+              <ArrowDown className="w-4 h-4" />
+            </button>
             <button onClick={() => removeGroup(g.id)} className="w-9 h-9 rounded bg-red-900/40 hover:bg-red-900/70 flex items-center justify-center" title="Remover série">
               <Trash2 className="w-4 h-4 text-red-300" />
             </button>
