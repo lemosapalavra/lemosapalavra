@@ -7,8 +7,10 @@ export type StickerRarity = "normal" | "rara" | "reliquia";
 
 export interface StickerResult {
   index: number;
+  number?: number; // numbered position in album (1-based)
   name: string;
   emoji: string;
+  image?: string;
   rarity: StickerRarity;
   isRepeat: boolean;
 }
