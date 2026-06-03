@@ -139,10 +139,21 @@ export default function Album() {
     if (!spendCoins(PACK_COST)) return;
     const pack = buildPack();
     const next = { ...readOwned() };
+    // build a global number index (1-based) across all stickers in order
+    const numberOf: Record<number, number> = {};
+    allStickers.forEach((s, idx) => { numberOf[s.id] = idx + 1; });
     const results: StickerResult[] = pack.map(({ sticker, rarity }) => {
       const isRepeat = (next[sticker.id] || 0) > 0;
       next[sticker.id] = (next[sticker.id] || 0) + 1;
-      return { index: sticker.id, name: sticker.name, emoji: sticker.emoji, rarity, isRepeat };
+      return {
+        index: sticker.id,
+        number: numberOf[sticker.id],
+        name: sticker.name,
+        emoji: sticker.emoji,
+        image: sticker.image,
+        rarity,
+        isRepeat,
+      };
     });
     writeOwned(next); setOwned(next); setPackResult(results);
   }, [spendCoins]);
