@@ -214,7 +214,7 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
                 return (
                   <div
                     key={i}
-                    className="relative w-24 sm:w-28 h-32 sm:h-36"
+                    className="relative w-28 sm:w-32 h-40 sm:h-44"
                     style={{ perspective: "800px" }}
                   >
                     <div
@@ -232,9 +232,9 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
                       >
                         <span className="drop-shadow-lg">👑</span>
                       </div>
-                      {/* Front of card */}
+                      {/* Front of card — real image + number + title */}
                       <div
-                        className={`absolute inset-0 rounded-2xl flex flex-col items-center justify-center gap-1 ${config.border} ${config.bg} ${config.glow} ${config.ring} shadow-2xl`}
+                        className={`absolute inset-0 rounded-2xl overflow-hidden ${config.border} ${config.glow} ${config.ring} shadow-2xl bg-black`}
                         style={{
                           backfaceVisibility: "hidden",
                           transform: "rotateY(180deg)",
@@ -242,15 +242,31 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
                           borderStyle: "solid",
                         }}
                       >
-                        <span className={`text-[10px] font-bold ${config.text} uppercase tracking-wide`}>{config.label}</span>
-                        <span className="text-3xl drop-shadow-md">{s.emoji}</span>
-                        <span className="font-display text-[9px] font-bold text-white text-center leading-tight px-1 drop-shadow">{s.name}</span>
-                        {s.isRepeat && (
-                          <span className="text-[8px] font-bold text-red-100 bg-red-500/80 px-1.5 rounded-full">REPETIDA</span>
+                        {s.image ? (
+                          <img src={s.image} alt={s.name} className="absolute inset-0 w-full h-full object-cover" draggable={false} />
+                        ) : (
+                          <div className={`absolute inset-0 flex items-center justify-center text-5xl ${config.bg}`}>{s.emoji}</div>
                         )}
-                        <span className="text-[8px] text-white/80 font-bold">🪙 {config.value}</span>
+                        {/* dark gradient for legibility */}
+                        <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/90 via-black/60 to-transparent" />
+                        <div className="absolute inset-x-0 top-0 h-1/4 bg-gradient-to-b from-black/70 to-transparent" />
+                        {/* number badge */}
+                        {typeof s.number === "number" && (
+                          <span className="absolute top-1.5 left-1.5 z-10 text-[10px] font-display font-extrabold bg-amber-400 text-amber-950 px-1.5 py-0.5 rounded-md shadow">
+                            Nº {String(s.number).padStart(2, "0")}
+                          </span>
+                        )}
+                        <span className={`absolute top-1.5 right-1.5 z-10 text-[9px] font-bold ${config.text} uppercase tracking-wide bg-black/60 px-1.5 py-0.5 rounded-md`}>{config.label}</span>
+                        {/* title */}
+                        <div className="absolute inset-x-1 bottom-1 z-10 text-center">
+                          <p className="font-display text-[11px] sm:text-xs font-extrabold text-white leading-tight drop-shadow-lg line-clamp-2">{s.name}</p>
+                          <p className="text-[9px] text-yellow-200 font-bold mt-0.5">🪙 {config.value}</p>
+                        </div>
+                        {s.isRepeat && (
+                          <span className="absolute top-7 left-1.5 z-10 text-[8px] font-bold text-red-100 bg-red-500/90 px-1.5 py-0.5 rounded-full">REPETIDA</span>
+                        )}
                         {s.rarity === "reliquia" && (
-                          <span className="absolute -top-2 -right-2 text-2xl animate-bounce">⭐</span>
+                          <span className="absolute -top-2 -right-2 z-20 text-2xl animate-bounce">⭐</span>
                         )}
                       </div>
                     </div>
