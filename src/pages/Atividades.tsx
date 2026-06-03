@@ -2,12 +2,14 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import PageHeader from "@/components/PageHeader";
 import CelebrationAnimation from "@/components/CelebrationAnimation";
 import CoinBadge from "@/components/CoinBadge";
+import EducacionalActivities from "@/components/EducacionalActivities";
 import iconQuiz from "@/assets/icon-quiz.png";
 import iconMemoria from "@/assets/icon-memoria.png";
 import iconQuebraCabeca from "@/assets/icon-quebracabeca.png";
 import iconColorir from "@/assets/icon-colorir.png";
 import icon7Erros from "@/assets/icon-7erros.png";
 import logoCentral from "@/assets/logo-central.png";
+import iconEducacionais from "@/assets/educacionais/logo.png.asset.json";
 
 // Puzzle source images (real biblical scenes)
 import imgCriacao from "@/assets/historia-criacao.png";
