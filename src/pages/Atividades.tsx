@@ -319,6 +319,13 @@ export default function Atividades() {
     return <ColoringGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "jigsaw")
     return <JigsawGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
+  if (activeGame === "edu")
+    return (
+      <>
+        <EducacionalActivities onBack={() => setActiveGame(null)} celebrate={showCelebration} bgStyle={bgStyle} />
+        <CelebrationAnimation show={celebration.show} message={celebration.message} coins={celebration.coins} emoji={celebration.emoji} onClose={closeCelebration} />
+      </>
+    );
 
   // === MENU ORBITAL ===
   const SPIN_DURATION = "120s";
