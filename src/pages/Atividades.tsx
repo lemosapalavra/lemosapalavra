@@ -2,12 +2,14 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import PageHeader from "@/components/PageHeader";
 import CelebrationAnimation from "@/components/CelebrationAnimation";
 import CoinBadge from "@/components/CoinBadge";
+import EducacionalActivities from "@/components/EducacionalActivities";
 import iconQuiz from "@/assets/icon-quiz.png";
 import iconMemoria from "@/assets/icon-memoria.png";
 import iconQuebraCabeca from "@/assets/icon-quebracabeca.png";
 import iconColorir from "@/assets/icon-colorir.png";
 import icon7Erros from "@/assets/icon-7erros.png";
 import logoCentral from "@/assets/logo-central.png";
+import iconEducacionais from "@/assets/educacionais/logo.png.asset.json";
 
 // Puzzle source images (real biblical scenes)
 import imgCriacao from "@/assets/historia-criacao.png";
@@ -289,11 +291,12 @@ export default function Atividades() {
   const closeCelebration = () => setCelebration({ show: false, message: "", coins: 0, emoji: "🏆" });
 
   const activities = [
-    { title: "Quiz Bíblico",   icon: iconQuiz,         id: "quiz",     coins: 5  },
-    { title: "Memória",        icon: iconMemoria,      id: "memory",   coins: 7  },
-    { title: "7 Erros",        icon: icon7Erros,       id: "spot",     coins: 5  },
-    { title: "Colorir",        icon: iconColorir,      id: "coloring", coins: 3  },
-    { title: "Quebra-Cabeça",  icon: iconQuebraCabeca, id: "jigsaw",   coins: 10 },
+    { title: "Quiz Bíblico",   icon: iconQuiz,            id: "quiz",     coins: 5  },
+    { title: "Memória",        icon: iconMemoria,         id: "memory",   coins: 7  },
+    { title: "7 Erros",        icon: icon7Erros,          id: "spot",     coins: 5  },
+    { title: "Colorir",        icon: iconColorir,         id: "coloring", coins: 3  },
+    { title: "Quebra-Cabeça",  icon: iconQuebraCabeca,    id: "jigsaw",   coins: 10 },
+    { title: "Atividades Educacionais", icon: iconEducacionais.url, id: "edu", coins: 5 },
   ];
 
   const bgStyle = { background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" };
@@ -316,6 +319,13 @@ export default function Atividades() {
     return <ColoringGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "jigsaw")
     return <JigsawGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
+  if (activeGame === "edu")
+    return (
+      <>
+        <EducacionalActivities onBack={() => setActiveGame(null)} celebrate={showCelebration} bgStyle={bgStyle} />
+        <CelebrationAnimation show={celebration.show} message={celebration.message} coins={celebration.coins} emoji={celebration.emoji} onClose={closeCelebration} />
+      </>
+    );
 
   // === MENU ORBITAL ===
   const SPIN_DURATION = "120s";

@@ -139,10 +139,21 @@ export default function Album() {
     if (!spendCoins(PACK_COST)) return;
     const pack = buildPack();
     const next = { ...readOwned() };
+    // build a global number index (1-based) across all stickers in order
+    const numberOf: Record<number, number> = {};
+    allStickers.forEach((s, idx) => { numberOf[s.id] = idx + 1; });
     const results: StickerResult[] = pack.map(({ sticker, rarity }) => {
       const isRepeat = (next[sticker.id] || 0) > 0;
       next[sticker.id] = (next[sticker.id] || 0) + 1;
-      return { index: sticker.id, name: sticker.name, emoji: sticker.emoji, rarity, isRepeat };
+      return {
+        index: sticker.id,
+        number: numberOf[sticker.id],
+        name: sticker.name,
+        emoji: sticker.emoji,
+        image: sticker.image,
+        rarity,
+        isRepeat,
+      };
     });
     writeOwned(next); setOwned(next); setPackResult(results);
   }, [spendCoins]);
@@ -514,7 +525,12 @@ function CategoryPage({
                   </div>
                 )}
                 {has && (
-                  <span className="absolute bottom-1 left-1 z-20 text-[10px] bg-black/70 text-amber-200 px-1.5 rounded-md leading-tight font-display font-bold">{number}</span>
+                  <div className="absolute inset-x-0 bottom-0 z-20 px-1 pb-1 pt-3 bg-gradient-to-t from-black/85 via-black/55 to-transparent">
+                    <div className="flex items-center gap-1">
+                      <span className="text-[10px] bg-amber-400 text-amber-950 px-1.5 rounded-md leading-tight font-display font-extrabold shadow">{number}</span>
+                      <span className="font-display font-bold text-[10px] sm:text-[11px] text-white leading-tight line-clamp-2 drop-shadow">{s.name}</span>
+                    </div>
+                  </div>
                 )}
                 {has && (owned[s.id] || 0) > 1 && (
                   <span className="absolute top-1 right-1 z-20 text-[9px] bg-red-500/90 text-white px-1.5 rounded-full leading-none font-bold">×{owned[s.id]}</span>
