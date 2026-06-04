@@ -322,19 +322,26 @@ export default function Atividades() {
     return <ColoringGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "jigsaw")
     return <JigsawGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
-  if (activeGame === "edu")
+  if (activeGame?.startsWith("edu:")) {
+    const eduId = activeGame.split(":")[1] as "circles" | "connect" | "differences" | "count";
     return (
       <>
-        <EducacionalActivities onBack={() => setActiveGame(null)} celebrate={showCelebration} bgStyle={bgStyle} />
+        <EducacionalActivities
+          onBack={() => setActiveGame(null)}
+          celebrate={showCelebration}
+          bgStyle={bgStyle}
+          initialActivity={eduId}
+        />
         <CelebrationAnimation show={celebration.show} message={celebration.message} coins={celebration.coins} emoji={celebration.emoji} onClose={closeCelebration} />
       </>
     );
+  }
 
   // === MENU ORBITAL ===
   const SPIN_DURATION = "120s";
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4" style={bgStyle}>
-      <PageHeader />
+      <PageHeader title="Atividades Educacionais" icon={iconAtividades} />
       <div
         className="relative orbit-area"
         style={{
