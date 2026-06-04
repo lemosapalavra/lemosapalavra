@@ -165,7 +165,7 @@ export default function Album() {
         onClick={() => { setPageIdx(0); setView("pages"); }}
         className="fixed inset-0 z-40 cursor-pointer bg-black"
       >
-        <PageHeader />
+        <PageHeader title="Álbum" subtitle="Heróis da Fé" icon={albumCapa} />
         <img
           src={albumCapa}
           alt="Heróis da Fé"
