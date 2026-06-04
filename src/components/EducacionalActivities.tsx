@@ -9,6 +9,8 @@ import edu5 from "@/assets/educacionais/educacional-5.jpg.asset.json";
 import edu6 from "@/assets/educacionais/educacional-6.jpg.asset.json";
 import edu7 from "@/assets/educacionais/educacional-7.jpg.asset.json";
 
+type Celebrate = (msg: string, coins: number, emoji?: string) => void;
+
 interface Props {
   onBack: () => void;
   celebrate: Celebrate;
