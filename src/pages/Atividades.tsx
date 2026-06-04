@@ -291,12 +291,15 @@ export default function Atividades() {
   const closeCelebration = () => setCelebration({ show: false, message: "", coins: 0, emoji: "🏆" });
 
   const activities = [
-    { title: "Quiz Bíblico",   icon: iconQuiz,            id: "quiz",     coins: 5  },
-    { title: "Memória",        icon: iconMemoria,         id: "memory",   coins: 7  },
-    { title: "7 Erros",        icon: icon7Erros,          id: "spot",     coins: 5  },
-    { title: "Colorir",        icon: iconColorir,         id: "coloring", coins: 3  },
-    { title: "Quebra-Cabeça",  icon: iconQuebraCabeca,    id: "jigsaw",   coins: 10 },
-    { title: "Atividades Educacionais", icon: iconEducacionais.url, id: "edu", coins: 5 },
+    { title: "Quiz Bíblico",        icon: iconQuiz,            id: "quiz",     coins: 5  },
+    { title: "Memória",             icon: iconMemoria,         id: "memory",   coins: 7  },
+    { title: "7 Erros",             icon: icon7Erros,          id: "spot",     coins: 5  },
+    { title: "Colorir",             icon: iconColorir,         id: "coloring", coins: 3  },
+    { title: "Quebra-Cabeça",       icon: iconQuebraCabeca,    id: "jigsaw",   coins: 10 },
+    { title: "Pinte os Círculos",   icon: iconEducacionais.url, id: "edu:circles",     coins: 5 },
+    { title: "Ligue as Cores",      icon: iconEducacionais.url, id: "edu:connect",     coins: 6 },
+    { title: "Ache os Diferentes",  icon: iconEducacionais.url, id: "edu:differences", coins: 5 },
+    { title: "Conte e Registre",    icon: iconEducacionais.url, id: "edu:count",       coins: 6 },
   ];
 
   const bgStyle = { background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" };
