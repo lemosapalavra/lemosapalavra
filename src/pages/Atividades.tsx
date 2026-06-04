@@ -4,6 +4,7 @@ import CelebrationAnimation from "@/components/CelebrationAnimation";
 import CoinBadge from "@/components/CoinBadge";
 import EducacionalActivities from "@/components/EducacionalActivities";
 import iconQuiz from "@/assets/icon-quiz.png";
+import iconAtividades from "@/assets/icon-atividades.png";
 import iconMemoria from "@/assets/icon-memoria.png";
 import iconQuebraCabeca from "@/assets/icon-quebracabeca.png";
 import iconColorir from "@/assets/icon-colorir.png";
