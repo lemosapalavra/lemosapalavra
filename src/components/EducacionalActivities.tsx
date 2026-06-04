@@ -4,10 +4,7 @@ import logoAsset from "@/assets/educacionais/logo.png.asset.json";
 import edu1 from "@/assets/educacionais/educacional-1.jpg.asset.json";
 import edu2 from "@/assets/educacionais/educacional-2.jpg.asset.json";
 import edu3 from "@/assets/educacionais/educacional-3.jpg.asset.json";
-import edu4 from "@/assets/educacionais/educacional-4.jpg.asset.json";
-import edu5 from "@/assets/educacionais/educacional-5.jpg.asset.json";
 import edu6 from "@/assets/educacionais/educacional-6.jpg.asset.json";
-import edu7 from "@/assets/educacionais/educacional-7.jpg.asset.json";
 
 type Celebrate = (msg: string, coins: number, emoji?: string) => void;
 
