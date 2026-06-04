@@ -121,10 +121,7 @@ function ActivityRunner({ meta, onBack, celebrate, bgStyle }:
           {meta.id === "circles" && <CirclesGame onComplete={complete} done={done} />}
           {meta.id === "connect" && <ConnectGame onComplete={complete} done={done} />}
           {meta.id === "differences" && <DifferencesGame onComplete={complete} done={done} />}
-          {meta.id === "paintNumbers" && <PaintNumbersGame onComplete={complete} done={done} image={meta.image} />}
-          {meta.id === "draw" && <DrawGame onComplete={complete} done={done} image={meta.image} />}
           {meta.id === "count" && <CountGame onComplete={complete} done={done} />}
-          {meta.id === "wordsearch" && <WordSearchGame onComplete={complete} done={done} />}
         </div>
 
         {done && (
