@@ -11,7 +11,7 @@ export interface OrbitItem {
   route: string;
 }
 
-const KEY = "lemos_orbit_config_v1";
+const KEY = "lemos_orbit_config_v2";
 
 export function defaultOrbit(): OrbitItem[] {
   return [
@@ -19,7 +19,7 @@ export function defaultOrbit(): OrbitItem[] {
     { icon: iconAlbum, label: "ÁLBUM", sublabel: "Heróis da Fé", route: "/album" },
     { icon: iconDevocionais, label: "DEVOCIONAIS", route: "/devocionais" },
     { icon: iconPedidos, label: "PEDIDOS\nDE ORAÇÃO", route: "/pedidos-oracao" },
-    { icon: iconAtividades, label: "ATIVIDADES", route: "/atividades" },
+    { icon: iconAtividades, label: "ATIVIDADES\nEDUCACIONAIS", route: "/atividades" },
   ];
 }
 

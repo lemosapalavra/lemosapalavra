@@ -181,7 +181,7 @@ export default function LemosPlay() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <PageHeader />
+      <PageHeader title="Lemos Play" subtitle="Filmes, Séries e Músicas" icon={lemosPlayLogo} />
       <header className="fixed top-0 inset-x-0 z-30 bg-gradient-to-b from-black/90 to-transparent pointer-events-none">
         <div className="flex items-center justify-between px-4 sm:px-12 py-3 pl-20">
           <img src={lemosPlayLogo} alt="Lemos Play" className="h-14 sm:h-20 w-auto drop-shadow-xl pointer-events-auto" />

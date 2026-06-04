@@ -4,6 +4,7 @@ import CelebrationAnimation from "@/components/CelebrationAnimation";
 import CoinBadge from "@/components/CoinBadge";
 import EducacionalActivities from "@/components/EducacionalActivities";
 import iconQuiz from "@/assets/icon-quiz.png";
+import iconAtividades from "@/assets/icon-atividades.png";
 import iconMemoria from "@/assets/icon-memoria.png";
 import iconQuebraCabeca from "@/assets/icon-quebracabeca.png";
 import iconColorir from "@/assets/icon-colorir.png";
@@ -291,12 +292,15 @@ export default function Atividades() {
   const closeCelebration = () => setCelebration({ show: false, message: "", coins: 0, emoji: "🏆" });
 
   const activities = [
-    { title: "Quiz Bíblico",   icon: iconQuiz,            id: "quiz",     coins: 5  },
-    { title: "Memória",        icon: iconMemoria,         id: "memory",   coins: 7  },
-    { title: "7 Erros",        icon: icon7Erros,          id: "spot",     coins: 5  },
-    { title: "Colorir",        icon: iconColorir,         id: "coloring", coins: 3  },
-    { title: "Quebra-Cabeça",  icon: iconQuebraCabeca,    id: "jigsaw",   coins: 10 },
-    { title: "Atividades Educacionais", icon: iconEducacionais.url, id: "edu", coins: 5 },
+    { title: "Quiz Bíblico",        icon: iconQuiz,            id: "quiz",     coins: 5  },
+    { title: "Memória",             icon: iconMemoria,         id: "memory",   coins: 7  },
+    { title: "7 Erros",             icon: icon7Erros,          id: "spot",     coins: 5  },
+    { title: "Colorir",             icon: iconColorir,         id: "coloring", coins: 3  },
+    { title: "Quebra-Cabeça",       icon: iconQuebraCabeca,    id: "jigsaw",   coins: 10 },
+    { title: "Pinte os Círculos",   icon: iconEducacionais.url, id: "edu:circles",     coins: 5 },
+    { title: "Ligue as Cores",      icon: iconEducacionais.url, id: "edu:connect",     coins: 6 },
+    { title: "Ache os Diferentes",  icon: iconEducacionais.url, id: "edu:differences", coins: 5 },
+    { title: "Conte e Registre",    icon: iconEducacionais.url, id: "edu:count",       coins: 6 },
   ];
 
   const bgStyle = { background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" };
@@ -319,19 +323,26 @@ export default function Atividades() {
     return <ColoringGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "jigsaw")
     return <JigsawGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
-  if (activeGame === "edu")
+  if (activeGame?.startsWith("edu:")) {
+    const eduId = activeGame.split(":")[1] as "circles" | "connect" | "differences" | "count";
     return (
       <>
-        <EducacionalActivities onBack={() => setActiveGame(null)} celebrate={showCelebration} bgStyle={bgStyle} />
+        <EducacionalActivities
+          onBack={() => setActiveGame(null)}
+          celebrate={showCelebration}
+          bgStyle={bgStyle}
+          initialActivity={eduId}
+        />
         <CelebrationAnimation show={celebration.show} message={celebration.message} coins={celebration.coins} emoji={celebration.emoji} onClose={closeCelebration} />
       </>
     );
+  }
 
   // === MENU ORBITAL ===
   const SPIN_DURATION = "120s";
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4" style={bgStyle}>
-      <PageHeader />
+      <PageHeader title="Atividades Educacionais" icon={iconAtividades} />
       <div
         className="relative orbit-area"
         style={{
