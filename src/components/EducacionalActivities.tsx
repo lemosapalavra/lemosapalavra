@@ -9,35 +9,32 @@ import edu5 from "@/assets/educacionais/educacional-5.jpg.asset.json";
 import edu6 from "@/assets/educacionais/educacional-6.jpg.asset.json";
 import edu7 from "@/assets/educacionais/educacional-7.jpg.asset.json";
 
-type Celebrate = (msg: string, coins: number, emoji?: string) => void;
-
 interface Props {
   onBack: () => void;
   celebrate: Celebrate;
   bgStyle: React.CSSProperties;
+  /** If set, opens directly into this activity, bypassing the menu */
+  initialActivity?: ActivityId;
 }
 
-type ActivityId = "circles" | "connect" | "differences" | "paintNumbers" | "draw" | "count" | "wordsearch";
+export type ActivityId = "circles" | "connect" | "differences" | "count";
 
-const ACTIVITIES: { id: ActivityId; title: string; icon: string; image: string; coins: number; desc: string }[] = [
+export const ACTIVITIES: { id: ActivityId; title: string; icon: string; image: string; coins: number; desc: string }[] = [
   { id: "circles",      title: "Pinte os Círculos",  icon: "🎨", image: edu1.url, coins: 5, desc: "Pinte cada círculo com a cor do seu número." },
   { id: "connect",      title: "Ligue as Cores",     icon: "🔗", image: edu2.url, coins: 6, desc: "Ligue os pontos seguindo a ordem dos números." },
   { id: "differences",  title: "Ache os Diferentes", icon: "🔍", image: edu3.url, coins: 5, desc: "Encontre as figuras que estão diferentes em cada bloco." },
-  { id: "paintNumbers", title: "Pinte por Número",   icon: "🖍️", image: edu4.url, coins: 8, desc: "Pinte o desenho seguindo a numeração das cores." },
-  { id: "draw",         title: "Desenhe Igual",      icon: "✏️", image: edu5.url, coins: 6, desc: "Desenhe as figuras iguais aos modelos no quadriculado." },
   { id: "count",        title: "Conte e Registre",   icon: "🔢", image: edu6.url, coins: 6, desc: "Conte quantas figuras de cada tipo existem." },
-  { id: "wordsearch",   title: "Caça-Palavras",      icon: "🔤", image: edu7.url, coins: 8, desc: "Encontre as palavras escondidas no caça-palavras." },
 ];
 
-export default function EducacionalActivities({ onBack, celebrate, bgStyle }: Props) {
-  const [active, setActive] = useState<ActivityId | null>(null);
+export default function EducacionalActivities({ onBack, celebrate, bgStyle, initialActivity }: Props) {
+  const [active, setActive] = useState<ActivityId | null>(initialActivity ?? null);
 
   if (active) {
     const meta = ACTIVITIES.find((a) => a.id === active)!;
     return (
       <ActivityRunner
         meta={meta}
-        onBack={() => setActive(null)}
+        onBack={initialActivity ? onBack : () => setActive(null)}
         celebrate={celebrate}
         bgStyle={bgStyle}
       />
