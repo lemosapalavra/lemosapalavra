@@ -49,18 +49,16 @@ export default function Index() {
       className="min-h-screen flex flex-col items-center justify-center overflow-hidden relative"
       style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}
     >
-      {user && (
+      {user && isAdmin && (
         <div className="absolute top-3 right-3 z-30 flex items-center gap-2">
-          {isAdmin && (
-            <button
-              onClick={() => setAdminOpen(true)}
-              className="w-10 h-10 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center transition"
-              title="Configurar página inicial"
-              aria-label="Configurar"
-            >
-              <Settings className="w-5 h-5 text-foreground" />
-            </button>
-          )}
+          <button
+            onClick={() => setAdminOpen(true)}
+            className="w-10 h-10 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center transition"
+            title="Configurar página inicial"
+            aria-label="Configurar"
+          >
+            <Settings className="w-5 h-5 text-foreground" />
+          </button>
           <button
             onClick={() => navigate("/config")}
             className="w-10 h-10 rounded-full bg-white/60 hover:bg-white shadow flex items-center justify-center transition"
