@@ -22,6 +22,15 @@ import imgMoises2 from "@/assets/historia-moises-2.png";
 import imgMandamentos from "@/assets/historia-10-mandamentos.png";
 import imgAdaoEva from "@/assets/historia-adao-eva-1.png";
 
+// 7 Erros — imagens pré-montadas (duas cenas empilhadas)
+import spot1 from "@/assets/spot7erros/spot-1.jpg.asset.json";
+import spot2 from "@/assets/spot7erros/spot-2.jpg.asset.json";
+import spot3 from "@/assets/spot7erros/spot-3.jpg.asset.json";
+import spot4 from "@/assets/spot7erros/spot-4.jpg.asset.json";
+import spot5 from "@/assets/spot7erros/spot-5.jpg.asset.json";
+import spot6 from "@/assets/spot7erros/spot-6.jpg.asset.json";
+import spot7 from "@/assets/spot7erros/spot-7.jpg.asset.json";
+
 // COLORIR — desenhos só de contorno (uploads do usuário)
 import colorAbraao from "@/assets/colorir/abraao.jpg";
 import colorAbraaoCordeiro from "@/assets/colorir/abraao-cordeiro.jpg";
