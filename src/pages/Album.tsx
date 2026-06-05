@@ -498,44 +498,38 @@ function CategoryPage({
                 data-sticker
                 onClick={(e) => { e.stopPropagation(); onStickerClick(s); }}
                 disabled={!has}
-                className={`relative w-full overflow-hidden transition-all aspect-[2/3] ${
-                  has
-                    ? "cursor-pointer hover:scale-[1.06] hover:z-30"
-                    : ""
+                className={`relative w-full overflow-hidden rounded-lg bg-white/95 shadow-md border border-amber-700/30 flex flex-col aspect-[2/3] ${
+                  has ? "cursor-pointer hover:scale-[1.06] hover:z-30 transition-transform" : "opacity-90"
                 }`}
               >
-                {s.image ? (
-                  <img
-                    src={s.image}
-                    alt={has ? s.name : "Figurinha não coletada"}
-                    className="absolute inset-0 w-full h-full object-contain"
-                    style={{ opacity: has ? 1 : 0.05, filter: has ? undefined : "grayscale(100%)" }}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className={`text-3xl ${has ? "" : "opacity-[0.05]"}`}>{s.emoji}</span>
-                  </div>
-                )}
-                {!has && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-amber-100/90">
-                    <span className="text-2xl drop-shadow">❓</span>
-                    <span className="text-[10px] font-display font-bold mt-1 drop-shadow">{number}</span>
-                  </div>
-                )}
-                {has && (
-                  <div className="absolute inset-x-0 bottom-0 z-20 px-1 pb-0.5 pt-2 bg-gradient-to-t from-black/80 via-black/35 to-transparent">
-                    <div className="flex items-center gap-1">
-                      <span className="text-[10px] bg-amber-400 text-amber-950 px-1.5 rounded-md leading-tight font-display font-extrabold shadow">{number}</span>
-                      <span className="font-display font-bold text-[10px] sm:text-[11px] text-white leading-tight line-clamp-2 drop-shadow">{s.name}</span>
+                {/* Image area — keeps natural proportions, never distorts */}
+                <div className="relative flex-1 w-full bg-amber-50/50 flex items-center justify-center overflow-hidden">
+                  {has && s.image ? (
+                    <img
+                      src={s.image}
+                      alt={s.name}
+                      className="max-w-full max-h-full object-contain p-1"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : has ? (
+                    <span className="text-4xl">{s.emoji}</span>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center text-amber-800/70">
+                      <span className="text-3xl drop-shadow">❓</span>
                     </div>
-                  </div>
-                )}
-                {has && (owned[s.id] || 0) > 1 && (
-                  <span className="absolute top-1 right-1 z-20 text-[9px] bg-red-500/90 text-white px-1.5 rounded-full leading-none font-bold">×{owned[s.id]}</span>
-                )}
-
+                  )}
+                  {has && (owned[s.id] || 0) > 1 && (
+                    <span className="absolute top-1 right-1 z-20 text-[9px] bg-red-500/90 text-white px-1.5 rounded-full leading-none font-bold">×{owned[s.id]}</span>
+                  )}
+                </div>
+                {/* Name band — below image, never overlaps */}
+                <div className="w-full bg-amber-900 text-amber-50 px-1 py-1 flex items-center gap-1 min-h-[2.4em]">
+                  <span className="text-[9px] bg-amber-400 text-amber-950 px-1 rounded leading-tight font-display font-extrabold shrink-0">{number}</span>
+                  <span className="font-display font-bold text-[9px] sm:text-[10px] leading-tight line-clamp-2 text-left">
+                    {has ? s.name : "???"}
+                  </span>
+                </div>
               </button>
             );
           })}
