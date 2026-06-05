@@ -142,96 +142,96 @@ const memoryConfig = {
 };
 
 /* =========================================================
-   7 ERROS — usando nossas próprias imagens bíblicas
-   Foto original (topo) + cópia com emojis extras (baixo).
-   Coordenadas em % (0..100) para responsividade.
+   7 ERROS — imagens prontas (duas cenas empilhadas verticalmente)
+   As coordenadas (x,y em %) referenciam o PAINEL DE BAIXO da imagem completa.
+   A imagem original ocupa ~5–50% e a versão alterada ~52–98%.
 ========================================================= */
-type SpotDiff = { x: number; y: number; r: number; emoji: string; size: number };
+type SpotDiff = { x: number; y: number; r: number };
 type SpotScene = { title: string; emoji: string; image: string; diffs: SpotDiff[] };
 
 const spotScenes: SpotScene[] = [
   {
-    title: "A Arca de Noé",
-    emoji: "🚢",
-    image: imgNoe,
+    title: "Fundo do Mar", emoji: "🐠", image: spot1.url,
     diffs: [
-      { x: 10, y: 12, r: 8, emoji: "☁️", size: 28 },
-      { x: 82, y: 10, r: 8, emoji: "🕊️", size: 26 },
-      { x: 48, y: 18, r: 7, emoji: "⭐", size: 24 },
-      { x: 18, y: 78, r: 8, emoji: "🐟", size: 26 },
-      { x: 88, y: 82, r: 8, emoji: "🐠", size: 26 },
-      { x: 50, y: 90, r: 7, emoji: "🌊", size: 26 },
-      { x: 70, y: 50, r: 8, emoji: "🦒", size: 28 },
+      { x: 38, y: 78, r: 7 },  // cavalo-marinho colorido
+      { x: 25, y: 88, r: 7 },  // âncora removida
+      { x: 92, y: 60, r: 6 },  // tartaruga removida
+      { x: 22, y: 72, r: 6 },  // peixinho azul removido
+      { x: 62, y: 88, r: 6 },  // concha
+      { x: 78, y: 92, r: 7 },  // estrela do mar
+      { x: 50, y: 85, r: 7 },  // baú aberto/fechado
     ],
   },
   {
-    title: "Davi e Golias",
-    emoji: "⚔️",
-    image: imgDavi,
+    title: "Animais da Floresta", emoji: "🦒", image: spot2.url,
     diffs: [
-      { x: 14, y: 14, r: 8, emoji: "☀️", size: 30 },
-      { x: 86, y: 12, r: 7, emoji: "🦅", size: 26 },
-      { x: 50, y: 10, r: 7, emoji: "✨", size: 22 },
-      { x: 22, y: 88, r: 8, emoji: "🌿", size: 26 },
-      { x: 78, y: 86, r: 8, emoji: "🪨", size: 26 },
-      { x: 40, y: 92, r: 7, emoji: "🐑", size: 26 },
-      { x: 62, y: 50, r: 7, emoji: "👑", size: 26 },
+      { x: 12, y: 72, r: 7 },  // borboleta roxa
+      { x: 38, y: 60, r: 7 },  // casinha do passarinho removida
+      { x: 22, y: 88, r: 7 },  // chapéu do elefante removido
+      { x: 38, y: 78, r: 7 },  // banana do macaco removida
+      { x: 88, y: 70, r: 7 },  // folha amarela na girafa
+      { x: 72, y: 92, r: 6 },  // flores diferentes
+      { x: 92, y: 95, r: 6 },  // flor removida
     ],
   },
   {
-    title: "Moisés e o Mar Vermelho",
-    emoji: "🌊",
-    image: imgMoises,
+    title: "Crianças no Parque", emoji: "🧒", image: spot3.url,
     diffs: [
-      { x: 12, y: 12, r: 8, emoji: "⚡", size: 28 },
-      { x: 88, y: 14, r: 8, emoji: "☁️", size: 28 },
-      { x: 50, y: 8,  r: 7, emoji: "🕊️", size: 24 },
-      { x: 18, y: 82, r: 8, emoji: "🐟", size: 26 },
-      { x: 82, y: 84, r: 8, emoji: "🐠", size: 26 },
-      { x: 48, y: 92, r: 7, emoji: "🌊", size: 22 },
-      { x: 70, y: 40, r: 7, emoji: "✨", size: 22 },
+      { x: 22, y: 65, r: 7 },  // sol removido
+      { x: 18, y: 72, r: 7 },  // casa removida
+      { x: 30, y: 78, r: 7 },  // pintinho removido
+      { x: 42, y: 70, r: 7 },  // pipa azul (era rosa)
+      { x: 68, y: 65, r: 7 },  // abelha (era borboleta)
+      { x: 22, y: 92, r: 7 },  // ovo cor diferente na cesta
+      { x: 50, y: 95, r: 6 },  // ovo decorado mudou
     ],
   },
   {
-    title: "A Criação",
-    emoji: "🌍",
-    image: imgCriacao,
+    title: "Na Fazenda", emoji: "🐄", image: spot4.url,
     diffs: [
-      { x: 14, y: 12, r: 8, emoji: "🌟", size: 26 },
-      { x: 86, y: 16, r: 8, emoji: "☄️", size: 28 },
-      { x: 50, y: 6,  r: 7, emoji: "🌙", size: 24 },
-      { x: 22, y: 86, r: 8, emoji: "🌸", size: 26 },
-      { x: 78, y: 88, r: 8, emoji: "🦋", size: 26 },
-      { x: 50, y: 92, r: 7, emoji: "🌿", size: 26 },
-      { x: 64, y: 48, r: 7, emoji: "🐦", size: 22 },
+      { x: 28, y: 78, r: 8 },  // porquinho no lugar da vaca
+      { x: 78, y: 72, r: 7 },  // espantalho sem pássaro
+      { x: 50, y: 90, r: 6 },  // pintinhos a menos
+      { x: 18, y: 92, r: 7 },  // só um patinho
+      { x: 88, y: 95, r: 7 },  // melancia entre as abóboras
+      { x: 95, y: 65, r: 6 },  // moinho mudou
+      { x: 62, y: 92, r: 6 },  // patinho extra
     ],
   },
   {
-    title: "Adão e Eva no Éden",
-    emoji: "🌳",
-    image: imgAdaoEva,
+    title: "Aventura no Mar", emoji: "🍍", image: spot5.url,
     diffs: [
-      { x: 12, y: 14, r: 8, emoji: "🍎", size: 26 },
-      { x: 85, y: 12, r: 8, emoji: "🐍", size: 26 },
-      { x: 50, y: 8, r: 7, emoji: "🌞", size: 26 },
-      { x: 20, y: 85, r: 8, emoji: "🦌", size: 26 },
-      { x: 80, y: 88, r: 8, emoji: "🐇", size: 26 },
-      { x: 48, y: 92, r: 7, emoji: "🌺", size: 24 },
-      { x: 65, y: 50, r: 7, emoji: "🦋", size: 24 },
+      { x: 30, y: 68, r: 8 },  // janela do abacaxi (sem Bob)
+      { x: 12, y: 72, r: 6 },  // Krusty Krab apagado
+      { x: 50, y: 78, r: 6 },  // peixinho amarelo (era azul)
+      { x: 22, y: 92, r: 6 },  // caracol com óculos
+      { x: 82, y: 80, r: 8 },  // Sr. Siriguejo no lugar do Patrick
+      { x: 90, y: 95, r: 6 },  // coral diferente
+      { x: 78, y: 92, r: 6 },  // detalhe no chão
     ],
   },
   {
-    title: "Os 10 Mandamentos",
-    emoji: "📜",
-    image: imgMandamentos,
+    title: "Piquenique no Parque", emoji: "🧺", image: spot6.url,
     diffs: [
-      { x: 12, y: 10, r: 8, emoji: "⚡", size: 28 },
-      { x: 88, y: 12, r: 8, emoji: "☁️", size: 28 },
-      { x: 50, y: 8, r: 7, emoji: "🔥", size: 26 },
-      { x: 18, y: 80, r: 8, emoji: "🪨", size: 26 },
-      { x: 82, y: 82, r: 8, emoji: "🌿", size: 24 },
-      { x: 50, y: 92, r: 7, emoji: "✨", size: 26 },
-      { x: 70, y: 45, r: 7, emoji: "🕊️", size: 24 },
+      { x: 32, y: 65, r: 7 },  // balão verde (era vermelho)
+      { x: 42, y: 68, r: 7 },  // avião no lugar do passarinho
+      { x: 90, y: 88, r: 7 },  // tartaruga removida
+      { x: 58, y: 88, r: 7 },  // uvas removidas
+      { x: 50, y: 90, r: 6 },  // laranja removida
+      { x: 18, y: 75, r: 6 },  // esquilo igual (decoração ao redor)
+      { x: 28, y: 95, r: 7 },  // cachorrinho dormindo
+    ],
+  },
+  {
+    title: "Brincando na Rua", emoji: "🌳", image: spot7.url,
+    diffs: [
+      { x: 12, y: 72, r: 7 },  // laço amarelo (era vermelho)
+      { x: 28, y: 80, r: 7 },  // camiseta da criança azul
+      { x: 50, y: 70, r: 7 },  // passarinho azul (era amarelo)
+      { x: 78, y: 72, r: 7 },  // criança boca aberta
+      { x: 35, y: 92, r: 6 },  // flores diferentes
+      { x: 62, y: 90, r: 6 },  // carrinho mudou
+      { x: 92, y: 60, r: 6 },  // detalhe do céu
     ],
   },
 ];
