@@ -21,6 +21,7 @@ interface PageHeaderProps {
 export default function PageHeader({ title, subtitle, icon }: PageHeaderProps) {
   const navigate = useNavigate();
   const { coins } = useCoins();
+  const isAdmin = useIsAdmin();
   const [user, setUser] = useState<{ name?: string; avatar?: string } | null>(null);
 
   useEffect(() => {
