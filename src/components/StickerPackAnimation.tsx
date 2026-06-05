@@ -243,7 +243,7 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
                         }}
                       >
                         {s.image ? (
-                          <img src={s.image} alt={s.name} className="absolute inset-0 w-full h-full object-cover" draggable={false} />
+                          <img src={s.image} alt={s.name} className="absolute inset-0 w-full h-full object-contain bg-white p-1" draggable={false} />
                         ) : (
                           <div className={`absolute inset-0 flex items-center justify-center text-5xl ${config.bg}`}>{s.emoji}</div>
                         )}
