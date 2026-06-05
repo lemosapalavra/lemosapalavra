@@ -375,8 +375,7 @@ export default function Atividades() {
         @keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes orbit-spin-reverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
         .orbit-area:hover .orbit-anim,
-        .orbit-area:focus-within .orbit-anim,
-        .orbit-area:active .orbit-anim { animation-play-state: paused !important; }
+        .orbit-area:focus-within .orbit-anim { animation-play-state: paused !important; }
       `}</style>
       <CelebrationAnimation show={celebration.show} message={celebration.message} coins={celebration.coins} emoji={celebration.emoji} onClose={closeCelebration} />
     </div>
