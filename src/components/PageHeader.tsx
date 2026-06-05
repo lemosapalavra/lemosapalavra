@@ -96,6 +96,16 @@ export default function PageHeader({ title, subtitle, icon }: PageHeaderProps) {
               />
             </div>
           )}
+          {isAdmin && (
+            <button
+              onClick={() => navigate("/config")}
+              className="w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center transition border border-amber-300"
+              title="Configurações (admin)"
+              aria-label="Configurações"
+            >
+              <Settings className="w-4 h-4 text-foreground" />
+            </button>
+          )}
         </div>
       </div>
     </header>
