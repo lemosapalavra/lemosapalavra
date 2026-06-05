@@ -694,14 +694,22 @@ function MemoryGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
   );
 }
 
-/* ---------- SPOT THE DIFFERENCE (7 ERROS) — usa nossas imagens ---------- */
+/* ---------- SPOT THE DIFFERENCE (7 ERROS) — imagens prontas, 5/dia ---------- */
 function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
+  // 5 cenas por dia, intercalando dia a dia
+  const dailyScenes = useMemo(() => {
+    const d = dayOfYear();
+    const total = spotScenes.length;
+    const start = (d * 5) % total;
+    return Array.from({ length: 5 }, (_, k) => spotScenes[(start + k) % total]);
+  }, []);
+
   const [sceneIdx, setSceneIdx] = useState(0);
   const [found, setFound] = useState<number[]>([]);
   const [misses, setMisses] = useState(0);
   const [shakeKey, setShakeKey] = useState(0);
 
-  const scene = spotScenes[sceneIdx];
+  const scene = dailyScenes[sceneIdx];
   const total = scene.diffs.length;
 
   const reset = (i: number) => { setSceneIdx(i); setFound([]); setMisses(0); };
@@ -711,7 +719,7 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
     const x = ((e.clientX - box.left) / box.width) * 100;
     const y = ((e.clientY - box.top) / box.height) * 100;
     const hit = scene.diffs.findIndex((d, i) =>
-      !found.includes(i) && Math.hypot(d.x - x, d.y - y) <= d.r + 2
+      !found.includes(i) && Math.hypot(d.x - x, d.y - y) <= d.r + 3
     );
     if (hit >= 0) {
       const nf = [...found, hit];
@@ -723,56 +731,43 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
     }
   };
 
-  const SceneImage = ({ withDiffs, onSceneClick }: { withDiffs: boolean; onSceneClick?: (e: React.MouseEvent<HTMLDivElement>) => void }) => (
-    <div
-      onClick={onSceneClick}
-      className={`relative w-full aspect-[4/3] rounded-2xl overflow-hidden border-2 ${withDiffs ? "border-primary/60 cursor-pointer" : "border-border"} shadow-lg bg-black select-none`}
-    >
-      <img src={scene.image} alt={scene.title} className="absolute inset-0 w-full h-full object-cover pointer-events-none" />
-      {withDiffs && scene.diffs.map((d, i) => (
-        <span
-          key={i}
-          aria-hidden
-          className="absolute pointer-events-none drop-shadow-lg"
-          style={{ left: `${d.x}%`, top: `${d.y}%`, fontSize: d.size, transform: "translate(-50%,-50%)" }}
-        >{d.emoji}</span>
-      ))}
-      {withDiffs && found.map((i) => {
-        const d = scene.diffs[i];
-        return (
-          <span
-            key={`mark-${i}`}
-            aria-hidden
-            className="absolute pointer-events-none rounded-full border-[3px] border-red-500 animate-pulse"
-            style={{ left: `${d.x}%`, top: `${d.y}%`, width: `${d.r * 2}%`, paddingBottom: `${d.r * 2}%`, transform: "translate(-50%,-50%)" }}
-          />
-        );
-      })}
-    </div>
-  );
-
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-2xl mx-auto">
         <PageHeader title="Jogo dos 7 Erros" subtitle={scene.title} icon={icon7Erros} />
         <button onClick={onBack} className="mb-3 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
-        <DailyBanner emoji="🔍" text="Cenas selecionadas para hoje — amanhã chegam novas!" />
+        <DailyBanner emoji="🔍" text="5 cenas selecionadas para hoje — amanhã chegam novas!" />
 
         <div className="flex justify-around mb-3 bg-popover rounded-xl py-2 shadow border border-border text-sm">
           <span className="font-display"><b className="text-primary">{found.length}</b>/{total} encontradas</span>
           <span className="font-display text-red-600">Erros: {misses}</span>
         </div>
 
-        <div className="space-y-3" key={shakeKey}>
-          <p className="text-xs text-center font-body text-muted-foreground">📷 Cena original (acima) — encontre os {total} itens extras na cena abaixo</p>
-          <SceneImage withDiffs={false} />
-          <div className={misses > 0 ? "animate-[shake_0.4s]" : ""}>
-            <SceneImage withDiffs onSceneClick={handleClick} />
+        <div key={shakeKey} className={misses > 0 ? "animate-[shake_0.4s]" : ""}>
+          <p className="text-xs text-center font-body text-muted-foreground mb-2">
+            🔍 Compare a cena de cima com a de baixo e clique nas {total} diferenças (na cena de baixo)
+          </p>
+          <div
+            onClick={handleClick}
+            className="relative w-full rounded-2xl overflow-hidden border-2 border-primary/60 cursor-pointer shadow-lg bg-white select-none"
+          >
+            <img src={scene.image} alt={scene.title} className="w-full h-auto pointer-events-none block" />
+            {found.map((i) => {
+              const d = scene.diffs[i];
+              return (
+                <span
+                  key={`mark-${i}`}
+                  aria-hidden
+                  className="absolute pointer-events-none rounded-full border-[3px] border-red-500 animate-pulse"
+                  style={{ left: `${d.x}%`, top: `${d.y}%`, width: `${d.r * 2}%`, paddingBottom: `${d.r * 2}%`, transform: "translate(-50%,-50%)" }}
+                />
+              );
+            })}
           </div>
         </div>
 
         <div className="flex gap-2 flex-wrap mt-4 justify-center">
-          {spotScenes.map((s, i) => (
+          {dailyScenes.map((s, i) => (
             <button key={i} onClick={() => reset(i)}
               className={`px-3 py-1.5 rounded-full font-display text-xs font-bold transition ${sceneIdx === i ? "bg-primary text-primary-foreground" : "bg-popover border border-border text-foreground hover:border-primary"}`}>
               {s.emoji} {s.title}
