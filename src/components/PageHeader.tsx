@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Settings } from "lucide-react";
 import { useCoins } from "@/hooks/useCoins";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
 import iconInicio from "@/assets/icon-inicio.jpg";
 import iconUsuario from "@/assets/icon-usuario.png";
 
@@ -19,6 +21,7 @@ interface PageHeaderProps {
 export default function PageHeader({ title, subtitle, icon }: PageHeaderProps) {
   const navigate = useNavigate();
   const { coins } = useCoins();
+  const isAdmin = useIsAdmin();
   const [user, setUser] = useState<{ name?: string; avatar?: string } | null>(null);
 
   useEffect(() => {
@@ -92,6 +95,16 @@ export default function PageHeader({ title, subtitle, icon }: PageHeaderProps) {
                 className="w-9 h-9 rounded-full border-2 border-amber-300 shadow-sm object-cover"
               />
             </div>
+          )}
+          {isAdmin && (
+            <button
+              onClick={() => navigate("/config")}
+              className="w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center transition border border-amber-300"
+              title="Configurações (admin)"
+              aria-label="Configurações"
+            >
+              <Settings className="w-4 h-4 text-foreground" />
+            </button>
           )}
         </div>
       </div>

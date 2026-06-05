@@ -297,10 +297,8 @@ export default function Atividades() {
     { title: "7 Erros",             icon: icon7Erros,          id: "spot",     coins: 5  },
     { title: "Colorir",             icon: iconColorir,         id: "coloring", coins: 3  },
     { title: "Quebra-Cabeça",       icon: iconQuebraCabeca,    id: "jigsaw",   coins: 10 },
-    { title: "Pinte os Círculos",   icon: iconEducacionais.url, id: "edu:circles",     coins: 5 },
-    { title: "Ligue as Cores",      icon: iconEducacionais.url, id: "edu:connect",     coins: 6 },
-    { title: "Ache os Diferentes",  icon: iconEducacionais.url, id: "edu:differences", coins: 5 },
-    { title: "Conte e Registre",    icon: iconEducacionais.url, id: "edu:count",       coins: 6 },
+    { title: "Pinte os Círculos",   icon: iconEducacionais.url, id: "edu:circles", coins: 5 },
+    { title: "Ligue as Cores",      icon: iconEducacionais.url, id: "edu:connect", coins: 6 },
   ];
 
   const bgStyle = { background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" };
@@ -377,8 +375,7 @@ export default function Atividades() {
         @keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes orbit-spin-reverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
         .orbit-area:hover .orbit-anim,
-        .orbit-area:focus-within .orbit-anim,
-        .orbit-area:active .orbit-anim { animation-play-state: paused !important; }
+        .orbit-area:focus-within .orbit-anim { animation-play-state: paused !important; }
       `}</style>
       <CelebrationAnimation show={celebration.show} message={celebration.message} coins={celebration.coins} emoji={celebration.emoji} onClose={closeCelebration} />
     </div>
