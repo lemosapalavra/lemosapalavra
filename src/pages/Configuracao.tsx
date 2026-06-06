@@ -188,6 +188,34 @@ export default function Configuracao() {
             </button>
           </div>
         </div>
+
+        {/* Atalhos para páginas configuráveis */}
+        <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
+          <h3 className="font-display text-lg font-bold text-foreground mb-3">⚡ Atalhos para Configurar Páginas</h3>
+          <p className="text-xs text-muted-foreground mb-3">
+            Acesse rapidamente cada página para revisar conteúdo e ajustes.
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            {[
+              { label: "🏠 Início", path: "/" },
+              { label: "📖 Bíblia", path: "/biblia" },
+              { label: "🎵 Louvores", path: "/louvores" },
+              { label: "✨ Devocionais", path: "/devocionais" },
+              { label: "🙏 Pedidos de Oração", path: "/pedidos-oracao" },
+              { label: "🎮 Atividades", path: "/atividades" },
+              { label: "📸 Álbum", path: "/album" },
+              { label: "🎬 Lemos Play", path: "/lemosplay" },
+            ].map((p) => (
+              <button
+                key={p.path}
+                onClick={() => navigate(p.path)}
+                className="px-3 py-3 rounded-xl border-2 border-amber-200 bg-gradient-to-br from-amber-50 to-yellow-50 hover:from-amber-100 hover:to-yellow-100 hover:scale-[1.02] transition font-display font-bold text-sm text-amber-900 text-left"
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
       <FeedbackFooter />
     </div>
