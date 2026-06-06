@@ -40,8 +40,8 @@ export default function PageHeader({ title, subtitle, icon }: PageHeaderProps) {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 w-full mb-3">
-      <div className="flex items-stretch gap-2 px-2 py-2 bg-white/70 backdrop-blur-md shadow-lg rounded-b-2xl border-b-2 border-amber-300/60">
+    <header className="sticky top-0 z-40 w-screen ml-[calc(50%-50vw)] mb-3">
+      <div className="flex items-stretch gap-2 px-3 py-2 bg-white/70 backdrop-blur-md shadow-lg border-b-2 border-amber-300/60">
         {/* Home */}
         <button
           onClick={() => navigate("/")}

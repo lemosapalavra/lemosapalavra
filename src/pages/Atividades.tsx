@@ -11,6 +11,11 @@ import iconColorir from "@/assets/icon-colorir.png";
 import icon7Erros from "@/assets/icon-7erros.png";
 import logoCentral from "@/assets/logo-central.png";
 import iconEducacionais from "@/assets/educacionais/logo.png.asset.json";
+import iconCacaPalavras from "@/assets/atividades/icone-caca-palavras.png.asset.json";
+import iconLigueCores from "@/assets/atividades/icone-ligue-cores.png.asset.json";
+import cacaImg1 from "@/assets/cacapalavras/caca-1.jpg.asset.json";
+import cacaImg2 from "@/assets/cacapalavras/caca-2.jpg.asset.json";
+import cacaImg3 from "@/assets/cacapalavras/caca-3.jpg.asset.json";
 
 // Puzzle source images (real biblical scenes)
 import imgCriacao from "@/assets/historia-criacao.png";
@@ -301,13 +306,14 @@ export default function Atividades() {
   const closeCelebration = () => setCelebration({ show: false, message: "", coins: 0, emoji: "🏆" });
 
   const activities = [
-    { title: "Quiz Bíblico",        icon: iconQuiz,            id: "quiz",     coins: 5  },
-    { title: "Memória",             icon: iconMemoria,         id: "memory",   coins: 7  },
-    { title: "7 Erros",             icon: icon7Erros,          id: "spot",     coins: 5  },
-    { title: "Colorir",             icon: iconColorir,         id: "coloring", coins: 3  },
-    { title: "Quebra-Cabeça",       icon: iconQuebraCabeca,    id: "jigsaw",   coins: 10 },
-    { title: "Pinte os Círculos",   icon: iconEducacionais.url, id: "edu:circles", coins: 5 },
-    { title: "Ligue as Cores",      icon: iconEducacionais.url, id: "edu:connect", coins: 6 },
+    { title: "Quiz Bíblico",        icon: iconQuiz,             id: "quiz",        coins: 5  },
+    { title: "Memória",             icon: iconMemoria,          id: "memory",      coins: 7  },
+    { title: "7 Erros",             icon: icon7Erros,           id: "spot",        coins: 5  },
+    { title: "Colorir",             icon: iconColorir,          id: "coloring",    coins: 3  },
+    { title: "Quebra-Cabeça",       icon: iconQuebraCabeca,     id: "jigsaw",      coins: 10 },
+    { title: "Caça-Palavras",       icon: iconCacaPalavras.url, id: "wordsearch",  coins: 8  },
+    { title: "Pinte os Círculos",   icon: iconEducacionais.url, id: "edu:circles", coins: 5  },
+    { title: "Ligue as Cores",      icon: iconLigueCores.url,   id: "edu:connect", coins: 6  },
   ];
 
   const bgStyle = { background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" };
@@ -330,6 +336,8 @@ export default function Atividades() {
     return <ColoringGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "jigsaw")
     return <JigsawGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
+  if (activeGame === "wordsearch")
+    return <WordSearchGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame?.startsWith("edu:")) {
     const eduId = activeGame.split(":")[1] as "circles" | "connect" | "differences" | "count";
     return (
