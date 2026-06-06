@@ -1135,3 +1135,160 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
     </div>
   );
 }
+
+/* =========================================================
+   CAÇA-PALAVRAS — 3 cartelas bíblicas (uma por dia, rotativa)
+   O usuário marca cada palavra como encontrada e ganha moedinhas
+========================================================= */
+type CacaCard = { title: string; image: string; words: string[]; reference?: string };
+const cacaCards: CacaCard[] = [
+  {
+    title: "Caça-Palavras Bíblicos",
+    image: cacaImg1.url,
+    words: ["Pedro", "André", "Tiago", "João", "Filipe", "Bartolomeu", "Tomé", "Mateus", "Tiago de Alfeu", "Tadeu", "Simão", "Judas Traidor"],
+    reference: "Mateus 10:2-4",
+  },
+  {
+    title: "O Nascimento de Jesus",
+    image: cacaImg2.url,
+    words: ["Jesus", "Manjedoura", "Estrela", "Pastores", "Anjo", "Presente"],
+    reference: "Lucas 2",
+  },
+  {
+    title: "Personagens da Bíblia",
+    image: cacaImg3.url,
+    words: ["Cesar", "Maria", "Jesus", "Pedro", "José", "Pilatos", "Lazáro", "Tiago"],
+  },
+];
+
+function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
+  const todayCard = cacaCards[dayOfYear() % cacaCards.length];
+  const [card, setCard] = useState<CacaCard>(todayCard);
+  const [found, setFound] = useState<Set<string>>(new Set());
+  const [zoom, setZoom] = useState(false);
+
+  const toggle = (w: string) => {
+    setFound((prev) => {
+      const n = new Set(prev);
+      if (n.has(w)) n.delete(w);
+      else n.add(w);
+      return n;
+    });
+  };
+
+  const completed = found.size === card.words.length && card.words.length > 0;
+  useEffect(() => {
+    if (completed) {
+      const coins = Math.max(5, card.words.length);
+      celebrate(`Você achou todas as ${card.words.length} palavras!`, coins, "🔎");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [completed]);
+
+  const switchCard = (c: CacaCard) => {
+    setCard(c);
+    setFound(new Set());
+  };
+
+  return (
+    <div className="min-h-screen py-6 px-4" style={bgStyle}>
+      <div className="max-w-2xl mx-auto">
+        <PageHeader title="Caça-Palavras" subtitle={card.title} icon={iconCacaPalavras.url} />
+        <button onClick={onBack} className="mb-3 text-primary font-display text-sm font-bold hover:underline">← Voltar às atividades</button>
+
+        <DailyBanner emoji="🔎" text="Caça-Palavras de hoje — amanhã teremos outra cartela!" />
+
+        {/* Card selector */}
+        <div className="flex gap-2 mb-3 flex-wrap justify-center">
+          {cacaCards.map((c) => (
+            <button
+              key={c.title}
+              onClick={() => switchCard(c)}
+              className={`px-3 py-1.5 rounded-full text-xs font-display font-bold border-2 transition ${
+                card.title === c.title
+                  ? "bg-amber-500 text-white border-amber-600 shadow"
+                  : "bg-white text-amber-900 border-amber-300 hover:bg-amber-50"
+              }`}
+            >
+              {c.title}
+            </button>
+          ))}
+        </div>
+
+        {/* Word search image */}
+        <div
+          className="relative rounded-2xl overflow-hidden bg-white border-4 border-amber-300 shadow-2xl cursor-zoom-in"
+          onClick={() => setZoom(true)}
+        >
+          <img src={card.image} alt={card.title} className="w-full h-auto block" />
+          <span className="absolute top-2 right-2 bg-amber-500 text-white text-[10px] font-display font-bold px-2 py-1 rounded-full shadow">
+            🔍 Tocar para ampliar
+          </span>
+        </div>
+
+        {/* Words list */}
+        <div className="mt-4 bg-white rounded-2xl p-4 shadow-lg border-2 border-amber-200">
+          <p className="text-center font-display font-bold text-amber-900 mb-3">
+            Encontre as palavras e marque ✓ ao achar cada uma
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            {card.words.map((w) => {
+              const done = found.has(w);
+              return (
+                <button
+                  key={w}
+                  onClick={() => toggle(w)}
+                  className={`px-3 py-2 rounded-xl border-2 font-body font-semibold text-sm transition ${
+                    done
+                      ? "bg-green-100 border-green-400 text-green-800 line-through"
+                      : "bg-amber-50 border-amber-300 text-amber-900 hover:bg-amber-100"
+                  }`}
+                >
+                  {done ? "✓ " : "⬜ "} {w}
+                </button>
+              );
+            })}
+          </div>
+          {card.reference && (
+            <p className="text-center text-xs text-muted-foreground italic mt-3">📖 {card.reference}</p>
+          )}
+          <div className="mt-3 flex items-center justify-between">
+            <span className="text-xs font-display font-bold text-amber-700">
+              {found.size}/{card.words.length} encontradas
+            </span>
+            <button
+              onClick={() => setFound(new Set())}
+              className="text-xs font-display font-bold text-rose-600 hover:underline"
+            >
+              🔄 Reiniciar
+            </button>
+          </div>
+        </div>
+
+        <p className="text-center text-xs text-muted-foreground font-body mt-3">
+          💡 Complete uma cartela para ganhar <span className="font-bold text-primary">moedinhas 🪙</span>!
+        </p>
+      </div>
+
+      {/* Zoom modal */}
+      {zoom && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 cursor-zoom-out"
+          onClick={() => setZoom(false)}
+        >
+          <button
+            onClick={() => setZoom(false)}
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 text-black font-bold text-xl shadow-lg"
+            aria-label="Fechar"
+          >
+            ✕
+          </button>
+          <img src={card.image} alt={card.title} className="max-w-full max-h-full rounded-xl shadow-2xl" />
+        </div>
+      )}
+
+      <CelebrationAnimation {...celebration} onClose={closeCelebration} />
+    </div>
+  );
+}
+
