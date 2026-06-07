@@ -10,12 +10,10 @@ import iconQuebraCabeca from "@/assets/icon-quebracabeca.png";
 import iconColorir from "@/assets/icon-colorir.png";
 import icon7Erros from "@/assets/icon-7erros.png";
 import logoCentral from "@/assets/logo-central.png";
-import iconEducacionais from "@/assets/educacionais/logo.png.asset.json";
+
 import iconCacaPalavras from "@/assets/atividades/icone-caca-palavras.png.asset.json";
 import iconLigueCores from "@/assets/atividades/icone-ligue-cores.png.asset.json";
-import cacaImg1 from "@/assets/cacapalavras/caca-1.jpg.asset.json";
-import cacaImg2 from "@/assets/cacapalavras/caca-2.jpg.asset.json";
-import cacaImg3 from "@/assets/cacapalavras/caca-3.jpg.asset.json";
+import iconPinteCirculos from "@/assets/atividades/pinte-circulos.png.asset.json";
 
 // Puzzle source images (real biblical scenes)
 import imgCriacao from "@/assets/historia-criacao.png";
@@ -312,7 +310,7 @@ export default function Atividades() {
     { title: "Colorir",             icon: iconColorir,          id: "coloring",    coins: 3  },
     { title: "Quebra-Cabeça",       icon: iconQuebraCabeca,     id: "jigsaw",      coins: 10 },
     { title: "Caça-Palavras",       icon: iconCacaPalavras.url, id: "wordsearch",  coins: 8  },
-    { title: "Pinte os Círculos",   icon: iconEducacionais.url, id: "edu:circles", coins: 5  },
+    { title: "Pinte os Círculos",   icon: iconPinteCirculos.url, id: "edu:circles", coins: 5  },
     { title: "Ligue as Cores",      icon: iconLigueCores.url,   id: "edu:connect", coins: 6  },
   ];
 
@@ -1137,66 +1135,165 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
 }
 
 /* =========================================================
-   CAÇA-PALAVRAS — 3 cartelas bíblicas (uma por dia, rotativa)
-   O usuário marca cada palavra como encontrada e ganha moedinhas
+   CAÇA-PALAVRAS — Grade interativa de letras (clicar para marcar)
+   3 cartelas bíblicas. O usuário clica em duas letras (início/fim)
+   formando uma linha reta; se as letras formarem uma palavra da
+   lista, ela é marcada como encontrada.
 ========================================================= */
-type CacaCard = { title: string; image: string; words: string[]; reference?: string };
+type CacaCard = { title: string; words: string[]; size: number; reference?: string };
 const cacaCards: CacaCard[] = [
   {
-    title: "Caça-Palavras Bíblicos",
-    image: cacaImg1.url,
-    words: ["Pedro", "André", "Tiago", "João", "Filipe", "Bartolomeu", "Tomé", "Mateus", "Tiago de Alfeu", "Tadeu", "Simão", "Judas Traidor"],
+    title: "Os 12 Apóstolos",
+    size: 12,
+    words: ["PEDRO", "ANDRE", "TIAGO", "JOAO", "FILIPE", "TOME", "MATEUS", "TADEU", "SIMAO", "JUDAS"],
     reference: "Mateus 10:2-4",
   },
   {
     title: "O Nascimento de Jesus",
-    image: cacaImg2.url,
-    words: ["Jesus", "Manjedoura", "Estrela", "Pastores", "Anjo", "Presente"],
+    size: 11,
+    words: ["JESUS", "MANJEDOURA", "ESTRELA", "PASTORES", "ANJO", "MARIA", "JOSE", "BELEM"],
     reference: "Lucas 2",
   },
   {
     title: "Personagens da Bíblia",
-    image: cacaImg3.url,
-    words: ["Cesar", "Maria", "Jesus", "Pedro", "José", "Pilatos", "Lazáro", "Tiago"],
+    size: 11,
+    words: ["MARIA", "JESUS", "PEDRO", "JOSE", "PILATOS", "LAZARO", "TIAGO", "MOISES"],
   },
 ];
+
+const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+type Dir = { dx: number; dy: number };
+const DIRS: Dir[] = [
+  { dx: 1, dy: 0 },   // →
+  { dx: 0, dy: 1 },   // ↓
+  { dx: 1, dy: 1 },   // ↘
+  { dx: 1, dy: -1 },  // ↗
+];
+
+function buildGrid(size: number, words: string[], seed: number) {
+  // Deterministic PRNG so the grid is stable per card
+  let s = seed || 1;
+  const rand = () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+  const grid: string[][] = Array.from({ length: size }, () => Array(size).fill(""));
+
+  const tryPlace = (word: string): boolean => {
+    for (let attempt = 0; attempt < 200; attempt++) {
+      const dir = DIRS[Math.floor(rand() * DIRS.length)];
+      const x0 = Math.floor(rand() * size);
+      const y0 = Math.floor(rand() * size);
+      const x1 = x0 + dir.dx * (word.length - 1);
+      const y1 = y0 + dir.dy * (word.length - 1);
+      if (x1 < 0 || x1 >= size || y1 < 0 || y1 >= size) continue;
+      let ok = true;
+      for (let i = 0; i < word.length; i++) {
+        const cx = x0 + dir.dx * i;
+        const cy = y0 + dir.dy * i;
+        const cur = grid[cy][cx];
+        if (cur && cur !== word[i]) { ok = false; break; }
+      }
+      if (!ok) continue;
+      for (let i = 0; i < word.length; i++) {
+        grid[y0 + dir.dy * i][x0 + dir.dx * i] = word[i];
+      }
+      return true;
+    }
+    return false;
+  };
+
+  const placed: string[] = [];
+  [...words].sort((a, b) => b.length - a.length).forEach((w) => {
+    if (tryPlace(w)) placed.push(w);
+  });
+
+  for (let y = 0; y < size; y++)
+    for (let x = 0; x < size; x++)
+      if (!grid[y][x]) grid[y][x] = ALPHA[Math.floor(rand() * 26)];
+
+  return { grid, placed };
+}
+
+function cellsBetween(a: { x: number; y: number }, b: { x: number; y: number }) {
+  const dx = Math.sign(b.x - a.x);
+  const dy = Math.sign(b.y - a.y);
+  const absX = Math.abs(b.x - a.x);
+  const absY = Math.abs(b.y - a.y);
+  // Must be a straight line (horizontal, vertical or 45° diagonal)
+  if (!(absX === 0 || absY === 0 || absX === absY)) return null;
+  const steps = Math.max(absX, absY);
+  const out: { x: number; y: number }[] = [];
+  for (let i = 0; i <= steps; i++) out.push({ x: a.x + dx * i, y: a.y + dy * i });
+  return out;
+}
 
 function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
   const todayCard = cacaCards[dayOfYear() % cacaCards.length];
   const [card, setCard] = useState<CacaCard>(todayCard);
-  const [found, setFound] = useState<Set<string>>(new Set());
-  const [zoom, setZoom] = useState(false);
 
-  const toggle = (w: string) => {
-    setFound((prev) => {
-      const n = new Set(prev);
-      if (n.has(w)) n.delete(w);
-      else n.add(w);
-      return n;
-    });
+  const { grid, placed } = useMemo(
+    () => buildGrid(card.size, card.words, card.title.length * 31 + dayOfYear()),
+    [card]
+  );
+  const wordsInPlay = placed;
+
+  const [found, setFound] = useState<Set<string>>(new Set());
+  const [foundCells, setFoundCells] = useState<Set<string>>(new Set());
+  const [start, setStart] = useState<{ x: number; y: number } | null>(null);
+  const [hoverEnd, setHoverEnd] = useState<{ x: number; y: number } | null>(null);
+  const [flash, setFlash] = useState<{ type: "ok" | "bad"; cells: string[] } | null>(null);
+
+  const keyOf = (x: number, y: number) => `${x},${y}`;
+
+  const clickCell = (x: number, y: number) => {
+    if (!start) { setStart({ x, y }); setHoverEnd({ x, y }); return; }
+    const path = cellsBetween(start, { x, y });
+    setStart(null); setHoverEnd(null);
+    if (!path) return;
+    const letters = path.map((c) => grid[c.y][c.x]).join("");
+    const reversed = [...letters].reverse().join("");
+    const hit = wordsInPlay.find((w) => w === letters || w === reversed);
+    if (hit && !found.has(hit)) {
+      const cells = path.map((c) => keyOf(c.x, c.y));
+      setFound((prev) => new Set(prev).add(hit));
+      setFoundCells((prev) => { const n = new Set(prev); cells.forEach((k) => n.add(k)); return n; });
+      setFlash({ type: "ok", cells });
+      setTimeout(() => setFlash(null), 700);
+    } else {
+      setFlash({ type: "bad", cells: path.map((c) => keyOf(c.x, c.y)) });
+      setTimeout(() => setFlash(null), 500);
+    }
   };
 
-  const completed = found.size === card.words.length && card.words.length > 0;
+  const previewCells = useMemo(() => {
+    if (!start || !hoverEnd) return new Set<string>();
+    const p = cellsBetween(start, hoverEnd);
+    if (!p) return new Set([keyOf(start.x, start.y)]);
+    return new Set(p.map((c) => keyOf(c.x, c.y)));
+  }, [start, hoverEnd]);
+
+  const completed = found.size === wordsInPlay.length && wordsInPlay.length > 0;
   useEffect(() => {
     if (completed) {
-      const coins = Math.max(5, card.words.length);
-      celebrate(`Você achou todas as ${card.words.length} palavras!`, coins, "🔎");
+      const coins = Math.max(5, wordsInPlay.length);
+      celebrate(`Você achou todas as ${wordsInPlay.length} palavras!`, coins, "🔎");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [completed]);
 
   const switchCard = (c: CacaCard) => {
-    setCard(c);
-    setFound(new Set());
+    setCard(c); setFound(new Set()); setFoundCells(new Set()); setStart(null); setHoverEnd(null);
+  };
+
+  const resetCard = () => {
+    setFound(new Set()); setFoundCells(new Set()); setStart(null); setHoverEnd(null);
   };
 
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-3xl mx-auto">
         <PageHeader title="Caça-Palavras" subtitle={card.title} icon={iconCacaPalavras.url} />
         <button onClick={onBack} className="mb-3 text-primary font-display text-sm font-bold hover:underline">← Voltar às atividades</button>
 
-        <DailyBanner emoji="🔎" text="Caça-Palavras de hoje — amanhã teremos outra cartela!" />
+        <DailyBanner emoji="🔎" text="Clique numa letra para iniciar e em outra para terminar. Encontre todas as palavras!" />
 
         {/* Card selector */}
         <div className="flex gap-2 mb-3 flex-wrap justify-center">
@@ -1215,37 +1312,63 @@ function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgSt
           ))}
         </div>
 
-        {/* Word search image */}
-        <div
-          className="relative rounded-2xl overflow-hidden bg-white border-4 border-amber-300 shadow-2xl cursor-zoom-in"
-          onClick={() => setZoom(true)}
-        >
-          <img src={card.image} alt={card.title} className="w-full h-auto block" />
-          <span className="absolute top-2 right-2 bg-amber-500 text-white text-[10px] font-display font-bold px-2 py-1 rounded-full shadow">
-            🔍 Tocar para ampliar
-          </span>
+        {/* Letter grid */}
+        <div className="bg-white rounded-2xl border-4 border-amber-300 shadow-2xl p-2 sm:p-3 mb-4">
+          <div
+            className="grid gap-[2px] sm:gap-[3px] mx-auto"
+            style={{
+              gridTemplateColumns: `repeat(${card.size}, minmax(0, 1fr))`,
+              maxWidth: `min(100%, ${card.size * 44}px)`,
+            }}
+          >
+            {grid.map((row, y) =>
+              row.map((ch, x) => {
+                const k = keyOf(x, y);
+                const isFound = foundCells.has(k);
+                const isPreview = previewCells.has(k);
+                const isStart = start && start.x === x && start.y === y;
+                const isFlashBad = flash?.type === "bad" && flash.cells.includes(k);
+                const isFlashOk = flash?.type === "ok" && flash.cells.includes(k);
+                let cls = "bg-amber-50 text-amber-900";
+                if (isFound) cls = "bg-green-400 text-white";
+                else if (isFlashOk) cls = "bg-green-300 text-green-950 animate-pulse";
+                else if (isFlashBad) cls = "bg-red-300 text-red-950 animate-pulse";
+                else if (isStart) cls = "bg-amber-500 text-white ring-2 ring-amber-700";
+                else if (isPreview) cls = "bg-amber-200 text-amber-900";
+                return (
+                  <button
+                    key={k}
+                    onClick={() => clickCell(x, y)}
+                    onMouseEnter={() => start && setHoverEnd({ x, y })}
+                    className={`aspect-square flex items-center justify-center rounded-md sm:rounded-lg font-display font-extrabold text-[12px] sm:text-base select-none transition ${cls} border border-amber-200`}
+                  >
+                    {ch}
+                  </button>
+                );
+              })
+            )}
+          </div>
         </div>
 
         {/* Words list */}
-        <div className="mt-4 bg-white rounded-2xl p-4 shadow-lg border-2 border-amber-200">
+        <div className="bg-white rounded-2xl p-4 shadow-lg border-2 border-amber-200">
           <p className="text-center font-display font-bold text-amber-900 mb-3">
-            Encontre as palavras e marque ✓ ao achar cada uma
+            Encontre todas as {wordsInPlay.length} palavras
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-            {card.words.map((w) => {
+            {wordsInPlay.map((w) => {
               const done = found.has(w);
               return (
-                <button
+                <div
                   key={w}
-                  onClick={() => toggle(w)}
-                  className={`px-3 py-2 rounded-xl border-2 font-body font-semibold text-sm transition ${
+                  className={`px-3 py-2 rounded-xl border-2 font-body font-semibold text-sm text-center transition ${
                     done
                       ? "bg-green-100 border-green-400 text-green-800 line-through"
-                      : "bg-amber-50 border-amber-300 text-amber-900 hover:bg-amber-100"
+                      : "bg-amber-50 border-amber-300 text-amber-900"
                   }`}
                 >
-                  {done ? "✓ " : "⬜ "} {w}
-                </button>
+                  {done ? "✓ " : "🔍 "} {w}
+                </div>
               );
             })}
           </div>
@@ -1254,10 +1377,10 @@ function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgSt
           )}
           <div className="mt-3 flex items-center justify-between">
             <span className="text-xs font-display font-bold text-amber-700">
-              {found.size}/{card.words.length} encontradas
+              {found.size}/{wordsInPlay.length} encontradas
             </span>
             <button
-              onClick={() => setFound(new Set())}
+              onClick={resetCard}
               className="text-xs font-display font-bold text-rose-600 hover:underline"
             >
               🔄 Reiniciar
@@ -1270,25 +1393,9 @@ function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgSt
         </p>
       </div>
 
-      {/* Zoom modal */}
-      {zoom && (
-        <div
-          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 cursor-zoom-out"
-          onClick={() => setZoom(false)}
-        >
-          <button
-            onClick={() => setZoom(false)}
-            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 text-black font-bold text-xl shadow-lg"
-            aria-label="Fechar"
-          >
-            ✕
-          </button>
-          <img src={card.image} alt={card.title} className="max-w-full max-h-full rounded-xl shadow-2xl" />
-        </div>
-      )}
-
       <CelebrationAnimation {...celebration} onClose={closeCelebration} />
     </div>
   );
 }
+
 
