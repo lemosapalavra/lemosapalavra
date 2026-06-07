@@ -524,20 +524,22 @@ function CategoryPage({
                     <span className="absolute top-6 right-1 z-20 text-[9px] bg-red-500 text-white px-1.5 rounded-full leading-tight font-bold shadow">×{owned[s.id]}</span>
                   )}
 
-                  {/* Image area */}
-                  <div className="relative flex-1 w-full bg-gradient-to-b from-white to-amber-50/40 flex items-center justify-center overflow-hidden">
+                  {/* Image area — fills the recipient completely */}
+                  <div className="relative flex-1 w-full overflow-hidden">
                     {has && s.image ? (
                       <img
                         src={s.image}
                         alt={s.name}
-                        className="max-w-full max-h-full object-contain p-1"
+                        className="absolute inset-0 w-full h-full object-cover"
                         loading="lazy"
                         decoding="async"
                       />
                     ) : has ? (
-                      <span className="text-4xl">{s.emoji}</span>
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-b from-white to-amber-50/40">
+                        <span className="text-4xl">{s.emoji}</span>
+                      </div>
                     ) : (
-                      <div className="flex flex-col items-center justify-center text-amber-800/40">
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-b from-white to-amber-50/40 text-amber-800/40">
                         <span className="text-3xl drop-shadow">❓</span>
                       </div>
                     )}
