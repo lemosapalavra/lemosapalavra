@@ -88,13 +88,14 @@ export default function Historias() {
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
-        <iframe
-          src={playing.src}
-          className="w-full h-full"
-          allow="autoplay; encrypted-media; fullscreen"
-          allowFullScreen
-          title={playing.title}
-        />
+        {playing.src ? (
+          <video src={playing.src} className="absolute inset-0 w-full h-full bg-black" controls autoPlay />
+        ) : (
+          <div className="max-w-md mx-auto text-center text-white p-6">
+            <h2 className="font-display text-3xl font-bold mb-3">Vídeo em atualização</h2>
+            <p className="text-white/80">O link antigo estava quebrado e foi removido para não exibir erro 404.</p>
+          </div>
+        )}
       </div>
     );
   }
