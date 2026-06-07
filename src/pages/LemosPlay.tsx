@@ -200,6 +200,7 @@ export default function LemosPlay() {
 
   const playInfo = useMemo(() => {
     if (!playing) return null;
+    if (!playing.src) return { kind: "iframe" as const, embedUrl: "", watchUrl: "", poster: playing.poster };
     const n = normalizeVideo(playing.src, true);
     const p = progress[playing.id];
     const start = p && p.d > 0 && p.t > 5 && p.t < p.d - 10 ? Math.floor(p.t) : 0;
@@ -216,6 +217,7 @@ export default function LemosPlay() {
   useEffect(() => {
     if (!playing) { setPlayError(false); return; }
     setPlayError(false);
+    if (!playing.src || playInfo?.kind === "mp4") return;
     const t = window.setTimeout(() => {
       // If iframe hasn't fired load within 8s, assume blocked/broken
       try {
@@ -224,7 +226,7 @@ export default function LemosPlay() {
       } catch { /* cross-origin = loaded fine */ }
     }, 8000);
     return () => window.clearTimeout(t);
-  }, [playing]);
+  }, [playing, playInfo?.kind]);
 
   useEffect(() => {
     if (!playing) return;
@@ -386,7 +388,7 @@ export default function LemosPlay() {
           </button>
           {playInfo?.kind === "mp4" ? (
             <video src={playSrc} className="absolute inset-0 w-full h-full bg-black" controls autoPlay onError={() => setPlayError(true)} />
-          ) : (
+          ) : playSrc ? (
             <iframe
               ref={iframeRef}
               src={playSrc}
@@ -396,19 +398,21 @@ export default function LemosPlay() {
               title={playing.title}
               onError={() => setPlayError(true)}
             />
-          )}
-          {playError && (
+          ) : null}
+          {(playError || !playSrc) && (
             <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/85 backdrop-blur p-6">
               <div className="max-w-md w-full bg-zinc-900 border border-zinc-700 rounded-xl p-6 text-center text-white shadow-2xl">
-                <h3 className="text-xl font-extrabold mb-2">Vídeo indisponível</h3>
+                <h3 className="text-xl font-extrabold mb-2">{playSrc ? "Vídeo indisponível" : "Vídeo em atualização"}</h3>
                 <p className="text-sm text-zinc-300 mb-5">
-                  Este link não carregou. O servidor de vídeo pode estar offline ou bloqueando este domínio.
-                  {isAdmin && " Como admin, você pode substituir o link em ⚙️ Configurar → Lemos Play (cole o link do YouTube ou Vimeo, ele será convertido automaticamente)."}
+                  {playSrc ? "Este link não carregou. O servidor de vídeo pode estar offline ou bloqueando este domínio." : "O link antigo deste vídeo estava quebrado e foi removido para não exibir erro 404."}
+                  {isAdmin && " Como admin, você pode substituir o link em ⚙️ Configurar → Lemos Play (cole o link do YouTube, Vimeo ou um arquivo MP4)."}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                  <a href={playInfo?.watchUrl || playing.src} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded bg-white text-black font-bold hover:bg-white/85">
-                    Abrir em nova aba
-                  </a>
+                  {playSrc && (
+                    <a href={playInfo?.watchUrl || playing.src} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded bg-white text-black font-bold hover:bg-white/85">
+                      Abrir em nova aba
+                    </a>
+                  )}
                   {isAdmin && (
                     <button onClick={() => { setPlaying(null); setAdminOpen(true); }} className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded bg-red-600 text-white font-bold hover:bg-red-700">
                       Corrigir link
