@@ -310,7 +310,7 @@ export default function Atividades() {
     { title: "Colorir",             icon: iconColorir,          id: "coloring",    coins: 3  },
     { title: "Quebra-Cabeça",       icon: iconQuebraCabeca,     id: "jigsaw",      coins: 10 },
     { title: "Caça-Palavras",       icon: iconCacaPalavras.url, id: "wordsearch",  coins: 8  },
-    { title: "Pinte os Círculos",   icon: iconEducacionais.url, id: "edu:circles", coins: 5  },
+    { title: "Pinte os Círculos",   icon: iconPinteCirculos.url, id: "edu:circles", coins: 5  },
     { title: "Ligue as Cores",      icon: iconLigueCores.url,   id: "edu:connect", coins: 6  },
   ];
 
