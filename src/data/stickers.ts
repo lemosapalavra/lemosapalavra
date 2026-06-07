@@ -206,6 +206,20 @@ const raw: Category[] = [
     ], personagensImgs),
   },
   {
+    key: "mulheres", name: "Mulheres da Bíblia", icon: "👩", color: "from-pink-400 to-rose-600",
+    bgs: [bgPersonagens1, bgIgreja1],
+    stickers: build([
+      ["Sara, mãe das nações", "👵", "Gênesis 17:15"],
+      ["Rute, a fiel", "🌾", "Rute 1:16"],
+      ["Ana, mãe de Samuel", "🙏", "1 Samuel 1"],
+      ["Débora, juíza e profetisa", "⚖️", "Juízes 4-5"],
+      ["Ester, a rainha corajosa", "👸", "Ester 4:14"],
+      ["Maria, mãe de Jesus", "🌹", "Lucas 1:26"],
+      ["Maria Madalena", "💧", "João 20:11"],
+      ["Lídia, vendedora de púrpura", "💜", "Atos 16:14"],
+    ], personagensImgs),
+  },
+  {
     key: "missoes", name: "Missões e Aventuras", icon: "🌍", color: "from-teal-400 to-cyan-600",
     bgs: [bgLugares1],
     stickers: build([
