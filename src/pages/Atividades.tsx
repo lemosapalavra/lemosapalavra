@@ -13,9 +13,7 @@ import logoCentral from "@/assets/logo-central.png";
 import iconEducacionais from "@/assets/educacionais/logo.png.asset.json";
 import iconCacaPalavras from "@/assets/atividades/icone-caca-palavras.png.asset.json";
 import iconLigueCores from "@/assets/atividades/icone-ligue-cores.png.asset.json";
-import cacaImg1 from "@/assets/cacapalavras/caca-1.jpg.asset.json";
-import cacaImg2 from "@/assets/cacapalavras/caca-2.jpg.asset.json";
-import cacaImg3 from "@/assets/cacapalavras/caca-3.jpg.asset.json";
+import iconPinteCirculos from "@/assets/atividades/pinte-circulos.png.asset.json";
 
 // Puzzle source images (real biblical scenes)
 import imgCriacao from "@/assets/historia-criacao.png";
