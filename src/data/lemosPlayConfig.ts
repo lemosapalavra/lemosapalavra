@@ -22,18 +22,21 @@ export interface LemosPlayConfig {
 }
 
 const KEY = "lemos_play_config_v1";
+const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
+const LOCAL_POSTER = (file: string) => `/videos/${file}`;
+const UNAVAILABLE_VIDEO = "";
 
 const defaultMusicas: PlayEntry[] = [
-  { id: "m1", title: "Do meu Jeito", src: "https://iframe.mediadelivery.net/embed/660719/6400db8d-69e9-4b99-8c19-9a512f714662?autoplay=true&preload=true" },
-  { id: "m2", title: "Pai e Filho", src: "https://iframe.mediadelivery.net/embed/660719/c1358bec-0118-4db8-8b34-8dce8c765fe2?autoplay=true&preload=true" },
-  { id: "m3", title: "Um de Nós", src: "https://iframe.mediadelivery.net/embed/660719/4a4cfdb3-e26c-4dc9-9363-f045feca99be?autoplay=true&preload=true" },
+  { id: "m1", title: "Do meu Jeito", src: UNAVAILABLE_VIDEO },
+  { id: "m2", title: "Pai e Filho", src: UNAVAILABLE_VIDEO },
+  { id: "m3", title: "Um de Nós", src: UNAVAILABLE_VIDEO },
 ];
 
 const defaultLouvores: PlayEntry[] = [
-  { id: "lv1", title: "Espírito Santo", src: "https://iframe.mediadelivery.net/embed/660653/ed00cfd9-9b30-4803-bf53-8070ec0b5be9?autoplay=true&preload=true" },
-  { id: "lv2", title: "Sou Fiel", src: "https://iframe.mediadelivery.net/embed/660653/2336364c-8169-4926-ac1a-1fc6baa6a0c5?autoplay=true&preload=true" },
-  { id: "lv3", title: "Graça Aleluia", src: "https://iframe.mediadelivery.net/embed/660653/ae17b103-e921-4ebb-bb23-2ae690c2e5a5?autoplay=true&preload=true" },
-  { id: "lv4", title: "Palavra Eterna", src: "https://iframe.mediadelivery.net/embed/660653/49bd5ac8-4537-45f6-9b25-d8af4da7d099?autoplay=true&preload=true" },
+  { id: "lv1", title: "Espírito Santo", src: UNAVAILABLE_VIDEO },
+  { id: "lv2", title: "Sou Fiel", src: LOCAL_VIDEO("ser-fiel.mp4") },
+  { id: "lv3", title: "Graça Aleluia", src: LOCAL_VIDEO("aleluia.mp4"), poster: LOCAL_POSTER("aleluia-poster.jpg") },
+  { id: "lv4", title: "Palavra Eterna", src: LOCAL_VIDEO("palavra-eterna.mp4"), poster: LOCAL_POSTER("palavra-eterna-poster.jpg") },
 ];
 
 function fromVideo(v: BibleVideo, id: string): PlayEntry {
