@@ -25,13 +25,16 @@ interface PlayItem {
   category: string;
 }
 
-const toPlay = (v: PlayEntry, category: string): PlayItem => ({
-  id: v.id,
-  title: v.title,
-  src: v.src,
-  poster: v.poster,
-  category,
-});
+const toPlay = (v: PlayEntry, category: string): PlayItem => {
+  const n = normalizeVideo(v.src, false);
+  return {
+    id: v.id,
+    title: v.title,
+    src: v.src,
+    poster: v.poster || n.poster,
+    category,
+  };
+};
 
 const PROGRESS_KEY = "lemosplay:progress";
 type ProgressMap = Record<string, { t: number; d: number; updated: number }>;
