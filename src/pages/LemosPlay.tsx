@@ -56,7 +56,7 @@ const initialSocial = (id: string): SocialState => {
 };
 const fmt = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}k` : `${n}`);
 
-function VideoSideActions({ itemId, title, src }: { itemId: string; title: string; src: string }) {
+function VideoSideActions({ itemId, title, src, className = "absolute top-1 right-1" }: { itemId: string; title: string; src: string; className?: string }) {
   const [map, setMap] = useState<SocialMap>(() => loadSocial());
   const st = map[itemId] || initialSocial(itemId);
   const update = (patch: Partial<SocialState>) => {
@@ -100,7 +100,7 @@ function VideoSideActions({ itemId, title, src }: { itemId: string; title: strin
   );
 
   return (
-    <div className="absolute top-1 right-1 z-20 flex flex-col gap-1.5 items-center">
+    <div className={`${className} z-20 flex flex-col gap-1.5 items-center`}>
       <Btn onClick={toggleFollow} icon={UserPlus} label={st.following ? "Seguindo" : "Seguir"} active={st.following} color="text-emerald-300" />
       <Btn onClick={toggleLike} icon={Heart} label={fmt(st.likes)} active={st.liked} color="text-rose-400" />
       <Btn onClick={onComment} icon={MessageCircle} label={fmt(st.comments)} />
@@ -364,7 +364,8 @@ export default function LemosPlay() {
                 const pct = p && p.d > 0 ? Math.min(100, Math.round((p.t / p.d) * 100)) : 0;
                 return (
                   <button key={v.id} onClick={() => { setPlaying(v); setOpenGroup(null); }} className="relative aspect-video rounded-lg overflow-hidden bg-zinc-800 hover:ring-2 hover:ring-white transition">
-                    {v.poster && <img src={v.poster} alt={v.title} className="w-full h-full object-cover" />}
+                    {v.poster ? <img src={v.poster} alt={v.title} className="w-full h-full object-cover" /> : <div className="absolute inset-0 bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center"><Play className="w-10 h-10 text-white/40" /></div>}
+                    <VideoSideActions itemId={v.id} title={v.title} src={v.src} />
                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-2">
                       <p className="text-white text-xs font-bold text-left line-clamp-2">{v.title}</p>
                     </div>
@@ -399,6 +400,7 @@ export default function LemosPlay() {
               onError={() => setPlayError(true)}
             />
           ) : null}
+          <VideoSideActions itemId={playing.id} title={playing.title} src={playing.src} className="absolute right-4 top-1/2 -translate-y-1/2" />
           {(playError || !playSrc) && (
             <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/85 backdrop-blur p-6">
               <div className="max-w-md w-full bg-zinc-900 border border-zinc-700 rounded-xl p-6 text-center text-white shadow-2xl">
