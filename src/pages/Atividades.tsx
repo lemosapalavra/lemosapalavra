@@ -10,7 +10,7 @@ import iconQuebraCabeca from "@/assets/icon-quebracabeca.png";
 import iconColorir from "@/assets/icon-colorir.png";
 import icon7Erros from "@/assets/icon-7erros.png";
 import logoCentral from "@/assets/logo-central.png";
-import iconEducacionais from "@/assets/educacionais/logo.png.asset.json";
+
 import iconCacaPalavras from "@/assets/atividades/icone-caca-palavras.png.asset.json";
 import iconLigueCores from "@/assets/atividades/icone-ligue-cores.png.asset.json";
 import iconPinteCirculos from "@/assets/atividades/pinte-circulos.png.asset.json";
