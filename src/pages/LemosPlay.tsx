@@ -198,13 +198,33 @@ export default function LemosPlay() {
     [filmesPlay, musicasPlay, louvoresPlay, seriesGroupItems]
   );
 
-  const playSrc = useMemo(() => {
-    if (!playing) return "";
+  const playInfo = useMemo(() => {
+    if (!playing) return null;
+    const n = normalizeVideo(playing.src, true);
     const p = progress[playing.id];
     const start = p && p.d > 0 && p.t > 5 && p.t < p.d - 10 ? Math.floor(p.t) : 0;
-    const sep = playing.src.includes("?") ? "&" : "?";
-    return start > 0 ? `${playing.src}${sep}t=${start}` : playing.src;
+    let url = n.embedUrl;
+    if (start > 0) {
+      const sep = url.includes("?") ? "&" : "?";
+      url = n.kind === "youtube" ? `${url}&start=${start}` : `${url}${sep}t=${start}`;
+    }
+    return { ...n, embedUrl: url };
   }, [playing, progress]);
+  const playSrc = playInfo?.embedUrl ?? "";
+
+  const [playError, setPlayError] = useState(false);
+  useEffect(() => {
+    if (!playing) { setPlayError(false); return; }
+    setPlayError(false);
+    const t = window.setTimeout(() => {
+      // If iframe hasn't fired load within 8s, assume blocked/broken
+      try {
+        const doc = iframeRef.current?.contentDocument;
+        if (!doc) setPlayError(true);
+      } catch { /* cross-origin = loaded fine */ }
+    }, 8000);
+    return () => window.clearTimeout(t);
+  }, [playing]);
 
   useEffect(() => {
     if (!playing) return;
