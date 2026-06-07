@@ -61,18 +61,42 @@ export function defaultConfig(): LemosPlayConfig {
   };
 }
 
+const flattenDefaults = (cfg: LemosPlayConfig) => [
+  ...cfg.filmes,
+  ...cfg.musicas,
+  ...cfg.louvores,
+  ...cfg.series.flatMap((g) => g.videos),
+];
+
+const repairBrokenBunnyLinks = (items: PlayEntry[], defaultsById: Map<string, PlayEntry>) =>
+  items.map((item) => {
+    if (!item.src.includes("iframe.mediadelivery.net")) return item;
+    const fallback = defaultsById.get(item.id);
+    return fallback ? { ...item, src: fallback.src, poster: item.poster ?? fallback.poster } : { ...item, src: "" };
+  });
+
+const repairConfig = (cfg: LemosPlayConfig, def: LemosPlayConfig): LemosPlayConfig => {
+  const defaultsById = new Map(flattenDefaults(def).map((item) => [item.id, item]));
+  return {
+    filmes: repairBrokenBunnyLinks(cfg.filmes, defaultsById),
+    musicas: repairBrokenBunnyLinks(cfg.musicas, defaultsById),
+    louvores: repairBrokenBunnyLinks(cfg.louvores, defaultsById),
+    series: cfg.series.map((group) => ({ ...group, videos: repairBrokenBunnyLinks(group.videos, defaultsById) })),
+  };
+};
+
 export function loadConfig(): LemosPlayConfig {
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) return defaultConfig();
     const parsed = JSON.parse(raw) as Partial<LemosPlayConfig>;
     const def = defaultConfig();
-    return {
+    return repairConfig({
       filmes: parsed.filmes ?? def.filmes,
       series: parsed.series ?? def.series,
       musicas: parsed.musicas ?? def.musicas,
       louvores: parsed.louvores ?? def.louvores,
-    };
+    }, def);
   } catch {
     return defaultConfig();
   }
