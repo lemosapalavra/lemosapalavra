@@ -81,16 +81,18 @@ function VideoSideActions({ itemId, title, src }: { itemId: string; title: strin
   };
 
   const Btn = ({ onClick, icon: Icon, label, active, color }: { onClick: (e: React.MouseEvent) => void; icon: typeof Heart; label: string; active?: boolean; color?: string }) => (
-    <button
+    <span
+      role="button"
+      tabIndex={0}
       onClick={onClick}
-      className="flex flex-col items-center gap-0.5 group/act"
+      className="flex flex-col items-center gap-0.5 group/act cursor-pointer"
       title={label}
     >
       <span className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/55 backdrop-blur flex items-center justify-center transition group-hover/act:bg-black/80 ${active ? color : "text-white"}`}>
         <Icon className={`w-4 h-4 ${active ? "fill-current" : ""}`} />
       </span>
       <span className="text-[9px] font-bold text-white drop-shadow text-center leading-none">{label}</span>
-    </button>
+    </span>
   );
 
   return (
