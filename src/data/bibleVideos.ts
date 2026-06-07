@@ -20,9 +20,6 @@ export interface BibleVideo {
 
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
-const BUNNY = (id: string) => `https://iframe.mediadelivery.net/embed/660536/${id}?autoplay=true`;
-export { BUNNY };
-
 export const seriesVideos: BibleVideo[] = [
   { title: "Adão e Eva — Parte I", icon: iconAdaoEva1, src: UNAVAILABLE_VIDEO },
   { title: "Adão e Eva — Parte II", icon: iconAdaoEva2, src: UNAVAILABLE_VIDEO },

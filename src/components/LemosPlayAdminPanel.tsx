@@ -155,7 +155,7 @@ function PlayList({ items, onChange }: { items: PlayEntry[]; onChange: (v: PlayE
             {editing && (
               <div className="space-y-2 pt-2 border-t border-zinc-800">
                 <label className="block text-[11px] text-zinc-400">URL do vídeo</label>
-                <input value={it.src} onChange={(e) => patch(it.id, { src: e.target.value })} placeholder="https://iframe.mediadelivery.net/embed/... ou YouTube embed" className={inputCls} />
+                <input value={it.src} onChange={(e) => patch(it.id, { src: e.target.value })} placeholder="YouTube, Vimeo ou /videos/arquivo.mp4" className={inputCls} />
                 <label className="block text-[11px] text-zinc-400">URL da capa / ícone (opcional)</label>
                 <input value={it.poster ?? ""} onChange={(e) => patch(it.id, { poster: e.target.value })} placeholder="https://..." className={inputCls} />
               </div>
