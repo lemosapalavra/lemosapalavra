@@ -489,7 +489,14 @@ function CategoryPage({
         <div className="grid grid-cols-4 gap-2 sm:gap-3 w-full" style={{ gridTemplateRows: "repeat(2, minmax(0, 1fr))" }}>
           {stickers.map((s, i) => {
             const has = (owned[s.id] || 0) > 0;
-            const number = String(startIndex + i + 1).padStart(2, "0");
+            const globalNum = String(s.id + 1).padStart(3, "0");
+            const rarityBadge =
+              s.rarity === "reliquia"
+                ? { label: "ESPECIAL", cls: "bg-gradient-to-r from-yellow-300 to-amber-500 text-amber-950 border-yellow-200" }
+                : s.rarity === "rara"
+                ? { label: "RARA", cls: "bg-gradient-to-r from-sky-300 to-indigo-500 text-white border-sky-200" }
+                : { label: "NORMAL", cls: "bg-gradient-to-r from-slate-200 to-slate-400 text-slate-900 border-slate-100" };
+            const corner = s.rarity === "reliquia" ? "✨" : s.rarity === "rara" ? "⭐" : null;
 
             return (
               <button
@@ -498,37 +505,53 @@ function CategoryPage({
                 data-sticker
                 onClick={(e) => { e.stopPropagation(); onStickerClick(s); }}
                 disabled={!has}
-                className={`relative w-full overflow-hidden rounded-lg bg-white/95 shadow-md border border-amber-700/30 flex flex-col aspect-[2/3] ${
-                  has ? "cursor-pointer hover:scale-[1.06] hover:z-30 transition-transform" : "opacity-90"
+                className={`relative w-full overflow-hidden rounded-xl bg-gradient-to-br ${cat.color} p-[3px] shadow-lg flex aspect-[2/3] ${
+                  has ? "cursor-pointer hover:scale-[1.06] hover:z-30 transition-transform" : "opacity-95"
                 }`}
               >
-                {/* Image area — keeps natural proportions, never distorts */}
-                <div className="relative flex-1 w-full bg-amber-50/50 flex items-center justify-center overflow-hidden">
-                  {has && s.image ? (
-                    <img
-                      src={s.image}
-                      alt={s.name}
-                      className="max-w-full max-h-full object-contain p-1"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  ) : has ? (
-                    <span className="text-4xl">{s.emoji}</span>
-                  ) : (
-                    <div className="flex flex-col items-center justify-center text-amber-800/70">
-                      <span className="text-3xl drop-shadow">❓</span>
-                    </div>
-                  )}
-                  {has && (owned[s.id] || 0) > 1 && (
-                    <span className="absolute top-1 right-1 z-20 text-[9px] bg-red-500/90 text-white px-1.5 rounded-full leading-none font-bold">×{owned[s.id]}</span>
-                  )}
-                </div>
-                {/* Name band — below image, never overlaps */}
-                <div className="w-full bg-amber-900 text-amber-50 px-1 py-1 flex items-center gap-1 min-h-[2.4em]">
-                  <span className="text-[9px] bg-amber-400 text-amber-950 px-1 rounded leading-tight font-display font-extrabold shrink-0">{number}</span>
-                  <span className="font-display font-bold text-[9px] sm:text-[10px] leading-tight line-clamp-2 text-left">
-                    {has ? s.name : "???"}
+                {/* Inner white card */}
+                <div className="relative w-full h-full bg-white rounded-[10px] flex flex-col overflow-hidden">
+                  {/* Number ribbon top-left */}
+                  <span className={`absolute top-1 left-1 z-20 text-[9px] font-display font-extrabold px-1.5 py-0.5 rounded-md shadow bg-gradient-to-br ${cat.color} text-white border border-white/60`}>
+                    Nº{globalNum}
                   </span>
+                  {/* Rarity corner sparkle */}
+                  {corner && (
+                    <span className="absolute top-1 right-1 z-20 text-sm drop-shadow">{corner}</span>
+                  )}
+                  {/* Repeat counter */}
+                  {has && (owned[s.id] || 0) > 1 && (
+                    <span className="absolute top-6 right-1 z-20 text-[9px] bg-red-500 text-white px-1.5 rounded-full leading-tight font-bold shadow">×{owned[s.id]}</span>
+                  )}
+
+                  {/* Image area */}
+                  <div className="relative flex-1 w-full bg-gradient-to-b from-white to-amber-50/40 flex items-center justify-center overflow-hidden">
+                    {has && s.image ? (
+                      <img
+                        src={s.image}
+                        alt={s.name}
+                        className="max-w-full max-h-full object-contain p-1"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : has ? (
+                      <span className="text-4xl">{s.emoji}</span>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center text-amber-800/40">
+                        <span className="text-3xl drop-shadow">❓</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Title + rarity band */}
+                  <div className={`w-full bg-gradient-to-r ${cat.color} px-1 py-1 flex flex-col items-center gap-0.5 min-h-[2.6em] text-white`}>
+                    <span className="font-display font-extrabold text-[9px] sm:text-[10px] leading-tight line-clamp-2 text-center drop-shadow">
+                      {has ? s.name : "???"}
+                    </span>
+                    <span className={`text-[7px] font-display font-extrabold px-1.5 py-[1px] rounded-full border ${rarityBadge.cls} leading-none tracking-wider`}>
+                      {rarityBadge.label}
+                    </span>
+                  </div>
                 </div>
               </button>
             );

@@ -104,7 +104,7 @@ export default function Configuracao() {
 
   const statCards = [
     { label: "Moedas", value: stats.coins, emoji: "🪙" },
-    { label: "Figurinhas", value: `${stats.stickers}/250`, emoji: "📸" },
+    { label: "Figurinhas", value: `${stats.stickers}/104`, emoji: "📸" },
     { label: "Pedidos de Oração", value: stats.pedidos, emoji: "🙏" },
     { label: "Feedbacks", value: stats.feedbacks, emoji: "💬" },
     { label: "Visitas Totais", value: stats.totalVisits, emoji: "👁️" },
