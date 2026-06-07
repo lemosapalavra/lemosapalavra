@@ -14,16 +14,15 @@ interface Louvor {
   thumb: string;
 }
 
-const EMBED = (lib: string, id: string, autoplay = false) =>
-  `https://iframe.mediadelivery.net/embed/${lib}/${id}?autoplay=${autoplay}&preload=true&muted=${!autoplay}`;
-const THUMB = (lib: string, id: string) =>
-  `https://iframe.mediadelivery.net/embed/${lib}/${id}?autoplay=false&preload=true&muted=true`;
+const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
+const LOCAL_POSTER = (file: string) => `/videos/${file}`;
+const UNAVAILABLE_VIDEO = "";
 
 const louvores: Louvor[] = [
-  { title: "Espírito Santo", src: EMBED("660653", "ed00cfd9-9b30-4803-bf53-8070ec0b5be9", true), thumb: THUMB("660653", "ed00cfd9-9b30-4803-bf53-8070ec0b5be9") },
-  { title: "Sou Fiel", src: EMBED("660653", "2336364c-8169-4926-ac1a-1fc6baa6a0c5", true), thumb: THUMB("660653", "2336364c-8169-4926-ac1a-1fc6baa6a0c5") },
-  { title: "Graça Aleluia", src: EMBED("660653", "ae17b103-e921-4ebb-bb23-2ae690c2e5a5", true), thumb: THUMB("660653", "ae17b103-e921-4ebb-bb23-2ae690c2e5a5") },
-  { title: "Palavra Eterna", src: EMBED("660653", "49bd5ac8-4537-45f6-9b25-d8af4da7d099", true), thumb: THUMB("660653", "49bd5ac8-4537-45f6-9b25-d8af4da7d099") },
+  { title: "Espírito Santo", src: UNAVAILABLE_VIDEO, thumb: iconLouvoresCat },
+  { title: "Sou Fiel", src: LOCAL_VIDEO("ser-fiel.mp4"), thumb: iconLouvoresCat },
+  { title: "Graça Aleluia", src: LOCAL_VIDEO("aleluia.mp4"), thumb: LOCAL_POSTER("aleluia-poster.jpg") },
+  { title: "Palavra Eterna", src: LOCAL_VIDEO("palavra-eterna.mp4"), thumb: LOCAL_POSTER("palavra-eterna-poster.jpg") },
 ];
 
 type Tab = "louvores" | "playlists" | "musicais";
@@ -48,13 +47,14 @@ export default function Louvores() {
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
-        <iframe
-          src={playing.src}
-          className="absolute inset-0 w-full h-full border-0"
-          allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-          allowFullScreen
-          title={playing.title}
-        />
+        {playing.src ? (
+          <video src={playing.src} className="absolute inset-0 w-full h-full bg-black" controls autoPlay />
+        ) : (
+          <div className="max-w-md mx-auto text-center text-white p-6">
+            <h2 className="font-display text-3xl font-bold mb-3">Vídeo em atualização</h2>
+            <p className="text-white/80">O link antigo estava quebrado e foi removido para não exibir erro 404.</p>
+          </div>
+        )}
       </div>
     );
   }
@@ -67,13 +67,7 @@ export default function Louvores() {
       className="flex flex-col items-center gap-2 hover:scale-105 transition-transform group"
     >
       <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-primary/30 shadow-lg bg-black">
-        <iframe
-          src={l.thumb}
-          className="absolute -inset-4 w-[calc(100%+2rem)] h-[calc(100%+2rem)] pointer-events-none"
-          tabIndex={-1}
-          aria-hidden
-          title={`Capa ${l.title}`}
-        />
+        <img src={l.thumb} alt={l.title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
         <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
       </div>
       <p className="text-xs sm:text-sm font-bold text-primary text-center leading-tight drop-shadow max-w-[120px]">
