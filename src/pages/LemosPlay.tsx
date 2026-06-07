@@ -6,6 +6,7 @@ import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
 import CoinBadge from "@/components/CoinBadge";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { loadConfig, type PlayEntry, type SeriesGroupCfg } from "@/data/lemosPlayConfig";
+import { normalizeVideo } from "@/lib/videoEmbed";
 
 // Coin reward per category when finishing/watching content
 const COIN_REWARDS: Record<string, number> = {
