@@ -384,7 +384,43 @@ export default function LemosPlay() {
           <button onClick={() => setPlaying(null)} className="absolute top-4 right-4 z-20 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white" title="Fechar">
             <X className="w-6 h-6" />
           </button>
-          <iframe ref={iframeRef} src={playSrc} className="absolute inset-0 w-full h-full border-0" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowFullScreen title={playing.title} />
+          {playInfo?.kind === "mp4" ? (
+            <video src={playSrc} className="absolute inset-0 w-full h-full bg-black" controls autoPlay onError={() => setPlayError(true)} />
+          ) : (
+            <iframe
+              ref={iframeRef}
+              src={playSrc}
+              className="absolute inset-0 w-full h-full border-0"
+              allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+              allowFullScreen
+              title={playing.title}
+              onError={() => setPlayError(true)}
+            />
+          )}
+          {playError && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/85 backdrop-blur p-6">
+              <div className="max-w-md w-full bg-zinc-900 border border-zinc-700 rounded-xl p-6 text-center text-white shadow-2xl">
+                <h3 className="text-xl font-extrabold mb-2">Vídeo indisponível</h3>
+                <p className="text-sm text-zinc-300 mb-5">
+                  Este link não carregou. O servidor de vídeo pode estar offline ou bloqueando este domínio.
+                  {isAdmin && " Como admin, você pode substituir o link em ⚙️ Configurar → Lemos Play (cole o link do YouTube ou Vimeo, ele será convertido automaticamente)."}
+                </p>
+                <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                  <a href={playInfo?.watchUrl || playing.src} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded bg-white text-black font-bold hover:bg-white/85">
+                    Abrir em nova aba
+                  </a>
+                  {isAdmin && (
+                    <button onClick={() => { setPlaying(null); setAdminOpen(true); }} className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded bg-red-600 text-white font-bold hover:bg-red-700">
+                      Corrigir link
+                    </button>
+                  )}
+                  <button onClick={() => setPlaying(null)} className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded bg-zinc-800 text-white font-bold hover:bg-zinc-700">
+                    Fechar
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
