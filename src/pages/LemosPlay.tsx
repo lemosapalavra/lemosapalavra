@@ -39,6 +39,72 @@ const loadProgress = (): ProgressMap => {
 };
 const saveProgress = (p: ProgressMap) => localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
 
+/* ============ Estado social por vídeo (curtidas, seguidores, etc) ============ */
+const SOCIAL_KEY = "lemosplay:social";
+type SocialState = { liked: boolean; following: boolean; likes: number; comments: number; shares: number };
+type SocialMap = Record<string, SocialState>;
+const loadSocial = (): SocialMap => { try { return JSON.parse(localStorage.getItem(SOCIAL_KEY) || "{}"); } catch { return {}; } };
+const saveSocial = (s: SocialMap) => localStorage.setItem(SOCIAL_KEY, JSON.stringify(s));
+const initialSocial = (id: string): SocialState => {
+  // pseudo-random initial counts so cards look alive
+  let h = 0; for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
+  return { liked: false, following: false, likes: 50 + (h % 9000), comments: 5 + (h % 400), shares: 1 + (h % 200) };
+};
+const fmt = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}k` : `${n}`);
+
+function VideoSideActions({ itemId, title, src }: { itemId: string; title: string; src: string }) {
+  const [map, setMap] = useState<SocialMap>(() => loadSocial());
+  const st = map[itemId] || initialSocial(itemId);
+  const update = (patch: Partial<SocialState>) => {
+    const next = { ...map, [itemId]: { ...st, ...patch } };
+    setMap(next); saveSocial(next);
+  };
+  const stop = (e: React.MouseEvent) => { e.stopPropagation(); e.preventDefault(); };
+  const toggleLike = (e: React.MouseEvent) => { stop(e); update({ liked: !st.liked, likes: st.likes + (st.liked ? -1 : 1) }); };
+  const toggleFollow = (e: React.MouseEvent) => { stop(e); update({ following: !st.following }); };
+  const onComment = (e: React.MouseEvent) => { stop(e); update({ comments: st.comments + 1 }); };
+  const onShare = async (e: React.MouseEvent) => {
+    stop(e);
+    const url = src || window.location.href;
+    try {
+      if (navigator.share) await navigator.share({ title, url });
+      else await navigator.clipboard.writeText(url);
+    } catch { /* noop */ }
+    update({ shares: st.shares + 1 });
+  };
+  const onDownload = (e: React.MouseEvent) => { stop(e); if (src) window.open(src, "_blank"); };
+  const onSendTo = (e: React.MouseEvent) => {
+    stop(e);
+    const url = src || window.location.href;
+    const text = encodeURIComponent(`${title} — ${url}`);
+    window.open(`https://wa.me/?text=${text}`, "_blank");
+  };
+
+  const Btn = ({ onClick, icon: Icon, label, active, color }: { onClick: (e: React.MouseEvent) => void; icon: typeof Heart; label: string; active?: boolean; color?: string }) => (
+    <button
+      onClick={onClick}
+      className="flex flex-col items-center gap-0.5 group/act"
+      title={label}
+    >
+      <span className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/55 backdrop-blur flex items-center justify-center transition group-hover/act:bg-black/80 ${active ? color : "text-white"}`}>
+        <Icon className={`w-4 h-4 ${active ? "fill-current" : ""}`} />
+      </span>
+      <span className="text-[9px] font-bold text-white drop-shadow text-center leading-none">{label}</span>
+    </button>
+  );
+
+  return (
+    <div className="absolute top-1 right-1 z-20 flex flex-col gap-1.5 items-center">
+      <Btn onClick={toggleFollow} icon={UserPlus} label={st.following ? "Seguindo" : "Seguir"} active={st.following} color="text-emerald-300" />
+      <Btn onClick={toggleLike} icon={Heart} label={fmt(st.likes)} active={st.liked} color="text-rose-400" />
+      <Btn onClick={onComment} icon={MessageCircle} label={fmt(st.comments)} />
+      <Btn onClick={onShare} icon={Share2} label={fmt(st.shares)} />
+      <Btn onClick={onDownload} icon={Download} label="Baixar" />
+      <Btn onClick={onSendTo} icon={Send} label="Enviar" />
+    </div>
+  );
+}
+
 function Row({ title, items, onPlay, progress }: { title: string; items: PlayItem[]; onPlay: (item: PlayItem) => void; progress: ProgressMap }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const scrollBy = (dx: number) => scrollerRef.current?.scrollBy({ left: dx, behavior: "smooth" });
