@@ -133,6 +133,7 @@ function Row({ title, items, onPlay, progress }: { title: string; items: PlayIte
                     <Play className="w-12 h-12 text-white/40" />
                   </div>
                 )}
+                <VideoSideActions itemId={item.id} title={item.title} src={item.src} />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-3 pb-4">
                   <p className="text-white font-bold text-sm text-left line-clamp-1">{item.title}</p>
                   <div className="flex items-center justify-between mt-0.5">
