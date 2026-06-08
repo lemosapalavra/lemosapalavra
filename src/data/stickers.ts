@@ -12,6 +12,8 @@ import bgApocalipse1 from "@/assets/album/apocalipse-1.webp";
 import bgPersonagens1 from "@/assets/album/personagens-1.webp";
 import bgProfetas1 from "@/assets/album/profetas-1.webp";
 import bgVersiculos1 from "@/assets/album/versiculos-1.webp";
+import { generatedStickerImage } from "@/data/generatedStickerImages";
+
 
 // Cropped sticker artwork (sorted by filename)
 function loadSet(glob: Record<string, string>): string[] {
@@ -252,8 +254,14 @@ const raw: Category[] = [
 let nextId = 0;
 export const categories: Category[] = raw.map((c) => ({
   ...c,
-  stickers: c.stickers.map((s) => ({ ...s, id: nextId++ })),
+  stickers: c.stickers.map((s, i) => ({
+    ...s,
+    id: nextId++,
+    // Se houver arte gerada por IA específica para este nome, prioriza-a.
+    image: generatedStickerImage(c.key, i) ?? s.image,
+  })),
 }));
+
 
 export const allStickers: Sticker[] = categories.flatMap((c) => c.stickers);
 
