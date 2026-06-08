@@ -383,10 +383,20 @@ export default function LemosPlay() {
       )}
 
       {playing && (
-        <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
-          <button onClick={() => setPlaying(null)} className="absolute top-4 right-4 z-20 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white" title="Fechar">
+        <div
+          ref={(el) => {
+            if (el && !document.fullscreenElement) {
+              const anyEl = el as any;
+              const req = anyEl.requestFullscreen || anyEl.webkitRequestFullscreen || anyEl.msRequestFullscreen;
+              req?.call(anyEl).catch(() => {});
+            }
+          }}
+          className="fixed inset-0 z-50 bg-black flex items-center justify-center"
+        >
+          <button onClick={() => { if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {}); setPlaying(null); }} className="absolute top-4 right-4 z-30 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white" title="Fechar">
             <X className="w-6 h-6" />
           </button>
+
           {playInfo?.kind === "mp4" ? (
             <video src={playSrc} className="absolute inset-0 w-full h-full bg-black" controls autoPlay onError={() => setPlayError(true)} />
           ) : playSrc ? (
