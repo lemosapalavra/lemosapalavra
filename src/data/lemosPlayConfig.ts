@@ -95,25 +95,32 @@ const flattenDefaults = (cfg: LemosPlayConfig) => [
   ...cfg.series.flatMap((g) => g.videos),
 ];
 
-const repairBrokenBunnyLinks = (items: PlayEntry[], defaultsById: Map<string, PlayEntry>) =>
+const normalizeItemsWithDefaults = (items: PlayEntry[], defaultsById: Map<string, PlayEntry>) =>
   items.map((item) => {
-    if (!item.src.includes("iframe.mediadelivery.net")) return item;
     const fallback = defaultsById.get(item.id);
-    return fallback ? { ...item, src: fallback.src, poster: item.poster ?? fallback.poster } : { ...item, src: "" };
+    if (item.src.includes("iframe.mediadelivery.net")) {
+      return fallback ? { ...item, src: fallback.src, poster: fallback.poster ?? item.poster } : { ...item, src: "" };
+    }
+    if (!fallback) return { ...item, poster: resolvePoster(item.title, item.poster) };
+    return {
+      ...item,
+      poster: resolvePoster(item.title, fallback.poster ?? item.poster),
+    };
   });
 
 const repairConfig = (cfg: LemosPlayConfig, def: LemosPlayConfig): LemosPlayConfig => {
   const defaultsById = new Map(flattenDefaults(def).map((item) => [item.id, item]));
-  const dropEmpty = (items: PlayEntry[]) => repairBrokenBunnyLinks(items, defaultsById).filter((i) => !!i.src);
+  const dropEmpty = (items: PlayEntry[]) => normalizeItemsWithDefaults(items, defaultsById).filter((i) => !!i.src);
   return {
     filmes: dropEmpty(cfg.filmes),
     musicas: dropEmpty(cfg.musicas),
     louvores: dropEmpty(cfg.louvores),
     series: cfg.series
-      .map((group) => ({ ...group, videos: dropEmpty(group.videos) }))
+      .map((group) => ({ ...group, icon: resolvePoster(group.title, group.icon), videos: dropEmpty(group.videos) }))
       .filter((g) => g.videos.length > 0),
   };
 };
+
 
 
 export function loadConfig(): LemosPlayConfig {
