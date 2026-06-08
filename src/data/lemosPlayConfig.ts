@@ -54,12 +54,16 @@ function fromGroup(g: BibleVideoGroup, gid: string): SeriesGroupCfg {
 
 export function defaultConfig(): LemosPlayConfig {
   return {
-    filmes: filmesVideos.map((v, i) => fromVideo(v, `f${i}`)),
-    series: seriesGroups.map((g, i) => fromGroup(g, `sg${i}`)),
-    musicas: defaultMusicas,
-    louvores: defaultLouvores,
+    filmes: filmesVideos.map((v, i) => fromVideo(v, `f${i}`)).filter((v) => !!v.src),
+    series: seriesGroups
+      .map((g, i) => fromGroup(g, `sg${i}`))
+      .map((g) => ({ ...g, videos: g.videos.filter((v) => !!v.src) }))
+      .filter((g) => g.videos.length > 0),
+    musicas: defaultMusicas.filter((v) => !!v.src),
+    louvores: defaultLouvores.filter((v) => !!v.src),
   };
 }
+
 
 const flattenDefaults = (cfg: LemosPlayConfig) => [
   ...cfg.filmes,
@@ -77,13 +81,17 @@ const repairBrokenBunnyLinks = (items: PlayEntry[], defaultsById: Map<string, Pl
 
 const repairConfig = (cfg: LemosPlayConfig, def: LemosPlayConfig): LemosPlayConfig => {
   const defaultsById = new Map(flattenDefaults(def).map((item) => [item.id, item]));
+  const dropEmpty = (items: PlayEntry[]) => repairBrokenBunnyLinks(items, defaultsById).filter((i) => !!i.src);
   return {
-    filmes: repairBrokenBunnyLinks(cfg.filmes, defaultsById),
-    musicas: repairBrokenBunnyLinks(cfg.musicas, defaultsById),
-    louvores: repairBrokenBunnyLinks(cfg.louvores, defaultsById),
-    series: cfg.series.map((group) => ({ ...group, videos: repairBrokenBunnyLinks(group.videos, defaultsById) })),
+    filmes: dropEmpty(cfg.filmes),
+    musicas: dropEmpty(cfg.musicas),
+    louvores: dropEmpty(cfg.louvores),
+    series: cfg.series
+      .map((group) => ({ ...group, videos: dropEmpty(group.videos) }))
+      .filter((g) => g.videos.length > 0),
   };
 };
+
 
 export function loadConfig(): LemosPlayConfig {
   try {

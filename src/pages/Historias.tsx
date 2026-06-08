@@ -32,7 +32,7 @@ interface Folder {
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
 
-const folders: Folder[] = [
+const rawFolders: Folder[] = [
   {
     key: "series",
     title: "Séries Bíblicas",
@@ -59,6 +59,12 @@ const folders: Folder[] = [
     ],
   },
 ];
+
+// Esconde vídeos sem fonte (links quebrados) e pastas sem nenhum vídeo
+const folders: Folder[] = rawFolders
+  .map((f) => ({ ...f, videos: f.videos.filter((v) => !!v.src) }))
+  .filter((f) => f.videos.length > 0);
+
 
 export default function Historias() {
   const [openFolder, setOpenFolder] = useState<Folder | null>(null);

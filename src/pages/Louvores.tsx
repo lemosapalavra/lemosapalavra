@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ArrowLeft } from "lucide-react";
+
 import PageHeader from "@/components/PageHeader";
 import CoinBadge from "@/components/CoinBadge";
 import iconLouvores from "@/assets/icon-louvores.png";
@@ -18,12 +19,15 @@ const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
 
-const louvores: Louvor[] = [
+const allLouvores: Louvor[] = [
   { title: "Espírito Santo", src: UNAVAILABLE_VIDEO, thumb: iconLouvoresCat },
   { title: "Sou Fiel", src: LOCAL_VIDEO("ser-fiel.mp4"), thumb: iconLouvoresCat },
   { title: "Graça Aleluia", src: LOCAL_VIDEO("aleluia.mp4"), thumb: LOCAL_POSTER("aleluia-poster.jpg") },
   { title: "Palavra Eterna", src: LOCAL_VIDEO("palavra-eterna.mp4"), thumb: LOCAL_POSTER("palavra-eterna-poster.jpg") },
 ];
+// Esconde os louvores cujo link está quebrado
+const louvores: Louvor[] = allLouvores.filter((l) => !!l.src);
+
 
 type Tab = "louvores" | "playlists" | "musicais";
 
@@ -37,9 +41,21 @@ export default function Louvores() {
   const [playing, setPlaying] = useState<Louvor | null>(null);
   const [tab, setTab] = useState<Tab>("louvores");
 
+  const playerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (playing && playerRef.current) {
+      const el = playerRef.current as any;
+      const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+      req?.call(el).catch(() => {});
+    }
+    return () => {
+      if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+    };
+  }, [playing]);
+
   if (playing) {
     return (
-      <div className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-in fade-in zoom-in duration-300">
+      <div ref={playerRef} className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-in fade-in zoom-in duration-300">
         <button
           onClick={() => setPlaying(null)}
           className="absolute top-4 left-4 z-20 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white transition"
@@ -58,6 +74,8 @@ export default function Louvores() {
       </div>
     );
   }
+
+
 
 
   const renderItem = (l: Louvor, i: number) => (
