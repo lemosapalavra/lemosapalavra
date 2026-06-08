@@ -1,4 +1,11 @@
 import { filmesVideos, seriesGroups, type BibleVideo, type BibleVideoGroup } from "@/data/bibleVideos";
+import moises3d from "@/assets/lemos-play/moises-3d.png.asset.json";
+import jonasBaleia from "@/assets/lemos-play/jonas-e-a-baleia.png.asset.json";
+import abraaoObediencia from "@/assets/lemos-play/abraao-e-a-obediencia.png.asset.json";
+import danielLeoes from "@/assets/lemos-play/daniel-na-cova-dos-leoes.png.asset.json";
+import doMeuJeito3d from "@/assets/lemos-play/do-meu-jeito-3d.png.asset.json";
+import paiEFilhoThumb from "@/assets/lemos-play/pai-e-filho.png.asset.json";
+import umDeNosThumb from "@/assets/lemos-play/e-se-ele-fosse-um-de-nos.png.asset.json";
 
 export interface PlayEntry {
   id: string;
@@ -26,10 +33,21 @@ const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
 
+const attachedThumbByTitle: Record<string, string> = {
+  "Moisés": moises3d.url,
+  "Jonas e a Baleia": jonasBaleia.url,
+  "Abraão e a Obediência": abraaoObediencia.url,
+  "Daniel na Cova dos Leões": danielLeoes.url,
+  "Do meu Jeito": doMeuJeito3d.url,
+  "Pai e Filho": paiEFilhoThumb.url,
+  "Um de Nós": umDeNosThumb.url,
+  "E se Ele Fosse Um de Nós": umDeNosThumb.url,
+};
+
 const defaultMusicas: PlayEntry[] = [
-  { id: "m1", title: "Do meu Jeito", src: UNAVAILABLE_VIDEO },
-  { id: "m2", title: "Pai e Filho", src: UNAVAILABLE_VIDEO },
-  { id: "m3", title: "Um de Nós", src: UNAVAILABLE_VIDEO },
+  { id: "m1", title: "Do meu Jeito", src: UNAVAILABLE_VIDEO, poster: attachedThumbByTitle["Do meu Jeito"] },
+  { id: "m2", title: "Pai e Filho", src: UNAVAILABLE_VIDEO, poster: attachedThumbByTitle["Pai e Filho"] },
+  { id: "m3", title: "Um de Nós", src: UNAVAILABLE_VIDEO, poster: attachedThumbByTitle["Um de Nós"] },
 ];
 
 const defaultLouvores: PlayEntry[] = [
@@ -39,15 +57,19 @@ const defaultLouvores: PlayEntry[] = [
   { id: "lv4", title: "Palavra Eterna", src: LOCAL_VIDEO("palavra-eterna.mp4"), poster: LOCAL_POSTER("palavra-eterna-poster.jpg") },
 ];
 
+function resolvePoster(title: string, fallback?: string): string | undefined {
+  return attachedThumbByTitle[title] ?? fallback;
+}
+
 function fromVideo(v: BibleVideo, id: string): PlayEntry {
-  return { id, title: v.title, src: v.src, poster: v.icon };
+  return { id, title: v.title, src: v.src, poster: resolvePoster(v.title, v.icon) };
 }
 
 function fromGroup(g: BibleVideoGroup, gid: string): SeriesGroupCfg {
   return {
     id: gid,
     title: g.title,
-    icon: g.icon,
+    icon: resolvePoster(g.title, g.icon),
     videos: g.videos.map((v, i) => fromVideo(v, `${gid}_${i}`)),
   };
 }
@@ -65,6 +87,7 @@ export function defaultConfig(): LemosPlayConfig {
 }
 
 
+
 const flattenDefaults = (cfg: LemosPlayConfig) => [
   ...cfg.filmes,
   ...cfg.musicas,
@@ -72,25 +95,32 @@ const flattenDefaults = (cfg: LemosPlayConfig) => [
   ...cfg.series.flatMap((g) => g.videos),
 ];
 
-const repairBrokenBunnyLinks = (items: PlayEntry[], defaultsById: Map<string, PlayEntry>) =>
+const normalizeItemsWithDefaults = (items: PlayEntry[], defaultsById: Map<string, PlayEntry>) =>
   items.map((item) => {
-    if (!item.src.includes("iframe.mediadelivery.net")) return item;
     const fallback = defaultsById.get(item.id);
-    return fallback ? { ...item, src: fallback.src, poster: item.poster ?? fallback.poster } : { ...item, src: "" };
+    if (item.src.includes("iframe.mediadelivery.net")) {
+      return fallback ? { ...item, src: fallback.src, poster: fallback.poster ?? item.poster } : { ...item, src: "" };
+    }
+    if (!fallback) return { ...item, poster: resolvePoster(item.title, item.poster) };
+    return {
+      ...item,
+      poster: resolvePoster(item.title, fallback.poster ?? item.poster),
+    };
   });
 
 const repairConfig = (cfg: LemosPlayConfig, def: LemosPlayConfig): LemosPlayConfig => {
   const defaultsById = new Map(flattenDefaults(def).map((item) => [item.id, item]));
-  const dropEmpty = (items: PlayEntry[]) => repairBrokenBunnyLinks(items, defaultsById).filter((i) => !!i.src);
+  const dropEmpty = (items: PlayEntry[]) => normalizeItemsWithDefaults(items, defaultsById).filter((i) => !!i.src);
   return {
     filmes: dropEmpty(cfg.filmes),
     musicas: dropEmpty(cfg.musicas),
     louvores: dropEmpty(cfg.louvores),
     series: cfg.series
-      .map((group) => ({ ...group, videos: dropEmpty(group.videos) }))
+      .map((group) => ({ ...group, icon: resolvePoster(group.title, group.icon), videos: dropEmpty(group.videos) }))
       .filter((g) => g.videos.length > 0),
   };
 };
+
 
 
 export function loadConfig(): LemosPlayConfig {
