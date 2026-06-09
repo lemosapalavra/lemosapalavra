@@ -116,26 +116,41 @@ const flattenDefaults = (cfg: LemosPlayConfig) => [
 const normalizeItemsWithDefaults = (items: PlayEntry[], defaultsById: Map<string, PlayEntry>) =>
   items.map((item) => {
     const fallback = defaultsById.get(item.id);
-    if (item.src.includes("iframe.mediadelivery.net")) {
-      return fallback ? { ...item, src: fallback.src, poster: fallback.poster ?? item.poster } : { ...item, src: "" };
-    }
-    if (!fallback) return { ...item, poster: resolvePoster(item.title, item.poster) };
     return {
       ...item,
-      poster: resolvePoster(item.title, fallback.poster ?? item.poster),
+      poster: resolvePoster(item.title, item.poster ?? fallback?.poster),
     };
   });
 
+const mergeById = (userItems: PlayEntry[], defaults: PlayEntry[]): PlayEntry[] => {
+  const map = new Map<string, PlayEntry>();
+  defaults.forEach((d) => map.set(d.id, d));
+  userItems.forEach((u) => {
+    const ex = map.get(u.id);
+    map.set(u.id, ex ? { ...ex, ...u, poster: resolvePoster(u.title || ex.title, u.poster ?? ex.poster) } : { ...u, poster: resolvePoster(u.title, u.poster) });
+  });
+  return Array.from(map.values());
+};
+
 const repairConfig = (cfg: LemosPlayConfig, def: LemosPlayConfig): LemosPlayConfig => {
   const defaultsById = new Map(flattenDefaults(def).map((item) => [item.id, item]));
-  const dropEmpty = (items: PlayEntry[]) => normalizeItemsWithDefaults(items, defaultsById).filter((i) => !!i.src);
+  const norm = (items: PlayEntry[]) => normalizeItemsWithDefaults(items, defaultsById);
   return {
-    filmes: dropEmpty(cfg.filmes),
-    musicas: dropEmpty(cfg.musicas),
-    louvores: dropEmpty(cfg.louvores),
-    series: cfg.series
-      .map((group) => ({ ...group, icon: resolvePoster(group.title, group.icon), videos: dropEmpty(group.videos) }))
-      .filter((g) => g.videos.length > 0),
+    filmes: mergeById(norm(cfg.filmes), def.filmes),
+    musicas: mergeById(norm(cfg.musicas), def.musicas),
+    louvores: mergeById(norm(cfg.louvores), def.louvores),
+    series: (() => {
+      const out = new Map<string, SeriesGroupCfg>();
+      def.series.forEach((g) => out.set(g.id, g));
+      cfg.series.forEach((g) => {
+        const ex = out.get(g.id);
+        const merged: SeriesGroupCfg = ex
+          ? { ...ex, ...g, icon: resolvePoster(g.title || ex.title, g.icon ?? ex.icon), videos: mergeById(norm(g.videos), ex.videos) }
+          : { ...g, icon: resolvePoster(g.title, g.icon), videos: norm(g.videos) };
+        out.set(g.id, merged);
+      });
+      return Array.from(out.values());
+    })(),
   };
 };
 
