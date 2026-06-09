@@ -61,6 +61,7 @@ const attachedThumbByTitle: Record<string, string> = {
   "Sou Fiel": serFielThumb.url,
   "Graça Aleluia": gracaAleluiaThumb.url,
   "Graca Aleluia": gracaAleluiaThumb.url,
+  "Palavra Eterna": palavraEternaThumb.url,
 };
 
 const defaultMusicas: PlayEntry[] = [
