@@ -2,10 +2,17 @@ import { filmesVideos, seriesGroups, type BibleVideo, type BibleVideoGroup } fro
 import moises3d from "@/assets/lemos-play/moises-3d.png.asset.json";
 import jonasBaleia from "@/assets/lemos-play/jonas-e-a-baleia.png.asset.json";
 import abraaoObediencia from "@/assets/lemos-play/abraao-e-a-obediencia.png.asset.json";
+import abraaoTesteThumb from "@/assets/lemos-play/abraao-e-o-teste.png.asset.json";
+import provadosPeloFogoThumb from "@/assets/lemos-play/provados-pelo-fogo.png.asset.json";
+import esauEJacoThumb from "@/assets/lemos-play/esau-e-jaco.png.asset.json";
+import joThumb from "@/assets/lemos-play/jo.png.asset.json";
 import danielLeoes from "@/assets/lemos-play/daniel-na-cova-dos-leoes.png.asset.json";
 import doMeuJeito3d from "@/assets/lemos-play/do-meu-jeito-3d.png.asset.json";
 import paiEFilhoThumb from "@/assets/lemos-play/pai-e-filho.png.asset.json";
 import umDeNosThumb from "@/assets/lemos-play/e-se-ele-fosse-um-de-nos.png.asset.json";
+import espiritoSantoThumb from "@/assets/lemos-play/espirito-santo-i.png.asset.json";
+import serFielThumb from "@/assets/lemos-play/ser-fiel-thumb.png.asset.json";
+import gracaAleluiaThumb from "@/assets/lemos-play/graca-aleluia.png.asset.json";
 
 export interface PlayEntry {
   id: string;
@@ -37,11 +44,22 @@ const attachedThumbByTitle: Record<string, string> = {
   "Moisés": moises3d.url,
   "Jonas e a Baleia": jonasBaleia.url,
   "Abraão e a Obediência": abraaoObediencia.url,
+  "Abraão e o Teste": abraaoTesteThumb.url,
+  "Provados pelo fogo": provadosPeloFogoThumb.url,
+  "Provados pelo Fogo": provadosPeloFogoThumb.url,
+  "Esau e Jacó": esauEJacoThumb.url,
+  "Esaú e Jacó": esauEJacoThumb.url,
+  "Jó": joThumb.url,
   "Daniel na Cova dos Leões": danielLeoes.url,
   "Do meu Jeito": doMeuJeito3d.url,
   "Pai e Filho": paiEFilhoThumb.url,
   "Um de Nós": umDeNosThumb.url,
   "E se Ele Fosse Um de Nós": umDeNosThumb.url,
+  "Espírito Santo": espiritoSantoThumb.url,
+  "Espirito Santo": espiritoSantoThumb.url,
+  "Sou Fiel": serFielThumb.url,
+  "Graça Aleluia": gracaAleluiaThumb.url,
+  "Graca Aleluia": gracaAleluiaThumb.url,
 };
 
 const defaultMusicas: PlayEntry[] = [
@@ -51,9 +69,9 @@ const defaultMusicas: PlayEntry[] = [
 ];
 
 const defaultLouvores: PlayEntry[] = [
-  { id: "lv1", title: "Espírito Santo", src: UNAVAILABLE_VIDEO },
-  { id: "lv2", title: "Sou Fiel", src: LOCAL_VIDEO("ser-fiel.mp4") },
-  { id: "lv3", title: "Graça Aleluia", src: LOCAL_VIDEO("aleluia.mp4"), poster: LOCAL_POSTER("aleluia-poster.jpg") },
+  { id: "lv1", title: "Espírito Santo", src: UNAVAILABLE_VIDEO, poster: attachedThumbByTitle["Espírito Santo"] },
+  { id: "lv2", title: "Sou Fiel", src: LOCAL_VIDEO("ser-fiel.mp4"), poster: attachedThumbByTitle["Sou Fiel"] },
+  { id: "lv3", title: "Graça Aleluia", src: LOCAL_VIDEO("aleluia.mp4"), poster: attachedThumbByTitle["Graça Aleluia"] },
   { id: "lv4", title: "Palavra Eterna", src: LOCAL_VIDEO("palavra-eterna.mp4"), poster: LOCAL_POSTER("palavra-eterna-poster.jpg") },
 ];
 
