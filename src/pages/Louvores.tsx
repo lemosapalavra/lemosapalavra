@@ -8,6 +8,9 @@ import iconLouvoresCat from "@/assets/icon-louvores-cat.png";
 import iconPlaylists from "@/assets/icon-playlists.png";
 import iconMusicais from "@/assets/icon-musicais.png";
 import logoCentral from "@/assets/logo-central.png";
+import espiritoSantoThumb from "@/assets/lemos-play/espirito-santo-i.png.asset.json";
+import serFielThumb from "@/assets/lemos-play/ser-fiel-thumb.png.asset.json";
+import gracaAleluiaThumb from "@/assets/lemos-play/graca-aleluia.png.asset.json";
 
 interface Louvor {
   title: string;
@@ -20,9 +23,9 @@ const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
 
 const allLouvores: Louvor[] = [
-  { title: "Espírito Santo", src: UNAVAILABLE_VIDEO, thumb: iconLouvoresCat },
-  { title: "Sou Fiel", src: LOCAL_VIDEO("ser-fiel.mp4"), thumb: iconLouvoresCat },
-  { title: "Graça Aleluia", src: LOCAL_VIDEO("aleluia.mp4"), thumb: LOCAL_POSTER("aleluia-poster.jpg") },
+  { title: "Espírito Santo", src: UNAVAILABLE_VIDEO, thumb: espiritoSantoThumb.url },
+  { title: "Sou Fiel", src: LOCAL_VIDEO("ser-fiel.mp4"), thumb: serFielThumb.url },
+  { title: "Graça Aleluia", src: LOCAL_VIDEO("aleluia.mp4"), thumb: gracaAleluiaThumb.url },
   { title: "Palavra Eterna", src: LOCAL_VIDEO("palavra-eterna.mp4"), thumb: LOCAL_POSTER("palavra-eterna-poster.jpg") },
 ];
 // Esconde os louvores cujo link está quebrado
