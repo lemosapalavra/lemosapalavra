@@ -13,6 +13,7 @@ import umDeNosThumb from "@/assets/lemos-play/e-se-ele-fosse-um-de-nos.png.asset
 import espiritoSantoThumb from "@/assets/lemos-play/espirito-santo-i.png.asset.json";
 import serFielThumb from "@/assets/lemos-play/ser-fiel-thumb.png.asset.json";
 import gracaAleluiaThumb from "@/assets/lemos-play/graca-aleluia.png.asset.json";
+import palavraEternaThumb from "@/assets/lemos-play/palavra-eterna.png.asset.json";
 
 export interface PlayEntry {
   id: string;
