@@ -94,13 +94,10 @@ function fromGroup(g: BibleVideoGroup, gid: string): SeriesGroupCfg {
 
 export function defaultConfig(): LemosPlayConfig {
   return {
-    filmes: filmesVideos.map((v, i) => fromVideo(v, `f${i}`)).filter((v) => !!v.src),
-    series: seriesGroups
-      .map((g, i) => fromGroup(g, `sg${i}`))
-      .map((g) => ({ ...g, videos: g.videos.filter((v) => !!v.src) }))
-      .filter((g) => g.videos.length > 0),
-    musicas: defaultMusicas.filter((v) => !!v.src),
-    louvores: defaultLouvores.filter((v) => !!v.src),
+    filmes: filmesVideos.map((v, i) => fromVideo(v, `f${i}`)),
+    series: seriesGroups.map((g, i) => fromGroup(g, `sg${i}`)),
+    musicas: defaultMusicas,
+    louvores: defaultLouvores,
   };
 }
 
