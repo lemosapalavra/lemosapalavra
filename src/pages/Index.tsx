@@ -18,6 +18,16 @@ export default function Index() {
   const [user, setUser] = useState<{ name: string; email: string; avatar?: string } | null>(null);
   const [dedicatoriaOpen, setDedicatoriaOpen] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const onDoc = (e: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) setUserMenuOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, []);
 
   useEffect(() => {
     const stored = localStorage.getItem("lemos_user");
