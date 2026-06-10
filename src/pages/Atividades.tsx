@@ -119,19 +119,19 @@ const quizCategories = [
    MEMÓRIA — inspirado em paciencia.co/memoria
    3 níveis de dificuldade + cronômetro + movimentos
 ========================================================= */
-// Memory uses real biblical sticker images from our album.
-import mem01 from "@/assets/album/herois-stickers/01.webp";
-import mem02 from "@/assets/album/herois-stickers/02.webp";
-import mem03 from "@/assets/album/herois-stickers/03.webp";
-import mem04 from "@/assets/album/herois-stickers/04.webp";
-import mem05 from "@/assets/album/herois-stickers/05.webp";
-import mem06 from "@/assets/album/herois-stickers/06.webp";
-import mem07 from "@/assets/album/herois-stickers/07.webp";
-import mem08 from "@/assets/album/herois-stickers/08.webp";
-import mem09 from "@/assets/album/herois-stickers/09.webp";
-import mem10 from "@/assets/album/herois-stickers/10.webp";
-import mem11 from "@/assets/album/herois-stickers/11.webp";
-import mem12 from "@/assets/album/herois-stickers/12.webp";
+// Memory uses the consistent Pixar 3D stickers (squares fit perfectly into card slots).
+import mem01 from "@/assets/album/generated/herois-1.png";
+import mem02 from "@/assets/album/generated/herois-2.png";
+import mem03 from "@/assets/album/generated/herois-3.png";
+import mem04 from "@/assets/album/generated/herois-4.png";
+import mem05 from "@/assets/album/generated/herois-5.png";
+import mem06 from "@/assets/album/generated/herois-6.png";
+import mem07 from "@/assets/album/generated/herois-7.png";
+import mem08 from "@/assets/album/generated/herois-8.png";
+import mem09 from "@/assets/album/generated/criacao-1.png";
+import mem10 from "@/assets/album/generated/criacao-4.png";
+import mem11 from "@/assets/album/generated/criacao-5.png";
+import mem12 from "@/assets/album/generated/criacao-8.png";
 const memoryImages = [mem01, mem02, mem03, mem04, mem05, mem06, mem07, mem08, mem09, mem10, mem11, mem12];
 const memorySets = {
   facil:   memoryImages.slice(0, 6),
