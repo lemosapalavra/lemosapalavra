@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Settings } from "lucide-react";
+import { Settings, LogOut } from "lucide-react";
 import OrbitMenu from "@/components/OrbitMenu";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import IndexAdminPanel from "@/components/IndexAdminPanel";
@@ -9,6 +9,7 @@ import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { loadOrbit } from "@/data/orbitConfig";
 
 import iconDedicatoria from "@/assets/icon-dedicatoria.png";
+import iconUsuario from "@/assets/icon-usuario.png";
 
 export default function Index() {
   const navigate = useNavigate();
