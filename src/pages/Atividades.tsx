@@ -156,85 +156,78 @@ const spotScenes: SpotScene[] = [
   {
     title: "Fundo do Mar", emoji: "🐠", image: spot1.url,
     diffs: [
-      { x: 38, y: 78, r: 7 },  // cavalo-marinho colorido
-      { x: 25, y: 88, r: 7 },  // âncora removida
-      { x: 92, y: 60, r: 6 },  // tartaruga removida
-      { x: 22, y: 72, r: 6 },  // peixinho azul removido
-      { x: 62, y: 88, r: 6 },  // concha
-      { x: 78, y: 92, r: 7 },  // estrela do mar
-      { x: 50, y: 85, r: 7 },  // baú aberto/fechado
+      { x: 92, y: 62, r: 4 },  // tartaruga removida (canto sup. dir.)
+      { x: 27, y: 68, r: 4 },  // peixinho azul removido (perto do polvo)
+      { x: 40, y: 80, r: 5 },  // cavalo-marinho mudou de cor
+      { x: 22, y: 90, r: 5 },  // âncora removida
+      { x: 88, y: 92, r: 4 },  // estrela-do-mar mudou de cor
+      { x: 56, y: 93, r: 4 },  // concha repositionada
     ],
   },
   {
     title: "Animais da Floresta", emoji: "🦒", image: spot2.url,
     diffs: [
-      { x: 12, y: 72, r: 7 },  // borboleta roxa
-      { x: 38, y: 60, r: 7 },  // casinha do passarinho removida
-      { x: 22, y: 88, r: 7 },  // chapéu do elefante removido
-      { x: 38, y: 78, r: 7 },  // banana do macaco removida
-      { x: 88, y: 70, r: 7 },  // folha amarela na girafa
-      { x: 72, y: 92, r: 6 },  // flores diferentes
-      { x: 92, y: 95, r: 6 },  // flor removida
+      { x: 46, y: 69, r: 6 },  // casinha do passarinho removida
+      { x: 18, y: 79, r: 5 },  // chapéu do elefante removido
+      { x: 34, y: 79, r: 5 },  // banana do macaco removida
+      { x: 80, y: 73, r: 5 },  // folha da girafa virou amarela
+      { x: 18, y: 73, r: 5 },  // borboleta extra/roxa
+      { x: 78, y: 91, r: 5 },  // flores diferentes
     ],
   },
   {
     title: "Crianças no Parque", emoji: "🧒", image: spot3.url,
     diffs: [
-      { x: 22, y: 65, r: 7 },  // sol removido
-      { x: 18, y: 72, r: 7 },  // casa removida
-      { x: 30, y: 78, r: 7 },  // pintinho removido
-      { x: 42, y: 70, r: 7 },  // pipa azul (era rosa)
-      { x: 68, y: 65, r: 7 },  // abelha (era borboleta)
-      { x: 22, y: 92, r: 7 },  // ovo cor diferente na cesta
-      { x: 50, y: 95, r: 6 },  // ovo decorado mudou
+      { x: 19, y: 70, r: 6 },  // casa vermelha removida
+      { x: 30, y: 75, r: 4 },  // pintinho removido
+      { x: 40, y: 72, r: 6 },  // pipa virou azul/turquesa
+      { x: 58, y: 70, r: 5 },  // borboleta virou abelha
+      { x: 14, y: 86, r: 5 },  // ovos da cesta com outras cores
+      { x: 42, y: 87, r: 4 },  // cenoura aparece junto do coelhinho
     ],
   },
   {
     title: "Na Fazenda", emoji: "🐄", image: spot4.url,
     diffs: [
-      { x: 28, y: 78, r: 8 },  // porquinho no lugar da vaca
-      { x: 78, y: 72, r: 7 },  // espantalho sem pássaro
-      { x: 50, y: 90, r: 6 },  // pintinhos a menos
-      { x: 18, y: 92, r: 7 },  // só um patinho
-      { x: 88, y: 95, r: 7 },  // melancia entre as abóboras
-      { x: 95, y: 65, r: 6 },  // moinho mudou
-      { x: 62, y: 92, r: 6 },  // patinho extra
+      { x: 30, y: 79, r: 6 },  // vaca virou porquinho
+      { x: 75, y: 73, r: 5 },  // pássaro azul saiu do espantalho
+      { x: 56, y: 83, r: 5 },  // menos pintinhos
+      { x: 14, y: 86, r: 5 },  // só um patinho na água
+      { x: 70, y: 92, r: 5 },  // melancia no meio das abóboras
+      { x: 47, y: 63, r: 5 },  // nuvem mudou no céu
     ],
   },
   {
     title: "Aventura no Mar", emoji: "🍍", image: spot5.url,
     diffs: [
-      { x: 30, y: 68, r: 8 },  // janela do abacaxi (sem Bob)
-      { x: 12, y: 72, r: 6 },  // Krusty Krab apagado
-      { x: 50, y: 78, r: 6 },  // peixinho amarelo (era azul)
-      { x: 22, y: 92, r: 6 },  // caracol com óculos
-      { x: 82, y: 80, r: 8 },  // Sr. Siriguejo no lugar do Patrick
-      { x: 90, y: 95, r: 6 },  // coral diferente
-      { x: 78, y: 92, r: 6 },  // detalhe no chão
+      { x: 32, y: 75, r: 6 },  // janela do abacaxi vazia (sem Bob)
+      { x: 12, y: 71, r: 5 },  // texto do Krusty Krab apagado
+      { x: 48, y: 79, r: 4 },  // peixinho virou amarelo listrado
+      { x: 18, y: 90, r: 4 },  // caracol sem óculos
+      { x: 80, y: 84, r: 7 },  // Sr. Siriguejo no lugar do Patrick
+      { x: 90, y: 94, r: 4 },  // detalhe do coral
     ],
   },
   {
     title: "Piquenique no Parque", emoji: "🧺", image: spot6.url,
     diffs: [
-      { x: 32, y: 65, r: 7 },  // balão verde (era vermelho)
-      { x: 42, y: 68, r: 7 },  // avião no lugar do passarinho
-      { x: 90, y: 88, r: 7 },  // tartaruga removida
-      { x: 58, y: 88, r: 7 },  // uvas removidas
-      { x: 50, y: 90, r: 6 },  // laranja removida
-      { x: 18, y: 75, r: 6 },  // esquilo igual (decoração ao redor)
-      { x: 28, y: 95, r: 7 },  // cachorrinho dormindo
+      { x: 30, y: 64, r: 6 },  // balão verde (era vermelho)
+      { x: 41, y: 65, r: 6 },  // avião no lugar do passarinho
+      { x: 75, y: 70, r: 5 },  // uma laçada a menos na pipa
+      { x: 90, y: 84, r: 5 },  // tartaruga removida no riacho
+      { x: 60, y: 84, r: 4 },  // cacho de uvas removido
+      { x: 50, y: 86, r: 4 },  // laranja removida
     ],
   },
   {
     title: "Brincando na Rua", emoji: "🌳", image: spot7.url,
     diffs: [
-      { x: 12, y: 72, r: 7 },  // laço amarelo (era vermelho)
-      { x: 28, y: 80, r: 7 },  // camiseta da criança azul
-      { x: 50, y: 70, r: 7 },  // passarinho azul (era amarelo)
-      { x: 78, y: 72, r: 7 },  // criança boca aberta
-      { x: 35, y: 92, r: 6 },  // flores diferentes
-      { x: 62, y: 90, r: 6 },  // carrinho mudou
-      { x: 92, y: 60, r: 6 },  // detalhe do céu
+      { x: 11, y: 73, r: 5 },  // laço da menina virou amarelo
+      { x: 53, y: 73, r: 4 },  // passarinho ficou azul
+      { x: 65, y: 88, r: 5 },  // carrinho mudou de cor
+      { x: 42, y: 91, r: 5 },  // flores em cores diferentes
+      { x: 92, y: 84, r: 4 },  // detalhe do hidrante
+      { x: 30, y: 86, r: 5 },  // camiseta do menino mudou
     ],
   },
 ];
