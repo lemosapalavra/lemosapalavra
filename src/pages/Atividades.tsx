@@ -704,7 +704,7 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
   }, []);
 
   const [sceneIdx, setSceneIdx] = useState(0);
-  const [found, setFound] = useState<number[]>([]);
+  const [found, setFound] = useState<{ i: number; x: number; y: number }[]>([]);
   const [misses, setMisses] = useState(0);
   const [shakeKey, setShakeKey] = useState(0);
 
@@ -717,11 +717,14 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
     const box = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - box.left) / box.width) * 100;
     const y = ((e.clientY - box.top) / box.height) * 100;
+    const foundIdx = new Set(found.map((f) => f.i));
+    // tolerância generosa para o clique acertar o erro mesmo em telas pequenas
     const hit = scene.diffs.findIndex((d, i) =>
-      !found.includes(i) && Math.hypot(d.x - x, d.y - y) <= d.r + 3
+      !foundIdx.has(i) && Math.hypot(d.x - x, d.y - y) <= d.r * 2 + 6
     );
     if (hit >= 0) {
-      const nf = [...found, hit];
+      // marcador é desenhado onde o usuário clicou, garantindo que apareça sobre o erro
+      const nf = [...found, { i: hit, x, y }];
       setFound(nf);
       if (nf.length === total) celebrate(`Você encontrou todas as ${total} diferenças!`, 5, "🔍");
     } else {
@@ -751,17 +754,14 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
             className="relative w-full rounded-2xl overflow-hidden border-2 border-primary/60 cursor-pointer shadow-lg bg-white select-none"
           >
             <img src={scene.image} alt={scene.title} className="w-full h-auto pointer-events-none block" />
-            {found.map((i) => {
-              const d = scene.diffs[i];
-              return (
-                <span
-                  key={`mark-${i}`}
-                  aria-hidden
-                  className="absolute pointer-events-none rounded-full border-[3px] border-red-500 animate-pulse"
-                  style={{ left: `${d.x}%`, top: `${d.y}%`, width: `${d.r * 2}%`, paddingBottom: `${d.r * 2}%`, transform: "translate(-50%,-50%)" }}
-                />
-              );
-            })}
+            {found.map((f, k) => (
+              <span
+                key={`mark-${k}`}
+                aria-hidden
+                className="absolute pointer-events-none rounded-full border-[3px] border-red-500 animate-pulse"
+                style={{ left: `${f.x}%`, top: `${f.y}%`, width: `8%`, paddingBottom: `8%`, transform: "translate(-50%,-50%)" }}
+              />
+            ))}
           </div>
         </div>
 
