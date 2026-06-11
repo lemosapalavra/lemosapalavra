@@ -45,13 +45,13 @@ export default function PageHeader({ title, subtitle, icon }: PageHeaderProps) {
         {/* Home */}
         <button
           onClick={() => navigate("/")}
-          className="flex flex-col items-center justify-center gap-0.5 hover:scale-110 transition-transform shrink-0"
+          className="flex items-center justify-center hover:scale-110 transition-transform shrink-0"
           aria-label="Início"
           title="Início"
         >
           <img src={iconInicio} alt="Início" className="w-11 h-11 rounded-xl shadow-md" />
-          <span className="font-display text-[10px] font-bold text-foreground leading-none">Início</span>
         </button>
+
 
         {/* Center: title with icon background */}
         <div className="relative flex-1 min-w-0 rounded-xl overflow-hidden flex items-center justify-center px-2"
