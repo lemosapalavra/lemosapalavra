@@ -47,6 +47,20 @@ export interface BibleVideoGroup {
 
 export const seriesGroups: BibleVideoGroup[] = [
   {
+    title: "A Criação",
+    icon: iconCriacao,
+    videos: [
+      { title: "A Criação", icon: iconCriacao, src: vidCriacao.url },
+    ],
+  },
+  {
+    title: "A Batalha dos Anjos",
+    icon: iconBatalha,
+    videos: [
+      { title: "A Batalha dos Anjos", icon: iconBatalha, src: vidBatalha.url },
+    ],
+  },
+  {
     title: "Adão e Eva",
     icon: grupoAdaoEva,
     videos: [
@@ -63,12 +77,30 @@ export const seriesGroups: BibleVideoGroup[] = [
     ],
   },
   {
+    title: "Os Irmãos Esaú e Jacó",
+    icon: esauJacoIcon.url,
+    videos: [
+      { title: "Esaú e Jacó — Parte I", icon: esauJacoIcon.url, src: vidEJ1.url },
+      { title: "Esaú e Jacó — Parte II", icon: esauJacoIcon.url, src: vidEJ2.url },
+      { title: "Esaú e Jacó — Parte III", icon: esauJacoIcon.url, src: vidEJ3.url },
+    ],
+  },
+  {
     title: "Moisés",
     icon: grupoMoises,
     videos: [
       { title: "Moisés — Parte I", icon: iconMoises1, src: UNAVAILABLE_VIDEO },
       { title: "Moisés — Parte II", icon: iconMoises2, src: UNAVAILABLE_VIDEO },
       { title: "Moisés — Parte III", icon: iconMoises3, src: UNAVAILABLE_VIDEO },
+    ],
+  },
+  {
+    title: "Os 10 Mandamentos",
+    icon: icon10Mandamentos,
+    videos: [
+      { title: "Os 10 Mandamentos — Parte I", icon: icon10Mandamentos, src: vid10m1.url },
+      { title: "Os 10 Mandamentos — Parte II", icon: icon10Mandamentos, src: vid10m2.url },
+      { title: "Os 10 Mandamentos — Parte III", icon: icon10Mandamentos, src: vid10m3.url },
     ],
   },
 ];
