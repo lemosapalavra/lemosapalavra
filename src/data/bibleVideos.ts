@@ -92,8 +92,8 @@ export const seriesGroups: BibleVideoGroup[] = [
 ];
 
 export const filmesVideos: BibleVideo[] = [
-  { title: "A Criação", icon: iconCriacao, src: LOCAL_VIDEO("a-criacao.mp4") },
-  { title: "A Batalha dos Anjos", icon: iconBatalha, src: LOCAL_VIDEO("batalha-dos-anjos.mp4") },
+  { title: "A Criação", icon: iconCriacao, src: vidCriacao.url },
+  { title: "A Batalha dos Anjos", icon: iconBatalha, src: vidBatalha.url },
   { title: "Davi e Golias", icon: iconDaviGolias, src: UNAVAILABLE_VIDEO },
   { title: "Os Dez Mandamentos", icon: icon10Mandamentos, src: UNAVAILABLE_VIDEO },
 ];
