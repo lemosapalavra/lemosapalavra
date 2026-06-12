@@ -47,20 +47,6 @@ export interface BibleVideoGroup {
 
 export const seriesGroups: BibleVideoGroup[] = [
   {
-    title: "A Criação",
-    icon: iconCriacao,
-    videos: [
-      { title: "A Criação", icon: iconCriacao, src: vidCriacao.url },
-    ],
-  },
-  {
-    title: "A Batalha dos Anjos",
-    icon: iconBatalha,
-    videos: [
-      { title: "A Batalha dos Anjos", icon: iconBatalha, src: vidBatalha.url },
-    ],
-  },
-  {
     title: "Adão e Eva",
     icon: grupoAdaoEva,
     videos: [
