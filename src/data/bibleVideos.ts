@@ -20,6 +20,14 @@ import vid10m3 from "@/assets/lemos-play/10-mandamentos-3.mp4.asset.json";
 import vidEJ1 from "@/assets/lemos-play/esau-jaco-1.mp4.asset.json";
 import vidEJ2 from "@/assets/lemos-play/esau-jaco-2.mp4.asset.json";
 import vidEJ3 from "@/assets/lemos-play/esau-jaco-3.mp4.asset.json";
+import vidJose1 from "@/assets/lemos-play/jose-egito-1.mp4.asset.json";
+import vidJose2 from "@/assets/lemos-play/jose-egito-2.mp4.asset.json";
+import vidJose3 from "@/assets/lemos-play/jose-egito-3.mp4.asset.json";
+import vidJo1 from "@/assets/lemos-play/jo-1.mp4.asset.json";
+import vidJo2 from "@/assets/lemos-play/jo-2.mp4.asset.json";
+import vidJo3 from "@/assets/lemos-play/jo-3.mp4.asset.json";
+import joseEgitoIcon from "@/assets/lemos-play/jose-egito.png.asset.json";
+import joIcon from "@/assets/lemos-play/jo.png.asset.json";
 
 export interface BibleVideo {
   title: string;
