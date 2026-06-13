@@ -77,8 +77,9 @@ export default function Album() {
     categories.forEach((c) => c.bgs?.forEach((b) => { if (b) { const i = new Image(); i.src = b; } }));
   }, []);
 
+  const validIds = useMemo(() => new Set(allStickers.map((s) => s.id)), []);
   const totalOwned = useMemo(
-    () => Object.keys(owned).filter((k) => owned[+k] > 0).length, [owned]
+    () => Object.keys(owned).filter((k) => owned[+k] > 0 && validIds.has(+k)).length, [owned, validIds]
   );
 
   const repeats = useMemo(() => Object.entries(owned).filter(([, c]) => (c || 0) > 1).map(([id, c]) => {
