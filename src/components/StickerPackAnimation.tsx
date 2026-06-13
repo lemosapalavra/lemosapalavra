@@ -171,8 +171,16 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
         )}
 
         {phase === "shaking" && (
-          <div className="animate-[shakeStrong_0.7s_ease-in-out]">
-            <img src={packImg} alt="" className="w-56 sm:w-72 h-auto rounded-xl drop-shadow-2xl" draggable={false} />
+          <div className="relative">
+            <div className="animate-[shakeStrong_0.7s_ease-in-out]">
+              <img src={packImg} alt="" className="w-56 sm:w-72 h-auto rounded-xl drop-shadow-2xl" draggable={false} />
+            </div>
+            {/* Two hands closing in with scissors */}
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-between -mx-10">
+              <div className="text-5xl sm:text-6xl animate-[handInLeft_0.7s_ease-out]" style={{ transform: "scaleX(-1)" }}>✋</div>
+              <div className="text-5xl sm:text-6xl animate-[handInRight_0.7s_ease-out]">✋</div>
+            </div>
+            <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl animate-[scissorsCut_0.7s_ease-out]">✂️</div>
           </div>
         )}
 
@@ -184,6 +192,9 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
             <div className="overflow-hidden animate-tear-right" style={{ clipPath: "polygon(52% 0, 100% 0, 100% 100%, 48% 100%)" }}>
               <img src={packImg} alt="" className="w-full h-auto" draggable={false} />
             </div>
+            {/* Hands pulling each half outward */}
+            <div className="pointer-events-none absolute top-1/2 -translate-y-1/2 -left-14 text-5xl sm:text-6xl animate-tear-left" style={{ transform: "scaleX(-1)" }}>✋</div>
+            <div className="pointer-events-none absolute top-1/2 -translate-y-1/2 -right-14 text-5xl sm:text-6xl animate-tear-right">✋</div>
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div className="w-40 h-40 rounded-full bg-yellow-300/80 blur-3xl animate-ping" />
             </div>
@@ -195,7 +206,9 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-72 h-72 rounded-full bg-gradient-to-br from-yellow-300 via-orange-300 to-pink-300 blur-3xl animate-ping" />
             </div>
-            <div className="relative font-display text-5xl sm:text-6xl font-bold text-yellow-200 drop-shadow-2xl animate-[zoomBounce_0.6s_ease-out]">
+            {/* Hand reaching in to pull stickers out */}
+            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-6xl sm:text-7xl animate-[handPull_0.6s_ease-out]">🤲</div>
+            <div className="relative font-display text-4xl sm:text-5xl font-bold text-yellow-200 drop-shadow-2xl animate-[zoomBounce_0.6s_ease-out]">
               ✨ AGORA! ✨
             </div>
           </div>
@@ -318,6 +331,25 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
         }
         @keyframes fadeUp {
           from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)}
+        }
+        @keyframes handInLeft {
+          0%{transform:translateX(-120px) scaleX(-1);opacity:0}
+          100%{transform:translateX(0) scaleX(-1);opacity:1}
+        }
+        @keyframes handInRight {
+          0%{transform:translateX(120px);opacity:0}
+          100%{transform:translateX(0);opacity:1}
+        }
+        @keyframes scissorsCut {
+          0%{transform:translate(-50%,-50%) scale(0) rotate(-30deg);opacity:0}
+          40%{transform:translate(-50%,-50%) scale(1.2) rotate(0deg);opacity:1}
+          70%{transform:translate(-50%,-50%) scale(1) rotate(15deg);opacity:1}
+          100%{transform:translate(-50%,-50%) scale(0.8) rotate(0deg);opacity:0}
+        }
+        @keyframes handPull {
+          0%{transform:translate(-50%,40px) scale(0.6);opacity:0}
+          60%{transform:translate(-50%,-10px) scale(1.1);opacity:1}
+          100%{transform:translate(-50%,0) scale(1);opacity:1}
         }
       `}</style>
     </div>

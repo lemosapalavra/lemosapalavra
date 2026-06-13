@@ -20,6 +20,14 @@ import vid10m3 from "@/assets/lemos-play/10-mandamentos-3.mp4.asset.json";
 import vidEJ1 from "@/assets/lemos-play/esau-jaco-1.mp4.asset.json";
 import vidEJ2 from "@/assets/lemos-play/esau-jaco-2.mp4.asset.json";
 import vidEJ3 from "@/assets/lemos-play/esau-jaco-3.mp4.asset.json";
+import vidJose1 from "@/assets/lemos-play/jose-egito-1.mp4.asset.json";
+import vidJose2 from "@/assets/lemos-play/jose-egito-2.mp4.asset.json";
+import vidJose3 from "@/assets/lemos-play/jose-egito-3.mp4.asset.json";
+import vidJo1 from "@/assets/lemos-play/jo-1.mp4.asset.json";
+import vidJo2 from "@/assets/lemos-play/jo-2.mp4.asset.json";
+import vidJo3 from "@/assets/lemos-play/jo-3.mp4.asset.json";
+import joseEgitoIcon from "@/assets/lemos-play/jose-egito.png.asset.json";
+import joIcon from "@/assets/lemos-play/jo.png.asset.json";
 
 export interface BibleVideo {
   title: string;
@@ -81,6 +89,24 @@ export const seriesGroups: BibleVideoGroup[] = [
     ],
   },
   {
+    title: "José do Egito",
+    icon: joseEgitoIcon.url,
+    videos: [
+      { title: "José do Egito — Parte I", icon: joseEgitoIcon.url, src: vidJose1.url },
+      { title: "José do Egito — Parte II", icon: joseEgitoIcon.url, src: vidJose2.url },
+      { title: "José do Egito — Parte III", icon: joseEgitoIcon.url, src: vidJose3.url },
+    ],
+  },
+  {
+    title: "Jó",
+    icon: joIcon.url,
+    videos: [
+      { title: "Jó — Parte I", icon: joIcon.url, src: vidJo1.url },
+      { title: "Jó — Parte II", icon: joIcon.url, src: vidJo2.url },
+      { title: "Jó — Parte III", icon: joIcon.url, src: vidJo3.url },
+    ],
+  },
+  {
     title: "Os 10 Mandamentos",
     icon: icon10Mandamentos,
     videos: [
@@ -95,5 +121,4 @@ export const filmesVideos: BibleVideo[] = [
   { title: "A Criação", icon: iconCriacao, src: vidCriacao.url },
   { title: "A Batalha dos Anjos", icon: iconBatalha, src: vidBatalha.url },
   { title: "Davi e Golias", icon: iconDaviGolias, src: UNAVAILABLE_VIDEO },
-  { title: "Os Dez Mandamentos", icon: icon10Mandamentos, src: UNAVAILABLE_VIDEO },
 ];
