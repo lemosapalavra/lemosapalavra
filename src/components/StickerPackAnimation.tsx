@@ -332,6 +332,25 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
         @keyframes fadeUp {
           from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)}
         }
+        @keyframes handInLeft {
+          0%{transform:translateX(-120px) scaleX(-1);opacity:0}
+          100%{transform:translateX(0) scaleX(-1);opacity:1}
+        }
+        @keyframes handInRight {
+          0%{transform:translateX(120px);opacity:0}
+          100%{transform:translateX(0);opacity:1}
+        }
+        @keyframes scissorsCut {
+          0%{transform:translate(-50%,-50%) scale(0) rotate(-30deg);opacity:0}
+          40%{transform:translate(-50%,-50%) scale(1.2) rotate(0deg);opacity:1}
+          70%{transform:translate(-50%,-50%) scale(1) rotate(15deg);opacity:1}
+          100%{transform:translate(-50%,-50%) scale(0.8) rotate(0deg);opacity:0}
+        }
+        @keyframes handPull {
+          0%{transform:translate(-50%,40px) scale(0.6);opacity:0}
+          60%{transform:translate(-50%,-10px) scale(1.1);opacity:1}
+          100%{transform:translate(-50%,0) scale(1);opacity:1}
+        }
       `}</style>
     </div>
   );
