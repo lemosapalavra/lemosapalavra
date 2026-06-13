@@ -89,6 +89,24 @@ export const seriesGroups: BibleVideoGroup[] = [
     ],
   },
   {
+    title: "José do Egito",
+    icon: joseEgitoIcon.url,
+    videos: [
+      { title: "José do Egito — Parte I", icon: joseEgitoIcon.url, src: vidJose1.url },
+      { title: "José do Egito — Parte II", icon: joseEgitoIcon.url, src: vidJose2.url },
+      { title: "José do Egito — Parte III", icon: joseEgitoIcon.url, src: vidJose3.url },
+    ],
+  },
+  {
+    title: "Jó",
+    icon: joIcon.url,
+    videos: [
+      { title: "Jó — Parte I", icon: joIcon.url, src: vidJo1.url },
+      { title: "Jó — Parte II", icon: joIcon.url, src: vidJo2.url },
+      { title: "Jó — Parte III", icon: joIcon.url, src: vidJo3.url },
+    ],
+  },
+  {
     title: "Os 10 Mandamentos",
     icon: icon10Mandamentos,
     videos: [
@@ -103,5 +121,4 @@ export const filmesVideos: BibleVideo[] = [
   { title: "A Criação", icon: iconCriacao, src: vidCriacao.url },
   { title: "A Batalha dos Anjos", icon: iconBatalha, src: vidBatalha.url },
   { title: "Davi e Golias", icon: iconDaviGolias, src: UNAVAILABLE_VIDEO },
-  { title: "Os Dez Mandamentos", icon: icon10Mandamentos, src: UNAVAILABLE_VIDEO },
 ];
