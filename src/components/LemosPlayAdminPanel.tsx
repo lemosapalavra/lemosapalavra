@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { X, Plus, Trash2, RotateCcw, Save, ArrowUp, ArrowDown, Pencil, ExternalLink } from "lucide-react";
+import { X, Plus, Trash2, RotateCcw, Save, ArrowUp, ArrowDown, Pencil, ExternalLink, Search } from "lucide-react";
 import { LemosPlayConfig, PlayEntry, SeriesGroupCfg, defaultConfig, loadConfig, resetConfig, saveConfig } from "@/data/lemosPlayConfig";
+import MediaPickerModal from "@/components/MediaPickerModal";
 
 type Tab = "filmes" | "series" | "musicas" | "louvores";
 
@@ -124,9 +125,17 @@ function PlayList({ items, onChange }: { items: PlayEntry[]; onChange: (v: PlayE
     onChange(next);
   };
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [picker, setPicker] = useState<{ id: string; field: "src" | "poster" } | null>(null);
 
   return (
     <div className="space-y-2">
+      <MediaPickerModal
+        open={!!picker}
+        kind={picker?.field === "poster" ? "image" : "video"}
+        currentUrl={picker ? (items.find((x) => x.id === picker.id)?.[picker.field] ?? "") : ""}
+        onClose={() => setPicker(null)}
+        onSelect={(url) => picker && patch(picker.id, { [picker.field]: url } as Partial<PlayEntry>)}
+      />
       {items.map((it, idx) => {
         const editing = editingId === it.id;
         return (
@@ -155,9 +164,29 @@ function PlayList({ items, onChange }: { items: PlayEntry[]; onChange: (v: PlayE
             {editing && (
               <div className="space-y-2 pt-2 border-t border-zinc-800">
                 <label className="block text-[11px] text-zinc-400">URL do vídeo</label>
-                <input value={it.src} onChange={(e) => patch(it.id, { src: e.target.value })} placeholder="YouTube, Vimeo ou /videos/arquivo.mp4" className={inputCls} />
+                <div className="flex gap-2">
+                  <input value={it.src} onChange={(e) => patch(it.id, { src: e.target.value })} placeholder="YouTube, Vimeo, /videos/arquivo.mp4 ou clique em Procurar" className={inputCls + " flex-1"} />
+                  <button
+                    type="button"
+                    onClick={() => setPicker({ id: it.id, field: "src" })}
+                    className="px-3 py-1.5 rounded bg-red-600 hover:bg-red-700 text-xs font-bold flex items-center gap-1 whitespace-nowrap"
+                    title="Procurar vídeo já existente no site"
+                  >
+                    <Search className="w-3.5 h-3.5" /> Procurar
+                  </button>
+                </div>
                 <label className="block text-[11px] text-zinc-400">URL da capa / ícone (opcional)</label>
-                <input value={it.poster ?? ""} onChange={(e) => patch(it.id, { poster: e.target.value })} placeholder="https://..." className={inputCls} />
+                <div className="flex gap-2">
+                  <input value={it.poster ?? ""} onChange={(e) => patch(it.id, { poster: e.target.value })} placeholder="https://... ou clique em Procurar" className={inputCls + " flex-1"} />
+                  <button
+                    type="button"
+                    onClick={() => setPicker({ id: it.id, field: "poster" })}
+                    className="px-3 py-1.5 rounded bg-zinc-700 hover:bg-zinc-600 text-xs font-bold flex items-center gap-1 whitespace-nowrap"
+                    title="Procurar capa já existente no site"
+                  >
+                    <Search className="w-3.5 h-3.5" /> Procurar
+                  </button>
+                </div>
               </div>
             )}
           </div>
