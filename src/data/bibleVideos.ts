@@ -28,6 +28,8 @@ import vidJo2 from "@/assets/lemos-play/jo-2.mp4.asset.json";
 import vidJo3 from "@/assets/lemos-play/jo-3.mp4.asset.json";
 import joseEgitoIcon from "@/assets/lemos-play/jose-egito.png.asset.json";
 import joIcon from "@/assets/lemos-play/jo.png.asset.json";
+import vidDavi1 from "@/assets/lemos-play/davi-golias-1.mp4.asset.json";
+import vidDavi2 from "@/assets/lemos-play/davi-golias-2.mp4.asset.json";
 
 export interface BibleVideo {
   title: string;
@@ -107,6 +109,14 @@ export const seriesGroups: BibleVideoGroup[] = [
     ],
   },
   {
+    title: "Davi e Golias",
+    icon: iconDaviGolias,
+    videos: [
+      { title: "Davi e Golias — Parte I", icon: iconDaviGolias, src: vidDavi1.url },
+      { title: "Davi e Golias — Parte II", icon: iconDaviGolias, src: vidDavi2.url },
+    ],
+  },
+  {
     title: "Os 10 Mandamentos",
     icon: icon10Mandamentos,
     videos: [
@@ -120,5 +130,4 @@ export const seriesGroups: BibleVideoGroup[] = [
 export const filmesVideos: BibleVideo[] = [
   { title: "A Criação", icon: iconCriacao, src: vidCriacao.url },
   { title: "A Batalha dos Anjos", icon: iconBatalha, src: vidBatalha.url },
-  { title: "Davi e Golias", icon: iconDaviGolias, src: UNAVAILABLE_VIDEO },
 ];
