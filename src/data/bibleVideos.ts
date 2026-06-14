@@ -30,6 +30,8 @@ import joseEgitoIcon from "@/assets/lemos-play/jose-egito.png.asset.json";
 import joIcon from "@/assets/lemos-play/jo.png.asset.json";
 import vidDavi1 from "@/assets/lemos-play/davi-golias-1.mp4.asset.json";
 import vidDavi2 from "@/assets/lemos-play/davi-golias-2.mp4.asset.json";
+import vidNoe1 from "@/assets/lemos-play/noe-1.mp4.asset.json";
+import vidNoe2 from "@/assets/lemos-play/noe-2.mp4.asset.json";
 
 export interface BibleVideo {
   title: string;
@@ -68,8 +70,8 @@ export const seriesGroups: BibleVideoGroup[] = [
     title: "Noé e a Arca",
     icon: iconNoe1,
     videos: [
-      { title: "Noé e a Arca — Parte I", icon: iconNoe1, src: UNAVAILABLE_VIDEO },
-      { title: "Noé e a Arca — Parte II", icon: iconNoe2, src: UNAVAILABLE_VIDEO },
+      { title: "Noé e a Arca — Parte I", icon: iconNoe1, src: vidNoe1.url },
+      { title: "Noé e a Arca — Parte II", icon: iconNoe2, src: vidNoe2.url },
     ],
   },
   {
