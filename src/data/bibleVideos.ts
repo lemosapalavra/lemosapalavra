@@ -70,8 +70,8 @@ export const seriesGroups: BibleVideoGroup[] = [
     title: "Noé e a Arca",
     icon: iconNoe1,
     videos: [
-      { title: "Noé e a Arca — Parte I", icon: iconNoe1, src: UNAVAILABLE_VIDEO },
-      { title: "Noé e a Arca — Parte II", icon: iconNoe2, src: UNAVAILABLE_VIDEO },
+      { title: "Noé e a Arca — Parte I", icon: iconNoe1, src: vidNoe1.url },
+      { title: "Noé e a Arca — Parte II", icon: iconNoe2, src: vidNoe2.url },
     ],
   },
   {
