@@ -125,9 +125,17 @@ function PlayList({ items, onChange }: { items: PlayEntry[]; onChange: (v: PlayE
     onChange(next);
   };
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [picker, setPicker] = useState<{ id: string; field: "src" | "poster" } | null>(null);
 
   return (
     <div className="space-y-2">
+      <MediaPickerModal
+        open={!!picker}
+        kind={picker?.field === "poster" ? "image" : "video"}
+        currentUrl={picker ? (items.find((x) => x.id === picker.id)?.[picker.field] ?? "") : ""}
+        onClose={() => setPicker(null)}
+        onSelect={(url) => picker && patch(picker.id, { [picker.field]: url } as Partial<PlayEntry>)}
+      />
       {items.map((it, idx) => {
         const editing = editingId === it.id;
         return (
