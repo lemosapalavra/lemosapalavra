@@ -126,7 +126,14 @@ const mergeById = (userItems: PlayEntry[], defaults: PlayEntry[]): PlayEntry[] =
   defaults.forEach((d) => map.set(d.id, d));
   userItems.forEach((u) => {
     const ex = map.get(u.id);
-    map.set(u.id, ex ? { ...ex, ...u, poster: resolvePoster(u.title || ex.title, u.poster ?? ex.poster) } : { ...u, poster: resolvePoster(u.title, u.poster) });
+    if (ex) {
+      // Prefer default src whenever it exists — user-saved empty/stale links
+      // should never override a working CDN URL bundled with the app.
+      const src = ex.src && ex.src.trim() ? ex.src : (u.src || "");
+      map.set(u.id, { ...ex, ...u, src, poster: resolvePoster(u.title || ex.title, u.poster ?? ex.poster) });
+    } else {
+      map.set(u.id, { ...u, poster: resolvePoster(u.title, u.poster) });
+    }
   });
   return Array.from(map.values());
 };
