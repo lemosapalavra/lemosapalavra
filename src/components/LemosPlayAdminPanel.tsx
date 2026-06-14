@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { X, Plus, Trash2, RotateCcw, Save, ArrowUp, ArrowDown, Pencil, ExternalLink } from "lucide-react";
+import { X, Plus, Trash2, RotateCcw, Save, ArrowUp, ArrowDown, Pencil, ExternalLink, Search } from "lucide-react";
 import { LemosPlayConfig, PlayEntry, SeriesGroupCfg, defaultConfig, loadConfig, resetConfig, saveConfig } from "@/data/lemosPlayConfig";
+import MediaPickerModal from "@/components/MediaPickerModal";
 
 type Tab = "filmes" | "series" | "musicas" | "louvores";
 
