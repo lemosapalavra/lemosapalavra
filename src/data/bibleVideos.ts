@@ -109,6 +109,14 @@ export const seriesGroups: BibleVideoGroup[] = [
     ],
   },
   {
+    title: "Davi e Golias",
+    icon: iconDaviGolias,
+    videos: [
+      { title: "Davi e Golias — Parte I", icon: iconDaviGolias, src: vidDavi1.url },
+      { title: "Davi e Golias — Parte II", icon: iconDaviGolias, src: vidDavi2.url },
+    ],
+  },
+  {
     title: "Os 10 Mandamentos",
     icon: icon10Mandamentos,
     videos: [
@@ -122,5 +130,4 @@ export const seriesGroups: BibleVideoGroup[] = [
 export const filmesVideos: BibleVideo[] = [
   { title: "A Criação", icon: iconCriacao, src: vidCriacao.url },
   { title: "A Batalha dos Anjos", icon: iconBatalha, src: vidBatalha.url },
-  { title: "Davi e Golias", icon: iconDaviGolias, src: UNAVAILABLE_VIDEO },
 ];
