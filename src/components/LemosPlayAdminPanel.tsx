@@ -164,9 +164,29 @@ function PlayList({ items, onChange }: { items: PlayEntry[]; onChange: (v: PlayE
             {editing && (
               <div className="space-y-2 pt-2 border-t border-zinc-800">
                 <label className="block text-[11px] text-zinc-400">URL do vídeo</label>
-                <input value={it.src} onChange={(e) => patch(it.id, { src: e.target.value })} placeholder="YouTube, Vimeo ou /videos/arquivo.mp4" className={inputCls} />
+                <div className="flex gap-2">
+                  <input value={it.src} onChange={(e) => patch(it.id, { src: e.target.value })} placeholder="YouTube, Vimeo, /videos/arquivo.mp4 ou clique em Procurar" className={inputCls + " flex-1"} />
+                  <button
+                    type="button"
+                    onClick={() => setPicker({ id: it.id, field: "src" })}
+                    className="px-3 py-1.5 rounded bg-red-600 hover:bg-red-700 text-xs font-bold flex items-center gap-1 whitespace-nowrap"
+                    title="Procurar vídeo já existente no site"
+                  >
+                    <Search className="w-3.5 h-3.5" /> Procurar
+                  </button>
+                </div>
                 <label className="block text-[11px] text-zinc-400">URL da capa / ícone (opcional)</label>
-                <input value={it.poster ?? ""} onChange={(e) => patch(it.id, { poster: e.target.value })} placeholder="https://..." className={inputCls} />
+                <div className="flex gap-2">
+                  <input value={it.poster ?? ""} onChange={(e) => patch(it.id, { poster: e.target.value })} placeholder="https://... ou clique em Procurar" className={inputCls + " flex-1"} />
+                  <button
+                    type="button"
+                    onClick={() => setPicker({ id: it.id, field: "poster" })}
+                    className="px-3 py-1.5 rounded bg-zinc-700 hover:bg-zinc-600 text-xs font-bold flex items-center gap-1 whitespace-nowrap"
+                    title="Procurar capa já existente no site"
+                  >
+                    <Search className="w-3.5 h-3.5" /> Procurar
+                  </button>
+                </div>
               </div>
             )}
           </div>
