@@ -299,7 +299,7 @@ export default function Atividades() {
   const activities = [
     { title: "Quiz Bíblico",        icon: iconQuiz,             id: "quiz",        coins: 5  },
     { title: "Memória",             icon: iconMemoria,          id: "memory",      coins: 7  },
-    { title: "7 Erros",             icon: icon7Erros,           id: "spot",        coins: 5  },
+    
     { title: "Colorir",             icon: iconColorir,          id: "coloring",    coins: 3  },
     { title: "Quebra-Cabeça",       icon: iconQuebraCabeca,     id: "jigsaw",      coins: 10 },
     { title: "Caça-Palavras",       icon: iconCacaPalavras.url, id: "wordsearch",  coins: 8  },
