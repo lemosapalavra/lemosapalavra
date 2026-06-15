@@ -1,9 +1,7 @@
 // Catálogo de vídeos/imagens já disponíveis no site para uso no painel admin.
 import vidCriacao from "@/assets/lemos-play/a-criacao.mp4.asset.json";
 import vidBatalha from "@/assets/lemos-play/a-batalha-dos-anjos.mp4.asset.json";
-import vid10m1 from "@/assets/lemos-play/10-mandamentos-1.mp4.asset.json";
-import vid10m2 from "@/assets/lemos-play/10-mandamentos-2.mp4.asset.json";
-import vid10m3 from "@/assets/lemos-play/10-mandamentos-3.mp4.asset.json";
+import vid10mFilme from "@/assets/lemos-play/10-mandamentos-filme.mp4.asset.json";
 import vidEJ1 from "@/assets/lemos-play/esau-jaco-1.mp4.asset.json";
 import vidEJ2 from "@/assets/lemos-play/esau-jaco-2.mp4.asset.json";
 import vidEJ3 from "@/assets/lemos-play/esau-jaco-3.mp4.asset.json";
@@ -15,8 +13,11 @@ import vidJo2 from "@/assets/lemos-play/jo-2.mp4.asset.json";
 import vidJo3 from "@/assets/lemos-play/jo-3.mp4.asset.json";
 import vidDavi1 from "@/assets/lemos-play/davi-golias-1.mp4.asset.json";
 import vidDavi2 from "@/assets/lemos-play/davi-golias-2.mp4.asset.json";
-import vidNoe1 from "@/assets/lemos-play/noe-1.mp4.asset.json";
-import vidNoe2 from "@/assets/lemos-play/noe-2.mp4.asset.json";
+import vidAdaoEva from "@/assets/lemos-play/adao-eva.mp4.asset.json";
+import vidNoeArcaFilme from "@/assets/lemos-play/noe-arca-filme.mp4.asset.json";
+import vidMoises1 from "@/assets/lemos-play/moises-1.mp4.asset.json";
+import vidMoises2 from "@/assets/lemos-play/moises-2.mp4.asset.json";
+import vidMoises3 from "@/assets/lemos-play/moises-3.mp4.asset.json";
 
 import moises3d from "@/assets/lemos-play/moises-3d.png.asset.json";
 import jonasBaleia from "@/assets/lemos-play/jonas-e-a-baleia.png.asset.json";
@@ -45,8 +46,12 @@ export interface MediaItem {
 export const availableVideos: MediaItem[] = [
   { label: "A Criação", url: vidCriacao.url, kind: "video", group: "Filmes" },
   { label: "A Batalha dos Anjos", url: vidBatalha.url, kind: "video", group: "Filmes" },
-  { label: "Noé e a Arca — Parte I", url: vidNoe1.url, kind: "video", group: "Séries · Noé" },
-  { label: "Noé e a Arca — Parte II", url: vidNoe2.url, kind: "video", group: "Séries · Noé" },
+  { label: "Adão e Eva (filme)", url: vidAdaoEva.url, kind: "video", group: "Filmes" },
+  { label: "Noé e a Arca (filme)", url: vidNoeArcaFilme.url, kind: "video", group: "Filmes" },
+  { label: "Os 10 Mandamentos (filme)", url: vid10mFilme.url, kind: "video", group: "Filmes" },
+  { label: "Moisés — Parte I", url: vidMoises1.url, kind: "video", group: "Séries · Moisés" },
+  { label: "Moisés — Parte II", url: vidMoises2.url, kind: "video", group: "Séries · Moisés" },
+  { label: "Moisés — Parte III", url: vidMoises3.url, kind: "video", group: "Séries · Moisés" },
   { label: "Esaú e Jacó — Parte I", url: vidEJ1.url, kind: "video", group: "Séries · Esaú e Jacó" },
   { label: "Esaú e Jacó — Parte II", url: vidEJ2.url, kind: "video", group: "Séries · Esaú e Jacó" },
   { label: "Esaú e Jacó — Parte III", url: vidEJ3.url, kind: "video", group: "Séries · Esaú e Jacó" },
@@ -58,9 +63,6 @@ export const availableVideos: MediaItem[] = [
   { label: "Jó — Parte III", url: vidJo3.url, kind: "video", group: "Séries · Jó" },
   { label: "Davi e Golias — Parte I", url: vidDavi1.url, kind: "video", group: "Séries · Davi e Golias" },
   { label: "Davi e Golias — Parte II", url: vidDavi2.url, kind: "video", group: "Séries · Davi e Golias" },
-  { label: "Os 10 Mandamentos — Parte I", url: vid10m1.url, kind: "video", group: "Séries · 10 Mandamentos" },
-  { label: "Os 10 Mandamentos — Parte II", url: vid10m2.url, kind: "video", group: "Séries · 10 Mandamentos" },
-  { label: "Os 10 Mandamentos — Parte III", url: vid10m3.url, kind: "video", group: "Séries · 10 Mandamentos" },
   { label: "Sou Fiel (louvor)", url: "/videos/ser-fiel.mp4", kind: "video", group: "Louvores" },
   { label: "Graça Aleluia (louvor)", url: "/videos/aleluia.mp4", kind: "video", group: "Louvores" },
   { label: "Palavra Eterna (louvor)", url: "/videos/palavra-eterna.mp4", kind: "video", group: "Louvores" },

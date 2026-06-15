@@ -245,6 +245,12 @@ function AdminModeToggle() {
         <div className="mt-4 pt-4 border-t border-border space-y-2">
           <p className="text-xs font-display font-bold text-foreground">⚡ Atalhos do Administrador</p>
           <button
+            onClick={() => (window.location.href = "/estatisticas")}
+            className="w-full text-left px-4 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-700 text-white font-display font-bold text-sm shadow hover:scale-[1.01] transition"
+          >
+            📊 Estatísticas de uso (acessos, cliques, tempo)
+          </button>
+          <button
             onClick={() => setPlayOpen(true)}
             className="w-full text-left px-4 py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-700 text-white font-display font-bold text-sm shadow hover:scale-[1.01] transition"
           >

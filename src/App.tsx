@@ -14,9 +14,16 @@ import Atividades from "./pages/Atividades.tsx";
 import Album from "./pages/Album.tsx";
 import LemosPlay from "./pages/LemosPlay.tsx";
 import Configuracao from "./pages/Configuracao.tsx";
+import Estatisticas from "./pages/Estatisticas.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
 
 const queryClient = new QueryClient();
+
+const AnalyticsTracker = () => {
+  useAnalyticsTracker();
+  return null;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -24,6 +31,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <AnalyticsTracker />
         <MysticBackground />
         <Routes>
           <Route path="/" element={<Index />} />
@@ -35,6 +43,7 @@ const App = () => (
           <Route path="/atividades" element={<Atividades />} />
           <Route path="/album" element={<Album />} />
           <Route path="/config" element={<Configuracao />} />
+          <Route path="/estatisticas" element={<Estatisticas />} />
           <Route path="/lemosplay" element={<LemosPlay />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
