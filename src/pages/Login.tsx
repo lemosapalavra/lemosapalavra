@@ -91,7 +91,8 @@ export default function Login() {
       alert("A senha deve ter pelo menos 6 caracteres.");
       return;
     }
-    const userData = { name, birthDate, role, email, password, avatar: finalAvatar };
+    const createdAt = new Date().toISOString();
+    const userData = { name, birthDate, phone, role, email, password, avatar: finalAvatar, createdAt };
     localStorage.setItem("lemos_user", JSON.stringify(userData));
     if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) setAdminMode(true);
     navigate("/");
