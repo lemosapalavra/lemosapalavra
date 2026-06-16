@@ -329,11 +329,17 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
 
 function PageShell({ children, side }: { children: React.ReactNode; side: "left" | "right" }) {
   return (
-    <div className={`relative w-full h-full bg-amber-900 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.6)] border-4 border-amber-950 overflow-hidden ${
-      side === "left" ? "rounded-l-2xl border-r-0" : "rounded-r-2xl border-l-0"
-    }`}>
-      <AramaicBackdrop />
-      <div className="relative w-full h-full p-3 sm:p-4">{children}</div>
+    <div
+      className="relative w-full h-full overflow-hidden rounded-2xl"
+      style={{
+        backgroundImage: `url(${pergaminhoAsset.url})`,
+        backgroundSize: "100% 100%",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.35))",
+      }}
+    >
+      <div className="relative w-full h-full p-6 sm:p-10">{children}</div>
     </div>
   );
 }
