@@ -18,11 +18,22 @@ export default function Estatisticas() {
   const navigate = useNavigate();
   const admin = useIsAdmin();
   const [data, setData] = useState<AnalyticsData>(() => loadAnalytics());
+  const [ip, setIp] = useState<string>("—");
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     if (!admin) {
       navigate("/config");
+      return;
     }
+    try {
+      const raw = localStorage.getItem("lemos_user");
+      if (raw) setUser(JSON.parse(raw));
+    } catch {}
+    fetch("https://api.ipify.org?format=json")
+      .then((r) => r.json())
+      .then((j) => setIp(j.ip || "—"))
+      .catch(() => setIp("indisponível"));
   }, [admin, navigate]);
 
   const refresh = () => setData(loadAnalytics());
@@ -214,14 +225,58 @@ export default function Estatisticas() {
           )}
         </div>
 
+        {/* Users panel */}
+        <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
+          <h3 className="font-display text-lg font-bold text-foreground mb-3">👥 Dados do(s) Usuário(s) deste dispositivo</h3>
+          {!user ? (
+            <p className="text-sm text-muted-foreground font-body">Nenhum cadastro encontrado neste dispositivo.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm font-body">
+                <thead>
+                  <tr className="text-left border-b border-border">
+                    <th className="py-2 pr-3">Avatar</th>
+                    <th className="py-2 pr-3">Nome</th>
+                    <th className="py-2 pr-3">E-mail</th>
+                    <th className="py-2 pr-3">Telefone</th>
+                    <th className="py-2 pr-3">Nascimento</th>
+                    <th className="py-2 pr-3">Função</th>
+                    <th className="py-2 pr-3">IP</th>
+                    <th className="py-2 pr-3">Cadastro</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-border/50">
+                    <td className="py-2 pr-3">
+                      {user.avatar ? (
+                        <img src={user.avatar} alt="" className="w-9 h-9 rounded-full object-cover" />
+                      ) : "—"}
+                    </td>
+                    <td className="py-2 pr-3">{user.name || "—"}</td>
+                    <td className="py-2 pr-3">{user.email || "—"}</td>
+                    <td className="py-2 pr-3">{user.phone || "—"}</td>
+                    <td className="py-2 pr-3">{user.birthDate || "—"}</td>
+                    <td className="py-2 pr-3 capitalize">{user.role || "—"}</td>
+                    <td className="py-2 pr-3 tabular-nums">{ip}</td>
+                    <td className="py-2 pr-3 text-xs">
+                      {user.createdAt ? new Date(user.createdAt).toLocaleString("pt-BR") : "—"}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <p className="text-xs text-muted-foreground mt-3">
+                ⚠️ Dados armazenados localmente neste dispositivo. Para um painel central com todos os usuários do site (em todos os dispositivos), é necessário ativar o backend com tabela de perfis.
+              </p>
+            </div>
+          )}
+        </div>
+
         <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
           <h3 className="font-display text-lg font-bold text-foreground mb-3">ℹ️ Informações da sessão</h3>
           <div className="text-sm font-body text-foreground space-y-1">
             <p><strong>Primeiro acesso:</strong> {new Date(data.firstSeen).toLocaleString("pt-BR")}</p>
             <p><strong>Último acesso:</strong> {new Date(data.lastSeen).toLocaleString("pt-BR")}</p>
-            <p className="text-xs text-muted-foreground mt-2">
-              ⚠️ Estatísticas armazenadas localmente neste dispositivo. Para consolidar dados de todos os usuários em um painel central seria necessário ativar tracking via backend.
-            </p>
+            <p><strong>IP atual:</strong> {ip}</p>
           </div>
         </div>
       </div>

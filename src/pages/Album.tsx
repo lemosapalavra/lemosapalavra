@@ -8,6 +8,7 @@ import AramaicBackdrop from "@/components/AramaicBackdrop";
 import { categories, allStickers, rarityBorder, rarityLabel, type Rarity, type Sticker } from "@/data/stickers";
 import { useCoins, ensureInitialCoins } from "@/hooks/useCoins";
 import albumCapa from "@/assets/album-capa.png";
+import pergaminhoAsset from "@/assets/pergaminho.png.asset.json";
 import iconInicio from "@/assets/icon-inicio.jpg";
 import iconUsuario from "@/assets/icon-usuario.png";
 
@@ -44,10 +45,16 @@ function buildPack(): { sticker: Sticker; rarity: Rarity }[] {
   const raras = shuffleDaily(allStickers.filter((s) => s.rarity === "rara"), 2);
   const normais = shuffleDaily(allStickers.filter((s) => s.rarity === "normal"), 3);
   const result: { sticker: Sticker; rarity: Rarity }[] = [];
-  const rel = pickRandom(reliquias, normais);
-  if (rel) result.push({ sticker: rel, rarity: "reliquia" });
-  const rar = pickRandom(raras, normais);
-  if (rar) result.push({ sticker: rar, rarity: "rara" });
+  // 1 "especial": rara OR (eventualmente) relíquia (~25% de chance)
+  const especialIsReliquia = Math.random() < 0.25;
+  const especial = especialIsReliquia
+    ? (pickRandom(reliquias, raras) ?? pickRandom(raras, normais))
+    : (pickRandom(raras, reliquias) ?? pickRandom(reliquias, normais));
+  if (especial) {
+    const rarity: Rarity = especialIsReliquia && reliquias.length ? "reliquia" : "rara";
+    result.push({ sticker: especial, rarity });
+  }
+  // 3 normais
   for (let i = 0; i < 3; i++) {
     const n = pickRandom(normais, allStickers);
     if (n) result.push({ sticker: n, rarity: "normal" });
@@ -322,11 +329,17 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
 
 function PageShell({ children, side }: { children: React.ReactNode; side: "left" | "right" }) {
   return (
-    <div className={`relative w-full h-full bg-amber-900 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.6)] border-4 border-amber-950 overflow-hidden ${
-      side === "left" ? "rounded-l-2xl border-r-0" : "rounded-r-2xl border-l-0"
-    }`}>
-      <AramaicBackdrop />
-      <div className="relative w-full h-full p-3 sm:p-4">{children}</div>
+    <div
+      className="relative w-full h-full overflow-hidden rounded-2xl"
+      style={{
+        backgroundImage: `url(${pergaminhoAsset.url})`,
+        backgroundSize: "100% 100%",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.35))",
+      }}
+    >
+      <div className="relative w-full h-full p-6 sm:p-10">{children}</div>
     </div>
   );
 }
@@ -405,8 +418,8 @@ function BackCoverPage({ owned }: { owned: Owned }) {
             <li>A cada <strong>atividade</strong> concluída você ganha 🪙 moedas.</li>
             <li>Assistir um <strong>filme, série ou vídeo</strong> também rende moedas.</li>
             <li>Ler um <strong>versículo, devocional</strong> ou trecho da <strong>Bíblia</strong> dá moedas.</li>
-            <li>Com <strong>3 🪙 moedas</strong> você compra um <strong>pacotinho</strong> com 5 figurinhas.</li>
-            <li>Cada pacote vem com 1 <strong>Relíquia</strong>, 1 <strong>Rara</strong> e 3 <strong>Normais</strong>.</li>
+            <li>Com <strong>3 🪙 moedas</strong> você compra um <strong>pacotinho</strong> com 4 figurinhas.</li>
+            <li>Cada pacote vem com 3 <strong>Normais</strong> + 1 <strong>Rara</strong> (com chance de <strong>Relíquia</strong>).</li>
             <li>Figurinhas <strong>repetidas</strong> podem ser trocadas na <em>Sala de Trocas</em>.</li>
           </ul>
         </div>

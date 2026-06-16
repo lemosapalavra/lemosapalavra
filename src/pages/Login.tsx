@@ -47,6 +47,7 @@ export default function Login() {
   // register-only fields
   const [name, setName] = useState("");
   const [birthDate, setBirthDate] = useState("");
+  const [phone, setPhone] = useState("");
   const [role, setRole] = useState<Role | "">("");
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const [customAvatar, setCustomAvatar] = useState<string>("");
@@ -90,7 +91,8 @@ export default function Login() {
       alert("A senha deve ter pelo menos 6 caracteres.");
       return;
     }
-    const userData = { name, birthDate, role, email, password, avatar: finalAvatar };
+    const createdAt = new Date().toISOString();
+    const userData = { name, birthDate, phone, role, email, password, avatar: finalAvatar, createdAt };
     localStorage.setItem("lemos_user", JSON.stringify(userData));
     if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) setAdminMode(true);
     navigate("/");
@@ -153,6 +155,15 @@ export default function Login() {
                     value={birthDate}
                     onChange={(e) => setBirthDate(e.target.value)}
                     className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                  />
+                </Field>
+                <Field label="Telefone">
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    placeholder="(11) 99999-9999"
                   />
                 </Field>
                 <Field label="Você é:">
