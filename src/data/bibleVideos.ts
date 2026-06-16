@@ -99,6 +99,22 @@ export const seriesGroups: BibleVideoGroup[] = [
     ],
   },
   {
+    title: "Abraão",
+    icon: iconAbraao.url,
+    videos: [
+      { title: "Abraão — Parte I", icon: iconAbraao.url, src: vidAbraao1.url },
+      { title: "Abraão — Parte II", icon: iconAbraao.url, src: vidAbraao2.url },
+    ],
+  },
+  {
+    title: "A Prova de Fogo",
+    icon: iconProvaFogo.url,
+    videos: [
+      { title: "A Prova de Fogo — Parte I", icon: iconProvaFogo.url, src: vidProvaFogo1.url },
+      { title: "A Prova de Fogo — Parte II", icon: iconProvaFogo.url, src: vidProvaFogo2.url },
+    ],
+  },
+  {
     title: "Davi e Golias",
     icon: iconDaviGolias,
     videos: [
@@ -113,5 +129,7 @@ export const filmesVideos: BibleVideo[] = [
   { title: "A Batalha dos Anjos", icon: iconBatalha, src: vidBatalha.url },
   { title: "Adão e Eva", icon: iconAdaoEva1, src: vidAdaoEva.url },
   { title: "Noé e a Arca", icon: iconNoe1, src: vidNoeArcaFilme.url },
+  { title: "Davi e Golias", icon: iconDaviGolias, src: vidDaviFilme.url },
+  { title: "Jonas e a Baleia", icon: iconJonas.url, src: vidJonasFilme.url },
   { title: "Os 10 Mandamentos", icon: icon10Mandamentos, src: vid10mFilme.url },
 ];
