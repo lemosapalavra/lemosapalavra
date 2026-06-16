@@ -22,10 +22,11 @@ import vidJose3 from "@/assets/lemos-play/jose-egito-3.mp4.asset.json";
 import vidJo1 from "@/assets/lemos-play/jo-1.mp4.asset.json";
 import vidJo2 from "@/assets/lemos-play/jo-2.mp4.asset.json";
 import vidJo3 from "@/assets/lemos-play/jo-3.mp4.asset.json";
-import joseEgitoIcon from "@/assets/lemos-play/jose-egito.png.asset.json";
+import joseEgitoCover from "@/assets/lemos-play/jose-egito-cover.png.asset.json";
+import joseEgitoP1 from "@/assets/lemos-play/jose-egito-parte-1.png.asset.json";
+import joseEgitoP2 from "@/assets/lemos-play/jose-egito-parte-2.png.asset.json";
+import joseEgitoP3 from "@/assets/lemos-play/jose-egito-parte-3.png.asset.json";
 import joIcon from "@/assets/lemos-play/jo.png.asset.json";
-import vidDavi1 from "@/assets/lemos-play/davi-golias-1.mp4.asset.json";
-import vidDavi2 from "@/assets/lemos-play/davi-golias-2.mp4.asset.json";
 import vidAdaoEva from "@/assets/lemos-play/adao-eva.mp4.asset.json";
 import vidNoeArcaFilme from "@/assets/lemos-play/noe-arca-filme.mp4.asset.json";
 import vidMoises1 from "@/assets/lemos-play/moises-1.mp4.asset.json";
@@ -82,11 +83,11 @@ export const seriesGroups: BibleVideoGroup[] = [
   },
   {
     title: "José do Egito",
-    icon: joseEgitoIcon.url,
+    icon: joseEgitoCover.url,
     videos: [
-      { title: "José do Egito — Parte I", icon: joseEgitoIcon.url, src: vidJose1.url },
-      { title: "José do Egito — Parte II", icon: joseEgitoIcon.url, src: vidJose2.url },
-      { title: "José do Egito — Parte III", icon: joseEgitoIcon.url, src: vidJose3.url },
+      { title: "José do Egito — Parte I", icon: joseEgitoP1.url, src: vidJose1.url },
+      { title: "José do Egito — Parte II", icon: joseEgitoP2.url, src: vidJose2.url },
+      { title: "José do Egito — Parte III", icon: joseEgitoP3.url, src: vidJose3.url },
     ],
   },
   {
@@ -112,14 +113,6 @@ export const seriesGroups: BibleVideoGroup[] = [
     videos: [
       { title: "A Prova de Fogo — Parte I", icon: iconProvaFogo.url, src: vidProvaFogo1.url },
       { title: "A Prova de Fogo — Parte II", icon: iconProvaFogo.url, src: vidProvaFogo2.url },
-    ],
-  },
-  {
-    title: "Davi e Golias",
-    icon: iconDaviGolias,
-    videos: [
-      { title: "Davi e Golias — Parte I", icon: iconDaviGolias, src: vidDavi1.url },
-      { title: "Davi e Golias — Parte II", icon: iconDaviGolias, src: vidDavi2.url },
     ],
   },
 ];
