@@ -47,6 +47,7 @@ export default function Login() {
   // register-only fields
   const [name, setName] = useState("");
   const [birthDate, setBirthDate] = useState("");
+  const [phone, setPhone] = useState("");
   const [role, setRole] = useState<Role | "">("");
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const [customAvatar, setCustomAvatar] = useState<string>("");
