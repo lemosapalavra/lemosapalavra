@@ -44,10 +44,16 @@ function buildPack(): { sticker: Sticker; rarity: Rarity }[] {
   const raras = shuffleDaily(allStickers.filter((s) => s.rarity === "rara"), 2);
   const normais = shuffleDaily(allStickers.filter((s) => s.rarity === "normal"), 3);
   const result: { sticker: Sticker; rarity: Rarity }[] = [];
-  const rel = pickRandom(reliquias, normais);
-  if (rel) result.push({ sticker: rel, rarity: "reliquia" });
-  const rar = pickRandom(raras, normais);
-  if (rar) result.push({ sticker: rar, rarity: "rara" });
+  // 1 "especial": rara OR (eventualmente) relíquia (~25% de chance)
+  const especialIsReliquia = Math.random() < 0.25;
+  const especial = especialIsReliquia
+    ? (pickRandom(reliquias, raras) ?? pickRandom(raras, normais))
+    : (pickRandom(raras, reliquias) ?? pickRandom(reliquias, normais));
+  if (especial) {
+    const rarity: Rarity = especialIsReliquia && reliquias.length ? "reliquia" : "rara";
+    result.push({ sticker: especial, rarity });
+  }
+  // 3 normais
   for (let i = 0; i < 3; i++) {
     const n = pickRandom(normais, allStickers);
     if (n) result.push({ sticker: n, rarity: "normal" });
