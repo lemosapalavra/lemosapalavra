@@ -18,11 +18,22 @@ export default function Estatisticas() {
   const navigate = useNavigate();
   const admin = useIsAdmin();
   const [data, setData] = useState<AnalyticsData>(() => loadAnalytics());
+  const [ip, setIp] = useState<string>("—");
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     if (!admin) {
       navigate("/config");
+      return;
     }
+    try {
+      const raw = localStorage.getItem("lemos_user");
+      if (raw) setUser(JSON.parse(raw));
+    } catch {}
+    fetch("https://api.ipify.org?format=json")
+      .then((r) => r.json())
+      .then((j) => setIp(j.ip || "—"))
+      .catch(() => setIp("indisponível"));
   }, [admin, navigate]);
 
   const refresh = () => setData(loadAnalytics());
