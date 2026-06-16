@@ -157,6 +157,15 @@ export default function Login() {
                     className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
                   />
                 </Field>
+                <Field label="Telefone">
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    placeholder="(11) 99999-9999"
+                  />
+                </Field>
                 <Field label="Você é:">
                   <div className="flex gap-2 flex-wrap">
                     {(["mãe", "pai", "filho", "filha"] as Role[]).map((r) => (
