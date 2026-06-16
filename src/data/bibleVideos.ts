@@ -83,11 +83,11 @@ export const seriesGroups: BibleVideoGroup[] = [
   },
   {
     title: "José do Egito",
-    icon: joseEgitoIcon.url,
+    icon: joseEgitoCover.url,
     videos: [
-      { title: "José do Egito — Parte I", icon: joseEgitoIcon.url, src: vidJose1.url },
-      { title: "José do Egito — Parte II", icon: joseEgitoIcon.url, src: vidJose2.url },
-      { title: "José do Egito — Parte III", icon: joseEgitoIcon.url, src: vidJose3.url },
+      { title: "José do Egito — Parte I", icon: joseEgitoP1.url, src: vidJose1.url },
+      { title: "José do Egito — Parte II", icon: joseEgitoP2.url, src: vidJose2.url },
+      { title: "José do Egito — Parte III", icon: joseEgitoP3.url, src: vidJose3.url },
     ],
   },
   {
@@ -113,14 +113,6 @@ export const seriesGroups: BibleVideoGroup[] = [
     videos: [
       { title: "A Prova de Fogo — Parte I", icon: iconProvaFogo.url, src: vidProvaFogo1.url },
       { title: "A Prova de Fogo — Parte II", icon: iconProvaFogo.url, src: vidProvaFogo2.url },
-    ],
-  },
-  {
-    title: "Davi e Golias",
-    icon: iconDaviGolias,
-    videos: [
-      { title: "Davi e Golias — Parte I", icon: iconDaviGolias, src: vidDavi1.url },
-      { title: "Davi e Golias — Parte II", icon: iconDaviGolias, src: vidDavi2.url },
     ],
   },
 ];
