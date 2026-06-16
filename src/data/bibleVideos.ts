@@ -31,6 +31,15 @@ import vidNoeArcaFilme from "@/assets/lemos-play/noe-arca-filme.mp4.asset.json";
 import vidMoises1 from "@/assets/lemos-play/moises-1.mp4.asset.json";
 import vidMoises2 from "@/assets/lemos-play/moises-2.mp4.asset.json";
 import vidMoises3 from "@/assets/lemos-play/moises-3.mp4.asset.json";
+import vidDaviFilme from "@/assets/lemos-play/davi-golias-filme.mp4.asset.json";
+import vidJonasFilme from "@/assets/lemos-play/jonas-baleia-filme.mp4.asset.json";
+import vidAbraao1 from "@/assets/lemos-play/abraao-1.mp4.asset.json";
+import vidAbraao2 from "@/assets/lemos-play/abraao-2.mp4.asset.json";
+import vidProvaFogo1 from "@/assets/lemos-play/prova-fogo-1.mp4.asset.json";
+import vidProvaFogo2 from "@/assets/lemos-play/prova-fogo-2.mp4.asset.json";
+import iconJonas from "@/assets/lemos-play/jonas-e-a-baleia.png.asset.json";
+import iconAbraao from "@/assets/lemos-play/abraao-e-a-obediencia.png.asset.json";
+import iconProvaFogo from "@/assets/lemos-play/provados-pelo-fogo.png.asset.json";
 
 export interface BibleVideo {
   title: string;
