@@ -17,6 +17,10 @@ import palavraEternaThumb from "@/assets/lemos-play/palavra-eterna.png.asset.jso
 import doMeuJeitoVid from "@/assets/lemos-play/do-meu-jeito.mp4.asset.json";
 import paiEFilhoVid from "@/assets/lemos-play/pai-e-filho.mp4.asset.json";
 import umDeNosVid from "@/assets/lemos-play/um-de-nos.mp4.asset.json";
+import entraCasaVid from "@/assets/lemos-play/entra-na-minha-casa.mp4.asset.json";
+import aleluiaVid from "@/assets/lemos-play/aleluia.mp4.asset.json";
+import palavraEternaVid from "@/assets/lemos-play/palavra-eterna.mp4.asset.json";
+import souFielVid from "@/assets/lemos-play/sou-fiel.mp4.asset.json";
 
 export interface PlayEntry {
   id: string;
@@ -39,7 +43,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v12";
+const KEY = "lemos_play_config_v13";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
@@ -74,10 +78,10 @@ const defaultMusicas: PlayEntry[] = [
 ];
 
 const defaultLouvores: PlayEntry[] = [
-  { id: "lv1", title: "Espírito Santo", src: UNAVAILABLE_VIDEO, poster: attachedThumbByTitle["Espírito Santo"] },
-  { id: "lv2", title: "Sou Fiel", src: LOCAL_VIDEO("ser-fiel.mp4"), poster: attachedThumbByTitle["Sou Fiel"] },
-  { id: "lv3", title: "Graça Aleluia", src: LOCAL_VIDEO("aleluia.mp4"), poster: attachedThumbByTitle["Graça Aleluia"] },
-  { id: "lv4", title: "Palavra Eterna", src: LOCAL_VIDEO("palavra-eterna.mp4"), poster: LOCAL_POSTER("palavra-eterna-poster.jpg") },
+  { id: "lv1", title: "Entra na minha Casa", src: entraCasaVid.url, poster: attachedThumbByTitle["Espírito Santo"] },
+  { id: "lv2", title: "Sou Fiel", src: souFielVid.url, poster: attachedThumbByTitle["Sou Fiel"] },
+  { id: "lv3", title: "Graça Aleluia", src: aleluiaVid.url, poster: attachedThumbByTitle["Graça Aleluia"] },
+  { id: "lv4", title: "Palavra Eterna", src: palavraEternaVid.url, poster: attachedThumbByTitle["Palavra Eterna"] },
 ];
 
 function resolvePoster(title: string, fallback?: string): string | undefined {
