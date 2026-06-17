@@ -68,9 +68,9 @@ const attachedThumbByTitle: Record<string, string> = {
 };
 
 const defaultMusicas: PlayEntry[] = [
-  { id: "m1", title: "Do meu Jeito", src: UNAVAILABLE_VIDEO, poster: attachedThumbByTitle["Do meu Jeito"] },
-  { id: "m2", title: "Pai e Filho", src: UNAVAILABLE_VIDEO, poster: attachedThumbByTitle["Pai e Filho"] },
-  { id: "m3", title: "Um de Nós", src: UNAVAILABLE_VIDEO, poster: attachedThumbByTitle["Um de Nós"] },
+  { id: "m1", title: "Do meu Jeito", src: doMeuJeitoVid.url, poster: attachedThumbByTitle["Do meu Jeito"] },
+  { id: "m2", title: "Pai e Filho", src: paiEFilhoVid.url, poster: attachedThumbByTitle["Pai e Filho"] },
+  { id: "m3", title: "Um de Nós", src: umDeNosVid.url, poster: attachedThumbByTitle["Um de Nós"] },
 ];
 
 const defaultLouvores: PlayEntry[] = [
