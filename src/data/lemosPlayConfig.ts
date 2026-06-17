@@ -17,6 +17,10 @@ import palavraEternaThumb from "@/assets/lemos-play/palavra-eterna.png.asset.jso
 import doMeuJeitoVid from "@/assets/lemos-play/do-meu-jeito.mp4.asset.json";
 import paiEFilhoVid from "@/assets/lemos-play/pai-e-filho.mp4.asset.json";
 import umDeNosVid from "@/assets/lemos-play/um-de-nos.mp4.asset.json";
+import entraCasaVid from "@/assets/lemos-play/entra-na-minha-casa.mp4.asset.json";
+import aleluiaVid from "@/assets/lemos-play/aleluia.mp4.asset.json";
+import palavraEternaVid from "@/assets/lemos-play/palavra-eterna.mp4.asset.json";
+import souFielVid from "@/assets/lemos-play/sou-fiel.mp4.asset.json";
 
 export interface PlayEntry {
   id: string;
