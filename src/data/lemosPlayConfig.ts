@@ -78,10 +78,10 @@ const defaultMusicas: PlayEntry[] = [
 ];
 
 const defaultLouvores: PlayEntry[] = [
-  { id: "lv1", title: "Espírito Santo", src: UNAVAILABLE_VIDEO, poster: attachedThumbByTitle["Espírito Santo"] },
-  { id: "lv2", title: "Sou Fiel", src: LOCAL_VIDEO("ser-fiel.mp4"), poster: attachedThumbByTitle["Sou Fiel"] },
-  { id: "lv3", title: "Graça Aleluia", src: LOCAL_VIDEO("aleluia.mp4"), poster: attachedThumbByTitle["Graça Aleluia"] },
-  { id: "lv4", title: "Palavra Eterna", src: LOCAL_VIDEO("palavra-eterna.mp4"), poster: LOCAL_POSTER("palavra-eterna-poster.jpg") },
+  { id: "lv1", title: "Entra na minha Casa", src: entraCasaVid.url, poster: attachedThumbByTitle["Espírito Santo"] },
+  { id: "lv2", title: "Sou Fiel", src: souFielVid.url, poster: attachedThumbByTitle["Sou Fiel"] },
+  { id: "lv3", title: "Graça Aleluia", src: aleluiaVid.url, poster: attachedThumbByTitle["Graça Aleluia"] },
+  { id: "lv4", title: "Palavra Eterna", src: palavraEternaVid.url, poster: attachedThumbByTitle["Palavra Eterna"] },
 ];
 
 function resolvePoster(title: string, fallback?: string): string | undefined {
