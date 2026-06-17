@@ -11,6 +11,11 @@ import logoCentral from "@/assets/logo-central.png";
 import espiritoSantoThumb from "@/assets/lemos-play/espirito-santo-i.png.asset.json";
 import serFielThumb from "@/assets/lemos-play/ser-fiel-thumb.png.asset.json";
 import gracaAleluiaThumb from "@/assets/lemos-play/graca-aleluia.png.asset.json";
+import palavraEternaThumb from "@/assets/lemos-play/palavra-eterna.png.asset.json";
+import entraCasaVid from "@/assets/lemos-play/entra-na-minha-casa.mp4.asset.json";
+import aleluiaVid from "@/assets/lemos-play/aleluia.mp4.asset.json";
+import palavraEternaVid from "@/assets/lemos-play/palavra-eterna.mp4.asset.json";
+import souFielVid from "@/assets/lemos-play/sou-fiel.mp4.asset.json";
 
 interface Louvor {
   title: string;
@@ -18,15 +23,11 @@ interface Louvor {
   thumb: string;
 }
 
-const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
-const LOCAL_POSTER = (file: string) => `/videos/${file}`;
-const UNAVAILABLE_VIDEO = "";
-
 const allLouvores: Louvor[] = [
-  { title: "Espírito Santo", src: UNAVAILABLE_VIDEO, thumb: espiritoSantoThumb.url },
-  { title: "Sou Fiel", src: LOCAL_VIDEO("ser-fiel.mp4"), thumb: serFielThumb.url },
-  { title: "Graça Aleluia", src: LOCAL_VIDEO("aleluia.mp4"), thumb: gracaAleluiaThumb.url },
-  { title: "Palavra Eterna", src: LOCAL_VIDEO("palavra-eterna.mp4"), thumb: LOCAL_POSTER("palavra-eterna-poster.jpg") },
+  { title: "Entra na minha Casa", src: entraCasaVid.url, thumb: espiritoSantoThumb.url },
+  { title: "Sou Fiel", src: souFielVid.url, thumb: serFielThumb.url },
+  { title: "Graça Aleluia", src: aleluiaVid.url, thumb: gracaAleluiaThumb.url },
+  { title: "Palavra Eterna", src: palavraEternaVid.url, thumb: palavraEternaThumb.url },
 ];
 // Esconde os louvores cujo link está quebrado
 const louvores: Louvor[] = allLouvores.filter((l) => !!l.src);
