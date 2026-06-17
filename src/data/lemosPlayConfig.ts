@@ -14,6 +14,9 @@ import espiritoSantoThumb from "@/assets/lemos-play/espirito-santo-i.png.asset.j
 import serFielThumb from "@/assets/lemos-play/ser-fiel-thumb.png.asset.json";
 import gracaAleluiaThumb from "@/assets/lemos-play/graca-aleluia.png.asset.json";
 import palavraEternaThumb from "@/assets/lemos-play/palavra-eterna.png.asset.json";
+import doMeuJeitoVid from "@/assets/lemos-play/do-meu-jeito.mp4.asset.json";
+import paiEFilhoVid from "@/assets/lemos-play/pai-e-filho.mp4.asset.json";
+import umDeNosVid from "@/assets/lemos-play/um-de-nos.mp4.asset.json";
 
 export interface PlayEntry {
   id: string;
