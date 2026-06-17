@@ -14,6 +14,9 @@ import espiritoSantoThumb from "@/assets/lemos-play/espirito-santo-i.png.asset.j
 import serFielThumb from "@/assets/lemos-play/ser-fiel-thumb.png.asset.json";
 import gracaAleluiaThumb from "@/assets/lemos-play/graca-aleluia.png.asset.json";
 import palavraEternaThumb from "@/assets/lemos-play/palavra-eterna.png.asset.json";
+import doMeuJeitoVid from "@/assets/lemos-play/do-meu-jeito.mp4.asset.json";
+import paiEFilhoVid from "@/assets/lemos-play/pai-e-filho.mp4.asset.json";
+import umDeNosVid from "@/assets/lemos-play/um-de-nos.mp4.asset.json";
 
 export interface PlayEntry {
   id: string;
@@ -36,7 +39,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v11";
+const KEY = "lemos_play_config_v12";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
@@ -65,9 +68,9 @@ const attachedThumbByTitle: Record<string, string> = {
 };
 
 const defaultMusicas: PlayEntry[] = [
-  { id: "m1", title: "Do meu Jeito", src: UNAVAILABLE_VIDEO, poster: attachedThumbByTitle["Do meu Jeito"] },
-  { id: "m2", title: "Pai e Filho", src: UNAVAILABLE_VIDEO, poster: attachedThumbByTitle["Pai e Filho"] },
-  { id: "m3", title: "Um de Nós", src: UNAVAILABLE_VIDEO, poster: attachedThumbByTitle["Um de Nós"] },
+  { id: "m1", title: "Do meu Jeito", src: doMeuJeitoVid.url, poster: attachedThumbByTitle["Do meu Jeito"] },
+  { id: "m2", title: "Pai e Filho", src: paiEFilhoVid.url, poster: attachedThumbByTitle["Pai e Filho"] },
+  { id: "m3", title: "Um de Nós", src: umDeNosVid.url, poster: attachedThumbByTitle["Um de Nós"] },
 ];
 
 const defaultLouvores: PlayEntry[] = [
