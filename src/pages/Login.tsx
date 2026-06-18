@@ -92,8 +92,8 @@ export default function Login() {
   };
 
   const doRegister = () => {
-    if (!name || !role || !finalAvatar) {
-      alert("Preencha nome, função e escolha um avatar.");
+    if (!name || !role || !ageRange || !finalAvatar) {
+      alert("Preencha nome, faixa etária, função e escolha um avatar.");
       return;
     }
     if (!password || password.length < 6) {
@@ -101,7 +101,7 @@ export default function Login() {
       return;
     }
     const createdAt = new Date().toISOString();
-    const userData = { name, birthDate, phone, role, email, password, avatar: finalAvatar, createdAt };
+    const userData = { name, ageRange, phone, role, email, password, avatar: finalAvatar, createdAt };
     localStorage.setItem("lemos_user", JSON.stringify(userData));
     if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) setAdminMode(true);
     navigate("/");
