@@ -1,14 +1,40 @@
 import { useEffect, useState } from "react";
 
 const KEY = "lemos_admin_mode";
+const ADMIN_EMAILS = ["marcello.pertutti@gmail.com"];
+
+function currentUserIsAdminEmail(): boolean {
+  try {
+    const raw = localStorage.getItem("lemos_user");
+    if (!raw) return false;
+    const u = JSON.parse(raw);
+    return ADMIN_EMAILS.includes(String(u?.email || "").toLowerCase());
+  } catch {
+    return false;
+  }
+}
 
 export function isAdminNow(): boolean {
-  return localStorage.getItem(KEY) === "1";
+  // Admin gear is ONLY visible to users whose account email is whitelisted
+  // AND who have toggled admin mode on this device. This prevents regular
+  // users from seeing or activating administrator controls.
+  return currentUserIsAdminEmail() && localStorage.getItem(KEY) === "1";
+}
+
+export function canBeAdmin(): boolean {
+  return currentUserIsAdminEmail();
 }
 
 export function setAdminMode(v: boolean) {
-  if (v) localStorage.setItem(KEY, "1");
-  else localStorage.removeItem(KEY);
+  if (v) {
+    if (!currentUserIsAdminEmail()) {
+      // Refuse to enable admin for non-admin accounts.
+      return;
+    }
+    localStorage.setItem(KEY, "1");
+  } else {
+    localStorage.removeItem(KEY);
+  }
   window.dispatchEvent(new Event("lemos_admin_change"));
 }
 
