@@ -1136,21 +1136,22 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
 type CacaCard = { title: string; words: string[]; size: number; reference?: string };
 const cacaCards: CacaCard[] = [
   {
-    title: "Os 12 Apóstolos",
-    size: 12,
-    words: ["PEDRO", "ANDRE", "TIAGO", "JOAO", "FILIPE", "TOME", "MATEUS", "TADEU", "SIMAO", "JUDAS"],
-    reference: "Mateus 10:2-4",
+    title: "Heróis da Bíblia",
+    size: 8,
+    words: ["JESUS", "MARIA", "JOSE", "DAVI", "NOE", "MOISES"],
+    reference: "Fácil para crianças",
   },
   {
-    title: "O Nascimento de Jesus",
-    size: 11,
-    words: ["JESUS", "MANJEDOURA", "ESTRELA", "PASTORES", "ANJO", "MARIA", "JOSE", "BELEM"],
+    title: "O Natal",
+    size: 8,
+    words: ["JESUS", "MARIA", "JOSE", "ANJO", "ESTRELA", "BELEM"],
     reference: "Lucas 2",
   },
   {
-    title: "Personagens da Bíblia",
-    size: 11,
-    words: ["MARIA", "JESUS", "PEDRO", "JOSE", "PILATOS", "LAZARO", "TIAGO", "MOISES"],
+    title: "Bichinhos da Arca",
+    size: 8,
+    words: ["NOE", "POMBA", "LEAO", "OVELHA", "ZEBRA", "URSO"],
+    reference: "Gênesis 7",
   },
 ];
 
