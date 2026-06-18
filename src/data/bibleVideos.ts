@@ -25,6 +25,9 @@ import joseEgitoP1 from "@/assets/lemos-play/jose-egito-parte-1.png.asset.json";
 import joseEgitoP2 from "@/assets/lemos-play/jose-egito-parte-2.png.asset.json";
 import joseEgitoP3 from "@/assets/lemos-play/jose-egito-parte-3.png.asset.json";
 import joIcon from "@/assets/lemos-play/jo.png.asset.json";
+import joP1 from "@/assets/lemos-play/jo-parte-1-v2.png.asset.json";
+import joP2 from "@/assets/lemos-play/jo-parte-2-v2.png.asset.json";
+import joP3 from "@/assets/lemos-play/jo-parte-3-v2.png.asset.json";
 import vidAdaoEva from "@/assets/lemos-play/adao-eva.mp4.asset.json";
 import vidNoeArcaFilme from "@/assets/lemos-play/noe-arca-filme.mp4.asset.json";
 import vidMoises1 from "@/assets/lemos-play/moises-1.mp4.asset.json";
@@ -39,9 +42,9 @@ import vidProvaFogo2 from "@/assets/lemos-play/prova-fogo-2.mp4.asset.json";
 import iconJonas from "@/assets/lemos-play/jonas-e-a-baleia.png.asset.json";
 import iconAbraao from "@/assets/lemos-play/abraao-e-a-obediencia.png.asset.json";
 import iconProvaFogo from "@/assets/lemos-play/provados-pelo-fogo.png.asset.json";
-import moisesP1 from "@/assets/lemos-play/moises-parte-1.png.asset.json";
-import moisesP2 from "@/assets/lemos-play/moises-parte-2.png.asset.json";
-import moisesP3 from "@/assets/lemos-play/moises-parte-3.png.asset.json";
+import moisesP1 from "@/assets/lemos-play/moises-parte-1-v2.png.asset.json";
+import moisesP2 from "@/assets/lemos-play/moises-parte-2-v2.png.asset.json";
+import moisesP3 from "@/assets/lemos-play/moises-parte-3-v2.png.asset.json";
 
 export interface BibleVideo {
   title: string;
@@ -91,11 +94,11 @@ export const seriesGroups: BibleVideoGroup[] = [
   },
   {
     title: "Jó",
-    icon: joIcon.url,
+    icon: joP1.url,
     videos: [
-      { title: "Jó — Parte I", icon: joIcon.url, src: vidJo1.url },
-      { title: "Jó — Parte II", icon: joIcon.url, src: vidJo2.url },
-      { title: "Jó — Parte III", icon: joIcon.url, src: vidJo3.url },
+      { title: "Jó — Parte I", icon: joP1.url, src: vidJo1.url },
+      { title: "Jó — Parte II", icon: joP2.url, src: vidJo2.url },
+      { title: "Jó — Parte III", icon: joP3.url, src: vidJo3.url },
     ],
   },
   {

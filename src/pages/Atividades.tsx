@@ -971,7 +971,12 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
 
 /* ---------- JIGSAW (Quebra-Cabeça do Dia) ---------- */
 function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
-  const dayPuzzleIdx = useMemo(() => dayOfYear() % jigsawCatalog.length, []);
+  const dailyPuzzleIndexes = useMemo(() => {
+    const d = dayOfYear();
+    const total = jigsawCatalog.length;
+    return Array.from({ length: Math.min(4, total) }, (_, k) => (d + k) % total);
+  }, []);
+  const dayPuzzleIdx = dailyPuzzleIndexes[0];
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [difficulty, setDifficulty] = useState<3 | 4 | 5>(3);
   const [tiles, setTiles] = useState<number[]>([]);
@@ -1047,24 +1052,19 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
             </div>
           </div>
 
-          {/* Gallery — 5 puzzles rotating daily (no repeats) */}
-          <h4 className="font-display font-bold text-foreground mb-2 text-sm">📚 Galeria do Dia (5 imagens)</h4>
+          {/* Gallery — 4 puzzles rotating daily (no repeats) */}
+          <h4 className="font-display font-bold text-foreground mb-2 text-sm">📚 Galeria do Dia (4 imagens)</h4>
           <div className="grid grid-cols-2 gap-3">
-            {(() => {
-              const d = dayOfYear();
-              const total = jigsawCatalog.length;
-              const picks = Array.from({ length: Math.min(5, total) }, (_, k) => (d + k) % total);
-              return picks.map((i) => {
-                const p = jigsawCatalog[i];
-                return (
-                  <button key={i} onClick={() => start(i, 3)}
-                    className="bg-popover rounded-2xl p-3 shadow-md hover:shadow-lg hover:scale-105 transition-all border border-border text-center group">
-                    <img src={p.image} alt={p.title} className="w-full aspect-square object-cover rounded-xl mb-2 group-hover:brightness-110 transition" />
-                    <h3 className="font-display text-sm font-bold text-foreground">{p.emoji} {p.title}</h3>
-                  </button>
-                );
-              });
-            })()}
+            {dailyPuzzleIndexes.map((i) => {
+              const p = jigsawCatalog[i];
+              return (
+                <button key={i} onClick={() => start(i, 3)}
+                  className="bg-popover rounded-2xl p-3 shadow-md hover:shadow-lg hover:scale-105 transition-all border border-border text-center group">
+                  <img src={p.image} alt={p.title} className="w-full aspect-square object-cover rounded-xl mb-2 group-hover:brightness-110 transition" />
+                  <h3 className="font-display text-sm font-bold text-foreground">{p.emoji} {p.title}</h3>
+                </button>
+              );
+            })}
           </div>
 
           <p className="text-center text-xs text-muted-foreground font-body mt-4">

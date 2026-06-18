@@ -4,7 +4,10 @@ import logoAsset from "@/assets/educacionais/logo.png.asset.json";
 import edu1 from "@/assets/educacionais/educacional-1.jpg.asset.json";
 import edu2 from "@/assets/educacionais/educacional-2.jpg.asset.json";
 import edu3 from "@/assets/educacionais/educacional-3.jpg.asset.json";
+import edu4 from "@/assets/educacionais/educacional-4.jpg.asset.json";
+import edu5 from "@/assets/educacionais/educacional-5.jpg.asset.json";
 import edu6 from "@/assets/educacionais/educacional-6.jpg.asset.json";
+import edu7 from "@/assets/educacionais/educacional-7.jpg.asset.json";
 
 type Celebrate = (msg: string, coins: number, emoji?: string) => void;
 
@@ -17,13 +20,14 @@ interface Props {
 
 export type ActivityId = "circles" | "connect" | "differences" | "count" | "paint" | "draw";
 
-export const ACTIVITIES: { id: ActivityId; title: string; icon: string; image: string; coins: number; desc: string }[] = [
-  { id: "circles", title: "Pinte os Círculos", icon: "🎨", image: edu1.url, coins: 5, desc: "Pinte cada círculo com a cor do seu número." },
-  { id: "connect", title: "Ligue as Cores", icon: "🔗", image: edu2.url, coins: 6, desc: "Ligue os pontos seguindo a ordem dos números." },
-  { id: "differences", title: "Ache os Diferentes", icon: "🔍", image: edu3.url, coins: 5, desc: "Encontre as figuras que estão diferentes em cada bloco." },
-  { id: "count", title: "Conte e Registre", icon: "🔢", image: edu6.url, coins: 6, desc: "Conte quantas figuras de cada tipo existem." },
-  { id: "paint", title: "Pinte por Números", icon: "🖍️", image: edu1.url, coins: 6, desc: "Escolha as cores certas e complete o desenho." },
-  { id: "draw", title: "Desenhe e Trace", icon: "✏️", image: edu2.url, coins: 5, desc: "Desenhe livremente seguindo o modelo do dia." },
+export const ACTIVITIES: { key: string; id: ActivityId; title: string; icon: string; image: string; coins: number; desc: string }[] = [
+  { key: "circles-1", id: "circles", title: "Pinte os Círculos", icon: "🎨", image: edu1.url, coins: 5, desc: "Pinte cada círculo com a cor do seu número." },
+  { key: "connect-1", id: "connect", title: "Ligue as Cores", icon: "🔗", image: edu2.url, coins: 6, desc: "Ligue os pontos seguindo a ordem dos números." },
+  { key: "differences-1", id: "differences", title: "Ache os Diferentes", icon: "🔍", image: edu3.url, coins: 5, desc: "Encontre as figuras que estão diferentes em cada bloco." },
+  { key: "count-1", id: "count", title: "Conte e Registre", icon: "🔢", image: edu4.url, coins: 6, desc: "Conte quantas figuras de cada tipo existem." },
+  { key: "paint-1", id: "paint", title: "Pinte por Números", icon: "🖍️", image: edu5.url, coins: 6, desc: "Escolha as cores certas e complete o desenho." },
+  { key: "draw-1", id: "draw", title: "Desenhe e Trace", icon: "✏️", image: edu6.url, coins: 5, desc: "Desenhe livremente seguindo o modelo do dia." },
+  { key: "circles-2", id: "circles", title: "Pinte os Círculos", icon: "🌈", image: edu7.url, coins: 5, desc: "Mais uma cartela colorida para alternar durante a semana." },
 ];
 
 function dayOfYear(d = new Date()) {
@@ -75,7 +79,7 @@ export default function EducacionalActivities({ onBack, celebrate, bgStyle, init
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
           {dailyActivities.map((a) => (
             <button
-              key={a.id}
+              key={a.key}
               onClick={() => setActive(a.id)}
               className="group relative bg-white rounded-2xl overflow-hidden border-2 border-amber-300 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition text-left"
             >
