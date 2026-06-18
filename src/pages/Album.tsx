@@ -294,9 +294,12 @@ function renderPage(p: (BookPage & { startIndex?: number }) | undefined, owned: 
 
 /* -------- Sticker Detail Modal — fullscreen image only -------- */
 function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; owned: number; onClose: () => void }) {
+  const stickerNumber = String(allStickers.findIndex((s) => s.id === sticker.id) + 1).padStart(3, "0");
+  const category = categories.find((cat) => cat.stickers.some((s) => s.id === sticker.id));
+
   return (
     <div
-      className="fixed inset-0 z-[60] bg-black/[0.99] flex items-center justify-center p-4 animate-[pageInNext_0.32s_ease-out]"
+      className="fixed inset-0 z-[60] bg-black/95 flex items-center justify-center p-4 animate-[pageInNext_0.32s_ease-out]"
       onClick={onClose}
     >
       <button
@@ -306,21 +309,51 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
       >
         <X className="w-6 h-6" />
       </button>
-      <div className="relative w-full h-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-        {sticker.image ? (
-          <img
-            src={sticker.image}
-            alt={sticker.name}
-            className="max-w-full max-h-full object-contain drop-shadow-2xl"
-            style={{ maxHeight: "92vh" }}
-          />
-        ) : (
-          <div className="text-[200px]">{sticker.emoji}</div>
-        )}
+      <div className="relative w-full max-w-5xl grid lg:grid-cols-[minmax(0,1fr)_320px] gap-4 items-center" onClick={(e) => e.stopPropagation()}>
+        <div className="relative rounded-[28px] bg-white/5 border border-white/10 p-4 backdrop-blur-sm flex items-center justify-center min-h-[60vh]">
+          {sticker.image ? (
+            <img
+              src={sticker.image}
+              alt={sticker.name}
+              className="max-w-full max-h-[78vh] object-contain drop-shadow-2xl"
+            />
+          ) : (
+            <div className="text-[200px]">{sticker.emoji}</div>
+          )}
+          {owned > 1 && (
+            <span className="absolute top-4 left-4 z-10 text-xs bg-red-500 text-white px-3 py-1 rounded-full font-bold shadow">×{owned}</span>
+          )}
+        </div>
+
+        <aside className="rounded-[28px] border border-white/10 bg-white/10 backdrop-blur-md p-5 text-white shadow-2xl">
+          <div className="flex items-center gap-2 mb-3">
+            <span className={`px-3 py-1 rounded-full text-xs font-display font-extrabold uppercase ${rarityBorder(sticker.rarity)} border bg-white/10`}>
+              {rarityLabel(sticker.rarity)}
+            </span>
+            <span className="px-3 py-1 rounded-full text-xs font-display font-extrabold bg-amber-400 text-amber-950">Nº {stickerNumber}</span>
+          </div>
+
+          <h3 className="font-display text-2xl font-extrabold leading-tight mb-2">{sticker.name}</h3>
+          <div className="space-y-3 text-sm">
+            <div className="rounded-2xl bg-black/20 border border-white/10 p-3">
+              <p className="text-white/70 text-[11px] uppercase font-bold">Categoria</p>
+              <p className="font-display font-bold text-base">{category?.icon} {category?.name || "Coleção"}</p>
+            </div>
+            <div className="rounded-2xl bg-black/20 border border-white/10 p-3">
+              <p className="text-white/70 text-[11px] uppercase font-bold">Tipo da figurinha</p>
+              <p className="font-display font-bold text-base">{rarityLabel(sticker.rarity)}</p>
+            </div>
+            <div className="rounded-2xl bg-black/20 border border-white/10 p-3">
+              <p className="text-white/70 text-[11px] uppercase font-bold">Referência</p>
+              <p className="font-body leading-relaxed">{sticker.reference || "Figurinha especial do álbum Heróis da Fé."}</p>
+            </div>
+            <div className="rounded-2xl bg-black/20 border border-white/10 p-3">
+              <p className="text-white/70 text-[11px] uppercase font-bold">Quantidade no álbum</p>
+              <p className="font-display font-bold text-base">{owned} unidade{owned > 1 ? "s" : ""}</p>
+            </div>
+          </div>
+        </aside>
       </div>
-      {owned > 1 && (
-        <span className="absolute top-4 left-4 z-10 text-xs bg-red-500 text-white px-3 py-1 rounded-full font-bold shadow">×{owned}</span>
-      )}
     </div>
   );
 }

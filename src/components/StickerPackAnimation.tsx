@@ -62,54 +62,61 @@ const Sparkles = ({ count = 20 }: { count?: number }) => {
 };
 
 export default function StickerPackAnimation({ stickers, onClose }: StickerPackAnimationProps) {
-  // pick a random pack image per opening (no flicker if reopened)
   const packImg = useMemo(() => PACKS[Math.floor(Math.random() * PACKS.length)], []);
   const [phase, setPhase] = useState<"pack" | "shaking" | "tearing" | "burst" | "reveal">("pack");
   const [revealedIdx, setRevealedIdx] = useState(-1);
   const [flippedIdx, setFlippedIdx] = useState<number[]>([]);
 
-  // play a tiny synthesized "rip" using Web Audio for tactile feedback
-  const playRip = () => {
-    try {
-      const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const o = ctx.createOscillator();
-      const g = ctx.createGain();
-      o.type = "sawtooth";
-      o.frequency.setValueAtTime(220, ctx.currentTime);
-      o.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.5);
-      g.gain.setValueAtTime(0.25, ctx.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.6);
-      o.connect(g); g.connect(ctx.destination);
-      o.start(); o.stop(ctx.currentTime + 0.6);
-    } catch {}
+  const getAudioContext = () => {
+    const w = window as any;
+    if (!w.__lemosAudioCtx) {
+      const Ctx = window.AudioContext || w.webkitAudioContext;
+      if (!Ctx) return null;
+      w.__lemosAudioCtx = new Ctx();
+    }
+    return w.__lemosAudioCtx as AudioContext;
   };
-  const playSparkle = () => {
+
+  const playTone = (type: OscillatorType, startHz: number, endHz: number, duration: number, volume: number) => {
     try {
-      const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const ctx = getAudioContext();
+      if (!ctx) return;
+      ctx.resume?.();
       const o = ctx.createOscillator();
       const g = ctx.createGain();
-      o.type = "triangle";
-      o.frequency.setValueAtTime(880, ctx.currentTime);
-      o.frequency.exponentialRampToValueAtTime(1760, ctx.currentTime + 0.15);
-      g.gain.setValueAtTime(0.15, ctx.currentTime);
-      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.25);
-      o.connect(g); g.connect(ctx.destination);
-      o.start(); o.stop(ctx.currentTime + 0.25);
+      o.type = type;
+      o.frequency.setValueAtTime(startHz, ctx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(endHz, ctx.currentTime + duration);
+      g.gain.setValueAtTime(volume, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+      o.connect(g);
+      g.connect(ctx.destination);
+      o.start();
+      o.stop(ctx.currentTime + duration);
     } catch {}
   };
 
-  // phase sequence
+  const playRip = () => playTone("sawtooth", 220, 40, 0.55, 0.22);
+  const playBurst = () => playTone("square", 120, 520, 0.28, 0.12);
+  const playSparkle = () => playTone("triangle", 880, 1760, 0.25, 0.12);
+
   useEffect(() => {
     if (phase === "shaking") {
-      const t = setTimeout(() => { playRip(); setPhase("tearing"); }, 700);
+      const t = setTimeout(() => {
+        playRip();
+        setPhase("tearing");
+      }, 700);
       return () => clearTimeout(t);
     }
     if (phase === "tearing") {
-      const t = setTimeout(() => setPhase("burst"), 900);
+      const t = setTimeout(() => {
+        playBurst();
+        setPhase("burst");
+      }, 900);
       return () => clearTimeout(t);
     }
     if (phase === "burst") {
-      const t = setTimeout(() => setPhase("reveal"), 600);
+      const t = setTimeout(() => setPhase("reveal"), 650);
       return () => clearTimeout(t);
     }
     if (phase === "reveal") {
@@ -155,7 +162,11 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
           <div className="flex flex-col items-center gap-3">
             <div
               className="cursor-pointer animate-shadow-pulse hover:scale-105 transition-transform"
-              onClick={() => setPhase("shaking")}
+              onClick={() => {
+                getAudioContext()?.resume?.();
+                playTone("triangle", 420, 520, 0.08, 0.06);
+                setPhase("shaking");
+              }}
             >
               <img
                 src={packImg}
@@ -165,7 +176,7 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
               />
             </div>
             <p className="font-display font-bold text-white text-lg drop-shadow-lg animate-pulse">
-              👆 Toque para rasgar!
+              👆 Toque para abrir o pacotinho!
             </p>
           </div>
         )}
@@ -206,10 +217,12 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-72 h-72 rounded-full bg-gradient-to-br from-yellow-300 via-orange-300 to-pink-300 blur-3xl animate-ping" />
             </div>
-            {/* Hand reaching in to pull stickers out */}
+            <div className="absolute inset-0 pointer-events-none">
+              <Sparkles count={36} />
+            </div>
             <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-6xl sm:text-7xl animate-[handPull_0.6s_ease-out]">🤲</div>
             <div className="relative font-display text-4xl sm:text-5xl font-bold text-yellow-200 drop-shadow-2xl animate-[zoomBounce_0.6s_ease-out]">
-              ✨ AGORA! ✨
+              ✨ ABRINDO! ✨
             </div>
           </div>
         )}
@@ -299,7 +312,8 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
                     📦 Repetidas guardadas para troca!
                   </p>
                 )}
-                <button onClick={onClose} className="btn-cartoon px-6 py-2 text-sm mt-2">
+                <p className="text-xs text-white/80 text-center">Toque fora ou no botão para continuar.</p>
+                <button onClick={onClose} className="btn-cartoon px-6 py-2 text-sm mt-1">
                   Fechar
                 </button>
               </div>
