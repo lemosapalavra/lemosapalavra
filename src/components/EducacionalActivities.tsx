@@ -12,21 +12,34 @@ interface Props {
   onBack: () => void;
   celebrate: Celebrate;
   bgStyle: React.CSSProperties;
-  /** If set, opens directly into this activity, bypassing the menu */
   initialActivity?: ActivityId;
 }
 
-export type ActivityId = "circles" | "connect" | "differences" | "count";
+export type ActivityId = "circles" | "connect" | "differences" | "count" | "paint" | "draw";
 
 export const ACTIVITIES: { id: ActivityId; title: string; icon: string; image: string; coins: number; desc: string }[] = [
-  { id: "circles",      title: "Pinte os Círculos",  icon: "🎨", image: edu1.url, coins: 5, desc: "Pinte cada círculo com a cor do seu número." },
-  { id: "connect",      title: "Ligue as Cores",     icon: "🔗", image: edu2.url, coins: 6, desc: "Ligue os pontos seguindo a ordem dos números." },
-  { id: "differences",  title: "Ache os Diferentes", icon: "🔍", image: edu3.url, coins: 5, desc: "Encontre as figuras que estão diferentes em cada bloco." },
-  { id: "count",        title: "Conte e Registre",   icon: "🔢", image: edu6.url, coins: 6, desc: "Conte quantas figuras de cada tipo existem." },
+  { id: "circles", title: "Pinte os Círculos", icon: "🎨", image: edu1.url, coins: 5, desc: "Pinte cada círculo com a cor do seu número." },
+  { id: "connect", title: "Ligue as Cores", icon: "🔗", image: edu2.url, coins: 6, desc: "Ligue os pontos seguindo a ordem dos números." },
+  { id: "differences", title: "Ache os Diferentes", icon: "🔍", image: edu3.url, coins: 5, desc: "Encontre as figuras que estão diferentes em cada bloco." },
+  { id: "count", title: "Conte e Registre", icon: "🔢", image: edu6.url, coins: 6, desc: "Conte quantas figuras de cada tipo existem." },
+  { id: "paint", title: "Pinte por Números", icon: "🖍️", image: edu1.url, coins: 6, desc: "Escolha as cores certas e complete o desenho." },
+  { id: "draw", title: "Desenhe e Trace", icon: "✏️", image: edu2.url, coins: 5, desc: "Desenhe livremente seguindo o modelo do dia." },
 ];
+
+function dayOfYear(d = new Date()) {
+  const start = new Date(d.getFullYear(), 0, 0);
+  const diff = d.getTime() - start.getTime();
+  return Math.floor(diff / 86400000);
+}
+
+function rotateActivities(list: typeof ACTIVITIES, size: number) {
+  const offset = dayOfYear() % list.length;
+  return Array.from({ length: size }, (_, i) => list[(offset + i) % list.length]);
+}
 
 export default function EducacionalActivities({ onBack, celebrate, bgStyle, initialActivity }: Props) {
   const [active, setActive] = useState<ActivityId | null>(initialActivity ?? null);
+  const dailyActivities = useMemo(() => rotateActivities(ACTIVITIES, 5), []);
 
   if (active) {
     const meta = ACTIVITIES.find((a) => a.id === active)!;
@@ -47,16 +60,20 @@ export default function EducacionalActivities({ onBack, celebrate, bgStyle, init
           ← Voltar às atividades
         </button>
 
-        {/* Header logo */}
         <div className="flex flex-col items-center gap-2 mb-4">
           <img src={logoAsset.url} alt="Atividades Educacionais" className="w-full max-w-md h-auto drop-shadow-2xl" />
           <p className="text-center font-body text-sm text-amber-900 italic">
-            ✨ Complete cada atividade e <span className="font-bold">ganhe moedinhas 🪙</span> para o seu álbum!
+            ✨ Todo dia aparecem <span className="font-bold">5 atividades educacionais</span>, alternando as demais nos outros dias.
           </p>
         </div>
 
+        <div className="rounded-2xl border-2 border-amber-300 bg-gradient-to-r from-amber-100 via-yellow-50 to-amber-100 px-4 py-3 mb-4 shadow text-center">
+          <p className="font-display font-extrabold text-amber-950 text-sm">🌤️ Atividades do dia</p>
+          <p className="font-body text-xs text-amber-800/80 mt-1">Sempre 5 por dia para ficar mais leve e divertido.</p>
+        </div>
+
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-          {ACTIVITIES.map((a) => (
+          {dailyActivities.map((a) => (
             <button
               key={a.id}
               onClick={() => setActive(a.id)}
@@ -115,12 +132,13 @@ function ActivityRunner({ meta, onBack, celebrate, bgStyle }:
           <CoinBadge amount={meta.coins} size="md" label="ao completar" />
         </div>
 
-        {/* Activity body */}
         <div className="bg-white rounded-2xl shadow-xl border-2 border-amber-200 p-3 sm:p-4">
           {meta.id === "circles" && <CirclesGame onComplete={complete} done={done} />}
           {meta.id === "connect" && <ConnectGame onComplete={complete} done={done} />}
           {meta.id === "differences" && <DifferencesGame onComplete={complete} done={done} />}
           {meta.id === "count" && <CountGame onComplete={complete} done={done} />}
+          {meta.id === "paint" && <PaintNumbersGame onComplete={complete} done={done} image={meta.image} />}
+          {meta.id === "draw" && <DrawGame onComplete={complete} done={done} image={meta.image} />}
         </div>
 
         {done && (

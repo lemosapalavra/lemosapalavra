@@ -1,16 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import dedicatoriaBg from "@/assets/pergaminho.png";
 
-// Each entry: aramaic line + Portuguese with **bold** markers preserved from the original PDF.
-// Use {{signature}} marker so we can render the name with a special font (Kaufmann BT).
 const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   {
     aramaic: "ܗܢܐ ܦܘܪܫܢܐ ܐܬܝܠܕ ܡܢ ܣܘܟܝܐ ܫܪܝܪܐ ܕܢܚܘܐ ܚ̈ܝܐ ܘܝܘ̈ܠܦܢܐ ܕܝܫܘܥ",
-    pt: "Este é um projeto que nasceu do desejo sincero de apresentar a vida os ensinamentos e o caminho de **Jesus** de forma acessível visual e fiel às Escrituras.",
+    pt: "Este projeto nasceu do desejo sincero de apresentar a **vida**, os ensinamentos e o caminho de **Jesus**, de forma acessível, visual e fiel às Escrituras.",
   },
   {
     aramaic: "ܡܩܪܒ ܐܢܐ ܗܢܐ ܦܘܪܫܢܐ ܒܬܘܕܝܬܐ ܘܒܗܝܡܢܘܬܐ",
-    pt: "Dedico este projeto com **GRATIDÃO** e **FÉ** á:",
+    pt: "Dedico, este projeto, com **GRATIDÃO** e **FÉ** á:",
   },
   {
     aramaic: "ܠܐܠܗܐ ܐܚܝܕ ܟܠ ܘܠܛܠܝܐ ܝܫܘܥ ܕܚܘܒܗ ܡܫܚܠܦ ܘܡܐܣܐ ܘܦܪܩ",
@@ -18,51 +16,51 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
   {
     aramaic: "ܠܐܢܬܬܝ ܡܪܬܐ ܘܠܒܪܝ ܡܬܝ ܣܡ̈ܟܐ ܕܡܣܝܒܪܢܘܬܐ ܘܕܣܒܪܐ",
-    pt: "À minha esposa **Marta** e ao meu filho **Matheus** sustentáculo de perseverança e esperança.",
+    pt: "À minha esposa **Marta** e ao meu filho **Matheus**, sustentáculo de perseverança e esperança.",
   },
   {
-    aramaic: "ܠܚܒܪܬܝ ܐܠܝܐܬ ܕܚܡܫܝܢ ܘܐܪܒܥ ܘܠܒܥܠܗ ܠܝܒܠܕܘ",
-    pt: "À minha amiga **Eliete** do 54, que sem medir esforços enfrentou caminhos difíceis para me socorrer em meu quinto AVC e a seu marido **Livaldo**, instrumentos do cuidado e da providência divina.",
+    aramaic: "ܠܚܒܪܬܝ ܐܠܝܬ ܘܠܒܥܠܗ ܠܝܒܠܕܘ ܐܝܟ ܐܝܕ̈ܐ ܕܚܘܣܝܐ ܘܦܪܢܣܐ ܕܐܠܗܐ",
+    pt: "À minha amiga **Eliete** do 54, que sem medir esforços enfrentou caminhos difíceis para me socorrer em meu quinto AVC, e a seu marido **Livaldo**, instrumentos do cuidado e da providência divina.",
   },
   {
-    aramaic: "ܠܫܪܒܬܐ ܕܠܝܡܘܣ ܘܐܡܝ ܒܐܝܩܪܐ ܡܪܬ ܪܝܓ̰ܐܢ ܘܚܬܝ ܡܪܝܣܐ",
-    pt: "À família **Lemos**, minha mãe de consideração Sra. **Maria Rejane**, e minha irmã **Marisa** pessoas que **Deus** levantou em meu caminho como instrumentos de apoio cuidado e de constância.",
+    aramaic: "ܠܫܪܒܬܐ ܕܠܝܡܘܣ ܘܠܪܓ̰ܢ ܘܠܡܪܝܣܐ ܕܗܘܘ ܣܡ̈ܟܐ ܘܚܘܣܝܐ ܒܐܘܪܚܝ",
+    pt: "À família **Lemos**, minha mãe de consideração Sra. **Rejane**, e minha irmã **Marisa**, pessoas que **Deus** os levantaram em meu caminho como instrumentos de apoio, cuidado e constância.",
   },
   {
-    aramaic: "ܘܠܐ ܛܥܐ ܐܢܐ ܠܗܘ ܕܗܘܐ ܠܝ ܐܒܐ ܫܪܝܪܐ ܡܪܝ ܐܪܠܝܢܕܘ ܦܪܢܣܝܣܩܘ ܕܠܝܡܘܣ",
-    pt: "Não poderia esquecer daquele que foi para mim um verdadeiro pai por consideração, homem íntegro, sábio e pescador Sr. **Arlindo Francisco de Lemos** (*Arlindo de Jé*) cuja inspiração continua viva e presente em minha caminhada.",
+    aramaic: "ܘܠܐ ܐܛܥܐ ܠܐܪܠܝܢܕܘ ܦܪܢܣܝܣܩܘ ܕܠܝܡܘܣ ܓܒܪܐ ܟܐܢܐ ܘܚܟܝܡܐ",
+    pt: "Sem, e jamais esquecer daquele que foi para mim um verdadeiro pai por consideração, homem íntegro, sábio e pescador o Sr. **Arlindo Francisco de Lemos** (*Arlindo de Jé*), cuja inspiração continua viva e presente em minha caminhada.",
   },
   {
     aramaic: "ܐܠܗܐ ܢܛܪ ܠܗ ܒܫܠܡܗ",
-    pt: "Que **Deus** o tenha em sua paz.",
+    pt: "**Que Deus o tenha em sua paz.**",
   },
   {
     aramaic: "ܡܘܕܐ ܐܢܐ ܐܦ ܠܐܝܠܝܢ ܕܠܐ ܝܕ̈ܥܐ ܠܥ̈ܝܢܝ ܕܐܠܗܐ ܣܡ ܐܢܘܢ ܒܐܘܪܚܝ",
-    pt: "Agradeço ainda àqueles que, anônimos aos meus olhos **Deus** os colocou em meu caminho: médicos, enfermeiras, técnicos, anestesistas, instrumentistas e a toda uma estrutura hospitalar por onde passei. Foi por meio dos quais o Senhor manifestou seu amor e seu cuidado, para com os seus.",
+    pt: "Agradeço ainda àqueles que, anônimos aos meus olhos, **Deus** os colocou em meu caminho: médicos, enfermeiras, técnicos, anestesistas, instrumentistas e a toda uma estrutura hospitalar por onde passei. Foi por meio dos quais o Senhor manifestou o seu amor e seu cuidado, para com os seus.",
   },
   {
     aramaic: "ܗܝܡܢܘ — ܐܠܗܐ ܗܘܐ!",
     pt: "**Acreditem, foi Deus!**",
   },
   {
-    aramaic: "ܝܘܡܢܐ ܡܣܬܟܠ ܐܢܐ ܕܐܠܗܐ ܒܡܪܘܬܗ ܡܫܠܛ ܥܠ ܟܠ",
-    pt: "Hoje compreendo que **Deus**, em sua **Soberania** permite que pessoas entrem e saiam de nossas vidas, é conforme o seu propósito, e não ao meu.",
+    aramaic: "ܝܘܡܢܐ ܡܣܬܟܠ ܐܢܐ ܕܐܠܗܐ ܒܣܘܒܪܢܘܬܗ ܫܒܩ ܕܢܥܠܘܢ ܘܢܦܩܘܢ ܐܢܫ̈ܐ ܡܢ ܚ̈ܝܝܢ",
+    pt: "Hoje compreendo que Deus, em sua __soberania__, permite que pessoas entrem e saiam de nossas vidas, é conforme o seu propósito, e não ao meu.",
   },
   {
     aramaic: "ܒܚ̈ܝܝ ܥܒܪܬ ܒܢܣ̈ܝܘܢܐ ܘܐܘ̈ܠܨܢܐ ܘܦܘܪ̈ܩܢܐ ܕܠܐ ܡܨܝܐ",
-    pt: "Em minha vida passei por muitas provações tribulações e livramentos impossíveis de superar. Humanamente dizendo: nem era para eu ainda estar aqui. Quem andou comigo sabe bem disso.",
+    pt: "Em minha vida passei por muitas provações, tribulações e livramentos impossíveis de superar. Humanamente dizendo, nem era para eu ainda estar aqui.",
   },
   {
-    aramaic: "ܒܪܡ ܡܠܬܗ ܕܡܪܝܐ ܩܝܡܐ ܠܥܠܡ. ܐܡܪ ܕܟܠ ܗܠܝܢ ܢܥܒܪܘܢ",
+    aramaic: "ܒܪܡ ܡܠܬܗ ܕܡܪܝܐ ܩܝܡܐ ܠܥܠܡ. ܐܡܪ ܕܟܠ ܗܠܝܢ ܢܥܒܪܘܢ ܘܢܩܝܡܢܝ",
     pt: "Mas a palavra do Senhor permanece firme. Disse que tudo isso passaria e falou ao meu coração, prometeu que iria me levantar e me abençoar.",
   },
   {
     aramaic: "ܟܠ ܝܘܡܐ ܚܕܬܐ ܗܘܐ ܣܗܕܘܬܐ ܚܝܬܐ ܕܚܘܒܗ ܒܝܫܘܥ ܡܫܝܚܐ",
-    pt: "Hoje, a cada novo dia de minha vida se torna um **testemunho vivo** do amor e do seu plano manifestado por meio de seu filho, **Jesus Cristo**.",
+    pt: "Assim, cada novo dia de minha vida se torna um __testemunho vivo__ do seu amor e do seu plano manifestado por meio de seu filho, **Jesus Cristo**.",
   },
   {
-    aramaic: "ܠܐܠܗܐ ܟܠ ܐܝܩܪܐ ܘܟܠ ܬܫܒܘܚܬܐ ܗܫܐ ܘܠܥܠܡ ܥܠܡܝܢ. ܐܡܝܢ.",
-    pt: "A **Deus**, toda a honra e toda glória, agora e para sempre. **Amém.**",
+    aramaic: "ܠܐܠܗܐ ܟܠ ܐܝܩܪܐ ܘܟܠ ܬܫܒܘܚܬܐ ܗܫܐ ܘܠܥܠܡ ܥܠܡܝܢ. ܐܡܝܢ",
+    pt: "A Deus, toda a honra e toda glória, agora e para sempre. Amém.",
   },
   {
     aramaic: "",
@@ -70,7 +68,6 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
 ];
 
-// Render Portuguese text supporting **bold**, *italic*, __underline__, and {{signature}}...{{/signature}} markers
 function renderRich(text: string) {
   const tokens = text.split(/(\{\{signature\}\}[^]*?\{\{\/signature\}\}|\*\*[^*]+\*\*|__[^_]+__|\*[^*]+\*|\n)/g);
   return tokens.map((tok, i) => {
@@ -124,26 +121,21 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
 
     setTimeout(() => setAllAramaicVisible(true), 300);
 
-    const startDelay = 3000;
+    const startDelay = 2600;
     dedicatoriaTexts.forEach((_, i) => {
       setTimeout(() => {
-        setTranslatedCount(prev => Math.max(prev, i + 1));
-      }, startDelay + i * 1200);
+        setTranslatedCount((prev) => Math.max(prev, i + 1));
+      }, startDelay + i * 1000);
     });
   }, []);
 
   useEffect(() => {
-    if (open) {
-      startAnimation();
-    }
+    if (open) startAnimation();
   }, [open, startAnimation]);
 
   const handleClose = () => {
-    if (isControlled) {
-      onOpenChange?.(false);
-    } else {
-      setInternalOpen(false);
-    }
+    if (isControlled) onOpenChange?.(false);
+    else setInternalOpen(false);
     setTranslatedCount(0);
     setAllAramaicVisible(false);
   };
@@ -160,7 +152,6 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
             className="relative max-w-2xl w-full max-h-[90vh]"
             style={{ animation: "scrollOpen 0.9s ease-out forwards" }}
           >
-            {/* Parchment scroll background (image already includes rolled edges) */}
             <div
               className="relative"
               style={{
@@ -179,7 +170,6 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
                 ✕
               </button>
 
-              {/* Inner content area sized to fit within the parchment (excluding rolled top/bottom of the image ~10% each) */}
               <div
                 className="overflow-y-auto relative"
                 style={{

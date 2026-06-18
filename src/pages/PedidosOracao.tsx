@@ -5,11 +5,11 @@ import { toast } from "@/hooks/use-toast";
 import iconPedidos from "@/assets/icon-pedidos-oracao.png";
 
 const tiposOracao = [
-  { id: "adoracao", label: "Oração de Adoração", desc: "Exaltação e louvor a Deus, reconhecendo Sua grandeza e santidade.", emoji: "🙌" },
-  { id: "confissao", label: "Oração de Confissão", desc: "Reconhecimento e arrependimento de pecados, buscando perdão e reconciliação com Deus.", emoji: "🙏" },
-  { id: "peticao", label: "Oração de Petição", desc: "Pedidos para necessidades espirituais ou físicas, expressando a vontade de Deus.", emoji: "🙇" },
-  { id: "intercessao", label: "Oração de Intercessão", desc: "Orar por outras pessoas, pedindo ajuda e proteção.", emoji: "🤝" },
-  { id: "agradecimento", label: "Oração de Agradecimento", desc: "Agradecer a Deus por Suas bênçãos e bondade.", emoji: "💛" },
+  { id: "adoracao", label: "Oração de Adoração", desc: "Louvor e amor para Deus com um coração alegre.", emoji: "🙌", color: "from-amber-300 to-yellow-400" },
+  { id: "confissao", label: "Oração de Confissão", desc: "Falar com sinceridade e pedir perdão a Deus.", emoji: "🙏", color: "from-pink-300 to-rose-400" },
+  { id: "peticao", label: "Oração de Petição", desc: "Levar seus pedidos e necessidades para Deus.", emoji: "💛", color: "from-sky-300 to-cyan-400" },
+  { id: "intercessao", label: "Oração de Intercessão", desc: "Orar por amigos, família e outras pessoas.", emoji: "🤝", color: "from-emerald-300 to-teal-400" },
+  { id: "agradecimento", label: "Oração de Agradecimento", desc: "Dizer obrigado pelas bênçãos e pelo cuidado de Deus.", emoji: "🌟", color: "from-violet-300 to-fuchsia-400" },
 ];
 
 interface Pedido {
@@ -52,83 +52,157 @@ export default function PedidosOracao() {
     setTipoSelecionado("");
     toast({
       title: "🙏 Oração registrada!",
-      description: "Seu pedido foi guardado no seu mural pessoal abaixo. Deus ouve cada palavra do seu coração.",
+      description: "Seu pedido foi guardado com carinho no seu mural de oração.",
     });
     setTimeout(() => {
       document.getElementById("mural-oracoes")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 200);
   };
 
-  const getTipoLabel = (id: string) => tiposOracao.find((t) => t.id === id)?.label || id;
-  const getTipoEmoji = (id: string) => tiposOracao.find((t) => t.id === id)?.emoji || "🙏";
+  const getTipo = (id: string) => tiposOracao.find((t) => t.id === id);
+  const getTipoLabel = (id: string) => getTipo(id)?.label || id;
+  const getTipoEmoji = (id: string) => getTipo(id)?.emoji || "🙏";
+  const getTipoColor = (id: string) => getTipo(id)?.color || "from-amber-300 to-yellow-400";
 
   return (
-    <div className="min-h-screen py-6 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
-      <div className="max-w-4xl mx-auto">
-        <PageHeader title="Pedidos de Oração" subtitle="Ore e compartilhe seus pedidos" icon={iconPedidos} />
+    <div className="min-h-screen py-6 px-4" style={{ background: "linear-gradient(180deg, hsl(198,85%,90%), hsl(45,100%,94%) 45%, hsl(325,80%,92%))" }}>
+      <div className="max-w-5xl mx-auto">
+        <PageHeader title="Pedidos de Oração" subtitle="Um cantinho de oração com carinho" icon={iconPedidos} />
 
-        <div className="rounded-2xl bg-gradient-to-r from-sky-100 via-amber-50 to-pink-100 border-2 border-sky-200 p-4 mb-5 shadow text-center">
-          <p className="font-display font-extrabold text-sky-900 text-base">🌟 Para onde vão suas orações?</p>
-          <p className="font-body text-sm text-sky-900/90 mt-1 leading-relaxed">
-            Suas orações são guardadas com carinho no seu <b>mural pessoal</b> (logo abaixo do formulário).
-            Elas ficam salvas no seu aparelho para que você possa <b>orar novamente</b> e acompanhar
-            o que pediu a Deus. 🙏 Acima de tudo, <b>o Pai do Céu já está ouvindo</b> cada palavra do seu coração.
-          </p>
+        <section className="relative overflow-hidden rounded-[28px] border-2 border-amber-200/80 shadow-2xl mb-6 bg-gradient-to-br from-sky-100 via-amber-50 to-pink-100">
+          <div className="absolute inset-0 opacity-20" style={{ background: "radial-gradient(circle at 20% 20%, #fff6bf, transparent 25%), radial-gradient(circle at 80% 25%, #ffd2e1, transparent 22%), radial-gradient(circle at 50% 90%, #b8ecff, transparent 28%)" }} />
+          <div className="relative px-6 py-7 text-center">
+            <div className="flex items-center justify-center gap-3 text-5xl mb-3">
+              <span>☁️</span><span>🙏</span><span>✨</span>
+            </div>
+            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-amber-950 mb-2">Vamos falar com Deus</h2>
+            <p className="font-body text-sm sm:text-base text-amber-900/90 max-w-2xl mx-auto leading-relaxed">
+              Aqui suas orações ficam guardadas com carinho no seu mural pessoal. Você pode voltar, reler,
+              agradecer e continuar conversando com Deus todos os dias.
+            </p>
+          </div>
+        </section>
+
+        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-6 items-start">
+          <form onSubmit={handleAdd} className="rounded-[28px] p-6 shadow-xl border-2 border-pink-200 bg-gradient-to-br from-white via-pink-50 to-amber-50">
+            <div className="flex items-center justify-between gap-3 mb-5">
+              <div>
+                <p className="font-display text-lg font-extrabold text-foreground">👤 {userName || "Usuário"}</p>
+                <p className="font-body text-sm text-muted-foreground">Escolha um tipo de oração e escreva com o coração.</p>
+              </div>
+              <div className="text-4xl">🕊️</div>
+            </div>
+
+            <p className="font-display text-sm font-bold text-foreground mb-3">Tipo de oração</p>
+            <div className="grid gap-3 mb-5">
+              {tiposOracao.map((tipo) => (
+                <button
+                  key={tipo.id}
+                  type="button"
+                  onClick={() => setTipoSelecionado(tipo.id)}
+                  className={`w-full text-left rounded-2xl p-4 border-2 transition-all ${
+                    tipoSelecionado === tipo.id
+                      ? "border-primary bg-primary/10 scale-[1.02] shadow-lg"
+                      : "border-border bg-white/80 hover:border-primary/30"
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className={`w-12 h-12 shrink-0 rounded-2xl bg-gradient-to-br ${tipo.color} flex items-center justify-center text-2xl shadow-md`}>
+                      {tipo.emoji}
+                    </div>
+                    <div>
+                      <p className="font-display text-sm font-extrabold text-foreground">{tipo.label}</p>
+                      <p className="font-body text-xs text-muted-foreground mt-1 leading-relaxed">{tipo.desc}</p>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            <textarea
+              value={texto}
+              onChange={(e) => setTexto(e.target.value)}
+              placeholder="Escreva aqui sua oração..."
+              rows={5}
+              className="w-full rounded-2xl border-2 border-amber-200 bg-white px-4 py-3 font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none mb-3 shadow-sm"
+            />
+
+            <p className="font-body text-xs text-amber-800 italic mb-4 text-center">
+              🌈 Deus ouve cada palavra do seu coração.
+            </p>
+
+            <button type="submit" className="btn-cartoon px-6 py-3 w-full">🙏 Enviar Oração</button>
+          </form>
+
+          <aside className="space-y-4">
+            <div className="rounded-[28px] p-5 border-2 border-sky-200 bg-gradient-to-br from-sky-50 via-white to-yellow-50 shadow-lg">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-300 to-cyan-400 flex items-center justify-center text-3xl shadow-md">💌</div>
+                <div>
+                  <h3 className="font-display text-lg font-extrabold text-sky-950">Seu mural de oração</h3>
+                  <p className="font-body text-xs text-sky-900/75">Guarde seus pedidos, agradecimentos e vitórias.</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-center">
+                <div className="rounded-2xl bg-white/90 border border-sky-200 p-3">
+                  <p className="text-2xl">🙏</p>
+                  <p className="font-display text-sm font-extrabold text-sky-950">{pedidos.length}</p>
+                  <p className="text-[11px] font-body text-sky-900/70">orações</p>
+                </div>
+                <div className="rounded-2xl bg-white/90 border border-amber-200 p-3">
+                  <p className="text-2xl">🌟</p>
+                  <p className="font-display text-sm font-extrabold text-amber-950">1</p>
+                  <p className="text-[11px] font-body text-amber-900/70">coração</p>
+                </div>
+                <div className="rounded-2xl bg-white/90 border border-pink-200 p-3">
+                  <p className="text-2xl">🕊️</p>
+                  <p className="font-display text-sm font-extrabold text-pink-950">∞</p>
+                  <p className="text-[11px] font-body text-pink-900/70">esperança</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-[28px] p-5 border-2 border-amber-200 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 shadow-lg">
+              <h3 className="font-display text-lg font-extrabold text-amber-950 mb-3">✨ Lembretes de fé</h3>
+              <div className="space-y-3">
+                <div className="rounded-2xl bg-white/90 p-3 border border-amber-200">
+                  <p className="font-display text-sm font-bold text-amber-900">💛 Ore com sinceridade</p>
+                  <p className="font-body text-xs text-amber-900/75 mt-1">Deus conhece seu coração e cuida de você com amor.</p>
+                </div>
+                <div className="rounded-2xl bg-white/90 p-3 border border-sky-200">
+                  <p className="font-display text-sm font-bold text-sky-900">🌤️ Volte para agradecer</p>
+                  <p className="font-body text-xs text-sky-900/75 mt-1">Seu mural também serve para lembrar das bênçãos recebidas.</p>
+                </div>
+                <div className="rounded-2xl bg-white/90 p-3 border border-pink-200">
+                  <p className="font-display text-sm font-bold text-pink-900">🫶 Ore por outras pessoas</p>
+                  <p className="font-body text-xs text-pink-900/75 mt-1">Interceder também é uma forma linda de amar.</p>
+                </div>
+              </div>
+            </div>
+          </aside>
         </div>
 
-        <form onSubmit={handleAdd} className="bg-popover rounded-2xl p-6 shadow-lg border border-border mb-8">
-          <p className="font-display text-lg font-bold text-foreground mb-1">👤 {userName || "Usuário"}</p>
-
-          <p className="font-body text-sm text-foreground mb-3 mt-4">Tipo de oração:</p>
-          <div className="space-y-2 mb-4">
-            {tiposOracao.map((tipo) => (
-              <button
-                key={tipo.id}
-                type="button"
-                onClick={() => setTipoSelecionado(tipo.id)}
-                className={`w-full text-left rounded-xl p-3 border-2 transition-all ${
-                  tipoSelecionado === tipo.id
-                    ? "border-primary bg-primary/10 scale-[1.02]"
-                    : "border-border bg-background hover:border-primary/30"
-                }`}
-              >
-                <p className="font-display text-sm font-bold text-foreground">{tipo.emoji} {tipo.label}</p>
-                <p className="font-body text-xs text-muted-foreground mt-0.5">{tipo.desc}</p>
-              </button>
-            ))}
-          </div>
-
-          <textarea
-            value={texto}
-            onChange={(e) => setTexto(e.target.value)}
-            placeholder="Descreva aqui sua oração..."
-            rows={4}
-            className="w-full rounded-xl border border-border bg-background px-4 py-3 font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none mb-3"
-          />
-
-          <p className="font-body text-xs text-muted-foreground italic mb-4">
-            A adoração é fundamental para a vida cristã, e ajuda a fortalecer a relação com Deus.
-          </p>
-
-          <button type="submit" className="btn-cartoon px-6 py-3 w-full">🙏 Enviar Oração</button>
-        </form>
-
-        <div id="mural-oracoes" className="space-y-3">
-          <h2 className="font-display font-extrabold text-lg text-foreground flex items-center gap-2 mb-1">
+        <div id="mural-oracoes" className="space-y-3 mt-8">
+          <h2 className="font-display font-extrabold text-xl text-foreground flex items-center gap-2 mb-1">
             📜 Seu mural de orações
             <span className="text-xs font-body font-normal text-muted-foreground">({pedidos.length})</span>
           </h2>
           {pedidos.length === 0 && (
-            <p className="text-center text-muted-foreground font-body py-8">Nenhum pedido ainda. Escreva o seu primeiro! 🙏</p>
+            <div className="rounded-[24px] border-2 border-dashed border-amber-300 bg-white/60 p-8 text-center shadow-sm">
+              <p className="text-5xl mb-3">🙏</p>
+              <p className="text-center text-muted-foreground font-body">Nenhum pedido ainda. Escreva o seu primeiro!</p>
+            </div>
           )}
           {pedidos.map((p, i) => (
-            <div key={i} className="bg-popover rounded-2xl p-4 shadow-md border border-border">
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-display text-sm font-bold text-primary">{getTipoEmoji(p.tipo)} {getTipoLabel(p.tipo)}</span>
+            <div key={i} className="rounded-[24px] p-4 shadow-md border-2 border-amber-200 bg-gradient-to-br from-white via-amber-50 to-pink-50">
+              <div className="flex items-center justify-between gap-3 mb-2">
+                <span className={`font-display text-sm font-extrabold px-3 py-1 rounded-full bg-gradient-to-r ${getTipoColor(p.tipo)} text-amber-950 shadow-sm`}>
+                  {getTipoEmoji(p.tipo)} {getTipoLabel(p.tipo)}
+                </span>
                 <span className="font-body text-xs text-muted-foreground">{p.data}</span>
               </div>
-              <p className="font-body text-foreground">{p.texto}</p>
-              <p className="font-body text-xs text-muted-foreground mt-1">— {p.nome}</p>
+              <p className="font-body text-foreground leading-relaxed">{p.texto}</p>
+              <p className="font-body text-xs text-muted-foreground mt-2">— {p.nome}</p>
             </div>
           ))}
         </div>

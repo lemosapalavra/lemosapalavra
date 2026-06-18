@@ -2,14 +2,12 @@ import iconCriacao from "@/assets/historia-criacao.png";
 import iconBatalha from "@/assets/historia-batalha-anjos.png";
 import iconAdaoEva1 from "@/assets/historia-adao-eva-1.png";
 import iconNoe1 from "@/assets/historia-noe-1.png";
-import iconNoe2 from "@/assets/historia-noe-2.png";
-import iconMoises1 from "@/assets/historia-moises-1.png";
-import iconMoises2 from "@/assets/historia-moises-2.png";
-import iconMoises3 from "@/assets/historia-moises-3.png";
 import iconDaviGolias from "@/assets/historia-davi-golias.png";
 import icon10Mandamentos from "@/assets/historia-10-mandamentos.png";
-import grupoMoises from "@/assets/grupo-moises.png";
 import esauJacoIcon from "@/assets/lemos-play/esau-e-jaco.png.asset.json";
+import esauJacoP1 from "@/assets/lemos-play/esau-jaco-parte-1.png.asset.json";
+import esauJacoP2 from "@/assets/lemos-play/esau-jaco-parte-2.png.asset.json";
+import esauJacoP3 from "@/assets/lemos-play/esau-jaco-parte-3.png.asset.json";
 import vidCriacao from "@/assets/lemos-play/a-criacao.mp4.asset.json";
 import vidBatalha from "@/assets/lemos-play/a-batalha-dos-anjos.mp4.asset.json";
 import vid10mFilme from "@/assets/lemos-play/10-mandamentos-filme.mp4.asset.json";
@@ -41,6 +39,9 @@ import vidProvaFogo2 from "@/assets/lemos-play/prova-fogo-2.mp4.asset.json";
 import iconJonas from "@/assets/lemos-play/jonas-e-a-baleia.png.asset.json";
 import iconAbraao from "@/assets/lemos-play/abraao-e-a-obediencia.png.asset.json";
 import iconProvaFogo from "@/assets/lemos-play/provados-pelo-fogo.png.asset.json";
+import moisesP1 from "@/assets/lemos-play/moises-parte-1.png.asset.json";
+import moisesP2 from "@/assets/lemos-play/moises-parte-2.png.asset.json";
+import moisesP3 from "@/assets/lemos-play/moises-parte-3.png.asset.json";
 
 export interface BibleVideo {
   title: string;
@@ -48,12 +49,10 @@ export interface BibleVideo {
   src: string;
 }
 
-const UNAVAILABLE_VIDEO = "";
-
 export const seriesVideos: BibleVideo[] = [
-  { title: "Moisés — Parte I", icon: iconMoises1, src: vidMoises1.url },
-  { title: "Moisés — Parte II", icon: iconMoises2, src: vidMoises2.url },
-  { title: "Moisés — Parte III", icon: iconMoises3, src: vidMoises3.url },
+  { title: "Moisés — Parte I", icon: moisesP1.url, src: vidMoises1.url },
+  { title: "Moisés — Parte II", icon: moisesP2.url, src: vidMoises2.url },
+  { title: "Moisés — Parte III", icon: moisesP3.url, src: vidMoises3.url },
 ];
 
 export interface BibleVideoGroup {
@@ -67,18 +66,18 @@ export const seriesGroups: BibleVideoGroup[] = [
     title: "Os Irmãos Esaú e Jacó",
     icon: esauJacoIcon.url,
     videos: [
-      { title: "Esaú e Jacó — Parte I", icon: esauJacoIcon.url, src: vidEJ1.url },
-      { title: "Esaú e Jacó — Parte II", icon: esauJacoIcon.url, src: vidEJ2.url },
-      { title: "Esaú e Jacó — Parte III", icon: esauJacoIcon.url, src: vidEJ3.url },
+      { title: "Esaú e Jacó — Parte I", icon: esauJacoP1.url, src: vidEJ1.url },
+      { title: "Esaú e Jacó — Parte II", icon: esauJacoP2.url, src: vidEJ2.url },
+      { title: "Esaú e Jacó — Parte III", icon: esauJacoP3.url, src: vidEJ3.url },
     ],
   },
   {
     title: "Moisés",
-    icon: grupoMoises,
+    icon: moisesP1.url,
     videos: [
-      { title: "Moisés — Parte I", icon: iconMoises1, src: vidMoises1.url },
-      { title: "Moisés — Parte II", icon: iconMoises2, src: vidMoises2.url },
-      { title: "Moisés — Parte III", icon: iconMoises3, src: vidMoises3.url },
+      { title: "Moisés — Parte I", icon: moisesP1.url, src: vidMoises1.url },
+      { title: "Moisés — Parte II", icon: moisesP2.url, src: vidMoises2.url },
+      { title: "Moisés — Parte III", icon: moisesP3.url, src: vidMoises3.url },
     ],
   },
   {
