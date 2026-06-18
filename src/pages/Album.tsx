@@ -90,6 +90,18 @@ export default function Album() {
   const totalOwned = useMemo(
     () => Object.keys(owned).filter((k) => owned[+k] > 0 && validIds.has(+k)).length, [owned, validIds]
   );
+  const earnedMedals = useMemo(() => getEarnedMedals(totalOwned, allStickers.length), [totalOwned]);
+
+  // Auto-open completion modal first time the album hits 100%
+  useEffect(() => {
+    if (isAlbumComplete(totalOwned, allStickers.length)) {
+      const seen = localStorage.getItem("lemos_album_v1_completion_seen");
+      if (!seen) {
+        localStorage.setItem("lemos_album_v1_completion_seen", "1");
+        setShowCompletion(true);
+      }
+    }
+  }, [totalOwned]);
 
   const repeats = useMemo(() => Object.entries(owned).filter(([, c]) => (c || 0) > 1).map(([id, c]) => {
     const s = allStickers.find((x) => x.id === +id)!;
