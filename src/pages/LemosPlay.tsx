@@ -321,7 +321,7 @@ export default function LemosPlay() {
       {/* Hero */}
       <section className="relative h-[70vh] sm:h-[85vh] w-full overflow-hidden">
         {hero?.poster ? (
-          <img src={hero.poster} alt={hero.title} className="absolute inset-0 w-full h-full object-cover" />
+          <img key={hero.id} src={hero.poster} alt={hero.title} className="absolute inset-0 w-full h-full object-cover animate-fade-in" />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-black" />
         )}
