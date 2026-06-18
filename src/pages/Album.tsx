@@ -2,8 +2,9 @@ import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
 
-import { ArrowLeft, ChevronLeft, Repeat, X } from "lucide-react";
+import { ArrowLeft, ChevronLeft, Repeat, X, Trophy } from "lucide-react";
 import StickerPackAnimation, { StickerResult } from "@/components/StickerPackAnimation";
+import AlbumCompletion, { getEarnedMedals, isAlbumComplete } from "@/components/AlbumCompletion";
 import AramaicBackdrop from "@/components/AramaicBackdrop";
 import { categories, allStickers, rarityBorder, rarityLabel, type Rarity, type Sticker } from "@/data/stickers";
 import { useCoins, ensureInitialCoins } from "@/hooks/useCoins";
@@ -78,6 +79,7 @@ export default function Album() {
   const [packResult, setPackResult] = useState<StickerResult[] | null>(null);
   const [owned, setOwned] = useState<Owned>(readOwned());
   const [selected, setSelected] = useState<Sticker | null>(null);
+  const [showCompletion, setShowCompletion] = useState(false);
 
   useEffect(() => { ensureInitialCoins(); }, []);
   useEffect(() => {
@@ -88,6 +90,18 @@ export default function Album() {
   const totalOwned = useMemo(
     () => Object.keys(owned).filter((k) => owned[+k] > 0 && validIds.has(+k)).length, [owned, validIds]
   );
+  const earnedMedals = useMemo(() => getEarnedMedals(totalOwned, allStickers.length), [totalOwned]);
+
+  // Auto-open completion modal first time the album hits 100%
+  useEffect(() => {
+    if (isAlbumComplete(totalOwned, allStickers.length)) {
+      const seen = localStorage.getItem("lemos_album_v1_completion_seen");
+      if (!seen) {
+        localStorage.setItem("lemos_album_v1_completion_seen", "1");
+        setShowCompletion(true);
+      }
+    }
+  }, [totalOwned]);
 
   const repeats = useMemo(() => Object.entries(owned).filter(([, c]) => (c || 0) > 1).map(([id, c]) => {
     const s = allStickers.find((x) => x.id === +id)!;
@@ -230,10 +244,21 @@ export default function Album() {
           </div>
           <div className="text-[10px] opacity-80">{totalOwned} / {allStickers.length} coletadas</div>
         </div>
-        <button onClick={() => setView("trade")}
-          className="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 px-2 sm:px-3 py-1.5 rounded-full font-display font-bold text-xs transition" title="Trocas">
-          <Repeat className="w-4 h-4" /> <span className="hidden sm:inline">Trocas</span>
-        </button>
+        <div className="flex items-center gap-1.5">
+          <button onClick={() => setShowCompletion(true)}
+            className="relative flex items-center gap-1 bg-gradient-to-br from-yellow-400 to-orange-500 hover:brightness-110 px-2 sm:px-3 py-1.5 rounded-full font-display font-bold text-xs transition shadow-lg" title="Conquistas">
+            <Trophy className="w-4 h-4" /> <span className="hidden sm:inline">Conquistas</span>
+            {earnedMedals.length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-rose-600 text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                {earnedMedals.length}
+              </span>
+            )}
+          </button>
+          <button onClick={() => setView("trade")}
+            className="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 px-2 sm:px-3 py-1.5 rounded-full font-display font-bold text-xs transition" title="Trocas">
+            <Repeat className="w-4 h-4" /> <span className="hidden sm:inline">Trocas</span>
+          </button>
+        </div>
       </div>
 
       {/* Single page area */}
@@ -278,6 +303,14 @@ export default function Album() {
       )}
 
       {selected && <StickerDetailModal sticker={selected} owned={owned[selected.id] || 0} onClose={() => setSelected(null)} />}
+
+      {showCompletion && (
+        <AlbumCompletion
+          totalOwned={totalOwned}
+          total={allStickers.length}
+          onClose={() => setShowCompletion(false)}
+        />
+      )}
     </div>
   );
 }
