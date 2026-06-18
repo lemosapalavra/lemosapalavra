@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
-import { useIsAdmin, setAdminMode } from "@/hooks/useIsAdmin";
+import { useIsAdmin, setAdminMode, canBeAdmin } from "@/hooks/useIsAdmin";
 import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
 import IndexAdminPanel from "@/components/IndexAdminPanel";
 
@@ -224,8 +224,10 @@ export default function Configuracao() {
 
 function AdminModeToggle() {
   const admin = useIsAdmin();
+  const allowed = canBeAdmin();
   const [playOpen, setPlayOpen] = useState(false);
   const [indexOpen, setIndexOpen] = useState(false);
+  if (!allowed) return null; // hide entirely from non-admin users
   return (
     <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
       <h3 className="font-display text-lg font-bold text-foreground mb-2">🔐 Modo Administrador</h3>

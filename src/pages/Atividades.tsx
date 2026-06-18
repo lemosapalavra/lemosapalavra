@@ -1047,16 +1047,24 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
             </div>
           </div>
 
-          {/* Gallery */}
-          <h4 className="font-display font-bold text-foreground mb-2 text-sm">📚 Galeria de Quebra-Cabeças</h4>
+          {/* Gallery — 5 puzzles rotating daily (no repeats) */}
+          <h4 className="font-display font-bold text-foreground mb-2 text-sm">📚 Galeria do Dia (5 imagens)</h4>
           <div className="grid grid-cols-2 gap-3">
-            {jigsawCatalog.map((p, i) => (
-              <button key={i} onClick={() => start(i, 3)}
-                className="bg-popover rounded-2xl p-3 shadow-md hover:shadow-lg hover:scale-105 transition-all border border-border text-center group">
-                <img src={p.image} alt={p.title} className="w-full aspect-square object-cover rounded-xl mb-2 group-hover:brightness-110 transition" />
-                <h3 className="font-display text-sm font-bold text-foreground">{p.emoji} {p.title}</h3>
-              </button>
-            ))}
+            {(() => {
+              const d = dayOfYear();
+              const total = jigsawCatalog.length;
+              const picks = Array.from({ length: Math.min(5, total) }, (_, k) => (d + k) % total);
+              return picks.map((i) => {
+                const p = jigsawCatalog[i];
+                return (
+                  <button key={i} onClick={() => start(i, 3)}
+                    className="bg-popover rounded-2xl p-3 shadow-md hover:shadow-lg hover:scale-105 transition-all border border-border text-center group">
+                    <img src={p.image} alt={p.title} className="w-full aspect-square object-cover rounded-xl mb-2 group-hover:brightness-110 transition" />
+                    <h3 className="font-display text-sm font-bold text-foreground">{p.emoji} {p.title}</h3>
+                  </button>
+                );
+              });
+            })()}
           </div>
 
           <p className="text-center text-xs text-muted-foreground font-body mt-4">
@@ -1136,21 +1144,22 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
 type CacaCard = { title: string; words: string[]; size: number; reference?: string };
 const cacaCards: CacaCard[] = [
   {
-    title: "Os 12 Apóstolos",
-    size: 12,
-    words: ["PEDRO", "ANDRE", "TIAGO", "JOAO", "FILIPE", "TOME", "MATEUS", "TADEU", "SIMAO", "JUDAS"],
-    reference: "Mateus 10:2-4",
+    title: "Heróis da Bíblia",
+    size: 8,
+    words: ["JESUS", "MARIA", "JOSE", "DAVI", "NOE", "MOISES"],
+    reference: "Fácil para crianças",
   },
   {
-    title: "O Nascimento de Jesus",
-    size: 11,
-    words: ["JESUS", "MANJEDOURA", "ESTRELA", "PASTORES", "ANJO", "MARIA", "JOSE", "BELEM"],
+    title: "O Natal",
+    size: 8,
+    words: ["JESUS", "MARIA", "JOSE", "ANJO", "ESTRELA", "BELEM"],
     reference: "Lucas 2",
   },
   {
-    title: "Personagens da Bíblia",
-    size: 11,
-    words: ["MARIA", "JESUS", "PEDRO", "JOSE", "PILATOS", "LAZARO", "TIAGO", "MOISES"],
+    title: "Bichinhos da Arca",
+    size: 8,
+    words: ["NOE", "POMBA", "LEAO", "OVELHA", "ZEBRA", "URSO"],
+    reference: "Gênesis 7",
   },
 ];
 

@@ -33,6 +33,15 @@ const avatars = [
 
 type Role = "mãe" | "pai" | "filho" | "filha";
 type Mode = "login" | "register";
+type AgeRange = "criancas" | "adolescentes" | "jovens" | "adultos" | "idosos";
+
+const AGE_RANGES: { id: AgeRange; label: string; emoji: string }[] = [
+  { id: "criancas",      label: "Crianças (0–12)",          emoji: "🧒" },
+  { id: "adolescentes",  label: "Adolescentes (13–17)",     emoji: "🧑" },
+  { id: "jovens",        label: "Jovens adultos (18–24)",   emoji: "🧑‍🎓" },
+  { id: "adultos",       label: "Adultos (25–59)",          emoji: "🧔" },
+  { id: "idosos",        label: "Idosos (60+)",             emoji: "🧓" },
+];
 
 const ADMIN_EMAIL = "marcello.pertutti@gmail.com"; // admin shortcut email
 
@@ -46,7 +55,7 @@ export default function Login() {
 
   // register-only fields
   const [name, setName] = useState("");
-  const [birthDate, setBirthDate] = useState("");
+  const [ageRange, setAgeRange] = useState<AgeRange | "">("");
   const [phone, setPhone] = useState("");
   const [role, setRole] = useState<Role | "">("");
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
@@ -83,8 +92,8 @@ export default function Login() {
   };
 
   const doRegister = () => {
-    if (!name || !role || !finalAvatar) {
-      alert("Preencha nome, função e escolha um avatar.");
+    if (!name || !role || !ageRange || !finalAvatar) {
+      alert("Preencha nome, faixa etária, função e escolha um avatar.");
       return;
     }
     if (!password || password.length < 6) {
@@ -92,7 +101,7 @@ export default function Login() {
       return;
     }
     const createdAt = new Date().toISOString();
-    const userData = { name, birthDate, phone, role, email, password, avatar: finalAvatar, createdAt };
+    const userData = { name, ageRange, phone, role, email, password, avatar: finalAvatar, createdAt };
     localStorage.setItem("lemos_user", JSON.stringify(userData));
     if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) setAdminMode(true);
     navigate("/");
@@ -149,13 +158,23 @@ export default function Login() {
                     placeholder="Nome e sobrenome"
                   />
                 </Field>
-                <Field label="Data de nascimento">
-                  <input
-                    type="date"
-                    value={birthDate}
-                    onChange={(e) => setBirthDate(e.target.value)}
-                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
-                  />
+                <Field label="Faixa etária *">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {AGE_RANGES.map((a) => (
+                      <button
+                        key={a.id}
+                        type="button"
+                        onClick={() => setAgeRange(a.id)}
+                        className={`px-3 py-2 rounded-xl text-xs font-body border-2 transition text-left ${
+                          ageRange === a.id
+                            ? "bg-amber-500 text-white border-amber-600 shadow"
+                            : "bg-white text-foreground border-amber-300 hover:border-amber-400"
+                        }`}
+                      >
+                        <span className="mr-1.5">{a.emoji}</span>{a.label}
+                      </button>
+                    ))}
+                  </div>
                 </Field>
                 <Field label="Telefone">
                   <input
