@@ -158,13 +158,23 @@ export default function Login() {
                     placeholder="Nome e sobrenome"
                   />
                 </Field>
-                <Field label="Data de nascimento">
-                  <input
-                    type="date"
-                    value={birthDate}
-                    onChange={(e) => setBirthDate(e.target.value)}
-                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
-                  />
+                <Field label="Faixa etária *">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {AGE_RANGES.map((a) => (
+                      <button
+                        key={a.id}
+                        type="button"
+                        onClick={() => setAgeRange(a.id)}
+                        className={`px-3 py-2 rounded-xl text-xs font-body border-2 transition text-left ${
+                          ageRange === a.id
+                            ? "bg-amber-500 text-white border-amber-600 shadow"
+                            : "bg-white text-foreground border-amber-300 hover:border-amber-400"
+                        }`}
+                      >
+                        <span className="mr-1.5">{a.emoji}</span>{a.label}
+                      </button>
+                    ))}
+                  </div>
                 </Field>
                 <Field label="Telefone">
                   <input
