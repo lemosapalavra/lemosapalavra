@@ -244,10 +244,21 @@ export default function Album() {
           </div>
           <div className="text-[10px] opacity-80">{totalOwned} / {allStickers.length} coletadas</div>
         </div>
-        <button onClick={() => setView("trade")}
-          className="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 px-2 sm:px-3 py-1.5 rounded-full font-display font-bold text-xs transition" title="Trocas">
-          <Repeat className="w-4 h-4" /> <span className="hidden sm:inline">Trocas</span>
-        </button>
+        <div className="flex items-center gap-1.5">
+          <button onClick={() => setShowCompletion(true)}
+            className="relative flex items-center gap-1 bg-gradient-to-br from-yellow-400 to-orange-500 hover:brightness-110 px-2 sm:px-3 py-1.5 rounded-full font-display font-bold text-xs transition shadow-lg" title="Conquistas">
+            <Trophy className="w-4 h-4" /> <span className="hidden sm:inline">Conquistas</span>
+            {earnedMedals.length > 0 && (
+              <span className="absolute -top-1 -right-1 bg-rose-600 text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                {earnedMedals.length}
+              </span>
+            )}
+          </button>
+          <button onClick={() => setView("trade")}
+            className="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 px-2 sm:px-3 py-1.5 rounded-full font-display font-bold text-xs transition" title="Trocas">
+            <Repeat className="w-4 h-4" /> <span className="hidden sm:inline">Trocas</span>
+          </button>
+        </div>
       </div>
 
       {/* Single page area */}
