@@ -74,6 +74,9 @@ const attachedThumbByTitle: Record<string, string> = {
   "Graça Aleluia": gracaAleluiaThumb.url,
   "Graca Aleluia": gracaAleluiaThumb.url,
   "Palavra Eterna": palavraEternaThumb.url,
+  "Faz um Milagre em Mim": fazMilagreThumb.url,
+  "Ressuscita-Me": ressuscitaMeThumb.url,
+  "Ressuscita Me": ressuscitaMeThumb.url,
 };
 
 const defaultMusicas: PlayEntry[] = [
@@ -83,11 +86,12 @@ const defaultMusicas: PlayEntry[] = [
 ];
 
 const defaultLouvores: PlayEntry[] = [
-  { id: "lv1", title: "Entra na minha Casa", src: entraCasaVid.url, poster: attachedThumbByTitle["Espírito Santo"] },
-  { id: "lv2", title: "Espírito Santo", src: espiritoSantoVid.url, poster: attachedThumbByTitle["Espírito Santo"] },
-  { id: "lv3", title: "Sou Fiel", src: souFielVid.url, poster: attachedThumbByTitle["Sou Fiel"] },
-  { id: "lv4", title: "Graça Aleluia", src: aleluiaVid.url, poster: attachedThumbByTitle["Graça Aleluia"] },
-  { id: "lv5", title: "Palavra Eterna", src: palavraEternaVid.url, poster: attachedThumbByTitle["Palavra Eterna"] },
+  { id: "lv1", title: "Faz um Milagre em Mim", src: fazMilagreVid.url, poster: attachedThumbByTitle["Faz um Milagre em Mim"] },
+  { id: "lv2", title: "Ressuscita-Me", src: ressuscitaMeVid.url, poster: attachedThumbByTitle["Ressuscita-Me"] },
+  { id: "lv3", title: "Espírito Santo", src: espiritoSantoVid.url, poster: attachedThumbByTitle["Espírito Santo"] },
+  { id: "lv4", title: "Sou Fiel", src: souFielVid.url, poster: attachedThumbByTitle["Sou Fiel"] },
+  { id: "lv5", title: "Graça Aleluia", src: aleluiaVid.url, poster: attachedThumbByTitle["Graça Aleluia"] },
+  { id: "lv6", title: "Palavra Eterna", src: palavraEternaVid.url, poster: attachedThumbByTitle["Palavra Eterna"] },
 ];
 
 function resolvePoster(title: string, fallback?: string): string | undefined {
