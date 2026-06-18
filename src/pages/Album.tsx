@@ -79,6 +79,7 @@ export default function Album() {
   const [packResult, setPackResult] = useState<StickerResult[] | null>(null);
   const [owned, setOwned] = useState<Owned>(readOwned());
   const [selected, setSelected] = useState<Sticker | null>(null);
+  const [showCompletion, setShowCompletion] = useState(false);
 
   useEffect(() => { ensureInitialCoins(); }, []);
   useEffect(() => {
