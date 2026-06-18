@@ -19,6 +19,7 @@ const LemosPlay = lazy(() => import("./pages/LemosPlay.tsx"));
 const Configuracao = lazy(() => import("./pages/Configuracao.tsx"));
 const Estatisticas = lazy(() => import("./pages/Estatisticas.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+const HistoriasBiblicas = lazy(() => import("./pages/HistoriasBiblicas.tsx"));
 
 const queryClient = new QueryClient();
 
@@ -54,6 +55,7 @@ const App = () => (
             <Route path="/config" element={<Configuracao />} />
             <Route path="/estatisticas" element={<Estatisticas />} />
             <Route path="/lemosplay" element={<LemosPlay />} />
+            <Route path="/historias-biblicas" element={<HistoriasBiblicas />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
