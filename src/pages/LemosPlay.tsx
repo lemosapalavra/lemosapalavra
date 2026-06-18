@@ -332,7 +332,7 @@ export default function LemosPlay() {
         <div id="filmes"><Row title="Filmes Bíblicos" items={filmesPlay} onPlay={setPlaying} progress={progress} /></div>
         <div id="series">
           <Row
-            title="Séries Bíblicas"
+            title="Mini Séries Bíblicas"
             items={seriesGroupItems.map((g) => ({ id: g.id, title: g.title, poster: g.poster, src: "", category: g.category }))}
             onPlay={(item) => {
               const g = seriesGroupItems.find((x) => x.id === item.id);
