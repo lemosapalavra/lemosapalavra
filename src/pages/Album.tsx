@@ -2,8 +2,9 @@ import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
 
-import { ArrowLeft, ChevronLeft, Repeat, X } from "lucide-react";
+import { ArrowLeft, ChevronLeft, Repeat, X, Trophy } from "lucide-react";
 import StickerPackAnimation, { StickerResult } from "@/components/StickerPackAnimation";
+import AlbumCompletion, { getEarnedMedals, isAlbumComplete } from "@/components/AlbumCompletion";
 import AramaicBackdrop from "@/components/AramaicBackdrop";
 import { categories, allStickers, rarityBorder, rarityLabel, type Rarity, type Sticker } from "@/data/stickers";
 import { useCoins, ensureInitialCoins } from "@/hooks/useCoins";
