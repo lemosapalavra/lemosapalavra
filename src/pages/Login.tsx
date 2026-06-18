@@ -261,20 +261,23 @@ export default function Login() {
             {mode === "register" && (
               <>
                 <Field label="Escolha seu avatar:">
-                  <div className="grid grid-cols-6 gap-2">
+                  <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
                     {avatars.map((av) => (
                       <button
                         key={av.name}
                         type="button"
                         title={av.name}
                         onClick={() => { setSelectedAvatar(av.src); setCustomAvatar(""); }}
-                        className={`rounded-full border-2 transition overflow-hidden ${
+                        className={`rounded-3xl border-2 transition overflow-hidden bg-amber-50 shadow-sm ${
                           selectedAvatar === av.src && !customAvatar
-                            ? "border-amber-500 scale-110 ring-2 ring-amber-300"
-                            : "border-transparent hover:border-amber-300"
+                            ? "border-amber-500 scale-105 ring-2 ring-amber-300"
+                            : "border-amber-200 hover:border-amber-300"
                         }`}
                       >
-                        <img src={av.src} alt={av.name} className="w-full h-full" />
+                        <img src={av.src} alt={av.name} className="w-full aspect-square object-cover" loading="lazy" width="1024" height="1024" />
+                        <div className="px-1.5 py-1 bg-white/90 border-t border-amber-100">
+                          <span className="block text-[11px] font-display font-bold text-amber-900 truncate">{av.name}</span>
+                        </div>
                       </button>
                     ))}
                   </div>

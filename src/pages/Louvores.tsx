@@ -13,6 +13,7 @@ import serFielThumb from "@/assets/lemos-play/ser-fiel-thumb.png.asset.json";
 import gracaAleluiaThumb from "@/assets/lemos-play/graca-aleluia.png.asset.json";
 import palavraEternaThumb from "@/assets/lemos-play/palavra-eterna.png.asset.json";
 import entraCasaVid from "@/assets/lemos-play/entra-na-minha-casa.mp4.asset.json";
+import espiritoSantoVid from "@/assets/lemos-play/espirito-santo.mp4.asset.json";
 import aleluiaVid from "@/assets/lemos-play/aleluia.mp4.asset.json";
 import palavraEternaVid from "@/assets/lemos-play/palavra-eterna.mp4.asset.json";
 import souFielVid from "@/assets/lemos-play/sou-fiel.mp4.asset.json";
@@ -25,6 +26,7 @@ interface Louvor {
 
 const allLouvores: Louvor[] = [
   { title: "Entra na minha Casa", src: entraCasaVid.url, thumb: espiritoSantoThumb.url },
+  { title: "Espírito Santo", src: espiritoSantoVid.url, thumb: espiritoSantoThumb.url },
   { title: "Sou Fiel", src: souFielVid.url, thumb: serFielThumb.url },
   { title: "Graça Aleluia", src: aleluiaVid.url, thumb: gracaAleluiaThumb.url },
   { title: "Palavra Eterna", src: palavraEternaVid.url, thumb: palavraEternaThumb.url },

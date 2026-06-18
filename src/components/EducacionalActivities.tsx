@@ -4,7 +4,10 @@ import logoAsset from "@/assets/educacionais/logo.png.asset.json";
 import edu1 from "@/assets/educacionais/educacional-1.jpg.asset.json";
 import edu2 from "@/assets/educacionais/educacional-2.jpg.asset.json";
 import edu3 from "@/assets/educacionais/educacional-3.jpg.asset.json";
+import edu4 from "@/assets/educacionais/educacional-4.jpg.asset.json";
+import edu5 from "@/assets/educacionais/educacional-5.jpg.asset.json";
 import edu6 from "@/assets/educacionais/educacional-6.jpg.asset.json";
+import edu7 from "@/assets/educacionais/educacional-7.jpg.asset.json";
 
 type Celebrate = (msg: string, coins: number, emoji?: string) => void;
 
@@ -21,9 +24,10 @@ export const ACTIVITIES: { id: ActivityId; title: string; icon: string; image: s
   { id: "circles", title: "Pinte os Círculos", icon: "🎨", image: edu1.url, coins: 5, desc: "Pinte cada círculo com a cor do seu número." },
   { id: "connect", title: "Ligue as Cores", icon: "🔗", image: edu2.url, coins: 6, desc: "Ligue os pontos seguindo a ordem dos números." },
   { id: "differences", title: "Ache os Diferentes", icon: "🔍", image: edu3.url, coins: 5, desc: "Encontre as figuras que estão diferentes em cada bloco." },
-  { id: "count", title: "Conte e Registre", icon: "🔢", image: edu6.url, coins: 6, desc: "Conte quantas figuras de cada tipo existem." },
-  { id: "paint", title: "Pinte por Números", icon: "🖍️", image: edu1.url, coins: 6, desc: "Escolha as cores certas e complete o desenho." },
-  { id: "draw", title: "Desenhe e Trace", icon: "✏️", image: edu2.url, coins: 5, desc: "Desenhe livremente seguindo o modelo do dia." },
+  { id: "count", title: "Conte e Registre", icon: "🔢", image: edu4.url, coins: 6, desc: "Conte quantas figuras de cada tipo existem." },
+  { id: "paint", title: "Pinte por Números", icon: "🖍️", image: edu5.url, coins: 6, desc: "Escolha as cores certas e complete o desenho." },
+  { id: "draw", title: "Desenhe e Trace", icon: "✏️", image: edu6.url, coins: 5, desc: "Desenhe livremente seguindo o modelo do dia." },
+  { id: "circles", title: "Pinte os Círculos", icon: "🌈", image: edu7.url, coins: 5, desc: "Mais uma cartela colorida para alternar durante a semana." },
 ];
 
 function dayOfYear(d = new Date()) {
