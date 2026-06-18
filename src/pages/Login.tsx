@@ -33,6 +33,15 @@ const avatars = [
 
 type Role = "mãe" | "pai" | "filho" | "filha";
 type Mode = "login" | "register";
+type AgeRange = "criancas" | "adolescentes" | "jovens" | "adultos" | "idosos";
+
+const AGE_RANGES: { id: AgeRange; label: string; emoji: string }[] = [
+  { id: "criancas",      label: "Crianças (0–12)",          emoji: "🧒" },
+  { id: "adolescentes",  label: "Adolescentes (13–17)",     emoji: "🧑" },
+  { id: "jovens",        label: "Jovens adultos (18–24)",   emoji: "🧑‍🎓" },
+  { id: "adultos",       label: "Adultos (25–59)",          emoji: "🧔" },
+  { id: "idosos",        label: "Idosos (60+)",             emoji: "🧓" },
+];
 
 const ADMIN_EMAIL = "marcello.pertutti@gmail.com"; // admin shortcut email
 
@@ -46,7 +55,7 @@ export default function Login() {
 
   // register-only fields
   const [name, setName] = useState("");
-  const [birthDate, setBirthDate] = useState("");
+  const [ageRange, setAgeRange] = useState<AgeRange | "">("");
   const [phone, setPhone] = useState("");
   const [role, setRole] = useState<Role | "">("");
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
