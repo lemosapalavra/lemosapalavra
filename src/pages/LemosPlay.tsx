@@ -272,7 +272,24 @@ export default function LemosPlay() {
       .filter((x): x is PlayItem => !!x);
   }, [progress, allItems]);
 
-  const hero = filmesPlay[0] ?? louvoresPlay[0] ?? musicasPlay[0];
+  // Hero rotates through a curated spotlight (filmes + first ep of each series)
+  // to mimic Netflix's "Em destaque" carousel. Auto-advances every 7s with a
+  // soft crossfade so users always see new content even without interaction.
+  const heroPool = useMemo<PlayItem[]>(() => {
+    const seriesFirsts = seriesGroupItems
+      .map((g) => g.videos[0])
+      .filter((v): v is PlayItem => !!v && !!v.poster);
+    const pool = [...filmesPlay, ...seriesFirsts, ...louvoresPlay, ...musicasPlay]
+      .filter((p) => !!p.poster);
+    return pool.length ? pool : [filmesPlay[0]].filter(Boolean) as PlayItem[];
+  }, [filmesPlay, seriesGroupItems, louvoresPlay, musicasPlay]);
+  const [heroIdx, setHeroIdx] = useState(0);
+  useEffect(() => {
+    if (heroPool.length < 2) return;
+    const id = window.setInterval(() => setHeroIdx((i) => (i + 1) % heroPool.length), 7000);
+    return () => window.clearInterval(id);
+  }, [heroPool.length]);
+  const hero = heroPool[heroIdx % Math.max(1, heroPool.length)] ?? filmesPlay[0] ?? louvoresPlay[0] ?? musicasPlay[0];
 
   return (
     <div className="min-h-screen bg-black text-white">
