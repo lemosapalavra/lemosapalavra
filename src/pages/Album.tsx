@@ -303,6 +303,14 @@ export default function Album() {
       )}
 
       {selected && <StickerDetailModal sticker={selected} owned={owned[selected.id] || 0} onClose={() => setSelected(null)} />}
+
+      {showCompletion && (
+        <AlbumCompletion
+          totalOwned={totalOwned}
+          total={allStickers.length}
+          onClose={() => setShowCompletion(false)}
+        />
+      )}
     </div>
   );
 }
