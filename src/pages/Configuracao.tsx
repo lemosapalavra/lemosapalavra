@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
-import { useIsAdmin, setAdminMode } from "@/hooks/useIsAdmin";
+import { useIsAdmin, setAdminMode, canBeAdmin } from "@/hooks/useIsAdmin";
 import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
 import IndexAdminPanel from "@/components/IndexAdminPanel";
 
