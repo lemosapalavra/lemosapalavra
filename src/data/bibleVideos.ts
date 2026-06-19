@@ -137,4 +137,24 @@ export const filmesVideos: BibleVideo[] = [
   { title: "Davi e Golias", icon: iconDaviGolias, src: vidDaviFilme.url },
   { title: "Jonas e a Baleia", icon: iconJonas.url, src: vidJonasFilme.url },
   { title: "Os 10 Mandamentos", icon: icon10Mandamentos, src: vid10mFilme.url },
+  { title: "O Nascimento de Jesus", icon: nascimentoJesusThumb.url, src: vidNascimentoJesus.url },
 ];
+
+// Cada filme pode ter uma "mini-série" com partes que dão continuidade à história.
+// Mapeia o título do filme para a lista de episódios da série correspondente.
+export const filmeContinuations: Record<string, BibleVideo[]> = {
+  "Noé e a Arca": [
+    { title: "Noé — Parte I", icon: iconNoe1, src: vidNoe1.url },
+    { title: "Noé — Parte II", icon: iconNoe1, src: vidNoe2.url },
+  ],
+  "Davi e Golias": [
+    { title: "Davi e Golias — Parte I", icon: iconDaviGolias, src: vidDavi1.url },
+    { title: "Davi e Golias — Parte II", icon: iconDaviGolias, src: vidDavi2.url },
+  ],
+  "Os 10 Mandamentos": [
+    { title: "Os 10 Mandamentos — Parte I", icon: icon10Mandamentos, src: vid10m1.url },
+    { title: "Os 10 Mandamentos — Parte II", icon: icon10Mandamentos, src: vid10m2.url },
+    { title: "Os 10 Mandamentos — Parte III", icon: icon10Mandamentos, src: vid10m3.url },
+  ],
+};
+
