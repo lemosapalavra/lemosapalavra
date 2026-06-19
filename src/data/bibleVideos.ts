@@ -45,6 +45,16 @@ import iconProvaFogo from "@/assets/lemos-play/provados-pelo-fogo.png.asset.json
 import moisesP1 from "@/assets/lemos-play/moises-parte-1-v2.png.asset.json";
 import moisesP2 from "@/assets/lemos-play/moises-parte-2-v2.png.asset.json";
 import moisesP3 from "@/assets/lemos-play/moises-parte-3-v2.png.asset.json";
+import vidNoe1 from "@/assets/lemos-play/noe-1.mp4.asset.json";
+import vidNoe2 from "@/assets/lemos-play/noe-2.mp4.asset.json";
+import vidDavi1 from "@/assets/lemos-play/davi-golias-1.mp4.asset.json";
+import vidDavi2 from "@/assets/lemos-play/davi-golias-2.mp4.asset.json";
+import vid10m1 from "@/assets/lemos-play/10-mandamentos-1.mp4.asset.json";
+import vid10m2 from "@/assets/lemos-play/10-mandamentos-2.mp4.asset.json";
+import vid10m3 from "@/assets/lemos-play/10-mandamentos-3.mp4.asset.json";
+import vidNascimentoJesus from "@/assets/lemos-play/nascimento-jesus.mp4.asset.json";
+import nascimentoJesusThumb from "@/assets/lemos-play/nascimento-jesus-thumb.jpg.asset.json";
+
 
 export interface BibleVideo {
   title: string;
