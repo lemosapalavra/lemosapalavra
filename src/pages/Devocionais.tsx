@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import CoinBadge from "@/components/CoinBadge";
@@ -135,6 +136,23 @@ export default function Devocionais() {
           </div>
         )}
       </div>
+      <div className="max-w-5xl mx-auto mt-8 mb-4">
+        <div className="rounded-[24px] border-2 border-sky-200 bg-gradient-to-r from-sky-50 to-amber-50 p-5 shadow-md text-center">
+          <p className="font-display text-base font-bold text-amber-900 mb-1">
+            📖 Quer mais histórias da Bíblia?
+          </p>
+          <p className="font-body text-sm text-amber-800 mb-3">
+            Leia nossas histórias bíblicas narradas especialmente para crianças.
+          </p>
+          <Link
+            to="/historias-biblicas"
+            className="inline-block font-display text-sm font-extrabold text-primary hover:underline"
+          >
+            história bíblica infantil →
+          </Link>
+        </div>
+      </div>
+
       <FeedbackFooter />
     </div>
   );
