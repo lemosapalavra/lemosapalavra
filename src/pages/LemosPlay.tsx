@@ -533,6 +533,34 @@ export default function LemosPlay() {
         </div>
       )}
 
+      {resumePrompt && (
+        <div className="fixed inset-0 z-[60] bg-black/85 backdrop-blur flex items-center justify-center p-4" onClick={() => setResumePrompt(null)}>
+          <div className="bg-zinc-900 border border-zinc-700 rounded-2xl max-w-md w-full p-6 text-center text-white shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-xl font-extrabold mb-2 line-clamp-2">{resumePrompt.item.title}</h3>
+            <p className="text-sm text-zinc-300 mb-5">
+              Você parou em <span className="font-bold text-white">{Math.floor(resumePrompt.seconds / 60)}:{String(resumePrompt.seconds % 60).padStart(2, "0")}</span>. Continuar de onde parou ou rever desde o início?
+            </p>
+            <div className="flex flex-col sm:flex-row gap-2 justify-center">
+              <button
+                onClick={() => { const r = resumePrompt; setResumePrompt(null); setPlayingGroupId(r.groupId); setPlaying(r.item); }}
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-red-600 text-white font-bold hover:bg-red-500"
+              >
+                <Play className="w-4 h-4 fill-white" /> Continuar
+              </button>
+              <button
+                onClick={() => { const r = resumePrompt; setResumePrompt(null); startFromBeginning(r.item, r.groupId); }}
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-white text-black font-bold hover:bg-white/85"
+              >
+                <RotateCcw className="w-4 h-4" /> Rever do início
+              </button>
+              <button onClick={() => setResumePrompt(null)} className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-zinc-800 text-white font-bold hover:bg-zinc-700">
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <LemosPlayAdminPanel open={adminOpen} onClose={() => setAdminOpen(false)} />
     </div>
   );
