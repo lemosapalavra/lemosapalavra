@@ -203,9 +203,45 @@ export default function LemosPlay() {
   );
 
   const [playing, setPlaying] = useState<PlayItem | null>(null);
+  const [playingGroupId, setPlayingGroupId] = useState<string | null>(null);
   const [openGroup, setOpenGroup] = useState<(typeof seriesGroupItems)[number] | null>(null);
   const [progress, setProgress] = useState<ProgressMap>(() => loadProgress());
+  const [resumePrompt, setResumePrompt] = useState<{ item: PlayItem; groupId: string | null; seconds: number } | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  // Decide if we should ask user to resume or restart before playing.
+  const requestPlay = (item: PlayItem, groupId: string | null = null) => {
+    const p = progress[item.id];
+    if (p && p.d > 0) {
+      const ratio = p.t / p.d;
+      if (ratio > 0.02 && ratio < 0.95 && p.t > 5) {
+        setResumePrompt({ item, groupId, seconds: Math.floor(p.t) });
+        return;
+      }
+    }
+    setPlayingGroupId(groupId);
+    setPlaying(item);
+  };
+  const startFromBeginning = (item: PlayItem, groupId: string | null) => {
+    // Wipe saved progress so the iframe URL won't include &start=
+    setProgress((prev) => {
+      const next = { ...prev };
+      delete next[item.id];
+      saveProgress(next);
+      return next;
+    });
+    setPlayingGroupId(groupId);
+    setPlaying(item);
+  };
+
+  // Next episode within the current series group (if any)
+  const nextInGroup = useMemo(() => {
+    if (!playing || !playingGroupId) return null;
+    const g = seriesGroupItems.find((x) => x.id === playingGroupId);
+    if (!g) return null;
+    const idx = g.videos.findIndex((v) => v.id === playing.id);
+    return idx >= 0 && idx < g.videos.length - 1 ? g.videos[idx + 1] : null;
+  }, [playing, playingGroupId, seriesGroupItems]);
 
   const allItems: PlayItem[] = useMemo(
     () => [...filmesPlay, ...musicasPlay, ...louvoresPlay, ...seriesGroupItems.flatMap((g) => g.videos)],
