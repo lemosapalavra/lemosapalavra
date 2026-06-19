@@ -296,16 +296,27 @@ export default function Atividades() {
   };
   const closeCelebration = () => setCelebration({ show: false, message: "", coins: 0, emoji: "🏆" });
 
-  const activities = [
+  const allActivities = [
     { title: "Quiz Bíblico",        icon: iconQuiz,             id: "quiz",        coins: 5  },
     { title: "Memória",             icon: iconMemoria,          id: "memory",      coins: 7  },
-    
     { title: "Colorir",             icon: iconColorir,          id: "coloring",    coins: 3  },
     { title: "Quebra-Cabeça",       icon: iconQuebraCabeca,     id: "jigsaw",      coins: 10 },
     { title: "Caça-Palavras",       icon: iconCacaPalavras.url, id: "wordsearch",  coins: 8  },
     { title: "Pinte os Círculos",   icon: iconPinteCirculos.url, id: "edu:circles", coins: 5  },
     { title: "Ligue as Cores",      icon: iconLigueCores.url,   id: "edu:connect", coins: 6  },
   ];
+
+  // Atividades do dia: dias com data par mostram 4 atividades, dias ímpares
+  // mostram 5. A janela é deslocada conforme o dia do ano, então o conjunto
+  // alterna de um dia para o outro sem repetir sempre as mesmas atividades.
+  const activities = useMemo(() => {
+    const today = new Date();
+    const day = today.getDate();
+    const count = day % 2 === 0 ? 4 : 5;
+    const offset = dayOfYear(today) % allActivities.length;
+    return Array.from({ length: count }, (_, i) => allActivities[(offset + i) % allActivities.length]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const bgStyle = { background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" };
   const Back = () => (
