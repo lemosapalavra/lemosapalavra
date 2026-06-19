@@ -18,6 +18,33 @@ const devos = [
   { title: "Luz do Mundo", verse: "Mateus 5:14-16", text: "Vocês são a luz do mundo. Não se pode esconder uma cidade construída sobre um monte.", reflection: "Jesus diz que somos a luz do mundo! Quando fazemos coisas boas, é como acender uma lanterna no escuro — todos podem ver o amor de Deus em nós.", prayer: "Jesus, me ajude a brilhar a Sua luz em todas as situações, na escola, em casa e com os amigos. Amém.", emoji: "✨", accent: "from-yellow-300 to-orange-400" },
 ];
 
+function HistoriasBiblicasSection() {
+  return (
+    <div className="rounded-[24px] border-2 border-amber-200 bg-gradient-to-r from-amber-50 to-pink-50 p-5 shadow-md text-center">
+      <p className="font-display text-base font-bold text-amber-900 mb-1">
+        📖 Histórias bíblicas para crianças
+      </p>
+      <p className="font-body text-sm text-amber-800 mb-3">
+        Aprofunde a fé da criançada com narrativas bíblicas divertidas e edificantes.
+      </p>
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        <Link
+          to="/historias-biblicas"
+          className="inline-block rounded-full bg-white/80 border border-amber-200 px-4 py-2 font-display text-sm font-extrabold text-primary hover:underline shadow-sm"
+        >
+          história bíblica infantil
+        </Link>
+        <Link
+          to="/historias-biblicas"
+          className="inline-block rounded-full bg-white/80 border border-amber-200 px-4 py-2 font-display text-sm font-extrabold text-primary hover:underline shadow-sm"
+        >
+          contos bíblicos infantis
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export default function Devocionais() {
   const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
   const todayIdx = dayOfYear % devos.length;
@@ -62,7 +89,7 @@ export default function Devocionais() {
                   </div>
                   <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-amber-950">{devos[todayIdx].title}</h3>
                   <p className="font-display text-amber-700 text-sm font-bold mt-1">📜 {devos[todayIdx].verse}</p>
-                  <p className="font-body text-sm text-amber-900/90 mt-2 line-clamp-2 italic">“{devos[todayIdx].text}”</p>
+                  <p className="font-body text-sm text-amber-900/90 mt-2 line-clamp-2 italic">"{devos[todayIdx].text}"</p>
                 </div>
                 <div className="shrink-0 self-center">
                   <CoinBadge amount={DEVO_COINS + 1} size="xs" label="ao ler" />
@@ -87,37 +114,19 @@ export default function Devocionais() {
                     <div className="flex-1 min-w-0">
                       <h3 className="font-display text-lg font-extrabold text-foreground">{d.title}</h3>
                       <p className="font-display text-primary text-xs font-bold mt-0.5">📜 {d.verse}</p>
-                      <p className="font-body text-xs text-muted-foreground mt-2 line-clamp-2 italic">“{d.text}”</p>
+                      <p className="font-body text-xs text-muted-foreground mt-2 line-clamp-2 italic">"{d.text}"</p>
                       <div className="flex items-center justify-between mt-3">
                         <p className="font-display text-xs text-primary font-bold">Toque para ler →</p>
                         <CoinBadge amount={DEVO_COINS} size="xs" />
                       </div>
-              </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
 
             <div className="mt-8 mb-4">
-              <div className="rounded-[24px] border-2 border-amber-200 bg-gradient-to-r from-amber-50 to-pink-50 p-5 shadow-md text-center">
-                <p className="font-display text-base font-bold text-amber-900 mb-1">
-                  📖 Histórias bíblicas para crianças
-                </p>
-                <p className="font-body text-sm text-amber-800 mb-3">
-                  Aprofunde a fé da criançada com narrativas bíblicas divertidas e edificantes.
-                </p>
-                <div className="flex flex-wrap items-center justify-center gap-3">
-                  <Link
-                    to="/historias-biblicas"
-                    className="inline-block rounded-full bg-white/80 border border-amber-200 px-4 py-2 font-display text-sm font-extrabold text-primary hover:underline shadow-sm"
-                  >
-                    história bíblica infantil
-                  </Link>
-                  <Link
-                    to="/historias-biblicas"
-                    className="inline-block rounded-full bg-white/80 border border-amber-200 px-4 py-2 font-display text-sm font-extrabold text-primary hover:underline shadow-sm"
-                  >
-                    contos bíblicos infantis
-                  </Link>
-                </div>
-              </div>
+              <HistoriasBiblicasSection />
             </div>
           </div>
         ) : (
@@ -140,7 +149,7 @@ export default function Devocionais() {
             <div className="grid gap-4">
               <div className="bg-gradient-to-r from-amber-100 to-yellow-100 rounded-[24px] p-5 border-2 border-amber-200 shadow-sm">
                 <h4 className="font-display text-sm font-extrabold text-amber-900 mb-2 flex items-center gap-2">📜 A Palavra de Deus</h4>
-                <p className="font-body text-amber-950 italic leading-relaxed">“{devos[selected].text}”</p>
+                <p className="font-body text-amber-950 italic leading-relaxed">"{devos[selected].text}"</p>
               </div>
 
               <div className="bg-gradient-to-r from-sky-100 to-blue-100 rounded-[24px] p-5 border-2 border-sky-200 shadow-sm">
@@ -158,6 +167,7 @@ export default function Devocionais() {
           </div>
         )}
       </div>
+
       <div className="max-w-5xl mx-auto mt-8 mb-4">
         <div className="rounded-[24px] border-2 border-sky-200 bg-gradient-to-r from-sky-50 to-amber-50 p-5 shadow-md text-center">
           <p className="font-display text-base font-bold text-amber-900 mb-1">
@@ -172,6 +182,31 @@ export default function Devocionais() {
           >
             história bíblica infantil →
           </Link>
+        </div>
+      </div>
+
+      <div className="max-w-5xl mx-auto mt-4 mb-4">
+        <div className="rounded-[24px] border-2 border-pink-200 bg-gradient-to-r from-pink-50 to-amber-50 p-5 shadow-md text-center">
+          <p className="font-display text-base font-bold text-amber-900 mb-1">
+            🌟 Explore a Bíblia com as crianças
+          </p>
+          <p className="font-body text-sm text-amber-800 mb-3">
+            Narrativas bíblicas ilustradas e contadas para toda a família.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Link
+              to="/historias-biblicas"
+              className="inline-block rounded-full bg-white/80 border border-pink-200 px-4 py-2 font-display text-sm font-extrabold text-primary hover:underline shadow-sm"
+            >
+              histórias bíblicas para crianças
+            </Link>
+            <Link
+              to="/historias-biblicas"
+              className="inline-block rounded-full bg-white/80 border border-pink-200 px-4 py-2 font-display text-sm font-extrabold text-primary hover:underline shadow-sm"
+            >
+              narrativas bíblicas para crianças
+            </Link>
+          </div>
         </div>
       </div>
 
