@@ -384,7 +384,7 @@ export default function LemosPlay() {
             Histórias bíblicas, filmes e músicas para inspirar e fortalecer a sua fé.
           </p>
           <div className="flex gap-3">
-            <button onClick={() => hero && setPlaying(hero)} className="inline-flex items-center gap-2 bg-white text-black font-bold px-6 py-2.5 rounded hover:bg-white/85 transition">
+            <button onClick={() => hero && requestPlay(hero)} className="inline-flex items-center gap-2 bg-white text-black font-bold px-6 py-2.5 rounded hover:bg-white/85 transition">
               <Play className="w-5 h-5 fill-black" /> Assistir
             </button>
             <button className="inline-flex items-center gap-2 bg-white/20 text-white font-bold px-6 py-2.5 rounded hover:bg-white/30 transition backdrop-blur">
