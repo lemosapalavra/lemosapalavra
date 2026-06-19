@@ -127,6 +127,34 @@ export const seriesGroups: BibleVideoGroup[] = [
       { title: "A Prova de Fogo — Parte II", icon: iconProvaFogo.url, src: vidProvaFogo2.url },
     ],
   },
+  {
+    title: "Noé e a Arca",
+    icon: iconNoe1,
+    videos: [
+      { title: "Noé e a Arca — Filme", icon: iconNoe1, src: vidNoeArcaFilme.url },
+      { title: "Noé — Parte I", icon: iconNoe1, src: vidNoe1.url },
+      { title: "Noé — Parte II", icon: iconNoe1, src: vidNoe2.url },
+    ],
+  },
+  {
+    title: "Davi e Golias",
+    icon: iconDaviGolias,
+    videos: [
+      { title: "Davi e Golias — Filme", icon: iconDaviGolias, src: vidDaviFilme.url },
+      { title: "Davi e Golias — Parte I", icon: iconDaviGolias, src: vidDavi1.url },
+      { title: "Davi e Golias — Parte II", icon: iconDaviGolias, src: vidDavi2.url },
+    ],
+  },
+  {
+    title: "Os 10 Mandamentos",
+    icon: icon10Mandamentos,
+    videos: [
+      { title: "Os 10 Mandamentos — Filme", icon: icon10Mandamentos, src: vid10mFilme.url },
+      { title: "Os 10 Mandamentos — Parte I", icon: icon10Mandamentos, src: vid10m1.url },
+      { title: "Os 10 Mandamentos — Parte II", icon: icon10Mandamentos, src: vid10m2.url },
+      { title: "Os 10 Mandamentos — Parte III", icon: icon10Mandamentos, src: vid10m3.url },
+    ],
+  },
 ];
 
 export const filmesVideos: BibleVideo[] = [
