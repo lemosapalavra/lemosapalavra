@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { Play, Info, ChevronLeft, ChevronRight, X, Settings, UserPlus, Heart, MessageCircle, Share2, Download, Send } from "lucide-react";
+import { Play, Info, ChevronLeft, ChevronRight, X, Settings, UserPlus, Heart, MessageCircle, Share2, Download, Send, ListVideo } from "lucide-react";
 import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 import PageHeader from "@/components/PageHeader";
 import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
@@ -112,7 +112,7 @@ function VideoSideActions({ itemId, title, src, className = "absolute top-1 righ
   );
 }
 
-function Row({ title, items, onPlay, progress }: { title: string; items: PlayItem[]; onPlay: (item: PlayItem) => void; progress: ProgressMap }) {
+function Row({ title, items, onPlay, progress, onContinueSeries, getContinuationCount }: { title: string; items: PlayItem[]; onPlay: (item: PlayItem) => void; progress: ProgressMap; onContinueSeries?: (item: PlayItem) => void; getContinuationCount?: (item: PlayItem) => number }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const scrollBy = (dx: number) => scrollerRef.current?.scrollBy({ left: dx, behavior: "smooth" });
 
@@ -129,6 +129,7 @@ function Row({ title, items, onPlay, progress }: { title: string; items: PlayIte
           {items.map((item) => {
             const p = progress[item.id];
             const pct = p && p.d > 0 ? Math.min(100, Math.round((p.t / p.d) * 100)) : 0;
+            const contCount = getContinuationCount?.(item) ?? 0;
             return (
               <button key={item.id} onClick={() => onPlay(item)} className="relative shrink-0 w-[200px] sm:w-[280px] aspect-video rounded overflow-hidden bg-zinc-900 hover:scale-105 hover:z-10 hover:ring-2 hover:ring-white transition-all duration-200 group/card">
                 {item.poster ? (
@@ -139,6 +140,18 @@ function Row({ title, items, onPlay, progress }: { title: string; items: PlayIte
                   </div>
                 )}
                 <VideoSideActions itemId={item.id} title={item.title} src={item.src} />
+                {contCount > 0 && onContinueSeries && (
+                  <span
+                    role="button"
+                    tabIndex={0}
+                    onClick={(e) => { e.stopPropagation(); e.preventDefault(); onContinueSeries(item); }}
+                    title={`Ver série (${contCount} episódios)`}
+                    className="absolute top-1 left-1 z-20 inline-flex items-center gap-1 px-2 py-1 rounded-full bg-red-600/95 hover:bg-red-500 text-white text-[10px] font-bold shadow-lg cursor-pointer transition"
+                  >
+                    <ListVideo className="w-3.5 h-3.5" />
+                    <span>+{contCount} ep.</span>
+                  </span>
+                )}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-3 pb-4">
                   <p className="text-white font-bold text-sm text-left line-clamp-1">{item.title}</p>
                   <div className="flex items-center justify-between mt-0.5">
