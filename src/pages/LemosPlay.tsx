@@ -360,7 +360,30 @@ export default function LemosPlay() {
 
       <div className="-mt-20 sm:-mt-32 relative z-10 pb-16">
         {continueItems.length > 0 && <Row title="Continuar assistindo" items={continueItems} onPlay={setPlaying} progress={progress} />}
-        <div id="filmes"><Row title="Filmes Bíblicos" items={filmesPlay} onPlay={setPlaying} progress={progress} /></div>
+        <div id="filmes"><Row
+          title="Filmes Bíblicos"
+          items={filmesPlay}
+          onPlay={setPlaying}
+          progress={progress}
+          getContinuationCount={(item) => (filmeContinuations[item.title]?.length ?? 0)}
+          onContinueSeries={(item) => {
+            const parts = filmeContinuations[item.title];
+            if (!parts?.length) return;
+            setOpenGroup({
+              id: `film-cont-${item.id}`,
+              title: item.title,
+              poster: item.poster,
+              category: "Série",
+              videos: parts.map((v, i) => ({
+                id: `${item.id}-ep${i + 1}`,
+                title: v.title,
+                src: v.src,
+                poster: v.icon,
+                category: "Série",
+              })),
+            });
+          }}
+        /></div>
         <div id="series">
           <Row
             title="Mini Séries Bíblicas"
