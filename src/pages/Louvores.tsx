@@ -207,6 +207,29 @@ export default function Louvores() {
             história bíblica infantil →
           </Link>
         </div>
+
+        <div className="max-w-2xl mx-auto mt-4 mb-2 rounded-[24px] border-2 border-pink-200 bg-gradient-to-r from-pink-50 to-amber-50 p-5 shadow-md text-center">
+          <p className="font-display text-base font-bold text-amber-900 mb-1">
+            🌟 Explore a Bíblia com as crianças
+          </p>
+          <p className="font-body text-sm text-amber-800 mb-3">
+            Narrativas bíblicas ilustradas e contadas para toda a família.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Link
+              to="/historias-biblicas"
+              className="inline-block rounded-full bg-white/80 border border-pink-200 px-4 py-2 font-display text-sm font-extrabold text-primary hover:underline shadow-sm"
+            >
+              histórias bíblicas para crianças
+            </Link>
+            <Link
+              to="/historias-biblicas"
+              className="inline-block rounded-full bg-white/80 border border-pink-200 px-4 py-2 font-display text-sm font-extrabold text-primary hover:underline shadow-sm"
+            >
+              narrativas bíblicas para crianças
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
