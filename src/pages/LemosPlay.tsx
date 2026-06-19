@@ -395,30 +395,12 @@ export default function LemosPlay() {
       </section>
 
       <div className="-mt-20 sm:-mt-32 relative z-10 pb-16">
-        {continueItems.length > 0 && <Row title="Continuar assistindo" items={continueItems} onPlay={setPlaying} progress={progress} />}
+        {continueItems.length > 0 && <Row title="Continuar assistindo" items={continueItems} onPlay={(item) => requestPlay(item)} progress={progress} />}
         <div id="filmes"><Row
           title="Filmes Bíblicos"
           items={filmesPlay}
-          onPlay={setPlaying}
+          onPlay={(item) => requestPlay(item)}
           progress={progress}
-          getContinuationCount={(item) => (filmeContinuations[item.title]?.length ?? 0)}
-          onContinueSeries={(item) => {
-            const parts = filmeContinuations[item.title];
-            if (!parts?.length) return;
-            setOpenGroup({
-              id: `film-cont-${item.id}`,
-              title: item.title,
-              poster: item.poster,
-              category: "Série",
-              videos: parts.map((v, i) => ({
-                id: `${item.id}-ep${i + 1}`,
-                title: v.title,
-                src: v.src,
-                poster: v.icon,
-                category: "Série",
-              })),
-            });
-          }}
         /></div>
         <div id="series">
           <Row
@@ -431,8 +413,8 @@ export default function LemosPlay() {
             progress={progress}
           />
         </div>
-        <div id="musicas"><Row title="Músicas" items={musicasPlay} onPlay={setPlaying} progress={progress} /></div>
-        <div id="louvores"><Row title="Louvores" items={louvoresPlay} onPlay={setPlaying} progress={progress} /></div>
+        <div id="musicas"><Row title="Músicas" items={musicasPlay} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
+        <div id="louvores"><Row title="Louvores" items={louvoresPlay} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
       </div>
 
       {openGroup && (
@@ -449,13 +431,23 @@ export default function LemosPlay() {
               </div>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {openGroup.videos.map((v) => {
+              {openGroup.videos.map((v, idx) => {
                 const p = progress[v.id];
                 const pct = p && p.d > 0 ? Math.min(100, Math.round((p.t / p.d) * 100)) : 0;
+                const next = openGroup.videos[idx + 1];
                 return (
-                  <button key={v.id} onClick={() => { setPlaying(v); setOpenGroup(null); }} className="relative aspect-video rounded-lg overflow-hidden bg-zinc-800 hover:ring-2 hover:ring-white transition">
+                  <button key={v.id} onClick={() => { const gid = openGroup.id; setOpenGroup(null); requestPlay(v, gid); }} className="relative aspect-video rounded-lg overflow-hidden bg-zinc-800 hover:ring-2 hover:ring-white transition">
                     {v.poster ? <img src={v.poster} alt={v.title} className="w-full h-full object-cover" /> : <div className="absolute inset-0 bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center"><Play className="w-10 h-10 text-white/40" /></div>}
                     <VideoSideActions itemId={v.id} title={v.title} src={v.src} />
+                    {next && (
+                      <span
+                        title={`Em seguida: ${next.title}`}
+                        className="absolute top-1 left-1 z-20 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-600/95 text-white text-[10px] font-bold shadow-lg"
+                      >
+                        <SkipForward className="w-3 h-3" />
+                        <span>Próximo</span>
+                      </span>
+                    )}
                     <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-2">
                       <p className="text-white text-xs font-bold text-left line-clamp-2">{v.title}</p>
                     </div>
