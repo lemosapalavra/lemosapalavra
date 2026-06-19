@@ -92,10 +92,32 @@ export default function Devocionais() {
                         <p className="font-display text-xs text-primary font-bold">Toque para ler →</p>
                         <CoinBadge amount={DEVO_COINS} size="xs" />
                       </div>
-                    </div>
-                  </div>
+              </div>
+            </div>
+
+            <div className="mt-8 mb-4">
+              <div className="rounded-[24px] border-2 border-amber-200 bg-gradient-to-r from-amber-50 to-pink-50 p-5 shadow-md text-center">
+                <p className="font-display text-base font-bold text-amber-900 mb-1">
+                  📖 Histórias bíblicas para crianças
+                </p>
+                <p className="font-body text-sm text-amber-800 mb-3">
+                  Aprofunde a fé da criançada com narrativas bíblicas divertidas e edificantes.
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <Link
+                    to="/historias-biblicas"
+                    className="inline-block rounded-full bg-white/80 border border-amber-200 px-4 py-2 font-display text-sm font-extrabold text-primary hover:underline shadow-sm"
+                  >
+                    história bíblica infantil
+                  </Link>
+                  <Link
+                    to="/historias-biblicas"
+                    className="inline-block rounded-full bg-white/80 border border-amber-200 px-4 py-2 font-display text-sm font-extrabold text-primary hover:underline shadow-sm"
+                  >
+                    contos bíblicos infantis
+                  </Link>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         ) : (
