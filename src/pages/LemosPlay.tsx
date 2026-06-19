@@ -493,6 +493,17 @@ export default function LemosPlay() {
             />
           ) : null}
           <VideoSideActions itemId={playing.id} title={playing.title} src={playing.src} className="absolute right-4 top-1/2 -translate-y-1/2" />
+          {nextInGroup && (
+            <button
+              onClick={() => requestPlay(nextInGroup, playingGroupId)}
+              className="absolute right-4 bottom-6 z-20 inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-red-600 hover:bg-red-500 text-white text-sm font-bold shadow-2xl ring-2 ring-white/30 transition"
+              title={`Próximo: ${nextInGroup.title}`}
+            >
+              <SkipForward className="w-4 h-4" />
+              <span className="hidden sm:inline">Próximo: {nextInGroup.title}</span>
+              <span className="sm:hidden">Próximo</span>
+            </button>
+          )}
           {(playError || !playSrc) && (
             <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/85 backdrop-blur p-6">
               <div className="max-w-md w-full bg-zinc-900 border border-zinc-700 rounded-xl p-6 text-center text-white shadow-2xl">
