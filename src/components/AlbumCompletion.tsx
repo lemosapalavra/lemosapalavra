@@ -152,7 +152,7 @@ export default function AlbumCompletion({ totalOwned, total, onClose }: Props) {
           )}
           {tab === "certificado" && <CertificatePanel user={user} />}
           {tab === "hall" && <HallPanel />}
-          {tab === "volume2" && <Volume2Panel />}
+          {tab === "volume2" && <Volume2Panel complete={complete} />}
         </div>
       </div>
 
