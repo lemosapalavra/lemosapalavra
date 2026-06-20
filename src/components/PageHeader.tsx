@@ -1,28 +1,32 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Settings } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Settings, ArrowLeft } from "lucide-react";
 import { useCoins } from "@/hooks/useCoins";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
-import iconInicio from "@/assets/icon-inicio.jpg";
 import iconUsuario from "@/assets/icon-usuario.png";
 
 interface PageHeaderProps {
   title?: string;
   subtitle?: string;
+  /** kept for API compatibility — page icons are no longer rendered */
   icon?: string;
 }
 
 /**
- * Global app header used on every page.
- * - Left: Home button
- * - Center: page name + background image (page icon)
- * - Right: user name + coin count
+ * Global app header.
+ * - Left: animated "back" button (hidden on home)
+ * - Center: animated title only (no page icon, no banner)
+ * - Right: coin badge + user
+ * - Below: thin reminder about earning coins
  */
-export default function PageHeader({ title, subtitle, icon }: PageHeaderProps) {
+export default function PageHeader({ title, subtitle }: PageHeaderProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { coins } = useCoins();
   const isAdmin = useIsAdmin();
   const [user, setUser] = useState<{ name?: string; avatar?: string } | null>(null);
+
+  const isHome = location.pathname === "/";
 
   useEffect(() => {
     const stored = localStorage.getItem("lemos_user");
@@ -42,24 +46,25 @@ export default function PageHeader({ title, subtitle, icon }: PageHeaderProps) {
   return (
     <header className="sticky top-0 z-40 w-screen ml-[calc(50%-50vw)] mb-3">
       <div className="flex items-center gap-2 px-3 py-2">
-        {/* Home */}
-        <button
-          onClick={() => navigate("/")}
-          className="flex items-center justify-center hover:scale-110 transition-transform shrink-0"
-          aria-label="Início"
-          title="Início"
-        >
-          <img src={iconInicio} alt="Início" className="w-11 h-11 rounded-xl shadow-md" />
-        </button>
+        {/* Animated back button (no Home icon) */}
+        {!isHome ? (
+          <button
+            onClick={() => navigate(-1)}
+            aria-label="Voltar"
+            title="Voltar"
+            className="shrink-0 w-11 h-11 rounded-full bg-white/85 hover:bg-white shadow-lg border-2 border-amber-300 flex items-center justify-center text-amber-900 animate-[backPulse_2s_ease-in-out_infinite] hover:scale-110 transition-transform"
+          >
+            <ArrowLeft className="w-5 h-5 animate-[backNudge_1.4s_ease-in-out_infinite]" />
+          </button>
+        ) : (
+          <div className="w-11 h-11 shrink-0" aria-hidden />
+        )}
 
-        {/* Center: title text only (no banner) */}
-        <div className="flex-1 min-w-0 flex items-center gap-2 justify-center text-center px-2">
-          {icon && (
-            <img src={icon} alt="" aria-hidden className="w-9 h-9 rounded-lg shadow-sm object-cover shrink-0" />
-          )}
+        {/* Center: title with effects */}
+        <div className="flex-1 min-w-0 flex items-center justify-center text-center px-2">
           <div className="min-w-0">
             {title && (
-              <h1 className="font-display font-extrabold text-sm sm:text-base md:text-lg leading-tight text-amber-950 truncate">
+              <h1 className="font-display font-extrabold text-base sm:text-lg md:text-2xl leading-tight truncate bg-clip-text text-transparent bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600 drop-shadow-[0_2px_6px_rgba(180,90,0,0.25)] animate-[titleGlow_2.6s_ease-in-out_infinite]">
                 {title}
               </h1>
             )}
@@ -99,6 +104,28 @@ export default function PageHeader({ title, subtitle, icon }: PageHeaderProps) {
           )}
         </div>
       </div>
+
+      {/* Coin reminder — shown on every page */}
+      <div className="px-3">
+        <div className="mx-auto max-w-3xl text-center text-[10px] sm:text-xs font-display font-bold text-amber-900/90 bg-gradient-to-r from-amber-100/80 via-yellow-100/80 to-amber-100/80 rounded-full px-3 py-1 border border-amber-300/70 shadow-sm">
+          🪙 Ganhe moedas completando atividades e assistindo aos vídeos!
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes titleGlow {
+          0%,100% { transform: scale(1); filter: drop-shadow(0 2px 4px rgba(180,90,0,0.25)); }
+          50% { transform: scale(1.04); filter: drop-shadow(0 6px 14px rgba(180,90,0,0.45)); }
+        }
+        @keyframes backPulse {
+          0%,100% { box-shadow: 0 4px 10px rgba(180,90,0,0.25); }
+          50% { box-shadow: 0 8px 20px rgba(180,90,0,0.55); }
+        }
+        @keyframes backNudge {
+          0%,100% { transform: translateX(0); }
+          50% { transform: translateX(-3px); }
+        }
+      `}</style>
     </header>
   );
 }
