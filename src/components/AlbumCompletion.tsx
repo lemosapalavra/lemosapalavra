@@ -401,7 +401,7 @@ function HallPanel() {
 }
 
 /* ============ VOLUME 2 ============ */
-function Volume2Panel() {
+function Volume2Panel({ complete }: { complete: boolean }) {
   const themes = [
     { icon: "✨", name: "Milagres de Jesus" },
     { icon: "🌾", name: "Parábolas" },
@@ -409,6 +409,29 @@ function Volume2Panel() {
     { icon: "📜", name: "Antigo Testamento II" },
     { icon: "🕊️", name: "Apocalipse Infantil" },
   ];
+
+  // Compute leftover coins + repeated stickers → credits for Volume II
+  const { remainingCoins, repeatCount, credits } = useMemo(() => {
+    let coins = 0;
+    try {
+      const u = JSON.parse(localStorage.getItem("lemos_user") || "{}");
+      coins = Number(u.coins || 0);
+    } catch { /* noop */ }
+    let repeats = 0;
+    try {
+      const owned = JSON.parse(localStorage.getItem("lemos_stickers_v2") || "{}");
+      Object.values(owned).forEach((c: any) => { if ((c || 0) > 1) repeats += (c - 1); });
+    } catch { /* noop */ }
+    return { remainingCoins: coins, repeatCount: repeats, credits: coins + repeats };
+  }, []);
+
+  // Persist credits so they're reserved for Volume II
+  useEffect(() => {
+    if (complete) {
+      localStorage.setItem("lemos_album_v2_credits", String(credits));
+    }
+  }, [complete, credits]);
+
   return (
     <div className="text-center space-y-4 py-2">
       <div className="text-6xl">📖</div>
@@ -416,6 +439,39 @@ function Volume2Panel() {
       <div className="inline-block bg-gradient-to-r from-rose-500 to-orange-500 text-white px-5 py-2 rounded-full font-display font-extrabold shadow-lg animate-pulse">
         🚀 EM BREVE
       </div>
+
+      {complete && (
+        <div className="bg-gradient-to-br from-amber-100 to-yellow-50 border-2 border-amber-400 rounded-2xl p-4 max-w-md mx-auto shadow-lg">
+          <div className="text-3xl mb-1">🎁</div>
+          <p className="font-display font-extrabold text-amber-900 text-lg">
+            Seus créditos para o Volume II
+          </p>
+          <p className="text-xs text-amber-800 mt-1 mb-3">
+            Como você completou o álbum, suas <strong>moedas restantes</strong> e <strong>figurinhas repetidas</strong> serão convertidas em créditos para o próximo volume.
+          </p>
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="bg-white/80 rounded-xl p-2 border border-amber-300">
+              <div className="text-xl">🪙</div>
+              <div className="font-display font-extrabold text-amber-900 tabular-nums">{remainingCoins}</div>
+              <div className="text-[10px] uppercase text-amber-700">Moedas</div>
+            </div>
+            <div className="bg-white/80 rounded-xl p-2 border border-amber-300">
+              <div className="text-xl">🔁</div>
+              <div className="font-display font-extrabold text-amber-900 tabular-nums">{repeatCount}</div>
+              <div className="text-[10px] uppercase text-amber-700">Repetidas</div>
+            </div>
+            <div className="bg-gradient-to-br from-amber-400 to-orange-500 text-white rounded-xl p-2 border border-amber-500 shadow">
+              <div className="text-xl">⭐</div>
+              <div className="font-display font-extrabold tabular-nums">{credits}</div>
+              <div className="text-[10px] uppercase">Créditos VII</div>
+            </div>
+          </div>
+          <p className="text-[11px] text-amber-700 italic mt-3">
+            🔒 Créditos guardados com segurança. Basta aguardar o lançamento do Volume II!
+          </p>
+        </div>
+      )}
+
       <p className="text-sm text-amber-800 max-w-md mx-auto">
         Está pronto para a próxima jornada? Estamos preparando novos temas incríveis para você continuar colecionando!
       </p>
