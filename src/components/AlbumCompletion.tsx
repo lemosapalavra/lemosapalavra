@@ -192,6 +192,14 @@ export default function AlbumCompletion({ totalOwned, total, onClose }: Props) {
 
       <style>{`
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes confettiFall {
+          0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(110vh) rotate(720deg); opacity: 0.85; }
+        }
+        @keyframes partyBounce {
+          0%,100% { transform: translateY(0) scale(1); }
+          50% { transform: translateY(-10px) scale(1.1); }
+        }
       `}</style>
     </div>
   );
