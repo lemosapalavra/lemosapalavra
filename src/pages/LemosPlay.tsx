@@ -6,6 +6,7 @@ import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
 import CoinBadge from "@/components/CoinBadge";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { loadConfig, type PlayEntry, type SeriesGroupCfg } from "@/data/lemosPlayConfig";
+import { awardOnce } from "@/hooks/useCoins";
 
 import { normalizeVideo } from "@/lib/videoEmbed";
 
@@ -303,8 +304,17 @@ export default function LemosPlay() {
               saveProgress(next);
               return next;
             });
+            if (t / d >= 0.9) {
+              const reward = COIN_REWARDS[playing.category] ?? 3;
+              awardOnce(`video:${currentId}`, reward, `Você assistiu "${playing.title}"`);
+            }
           }
         }
+        if (data.event === "ended") {
+          const reward = COIN_REWARDS[playing.category] ?? 3;
+          awardOnce(`video:${currentId}`, reward, `Você assistiu "${playing.title}"`);
+        }
+
       } catch {}
     };
     window.addEventListener("message", onMsg);
@@ -496,7 +506,32 @@ export default function LemosPlay() {
           </button>
 
           {playInfo?.kind === "mp4" ? (
-            <video src={playSrc} className="absolute inset-0 w-full h-full bg-black" controls autoPlay onError={() => setPlayError(true)} />
+            <video
+              src={playSrc}
+              className="absolute inset-0 w-full h-full bg-black"
+              controls
+              autoPlay
+              onError={() => setPlayError(true)}
+              onTimeUpdate={(e) => {
+                const v = e.currentTarget;
+                if (v.duration > 0) {
+                  setProgress((prev) => {
+                    const next = { ...prev, [playing.id]: { t: v.currentTime, d: v.duration, updated: Date.now() } };
+                    saveProgress(next);
+                    return next;
+                  });
+                  if (v.currentTime / v.duration >= 0.9) {
+                    const reward = COIN_REWARDS[playing.category] ?? 3;
+                    awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
+                  }
+                }
+              }}
+              onEnded={() => {
+                const reward = COIN_REWARDS[playing.category] ?? 3;
+                awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
+              }}
+            />
+
           ) : playSrc ? (
             <iframe
               ref={iframeRef}
