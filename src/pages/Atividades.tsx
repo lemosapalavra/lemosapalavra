@@ -284,16 +284,44 @@ export default function Atividades() {
   const [activeGame, setActiveGame] = useState<string | null>(null);
   const [celebration, setCelebration] = useState({ show: false, message: "", coins: 0, emoji: "🏆" });
 
-  const awardCoins = (amount: number) => {
+  const awardCoinsRaw = (amount: number) => {
     const user = JSON.parse(localStorage.getItem("lemos_user") || "{}");
     user.coins = (user.coins || 0) + amount;
     localStorage.setItem("lemos_user", JSON.stringify(user));
     window.dispatchEvent(new CustomEvent("lemos:coins"));
   };
-  const showCelebration = (message: string, coins: number, emoji = "🏆") => {
-    awardCoins(coins);
-    setCelebration({ show: true, message, coins, emoji });
+  // Claim a reward once per (game, local date) so the user can't farm coins by
+  // replaying the same activity multiple times in the same day.
+  const claimDailyReward = (gameId: string, amount: number, label: string) => {
+    const d = new Date();
+    const ymd = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    const key = `activity:${gameId}:${ymd}`;
+    try {
+      const claims = JSON.parse(localStorage.getItem("lemos_reward_claims") || "{}");
+      if (claims[key]) return false;
+      claims[key] = Date.now();
+      localStorage.setItem("lemos_reward_claims", JSON.stringify(claims));
+    } catch { /* noop */ }
+    awardCoinsRaw(amount);
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const { toast } = require("sonner");
+      toast.success(`🪙 +${amount} moedinhas!`, { description: label, duration: 3500 });
+    } catch { /* noop */ }
+    return true;
   };
+  const showCelebration = (message: string, coins: number, emoji = "🏆") => {
+    const gameId = activeGame || "generic";
+    const granted = claimDailyReward(gameId, coins, message);
+    const shownCoins = granted ? coins : 0;
+    setCelebration({
+      show: true,
+      message: granted ? message : `${message} (recompensa já recebida hoje)`,
+      coins: shownCoins,
+      emoji,
+    });
+  };
+
   const closeCelebration = () => setCelebration({ show: false, message: "", coins: 0, emoji: "🏆" });
 
   const allActivities = [
