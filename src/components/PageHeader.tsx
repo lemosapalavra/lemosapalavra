@@ -41,7 +41,7 @@ export default function PageHeader({ title, subtitle, icon }: PageHeaderProps) {
 
   return (
     <header className="sticky top-0 z-40 w-screen ml-[calc(50%-50vw)] mb-3">
-      <div className="flex items-stretch gap-2 px-3 py-2 bg-white/70 backdrop-blur-md shadow-lg border-b-2 border-amber-300/60">
+      <div className="flex items-center gap-2 px-3 py-2">
         {/* Home */}
         <button
           onClick={() => navigate("/")}
@@ -52,23 +52,14 @@ export default function PageHeader({ title, subtitle, icon }: PageHeaderProps) {
           <img src={iconInicio} alt="Início" className="w-11 h-11 rounded-xl shadow-md" />
         </button>
 
-
-        {/* Center: title with icon background */}
-        <div className="relative flex-1 min-w-0 rounded-xl overflow-hidden flex items-center justify-center px-2"
-          style={{ background: "linear-gradient(135deg, hsl(36,90%,85%), hsl(45,100%,92%))" }}>
+        {/* Center: title text only (no banner) */}
+        <div className="flex-1 min-w-0 flex items-center gap-2 justify-center text-center px-2">
           {icon && (
-            <img
-              src={icon}
-              alt=""
-              aria-hidden
-              className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-              style={{ opacity: 0.28 }}
-            />
+            <img src={icon} alt="" aria-hidden className="w-9 h-9 rounded-lg shadow-sm object-cover shrink-0" />
           )}
-          <div className="absolute inset-0 bg-gradient-to-r from-white/40 via-white/10 to-white/40 pointer-events-none" />
-          <div className="relative text-center min-w-0">
+          <div className="min-w-0">
             {title && (
-              <h1 className="font-display font-extrabold text-sm sm:text-base md:text-lg leading-tight text-amber-950 truncate drop-shadow-sm">
+              <h1 className="font-display font-extrabold text-sm sm:text-base md:text-lg leading-tight text-amber-950 truncate">
                 {title}
               </h1>
             )}

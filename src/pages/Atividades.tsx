@@ -358,8 +358,11 @@ export default function Atividades() {
   // === MENU ORBITAL ===
   const SPIN_DURATION = "120s";
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4" style={bgStyle}>
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-4" style={bgStyle}>
       <PageHeader title="Atividades Educacionais" icon={iconAtividades} />
+      <div className="mb-3 inline-flex items-center gap-2 bg-white/80 border border-amber-300 text-amber-900 font-display font-bold text-xs sm:text-sm px-4 py-2 rounded-full shadow">
+        🔄 As atividades se alternam dia a dia — novas opções a cada visita!
+      </div>
       <div
         className="relative orbit-area"
         style={{
