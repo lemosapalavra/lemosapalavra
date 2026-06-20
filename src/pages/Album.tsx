@@ -185,28 +185,31 @@ export default function Album() {
     return (
       <div
         onClick={() => { setPageIdx(0); setView("pages"); }}
-        className="fixed inset-0 z-40 cursor-pointer flex flex-col items-center justify-center"
-        style={{
-          backgroundImage: `url(${pergaminhoAsset.url})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundColor: "hsl(40,55%,80%)",
-        }}
+        className="fixed inset-0 z-40 cursor-pointer flex flex-col items-center justify-center bg-gradient-to-b from-amber-900 via-amber-800 to-stone-900"
       >
-        <PageHeader title="Álbum" icon={pergaminhoAsset.url} />
-        <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
-          <h1 className="font-display font-extrabold text-4xl sm:text-6xl text-amber-900 drop-shadow-lg animate-[albumTitle_2.4s_ease-in-out_infinite]">
+        <PageHeader title="Álbum" />
+        <div className="flex-1 flex flex-col items-center justify-center px-6 text-center gap-4 w-full overflow-hidden">
+          <img
+            src={albumCapa}
+            alt="Capa do Álbum Heróis da Bíblia"
+            className="max-h-[55vh] w-auto rounded-2xl shadow-2xl border-4 border-amber-300 animate-[coverFloat_3.6s_ease-in-out_infinite]"
+          />
+          <h1 className="font-display font-extrabold text-3xl sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-yellow-100 to-amber-300 drop-shadow-lg animate-[albumTitle_2.4s_ease-in-out_infinite]">
             ✨ Heróis da Bíblia ✨
           </h1>
-          <p className="font-body text-amber-800 mt-3 text-sm sm:text-base italic">Toque para abrir o álbum sagrado</p>
+          <p className="font-body text-amber-100 text-sm sm:text-base italic">Toque para abrir o álbum sagrado</p>
         </div>
-        <div className="mb-8 bg-white/90 px-5 py-2.5 rounded-full font-display font-bold text-base shadow-2xl animate-pulse">
+        <div className="mb-8 bg-white/95 px-5 py-2.5 rounded-full font-display font-bold text-base shadow-2xl animate-pulse">
           👆 Toque para abrir
         </div>
         <style>{`
           @keyframes albumTitle {
-            0%,100% { transform: scale(1) translateY(0); text-shadow: 0 4px 14px rgba(180,90,0,0.35); }
-            50% { transform: scale(1.05) translateY(-4px); text-shadow: 0 10px 24px rgba(180,90,0,0.55); }
+            0%,100% { transform: scale(1) translateY(0); text-shadow: 0 4px 14px rgba(255,200,80,0.35); }
+            50% { transform: scale(1.05) translateY(-4px); text-shadow: 0 10px 24px rgba(255,200,80,0.55); }
+          }
+          @keyframes coverFloat {
+            0%,100% { transform: translateY(0) rotate(-1deg); }
+            50% { transform: translateY(-8px) rotate(1deg); }
           }
         `}</style>
       </div>
