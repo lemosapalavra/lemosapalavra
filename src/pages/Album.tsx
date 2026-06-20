@@ -185,18 +185,30 @@ export default function Album() {
     return (
       <div
         onClick={() => { setPageIdx(0); setView("pages"); }}
-        className="fixed inset-0 z-40 cursor-pointer bg-black"
+        className="fixed inset-0 z-40 cursor-pointer flex flex-col items-center justify-center"
+        style={{
+          backgroundImage: `url(${pergaminhoAsset.url})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundColor: "hsl(40,55%,80%)",
+        }}
       >
-        <PageHeader title="Álbum" subtitle="Heróis da Fé" icon={albumCapa} />
-        <img
-          src={albumCapa}
-          alt="Heróis da Fé"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ objectPosition: "center 18%" }}
-        />
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white/90 px-5 py-2.5 rounded-full font-display font-bold text-base shadow-2xl animate-pulse">
+        <PageHeader title="Álbum" icon={pergaminhoAsset.url} />
+        <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+          <h1 className="font-display font-extrabold text-4xl sm:text-6xl text-amber-900 drop-shadow-lg animate-[albumTitle_2.4s_ease-in-out_infinite]">
+            ✨ Heróis da Bíblia ✨
+          </h1>
+          <p className="font-body text-amber-800 mt-3 text-sm sm:text-base italic">Toque para abrir o álbum sagrado</p>
+        </div>
+        <div className="mb-8 bg-white/90 px-5 py-2.5 rounded-full font-display font-bold text-base shadow-2xl animate-pulse">
           👆 Toque para abrir
         </div>
+        <style>{`
+          @keyframes albumTitle {
+            0%,100% { transform: scale(1) translateY(0); text-shadow: 0 4px 14px rgba(180,90,0,0.35); }
+            50% { transform: scale(1.05) translateY(-4px); text-shadow: 0 10px 24px rgba(180,90,0,0.55); }
+          }
+        `}</style>
       </div>
     );
   }
