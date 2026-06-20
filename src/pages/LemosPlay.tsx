@@ -209,6 +209,33 @@ export default function LemosPlay() {
   const [progress, setProgress] = useState<ProgressMap>(() => loadProgress());
   const [resumePrompt, setResumePrompt] = useState<{ item: PlayItem; groupId: string | null; seconds: number } | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const playerContainerRef = useRef<HTMLDivElement>(null);
+  const lastProgressSave = useRef<number>(0);
+
+  // Throttled progress writer: updates localStorage immediately,
+  // but only triggers React state update every 5s to avoid re-renders
+  // that would re-fire the fullscreen effect and interrupt playback.
+  const writeProgress = (id: string, t: number, d: number) => {
+    const all = loadProgress();
+    all[id] = { t, d, updated: Date.now() };
+    saveProgress(all);
+    const now = Date.now();
+    if (now - lastProgressSave.current > 5000) {
+      lastProgressSave.current = now;
+      setProgress(all);
+    }
+  };
+
+  // Fullscreen ONCE when a video opens — not on every re-render.
+  useEffect(() => {
+    if (!playing) return;
+    const el = playerContainerRef.current;
+    if (!el || document.fullscreenElement) return;
+    const anyEl = el as any;
+    const req = anyEl.requestFullscreen || anyEl.webkitRequestFullscreen || anyEl.msRequestFullscreen;
+    req?.call(anyEl).catch(() => {});
+  }, [playing?.id]);
+
 
   // Decide if we should ask user to resume or restart before playing.
   const requestPlay = (item: PlayItem, groupId: string | null = null) => {
