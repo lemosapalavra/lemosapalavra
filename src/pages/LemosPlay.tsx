@@ -326,11 +326,7 @@ export default function LemosPlay() {
           const t = Number(data.value.seconds);
           const d = Number(data.value.duration);
           if (!isNaN(t) && !isNaN(d) && d > 0) {
-            setProgress((prev) => {
-              const next = { ...prev, [currentId]: { t, d, updated: Date.now() } };
-              saveProgress(next);
-              return next;
-            });
+            writeProgress(currentId, t, d);
             if (t / d >= 0.9) {
               const reward = COIN_REWARDS[playing.category] ?? 3;
               awardOnce(`video:${currentId}`, reward, `Você assistiu "${playing.title}"`);
