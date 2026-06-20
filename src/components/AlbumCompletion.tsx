@@ -78,8 +78,42 @@ export default function AlbumCompletion({ totalOwned, total, onClose }: Props) {
 
   return (
     <div className="fixed inset-0 z-[70] bg-black/90 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 overflow-y-auto" onClick={onClose}>
+      {/* 🎉 Party confetti — only on full completion */}
+      {complete && (
+        <>
+          <div className="pointer-events-none fixed inset-0 z-[71] overflow-hidden">
+            {Array.from({ length: 60 }).map((_, i) => {
+              const colors = ["#f59e0b", "#ef4444", "#10b981", "#3b82f6", "#a855f7", "#fde047"];
+              const left = (i * 37) % 100;
+              const delay = (i % 12) * 0.18;
+              const dur = 3 + ((i * 7) % 30) / 10;
+              const size = 6 + (i % 5) * 2;
+              const color = colors[i % colors.length];
+              const rotate = (i * 47) % 360;
+              return (
+                <span
+                  key={i}
+                  style={{
+                    left: `${left}%`,
+                    background: color,
+                    width: `${size}px`,
+                    height: `${size * 1.6}px`,
+                    animationDelay: `${delay}s`,
+                    animationDuration: `${dur}s`,
+                    transform: `rotate(${rotate}deg)`,
+                  }}
+                  className="absolute -top-6 rounded-sm opacity-90 animate-[confettiFall_linear_infinite] shadow"
+                />
+              );
+            })}
+          </div>
+          <div className="pointer-events-none fixed inset-0 z-[71] flex items-start justify-center">
+            <div className="mt-6 text-5xl sm:text-6xl animate-[partyBounce_1.2s_ease-in-out_infinite]">🎊🎉🥳🎉🎊</div>
+          </div>
+        </>
+      )}
       <div
-        className="relative w-full max-w-3xl my-4 bg-gradient-to-br from-amber-50 to-orange-100 rounded-3xl shadow-2xl border-4 border-amber-500 overflow-hidden animate-[fadeUp_0.4s_ease-out]"
+        className="relative w-full max-w-3xl my-4 bg-gradient-to-br from-amber-50 to-orange-100 rounded-3xl shadow-2xl border-4 border-amber-500 overflow-hidden animate-[fadeUp_0.4s_ease-out] z-[72]"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -98,7 +132,7 @@ export default function AlbumCompletion({ totalOwned, total, onClose }: Props) {
           </h2>
           <p className="text-xs sm:text-sm opacity-95">
             {complete
-              ? "Você completou o Álbum Heróis da Fé — Volume 1!"
+              ? "Você completou o Álbum Heróis da Fé — Volume 1! 🎊 Em breve chega o Volume II com muitas novidades!"
               : `Continue colecionando! ${totalOwned}/${total} figurinhas.`}
           </p>
         </div>
@@ -158,6 +192,14 @@ export default function AlbumCompletion({ totalOwned, total, onClose }: Props) {
 
       <style>{`
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes confettiFall {
+          0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(110vh) rotate(720deg); opacity: 0.85; }
+        }
+        @keyframes partyBounce {
+          0%,100% { transform: translateY(0) scale(1); }
+          50% { transform: translateY(-10px) scale(1.1); }
+        }
       `}</style>
     </div>
   );
