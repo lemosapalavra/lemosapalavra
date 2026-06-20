@@ -304,8 +304,17 @@ export default function LemosPlay() {
               saveProgress(next);
               return next;
             });
+            if (t / d >= 0.9) {
+              const reward = COIN_REWARDS[playing.category] ?? 3;
+              awardOnce(`video:${currentId}`, reward, `Você assistiu "${playing.title}"`);
+            }
           }
         }
+        if (data.event === "ended") {
+          const reward = COIN_REWARDS[playing.category] ?? 3;
+          awardOnce(`video:${currentId}`, reward, `Você assistiu "${playing.title}"`);
+        }
+
       } catch {}
     };
     window.addEventListener("message", onMsg);
