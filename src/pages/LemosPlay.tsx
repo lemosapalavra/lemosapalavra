@@ -353,30 +353,20 @@ export default function LemosPlay() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <PageHeader title="Lemos Play" subtitle="Filmes, Séries e Músicas" icon={lemosPlayLogo} />
-      <header className="fixed top-0 inset-x-0 z-30 bg-gradient-to-b from-black/90 to-transparent pointer-events-none">
-        <div className="flex items-center justify-between px-4 sm:px-12 py-3 pl-20">
-          <img src={lemosPlayLogo} alt="Lemos Play" className="h-14 sm:h-20 w-auto drop-shadow-xl pointer-events-auto" />
-          <div className="flex items-center gap-4 pointer-events-auto">
-            <nav className="hidden sm:flex items-center gap-6 text-sm font-semibold text-zinc-200">
-              <a href="#filmes" className="hover:text-white">Filmes</a>
-              <a href="#series" className="hover:text-white">Séries</a>
-              <a href="#musicas" className="hover:text-white">Músicas</a>
-              <a href="#louvores" className="hover:text-white">Louvores</a>
-            </nav>
-            {isAdmin && (
-              <button
-                onClick={() => setAdminOpen(true)}
-                className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center transition"
-                title="Configurar Lemos Play"
-                aria-label="Configurar"
-              >
-                <Settings className="w-5 h-5 text-white" />
-              </button>
-            )}
-          </div>
+      <PageHeader title="Lemos Play" subtitle="Filmes, Séries e Músicas" />
+      {isAdmin && (
+        <div className="fixed top-2 right-2 z-40">
+          <button
+            onClick={() => setAdminOpen(true)}
+            className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center transition"
+            title="Configurar Lemos Play"
+            aria-label="Configurar"
+          >
+            <Settings className="w-5 h-5 text-white" />
+          </button>
         </div>
-      </header>
+      )}
+
 
       {/* Hero */}
       <section className="relative h-[70vh] sm:h-[85vh] w-full overflow-hidden">
