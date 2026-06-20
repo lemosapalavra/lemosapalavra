@@ -506,7 +506,32 @@ export default function LemosPlay() {
           </button>
 
           {playInfo?.kind === "mp4" ? (
-            <video src={playSrc} className="absolute inset-0 w-full h-full bg-black" controls autoPlay onError={() => setPlayError(true)} />
+            <video
+              src={playSrc}
+              className="absolute inset-0 w-full h-full bg-black"
+              controls
+              autoPlay
+              onError={() => setPlayError(true)}
+              onTimeUpdate={(e) => {
+                const v = e.currentTarget;
+                if (v.duration > 0) {
+                  setProgress((prev) => {
+                    const next = { ...prev, [playing.id]: { t: v.currentTime, d: v.duration, updated: Date.now() } };
+                    saveProgress(next);
+                    return next;
+                  });
+                  if (v.currentTime / v.duration >= 0.9) {
+                    const reward = COIN_REWARDS[playing.category] ?? 3;
+                    awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
+                  }
+                }
+              }}
+              onEnded={() => {
+                const reward = COIN_REWARDS[playing.category] ?? 3;
+                awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
+              }}
+            />
+
           ) : playSrc ? (
             <iframe
               ref={iframeRef}
