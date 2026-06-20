@@ -241,25 +241,31 @@ export default function Album() {
 
   return (
     <div className="fixed inset-0 z-40 flex flex-col"
-      style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
+      style={{
+        backgroundImage: `url(${pergaminhoAsset.url})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundColor: "hsl(40,55%,82%)",
+      }}>
       <div className="px-3 pt-3">
         <StandardHeader onHome={() => navigate("/")} coins={coins} />
       </div>
-      <div className="flex items-center justify-between px-3 py-2 bg-amber-950/90 text-white shadow-lg z-10">
+
+      {/* Floating icon-only toolbar (no brown bar) */}
+      <div className="flex items-center justify-between px-3 py-2 z-10">
         <button onClick={() => setView("cover")}
-          className="flex items-center gap-1 bg-white/15 hover:bg-white/25 px-3 py-1.5 rounded-full font-display font-bold text-sm transition">
-          <ArrowLeft className="w-4 h-4" /> Capa
+          aria-label="Voltar para a capa" title="Capa"
+          className="w-11 h-11 rounded-full bg-white/80 hover:bg-white shadow-lg flex items-center justify-center text-amber-900 transition">
+          <ArrowLeft className="w-5 h-5" />
         </button>
         <div className="text-center min-w-0 px-2">
-          <div className="font-display font-extrabold text-sm sm:text-base truncate">
-            📖 Heróis da Fé{currentCatName ? ` — ${currentCatName}` : ""}
-          </div>
-          <div className="text-[10px] opacity-80">{totalOwned} / {allStickers.length} coletadas</div>
+          <div className="text-[10px] font-bold text-amber-900/80">{totalOwned} / {allStickers.length} coletadas</div>
         </div>
         <div className="flex items-center gap-1.5">
           <button onClick={() => setShowCompletion(true)}
-            className="relative flex items-center gap-1 bg-gradient-to-br from-yellow-400 to-orange-500 hover:brightness-110 px-2 sm:px-3 py-1.5 rounded-full font-display font-bold text-xs transition shadow-lg" title="Conquistas">
-            <Trophy className="w-4 h-4" /> <span className="hidden sm:inline">Conquistas</span>
+            aria-label="Conquistas" title="Conquistas"
+            className="relative w-11 h-11 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 hover:brightness-110 shadow-lg flex items-center justify-center text-white transition">
+            <Trophy className="w-5 h-5" />
             {earnedMedals.length > 0 && (
               <span className="absolute -top-1 -right-1 bg-rose-600 text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center font-bold">
                 {earnedMedals.length}
@@ -267,11 +273,26 @@ export default function Album() {
             )}
           </button>
           <button onClick={() => setView("trade")}
-            className="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 px-2 sm:px-3 py-1.5 rounded-full font-display font-bold text-xs transition" title="Trocas">
-            <Repeat className="w-4 h-4" /> <span className="hidden sm:inline">Trocas</span>
+            aria-label="Trocas" title="Trocas"
+            className="w-11 h-11 rounded-full bg-emerald-500 hover:bg-emerald-600 shadow-lg flex items-center justify-center text-white transition">
+            <Repeat className="w-5 h-5" />
           </button>
         </div>
       </div>
+
+      {/* Animated central chapter title */}
+      <div className="text-center px-3 pb-1">
+        <h2 key={currentCatName}
+          className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-amber-900 drop-shadow animate-[chapterPulse_2.2s_ease-in-out_infinite]">
+          {currentPage?.kind === "category" ? <>{currentPage.cat.icon} {currentCatName}</> : "📕 Resumo do Álbum"}
+        </h2>
+      </div>
+      <style>{`
+        @keyframes chapterPulse {
+          0%,100% { transform: scale(1); text-shadow: 0 4px 12px rgba(180,90,0,0.3); }
+          50% { transform: scale(1.04); text-shadow: 0 8px 20px rgba(180,90,0,0.5); }
+        }
+      `}</style>
 
       {/* Single page area */}
       <div
