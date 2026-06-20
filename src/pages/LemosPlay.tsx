@@ -503,13 +503,7 @@ export default function LemosPlay() {
 
       {playing && (
         <div
-          ref={(el) => {
-            if (el && !document.fullscreenElement) {
-              const anyEl = el as any;
-              const req = anyEl.requestFullscreen || anyEl.webkitRequestFullscreen || anyEl.msRequestFullscreen;
-              req?.call(anyEl).catch(() => {});
-            }
-          }}
+          ref={playerContainerRef}
           className="fixed inset-0 z-50 bg-black flex items-center justify-center"
         >
           <button onClick={() => { if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {}); setPlaying(null); }} className="absolute top-4 right-4 z-30 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white" title="Fechar">
@@ -526,11 +520,7 @@ export default function LemosPlay() {
               onTimeUpdate={(e) => {
                 const v = e.currentTarget;
                 if (v.duration > 0) {
-                  setProgress((prev) => {
-                    const next = { ...prev, [playing.id]: { t: v.currentTime, d: v.duration, updated: Date.now() } };
-                    saveProgress(next);
-                    return next;
-                  });
+                  writeProgress(playing.id, v.currentTime, v.duration);
                   if (v.currentTime / v.duration >= 0.9) {
                     const reward = COIN_REWARDS[playing.category] ?? 3;
                     awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
@@ -542,6 +532,7 @@ export default function LemosPlay() {
                 awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
               }}
             />
+
 
           ) : playSrc ? (
             <iframe
