@@ -71,6 +71,9 @@ export default function Devocionais() {
                   Vamos passar um tempinho com Jesus hoje? Cada devocional tem uma palavra da Bíblia,
                   um pensamento especial e uma oração feita para crianças.
                 </p>
+                <div className="mt-4 inline-flex items-center gap-2 bg-white/80 border border-amber-300 text-amber-900 font-display font-bold text-xs sm:text-sm px-4 py-2 rounded-full shadow">
+                  🔄 Os devocionais se alternam dia a dia — sempre com novas opções para você descobrir!
+                </div>
               </div>
             </section>
 
