@@ -120,7 +120,7 @@ export default function Album() {
         kind: "category" as const,
         cat,
         stickers,
-        bg: cat.bgs?.[0],
+        bg: undefined,
         pageInCat: 1 as const,
         startIndex: running,
       };
