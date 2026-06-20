@@ -304,13 +304,10 @@ export default function Atividades() {
       localStorage.setItem("lemos_reward_claims", JSON.stringify(claims));
     } catch { /* noop */ }
     awardCoinsRaw(amount);
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const { toast } = require("sonner");
-      toast.success(`🪙 +${amount} moedinhas!`, { description: label, duration: 3500 });
-    } catch { /* noop */ }
+    toast.success(`🪙 +${amount} moedinhas!`, { description: label, duration: 3500 });
     return true;
   };
+
   const showCelebration = (message: string, coins: number, emoji = "🏆") => {
     const gameId = activeGame || "generic";
     const granted = claimDailyReward(gameId, coins, message);
