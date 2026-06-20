@@ -209,6 +209,33 @@ export default function LemosPlay() {
   const [progress, setProgress] = useState<ProgressMap>(() => loadProgress());
   const [resumePrompt, setResumePrompt] = useState<{ item: PlayItem; groupId: string | null; seconds: number } | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const playerContainerRef = useRef<HTMLDivElement>(null);
+  const lastProgressSave = useRef<number>(0);
+
+  // Throttled progress writer: updates localStorage immediately,
+  // but only triggers React state update every 5s to avoid re-renders
+  // that would re-fire the fullscreen effect and interrupt playback.
+  const writeProgress = (id: string, t: number, d: number) => {
+    const all = loadProgress();
+    all[id] = { t, d, updated: Date.now() };
+    saveProgress(all);
+    const now = Date.now();
+    if (now - lastProgressSave.current > 5000) {
+      lastProgressSave.current = now;
+      setProgress(all);
+    }
+  };
+
+  // Fullscreen ONCE when a video opens — not on every re-render.
+  useEffect(() => {
+    if (!playing) return;
+    const el = playerContainerRef.current;
+    if (!el || document.fullscreenElement) return;
+    const anyEl = el as any;
+    const req = anyEl.requestFullscreen || anyEl.webkitRequestFullscreen || anyEl.msRequestFullscreen;
+    req?.call(anyEl).catch(() => {});
+  }, [playing?.id]);
+
 
   // Decide if we should ask user to resume or restart before playing.
   const requestPlay = (item: PlayItem, groupId: string | null = null) => {
@@ -299,11 +326,7 @@ export default function LemosPlay() {
           const t = Number(data.value.seconds);
           const d = Number(data.value.duration);
           if (!isNaN(t) && !isNaN(d) && d > 0) {
-            setProgress((prev) => {
-              const next = { ...prev, [currentId]: { t, d, updated: Date.now() } };
-              saveProgress(next);
-              return next;
-            });
+            writeProgress(currentId, t, d);
             if (t / d >= 0.9) {
               const reward = COIN_REWARDS[playing.category] ?? 3;
               awardOnce(`video:${currentId}`, reward, `Você assistiu "${playing.title}"`);
@@ -353,30 +376,20 @@ export default function LemosPlay() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <PageHeader title="Lemos Play" subtitle="Filmes, Séries e Músicas" icon={lemosPlayLogo} />
-      <header className="fixed top-0 inset-x-0 z-30 bg-gradient-to-b from-black/90 to-transparent pointer-events-none">
-        <div className="flex items-center justify-between px-4 sm:px-12 py-3 pl-20">
-          <img src={lemosPlayLogo} alt="Lemos Play" className="h-14 sm:h-20 w-auto drop-shadow-xl pointer-events-auto" />
-          <div className="flex items-center gap-4 pointer-events-auto">
-            <nav className="hidden sm:flex items-center gap-6 text-sm font-semibold text-zinc-200">
-              <a href="#filmes" className="hover:text-white">Filmes</a>
-              <a href="#series" className="hover:text-white">Séries</a>
-              <a href="#musicas" className="hover:text-white">Músicas</a>
-              <a href="#louvores" className="hover:text-white">Louvores</a>
-            </nav>
-            {isAdmin && (
-              <button
-                onClick={() => setAdminOpen(true)}
-                className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center transition"
-                title="Configurar Lemos Play"
-                aria-label="Configurar"
-              >
-                <Settings className="w-5 h-5 text-white" />
-              </button>
-            )}
-          </div>
+      <PageHeader title="Lemos Play" subtitle="Filmes, Séries e Músicas" />
+      {isAdmin && (
+        <div className="fixed top-2 right-2 z-40">
+          <button
+            onClick={() => setAdminOpen(true)}
+            className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center transition"
+            title="Configurar Lemos Play"
+            aria-label="Configurar"
+          >
+            <Settings className="w-5 h-5 text-white" />
+          </button>
         </div>
-      </header>
+      )}
+
 
       {/* Hero */}
       <section className="relative h-[70vh] sm:h-[85vh] w-full overflow-hidden">
@@ -413,20 +426,18 @@ export default function LemosPlay() {
           progress={progress}
         /></div>
 
-        {/* Origem da Série Jesus — destaque */}
-        <div className="px-4 sm:px-8 -mt-2 mb-6">
-          <a
-            href="#series"
-            className="block max-w-3xl mx-auto rounded-2xl bg-gradient-to-r from-amber-500/90 via-orange-500/90 to-rose-500/90 text-white px-4 py-3 shadow-lg border border-amber-300/40 hover:scale-[1.01] transition"
-          >
-            <p className="font-display font-extrabold text-sm sm:text-base">
-              ⭐ <span className="underline decoration-yellow-200">O Nascimento de Jesus</span> é o filme que deu origem à <strong>Série Jesus</strong>.
+        {/* Origem da Série Jesus — só texto branco */}
+        <div className="px-4 sm:px-8 -mt-2 mb-6 text-center">
+          <a href="#series" className="block max-w-3xl mx-auto text-white hover:text-amber-200 transition">
+            <p className="font-display font-extrabold text-sm sm:text-base drop-shadow">
+              ⭐ <span className="underline">O Nascimento de Jesus</span> é o filme que deu origem à <strong>Série Jesus</strong>.
             </p>
-            <p className="text-xs sm:text-sm opacity-95">
+            <p className="text-xs sm:text-sm text-white/85 drop-shadow">
               👇 Assista à série logo abaixo, em Mini Séries Bíblicas.
             </p>
           </a>
         </div>
+
 
         <div id="series">
           <Row
@@ -492,16 +503,10 @@ export default function LemosPlay() {
 
       {playing && (
         <div
-          ref={(el) => {
-            if (el && !document.fullscreenElement) {
-              const anyEl = el as any;
-              const req = anyEl.requestFullscreen || anyEl.webkitRequestFullscreen || anyEl.msRequestFullscreen;
-              req?.call(anyEl).catch(() => {});
-            }
-          }}
+          ref={playerContainerRef}
           className="fixed inset-0 z-50 bg-black flex items-center justify-center"
         >
-          <button onClick={() => { if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {}); setPlaying(null); }} className="absolute top-4 right-4 z-30 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white" title="Fechar">
+          <button onClick={() => { if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {}); setProgress(loadProgress()); setPlaying(null); }} className="absolute top-4 right-4 z-30 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white" title="Fechar">
             <X className="w-6 h-6" />
           </button>
 
@@ -515,11 +520,7 @@ export default function LemosPlay() {
               onTimeUpdate={(e) => {
                 const v = e.currentTarget;
                 if (v.duration > 0) {
-                  setProgress((prev) => {
-                    const next = { ...prev, [playing.id]: { t: v.currentTime, d: v.duration, updated: Date.now() } };
-                    saveProgress(next);
-                    return next;
-                  });
+                  writeProgress(playing.id, v.currentTime, v.duration);
                   if (v.currentTime / v.duration >= 0.9) {
                     const reward = COIN_REWARDS[playing.category] ?? 3;
                     awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
@@ -531,6 +532,7 @@ export default function LemosPlay() {
                 awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
               }}
             />
+
 
           ) : playSrc ? (
             <iframe
