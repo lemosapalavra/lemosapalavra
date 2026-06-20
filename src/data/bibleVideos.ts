@@ -155,6 +155,13 @@ export const seriesGroups: BibleVideoGroup[] = [
       { title: "Os 10 Mandamentos — Parte III", icon: icon10Mandamentos, src: vid10m3.url },
     ],
   },
+  {
+    title: "Série Jesus",
+    icon: nascimentoJesusThumb.url,
+    videos: [
+      { title: "O Nascimento de Jesus — Origem da Série", icon: nascimentoJesusThumb.url, src: vidNascimentoJesus.url },
+    ],
+  },
 ];
 
 export const filmesVideos: BibleVideo[] = [
