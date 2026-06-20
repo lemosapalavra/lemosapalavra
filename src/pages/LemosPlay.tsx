@@ -403,20 +403,18 @@ export default function LemosPlay() {
           progress={progress}
         /></div>
 
-        {/* Origem da Série Jesus — destaque */}
-        <div className="px-4 sm:px-8 -mt-2 mb-6">
-          <a
-            href="#series"
-            className="block max-w-3xl mx-auto rounded-2xl bg-gradient-to-r from-amber-500/90 via-orange-500/90 to-rose-500/90 text-white px-4 py-3 shadow-lg border border-amber-300/40 hover:scale-[1.01] transition"
-          >
-            <p className="font-display font-extrabold text-sm sm:text-base">
-              ⭐ <span className="underline decoration-yellow-200">O Nascimento de Jesus</span> é o filme que deu origem à <strong>Série Jesus</strong>.
+        {/* Origem da Série Jesus — só texto branco */}
+        <div className="px-4 sm:px-8 -mt-2 mb-6 text-center">
+          <a href="#series" className="block max-w-3xl mx-auto text-white hover:text-amber-200 transition">
+            <p className="font-display font-extrabold text-sm sm:text-base drop-shadow">
+              ⭐ <span className="underline">O Nascimento de Jesus</span> é o filme que deu origem à <strong>Série Jesus</strong>.
             </p>
-            <p className="text-xs sm:text-sm opacity-95">
+            <p className="text-xs sm:text-sm text-white/85 drop-shadow">
               👇 Assista à série logo abaixo, em Mini Séries Bíblicas.
             </p>
           </a>
         </div>
+
 
         <div id="series">
           <Row
