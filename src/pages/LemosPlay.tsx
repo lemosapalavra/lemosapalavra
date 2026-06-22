@@ -226,15 +226,14 @@ export default function LemosPlay() {
     }
   };
 
-  // Fullscreen ONCE when a video opens — not on every re-render.
-  useEffect(() => {
-    if (!playing) return;
-    const el = playerContainerRef.current;
-    if (!el || document.fullscreenElement) return;
-    const anyEl = el as any;
-    const req = anyEl.requestFullscreen || anyEl.webkitRequestFullscreen || anyEl.msRequestFullscreen;
-    req?.call(anyEl).catch(() => {});
-  }, [playing?.id]);
+  // NOTE: auto-fullscreen was removed. In sandboxed/preview iframes the
+  // Fullscreen API is disallowed and a rejected requestFullscreen could
+  // cause the player UI to flicker/close on open ("video sai sozinho"
+  // bug reported by the user). The native controls already expose a
+  // fullscreen button if the user wants it.
+
+
+
 
 
   // Decide if we should ask user to resume or restart before playing.
