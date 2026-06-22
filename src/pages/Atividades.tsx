@@ -4,6 +4,7 @@ import PageHeader from "@/components/PageHeader";
 import CelebrationAnimation from "@/components/CelebrationAnimation";
 import CoinBadge from "@/components/CoinBadge";
 import EducacionalActivities from "@/components/EducacionalActivities";
+import ActivityNav from "@/components/ActivityNav";
 import iconQuiz from "@/assets/icon-quiz.png";
 import iconAtividades from "@/assets/icon-atividades.png";
 import iconMemoria from "@/assets/icon-memoria.png";
