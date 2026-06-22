@@ -4,6 +4,7 @@ import PageHeader from "@/components/PageHeader";
 import CelebrationAnimation from "@/components/CelebrationAnimation";
 import CoinBadge from "@/components/CoinBadge";
 import EducacionalActivities from "@/components/EducacionalActivities";
+import ActivityNav from "@/components/ActivityNav";
 import iconQuiz from "@/assets/icon-quiz.png";
 import iconAtividades from "@/assets/icon-atividades.png";
 import iconMemoria from "@/assets/icon-memoria.png";
@@ -346,7 +347,7 @@ export default function Atividades() {
 
   const bgStyle = { background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" };
   const Back = () => (
-    <button onClick={() => setActiveGame(null)} className="mb-4 text-primary font-display text-sm font-bold hover:underline">← Voltar às atividades</button>
+    <ActivityNav onBack={() => setActiveGame(null)} backLabel="Voltar às atividades" />
   );
   const CoinHint = () => (
     <p className="text-center text-xs text-muted-foreground font-body mt-2">
@@ -491,7 +492,7 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
       <div className="min-h-screen py-6 px-4" style={bgStyle}>
         <div className="max-w-lg mx-auto">
           <PageHeader title="Quiz Bíblico" subtitle="Escolha uma categoria" icon={iconQuiz} />
-          <button onClick={onBack} className="mb-3 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
+          <ActivityNav onBack={onBack} />
           <DailyBanner emoji="🧠" text="Perguntas de hoje — amanhã vêm novas!" />
           <div className="grid gap-3">
             {quizCategories.map((c) => (
@@ -520,7 +521,7 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-lg mx-auto">
         <PageHeader title="Quiz Bíblico" subtitle={done ? "Resultado" : `Pergunta ${idx + 1} de ${questions.length}`} icon={iconQuiz} />
-        <button onClick={onBack} className="mb-4 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
+        <ActivityNav onBack={onBack} />
 
         {done ? (
           <div className="bg-popover rounded-2xl p-6 shadow-lg border border-border text-center">
@@ -660,7 +661,7 @@ function MemoryGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
       <div className="min-h-screen py-6 px-4" style={bgStyle}>
         <div className="max-w-lg mx-auto">
           <PageHeader title="Jogo da Memória" subtitle="Escolha a dificuldade" icon={iconMemoria} />
-          <button onClick={onBack} className="mb-3 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
+          <ActivityNav onBack={onBack} />
           <DailyBanner emoji="🃏" text="Cartas de hoje — amanhã haverá uma nova combinação!" />
           <div className="grid gap-3">
             {(Object.keys(memoryConfig) as (keyof typeof memoryConfig)[]).map((k) => (
@@ -777,7 +778,7 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-2xl mx-auto">
         <PageHeader title="Jogo dos 7 Erros" subtitle={scene.title} icon={icon7Erros} />
-        <button onClick={onBack} className="mb-3 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
+        <ActivityNav onBack={onBack} />
         <DailyBanner emoji="🔍" text="5 cenas selecionadas para hoje — amanhã chegam novas!" />
 
         <div className="flex justify-around mb-3 bg-popover rounded-xl py-2 shadow border border-border text-sm">
@@ -934,7 +935,7 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-lg mx-auto">
         <PageHeader title="Colorir" subtitle={scene.title} icon={iconColorir} />
-        <button onClick={onBack} className="mb-4 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
+        <ActivityNav onBack={onBack} />
 
         <div className="text-center mb-3 space-y-1">
           <span className="inline-flex items-center gap-2 text-xs font-display font-bold bg-amber-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">
@@ -1066,7 +1067,7 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
       <div className="min-h-screen py-6 px-4" style={bgStyle}>
         <div className="max-w-lg mx-auto">
           <PageHeader title="Quebra-Cabeça" subtitle="Escolha um puzzle" icon={iconQuebraCabeca} />
-          <button onClick={onBack} className="mb-3 text-primary font-display text-sm font-bold hover:underline">← Voltar</button>
+          <ActivityNav onBack={onBack} />
           <DailyBanner emoji="🧩" text="Puzzle do dia — amanhã chega uma nova imagem bíblica!" />
 
 
@@ -1333,7 +1334,7 @@ function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgSt
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-3xl mx-auto">
         <PageHeader title="Caça-Palavras" subtitle={card.title} icon={iconCacaPalavras.url} />
-        <button onClick={onBack} className="mb-3 text-primary font-display text-sm font-bold hover:underline">← Voltar às atividades</button>
+        <ActivityNav onBack={onBack} backLabel="Voltar às atividades" />
 
         <DailyBanner emoji="🔎" text="Clique numa letra para iniciar e em outra para terminar. Encontre todas as palavras!" />
 

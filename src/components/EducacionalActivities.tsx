@@ -1,5 +1,6 @@
 import { useState, useRef, useMemo, useEffect } from "react";
 import CoinBadge from "@/components/CoinBadge";
+import ActivityNav from "@/components/ActivityNav";
 import logoAsset from "@/assets/educacionais/logo.png.asset.json";
 import edu1 from "@/assets/educacionais/educacional-1.jpg.asset.json";
 import edu2 from "@/assets/educacionais/educacional-2.jpg.asset.json";
@@ -60,9 +61,7 @@ export default function EducacionalActivities({ onBack, celebrate, bgStyle, init
   return (
     <div className="min-h-screen px-4 py-6" style={bgStyle}>
       <div className="max-w-5xl mx-auto">
-        <button onClick={onBack} className="mb-3 text-primary font-display text-sm font-bold hover:underline">
-          ← Voltar às atividades
-        </button>
+        <ActivityNav onBack={onBack} backLabel="Voltar às atividades" />
 
         <div className="flex flex-col items-center gap-2 mb-4">
           <img src={logoAsset.url} alt="Atividades Educacionais" className="w-full max-w-md h-auto drop-shadow-2xl" />
@@ -122,9 +121,7 @@ function ActivityRunner({ meta, onBack, celebrate, bgStyle }:
   return (
     <div className="min-h-screen px-4 py-6" style={bgStyle}>
       <div className="max-w-3xl mx-auto">
-        <button onClick={onBack} className="mb-3 text-primary font-display text-sm font-bold hover:underline">
-          ← Voltar às atividades educacionais
-        </button>
+        <ActivityNav onBack={onBack} backLabel="Voltar às atividades educacionais" />
 
         <div className="rounded-2xl bg-gradient-to-r from-amber-100 via-yellow-50 to-amber-100 border-2 border-amber-300 px-4 py-3 mb-4 shadow flex items-center justify-between gap-3">
           <div className="min-w-0">

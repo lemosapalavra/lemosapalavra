@@ -226,15 +226,14 @@ export default function LemosPlay() {
     }
   };
 
-  // Fullscreen ONCE when a video opens — not on every re-render.
-  useEffect(() => {
-    if (!playing) return;
-    const el = playerContainerRef.current;
-    if (!el || document.fullscreenElement) return;
-    const anyEl = el as any;
-    const req = anyEl.requestFullscreen || anyEl.webkitRequestFullscreen || anyEl.msRequestFullscreen;
-    req?.call(anyEl).catch(() => {});
-  }, [playing?.id]);
+  // NOTE: auto-fullscreen was removed. In sandboxed/preview iframes the
+  // Fullscreen API is disallowed and a rejected requestFullscreen could
+  // cause the player UI to flicker/close on open ("video sai sozinho"
+  // bug reported by the user). The native controls already expose a
+  // fullscreen button if the user wants it.
+
+
+
 
 
   // Decide if we should ask user to resume or restart before playing.
@@ -275,6 +274,28 @@ export default function LemosPlay() {
     () => [...filmesPlay, ...musicasPlay, ...louvoresPlay, ...seriesGroupItems.flatMap((g) => g.videos)],
     [filmesPlay, musicasPlay, louvoresPlay, seriesGroupItems]
   );
+
+  // Suggestions shown inside the player so the user can choose what to
+  // watch next — Netflix-style. Priority: next-in-series, then siblings
+  // of the same series, then other items of the same category, then a
+  // sample from the rest of the catalog. Deduped, capped at 8.
+  const nextSuggestions = useMemo<PlayItem[]>(() => {
+    if (!playing) return [];
+    const out: PlayItem[] = [];
+    const seen = new Set<string>([playing.id]);
+    const push = (v?: PlayItem | null) => {
+      if (v && !seen.has(v.id) && v.poster) { seen.add(v.id); out.push(v); }
+    };
+    if (nextInGroup) push(nextInGroup);
+    if (playingGroupId) {
+      const g = seriesGroupItems.find((x) => x.id === playingGroupId);
+      g?.videos.forEach(push);
+    }
+    allItems.filter((v) => v.category === playing.category).forEach(push);
+    allItems.forEach(push);
+    return out.slice(0, 8);
+  }, [playing, playingGroupId, nextInGroup, seriesGroupItems, allItems]);
+
 
   // IMPORTANT: only depend on `playing.id`, NOT on `progress`.
   // If we depend on progress, every progress write changes the embed URL
@@ -511,94 +532,146 @@ export default function LemosPlay() {
       {playing && (
         <div
           ref={playerContainerRef}
-          className="fixed inset-0 z-50 bg-black flex items-center justify-center"
+          className="fixed inset-0 z-50 bg-black flex flex-col"
         >
-          <button onClick={() => { if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {}); setProgress(loadProgress()); setPlaying(null); }} className="absolute top-4 right-4 z-30 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white" title="Fechar">
+          <button onClick={() => { setProgress(loadProgress()); setPlaying(null); }} className="absolute top-4 right-4 z-30 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white" title="Fechar">
             <X className="w-6 h-6" />
           </button>
 
-          {playInfo?.kind === "mp4" ? (
-            <video
-              key={playing.id}
-              src={playSrc}
-              className="absolute inset-0 w-full h-full bg-black"
-              controls
-              autoPlay
-              onLoadedMetadata={(e) => {
-                if (initialStart > 0 && initialStart < e.currentTarget.duration - 1) {
-                  e.currentTarget.currentTime = initialStart;
-                }
-              }}
-              onError={() => setPlayError(true)}
-              onTimeUpdate={(e) => {
-                const v = e.currentTarget;
-                if (v.duration > 0) {
-                  writeProgress(playing.id, v.currentTime, v.duration);
-                  if (v.currentTime / v.duration >= 0.9) {
-                    const reward = COIN_REWARDS[playing.category] ?? 3;
-                    awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
+          {/* Video stage — leaves room for the suggestions strip below */}
+          <div className="relative flex-1 min-h-0 bg-black">
+            {playInfo?.kind === "mp4" ? (
+              <video
+                key={playing.id}
+                src={playSrc}
+                className="absolute inset-0 w-full h-full bg-black"
+                controls
+                autoPlay
+                playsInline
+                onLoadedMetadata={(e) => {
+                  if (initialStart > 0 && initialStart < e.currentTarget.duration - 1) {
+                    e.currentTarget.currentTime = initialStart;
                   }
-                }
-              }}
-              onEnded={() => {
-                const reward = COIN_REWARDS[playing.category] ?? 3;
-                awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
-              }}
-            />
-
-
-
-          ) : playSrc ? (
-            <iframe
-              ref={iframeRef}
-              src={playSrc}
-              className="absolute inset-0 w-full h-full border-0"
-              allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-              allowFullScreen
-              title={playing.title}
-              onError={() => setPlayError(true)}
-            />
-          ) : null}
-          <VideoSideActions itemId={playing.id} title={playing.title} src={playing.src} className="absolute right-4 top-1/2 -translate-y-1/2" />
-          {nextInGroup && (
-            <button
-              onClick={() => requestPlay(nextInGroup, playingGroupId)}
-              className="absolute right-4 bottom-6 z-20 inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-red-600 hover:bg-red-500 text-white text-sm font-bold shadow-2xl ring-2 ring-white/30 transition"
-              title={`Próximo: ${nextInGroup.title}`}
-            >
-              <SkipForward className="w-4 h-4" />
-              <span className="hidden sm:inline">Próximo: {nextInGroup.title}</span>
-              <span className="sm:hidden">Próximo</span>
-            </button>
-          )}
-          {(playError || !playSrc) && (
-            <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/85 backdrop-blur p-6">
-              <div className="max-w-md w-full bg-zinc-900 border border-zinc-700 rounded-xl p-6 text-center text-white shadow-2xl">
-                <h3 className="text-xl font-extrabold mb-2">{playSrc ? "Vídeo indisponível" : "Vídeo em atualização"}</h3>
-                <p className="text-sm text-zinc-300 mb-5">
-                  {playSrc ? "Este link não carregou. O servidor de vídeo pode estar offline ou bloqueando este domínio." : "O link antigo deste vídeo estava quebrado e foi removido para não exibir erro 404."}
-                  {isAdmin && " Como admin, você pode substituir o link em ⚙️ Configurar → Lemos Play (cole o link do YouTube, Vimeo ou um arquivo MP4)."}
-                </p>
-                <div className="flex flex-col sm:flex-row gap-2 justify-center">
-                  {playSrc && (
-                    <a href={playInfo?.watchUrl || playing.src} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded bg-white text-black font-bold hover:bg-white/85">
-                      Abrir em nova aba
-                    </a>
-                  )}
-                  {isAdmin && (
-                    <button onClick={() => { setPlaying(null); setAdminOpen(true); }} className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded bg-red-600 text-white font-bold hover:bg-red-700">
-                      Corrigir link
+                }}
+                onError={() => setPlayError(true)}
+                onTimeUpdate={(e) => {
+                  const v = e.currentTarget;
+                  if (v.duration > 0) {
+                    writeProgress(playing.id, v.currentTime, v.duration);
+                    if (v.currentTime / v.duration >= 0.9) {
+                      const reward = COIN_REWARDS[playing.category] ?? 3;
+                      awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
+                    }
+                  }
+                }}
+                onEnded={() => {
+                  const reward = COIN_REWARDS[playing.category] ?? 3;
+                  awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
+                }}
+              />
+            ) : playSrc ? (
+              <iframe
+                ref={iframeRef}
+                src={playSrc}
+                className="absolute inset-0 w-full h-full border-0"
+                allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+                allowFullScreen
+                title={playing.title}
+                onError={() => setPlayError(true)}
+              />
+            ) : null}
+            <VideoSideActions itemId={playing.id} title={playing.title} src={playing.src} className="absolute right-4 top-1/2 -translate-y-1/2" />
+            {nextInGroup && (
+              <button
+                onClick={() => requestPlay(nextInGroup, playingGroupId)}
+                className="absolute right-4 bottom-6 z-20 inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-red-600 hover:bg-red-500 text-white text-sm font-bold shadow-2xl ring-2 ring-white/30 transition"
+                title={`Próximo: ${nextInGroup.title}`}
+              >
+                <SkipForward className="w-4 h-4" />
+                <span className="hidden sm:inline">Próximo: {nextInGroup.title}</span>
+                <span className="sm:hidden">Próximo</span>
+              </button>
+            )}
+            {(playError || !playSrc) && (
+              <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/85 backdrop-blur p-6">
+                <div className="max-w-md w-full bg-zinc-900 border border-zinc-700 rounded-xl p-6 text-center text-white shadow-2xl">
+                  <h3 className="text-xl font-extrabold mb-2">{playSrc ? "Vídeo indisponível" : "Vídeo em atualização"}</h3>
+                  <p className="text-sm text-zinc-300 mb-5">
+                    {playSrc ? "Este link não carregou. O servidor de vídeo pode estar offline ou bloqueando este domínio." : "O link antigo deste vídeo estava quebrado e foi removido para não exibir erro 404."}
+                    {isAdmin && " Como admin, você pode substituir o link em ⚙️ Configurar → Lemos Play (cole o link do YouTube, Vimeo ou um arquivo MP4)."}
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                    {playSrc && (
+                      <a href={playInfo?.watchUrl || playing.src} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded bg-white text-black font-bold hover:bg-white/85">
+                        Abrir em nova aba
+                      </a>
+                    )}
+                    {isAdmin && (
+                      <button onClick={() => { setPlaying(null); setAdminOpen(true); }} className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded bg-red-600 text-white font-bold hover:bg-red-700">
+                        Corrigir link
+                      </button>
+                    )}
+                    <button onClick={() => setPlaying(null)} className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded bg-zinc-800 text-white font-bold hover:bg-zinc-700">
+                      Fechar
                     </button>
-                  )}
-                  <button onClick={() => setPlaying(null)} className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded bg-zinc-800 text-white font-bold hover:bg-zinc-700">
-                    Fechar
-                  </button>
+                  </div>
                 </div>
+              </div>
+            )}
+          </div>
+
+          {/* Próximos vídeos — escolha o próximo */}
+          {nextSuggestions.length > 0 && (
+            <div className="shrink-0 bg-gradient-to-t from-black via-black/95 to-black/70 border-t border-white/10 px-4 sm:px-8 py-3">
+              <div className="flex items-center gap-2 mb-2">
+                <SkipForward className="w-4 h-4 text-red-500" />
+                <h3 className="font-display font-extrabold text-white text-sm sm:text-base">
+                  Assista ao próximo vídeo
+                </h3>
+                <span className="text-white/60 text-xs hidden sm:inline">
+                  · escolha um da sequência ou outro vídeo
+                </span>
+              </div>
+              <div className="flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
+                {nextSuggestions.map((v) => {
+                  const p = progress[v.id];
+                  const pct = p && p.d > 0 ? Math.min(100, Math.round((p.t / p.d) * 100)) : 0;
+                  const gid = seriesGroupItems.find((g) => g.videos.some((x) => x.id === v.id))?.id ?? null;
+                  return (
+                    <button
+                      key={v.id}
+                      onClick={() => requestPlay(v, gid)}
+                      className="relative shrink-0 w-[150px] sm:w-[200px] aspect-video rounded-md overflow-hidden bg-zinc-900 hover:ring-2 hover:ring-white transition group/sug"
+                      title={v.title}
+                    >
+                      {v.poster ? (
+                        <img src={v.poster} alt={v.title} className="w-full h-full object-cover" loading="lazy" />
+                      ) : (
+                        <div className="absolute inset-0 bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center">
+                          <Play className="w-8 h-8 text-white/40" />
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-black/30 opacity-0 group-hover/sug:opacity-100 flex items-center justify-center transition">
+                        <Play className="w-8 h-8 text-white fill-white" />
+                      </div>
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-2">
+                        <p className="text-white text-[11px] sm:text-xs font-bold text-left line-clamp-1">{v.title}</p>
+                        <p className="text-zinc-300 text-[10px] text-left">{v.category}</p>
+                      </div>
+                      {pct > 0 && (
+                        <div className="absolute bottom-0 inset-x-0 h-1 bg-white/20">
+                          <div className="h-full" style={{ width: `${pct}%`, background: "#e50914" }} />
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
         </div>
       )}
+
 
       {resumePrompt && (
         <div className="fixed inset-0 z-[60] bg-black/85 backdrop-blur flex items-center justify-center p-4" onClick={() => setResumePrompt(null)}>
