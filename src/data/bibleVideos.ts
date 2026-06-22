@@ -54,6 +54,10 @@ import vid10m2 from "@/assets/lemos-play/10-mandamentos-2.mp4.asset.json";
 import vid10m3 from "@/assets/lemos-play/10-mandamentos-3.mp4.asset.json";
 import vidNascimentoJesus from "@/assets/lemos-play/nascimento-jesus.mp4.asset.json";
 import nascimentoJesusThumb from "@/assets/lemos-play/nascimento-jesus-thumb.jpg.asset.json";
+import vidBatismoP1 from "@/assets/lemos-play/batismo-jesus-parte1.mp4.asset.json";
+import vidBatismoP2 from "@/assets/lemos-play/batismo-jesus-parte2.mp4.asset.json";
+import batismoP1Thumb from "@/assets/lemos-play/batismo-jesus-parte1-thumb.png.asset.json";
+import batismoP2Thumb from "@/assets/lemos-play/batismo-jesus-parte2-thumb.png.asset.json";
 
 
 export interface BibleVideo {
@@ -160,6 +164,8 @@ export const seriesGroups: BibleVideoGroup[] = [
     icon: nascimentoJesusThumb.url,
     videos: [
       { title: "O Nascimento de Jesus — Origem da Série", icon: nascimentoJesusThumb.url, src: vidNascimentoJesus.url },
+      { title: "O Batismo de Jesus — Parte I", icon: batismoP1Thumb.url, src: vidBatismoP1.url },
+      { title: "O Batismo de Jesus — Parte II", icon: batismoP2Thumb.url, src: vidBatismoP2.url },
     ],
   },
 ];

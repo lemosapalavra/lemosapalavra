@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Settings, ArrowLeft, Home } from "lucide-react";
+import { Settings, ArrowLeft } from "lucide-react";
 import { useCoins } from "@/hooks/useCoins";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import iconUsuario from "@/assets/icon-usuario.png";
+import iconInicio from "@/assets/icon-inicio.jpg";
 
 interface PageHeaderProps {
   title?: string;
@@ -51,9 +52,9 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
             onClick={() => navigate("/")}
             aria-label="Início"
             title="Início"
-            className="shrink-0 w-11 h-11 rounded-full bg-white/90 hover:bg-white shadow-lg border-2 border-amber-300 flex items-center justify-center text-amber-900 animate-[backPulse_2.4s_ease-in-out_infinite] hover:scale-110 transition-transform"
+            className="shrink-0 w-11 h-11 rounded-full overflow-hidden bg-white shadow-lg border-2 border-amber-300 animate-[backPulse_2.4s_ease-in-out_infinite] hover:scale-110 transition-transform"
           >
-            <Home className="w-5 h-5" />
+            <img src={iconInicio} alt="Início" className="w-full h-full object-cover" />
           </button>
         ) : (
           <div className="w-11 h-11 shrink-0" aria-hidden />
