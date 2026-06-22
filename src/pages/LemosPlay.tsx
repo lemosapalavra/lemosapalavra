@@ -275,6 +275,28 @@ export default function LemosPlay() {
     [filmesPlay, musicasPlay, louvoresPlay, seriesGroupItems]
   );
 
+  // Suggestions shown inside the player so the user can choose what to
+  // watch next — Netflix-style. Priority: next-in-series, then siblings
+  // of the same series, then other items of the same category, then a
+  // sample from the rest of the catalog. Deduped, capped at 8.
+  const nextSuggestions = useMemo<PlayItem[]>(() => {
+    if (!playing) return [];
+    const out: PlayItem[] = [];
+    const seen = new Set<string>([playing.id]);
+    const push = (v?: PlayItem | null) => {
+      if (v && !seen.has(v.id) && v.poster) { seen.add(v.id); out.push(v); }
+    };
+    if (nextInGroup) push(nextInGroup);
+    if (playingGroupId) {
+      const g = seriesGroupItems.find((x) => x.id === playingGroupId);
+      g?.videos.forEach(push);
+    }
+    allItems.filter((v) => v.category === playing.category).forEach(push);
+    allItems.forEach(push);
+    return out.slice(0, 8);
+  }, [playing, playingGroupId, nextInGroup, seriesGroupItems, allItems]);
+
+
   // IMPORTANT: only depend on `playing.id`, NOT on `progress`.
   // If we depend on progress, every progress write changes the embed URL
   // (start/t param) which forces the iframe/video to reload and restart
