@@ -276,20 +276,27 @@ export default function LemosPlay() {
     [filmesPlay, musicasPlay, louvoresPlay, seriesGroupItems]
   );
 
+  // IMPORTANT: only depend on `playing.id`, NOT on `progress`.
+  // If we depend on progress, every progress write changes the embed URL
+  // (start/t param) which forces the iframe/video to reload and restart
+  // from the very beginning — exactly the bug the user reported.
   const playInfo = useMemo(() => {
     if (!playing) return null;
     if (!playing.src) return { kind: "iframe" as const, embedUrl: "", watchUrl: "", poster: playing.poster };
     const n = normalizeVideo(playing.src, true);
-    const p = progress[playing.id];
-    const start = p && p.d > 0 && p.t > 5 && p.t < p.d - 10 ? Math.floor(p.t) : 0;
+    // Read progress directly from storage at open time (snapshot).
+    const stored = loadProgress()[playing.id];
+    const start = stored && stored.d > 0 && stored.t > 5 && stored.t < stored.d - 10 ? Math.floor(stored.t) : 0;
     let url = n.embedUrl;
-    if (start > 0) {
+    if (start > 0 && n.kind !== "mp4") {
       const sep = url.includes("?") ? "&" : "?";
       url = n.kind === "youtube" ? `${url}&start=${start}` : `${url}${sep}t=${start}`;
     }
-    return { ...n, embedUrl: url };
-  }, [playing, progress]);
+    return { ...n, embedUrl: url, startSeconds: start };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playing?.id]);
   const playSrc = playInfo?.embedUrl ?? "";
+  const initialStart = (playInfo as any)?.startSeconds ?? 0;
 
   const [playError, setPlayError] = useState(false);
   useEffect(() => {
@@ -512,10 +519,16 @@ export default function LemosPlay() {
 
           {playInfo?.kind === "mp4" ? (
             <video
+              key={playing.id}
               src={playSrc}
               className="absolute inset-0 w-full h-full bg-black"
               controls
               autoPlay
+              onLoadedMetadata={(e) => {
+                if (initialStart > 0 && initialStart < e.currentTarget.duration - 1) {
+                  e.currentTarget.currentTime = initialStart;
+                }
+              }}
               onError={() => setPlayError(true)}
               onTimeUpdate={(e) => {
                 const v = e.currentTarget;
@@ -532,6 +545,7 @@ export default function LemosPlay() {
                 awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
               }}
             />
+
 
 
           ) : playSrc ? (
