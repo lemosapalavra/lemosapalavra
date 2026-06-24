@@ -20,6 +20,8 @@ const Configuracao = lazy(() => import("./pages/Configuracao.tsx"));
 const Estatisticas = lazy(() => import("./pages/Estatisticas.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const HistoriasBiblicas = lazy(() => import("./pages/HistoriasBiblicas.tsx"));
+const AdminWhatsapp = lazy(() => import("./pages/AdminWhatsapp.tsx"));
+
 
 const queryClient = new QueryClient();
 
