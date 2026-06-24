@@ -17,9 +17,6 @@ import palavraEternaThumb from "@/assets/lemos-play/palavra-eterna.png.asset.jso
 import curaParaliticoThumb from "@/assets/lemos-play/cura-paralitico-thumb.png.asset.json";
 import aTempestadeThumb from "@/assets/lemos-play/a-tempestade-thumb.png.asset.json";
 import expulsaDemoniosThumb from "@/assets/lemos-play/jesus-expulsa-demonios-thumb.png.asset.json";
-import eleVive1Thumb from "@/assets/lemos-play/ele-vive-parte1-thumb.png.asset.json";
-import eleVive2Thumb from "@/assets/lemos-play/ele-vive-parte2-thumb.png.asset.json";
-import eleVive3Thumb from "@/assets/lemos-play/ele-vive-parte3-thumb.png.asset.json";
 import doMeuJeitoVid from "@/assets/lemos-play/do-meu-jeito.mp4.asset.json";
 import paiEFilhoVid from "@/assets/lemos-play/pai-e-filho.mp4.asset.json";
 import umDeNosVid from "@/assets/lemos-play/um-de-nos.mp4.asset.json";
@@ -55,7 +52,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v24";
+const KEY = "lemos_play_config_v25";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
@@ -88,9 +85,6 @@ const attachedThumbByTitle: Record<string, string> = {
   "A Cura do Paralítico": curaParaliticoThumb.url,
   "A Tempestade": aTempestadeThumb.url,
   "Jesus Expulsa Demônios": expulsaDemoniosThumb.url,
-  "Ele Vive — Parte I": eleVive1Thumb.url,
-  "Ele Vive — Parte II": eleVive2Thumb.url,
-  "Ele Vive — Parte III": eleVive3Thumb.url,
 };
 
 const defaultMusicas: PlayEntry[] = [
