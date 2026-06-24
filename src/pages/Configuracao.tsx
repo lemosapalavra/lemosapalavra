@@ -264,6 +264,13 @@ function AdminModeToggle() {
           >
             🏠 Editar Página Inicial (menu orbital)
           </button>
+          <button
+            onClick={() => (window.location.href = "/admin/whatsapp")}
+            className="w-full text-left px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-green-700 text-white font-display font-bold text-sm shadow hover:scale-[1.01] transition"
+          >
+            💬 Comunicação WhatsApp (mensagens aos usuários)
+          </button>
+
         </div>
       )}
 
