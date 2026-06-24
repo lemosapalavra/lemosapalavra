@@ -52,7 +52,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v24";
+const KEY = "lemos_play_config_v25";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
@@ -85,9 +85,6 @@ const attachedThumbByTitle: Record<string, string> = {
   "A Cura do Paralítico": curaParaliticoThumb.url,
   "A Tempestade": aTempestadeThumb.url,
   "Jesus Expulsa Demônios": expulsaDemoniosThumb.url,
-  "Ele Vive — Parte I": eleVive1Thumb.url,
-  "Ele Vive — Parte II": eleVive2Thumb.url,
-  "Ele Vive — Parte III": eleVive3Thumb.url,
 };
 
 const defaultMusicas: PlayEntry[] = [
