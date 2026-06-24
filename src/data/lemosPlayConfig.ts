@@ -14,6 +14,12 @@ import espiritoSantoThumb from "@/assets/lemos-play/espirito-santo-i.png.asset.j
 import serFielThumb from "@/assets/lemos-play/ser-fiel-thumb.png.asset.json";
 import gracaAleluiaThumb from "@/assets/lemos-play/graca-aleluia.png.asset.json";
 import palavraEternaThumb from "@/assets/lemos-play/palavra-eterna.png.asset.json";
+import curaParaliticoThumb from "@/assets/lemos-play/cura-paralitico-thumb.png.asset.json";
+import aTempestadeThumb from "@/assets/lemos-play/a-tempestade-thumb.png.asset.json";
+import expulsaDemoniosThumb from "@/assets/lemos-play/jesus-expulsa-demonios-thumb.png.asset.json";
+import eleVive1Thumb from "@/assets/lemos-play/ele-vive-parte1-thumb.png.asset.json";
+import eleVive2Thumb from "@/assets/lemos-play/ele-vive-parte2-thumb.png.asset.json";
+import eleVive3Thumb from "@/assets/lemos-play/ele-vive-parte3-thumb.png.asset.json";
 import doMeuJeitoVid from "@/assets/lemos-play/do-meu-jeito.mp4.asset.json";
 import paiEFilhoVid from "@/assets/lemos-play/pai-e-filho.mp4.asset.json";
 import umDeNosVid from "@/assets/lemos-play/um-de-nos.mp4.asset.json";
@@ -79,12 +85,12 @@ const attachedThumbByTitle: Record<string, string> = {
   "Faz um Milagre em Mim": fazMilagreThumb.url,
   "Ressuscita-Me": ressuscitaMeThumb.url,
   "Ressuscita Me": ressuscitaMeThumb.url,
-  "A Cura do Paralítico": "/__l5e/assets-v1/" + "placeholder",
-  "A Tempestade": "/__l5e/assets-v1/" + "placeholder",
-  "Jesus Expulsa Demônios": "/__l5e/assets-v1/" + "placeholder",
-  "Ele Vive — Parte I": "/__l5e/assets-v1/" + "placeholder",
-  "Ele Vive — Parte II": "/__l5e/assets-v1/" + "placeholder",
-  "Ele Vive — Parte III": "/__l5e/assets-v1/" + "placeholder",
+  "A Cura do Paralítico": curaParaliticoThumb.url,
+  "A Tempestade": aTempestadeThumb.url,
+  "Jesus Expulsa Demônios": expulsaDemoniosThumb.url,
+  "Ele Vive — Parte I": eleVive1Thumb.url,
+  "Ele Vive — Parte II": eleVive2Thumb.url,
+  "Ele Vive — Parte III": eleVive3Thumb.url,
 };
 
 const defaultMusicas: PlayEntry[] = [
