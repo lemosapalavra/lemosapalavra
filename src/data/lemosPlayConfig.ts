@@ -101,8 +101,9 @@ function resolvePoster(title: string, fallback?: string): string | undefined {
 }
 
 function fromVideo(v: BibleVideo, id: string): PlayEntry {
-  return { id, title: v.title, src: v.src, poster: resolvePoster(v.title, v.icon) };
+  return { id, title: v.title, src: v.src, poster: resolvePoster(v.title, v.icon), section: v.section };
 }
+
 
 function fromGroup(g: BibleVideoGroup, gid: string): SeriesGroupCfg {
   return {
