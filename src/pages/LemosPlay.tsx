@@ -495,7 +495,8 @@ export default function LemosPlay() {
                 <p className="text-zinc-400 text-sm">{openGroup.videos.length} episódios</p>
               </div>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div>
+
             {(() => {
               // Group videos by optional "section" to render sub-folders
               const sectionsMap = new Map<string, typeof openGroup.videos>();
