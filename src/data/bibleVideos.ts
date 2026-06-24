@@ -65,6 +65,9 @@ import vidSemeador from "@/assets/lemos-play/jesus-semeador.mp4.asset.json";
 import semeadorThumb from "@/assets/lemos-play/o-semeador-cover.jpg.asset.json";
 import jesusSerieLogo from "@/assets/lemos-play/jesus-serie-logo.png.asset.json";
 import milagresJesusThumb from "@/assets/lemos-play/milagres-jesus.png.asset.json";
+import vidCuraParalitico from "@/assets/lemos-play/cura-paralitico.mp4.asset.json";
+import vidATempestade from "@/assets/lemos-play/a-tempestade.mp4.asset.json";
+import vidExpulsaDemonios from "@/assets/lemos-play/jesus-expulsa-demonios.mp4.asset.json";
 
 
 export interface BibleVideo {
@@ -172,9 +175,11 @@ export const seriesGroups: BibleVideoGroup[] = [
     title: "Série Jesus",
     icon: jesusSerieLogo.url,
     videos: [
-      { title: "O Nascimento de Jesus — Origem da Série", icon: nascimentoJesusThumb.url, src: vidNascimentoJesus.url, section: "Origem" },
       { title: "O Batismo de Jesus — Parte I", icon: batismoP1Thumb.url, src: vidBatismoP1.url, section: "Batismo de Jesus" },
       { title: "O Batismo de Jesus — Parte II", icon: batismoP2Thumb.url, src: vidBatismoP2.url, section: "Batismo de Jesus" },
+      { title: "A Cura do Paralítico", icon: milagresJesusThumb.url, src: vidCuraParalitico.url, section: "Milagres de Jesus" },
+      { title: "A Tempestade", icon: milagresJesusThumb.url, src: vidATempestade.url, section: "Milagres de Jesus" },
+      { title: "Jesus Expulsa Demônios", icon: milagresJesusThumb.url, src: vidExpulsaDemonios.url, section: "Milagres de Jesus" },
       { title: "Ele Vive — Parte I", icon: milagresJesusThumb.url, src: vidEleVive1.url, section: "Ele Vive" },
       { title: "Ele Vive — Parte II", icon: milagresJesusThumb.url, src: vidEleVive2.url, section: "Ele Vive" },
       { title: "Ele Vive — Parte III", icon: milagresJesusThumb.url, src: vidEleVive3.url, section: "Ele Vive" },
