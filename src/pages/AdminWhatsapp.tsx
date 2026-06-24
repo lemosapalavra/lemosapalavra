@@ -92,7 +92,7 @@ export default function AdminWhatsapp() {
   const targetName = (selected?.name || customName || "amigo(a)").trim();
   const targetPhone = sanitizePhone(selected?.phone || customPhone);
 
-  const finalText = useMemo(() => message.replaceAll("{nome}", targetName), [message, targetName]);
+  const finalText = useMemo(() => message.split("{nome}").join(targetName), [message, targetName]);
   const waUrl = useMemo(
     () => (targetPhone ? `https://wa.me/${targetPhone}?text=${encodeURIComponent(finalText)}` : ""),
     [targetPhone, finalText]
