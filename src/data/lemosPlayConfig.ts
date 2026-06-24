@@ -49,7 +49,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v21";
+const KEY = "lemos_play_config_v22";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
@@ -79,6 +79,12 @@ const attachedThumbByTitle: Record<string, string> = {
   "Faz um Milagre em Mim": fazMilagreThumb.url,
   "Ressuscita-Me": ressuscitaMeThumb.url,
   "Ressuscita Me": ressuscitaMeThumb.url,
+  "A Cura do Paralítico": "/__l5e/assets-v1/" + "placeholder",
+  "A Tempestade": "/__l5e/assets-v1/" + "placeholder",
+  "Jesus Expulsa Demônios": "/__l5e/assets-v1/" + "placeholder",
+  "Ele Vive — Parte I": "/__l5e/assets-v1/" + "placeholder",
+  "Ele Vive — Parte II": "/__l5e/assets-v1/" + "placeholder",
+  "Ele Vive — Parte III": "/__l5e/assets-v1/" + "placeholder",
 };
 
 const defaultMusicas: PlayEntry[] = [
