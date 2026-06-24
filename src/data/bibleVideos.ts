@@ -58,13 +58,22 @@ import vidBatismoP1 from "@/assets/lemos-play/batismo-jesus-parte1.mp4.asset.jso
 import vidBatismoP2 from "@/assets/lemos-play/batismo-jesus-parte2.mp4.asset.json";
 import batismoP1Thumb from "@/assets/lemos-play/batismo-jesus-parte1-thumb.png.asset.json";
 import batismoP2Thumb from "@/assets/lemos-play/batismo-jesus-parte2-thumb.png.asset.json";
+import vidEleVive1 from "@/assets/lemos-play/ele-vive-parte1.mp4.asset.json";
+import vidEleVive2 from "@/assets/lemos-play/ele-vive-parte2.mp4.asset.json";
+import vidEleVive3 from "@/assets/lemos-play/ele-vive-parte3.mp4.asset.json";
+import vidSemeador from "@/assets/lemos-play/jesus-semeador.mp4.asset.json";
+import semeadorThumb from "@/assets/lemos-play/o-semeador-cover.jpg.asset.json";
+import jesusSerieLogo from "@/assets/lemos-play/jesus-serie-logo.png.asset.json";
+import milagresJesusThumb from "@/assets/lemos-play/milagres-jesus.png.asset.json";
 
 
 export interface BibleVideo {
   title: string;
   icon: string;
   src: string;
+  section?: string;
 }
+
 
 export const seriesVideos: BibleVideo[] = [
   { title: "Moisés — Parte I", icon: moisesP1.url, src: vidMoises1.url },
