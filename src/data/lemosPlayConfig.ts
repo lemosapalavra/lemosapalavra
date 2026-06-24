@@ -32,6 +32,7 @@ export interface PlayEntry {
   title: string;
   src: string; // full iframe embed url
   poster?: string; // optional image url
+  section?: string;
 }
 
 export interface SeriesGroupCfg {
@@ -48,10 +49,11 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v19";
+const KEY = "lemos_play_config_v20";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
+
 
 const attachedThumbByTitle: Record<string, string> = {
   "Moisés": moises3d.url,
@@ -99,8 +101,9 @@ function resolvePoster(title: string, fallback?: string): string | undefined {
 }
 
 function fromVideo(v: BibleVideo, id: string): PlayEntry {
-  return { id, title: v.title, src: v.src, poster: resolvePoster(v.title, v.icon) };
+  return { id, title: v.title, src: v.src, poster: resolvePoster(v.title, v.icon), section: v.section };
 }
+
 
 function fromGroup(g: BibleVideoGroup, gid: string): SeriesGroupCfg {
   return {

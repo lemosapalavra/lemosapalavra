@@ -58,13 +58,22 @@ import vidBatismoP1 from "@/assets/lemos-play/batismo-jesus-parte1.mp4.asset.jso
 import vidBatismoP2 from "@/assets/lemos-play/batismo-jesus-parte2.mp4.asset.json";
 import batismoP1Thumb from "@/assets/lemos-play/batismo-jesus-parte1-thumb.png.asset.json";
 import batismoP2Thumb from "@/assets/lemos-play/batismo-jesus-parte2-thumb.png.asset.json";
+import vidEleVive1 from "@/assets/lemos-play/ele-vive-parte1.mp4.asset.json";
+import vidEleVive2 from "@/assets/lemos-play/ele-vive-parte2.mp4.asset.json";
+import vidEleVive3 from "@/assets/lemos-play/ele-vive-parte3.mp4.asset.json";
+import vidSemeador from "@/assets/lemos-play/jesus-semeador.mp4.asset.json";
+import semeadorThumb from "@/assets/lemos-play/o-semeador-cover.jpg.asset.json";
+import jesusSerieLogo from "@/assets/lemos-play/jesus-serie-logo.png.asset.json";
+import milagresJesusThumb from "@/assets/lemos-play/milagres-jesus.png.asset.json";
 
 
 export interface BibleVideo {
   title: string;
   icon: string;
   src: string;
+  section?: string;
 }
+
 
 export const seriesVideos: BibleVideo[] = [
   { title: "Moisés — Parte I", icon: moisesP1.url, src: vidMoises1.url },
@@ -161,11 +170,14 @@ export const seriesGroups: BibleVideoGroup[] = [
   },
   {
     title: "Série Jesus",
-    icon: nascimentoJesusThumb.url,
+    icon: jesusSerieLogo.url,
     videos: [
-      { title: "O Nascimento de Jesus — Origem da Série", icon: nascimentoJesusThumb.url, src: vidNascimentoJesus.url },
-      { title: "O Batismo de Jesus — Parte I", icon: batismoP1Thumb.url, src: vidBatismoP1.url },
-      { title: "O Batismo de Jesus — Parte II", icon: batismoP2Thumb.url, src: vidBatismoP2.url },
+      { title: "O Nascimento de Jesus — Origem da Série", icon: nascimentoJesusThumb.url, src: vidNascimentoJesus.url, section: "Origem" },
+      { title: "O Batismo de Jesus — Parte I", icon: batismoP1Thumb.url, src: vidBatismoP1.url, section: "Batismo de Jesus" },
+      { title: "O Batismo de Jesus — Parte II", icon: batismoP2Thumb.url, src: vidBatismoP2.url, section: "Batismo de Jesus" },
+      { title: "Ele Vive — Parte I", icon: milagresJesusThumb.url, src: vidEleVive1.url, section: "Ele Vive" },
+      { title: "Ele Vive — Parte II", icon: milagresJesusThumb.url, src: vidEleVive2.url, section: "Ele Vive" },
+      { title: "Ele Vive — Parte III", icon: milagresJesusThumb.url, src: vidEleVive3.url, section: "Ele Vive" },
     ],
   },
 ];
@@ -176,7 +188,9 @@ export const filmesVideos: BibleVideo[] = [
   { title: "Adão e Eva", icon: iconAdaoEva1, src: vidAdaoEva.url },
   { title: "Jonas e a Baleia", icon: iconJonas.url, src: vidJonasFilme.url },
   { title: "O Nascimento de Jesus", icon: nascimentoJesusThumb.url, src: vidNascimentoJesus.url },
+  { title: "O Semeador", icon: semeadorThumb.url, src: vidSemeador.url },
 ];
+
 
 // Movido de "filmes" para "séries": cada filme principal vira o episódio
 // inicial e ganha as partes complementares, formando uma mini-série completa.
