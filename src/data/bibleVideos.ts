@@ -170,11 +170,14 @@ export const seriesGroups: BibleVideoGroup[] = [
   },
   {
     title: "Série Jesus",
-    icon: nascimentoJesusThumb.url,
+    icon: jesusSerieLogo.url,
     videos: [
-      { title: "O Nascimento de Jesus — Origem da Série", icon: nascimentoJesusThumb.url, src: vidNascimentoJesus.url },
-      { title: "O Batismo de Jesus — Parte I", icon: batismoP1Thumb.url, src: vidBatismoP1.url },
-      { title: "O Batismo de Jesus — Parte II", icon: batismoP2Thumb.url, src: vidBatismoP2.url },
+      { title: "O Nascimento de Jesus — Origem da Série", icon: nascimentoJesusThumb.url, src: vidNascimentoJesus.url, section: "Origem" },
+      { title: "O Batismo de Jesus — Parte I", icon: batismoP1Thumb.url, src: vidBatismoP1.url, section: "Batismo de Jesus" },
+      { title: "O Batismo de Jesus — Parte II", icon: batismoP2Thumb.url, src: vidBatismoP2.url, section: "Batismo de Jesus" },
+      { title: "Ele Vive — Parte I", icon: milagresJesusThumb.url, src: vidEleVive1.url, section: "Ele Vive" },
+      { title: "Ele Vive — Parte II", icon: milagresJesusThumb.url, src: vidEleVive2.url, section: "Ele Vive" },
+      { title: "Ele Vive — Parte III", icon: milagresJesusThumb.url, src: vidEleVive3.url, section: "Ele Vive" },
     ],
   },
 ];
@@ -185,7 +188,9 @@ export const filmesVideos: BibleVideo[] = [
   { title: "Adão e Eva", icon: iconAdaoEva1, src: vidAdaoEva.url },
   { title: "Jonas e a Baleia", icon: iconJonas.url, src: vidJonasFilme.url },
   { title: "O Nascimento de Jesus", icon: nascimentoJesusThumb.url, src: vidNascimentoJesus.url },
+  { title: "O Semeador", icon: semeadorThumb.url, src: vidSemeador.url },
 ];
+
 
 // Movido de "filmes" para "séries": cada filme principal vira o episódio
 // inicial e ganha as partes complementares, formando uma mini-série completa.
