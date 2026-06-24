@@ -261,9 +261,11 @@ export default function Album() {
           className="w-11 h-11 rounded-full bg-white/80 hover:bg-white shadow-lg flex items-center justify-center text-amber-900 transition">
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <div className="text-center min-w-0 px-2">
-          <div className="text-[10px] font-bold text-amber-900/80">{totalOwned} / {allStickers.length} coletadas</div>
+        <div className="text-center min-w-0 px-2 bg-transparent">
+          <div className="text-[10px] uppercase tracking-wider font-bold text-amber-900/70 leading-tight">Figurinhas Coletadas</div>
+          <div className="text-sm font-display font-extrabold text-amber-900 tabular-nums">{totalOwned} / {allStickers.length}</div>
         </div>
+
         <div className="flex items-center gap-1.5">
           <button onClick={() => setShowCompletion(true)}
             aria-label="Conquistas" title="Conquistas"
