@@ -496,34 +496,54 @@ export default function LemosPlay() {
               </div>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {openGroup.videos.map((v, idx) => {
-                const p = progress[v.id];
-                const pct = p && p.d > 0 ? Math.min(100, Math.round((p.t / p.d) * 100)) : 0;
-                const next = openGroup.videos[idx + 1];
-                return (
-                  <button key={v.id} onClick={() => { const gid = openGroup.id; setOpenGroup(null); requestPlay(v, gid); }} className="relative aspect-video rounded-lg overflow-hidden bg-zinc-800 hover:ring-2 hover:ring-white transition">
-                    {v.poster ? <img src={v.poster} alt={v.title} className="w-full h-full object-cover" /> : <div className="absolute inset-0 bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center"><Play className="w-10 h-10 text-white/40" /></div>}
-                    <VideoSideActions itemId={v.id} title={v.title} src={v.src} />
-                    {next && (
-                      <span
-                        title={`Em seguida: ${next.title}`}
-                        className="absolute top-1 left-1 z-20 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-600/95 text-white text-[10px] font-bold shadow-lg"
-                      >
-                        <SkipForward className="w-3 h-3" />
-                        <span>Próximo</span>
-                      </span>
-                    )}
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-2">
-                      <p className="text-white text-xs font-bold text-left line-clamp-2">{v.title}</p>
-                    </div>
-                    {pct > 0 && (
-                      <div className="absolute bottom-0 inset-x-0 h-1 bg-white/20">
-                        <div className="h-full" style={{ width: `${pct}%`, background: "#e50914" }} />
-                      </div>
-                    )}
-                  </button>
-                );
-              })}
+            {(() => {
+              // Group videos by optional "section" to render sub-folders
+              const sectionsMap = new Map<string, typeof openGroup.videos>();
+              openGroup.videos.forEach((v) => {
+                const key = (v as any).section || "";
+                if (!sectionsMap.has(key)) sectionsMap.set(key, [] as any);
+                sectionsMap.get(key)!.push(v);
+              });
+              const sectionEntries = Array.from(sectionsMap.entries());
+              return sectionEntries.map(([sectionName, vids]) => (
+                <div key={sectionName || "_root"} className="mb-5">
+                  {sectionName && (
+                    <h4 className="text-amber-300 font-display font-extrabold text-sm uppercase tracking-wide mb-2 flex items-center gap-2">
+                      📁 <span>{sectionName}</span>
+                      <span className="text-zinc-500 text-xs font-normal">({vids.length})</span>
+                    </h4>
+                  )}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {vids.map((v, idx) => {
+                      const p = progress[v.id];
+                      const pct = p && p.d > 0 ? Math.min(100, Math.round((p.t / p.d) * 100)) : 0;
+                      const next = vids[idx + 1];
+                      return (
+                        <button key={v.id} onClick={() => { const gid = openGroup.id; setOpenGroup(null); requestPlay(v, gid); }} className="relative aspect-video rounded-lg overflow-hidden bg-zinc-800 hover:ring-2 hover:ring-white transition">
+                          {v.poster ? <img src={v.poster} alt={v.title} className="w-full h-full object-cover" /> : <div className="absolute inset-0 bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center"><Play className="w-10 h-10 text-white/40" /></div>}
+                          <VideoSideActions itemId={v.id} title={v.title} src={v.src} />
+                          {next && (
+                            <span title={`Em seguida: ${next.title}`} className="absolute top-1 left-1 z-20 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-600/95 text-white text-[10px] font-bold shadow-lg">
+                              <SkipForward className="w-3 h-3" />
+                              <span>Próximo</span>
+                            </span>
+                          )}
+                          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-2">
+                            <p className="text-white text-xs font-bold text-left line-clamp-2">{v.title}</p>
+                          </div>
+                          {pct > 0 && (
+                            <div className="absolute bottom-0 inset-x-0 h-1 bg-white/20">
+                              <div className="h-full" style={{ width: `${pct}%`, background: "#e50914" }} />
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ));
+            })()}
+
             </div>
           </div>
         </div>
