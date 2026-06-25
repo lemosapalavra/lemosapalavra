@@ -52,7 +52,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v26";
+const KEY = "lemos_play_config_v27";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
@@ -153,15 +153,29 @@ const mergeById = (userItems: PlayEntry[], defaults: PlayEntry[]): PlayEntry[] =
   userItems.forEach((u) => {
     const ex = map.get(u.id);
     if (ex) {
-      // Prefer default src whenever it exists — user-saved empty/stale links
-      // should never override a working CDN URL bundled with the app.
+      // Defaults (code) are the source of truth for title, poster, src, and section.
+      // User-saved data only fills in fields that don't exist in defaults — this way,
+      // renames in code (e.g. "O Nascimento de Jesus" → "Jesus") appear immediately
+      // without bumping the storage version key.
       const src = ex.src && ex.src.trim() ? ex.src : (u.src || "");
-      map.set(u.id, { ...ex, ...u, src, poster: resolvePoster(u.title || ex.title, u.poster ?? ex.poster) });
+      map.set(u.id, {
+        ...u,
+        ...ex,
+        src,
+        title: ex.title,
+        poster: resolvePoster(ex.title, ex.poster ?? u.poster),
+        section: ex.section ?? u.section,
+      });
     } else {
       map.set(u.id, { ...u, poster: resolvePoster(u.title, u.poster) });
     }
   });
-  return Array.from(map.values());
+  // Keep ordering aligned with defaults so reordering in code also takes effect.
+  const ordered: PlayEntry[] = [];
+  const seen = new Set<string>();
+  defaults.forEach((d) => { const it = map.get(d.id); if (it) { ordered.push(it); seen.add(d.id); } });
+  map.forEach((v, k) => { if (!seen.has(k)) ordered.push(v); });
+  return ordered;
 };
 
 const repairConfig = (cfg: LemosPlayConfig, def: LemosPlayConfig): LemosPlayConfig => {
@@ -172,16 +186,23 @@ const repairConfig = (cfg: LemosPlayConfig, def: LemosPlayConfig): LemosPlayConf
     musicas: mergeById(norm(cfg.musicas), def.musicas),
     louvores: mergeById(norm(cfg.louvores), def.louvores),
     series: (() => {
-      const out = new Map<string, SeriesGroupCfg>();
-      def.series.forEach((g) => out.set(g.id, g));
-      cfg.series.forEach((g) => {
-        const ex = out.get(g.id);
-        const merged: SeriesGroupCfg = ex
-          ? { ...ex, ...g, icon: resolvePoster(g.title || ex.title, g.icon ?? ex.icon), videos: mergeById(norm(g.videos), ex.videos) }
-          : { ...g, icon: resolvePoster(g.title, g.icon), videos: norm(g.videos) };
-        out.set(g.id, merged);
+      // Defaults drive series presence, titles, icons, and ordering.
+      const out: SeriesGroupCfg[] = def.series.map((g) => {
+        const userG = cfg.series.find((s) => s.id === g.id);
+        return {
+          ...g,
+          title: g.title,
+          icon: resolvePoster(g.title, g.icon),
+          videos: mergeById(userG ? norm(userG.videos) : [], g.videos),
+        };
       });
-      return Array.from(out.values());
+      // Preserve any extra user-only series at the end (shouldn't normally happen).
+      cfg.series.forEach((g) => {
+        if (!def.series.find((d) => d.id === g.id)) {
+          out.push({ ...g, icon: resolvePoster(g.title, g.icon), videos: norm(g.videos) });
+        }
+      });
+      return out;
     })(),
   };
 };
