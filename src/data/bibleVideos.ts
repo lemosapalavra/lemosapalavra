@@ -67,6 +67,10 @@ import expulsaDemoniosThumb from "@/assets/lemos-play/jesus-expulsa-demonios-thu
 import vidCuraParalitico from "@/assets/lemos-play/cura-paralitico.mp4.asset.json";
 import vidATempestade from "@/assets/lemos-play/a-tempestade.mp4.asset.json";
 import vidExpulsaDemonios from "@/assets/lemos-play/jesus-expulsa-demonios.mp4.asset.json";
+import vidFilhoProdigo1 from "@/assets/lemos-play/filho-prodigo-parte1.mp4.asset.json";
+import vidFilhoProdigo2 from "@/assets/lemos-play/filho-prodigo-parte2.mp4.asset.json";
+import filhoProdigo1Thumb from "@/assets/lemos-play/filho-prodigo-parte1-thumb.png.asset.json";
+import filhoProdigo2Thumb from "@/assets/lemos-play/filho-prodigo-parte2-thumb.png.asset.json";
 
 
 export interface BibleVideo {
@@ -171,7 +175,7 @@ export const seriesGroups: BibleVideoGroup[] = [
     ],
   },
   {
-    title: "Série Jesus",
+    title: "Jesus - A Série Ele está Vivo!",
     icon: jesusSerieLogo.url,
     videos: [
       { title: "O Batismo de Jesus — Parte I", icon: batismoP1Thumb.url, src: vidBatismoP1.url, section: "Batismo de Jesus" },
@@ -181,6 +185,14 @@ export const seriesGroups: BibleVideoGroup[] = [
       { title: "Jesus Expulsa Demônios", icon: expulsaDemoniosThumb.url, src: vidExpulsaDemonios.url, section: "Milagres de Jesus" },
     ],
   },
+  {
+    title: "O Filho Pródigo",
+    icon: filhoProdigo1Thumb.url,
+    videos: [
+      { title: "O Filho Pródigo — Parte I", icon: filhoProdigo1Thumb.url, src: vidFilhoProdigo1.url },
+      { title: "O Filho Pródigo — Parte II", icon: filhoProdigo2Thumb.url, src: vidFilhoProdigo2.url },
+    ],
+  },
 ];
 
 export const filmesVideos: BibleVideo[] = [
@@ -188,7 +200,7 @@ export const filmesVideos: BibleVideo[] = [
   { title: "A Batalha dos Anjos", icon: iconBatalha, src: vidBatalha.url },
   { title: "Adão e Eva", icon: iconAdaoEva1, src: vidAdaoEva.url },
   { title: "Jonas e a Baleia", icon: iconJonas.url, src: vidJonasFilme.url },
-  { title: "O Nascimento de Jesus", icon: nascimentoJesusThumb.url, src: vidNascimentoJesus.url },
+  { title: "Jesus", icon: nascimentoJesusThumb.url, src: vidNascimentoJesus.url },
   { title: "O Semeador", icon: semeadorThumb.url, src: vidSemeador.url },
 ];
 
