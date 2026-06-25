@@ -189,6 +189,9 @@ export const seriesGroups: BibleVideoGroup[] = [
       { title: "A Cura do Paralítico", icon: curaParaliticoThumb.url, src: vidCuraParalitico.url, section: "Milagres de Jesus" },
       { title: "A Tempestade", icon: aTempestadeThumb.url, src: vidATempestade.url, section: "Milagres de Jesus" },
       { title: "Jesus Expulsa Demônios", icon: expulsaDemoniosThumb.url, src: vidExpulsaDemonios.url, section: "Milagres de Jesus" },
+      { title: "Ele Vive — Parte I", icon: eleVive1Thumb.url, src: vidEleVive1.url, section: "Ele Vive" },
+      { title: "Ele Vive — Parte II", icon: eleVive2Thumb.url, src: vidEleVive2.url, section: "Ele Vive" },
+      { title: "Ele Vive — Parte III", icon: eleVive3Thumb.url, src: vidEleVive3.url, section: "Ele Vive" },
     ],
   },
   {
