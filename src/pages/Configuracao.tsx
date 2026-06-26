@@ -116,6 +116,10 @@ export default function Configuracao() {
       <div className="max-w-4xl mx-auto">
         <PageHeader title="Configurações" subtitle="Painel de administração" />
 
+        {/* Live visits counter */}
+        <LiveVisitsBanner totalVisits={stats.totalVisits} elapsed={elapsed} />
+
+
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
           {statCards.map((s, i) => (
