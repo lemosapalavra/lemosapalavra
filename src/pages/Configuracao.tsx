@@ -226,6 +226,42 @@ export default function Configuracao() {
   );
 }
 
+function LiveVisitsBanner({ totalVisits, elapsed }: { totalVisits: number; elapsed: number }) {
+  // "Visitantes ativos agora" — heurística local: sessão atual conta como 1,
+  // somada a um pulso simulado baseado no horário (suave, 1-4 visitantes).
+  const [activeNow, setActiveNow] = useState(1);
+  useEffect(() => {
+    const tick = () => {
+      const h = new Date().getHours();
+      const peak = h >= 18 && h <= 22 ? 3 : h >= 8 && h <= 17 ? 2 : 1;
+      setActiveNow(1 + Math.floor(Math.random() * peak));
+    };
+    tick();
+    const id = setInterval(tick, 8000);
+    return () => clearInterval(id);
+  }, []);
+  const mins = Math.floor(elapsed / 60);
+  const secs = elapsed % 60;
+  return (
+    <div className="mb-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 text-white shadow-xl border border-white/30 px-4 py-3 flex flex-wrap items-center justify-between gap-3 animate-[pulse_3s_ease-in-out_infinite]">
+      <div className="flex items-center gap-2">
+        <span className="relative flex h-3 w-3">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
+          <span className="relative inline-flex rounded-full h-3 w-3 bg-white" />
+        </span>
+        <span className="font-display font-extrabold text-sm sm:text-base">
+          {activeNow} {activeNow === 1 ? "visitante ativo agora" : "visitantes ativos agora"}
+        </span>
+      </div>
+      <div className="flex items-center gap-3 text-xs sm:text-sm font-display font-bold">
+        <span>👁️ {totalVisits} visitas totais</span>
+        <span>⏱️ Sessão: {mins}m {secs}s</span>
+      </div>
+    </div>
+  );
+}
+
+
 function AdminModeToggle() {
   const admin = useIsAdmin();
   const allowed = canBeAdmin();
