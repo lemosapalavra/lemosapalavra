@@ -221,6 +221,9 @@ export default function Album() {
           <h1 className="font-display font-extrabold text-3xl sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-yellow-100 to-amber-300 drop-shadow-lg animate-[albumTitle_2.4s_ease-in-out_infinite]">
             ✨ Heróis da Bíblia ✨
           </h1>
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-amber-950 font-display font-extrabold text-sm sm:text-base px-4 py-2 rounded-full shadow-2xl border-2 border-white animate-[coverFloat_3s_ease-in-out_infinite]">
+            🎴 Mais de <span className="text-lg sm:text-xl">{allStickers.length}</span> figurinhas para colecionar!
+          </div>
           <p className="font-body text-amber-100 text-sm sm:text-base italic">Toque para abrir o álbum sagrado</p>
         </div>
         <div className="mb-8 bg-white/95 px-5 py-2.5 rounded-full font-display font-bold text-base shadow-2xl animate-pulse">
