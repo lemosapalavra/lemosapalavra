@@ -132,7 +132,7 @@ function Row({ title, items, onPlay, progress, onContinueSeries, getContinuation
             const pct = p && p.d > 0 ? Math.min(100, Math.round((p.t / p.d) * 100)) : 0;
             const contCount = getContinuationCount?.(item) ?? 0;
             return (
-              <button key={item.id} onClick={() => onPlay(item)} className="relative shrink-0 w-[200px] sm:w-[280px] aspect-video rounded overflow-hidden bg-zinc-900 hover:scale-105 hover:z-10 hover:ring-2 hover:ring-white transition-all duration-200 group/card">
+              <button key={item.id} onClick={() => onPlay(item)} className="relative shrink-0 w-[140px] sm:w-[180px] aspect-[2/3] rounded-lg overflow-hidden bg-zinc-900 hover:scale-105 hover:z-10 hover:ring-2 hover:ring-white transition-all duration-200 group/card">
                 {item.poster ? (
                   <img src={item.poster} alt={item.title} className="w-full h-full object-cover" loading="lazy" />
                 ) : (
@@ -520,7 +520,7 @@ export default function LemosPlay() {
                       const pct = p && p.d > 0 ? Math.min(100, Math.round((p.t / p.d) * 100)) : 0;
                       const next = vids[idx + 1];
                       return (
-                        <button key={v.id} onClick={() => { const gid = openGroup.id; setOpenGroup(null); requestPlay(v, gid); }} className="relative aspect-video rounded-lg overflow-hidden bg-zinc-800 hover:ring-2 hover:ring-white transition">
+                        <button key={v.id} onClick={() => { const gid = openGroup.id; setOpenGroup(null); requestPlay(v, gid); }} className="relative aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 hover:ring-2 hover:ring-white transition">
                           {v.poster ? <img src={v.poster} alt={v.title} className="w-full h-full object-cover" /> : <div className="absolute inset-0 bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center"><Play className="w-10 h-10 text-white/40" /></div>}
                           <VideoSideActions itemId={v.id} title={v.title} src={v.src} />
                           {next && (
@@ -662,7 +662,7 @@ export default function LemosPlay() {
                     <button
                       key={v.id}
                       onClick={() => requestPlay(v, gid)}
-                      className="relative shrink-0 w-[150px] sm:w-[200px] aspect-video rounded-md overflow-hidden bg-zinc-900 hover:ring-2 hover:ring-white transition group/sug"
+                      className="relative shrink-0 w-[100px] sm:w-[130px] aspect-[2/3] rounded-md overflow-hidden bg-zinc-900 hover:ring-2 hover:ring-white transition group/sug"
                       title={v.title}
                     >
                       {v.poster ? (
