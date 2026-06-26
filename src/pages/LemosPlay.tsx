@@ -132,7 +132,7 @@ function Row({ title, items, onPlay, progress, onContinueSeries, getContinuation
             const pct = p && p.d > 0 ? Math.min(100, Math.round((p.t / p.d) * 100)) : 0;
             const contCount = getContinuationCount?.(item) ?? 0;
             return (
-              <button key={item.id} onClick={() => onPlay(item)} className="relative shrink-0 w-[200px] sm:w-[280px] aspect-video rounded overflow-hidden bg-zinc-900 hover:scale-105 hover:z-10 hover:ring-2 hover:ring-white transition-all duration-200 group/card">
+              <button key={item.id} onClick={() => onPlay(item)} className="relative shrink-0 w-[140px] sm:w-[180px] aspect-[2/3] rounded-lg overflow-hidden bg-zinc-900 hover:scale-105 hover:z-10 hover:ring-2 hover:ring-white transition-all duration-200 group/card">
                 {item.poster ? (
                   <img src={item.poster} alt={item.title} className="w-full h-full object-cover" loading="lazy" />
                 ) : (
@@ -166,6 +166,68 @@ function Row({ title, items, onPlay, progress, onContinueSeries, getContinuation
                   </div>
                 )}
               </button>
+            );
+          })}
+        </div>
+        <button onClick={() => scrollBy(600)} className="absolute right-0 top-0 bottom-0 z-10 w-12 bg-black/60 opacity-0 group-hover/row:opacity-100 transition-opacity flex items-center justify-center text-white hover:bg-black/80" aria-label="Próximo">
+          <ChevronRight className="w-8 h-8" />
+        </button>
+      </div>
+    </section>
+  );
+}
+
+/* ============ Top 10 row (Netflix-style with big rank numerals) ============ */
+function TopTenRow({ items, onPlay, progress }: { items: PlayItem[]; onPlay: (item: PlayItem) => void; progress: ProgressMap }) {
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const scrollBy = (dx: number) => scrollerRef.current?.scrollBy({ left: dx, behavior: "smooth" });
+  if (!items.length) return null;
+  const top = items.slice(0, 10);
+  return (
+    <section className="mb-8 group/row">
+      <h2 className="text-white font-bold text-lg sm:text-2xl mb-3 px-4 sm:px-12 flex items-center gap-2">
+        <span className="inline-flex items-center justify-center px-2 py-0.5 rounded bg-red-600 text-white text-xs font-extrabold tracking-widest">TOP 10</span>
+        <span>No Lemos Play hoje</span>
+      </h2>
+      <div className="relative">
+        <button onClick={() => scrollBy(-600)} className="absolute left-0 top-0 bottom-0 z-10 w-12 bg-black/60 opacity-0 group-hover/row:opacity-100 transition-opacity flex items-center justify-center text-white hover:bg-black/80" aria-label="Anterior">
+          <ChevronLeft className="w-8 h-8" />
+        </button>
+        <div ref={scrollerRef} className="flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth px-4 sm:px-12 pb-3" style={{ scrollbarWidth: "none" }}>
+          {top.map((item, idx) => {
+            const rank = idx + 1;
+            const p = progress[item.id];
+            const pct = p && p.d > 0 ? Math.min(100, Math.round((p.t / p.d) * 100)) : 0;
+            return (
+              <div key={item.id} className="relative shrink-0 flex items-end gap-0 sm:gap-1">
+                <span
+                  aria-hidden
+                  className="select-none font-display font-black leading-none text-transparent text-[120px] sm:text-[180px] -mr-6 sm:-mr-10"
+                  style={{
+                    WebkitTextStroke: "3px #ffffff",
+                    textShadow: "0 6px 24px rgba(0,0,0,0.7)",
+                  }}
+                >
+                  {rank}
+                </span>
+                <button onClick={() => onPlay(item)} className="relative w-[120px] sm:w-[160px] aspect-[2/3] rounded-lg overflow-hidden bg-zinc-900 hover:scale-105 hover:z-10 hover:ring-2 hover:ring-white transition-all duration-200">
+                  {item.poster ? (
+                    <img src={item.poster} alt={item.title} className="w-full h-full object-cover" loading="lazy" />
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center">
+                      <Play className="w-10 h-10 text-white/40" />
+                    </div>
+                  )}
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-2">
+                    <p className="text-white font-bold text-xs text-left line-clamp-1">{item.title}</p>
+                  </div>
+                  {pct > 0 && (
+                    <div className="absolute bottom-0 inset-x-0 h-1 bg-white/20">
+                      <div className="h-full" style={{ width: `${pct}%`, background: "#e50914" }} />
+                    </div>
+                  )}
+                </button>
+              </div>
             );
           })}
         </div>
@@ -447,6 +509,19 @@ export default function LemosPlay() {
 
       <div className="-mt-20 sm:-mt-32 relative z-10 pb-16">
         {continueItems.length > 0 && <Row title="Continuar assistindo" items={continueItems} onPlay={(item) => requestPlay(item)} progress={progress} />}
+
+        {/* Top 10 — destaques do Lemos Play */}
+        <TopTenRow
+          items={(() => {
+            const seriesFirsts = seriesGroupItems.map((g) => g.videos[0]).filter((v): v is PlayItem => !!v);
+            const pool = [...filmesPlay, ...seriesFirsts, ...louvoresPlay, ...musicasPlay].filter((p) => !!p.poster);
+            const seen = new Set<string>();
+            return pool.filter((p) => (seen.has(p.id) ? false : (seen.add(p.id), true))).slice(0, 10);
+          })()}
+          onPlay={(item) => requestPlay(item)}
+          progress={progress}
+        />
+
         <div id="filmes"><Row
           title="Filmes Bíblicos"
           items={filmesPlay}
@@ -520,7 +595,7 @@ export default function LemosPlay() {
                       const pct = p && p.d > 0 ? Math.min(100, Math.round((p.t / p.d) * 100)) : 0;
                       const next = vids[idx + 1];
                       return (
-                        <button key={v.id} onClick={() => { const gid = openGroup.id; setOpenGroup(null); requestPlay(v, gid); }} className="relative aspect-video rounded-lg overflow-hidden bg-zinc-800 hover:ring-2 hover:ring-white transition">
+                        <button key={v.id} onClick={() => { const gid = openGroup.id; setOpenGroup(null); requestPlay(v, gid); }} className="relative aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 hover:ring-2 hover:ring-white transition">
                           {v.poster ? <img src={v.poster} alt={v.title} className="w-full h-full object-cover" /> : <div className="absolute inset-0 bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center"><Play className="w-10 h-10 text-white/40" /></div>}
                           <VideoSideActions itemId={v.id} title={v.title} src={v.src} />
                           {next && (
@@ -662,7 +737,7 @@ export default function LemosPlay() {
                     <button
                       key={v.id}
                       onClick={() => requestPlay(v, gid)}
-                      className="relative shrink-0 w-[150px] sm:w-[200px] aspect-video rounded-md overflow-hidden bg-zinc-900 hover:ring-2 hover:ring-white transition group/sug"
+                      className="relative shrink-0 w-[100px] sm:w-[130px] aspect-[2/3] rounded-md overflow-hidden bg-zinc-900 hover:ring-2 hover:ring-white transition group/sug"
                       title={v.title}
                     >
                       {v.poster ? (
