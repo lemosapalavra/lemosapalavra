@@ -182,6 +182,9 @@ export default function Album() {
 
   // ============= COVER (fullscreen) =============
   if (view === "cover") {
+    const completed = isAlbumComplete(totalOwned, allStickers.length);
+    let userName = "";
+    try { userName = JSON.parse(localStorage.getItem("lemos_user") || "{}")?.name || ""; } catch {}
     return (
       <div
         onClick={() => { setPageIdx(0); setView("pages"); }}
@@ -189,11 +192,27 @@ export default function Album() {
       >
         <PageHeader title="Álbum" />
         <div className="flex-1 flex flex-col items-center justify-center px-6 text-center gap-4 w-full overflow-hidden">
-          <img
-            src={albumCapa}
-            alt="Capa do Álbum Heróis da Bíblia"
-            className="max-h-[55vh] w-auto rounded-2xl shadow-2xl border-4 border-amber-300 animate-[coverFloat_3.6s_ease-in-out_infinite]"
-          />
+          <div className="relative">
+            <img
+              src={albumCapa}
+              alt="Capa do Álbum Heróis da Bíblia"
+              className="max-h-[55vh] w-auto rounded-2xl shadow-2xl border-4 border-amber-300 animate-[coverFloat_3.6s_ease-in-out_infinite]"
+            />
+            {/* Volume I sticker badge */}
+            <div className="absolute -top-3 -left-3 rotate-[-12deg] bg-gradient-to-br from-rose-500 via-red-500 to-amber-500 text-white font-display font-extrabold text-xs sm:text-sm px-3 py-1.5 rounded-full shadow-2xl border-2 border-white animate-[coverFloat_3s_ease-in-out_infinite]">
+              📘 VOLUME I
+            </div>
+
+            {/* Completion banner */}
+            {completed && (
+              <div className="absolute left-1/2 -translate-x-1/2 -bottom-5 w-[92%] bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-500 text-amber-950 font-display font-extrabold text-center px-3 py-2 rounded-2xl shadow-2xl border-2 border-white animate-[albumTitle_2.4s_ease-in-out_infinite]">
+                <div className="text-sm sm:text-base">🏆 Parabéns{userName ? `, ${userName}` : ""}!</div>
+                <div className="text-[10px] sm:text-xs font-bold leading-tight opacity-90">
+                  Você completou o Volume I — em breve, Volume II com muitas novidades!
+                </div>
+              </div>
+            )}
+          </div>
           <h1 className="font-display font-extrabold text-3xl sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-yellow-100 to-amber-300 drop-shadow-lg animate-[albumTitle_2.4s_ease-in-out_infinite]">
             ✨ Heróis da Bíblia ✨
           </h1>
