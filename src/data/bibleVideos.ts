@@ -74,6 +74,8 @@ import filhoProdigo2Thumb from "@/assets/lemos-play/filho-prodigo-parte2-thumb.p
 import vidEleVive1 from "@/assets/lemos-play/ele-vive-parte1.mp4.asset.json";
 import vidEleVive2 from "@/assets/lemos-play/ele-vive-parte2.mp4.asset.json";
 import vidEleVive3 from "@/assets/lemos-play/ele-vive-parte3.mp4.asset.json";
+import vidApocalipse from "@/assets/lemos-play/apocalipse-batalha-final.mp4.asset.json";
+import apocalipseThumb from "@/assets/lemos-play/apocalipse-batalha-final-thumb.jpg.asset.json";
 import eleVive1Thumb from "@/assets/lemos-play/ele-vive-parte1-thumb.png.asset.json";
 import eleVive2Thumb from "@/assets/lemos-play/ele-vive-parte2-thumb.png.asset.json";
 import eleVive3Thumb from "@/assets/lemos-play/ele-vive-parte3-thumb.png.asset.json";
@@ -211,6 +213,7 @@ export const filmesVideos: BibleVideo[] = [
   { title: "Jonas e a Baleia", icon: iconJonas.url, src: vidJonasFilme.url },
   { title: "Jesus", icon: nascimentoJesusThumb.url, src: vidNascimentoJesus.url },
   { title: "O Semeador", icon: semeadorThumb.url, src: vidSemeador.url },
+  { title: "Apocalipse — A Batalha Final", icon: apocalipseThumb.url, src: vidApocalipse.url },
 ];
 
 
