@@ -13,7 +13,7 @@ import pergaminhoAsset from "@/assets/pergaminho.png.asset.json";
 import iconInicio from "@/assets/icon-inicio.jpg";
 import iconUsuario from "@/assets/icon-usuario.png";
 
-const STICKERS_KEY = "lemos_stickers_v2";
+const STICKERS_KEY = "lemos_stickers_v3";
 const PACK_COST = 3;
 
 type Owned = Record<number, number>;
