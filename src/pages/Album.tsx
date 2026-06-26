@@ -114,18 +114,23 @@ export default function Album() {
   // A final "backcover" page summarises the album.
   const pages = useMemo<(BookPage & { startIndex: number })[]>(() => {
     let running = 0;
-    const catPages = categories.map((cat) => {
-      const stickers = cat.stickers.slice(0, 8);
-      const page = {
-        kind: "category" as const,
-        cat,
-        stickers,
-        bg: undefined,
-        pageInCat: 1 as const,
-        startIndex: running,
-      };
-      running += stickers.length;
-      return page;
+    const catPages: (BookPage & { startIndex: number })[] = [];
+    categories.forEach((cat) => {
+      // Split each category into pages of 8 stickers (typically 2 pages = 16 stickers).
+      const chunkSize = 8;
+      for (let off = 0; off < cat.stickers.length; off += chunkSize) {
+        const stickers = cat.stickers.slice(off, off + chunkSize);
+        const pageInCat = (off === 0 ? 1 : 2) as 1 | 2;
+        catPages.push({
+          kind: "category" as const,
+          cat,
+          stickers,
+          bg: undefined,
+          pageInCat,
+          startIndex: running,
+        });
+        running += stickers.length;
+      }
     });
     return [...catPages, { kind: "backcover" as const, startIndex: running }];
   }, []);
