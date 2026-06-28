@@ -75,18 +75,42 @@ export default function Login() {
 
   const finalAvatar = customAvatar || selectedAvatar;
 
+  // ---- Multi-user storage ----
+  // `lemos_users` = array de todas as contas criadas neste dispositivo
+  // `lemos_user`  = perfil atualmente logado (lido pelas outras páginas)
+  type StoredUser = {
+    name: string; ageRange: string; phone: string; role: string;
+    email: string; password: string; avatar: string; createdAt: string;
+  };
+  const readAllUsers = (): StoredUser[] => {
+    try {
+      const arr = JSON.parse(localStorage.getItem("lemos_users") || "[]");
+      if (Array.isArray(arr) && arr.length) return arr;
+    } catch {}
+    // Migração: se existia apenas `lemos_user`, traz para a lista
+    try {
+      const single = localStorage.getItem("lemos_user");
+      if (single) return [JSON.parse(single)];
+    } catch {}
+    return [];
+  };
+  const writeAllUsers = (list: StoredUser[]) =>
+    localStorage.setItem("lemos_users", JSON.stringify(list));
+
   const doLogin = () => {
-    const stored = localStorage.getItem("lemos_user");
-    if (!stored) {
+    const all = readAllUsers();
+    if (!all.length) {
       alert("Nenhum cadastro encontrado. Crie uma conta primeiro.");
       return;
     }
-    const userData = JSON.parse(stored);
-    if (userData.email !== email || userData.password !== password) {
+    const match = all.find(
+      (u) => (u.email || "").toLowerCase() === email.toLowerCase() && u.password === password
+    );
+    if (!match) {
       alert("E-mail ou senha incorretos.");
       return;
     }
-    // mark logged-in for "manter-me logado"
+    localStorage.setItem("lemos_user", JSON.stringify(match));
     if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) setAdminMode(true);
     navigate("/");
   };
@@ -101,7 +125,11 @@ export default function Login() {
       return;
     }
     const createdAt = new Date().toISOString();
-    const userData = { name, ageRange, phone, role, email, password, avatar: finalAvatar, createdAt };
+    const userData: StoredUser = { name, ageRange, phone, role, email, password, avatar: finalAvatar, createdAt };
+    const all = readAllUsers();
+    const idx = all.findIndex((u) => (u.email || "").toLowerCase() === email.toLowerCase());
+    if (idx >= 0) all[idx] = userData; else all.push(userData);
+    writeAllUsers(all);
     localStorage.setItem("lemos_user", JSON.stringify(userData));
     if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) setAdminMode(true);
     navigate("/");

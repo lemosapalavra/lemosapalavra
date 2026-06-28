@@ -153,12 +153,8 @@ function Row({ title, items, onPlay, progress, onContinueSeries, getContinuation
                     <span>+{contCount} ep.</span>
                   </span>
                 )}
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-3 pb-4">
-                  <p className="text-white font-bold text-sm text-left line-clamp-1">{item.title}</p>
-                  <div className="flex items-center justify-between mt-0.5">
-                    <p className="text-zinc-300 text-xs text-left">{item.category}</p>
-                    <CoinBadge amount={COIN_REWARDS[item.category] ?? 3} size="xs" />
-                  </div>
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-2 flex justify-end">
+                  <CoinBadge amount={COIN_REWARDS[item.category] ?? 3} size="xs" />
                 </div>
                 {pct > 0 && (
                   <div className="absolute bottom-0 inset-x-0 h-1 bg-white/20">
@@ -187,7 +183,7 @@ function TopTenRow({ items, onPlay, progress }: { items: PlayItem[]; onPlay: (it
     <section className="mb-8 group/row">
       <h2 className="text-white font-bold text-lg sm:text-2xl mb-3 px-4 sm:px-12 flex items-center gap-2">
         <span className="inline-flex items-center justify-center px-2 py-0.5 rounded bg-red-600 text-white text-xs font-extrabold tracking-widest">TOP 10</span>
-        <span>No Lemos Play hoje</span>
+        <span>em Histórias hoje</span>
       </h2>
       <div className="relative">
         <button onClick={() => scrollBy(-600)} className="absolute left-0 top-0 bottom-0 z-10 w-12 bg-black/60 opacity-0 group-hover/row:opacity-100 transition-opacity flex items-center justify-center text-white hover:bg-black/80" aria-label="Anterior">
@@ -218,9 +214,7 @@ function TopTenRow({ items, onPlay, progress }: { items: PlayItem[]; onPlay: (it
                       <Play className="w-10 h-10 text-white/40" />
                     </div>
                   )}
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-2">
-                    <p className="text-white font-bold text-xs text-left line-clamp-1">{item.title}</p>
-                  </div>
+                  {/* Título removido — já consta na capa */}
                   {pct > 0 && (
                     <div className="absolute bottom-0 inset-x-0 h-1 bg-white/20">
                       <div className="h-full" style={{ width: `${pct}%`, background: "#e50914" }} />
@@ -466,7 +460,7 @@ export default function LemosPlay() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <PageHeader title="Lemos Play" subtitle="Filmes, Séries e Músicas" />
+      <PageHeader title="Histórias" subtitle="Filmes, Séries e Músicas" />
       {isAdmin && (
         <div className="fixed top-2 right-2 z-40">
           <button
