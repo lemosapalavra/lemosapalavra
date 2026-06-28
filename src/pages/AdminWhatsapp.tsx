@@ -146,7 +146,8 @@ export default function AdminWhatsapp() {
                     <div className="flex-1 min-w-0">
                       <p className="font-display font-bold text-sm truncate">{u.name || "Sem nome"}</p>
                       <p className="text-xs text-muted-foreground truncate">
-                        📱 {u.phone || "sem telefone"} · {u.email || "sem e-mail"}
+                        {u.role ? `${u.role}` : ""}{u.ageRange ? ` · ${u.ageRange}` : ""}
+                        {u.phone ? " · 📱 contato cadastrado" : " · sem contato"}
                       </p>
                     </div>
                   </button>
@@ -220,7 +221,7 @@ export default function AdminWhatsapp() {
             </div>
           </div>
           <div className="text-xs text-muted-foreground mb-3">
-            <strong>Para:</strong> {targetName} {targetPhone ? `(+${targetPhone})` : "(sem telefone válido)"}
+            <strong>Para:</strong> {targetName} {targetPhone ? "(contato oculto por privacidade)" : "(sem telefone válido)"}
           </div>
           <div className="flex flex-wrap gap-2">
             <button
