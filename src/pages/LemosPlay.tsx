@@ -516,6 +516,54 @@ export default function LemosPlay() {
           progress={progress}
         />
 
+        {/* Coleção: Gênesis — filmes + séries do início da Bíblia */}
+        {(() => {
+          const matchG = (t: string) => /cria(ç|c)ão|ad(ã|a)o|noé|noe|abra(ã|a)o|esa(ú|u)|jac(ó|o)|jos(é|e) do egito|prova de fogo|batalha dos anjos|10 mandamentos|dez mandamentos|mois(é|e)s/i.test(t);
+          const filmesG = filmesPlay.filter((f) => matchG(f.title));
+          const seriesG = seriesGroupItems.filter((g) => matchG(g.title));
+          const items = [
+            ...filmesG,
+            ...seriesG.map((g) => ({ id: g.id, title: g.title, poster: g.poster, src: "", category: g.category })),
+          ];
+          return (
+            <div id="genesis">
+              <Row
+                title="📖 Gênesis"
+                items={items}
+                onPlay={(item) => {
+                  const g = seriesGroupItems.find((x) => x.id === item.id);
+                  if (g) setOpenGroup(g); else requestPlay(item);
+                }}
+                progress={progress}
+              />
+            </div>
+          );
+        })()}
+
+        {/* Coleção: Jesus — vida, milagres, parábolas e ressurreição */}
+        {(() => {
+          const matchJ = (t: string) => /jesus|batismo|semeador|filho pr(ó|o)digo|parali|tempestade|dem(ô|o)nios|ele vive|apocalipse/i.test(t);
+          const filmesJ = filmesPlay.filter((f) => matchJ(f.title));
+          const seriesJ = seriesGroupItems.filter((g) => matchJ(g.title));
+          const items = [
+            ...filmesJ,
+            ...seriesJ.map((g) => ({ id: g.id, title: g.title, poster: g.poster, src: "", category: g.category })),
+          ];
+          return (
+            <div id="jesus">
+              <Row
+                title="✝️ Jesus"
+                items={items}
+                onPlay={(item) => {
+                  const g = seriesGroupItems.find((x) => x.id === item.id);
+                  if (g) setOpenGroup(g); else requestPlay(item);
+                }}
+                progress={progress}
+              />
+            </div>
+          );
+        })()}
+
         <div id="filmes"><Row
           title="Filmes Bíblicos"
           items={filmesPlay}
