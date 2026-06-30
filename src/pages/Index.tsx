@@ -44,7 +44,8 @@ export default function Index() {
     }
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try { await (await import("@/integrations/supabase/client")).supabase.auth.signOut(); } catch {}
     localStorage.removeItem("lemos_user");
     setUser(null);
   };
