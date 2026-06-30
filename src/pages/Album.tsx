@@ -55,8 +55,8 @@ function buildPack(): { sticker: Sticker; rarity: Rarity }[] {
     const rarity: Rarity = especialIsReliquia && reliquias.length ? "reliquia" : "rara";
     result.push({ sticker: especial, rarity });
   }
-  // 3 normais
-  for (let i = 0; i < 3; i++) {
+  // 4 normais — pacote completo com 5 figurinhas (1 especial + 4 normais)
+  for (let i = 0; i < 4; i++) {
     const n = pickRandom(normais, allStickers);
     if (n) result.push({ sticker: n, rarity: "normal" });
   }
