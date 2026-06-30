@@ -85,6 +85,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <AuthBootstrap />
         <AnalyticsTracker />
         <MysticBackground />
         <Suspense fallback={<PageFallback />}>
