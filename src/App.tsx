@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import MysticBackground from "@/components/MysticBackground";
 import Index from "./pages/Index.tsx";
 import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
+import { supabase } from "@/integrations/supabase/client";
 
 const Login = lazy(() => import("./pages/Login.tsx"));
 const Biblia = lazy(() => import("./pages/Biblia.tsx"));
@@ -27,6 +28,48 @@ const queryClient = new QueryClient();
 
 const AnalyticsTracker = () => {
   useAnalyticsTracker();
+  return null;
+};
+
+const AuthBootstrap = () => {
+  // Keeps the legacy `lemos_user` localStorage profile in sync with the
+  // current Supabase session — so the user stays "logged in" across
+  // devices and reloads instead of having to re-register every time.
+  useEffect(() => {
+    let cancelled = false;
+    const hydrate = async (userId: string, email: string | null) => {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("name, age_range, phone, role, avatar, email, created_at")
+        .eq("id", userId)
+        .maybeSingle();
+      if (cancelled) return;
+      const u = {
+        name: profile?.name || "",
+        ageRange: profile?.age_range || "",
+        phone: profile?.phone || "",
+        role: profile?.role || "",
+        avatar: profile?.avatar || "",
+        email: profile?.email || email || "",
+        createdAt: profile?.created_at || new Date().toISOString(),
+      };
+      localStorage.setItem("lemos_user", JSON.stringify(u));
+      window.dispatchEvent(new Event("lemos_admin_change"));
+    };
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT") {
+        localStorage.removeItem("lemos_user");
+        localStorage.removeItem("lemos_admin_mode");
+        window.dispatchEvent(new Event("lemos_admin_change"));
+        return;
+      }
+      if (session?.user) hydrate(session.user.id, session.user.email);
+    });
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session?.user) hydrate(data.session.user.id, data.session.user.email);
+    });
+    return () => { cancelled = true; sub.subscription.unsubscribe(); };
+  }, []);
   return null;
 };
 
