@@ -55,8 +55,8 @@ function buildPack(): { sticker: Sticker; rarity: Rarity }[] {
     const rarity: Rarity = especialIsReliquia && reliquias.length ? "reliquia" : "rara";
     result.push({ sticker: especial, rarity });
   }
-  // 3 normais
-  for (let i = 0; i < 3; i++) {
+  // 4 normais — pacote completo com 5 figurinhas (1 especial + 4 normais)
+  for (let i = 0; i < 4; i++) {
     const n = pickRandom(normais, allStickers);
     if (n) result.push({ sticker: n, rarity: "normal" });
   }
@@ -549,8 +549,8 @@ function BackCoverPage({ owned }: { owned: Owned }) {
             <li>A cada <strong>atividade</strong> concluída você ganha 🪙 moedas.</li>
             <li>Assistir um <strong>filme, série ou vídeo</strong> também rende moedas.</li>
             <li>Ler um <strong>versículo, devocional</strong> ou trecho da <strong>Bíblia</strong> dá moedas.</li>
-            <li>Com <strong>3 🪙 moedas</strong> você compra um <strong>pacotinho</strong> com 4 figurinhas.</li>
-            <li>Cada pacote vem com 3 <strong>Normais</strong> + 1 <strong>Rara</strong> (com chance de <strong>Relíquia</strong>).</li>
+            <li>Com <strong>3 🪙 moedas</strong> você compra um <strong>pacotinho</strong> com 5 figurinhas.</li>
+            <li>Cada pacote vem com 4 <strong>Normais</strong> + 1 <strong>Rara</strong> (com chance de <strong>Relíquia</strong>).</li>
             <li>Figurinhas <strong>repetidas</strong> podem ser trocadas na <em>Sala de Trocas</em>.</li>
           </ul>
         </div>

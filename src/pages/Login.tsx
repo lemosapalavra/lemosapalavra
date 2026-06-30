@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Shield } from "lucide-react";
 import { setAdminMode } from "@/hooks/useIsAdmin";
+import { supabase } from "@/integrations/supabase/client";
 
 import avatarAbraao from "@/assets/avatar-abraao.png";
 import avatarAnjo from "@/assets/avatar-anjo.png";
@@ -43,7 +44,28 @@ const AGE_RANGES: { id: AgeRange; label: string; emoji: string }[] = [
   { id: "idosos",        label: "Idosos (60+)",             emoji: "🧓" },
 ];
 
-const ADMIN_EMAIL = "marcello.pertutti@gmail.com"; // admin shortcut email
+const ADMIN_EMAIL = "marcello.pertutti@gmail.com";
+
+// Hydrate the legacy localStorage profile object that the rest of the
+// app already reads from (`lemos_user`) using the Supabase profile row.
+async function hydrateLocalProfile(userId: string, fallbackEmail: string) {
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("name, age_range, phone, role, avatar, email, created_at")
+    .eq("id", userId)
+    .maybeSingle();
+  const u = {
+    name: profile?.name || "",
+    ageRange: profile?.age_range || "",
+    phone: profile?.phone || "",
+    role: profile?.role || "",
+    avatar: profile?.avatar || "",
+    email: profile?.email || fallbackEmail,
+    createdAt: profile?.created_at || new Date().toISOString(),
+  };
+  localStorage.setItem("lemos_user", JSON.stringify(u));
+  return u;
+}
 
 export default function Login() {
   const navigate = useNavigate();
@@ -52,6 +74,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPwd, setShowPwd] = useState(false);
   const [remember, setRemember] = useState(true);
+  const [busy, setBusy] = useState(false);
 
   // register-only fields
   const [name, setName] = useState("");
@@ -75,68 +98,76 @@ export default function Login() {
 
   const finalAvatar = customAvatar || selectedAvatar;
 
-  // ---- Multi-user storage ----
-  // `lemos_users` = array de todas as contas criadas neste dispositivo
-  // `lemos_user`  = perfil atualmente logado (lido pelas outras páginas)
-  type StoredUser = {
-    name: string; ageRange: string; phone: string; role: string;
-    email: string; password: string; avatar: string; createdAt: string;
-  };
-  const readAllUsers = (): StoredUser[] => {
-    try {
-      const arr = JSON.parse(localStorage.getItem("lemos_users") || "[]");
-      if (Array.isArray(arr) && arr.length) return arr;
-    } catch {}
-    // Migração: se existia apenas `lemos_user`, traz para a lista
-    try {
-      const single = localStorage.getItem("lemos_user");
-      if (single) return [JSON.parse(single)];
-    } catch {}
-    return [];
-  };
-  const writeAllUsers = (list: StoredUser[]) =>
-    localStorage.setItem("lemos_users", JSON.stringify(list));
-
-  const doLogin = () => {
-    const all = readAllUsers();
-    if (!all.length) {
-      alert("Nenhum cadastro encontrado. Crie uma conta primeiro.");
+  const doLogin = async () => {
+    if (!email || !password) { alert("Informe e-mail e senha."); return; }
+    setBusy(true);
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
+    setBusy(false);
+    if (error || !data.user) {
+      alert("E-mail ou senha incorretos. Se ainda não tem cadastro, clique em CRIAR UMA CONTA.");
       return;
     }
-    const match = all.find(
-      (u) => (u.email || "").toLowerCase() === email.toLowerCase() && u.password === password
-    );
-    if (!match) {
-      alert("E-mail ou senha incorretos.");
-      return;
-    }
-    localStorage.setItem("lemos_user", JSON.stringify(match));
-    if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) setAdminMode(true);
+    await hydrateLocalProfile(data.user.id, data.user.email || email);
+    if ((data.user.email || "").toLowerCase() === ADMIN_EMAIL) setAdminMode(true);
     navigate("/");
   };
 
-  const doRegister = () => {
+  const doRegister = async () => {
     if (!name || !role || !ageRange || !finalAvatar) {
       alert("Preencha nome, faixa etária, função e escolha um avatar.");
       return;
     }
-    if (!password || password.length < 6) {
-      alert("A senha deve ter pelo menos 6 caracteres.");
+    if (!email || !password || password.length < 6) {
+      alert("Informe um e-mail válido e uma senha com pelo menos 6 caracteres.");
       return;
     }
-    const createdAt = new Date().toISOString();
-    const userData: StoredUser = { name, ageRange, phone, role, email, password, avatar: finalAvatar, createdAt };
-    const all = readAllUsers();
-    const idx = all.findIndex((u) => (u.email || "").toLowerCase() === email.toLowerCase());
-    if (idx >= 0) all[idx] = userData; else all.push(userData);
-    writeAllUsers(all);
-    localStorage.setItem("lemos_user", JSON.stringify(userData));
-    if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) setAdminMode(true);
+    setBusy(true);
+    const { data, error } = await supabase.auth.signUp({
+      email: email.trim(),
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/`,
+        data: { name, age_range: ageRange, phone, role, avatar: finalAvatar },
+      },
+    });
+    if (error) {
+      setBusy(false);
+      if (/registered|already/i.test(error.message)) {
+        alert("Este e-mail já tem cadastro. Faça login com sua senha.");
+        setMode("login");
+      } else {
+        alert("Não foi possível criar sua conta: " + error.message);
+      }
+      return;
+    }
+    // Auto-confirm está ativo → já temos sessão. Garantimos sessão ativa
+    // (fallback: tenta login imediato) e hidratamos o perfil local.
+    let userId = data.user?.id;
+    if (!data.session) {
+      const { data: signIn } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+      userId = signIn.user?.id ?? userId;
+    }
+    setBusy(false);
+    if (!userId) {
+      alert("Cadastro criado! Faça login para continuar.");
+      setMode("login");
+      return;
+    }
+    await hydrateLocalProfile(userId, email);
+    if (email.toLowerCase() === ADMIN_EMAIL) setAdminMode(true);
     navigate("/");
   };
 
-  const handleForgotPwd = () => {
-    alert("📧 Para recuperar sua senha, entre em contato com o administrador.");
+  const handleForgotPwd = async () => {
+    if (!email) { alert("Digite seu e-mail acima e clique novamente em 'Esqueci minha senha'."); return; }
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/login`,
+    });
+    if (error) alert("Não foi possível enviar o e-mail: " + error.message);
+    else alert("📧 Enviamos um link para redefinir sua senha. Verifique seu e-mail.");
   };
 
   const handleAdminShortcut = () => {
@@ -153,6 +184,7 @@ export default function Login() {
   const handleGoogle = () => {
     alert("🚧 Login com Google em breve!");
   };
+
 
   return (
     <div
@@ -333,13 +365,15 @@ export default function Login() {
                 <>
                   <button
                     onClick={doLogin}
-                    className="flex-1 bg-foreground text-background font-display font-bold py-3 rounded-lg hover:opacity-90 transition tracking-wide text-sm"
+                    disabled={busy}
+                    className="flex-1 bg-foreground text-background font-display font-bold py-3 rounded-lg hover:opacity-90 transition tracking-wide text-sm disabled:opacity-60"
                   >
-                    ENTRAR
+                    {busy ? "ENTRANDO..." : "ENTRAR"}
                   </button>
                   <button
                     onClick={() => setMode("register")}
-                    className="flex-1 bg-transparent border-2 border-foreground text-foreground font-display font-bold py-3 rounded-lg hover:bg-foreground/5 transition tracking-wide text-sm"
+                    disabled={busy}
+                    className="flex-1 bg-transparent border-2 border-foreground text-foreground font-display font-bold py-3 rounded-lg hover:bg-foreground/5 transition tracking-wide text-sm disabled:opacity-60"
                   >
                     CRIAR UMA CONTA
                   </button>
@@ -348,13 +382,15 @@ export default function Login() {
                 <>
                   <button
                     onClick={doRegister}
-                    className="flex-1 bg-foreground text-background font-display font-bold py-3 rounded-lg hover:opacity-90 transition tracking-wide text-sm"
+                    disabled={busy}
+                    className="flex-1 bg-foreground text-background font-display font-bold py-3 rounded-lg hover:opacity-90 transition tracking-wide text-sm disabled:opacity-60"
                   >
-                    CRIAR CONTA
+                    {busy ? "CRIANDO..." : "CRIAR CONTA"}
                   </button>
                   <button
                     onClick={() => setMode("login")}
-                    className="flex-1 bg-transparent border-2 border-foreground text-foreground font-display font-bold py-3 rounded-lg hover:bg-foreground/5 transition tracking-wide text-sm"
+                    disabled={busy}
+                    className="flex-1 bg-transparent border-2 border-foreground text-foreground font-display font-bold py-3 rounded-lg hover:bg-foreground/5 transition tracking-wide text-sm disabled:opacity-60"
                   >
                     VOLTAR
                   </button>

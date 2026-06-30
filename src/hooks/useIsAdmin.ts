@@ -15,10 +15,14 @@ function currentUserIsAdminEmail(): boolean {
 }
 
 export function isAdminNow(): boolean {
-  // Admin gear is ONLY visible to users whose account email is whitelisted
-  // AND who have toggled admin mode on this device. This prevents regular
-  // users from seeing or activating administrator controls.
-  return currentUserIsAdminEmail() && localStorage.getItem(KEY) === "1";
+  // Admin gear is ONLY visible to whitelisted admin email AND with admin mode active.
+  // Also proactively clear stale admin flag for non-admin accounts so the gear
+  // can never leak to regular users from a previous session/device state.
+  if (!currentUserIsAdminEmail()) {
+    if (localStorage.getItem(KEY) === "1") localStorage.removeItem(KEY);
+    return false;
+  }
+  return localStorage.getItem(KEY) === "1";
 }
 
 export function canBeAdmin(): boolean {
