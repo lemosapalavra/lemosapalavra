@@ -365,13 +365,15 @@ export default function Login() {
                 <>
                   <button
                     onClick={doLogin}
-                    className="flex-1 bg-foreground text-background font-display font-bold py-3 rounded-lg hover:opacity-90 transition tracking-wide text-sm"
+                    disabled={busy}
+                    className="flex-1 bg-foreground text-background font-display font-bold py-3 rounded-lg hover:opacity-90 transition tracking-wide text-sm disabled:opacity-60"
                   >
-                    ENTRAR
+                    {busy ? "ENTRANDO..." : "ENTRAR"}
                   </button>
                   <button
                     onClick={() => setMode("register")}
-                    className="flex-1 bg-transparent border-2 border-foreground text-foreground font-display font-bold py-3 rounded-lg hover:bg-foreground/5 transition tracking-wide text-sm"
+                    disabled={busy}
+                    className="flex-1 bg-transparent border-2 border-foreground text-foreground font-display font-bold py-3 rounded-lg hover:bg-foreground/5 transition tracking-wide text-sm disabled:opacity-60"
                   >
                     CRIAR UMA CONTA
                   </button>
@@ -380,13 +382,15 @@ export default function Login() {
                 <>
                   <button
                     onClick={doRegister}
-                    className="flex-1 bg-foreground text-background font-display font-bold py-3 rounded-lg hover:opacity-90 transition tracking-wide text-sm"
+                    disabled={busy}
+                    className="flex-1 bg-foreground text-background font-display font-bold py-3 rounded-lg hover:opacity-90 transition tracking-wide text-sm disabled:opacity-60"
                   >
-                    CRIAR CONTA
+                    {busy ? "CRIANDO..." : "CRIAR CONTA"}
                   </button>
                   <button
                     onClick={() => setMode("login")}
-                    className="flex-1 bg-transparent border-2 border-foreground text-foreground font-display font-bold py-3 rounded-lg hover:bg-foreground/5 transition tracking-wide text-sm"
+                    disabled={busy}
+                    className="flex-1 bg-transparent border-2 border-foreground text-foreground font-display font-bold py-3 rounded-lg hover:bg-foreground/5 transition tracking-wide text-sm disabled:opacity-60"
                   >
                     VOLTAR
                   </button>
