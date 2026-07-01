@@ -1177,31 +1177,30 @@ type CacaCard = { title: string; words: string[]; size: number; reference?: stri
 const cacaCards: CacaCard[] = [
   {
     title: "Heróis da Bíblia",
-    size: 8,
-    words: ["JESUS", "MARIA", "JOSE", "DAVI", "NOE", "MOISES"],
+    size: 6,
+    words: ["JESUS", "DAVI", "NOE", "JOSE"],
     reference: "Fácil para crianças",
   },
   {
     title: "O Natal",
-    size: 8,
-    words: ["JESUS", "MARIA", "JOSE", "ANJO", "ESTRELA", "BELEM"],
+    size: 6,
+    words: ["JESUS", "MARIA", "ANJO", "JOSE"],
     reference: "Lucas 2",
   },
   {
     title: "Bichinhos da Arca",
-    size: 8,
-    words: ["NOE", "POMBA", "LEAO", "OVELHA", "ZEBRA", "URSO"],
+    size: 6,
+    words: ["NOE", "LEAO", "URSO", "POMBA"],
     reference: "Gênesis 7",
   },
 ];
 
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 type Dir = { dx: number; dy: number };
+// Kid-friendly: only horizontal (→) and vertical (↓) — no diagonals.
 const DIRS: Dir[] = [
-  { dx: 1, dy: 0 },   // →
-  { dx: 0, dy: 1 },   // ↓
-  { dx: 1, dy: 1 },   // ↘
-  { dx: 1, dy: -1 },  // ↗
+  { dx: 1, dy: 0 },
+  { dx: 0, dy: 1 },
 ];
 
 function buildGrid(size: number, words: string[], seed: number) {
