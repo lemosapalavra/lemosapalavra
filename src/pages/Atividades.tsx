@@ -1116,9 +1116,7 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-lg mx-auto">
-        <PageHeader title="Quebra-Cabeça" subtitle={`${puzzle.title} • ${gs}x${gs}`} icon={iconQuebraCabeca} />
-        <button onClick={() => { setSelectedIdx(null); setRunning(false); }}
-          className="mb-4 text-primary font-display text-sm font-bold hover:underline">← Trocar puzzle</button>
+        <ActivityNav onBack={() => { setSelectedIdx(null); setRunning(false); }} title="Quebra-Cabeça" subtitle={`${puzzle.title} • ${gs}x${gs}`} backLabel="Trocar puzzle" />
 
         <div className="flex justify-around mb-3 bg-popover rounded-xl py-2 shadow border border-border text-sm">
           <span className="font-display">🔀 <b>{moves}</b> movimentos</span>
