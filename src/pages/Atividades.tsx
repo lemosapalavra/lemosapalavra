@@ -1324,8 +1324,7 @@ function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgSt
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-3xl mx-auto">
-        <PageHeader title="Caça-Palavras" subtitle={card.title} icon={iconCacaPalavras.url} />
-        <ActivityNav onBack={onBack} backLabel="Voltar às atividades" />
+        <ActivityNav onBack={onBack} title="Caça-Palavras" subtitle={card.title} />
 
         <DailyBanner emoji="🔎" text="Clique numa letra para iniciar e em outra para terminar. Encontre todas as palavras!" />
 
