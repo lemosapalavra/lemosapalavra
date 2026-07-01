@@ -684,8 +684,7 @@ function MemoryGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-lg mx-auto">
-        <PageHeader title="Jogo da Memória" subtitle={cfg.label} icon={iconMemoria} />
-        <button onClick={() => { setLevel(null); setRunning(false); }} className="mb-4 text-primary font-display text-sm font-bold hover:underline">← Trocar dificuldade</button>
+        <ActivityNav onBack={() => { setLevel(null); setRunning(false); }} title="Jogo da Memória" subtitle={cfg.label} backLabel="Trocar dificuldade" />
 
         <div className="flex justify-around mb-4 bg-popover rounded-xl py-2 shadow border border-border">
           <div className="text-center">
