@@ -493,14 +493,22 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
         <div className="max-w-lg mx-auto">
           <ActivityNav onBack={onBack} title="Quiz Bíblico" subtitle="Escolha uma categoria" />
           <DailyBanner emoji="🧠" text="Perguntas de hoje — amanhã vêm novas!" />
-          <div className="grid gap-3">
+          <div className="grid grid-cols-2 gap-3">
             {quizCategories.map((c) => (
-              <button key={c.id} onClick={() => startCategory(c.id)}
-                className={`bg-gradient-to-r ${c.color} text-white rounded-2xl p-5 shadow-lg hover:scale-[1.03] transition-transform font-display text-lg font-bold text-left`}>
-                {c.label}
-                <span className="block text-xs opacity-90 font-body font-normal mt-1">
-                  {c.id === "ALL" ? quizBank.length : quizBank.filter((q) => q.cat === c.id).length} perguntas disponíveis
-                </span>
+              <button
+                key={c.id}
+                onClick={() => startCategory(c.id)}
+                className={`relative overflow-hidden bg-gradient-to-br ${c.color} text-white rounded-2xl shadow-lg hover:scale-[1.03] transition-transform font-display text-left border-2 border-white/40`}
+              >
+                <div className="aspect-square w-full overflow-hidden">
+                  <img src={c.image} alt={c.label} loading="lazy" className="w-full h-full object-cover opacity-90" />
+                </div>
+                <div className="p-3 bg-black/25 backdrop-blur-sm">
+                  <p className="font-bold text-sm sm:text-base leading-tight drop-shadow">{c.label}</p>
+                  <p className="text-[10px] sm:text-xs opacity-90 font-body font-normal mt-0.5">
+                    {c.id === "ALL" ? quizBank.length : quizBank.filter((q) => q.cat === c.id).length} perguntas
+                  </p>
+                </div>
               </button>
             ))}
           </div>
