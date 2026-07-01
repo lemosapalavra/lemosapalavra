@@ -11,7 +11,7 @@ export interface OrbitItem {
   route: string;
 }
 
-const KEY = "lemos_orbit_config_v2";
+const KEY = "lemos_orbit_config_v3";
 
 export function defaultOrbit(): OrbitItem[] {
   return [
