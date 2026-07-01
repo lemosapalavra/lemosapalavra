@@ -929,8 +929,7 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-lg mx-auto">
-        <PageHeader title="Colorir" subtitle={scene.title} icon={iconColorir} />
-        <ActivityNav onBack={onBack} />
+        <ActivityNav onBack={onBack} title="Colorir" subtitle={scene.title} />
 
         <div className="text-center mb-3 space-y-1">
           <span className="inline-flex items-center gap-2 text-xs font-display font-bold bg-amber-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">
