@@ -11,11 +11,11 @@ export interface OrbitItem {
   route: string;
 }
 
-const KEY = "lemos_orbit_config_v2";
+const KEY = "lemos_orbit_config_v3";
 
 export function defaultOrbit(): OrbitItem[] {
   return [
-    { icon: lemosPlayLogo, label: "HISTÓRIAS", sublabel: "Filmes, Séries e Músicas", route: "/lemosplay" },
+    { icon: lemosPlayLogo, label: "HISTÓRIAS\nBÍBLICAS", sublabel: "Filmes, Séries e Músicas", route: "/lemosplay" },
     { icon: iconAlbum, label: "ÁLBUM", sublabel: "Heróis da Fé", route: "/album" },
     { icon: iconDevocionais, label: "DEVOCIONAIS", route: "/devocionais" },
     { icon: iconPedidos, label: "PEDIDOS\nDE ORAÇÃO", route: "/pedidos-oracao" },

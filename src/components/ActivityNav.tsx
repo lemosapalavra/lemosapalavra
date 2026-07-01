@@ -5,15 +5,17 @@ import iconInicio from "@/assets/icon-inicio.jpg";
 interface ActivityNavProps {
   onBack: () => void;
   backLabel?: string;
+  title?: string;
+  subtitle?: string;
   className?: string;
 }
 
 /**
- * Animated Início + Voltar pair rendered INSIDE an activity sub-view.
- * - Início: navigates to the home route ("/")
- * - Voltar: invokes the activity's own onBack (returns to activity list)
+ * Minimal header for activity sub-views.
+ * Shows ONLY the Início + Voltar buttons (per user request) plus an optional
+ * title/subtitle centered. No user info, coin badge, or admin gear.
  */
-export default function ActivityNav({ onBack, backLabel = "Voltar às atividades", className = "" }: ActivityNavProps) {
+export default function ActivityNav({ onBack, backLabel = "Voltar às atividades", title, subtitle, className = "" }: ActivityNavProps) {
   const navigate = useNavigate();
   return (
     <div className={`flex items-center gap-2 mb-4 ${className}`}>
@@ -34,6 +36,16 @@ export default function ActivityNav({ onBack, backLabel = "Voltar às atividades
         <ArrowLeft className="w-5 h-5 animate-[backNudge_1.4s_ease-in-out_infinite]" />
         <span>Voltar</span>
       </button>
+      {(title || subtitle) && (
+        <div className="flex-1 min-w-0 text-center px-2">
+          {title && (
+            <h1 className="font-display font-extrabold text-base sm:text-xl leading-tight truncate bg-clip-text text-transparent bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600">
+              {title}
+            </h1>
+          )}
+          {subtitle && <p className="font-body text-[11px] sm:text-xs leading-tight truncate text-amber-900/80">{subtitle}</p>}
+        </div>
+      )}
     </div>
   );
 }

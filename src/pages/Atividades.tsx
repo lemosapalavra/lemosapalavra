@@ -111,10 +111,10 @@ function quizImageFor(q: string, cat: string): string {
 }
 
 const quizCategories = [
-  { id: "ALL", label: "🎯 Tudo", color: "from-purple-400 to-pink-400" },
-  { id: "AT", label: "📜 Antigo Testamento", color: "from-amber-400 to-orange-500" },
-  { id: "NT", label: "✨ Novo Testamento", color: "from-sky-400 to-blue-500" },
-  { id: "GERAL", label: "📖 Bíblia Geral", color: "from-emerald-400 to-teal-500" },
+  { id: "ALL", label: "🎯 Tudo", color: "from-purple-400 to-pink-400", image: logoCentral },
+  { id: "AT", label: "📜 Antigo Testamento", color: "from-amber-400 to-orange-500", image: imgMandamentos },
+  { id: "NT", label: "✨ Novo Testamento", color: "from-sky-400 to-blue-500", image: imgCriacao },
+  { id: "GERAL", label: "📖 Bíblia Geral", color: "from-emerald-400 to-teal-500", image: imgAdaoEva },
 ];
 
 /* =========================================================
@@ -491,17 +491,24 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
     return (
       <div className="min-h-screen py-6 px-4" style={bgStyle}>
         <div className="max-w-lg mx-auto">
-          <PageHeader title="Quiz Bíblico" subtitle="Escolha uma categoria" icon={iconQuiz} />
-          <ActivityNav onBack={onBack} />
+          <ActivityNav onBack={onBack} title="Quiz Bíblico" subtitle="Escolha uma categoria" />
           <DailyBanner emoji="🧠" text="Perguntas de hoje — amanhã vêm novas!" />
-          <div className="grid gap-3">
+          <div className="grid grid-cols-2 gap-3">
             {quizCategories.map((c) => (
-              <button key={c.id} onClick={() => startCategory(c.id)}
-                className={`bg-gradient-to-r ${c.color} text-white rounded-2xl p-5 shadow-lg hover:scale-[1.03] transition-transform font-display text-lg font-bold text-left`}>
-                {c.label}
-                <span className="block text-xs opacity-90 font-body font-normal mt-1">
-                  {c.id === "ALL" ? quizBank.length : quizBank.filter((q) => q.cat === c.id).length} perguntas disponíveis
-                </span>
+              <button
+                key={c.id}
+                onClick={() => startCategory(c.id)}
+                className={`relative overflow-hidden bg-gradient-to-br ${c.color} text-white rounded-2xl shadow-lg hover:scale-[1.03] transition-transform font-display text-left border-2 border-white/40`}
+              >
+                <div className="aspect-square w-full overflow-hidden">
+                  <img src={c.image} alt={c.label} loading="lazy" className="w-full h-full object-cover opacity-90" />
+                </div>
+                <div className="p-3 bg-black/25 backdrop-blur-sm">
+                  <p className="font-bold text-sm sm:text-base leading-tight drop-shadow">{c.label}</p>
+                  <p className="text-[10px] sm:text-xs opacity-90 font-body font-normal mt-0.5">
+                    {c.id === "ALL" ? quizBank.length : quizBank.filter((q) => q.cat === c.id).length} perguntas
+                  </p>
+                </div>
               </button>
             ))}
           </div>
@@ -520,8 +527,7 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-lg mx-auto">
-        <PageHeader title="Quiz Bíblico" subtitle={done ? "Resultado" : `Pergunta ${idx + 1} de ${questions.length}`} icon={iconQuiz} />
-        <ActivityNav onBack={onBack} />
+        <ActivityNav onBack={onBack} title="Quiz Bíblico" subtitle={done ? "Resultado" : `Pergunta ${idx + 1} de ${questions.length}`} />
 
         {done ? (
           <div className="bg-popover rounded-2xl p-6 shadow-lg border border-border text-center">
@@ -660,8 +666,7 @@ function MemoryGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
     return (
       <div className="min-h-screen py-6 px-4" style={bgStyle}>
         <div className="max-w-lg mx-auto">
-          <PageHeader title="Jogo da Memória" subtitle="Escolha a dificuldade" icon={iconMemoria} />
-          <ActivityNav onBack={onBack} />
+          <ActivityNav onBack={onBack} title="Jogo da Memória" subtitle="Escolha a dificuldade" />
           <DailyBanner emoji="🃏" text="Cartas de hoje — amanhã haverá uma nova combinação!" />
           <div className="grid gap-3">
             {(Object.keys(memoryConfig) as (keyof typeof memoryConfig)[]).map((k) => (
@@ -687,8 +692,7 @@ function MemoryGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-lg mx-auto">
-        <PageHeader title="Jogo da Memória" subtitle={cfg.label} icon={iconMemoria} />
-        <button onClick={() => { setLevel(null); setRunning(false); }} className="mb-4 text-primary font-display text-sm font-bold hover:underline">← Trocar dificuldade</button>
+        <ActivityNav onBack={() => { setLevel(null); setRunning(false); }} title="Jogo da Memória" subtitle={cfg.label} backLabel="Trocar dificuldade" />
 
         <div className="flex justify-around mb-4 bg-popover rounded-xl py-2 shadow border border-border">
           <div className="text-center">
@@ -777,8 +781,7 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-2xl mx-auto">
-        <PageHeader title="Jogo dos 7 Erros" subtitle={scene.title} icon={icon7Erros} />
-        <ActivityNav onBack={onBack} />
+        <ActivityNav onBack={onBack} title="Jogo dos 7 Erros" subtitle={scene.title} />
         <DailyBanner emoji="🔍" text="5 cenas selecionadas para hoje — amanhã chegam novas!" />
 
         <div className="flex justify-around mb-3 bg-popover rounded-xl py-2 shadow border border-border text-sm">
@@ -934,8 +937,7 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-lg mx-auto">
-        <PageHeader title="Colorir" subtitle={scene.title} icon={iconColorir} />
-        <ActivityNav onBack={onBack} />
+        <ActivityNav onBack={onBack} title="Colorir" subtitle={scene.title} />
 
         <div className="text-center mb-3 space-y-1">
           <span className="inline-flex items-center gap-2 text-xs font-display font-bold bg-amber-100 text-amber-800 px-3 py-1 rounded-full border border-amber-300">
@@ -1066,8 +1068,7 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
     return (
       <div className="min-h-screen py-6 px-4" style={bgStyle}>
         <div className="max-w-lg mx-auto">
-          <PageHeader title="Quebra-Cabeça" subtitle="Escolha um puzzle" icon={iconQuebraCabeca} />
-          <ActivityNav onBack={onBack} />
+          <ActivityNav onBack={onBack} title="Quebra-Cabeça" subtitle="Escolha um puzzle" />
           <DailyBanner emoji="🧩" text="Puzzle do dia — amanhã chega uma nova imagem bíblica!" />
 
 
@@ -1123,9 +1124,7 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-lg mx-auto">
-        <PageHeader title="Quebra-Cabeça" subtitle={`${puzzle.title} • ${gs}x${gs}`} icon={iconQuebraCabeca} />
-        <button onClick={() => { setSelectedIdx(null); setRunning(false); }}
-          className="mb-4 text-primary font-display text-sm font-bold hover:underline">← Trocar puzzle</button>
+        <ActivityNav onBack={() => { setSelectedIdx(null); setRunning(false); }} title="Quebra-Cabeça" subtitle={`${puzzle.title} • ${gs}x${gs}`} backLabel="Trocar puzzle" />
 
         <div className="flex justify-around mb-3 bg-popover rounded-xl py-2 shadow border border-border text-sm">
           <span className="font-display">🔀 <b>{moves}</b> movimentos</span>
@@ -1186,31 +1185,30 @@ type CacaCard = { title: string; words: string[]; size: number; reference?: stri
 const cacaCards: CacaCard[] = [
   {
     title: "Heróis da Bíblia",
-    size: 8,
-    words: ["JESUS", "MARIA", "JOSE", "DAVI", "NOE", "MOISES"],
+    size: 6,
+    words: ["JESUS", "DAVI", "NOE", "JOSE"],
     reference: "Fácil para crianças",
   },
   {
     title: "O Natal",
-    size: 8,
-    words: ["JESUS", "MARIA", "JOSE", "ANJO", "ESTRELA", "BELEM"],
+    size: 6,
+    words: ["JESUS", "MARIA", "ANJO", "JOSE"],
     reference: "Lucas 2",
   },
   {
     title: "Bichinhos da Arca",
-    size: 8,
-    words: ["NOE", "POMBA", "LEAO", "OVELHA", "ZEBRA", "URSO"],
+    size: 6,
+    words: ["NOE", "LEAO", "URSO", "POMBA"],
     reference: "Gênesis 7",
   },
 ];
 
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 type Dir = { dx: number; dy: number };
+// Kid-friendly: only horizontal (→) and vertical (↓) — no diagonals.
 const DIRS: Dir[] = [
-  { dx: 1, dy: 0 },   // →
-  { dx: 0, dy: 1 },   // ↓
-  { dx: 1, dy: 1 },   // ↘
-  { dx: 1, dy: -1 },  // ↗
+  { dx: 1, dy: 0 },
+  { dx: 0, dy: 1 },
 ];
 
 function buildGrid(size: number, words: string[], seed: number) {
@@ -1333,8 +1331,7 @@ function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgSt
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-3xl mx-auto">
-        <PageHeader title="Caça-Palavras" subtitle={card.title} icon={iconCacaPalavras.url} />
-        <ActivityNav onBack={onBack} backLabel="Voltar às atividades" />
+        <ActivityNav onBack={onBack} title="Caça-Palavras" subtitle={card.title} />
 
         <DailyBanner emoji="🔎" text="Clique numa letra para iniciar e em outra para terminar. Encontre todas as palavras!" />
 
