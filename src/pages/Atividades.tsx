@@ -658,8 +658,7 @@ function MemoryGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
     return (
       <div className="min-h-screen py-6 px-4" style={bgStyle}>
         <div className="max-w-lg mx-auto">
-          <PageHeader title="Jogo da Memória" subtitle="Escolha a dificuldade" icon={iconMemoria} />
-          <ActivityNav onBack={onBack} />
+          <ActivityNav onBack={onBack} title="Jogo da Memória" subtitle="Escolha a dificuldade" />
           <DailyBanner emoji="🃏" text="Cartas de hoje — amanhã haverá uma nova combinação!" />
           <div className="grid gap-3">
             {(Object.keys(memoryConfig) as (keyof typeof memoryConfig)[]).map((k) => (
