@@ -504,7 +504,7 @@ export default function LemosPlay() {
       <div className="-mt-20 sm:-mt-32 relative z-10 pb-16">
         {continueItems.length > 0 && <Row title="Continuar assistindo" items={continueItems} onPlay={(item) => requestPlay(item)} progress={progress} />}
 
-        {/* Top 10 — destaques do Lemos Play */}
+        {/* Top 10 — destaques */}
         <TopTenRow
           items={(() => {
             const seriesFirsts = seriesGroupItems.map((g) => g.videos[0]).filter((v): v is PlayItem => !!v);
@@ -516,31 +516,24 @@ export default function LemosPlay() {
           progress={progress}
         />
 
-        {/* Seções Gênesis e Jesus removidas — aguardando retransmissão dos vídeos */}
-
-        <div id="filmes"><Row
-          title="Filmes Bíblicos"
-          items={filmesPlay}
-          onPlay={(item) => requestPlay(item)}
-          progress={progress}
-        /></div>
-
-        {/* Origem da Série Jesus — só texto branco */}
-        <div className="px-4 sm:px-8 -mt-2 mb-6 text-center">
-          <a href="#series" className="block max-w-3xl mx-auto text-white hover:text-amber-200 transition">
-            <p className="font-display font-extrabold text-sm sm:text-base drop-shadow">
-              ⭐ <span className="underline">O Nascimento de Jesus</span> é o filme que deu origem à <strong>Série Jesus</strong>.
-            </p>
-            <p className="text-xs sm:text-sm text-white/85 drop-shadow">
-              👇 Assista à série logo abaixo, em Mini Séries Bíblicas.
-            </p>
-          </a>
-        </div>
-
+        {(() => {
+          const seriesFirsts = seriesGroupItems.map((g) => g.videos[0]).filter((v): v is PlayItem => !!v);
+          const universe = [...filmesPlay, ...seriesFirsts];
+          const genesisRegex = /cria[cç][aã]o|ad[aã]o|noé|noe|abra[aã]o|esa[uú]|jac[oó]|jos[eé]|j[óo]\b|mois[eé]s|jonas|batalha dos anjos/i;
+          const jesusRegex = /jesus|batismo|par[aá]l[ií]tico|tempestade|dem[oô]nios|ele vive|filho pr[oó]digo|semeador|apocalipse/i;
+          const genesisItems = universe.filter((v) => genesisRegex.test(v.title));
+          const jesusItems = universe.filter((v) => jesusRegex.test(v.title));
+          return (
+            <>
+              <div id="genesis"><Row title="📖 Gênesis" items={genesisItems} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
+              <div id="jesus"><Row title="✝️ Jesus" items={jesusItems} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
+            </>
+          );
+        })()}
 
         <div id="series">
           <Row
-            title="Mini Séries Bíblicas"
+            title="Séries"
             items={seriesGroupItems.map((g) => ({ id: g.id, title: g.title, poster: g.poster, src: "", category: g.category }))}
             onPlay={(item) => {
               const g = seriesGroupItems.find((x) => x.id === item.id);
@@ -552,6 +545,7 @@ export default function LemosPlay() {
         <div id="musicas"><Row title="Músicas" items={musicasPlay} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
         <div id="louvores"><Row title="Louvores" items={louvoresPlay} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
       </div>
+
 
       {openGroup && (
         <div className="fixed inset-0 z-40 bg-black/85 backdrop-blur flex items-center justify-center p-4" onClick={() => setOpenGroup(null)}>
