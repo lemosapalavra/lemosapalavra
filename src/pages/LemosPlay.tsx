@@ -475,12 +475,25 @@ export default function LemosPlay() {
       )}
 
 
-      {/* Hero */}
+      {/* Hero — rotating spotlight com prévia em vídeo (estilo Netflix) */}
       <section className="relative h-[70vh] sm:h-[85vh] w-full overflow-hidden">
         {hero?.poster ? (
-          <img key={hero.id} src={hero.poster} alt={hero.title} className="absolute inset-0 w-full h-full object-cover animate-fade-in" />
+          <img key={`hero-img-${hero.id}`} src={hero.poster} alt={hero.title} className="absolute inset-0 w-full h-full object-cover animate-fade-in" />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-black" />
+        )}
+        {/* Muted preview overlay for direct-video sources */}
+        {hero?.src && /\.(mp4|webm|mov)(\?|$)/i.test(hero.src) && (
+          <video
+            key={`hero-vid-${hero.id}`}
+            src={hero.src}
+            className="absolute inset-0 w-full h-full object-cover animate-fade-in"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+          />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent" />
