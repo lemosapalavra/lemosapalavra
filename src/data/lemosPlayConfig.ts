@@ -196,12 +196,9 @@ const repairConfig = (cfg: LemosPlayConfig, def: LemosPlayConfig): LemosPlayConf
           videos: mergeById(userG ? norm(userG.videos) : [], g.videos),
         };
       });
-      // Preserve any extra user-only series at the end (shouldn't normally happen).
-      cfg.series.forEach((g) => {
-        if (!def.series.find((d) => d.id === g.id)) {
-          out.push({ ...g, icon: resolvePoster(g.title, g.icon), videos: norm(g.videos) });
-        }
-      });
+      // Ignoramos grupos extras que só existam no localStorage do usuário —
+      // dessa forma, remoções feitas no código (ex.: Noé, Davi, 10 Mandamentos,
+      // Jesus, O Filho Pródigo) desaparecem imediatamente da UI.
       return out;
     })(),
   };
