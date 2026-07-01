@@ -154,56 +154,8 @@ export const seriesGroups: BibleVideoGroup[] = [
       { title: "A Prova de Fogo — Parte II", icon: iconProvaFogo.url, src: vidProvaFogo2.url },
     ],
   },
-  {
-    title: "Noé e a Arca",
-    icon: iconNoe1,
-    videos: [
-      { title: "Noé e a Arca — Filme", icon: iconNoe1, src: vidNoeArcaFilme.url },
-      { title: "Noé — Parte I", icon: iconNoe1, src: vidNoe1.url },
-      { title: "Noé — Parte II", icon: iconNoe1, src: vidNoe2.url },
-    ],
-  },
-  {
-    title: "Davi e Golias",
-    icon: iconDaviGolias,
-    videos: [
-      { title: "Davi e Golias — Filme", icon: iconDaviGolias, src: vidDaviFilme.url },
-      { title: "Davi e Golias — Parte I", icon: iconDaviGolias, src: vidDavi1.url },
-      { title: "Davi e Golias — Parte II", icon: iconDaviGolias, src: vidDavi2.url },
-    ],
-  },
-  {
-    title: "Os 10 Mandamentos",
-    icon: icon10Mandamentos,
-    videos: [
-      { title: "Os 10 Mandamentos — Filme", icon: icon10Mandamentos, src: vid10mFilme.url },
-      { title: "Os 10 Mandamentos — Parte I", icon: icon10Mandamentos, src: vid10m1.url },
-      { title: "Os 10 Mandamentos — Parte II", icon: icon10Mandamentos, src: vid10m2.url },
-      { title: "Os 10 Mandamentos — Parte III", icon: icon10Mandamentos, src: vid10m3.url },
-    ],
-  },
-  {
-    title: "Jesus - A Série Ele está Vivo!",
-    icon: jesusSerieLogo.url,
-    videos: [
-      { title: "O Batismo de Jesus — Parte I", icon: batismoP1Thumb.url, src: vidBatismoP1.url, section: "Batismo de Jesus" },
-      { title: "O Batismo de Jesus — Parte II", icon: batismoP2Thumb.url, src: vidBatismoP2.url, section: "Batismo de Jesus" },
-      { title: "A Cura do Paralítico", icon: curaParaliticoThumb.url, src: vidCuraParalitico.url, section: "Milagres de Jesus" },
-      { title: "A Tempestade", icon: aTempestadeThumb.url, src: vidATempestade.url, section: "Milagres de Jesus" },
-      { title: "Jesus Expulsa Demônios", icon: expulsaDemoniosThumb.url, src: vidExpulsaDemonios.url, section: "Milagres de Jesus" },
-      { title: "Ele Vive — Parte I", icon: eleVive1Thumb.url, src: vidEleVive1.url, section: "Ele Vive" },
-      { title: "Ele Vive — Parte II", icon: eleVive2Thumb.url, src: vidEleVive2.url, section: "Ele Vive" },
-      { title: "Ele Vive — Parte III", icon: eleVive3Thumb.url, src: vidEleVive3.url, section: "Ele Vive" },
-    ],
-  },
-  {
-    title: "O Filho Pródigo",
-    icon: filhoProdigo1Thumb.url,
-    videos: [
-      { title: "O Filho Pródigo — Parte I", icon: filhoProdigo1Thumb.url, src: vidFilhoProdigo1.url },
-      { title: "O Filho Pródigo — Parte II", icon: filhoProdigo2Thumb.url, src: vidFilhoProdigo2.url },
-    ],
-  },
+  // Removidos por solicitação: Noé e a Arca, Davi e Golias, Os 10 Mandamentos,
+  // Jesus - A Série Ele está Vivo!, O Filho Pródigo.
 ];
 
 export const filmesVideos: BibleVideo[] = [
