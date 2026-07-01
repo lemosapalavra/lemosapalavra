@@ -491,8 +491,7 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
     return (
       <div className="min-h-screen py-6 px-4" style={bgStyle}>
         <div className="max-w-lg mx-auto">
-          <PageHeader title="Quiz Bíblico" subtitle="Escolha uma categoria" icon={iconQuiz} />
-          <ActivityNav onBack={onBack} />
+          <ActivityNav onBack={onBack} title="Quiz Bíblico" subtitle="Escolha uma categoria" />
           <DailyBanner emoji="🧠" text="Perguntas de hoje — amanhã vêm novas!" />
           <div className="grid gap-3">
             {quizCategories.map((c) => (
