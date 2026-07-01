@@ -519,8 +519,7 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-lg mx-auto">
-        <PageHeader title="Quiz Bíblico" subtitle={done ? "Resultado" : `Pergunta ${idx + 1} de ${questions.length}`} icon={iconQuiz} />
-        <ActivityNav onBack={onBack} />
+        <ActivityNav onBack={onBack} title="Quiz Bíblico" subtitle={done ? "Resultado" : `Pergunta ${idx + 1} de ${questions.length}`} />
 
         {done ? (
           <div className="bg-popover rounded-2xl p-6 shadow-lg border border-border text-center">
