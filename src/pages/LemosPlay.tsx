@@ -460,7 +460,7 @@ export default function LemosPlay() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <PageHeader title="Histórias" subtitle="Filmes, Séries e Músicas" />
+      <PageHeader title="Histórias Bíblicas" subtitle="Filmes, Séries e Músicas" />
       {isAdmin && (
         <div className="fixed top-2 right-2 z-40">
           <button
