@@ -773,8 +773,7 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
   return (
     <div className="min-h-screen py-6 px-4" style={bgStyle}>
       <div className="max-w-2xl mx-auto">
-        <PageHeader title="Jogo dos 7 Erros" subtitle={scene.title} icon={icon7Erros} />
-        <ActivityNav onBack={onBack} />
+        <ActivityNav onBack={onBack} title="Jogo dos 7 Erros" subtitle={scene.title} />
         <DailyBanner emoji="🔍" text="5 cenas selecionadas para hoje — amanhã chegam novas!" />
 
         <div className="flex justify-around mb-3 bg-popover rounded-xl py-2 shadow border border-border text-sm">
