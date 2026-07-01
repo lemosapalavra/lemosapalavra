@@ -111,10 +111,10 @@ function quizImageFor(q: string, cat: string): string {
 }
 
 const quizCategories = [
-  { id: "ALL", label: "🎯 Tudo", color: "from-purple-400 to-pink-400" },
-  { id: "AT", label: "📜 Antigo Testamento", color: "from-amber-400 to-orange-500" },
-  { id: "NT", label: "✨ Novo Testamento", color: "from-sky-400 to-blue-500" },
-  { id: "GERAL", label: "📖 Bíblia Geral", color: "from-emerald-400 to-teal-500" },
+  { id: "ALL", label: "🎯 Tudo", color: "from-purple-400 to-pink-400", image: logoCentral },
+  { id: "AT", label: "📜 Antigo Testamento", color: "from-amber-400 to-orange-500", image: imgMandamentos },
+  { id: "NT", label: "✨ Novo Testamento", color: "from-sky-400 to-blue-500", image: imgCriacao },
+  { id: "GERAL", label: "📖 Bíblia Geral", color: "from-emerald-400 to-teal-500", image: imgAdaoEva },
 ];
 
 /* =========================================================
