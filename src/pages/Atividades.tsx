@@ -1060,8 +1060,7 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
     return (
       <div className="min-h-screen py-6 px-4" style={bgStyle}>
         <div className="max-w-lg mx-auto">
-          <PageHeader title="Quebra-Cabeça" subtitle="Escolha um puzzle" icon={iconQuebraCabeca} />
-          <ActivityNav onBack={onBack} />
+          <ActivityNav onBack={onBack} title="Quebra-Cabeça" subtitle="Escolha um puzzle" />
           <DailyBanner emoji="🧩" text="Puzzle do dia — amanhã chega uma nova imagem bíblica!" />
 
 
