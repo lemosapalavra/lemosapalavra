@@ -324,3 +324,99 @@ function AdminModeToggle() {
   );
 }
 
+
+function AdminInteractionRow({
+  user,
+  lastVisit,
+  stickers,
+  pagesVisited,
+}: {
+  user: any;
+  lastVisit: string;
+  stickers: number;
+  pagesVisited: Record<string, number>;
+}) {
+  const admin = useIsAdmin();
+  const [ip, setIp] = useState<string>("—");
+  const [location, setLocation] = useState<string>("—");
+
+  useEffect(() => {
+    if (!admin) return;
+    fetch("https://ipapi.co/json/")
+      .then((r) => r.json())
+      .then((j) => {
+        setIp(j.ip || "—");
+        const parts = [j.city, j.region, j.country_name].filter(Boolean);
+        setLocation(parts.length ? parts.join(", ") : "—");
+      })
+      .catch(() => {
+        setIp("indisponível");
+        setLocation("indisponível");
+      });
+  }, [admin]);
+
+  if (!admin || !user) return null;
+
+  const dispositivo = `${navigator.platform || "?"} · ${navigator.userAgent.split("(")[0].trim()}`;
+  const albumTotal = 208;
+  const albumConcluido = stickers >= albumTotal ? "Sim ✅" : `Não (${stickers}/${albumTotal})`;
+  const atividadesVisitas = pagesVisited["/atividades"] || 0;
+  const progressoAtividades = `${atividadesVisitas} acesso${atividadesVisitas === 1 ? "" : "s"}`;
+  const status = "🟢 Ativo";
+  const responsavel =
+    user.role === "pai" || user.role === "mãe"
+      ? `${user.role} — ${user.name}`
+      : user.role === "filho" || user.role === "filha"
+      ? "Responsável não informado"
+      : "—";
+  const cadastro = user.createdAt ? new Date(user.createdAt).toLocaleString("pt-BR") : "—";
+  const ultimoLogin = lastVisit || new Date().toLocaleString("pt-BR");
+
+  const cells: { label: string; value: string }[] = [
+    { label: "Nome", value: user.name || "—" },
+    { label: "Função", value: user.role || "—" },
+    { label: "Telefone", value: user.phone || "—" },
+    { label: "Data de cadastro", value: cadastro },
+    { label: "Último login", value: ultimoLogin },
+    { label: "IP / dispositivo", value: `${ip} · ${dispositivo}` },
+    { label: "Localização", value: location },
+    { label: "Status", value: status },
+    { label: "Faixa etária", value: user.ageRange || "—" },
+    { label: "Álbum concluído", value: albumConcluido },
+    { label: "Progresso nas atividades", value: progressoAtividades },
+    { label: "Responsável (pai/mãe)", value: responsavel },
+  ];
+
+  return (
+    <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
+      <h3 className="font-display text-lg font-bold text-foreground mb-3">
+        🧭 Interação do usuário (admin)
+      </h3>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm font-body border-collapse">
+          <thead>
+            <tr className="text-left border-b border-border bg-amber-50">
+              {cells.map((c) => (
+                <th key={c.label} className="py-2 px-2 font-display font-bold text-amber-900 whitespace-nowrap text-xs">
+                  {c.label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-b border-border/50 hover:bg-amber-50/50">
+              {cells.map((c) => (
+                <td key={c.label} className="py-2 px-2 text-xs text-foreground whitespace-nowrap">
+                  {c.value}
+                </td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p className="text-[11px] text-muted-foreground mt-3">
+        ⚠️ Linha baseada nos dados deste dispositivo. Para consolidar todos os usuários do site, é necessário conectar o backend a esta tabela.
+      </p>
+    </div>
+  );
+}
