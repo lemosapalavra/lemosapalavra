@@ -997,9 +997,15 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
 
         <div className="flex flex-col items-center gap-2 mt-4">
           <CoinBadge amount={3} size="md" label="ao finalizar" />
-          {fills >= 3 && (
-            <button onClick={() => celebrate(`"${scene.title}" pintado!`, 3, "🎨")}
-              className="btn-cartoon px-6 py-3 text-sm">✨ Finalizar e ganhar moedinhas</button>
+          <button
+            onClick={() => celebrate(`"${scene.title}" pintado!`, 3, "🎨")}
+            disabled={fills < 1}
+            className="btn-cartoon px-6 py-3 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            ✨ Finalizar e ganhar moedinhas
+          </button>
+          {fills < 1 && (
+            <p className="text-[11px] text-muted-foreground italic">Pinte pelo menos uma área para finalizar 🎨</p>
           )}
         </div>
 
