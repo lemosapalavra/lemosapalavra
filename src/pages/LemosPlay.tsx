@@ -538,16 +538,15 @@ export default function LemosPlay() {
         />
 
         {(() => {
-          const seriesFirsts = seriesGroupItems.map((g) => g.videos[0]).filter((v): v is PlayItem => !!v);
-          const universe = [...filmesPlay, ...seriesFirsts];
-          const genesisRegex = /cria[cç][aã]o|ad[aã]o|noé|noe|abra[aã]o|esa[uú]|jac[oó]|jos[eé]|j[óo]\b|mois[eé]s|jonas|batalha dos anjos/i;
-          const jesusRegex = /jesus|batismo|par[aá]l[ií]tico|tempestade|dem[oô]nios|ele vive|filho pr[oó]digo|semeador|apocalipse/i;
-          const genesisItems = universe.filter((v) => genesisRegex.test(v.title));
-          const jesusItems = universe.filter((v) => jesusRegex.test(v.title));
+          // Rows Gênesis e Jesus temporariamente vazios — aguardando novo lote
+          // de vídeos do administrador. Mantemos os cabeçalhos para preservar
+          // a ordem/UX do menu de categorias.
+          const genesisItems: PlayItem[] = [];
+          const jesusItems: PlayItem[] = [];
           return (
             <>
-              <div id="genesis"><Row title="📖 Gênesis" items={genesisItems} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
-              <div id="jesus"><Row title="✝️ Jesus" items={jesusItems} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
+              <div id="genesis"><Row title="📖 Gênesis" items={genesisItems} onPlay={(item) => requestPlay(item)} progress={progress} emptyMessage="✨ Novos vídeos em breve — envie os arquivos para o administrador." /></div>
+              <div id="jesus"><Row title="✝️ Jesus" items={jesusItems} onPlay={(item) => requestPlay(item)} progress={progress} emptyMessage="✨ Novos vídeos em breve — envie os arquivos para o administrador." /></div>
             </>
           );
         })()}
