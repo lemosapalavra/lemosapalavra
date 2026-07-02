@@ -44,7 +44,9 @@ const AGE_RANGES: { id: AgeRange; label: string; emoji: string }[] = [
   { id: "idosos",        label: "Idosos (60+)",             emoji: "🧓" },
 ];
 
-const ADMIN_EMAIL = "marcello.pertutti@gmail.com";
+const ADMIN_EMAIL = "admin@lemos.local";
+const ADMIN_SHORTCUT_LOGIN = "admin";
+const ADMIN_SHORTCUT_PASSWORD = "1234";
 
 // Hydrate the legacy localStorage profile object that the rest of the
 // app already reads from (`lemos_user`) using the Supabase profile row.
@@ -100,6 +102,23 @@ export default function Login() {
 
   const doLogin = async () => {
     if (!email || !password) { alert("Informe e-mail e senha."); return; }
+    // 🔐 Atalho de administrador: usuário "admin" / senha "1234" entra
+    // localmente com privilégios totais, sem depender do backend.
+    if (email.trim().toLowerCase() === ADMIN_SHORTCUT_LOGIN && password === ADMIN_SHORTCUT_PASSWORD) {
+      const adminUser = {
+        name: "Administrador",
+        ageRange: "adultos",
+        phone: "",
+        role: "admin",
+        avatar: "",
+        email: ADMIN_EMAIL,
+        createdAt: new Date().toISOString(),
+      };
+      localStorage.setItem("lemos_user", JSON.stringify(adminUser));
+      setAdminMode(true);
+      navigate("/");
+      return;
+    }
     setBusy(true);
     const { data, error } = await supabase.auth.signInWithPassword({
       email: email.trim(),

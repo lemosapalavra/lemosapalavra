@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const KEY = "lemos_admin_mode";
-const ADMIN_EMAILS = ["marcello.pertutti@gmail.com"];
+const ADMIN_EMAILS = ["admin@lemos.local"];
 
 function currentUserIsAdminEmail(): boolean {
   try {

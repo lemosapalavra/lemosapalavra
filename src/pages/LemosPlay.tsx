@@ -113,11 +113,21 @@ function VideoSideActions({ itemId, title, src, className = "absolute top-1 righ
   );
 }
 
-function Row({ title, items, onPlay, progress, onContinueSeries, getContinuationCount }: { title: string; items: PlayItem[]; onPlay: (item: PlayItem) => void; progress: ProgressMap; onContinueSeries?: (item: PlayItem) => void; getContinuationCount?: (item: PlayItem) => number }) {
+function Row({ title, items, onPlay, progress, onContinueSeries, getContinuationCount, emptyMessage }: { title: string; items: PlayItem[]; onPlay: (item: PlayItem) => void; progress: ProgressMap; onContinueSeries?: (item: PlayItem) => void; getContinuationCount?: (item: PlayItem) => number; emptyMessage?: string }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const scrollBy = (dx: number) => scrollerRef.current?.scrollBy({ left: dx, behavior: "smooth" });
 
-  if (!items.length) return null;
+  if (!items.length) {
+    if (!emptyMessage) return null;
+    return (
+      <section className="mb-8">
+        <h2 className="text-white font-bold text-lg sm:text-2xl mb-3 px-4 sm:px-12">{title}</h2>
+        <div className="mx-4 sm:mx-12 rounded-xl border border-dashed border-white/20 bg-white/5 px-4 py-6 text-sm text-zinc-300 italic text-center">
+          {emptyMessage}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="mb-8 group/row">
@@ -475,29 +485,37 @@ export default function LemosPlay() {
       )}
 
 
-      {/* Hero — rotating spotlight com prévia em vídeo (estilo Netflix) */}
-      <section className="relative h-[70vh] sm:h-[85vh] w-full overflow-hidden">
-        {hero?.poster ? (
-          <img key={`hero-img-${hero.id}`} src={hero.poster} alt={hero.title} className="absolute inset-0 w-full h-full object-cover animate-fade-in" />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-black" />
-        )}
-        {/* Muted preview overlay for direct-video sources */}
-        {hero?.src && /\.(mp4|webm|mov)(\?|$)/i.test(hero.src) && (
-          <video
-            key={`hero-vid-${hero.id}`}
-            src={hero.src}
-            className="absolute inset-0 w-full h-full object-cover animate-fade-in"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent" />
-        <div className="relative h-full flex flex-col justify-end pb-16 sm:pb-24 px-4 sm:px-12 max-w-3xl">
+      {/* Hero — capa estática à esquerda + prévia em vídeo à direita (mesmo tamanho) */}
+      <section className="relative h-[55vh] sm:h-[70vh] w-full overflow-hidden bg-black">
+        <div className="absolute inset-0 grid grid-cols-2 gap-0.5">
+          {/* Capa estática */}
+          <div className="relative overflow-hidden bg-zinc-900">
+            {hero?.poster ? (
+              <img key={`hero-img-${hero.id}`} src={hero.poster} alt={hero.title} className="absolute inset-0 w-full h-full object-cover animate-fade-in" />
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-black" />
+            )}
+          </div>
+          {/* Prévia em vídeo (mesmo tamanho da capa) */}
+          <div className="relative overflow-hidden bg-zinc-900">
+            {hero?.src && /\.(mp4|webm|mov)(\?|$)/i.test(hero.src) ? (
+              <video
+                key={`hero-vid-${hero.id}`}
+                src={hero.src}
+                className="absolute inset-0 w-full h-full object-cover animate-fade-in"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+              />
+            ) : hero?.poster ? (
+              <img src={hero.poster} alt="" className="absolute inset-0 w-full h-full object-cover opacity-70" />
+            ) : null}
+          </div>
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent pointer-events-none" />
+        <div className="relative h-full flex flex-col justify-end pb-10 sm:pb-16 px-4 sm:px-12 max-w-3xl">
           <p className="uppercase tracking-widest text-xs sm:text-sm text-zinc-300 mb-2">Em destaque · {hero?.category}</p>
           <h1 className="font-display text-4xl sm:text-6xl font-extrabold drop-shadow-2xl mb-3">{hero?.title}</h1>
           <p className="text-zinc-200 text-sm sm:text-base mb-5 max-w-xl">
@@ -530,16 +548,15 @@ export default function LemosPlay() {
         />
 
         {(() => {
-          const seriesFirsts = seriesGroupItems.map((g) => g.videos[0]).filter((v): v is PlayItem => !!v);
-          const universe = [...filmesPlay, ...seriesFirsts];
-          const genesisRegex = /cria[cç][aã]o|ad[aã]o|noé|noe|abra[aã]o|esa[uú]|jac[oó]|jos[eé]|j[óo]\b|mois[eé]s|jonas|batalha dos anjos/i;
-          const jesusRegex = /jesus|batismo|par[aá]l[ií]tico|tempestade|dem[oô]nios|ele vive|filho pr[oó]digo|semeador|apocalipse/i;
-          const genesisItems = universe.filter((v) => genesisRegex.test(v.title));
-          const jesusItems = universe.filter((v) => jesusRegex.test(v.title));
+          // Rows Gênesis e Jesus temporariamente vazios — aguardando novo lote
+          // de vídeos do administrador. Mantemos os cabeçalhos para preservar
+          // a ordem/UX do menu de categorias.
+          const genesisItems: PlayItem[] = [];
+          const jesusItems: PlayItem[] = [];
           return (
             <>
-              <div id="genesis"><Row title="📖 Gênesis" items={genesisItems} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
-              <div id="jesus"><Row title="✝️ Jesus" items={jesusItems} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
+              <div id="genesis"><Row title="📖 Gênesis" items={genesisItems} onPlay={(item) => requestPlay(item)} progress={progress} emptyMessage="✨ Novos vídeos em breve — envie os arquivos para o administrador." /></div>
+              <div id="jesus"><Row title="✝️ Jesus" items={jesusItems} onPlay={(item) => requestPlay(item)} progress={progress} emptyMessage="✨ Novos vídeos em breve — envie os arquivos para o administrador." /></div>
             </>
           );
         })()}
