@@ -475,29 +475,37 @@ export default function LemosPlay() {
       )}
 
 
-      {/* Hero — rotating spotlight com prévia em vídeo (estilo Netflix) */}
-      <section className="relative h-[70vh] sm:h-[85vh] w-full overflow-hidden">
-        {hero?.poster ? (
-          <img key={`hero-img-${hero.id}`} src={hero.poster} alt={hero.title} className="absolute inset-0 w-full h-full object-cover animate-fade-in" />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-black" />
-        )}
-        {/* Muted preview overlay for direct-video sources */}
-        {hero?.src && /\.(mp4|webm|mov)(\?|$)/i.test(hero.src) && (
-          <video
-            key={`hero-vid-${hero.id}`}
-            src={hero.src}
-            className="absolute inset-0 w-full h-full object-cover animate-fade-in"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent" />
-        <div className="relative h-full flex flex-col justify-end pb-16 sm:pb-24 px-4 sm:px-12 max-w-3xl">
+      {/* Hero — capa estática à esquerda + prévia em vídeo à direita (mesmo tamanho) */}
+      <section className="relative h-[55vh] sm:h-[70vh] w-full overflow-hidden bg-black">
+        <div className="absolute inset-0 grid grid-cols-2 gap-0.5">
+          {/* Capa estática */}
+          <div className="relative overflow-hidden bg-zinc-900">
+            {hero?.poster ? (
+              <img key={`hero-img-${hero.id}`} src={hero.poster} alt={hero.title} className="absolute inset-0 w-full h-full object-cover animate-fade-in" />
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-black" />
+            )}
+          </div>
+          {/* Prévia em vídeo (mesmo tamanho da capa) */}
+          <div className="relative overflow-hidden bg-zinc-900">
+            {hero?.src && /\.(mp4|webm|mov)(\?|$)/i.test(hero.src) ? (
+              <video
+                key={`hero-vid-${hero.id}`}
+                src={hero.src}
+                className="absolute inset-0 w-full h-full object-cover animate-fade-in"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+              />
+            ) : hero?.poster ? (
+              <img src={hero.poster} alt="" className="absolute inset-0 w-full h-full object-cover opacity-70" />
+            ) : null}
+          </div>
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent pointer-events-none" />
+        <div className="relative h-full flex flex-col justify-end pb-10 sm:pb-16 px-4 sm:px-12 max-w-3xl">
           <p className="uppercase tracking-widest text-xs sm:text-sm text-zinc-300 mb-2">Em destaque · {hero?.category}</p>
           <h1 className="font-display text-4xl sm:text-6xl font-extrabold drop-shadow-2xl mb-3">{hero?.title}</h1>
           <p className="text-zinc-200 text-sm sm:text-base mb-5 max-w-xl">
