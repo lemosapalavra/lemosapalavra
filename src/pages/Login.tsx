@@ -200,8 +200,27 @@ export default function Login() {
     }
   };
 
-  const handleGoogle = () => {
-    alert("🚧 Login com Google em breve!");
+  const handleGoogle = async () => {
+    try {
+      const { lovable } = await import("@/integrations/lovable/index");
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+      if (result.error) {
+        alert("Não foi possível entrar com o Google: " + (result.error as any)?.message);
+        return;
+      }
+      if (result.redirected) return; // browser will redirect
+      // Sessão pronta — hidrata o perfil local
+      const { data } = await supabase.auth.getUser();
+      if (data.user) {
+        await hydrateLocalProfile(data.user.id, data.user.email || "");
+        if ((data.user.email || "").toLowerCase() === ADMIN_EMAIL) setAdminMode(true);
+      }
+      navigate("/");
+    } catch (e: any) {
+      alert("Erro no login com Google: " + (e?.message || String(e)));
+    }
   };
 
 
