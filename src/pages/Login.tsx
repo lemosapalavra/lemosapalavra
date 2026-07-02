@@ -44,7 +44,9 @@ const AGE_RANGES: { id: AgeRange; label: string; emoji: string }[] = [
   { id: "idosos",        label: "Idosos (60+)",             emoji: "🧓" },
 ];
 
-const ADMIN_EMAIL = "marcello.pertutti@gmail.com";
+const ADMIN_EMAIL = "admin@lemos.local";
+const ADMIN_SHORTCUT_LOGIN = "admin";
+const ADMIN_SHORTCUT_PASSWORD = "1234";
 
 // Hydrate the legacy localStorage profile object that the rest of the
 // app already reads from (`lemos_user`) using the Supabase profile row.
