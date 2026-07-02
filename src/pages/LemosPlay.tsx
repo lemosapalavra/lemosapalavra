@@ -113,11 +113,21 @@ function VideoSideActions({ itemId, title, src, className = "absolute top-1 righ
   );
 }
 
-function Row({ title, items, onPlay, progress, onContinueSeries, getContinuationCount }: { title: string; items: PlayItem[]; onPlay: (item: PlayItem) => void; progress: ProgressMap; onContinueSeries?: (item: PlayItem) => void; getContinuationCount?: (item: PlayItem) => number }) {
+function Row({ title, items, onPlay, progress, onContinueSeries, getContinuationCount, emptyMessage }: { title: string; items: PlayItem[]; onPlay: (item: PlayItem) => void; progress: ProgressMap; onContinueSeries?: (item: PlayItem) => void; getContinuationCount?: (item: PlayItem) => number; emptyMessage?: string }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const scrollBy = (dx: number) => scrollerRef.current?.scrollBy({ left: dx, behavior: "smooth" });
 
-  if (!items.length) return null;
+  if (!items.length) {
+    if (!emptyMessage) return null;
+    return (
+      <section className="mb-8">
+        <h2 className="text-white font-bold text-lg sm:text-2xl mb-3 px-4 sm:px-12">{title}</h2>
+        <div className="mx-4 sm:mx-12 rounded-xl border border-dashed border-white/20 bg-white/5 px-4 py-6 text-sm text-zinc-300 italic text-center">
+          {emptyMessage}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="mb-8 group/row">
