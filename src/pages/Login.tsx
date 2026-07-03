@@ -407,7 +407,7 @@ export default function Login() {
               {mode === "login" ? (
                 <>
                   <button
-                    onClick={doLogin}
+                    onClick={() => doLogin()}
                     disabled={busy}
                     className="flex-1 bg-foreground text-background font-display font-bold py-3 rounded-lg hover:opacity-90 transition tracking-wide text-sm disabled:opacity-60"
                   >
