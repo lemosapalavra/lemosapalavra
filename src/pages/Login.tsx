@@ -100,23 +100,28 @@ export default function Login() {
 
   const finalAvatar = customAvatar || selectedAvatar;
 
-  const doLogin = async () => {
-    if (!email || !password) { alert("Informe e-mail e senha."); return; }
-    // 🔐 Atalho de administrador: usuário "admin" / senha "1234" entra
-    // localmente com privilégios totais, sem depender do backend.
-    if (email.trim().toLowerCase() === ADMIN_SHORTCUT_LOGIN && password === ADMIN_SHORTCUT_PASSWORD) {
-      const adminUser = {
-        name: "Administrador",
-        ageRange: "adultos",
-        phone: "",
-        role: "admin",
-        avatar: "",
-        email: ADMIN_EMAIL,
-        createdAt: new Date().toISOString(),
-      };
-      localStorage.setItem("lemos_user", JSON.stringify(adminUser));
-      setAdminMode(true);
-      navigate("/");
+  const loginAsAdmin = () => {
+    const adminUser = {
+      name: "Administrador",
+      ageRange: "adultos",
+      phone: "",
+      role: "admin",
+      avatar: "",
+      email: ADMIN_EMAIL,
+      createdAt: new Date().toISOString(),
+    };
+    localStorage.setItem("lemos_user", JSON.stringify(adminUser));
+    setAdminMode(true);
+    navigate("/");
+  };
+
+  const doLogin = async (overrideEmail?: string, overridePassword?: string) => {
+    const em = (overrideEmail ?? email).trim();
+    const pw = overridePassword ?? password;
+    if (!em || !pw) { alert("Informe e-mail e senha."); return; }
+    // 🔐 Atalho de administrador
+    if (em.toLowerCase() === ADMIN_SHORTCUT_LOGIN && pw === ADMIN_SHORTCUT_PASSWORD) {
+      loginAsAdmin();
       return;
     }
     setBusy(true);
@@ -402,7 +407,7 @@ export default function Login() {
               {mode === "login" ? (
                 <>
                   <button
-                    onClick={doLogin}
+                    onClick={() => doLogin()}
                     disabled={busy}
                     className="flex-1 bg-foreground text-background font-display font-bold py-3 rounded-lg hover:opacity-90 transition tracking-wide text-sm disabled:opacity-60"
                   >
@@ -462,11 +467,7 @@ export default function Login() {
           {/* Admin shortcut */}
           <div className="mt-5 pt-4 border-t border-amber-200/60 flex flex-col items-center gap-2">
             <button
-              onClick={() => {
-                setEmail(ADMIN_SHORTCUT_LOGIN);
-                setPassword(ADMIN_SHORTCUT_PASSWORD);
-                setTimeout(doLogin, 50);
-              }}
+              onClick={loginAsAdmin}
               className="flex items-center gap-2 text-sm bg-amber-500 hover:bg-amber-600 text-white font-display font-bold px-4 py-2 rounded-lg shadow transition"
               title="Entrar como administrador"
             >
