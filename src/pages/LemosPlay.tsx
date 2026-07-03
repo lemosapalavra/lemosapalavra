@@ -468,6 +468,18 @@ export default function LemosPlay() {
   }, [heroPool.length]);
   const hero = heroPool[heroIdx % Math.max(1, heroPool.length)] ?? filmesPlay[0] ?? louvoresPlay[0] ?? musicasPlay[0];
 
+  // Descrição curta por categoria — fallback quando não há sinopse específica.
+  const heroDescription = useMemo(() => {
+    if (!hero) return "";
+    const byCategory: Record<string, string> = {
+      Filme: "Um filme bíblico especial para toda a família — mergulhe nesta história e fortaleça a sua fé.",
+      Série: "Uma série em capítulos com aventuras bíblicas que ensinam valores eternos. Assista episódio por episódio!",
+      Música: "Música cristã para louvar, adorar e alegrar o coração de crianças e adultos.",
+      Louvor: "Um louvor inspirador para elevar a sua fé e adorar a Deus em família.",
+    };
+    return byCategory[hero.category] ?? "Histórias bíblicas, filmes e músicas para inspirar e fortalecer a sua fé.";
+  }, [hero]);
+
   return (
     <div className="min-h-screen bg-black text-white">
       <PageHeader title="Histórias Bíblicas" subtitle="Filmes, Séries e Músicas" />
@@ -485,48 +497,86 @@ export default function LemosPlay() {
       )}
 
 
-      {/* Hero — capa estática à esquerda + prévia em vídeo à direita (mesmo tamanho) */}
-      <section className="relative h-[55vh] sm:h-[70vh] w-full overflow-hidden bg-black">
-        <div className="absolute inset-0 grid grid-cols-2 gap-0.5">
-          {/* Capa estática */}
-          <div className="relative overflow-hidden bg-zinc-900">
-            {hero?.poster ? (
-              <img key={`hero-img-${hero.id}`} src={hero.poster} alt={hero.title} className="absolute inset-0 w-full h-full object-cover animate-fade-in" />
-            ) : (
-              <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-black" />
+      {/* Hero — título + descrição à esquerda, prévia do vídeo à direita (tamanho moderado) */}
+      <section className="relative w-full overflow-hidden bg-gradient-to-b from-zinc-900 via-black to-black">
+        {/* Fundo desfocado com o poster do destaque atual */}
+        {hero?.poster && (
+          <div
+            key={`hero-bg-${hero.id}`}
+            className="absolute inset-0 opacity-30 blur-2xl scale-110 animate-fade-in"
+            style={{ backgroundImage: `url(${hero.poster})`, backgroundSize: "cover", backgroundPosition: "center" }}
+            aria-hidden
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30 pointer-events-none" />
+
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-12 pt-24 pb-12 sm:pt-28 sm:pb-16 grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-6 sm:gap-10 items-center">
+          {/* Texto */}
+          <div key={`hero-text-${hero?.id}`} className="animate-fade-in">
+            <p className="uppercase tracking-widest text-xs sm:text-sm text-amber-300 font-bold mb-2">
+              ✨ Em destaque · {hero?.category}
+            </p>
+            <h1 className="font-display text-3xl sm:text-5xl font-extrabold drop-shadow-2xl mb-3 leading-tight">
+              {hero?.title}
+            </h1>
+            <p className="text-zinc-200 text-sm sm:text-base mb-5 max-w-xl leading-relaxed">
+              {heroDescription}
+            </p>
+            <div className="flex gap-3 flex-wrap">
+              <button onClick={() => hero && requestPlay(hero)} className="inline-flex items-center gap-2 bg-white text-black font-bold px-6 py-2.5 rounded hover:bg-white/85 transition">
+                <Play className="w-5 h-5 fill-black" /> Assistir agora
+              </button>
+              <button className="inline-flex items-center gap-2 bg-white/20 text-white font-bold px-6 py-2.5 rounded hover:bg-white/30 transition backdrop-blur">
+                <Info className="w-5 h-5" /> Mais informações
+              </button>
+            </div>
+            {heroPool.length > 1 && (
+              <div className="flex gap-1.5 mt-6">
+                {heroPool.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setHeroIdx(i)}
+                    className={`h-1.5 rounded-full transition-all ${i === heroIdx % heroPool.length ? "w-8 bg-white" : "w-2 bg-white/30 hover:bg-white/60"}`}
+                    aria-label={`Destaque ${i + 1}`}
+                  />
+                ))}
+              </div>
             )}
           </div>
-          {/* Prévia em vídeo (mesmo tamanho da capa) */}
-          <div className="relative overflow-hidden bg-zinc-900">
-            {hero?.src && /\.(mp4|webm|mov)(\?|$)/i.test(hero.src) ? (
-              <video
-                key={`hero-vid-${hero.id}`}
-                src={hero.src}
-                className="absolute inset-0 w-full h-full object-cover animate-fade-in"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-              />
-            ) : hero?.poster ? (
-              <img src={hero.poster} alt="" className="absolute inset-0 w-full h-full object-cover opacity-70" />
-            ) : null}
-          </div>
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent pointer-events-none" />
-        <div className="relative h-full flex flex-col justify-end pb-10 sm:pb-16 px-4 sm:px-12 max-w-3xl">
-          <p className="uppercase tracking-widest text-xs sm:text-sm text-zinc-300 mb-2">Em destaque · {hero?.category}</p>
-          <h1 className="font-display text-4xl sm:text-6xl font-extrabold drop-shadow-2xl mb-3">{hero?.title}</h1>
-          <p className="text-zinc-200 text-sm sm:text-base mb-5 max-w-xl">
-            Histórias bíblicas, filmes e músicas para inspirar e fortalecer a sua fé.
-          </p>
-          <div className="flex gap-3">
-            <button onClick={() => hero && requestPlay(hero)} className="inline-flex items-center gap-2 bg-white text-black font-bold px-6 py-2.5 rounded hover:bg-white/85 transition">
-              <Play className="w-5 h-5 fill-black" /> Assistir
-            </button>
-            <button className="inline-flex items-center gap-2 bg-white/20 text-white font-bold px-6 py-2.5 rounded hover:bg-white/30 transition backdrop-blur">
-              <Info className="w-5 h-5" /> Mais informações
+
+          {/* Prévia do vídeo */}
+          <div className="relative w-full max-w-md mx-auto md:mx-0 md:justify-self-end">
+            <button
+              onClick={() => hero && requestPlay(hero)}
+              className="group relative block w-full aspect-video rounded-2xl overflow-hidden bg-zinc-900 shadow-2xl ring-1 ring-white/10 hover:ring-white/40 transition"
+              title={`Assistir ${hero?.title}`}
+            >
+              {hero?.src && /\.(mp4|webm|mov)(\?|$)/i.test(hero.src) ? (
+                <video
+                  key={`hero-vid-${hero.id}`}
+                  src={hero.src}
+                  poster={hero.poster}
+                  className="absolute inset-0 w-full h-full object-cover animate-fade-in"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                />
+              ) : hero?.poster ? (
+                <img key={`hero-img-${hero.id}`} src={hero.poster} alt={hero.title} className="absolute inset-0 w-full h-full object-cover animate-fade-in" />
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-black" />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                <span className="w-16 h-16 rounded-full bg-white/95 flex items-center justify-center shadow-2xl">
+                  <Play className="w-8 h-8 fill-black text-black ml-1" />
+                </span>
+              </span>
+              <span className="absolute bottom-2 left-3 text-[10px] uppercase tracking-widest font-bold text-white/90 bg-black/50 px-2 py-0.5 rounded">
+                Prévia
+              </span>
             </button>
           </div>
         </div>
