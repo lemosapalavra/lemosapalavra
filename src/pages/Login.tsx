@@ -460,14 +460,26 @@ export default function Login() {
           </div>
 
           {/* Admin shortcut */}
-          <div className="mt-5 pt-4 border-t border-amber-200/60 flex items-center justify-center">
+          <div className="mt-5 pt-4 border-t border-amber-200/60 flex flex-col items-center gap-2">
+            <button
+              onClick={() => {
+                setEmail(ADMIN_SHORTCUT_LOGIN);
+                setPassword(ADMIN_SHORTCUT_PASSWORD);
+                setTimeout(doLogin, 50);
+              }}
+              className="flex items-center gap-2 text-sm bg-amber-500 hover:bg-amber-600 text-white font-display font-bold px-4 py-2 rounded-lg shadow transition"
+              title="Entrar como administrador"
+            >
+              <Shield className="w-4 h-4" />
+              Entrar como Admin
+            </button>
             <button
               onClick={handleAdminShortcut}
-              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-amber-700 transition font-body"
-              title="Acesso administrador"
+              className="flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-amber-700 transition font-body"
+              title="Acesso administrador avançado"
             >
-              <Shield className="w-3.5 h-3.5" />
-              Acesso administrador
+              <Shield className="w-3 h-3" />
+              Acesso administrador avançado
             </button>
           </div>
         </div>
