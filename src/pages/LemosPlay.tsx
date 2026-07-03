@@ -468,6 +468,18 @@ export default function LemosPlay() {
   }, [heroPool.length]);
   const hero = heroPool[heroIdx % Math.max(1, heroPool.length)] ?? filmesPlay[0] ?? louvoresPlay[0] ?? musicasPlay[0];
 
+  // Descrição curta por categoria — fallback quando não há sinopse específica.
+  const heroDescription = useMemo(() => {
+    if (!hero) return "";
+    const byCategory: Record<string, string> = {
+      Filme: "Um filme bíblico especial para toda a família — mergulhe nesta história e fortaleça a sua fé.",
+      Série: "Uma série em capítulos com aventuras bíblicas que ensinam valores eternos. Assista episódio por episódio!",
+      Música: "Música cristã para louvar, adorar e alegrar o coração de crianças e adultos.",
+      Louvor: "Um louvor inspirador para elevar a sua fé e adorar a Deus em família.",
+    };
+    return byCategory[hero.category] ?? "Histórias bíblicas, filmes e músicas para inspirar e fortalecer a sua fé.";
+  }, [hero]);
+
   return (
     <div className="min-h-screen bg-black text-white">
       <PageHeader title="Histórias Bíblicas" subtitle="Filmes, Séries e Músicas" />
