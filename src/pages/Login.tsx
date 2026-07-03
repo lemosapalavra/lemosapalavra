@@ -100,23 +100,28 @@ export default function Login() {
 
   const finalAvatar = customAvatar || selectedAvatar;
 
-  const doLogin = async () => {
-    if (!email || !password) { alert("Informe e-mail e senha."); return; }
-    // 🔐 Atalho de administrador: usuário "admin" / senha "1234" entra
-    // localmente com privilégios totais, sem depender do backend.
-    if (email.trim().toLowerCase() === ADMIN_SHORTCUT_LOGIN && password === ADMIN_SHORTCUT_PASSWORD) {
-      const adminUser = {
-        name: "Administrador",
-        ageRange: "adultos",
-        phone: "",
-        role: "admin",
-        avatar: "",
-        email: ADMIN_EMAIL,
-        createdAt: new Date().toISOString(),
-      };
-      localStorage.setItem("lemos_user", JSON.stringify(adminUser));
-      setAdminMode(true);
-      navigate("/");
+  const loginAsAdmin = () => {
+    const adminUser = {
+      name: "Administrador",
+      ageRange: "adultos",
+      phone: "",
+      role: "admin",
+      avatar: "",
+      email: ADMIN_EMAIL,
+      createdAt: new Date().toISOString(),
+    };
+    localStorage.setItem("lemos_user", JSON.stringify(adminUser));
+    setAdminMode(true);
+    navigate("/");
+  };
+
+  const doLogin = async (overrideEmail?: string, overridePassword?: string) => {
+    const em = (overrideEmail ?? email).trim();
+    const pw = overridePassword ?? password;
+    if (!em || !pw) { alert("Informe e-mail e senha."); return; }
+    // 🔐 Atalho de administrador
+    if (em.toLowerCase() === ADMIN_SHORTCUT_LOGIN && pw === ADMIN_SHORTCUT_PASSWORD) {
+      loginAsAdmin();
       return;
     }
     setBusy(true);
