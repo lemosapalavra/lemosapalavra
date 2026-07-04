@@ -497,87 +497,67 @@ export default function LemosPlay() {
       )}
 
 
-      {/* Hero — título + descrição à esquerda, prévia do vídeo à direita (tamanho moderado) */}
-      <section className="relative w-full overflow-hidden bg-gradient-to-b from-zinc-900 via-black to-black">
-        {/* Fundo desfocado com o poster do destaque atual */}
-        {hero?.poster && (
-          <div
-            key={`hero-bg-${hero.id}`}
-            className="absolute inset-0 opacity-30 blur-2xl scale-110 animate-fade-in"
-            style={{ backgroundImage: `url(${hero.poster})`, backgroundSize: "cover", backgroundPosition: "center" }}
-            aria-hidden
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30 pointer-events-none" />
+      {/* Hero — estilo Netflix: prévia em tela cheia do destaque, descrição à esquerda sobreposta */}
+      <section className="relative w-full overflow-hidden bg-black">
+        <div className="relative w-full h-[70vh] min-h-[420px] sm:h-[85vh] sm:min-h-[560px]">
+          {/* Prévia em vídeo ocupando todo o espaço do destaque */}
+          {hero?.src && /\.(mp4|webm|mov)(\?|$)/i.test(hero.src) ? (
+            <video
+              key={`hero-vid-${hero.id}`}
+              src={hero.src}
+              poster={hero.poster}
+              className="absolute inset-0 w-full h-full object-cover animate-fade-in"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+            />
+          ) : hero?.poster ? (
+            <img key={`hero-img-${hero.id}`} src={hero.poster} alt={hero.title} className="absolute inset-0 w-full h-full object-cover animate-fade-in" />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-black" />
+          )}
 
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-12 pt-24 pb-12 sm:pt-28 sm:pb-16 grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-6 sm:gap-10 items-center">
-          {/* Texto */}
-          <div key={`hero-text-${hero?.id}`} className="animate-fade-in">
-            <p className="uppercase tracking-widest text-xs sm:text-sm text-amber-300 font-bold mb-2">
-              ✨ Em destaque · {hero?.category}
-            </p>
-            <h1 className="font-display text-3xl sm:text-5xl font-extrabold drop-shadow-2xl mb-3 leading-tight">
-              {hero?.title}
-            </h1>
-            <p className="text-zinc-200 text-sm sm:text-base mb-5 max-w-xl leading-relaxed">
-              {heroDescription}
-            </p>
-            <div className="flex gap-3 flex-wrap">
-              <button onClick={() => hero && requestPlay(hero)} className="inline-flex items-center gap-2 bg-white text-black font-bold px-6 py-2.5 rounded hover:bg-white/85 transition">
-                <Play className="w-5 h-5 fill-black" /> Assistir agora
-              </button>
-              <button className="inline-flex items-center gap-2 bg-white/20 text-white font-bold px-6 py-2.5 rounded hover:bg-white/30 transition backdrop-blur">
-                <Info className="w-5 h-5" /> Mais informações
-              </button>
-            </div>
-            {heroPool.length > 1 && (
-              <div className="flex gap-1.5 mt-6">
-                {heroPool.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setHeroIdx(i)}
-                    className={`h-1.5 rounded-full transition-all ${i === heroIdx % heroPool.length ? "w-8 bg-white" : "w-2 bg-white/30 hover:bg-white/60"}`}
-                    aria-label={`Destaque ${i + 1}`}
-                  />
-                ))}
+          {/* Gradientes overlay estilo Netflix (esquerda + base) */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black to-transparent pointer-events-none" />
+
+          {/* Texto à esquerda */}
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full max-w-6xl mx-auto px-4 sm:px-12">
+              <div key={`hero-text-${hero?.id}`} className="animate-fade-in max-w-xl">
+                <p className="uppercase tracking-widest text-xs sm:text-sm text-amber-300 font-bold mb-2">
+                  ✨ Em destaque · {hero?.category}
+                </p>
+                <h1 className="font-display text-3xl sm:text-5xl md:text-6xl font-extrabold drop-shadow-2xl mb-3 leading-tight text-white">
+                  {hero?.title}
+                </h1>
+                <p className="text-zinc-200 text-sm sm:text-base mb-5 leading-relaxed drop-shadow-lg">
+                  {heroDescription}
+                </p>
+                <div className="flex gap-3 flex-wrap">
+                  <button onClick={() => hero && requestPlay(hero)} className="inline-flex items-center gap-2 bg-white text-black font-bold px-6 py-2.5 rounded hover:bg-white/85 transition">
+                    <Play className="w-5 h-5 fill-black" /> Assistir agora
+                  </button>
+                  <button className="inline-flex items-center gap-2 bg-white/20 text-white font-bold px-6 py-2.5 rounded hover:bg-white/30 transition backdrop-blur">
+                    <Info className="w-5 h-5" /> Mais informações
+                  </button>
+                </div>
+                {heroPool.length > 1 && (
+                  <div className="flex gap-1.5 mt-6">
+                    {heroPool.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setHeroIdx(i)}
+                        className={`h-1.5 rounded-full transition-all ${i === heroIdx % heroPool.length ? "w-8 bg-white" : "w-2 bg-white/30 hover:bg-white/60"}`}
+                        aria-label={`Destaque ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-
-          {/* Prévia do vídeo */}
-          <div className="relative w-full max-w-md mx-auto md:mx-0 md:justify-self-end">
-            <button
-              onClick={() => hero && requestPlay(hero)}
-              className="group relative block w-full aspect-video rounded-2xl overflow-hidden bg-zinc-900 shadow-2xl ring-1 ring-white/10 hover:ring-white/40 transition"
-              title={`Assistir ${hero?.title}`}
-            >
-              {hero?.src && /\.(mp4|webm|mov)(\?|$)/i.test(hero.src) ? (
-                <video
-                  key={`hero-vid-${hero.id}`}
-                  src={hero.src}
-                  poster={hero.poster}
-                  className="absolute inset-0 w-full h-full object-cover animate-fade-in"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                />
-              ) : hero?.poster ? (
-                <img key={`hero-img-${hero.id}`} src={hero.poster} alt={hero.title} className="absolute inset-0 w-full h-full object-cover animate-fade-in" />
-              ) : (
-                <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-black" />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-              <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
-                <span className="w-16 h-16 rounded-full bg-white/95 flex items-center justify-center shadow-2xl">
-                  <Play className="w-8 h-8 fill-black text-black ml-1" />
-                </span>
-              </span>
-              <span className="absolute bottom-2 left-3 text-[10px] uppercase tracking-widest font-bold text-white/90 bg-black/50 px-2 py-0.5 rounded">
-                Prévia
-              </span>
-            </button>
+            </div>
           </div>
         </div>
       </section>
