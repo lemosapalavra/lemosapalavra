@@ -14,13 +14,11 @@ import serFielThumb from "@/assets/lemos-play/ser-fiel-thumb.png.asset.json";
 import gracaAleluiaThumb from "@/assets/lemos-play/graca-aleluia.png.asset.json";
 import palavraEternaThumb from "@/assets/lemos-play/palavra-eterna.png.asset.json";
 import fazMilagreThumb from "@/assets/lemos-play/faz-um-milagre-em-mim.png.asset.json";
-import ressuscitaMeThumb from "@/assets/lemos-play/ressuscita-me.png.asset.json";
 import espiritoSantoVid from "@/assets/lemos-play/espirito-santo.mp4.asset.json";
 import aleluiaVid from "@/assets/lemos-play/aleluia.mp4.asset.json";
 import palavraEternaVid from "@/assets/lemos-play/palavra-eterna.mp4.asset.json";
 import souFielVid from "@/assets/lemos-play/sou-fiel.mp4.asset.json";
 import fazMilagreVid from "@/assets/lemos-play/faz-um-milagre-em-mim.mp4.asset.json";
-import ressuscitaMeVid from "@/assets/lemos-play/ressuscita-me.mp4.asset.json";
 
 interface Louvor {
   title: string;
