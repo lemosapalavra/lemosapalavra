@@ -95,7 +95,7 @@ const defaultMusicas: PlayEntry[] = [
 
 const defaultLouvores: PlayEntry[] = [
   { id: "lv1", title: "Faz um Milagre em Mim", src: fazMilagreVid.url, poster: attachedThumbByTitle["Faz um Milagre em Mim"] },
-  { id: "lv2", title: "Ressuscita-Me", src: ressuscitaMeVid.url, poster: attachedThumbByTitle["Ressuscita-Me"] },
+  
   { id: "lv3", title: "Espírito Santo", src: espiritoSantoVid.url, poster: attachedThumbByTitle["Espírito Santo"] },
   { id: "lv4", title: "Sou Fiel", src: souFielVid.url, poster: attachedThumbByTitle["Sou Fiel"] },
   { id: "lv5", title: "Graça Aleluia", src: aleluiaVid.url, poster: attachedThumbByTitle["Graça Aleluia"] },
