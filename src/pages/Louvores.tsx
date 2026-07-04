@@ -30,7 +30,6 @@ interface Louvor {
 
 const allLouvores: Louvor[] = [
   { title: "Faz um Milagre em Mim", src: fazMilagreVid.url, thumb: fazMilagreThumb.url },
-  { title: "Ressuscita-Me", src: ressuscitaMeVid.url, thumb: ressuscitaMeThumb.url },
   { title: "Espírito Santo", src: espiritoSantoVid.url, thumb: espiritoSantoThumb.url },
   { title: "Sou Fiel", src: souFielVid.url, thumb: serFielThumb.url },
   { title: "Graça Aleluia", src: aleluiaVid.url, thumb: gracaAleluiaThumb.url },
