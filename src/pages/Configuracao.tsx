@@ -145,6 +145,7 @@ export default function Configuracao() {
             <p><strong>Plataforma:</strong> {navigator.platform}</p>
             <p><strong>Idioma:</strong> {navigator.language}</p>
             <p><strong>Resolução:</strong> {window.screen.width}x{window.screen.height}</p>
+            <IpLocationLines />
           </div>
         </div>
 
@@ -227,6 +228,30 @@ export default function Configuracao() {
       </div>
       <FeedbackFooter />
     </div>
+  );
+}
+
+function IpLocationLines() {
+  const [ip, setIp] = useState<string>("carregando...");
+  const [loc, setLoc] = useState<string>("carregando...");
+  useEffect(() => {
+    fetch("https://ipapi.co/json/")
+      .then((r) => r.json())
+      .then((j) => {
+        setIp(j.ip || "—");
+        const parts = [j.city, j.region, j.country_name].filter(Boolean);
+        setLoc(parts.length ? parts.join(", ") : "—");
+      })
+      .catch(() => {
+        setIp("indisponível");
+        setLoc("indisponível");
+      });
+  }, []);
+  return (
+    <>
+      <p><strong>IP:</strong> {ip}</p>
+      <p><strong>Localização:</strong> {loc}</p>
+    </>
   );
 }
 
