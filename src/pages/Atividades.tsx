@@ -1367,12 +1367,12 @@ function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgSt
         </div>
 
         {/* Letter grid */}
-        <div className="bg-white rounded-2xl border-4 border-amber-300 shadow-2xl p-2 sm:p-3 mb-4">
+        <div className="bg-white rounded-2xl border-4 border-amber-300 shadow-2xl p-2 sm:p-3 mb-4 overflow-hidden">
           <div
-            className="grid gap-[2px] sm:gap-[3px] mx-auto"
+            className="grid gap-1 mx-auto w-full"
             style={{
               gridTemplateColumns: `repeat(${card.size}, minmax(0, 1fr))`,
-              maxWidth: `min(100%, ${card.size * 44}px)`,
+              maxWidth: `${card.size * 56}px`,
             }}
           >
             {grid.map((row, y) =>
@@ -1394,15 +1394,16 @@ function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgSt
                     key={k}
                     onClick={() => clickCell(x, y)}
                     onMouseEnter={() => start && setHoverEnd({ x, y })}
-                    className={`aspect-square flex items-center justify-center rounded-md sm:rounded-lg font-display font-extrabold text-[12px] sm:text-base select-none transition ${cls} border border-amber-200`}
+                    className={`aspect-square w-full min-w-0 flex items-center justify-center rounded-md sm:rounded-lg font-display font-extrabold text-sm sm:text-base md:text-lg leading-none select-none transition overflow-hidden ${cls} border border-amber-200`}
                   >
-                    {ch}
+                    <span className="pointer-events-none">{ch}</span>
                   </button>
                 );
               })
             )}
           </div>
         </div>
+
 
         {/* Words list */}
         <div className="bg-white rounded-2xl p-4 shadow-lg border-2 border-amber-200">
