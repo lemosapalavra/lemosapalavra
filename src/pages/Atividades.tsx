@@ -1318,13 +1318,21 @@ function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgSt
   }, [start, hoverEnd]);
 
   const completed = found.size === wordsInPlay.length && wordsInPlay.length > 0;
+  const celebratedRef = useRef<string | null>(null);
   useEffect(() => {
-    if (completed) {
+    if (completed && celebratedRef.current !== card.title) {
+      celebratedRef.current = card.title;
       const coins = Math.max(5, wordsInPlay.length);
-      celebrate(`Você achou todas as ${wordsInPlay.length} palavras!`, coins, "🔎");
+      // small delay so the last "ok" flash is visible
+      setTimeout(() => {
+        celebrate(`Você achou todas as ${wordsInPlay.length} palavras!`, coins, "🔎");
+      }, 400);
+    }
+    if (!completed && celebratedRef.current === card.title) {
+      celebratedRef.current = null;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [completed]);
+  }, [completed, card.title]);
 
   const switchCard = (c: CacaCard) => {
     setCard(c); setFound(new Set()); setFoundCells(new Set()); setStart(null); setHoverEnd(null);
