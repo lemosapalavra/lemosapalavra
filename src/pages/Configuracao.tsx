@@ -338,6 +338,20 @@ function AdminModeToggle() {
 }
 
 
+interface UserRow {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  phone: string;
+  ageRange: string;
+  createdAt: string;
+  lastLogin: string;
+  pagesTop: string;
+  status: string;
+  source: string;
+}
+
 function AdminInteractionRow({
   user,
   lastVisit,
@@ -350,86 +364,180 @@ function AdminInteractionRow({
   pagesVisited: Record<string, number>;
 }) {
   const admin = useIsAdmin();
-  const [ip, setIp] = useState<string>("—");
-  const [location, setLocation] = useState<string>("—");
+  const { ip, location } = useIpLocation();
+  const [rows, setRows] = useState<UserRow[]>([]);
+  const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  const topPages = (visits: Record<string, number>) =>
+    Object.entries(visits || {})
+      .sort((a, b) => (b[1] as number) - (a[1] as number))
+      .slice(0, 3)
+      .map(([p, c]) => `${p} (${c})`)
+      .join(" · ") || "—";
 
   useEffect(() => {
     if (!admin) return;
-    fetch("https://ipapi.co/json/")
-      .then((r) => r.json())
-      .then((j) => {
-        setIp(j.ip || "—");
-        const parts = [j.city, j.region, j.country_name].filter(Boolean);
-        setLocation(parts.length ? parts.join(", ") : "—");
-      })
-      .catch(() => {
-        setIp("indisponível");
-        setLocation("indisponível");
+    (async () => {
+      setLoading(true);
+      const collected: UserRow[] = [];
+
+      // Backend profiles
+      try {
+        const { data } = await supabase
+          .from("profiles")
+          .select("id, name, email, role, phone, age_range, created_at, updated_at")
+          .order("created_at", { ascending: false });
+        if (data) {
+          data.forEach((p: any) =>
+            collected.push({
+              id: p.id,
+              name: p.name || "—",
+              email: p.email || "—",
+              role: p.role || "—",
+              phone: p.phone || "—",
+              ageRange: p.age_range || "—",
+              createdAt: p.created_at ? new Date(p.created_at).toLocaleString("pt-BR") : "—",
+              lastLogin: p.updated_at ? new Date(p.updated_at).toLocaleString("pt-BR") : "—",
+              pagesTop: "—",
+              status: "🟢 Ativo",
+              source: "Backend",
+            })
+          );
+        }
+      } catch {}
+
+      // Current device user (may overlap; keep as "Este dispositivo")
+      if (user) {
+        collected.push({
+          id: user.id || "local",
+          name: user.name || "—",
+          email: user.email || "—",
+          role: user.role || "—",
+          phone: user.phone || "—",
+          ageRange: user.ageRange || "—",
+          createdAt: user.createdAt ? new Date(user.createdAt).toLocaleString("pt-BR") : "—",
+          lastLogin: lastVisit || new Date().toLocaleString("pt-BR"),
+          pagesTop: topPages(pagesVisited),
+          status: "🟢 Ativo agora",
+          source: `Este dispositivo · ${ip}`,
+        });
+      }
+
+      // Dedup by email (backend wins, but merge local pages/ip)
+      const map = new Map<string, UserRow>();
+      collected.forEach((r) => {
+        const key = (r.email || r.id).toLowerCase();
+        const existing = map.get(key);
+        if (!existing) map.set(key, r);
+        else {
+          map.set(key, {
+            ...existing,
+            pagesTop: existing.pagesTop !== "—" ? existing.pagesTop : r.pagesTop,
+            status: r.status.includes("agora") ? r.status : existing.status,
+            source:
+              existing.source === "Backend" && r.source.startsWith("Este dispositivo")
+                ? `Backend · ${r.source}`
+                : existing.source,
+          });
+        }
       });
-  }, [admin]);
 
-  if (!admin || !user) return null;
+      setRows(Array.from(map.values()));
+      setLoading(false);
+    })();
+  }, [admin, user, lastVisit, pagesVisited, ip]);
 
-  const dispositivo = `${navigator.platform || "?"} · ${navigator.userAgent.split("(")[0].trim()}`;
-  const albumTotal = 208;
-  const albumConcluido = stickers >= albumTotal ? "Sim ✅" : `Não (${stickers}/${albumTotal})`;
-  const atividadesVisitas = pagesVisited["/atividades"] || 0;
-  const progressoAtividades = `${atividadesVisitas} acesso${atividadesVisitas === 1 ? "" : "s"}`;
-  const status = "🟢 Ativo";
-  const responsavel =
-    user.role === "pai" || user.role === "mãe"
-      ? `${user.role} — ${user.name}`
-      : user.role === "filho" || user.role === "filha"
-      ? "Responsável não informado"
-      : "—";
-  const cadastro = user.createdAt ? new Date(user.createdAt).toLocaleString("pt-BR") : "—";
-  const ultimoLogin = lastVisit || new Date().toLocaleString("pt-BR");
+  if (!admin) return null;
 
-  const cells: { label: string; value: string }[] = [
-    { label: "Nome", value: user.name || "—" },
-    { label: "Função", value: user.role || "—" },
-    { label: "Telefone", value: user.phone || "—" },
-    { label: "Data de cadastro", value: cadastro },
-    { label: "Último login", value: ultimoLogin },
-    { label: "IP / dispositivo", value: `${ip} · ${dispositivo}` },
-    { label: "Localização", value: location },
-    { label: "Status", value: status },
-    { label: "Faixa etária", value: user.ageRange || "—" },
-    { label: "Álbum concluído", value: albumConcluido },
-    { label: "Progresso nas atividades", value: progressoAtividades },
-    { label: "Responsável (pai/mãe)", value: responsavel },
+  const filtered = rows.filter((r) => {
+    if (!query.trim()) return true;
+    const q = query.toLowerCase();
+    return [r.name, r.email, r.role, r.phone].some((v) => v?.toLowerCase().includes(q));
+  });
+
+  const columns: { key: keyof UserRow; label: string; width?: string }[] = [
+    { key: "name", label: "Nome" },
+    { key: "email", label: "Email" },
+    { key: "role", label: "Função" },
+    { key: "phone", label: "Telefone" },
+    { key: "ageRange", label: "Faixa etária" },
+    { key: "status", label: "Status" },
+    { key: "createdAt", label: "Cadastro" },
+    { key: "lastLogin", label: "Último acesso" },
+    { key: "pagesTop", label: "Páginas mais visitadas" },
+    { key: "source", label: "Origem / IP" },
   ];
 
   return (
     <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
-      <h3 className="font-display text-lg font-bold text-foreground mb-3">
-        🧭 Interação do usuário (admin)
-      </h3>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm font-body border-collapse">
-          <thead>
-            <tr className="text-left border-b border-border bg-amber-50">
-              {cells.map((c) => (
-                <th key={c.label} className="py-2 px-2 font-display font-bold text-amber-900 whitespace-nowrap text-xs">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+        <h3 className="font-display text-lg font-bold text-foreground">
+          🧭 Usuários cadastrados ({rows.length})
+        </h3>
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="🔍 Buscar por nome, email, função..."
+          className="px-3 py-1.5 rounded-lg border border-border bg-background text-sm font-body w-full sm:w-72 focus:outline-none focus:border-amber-400"
+        />
+      </div>
+
+      <div className="overflow-x-auto rounded-xl border border-border">
+        <table className="min-w-full text-sm font-body border-collapse">
+          <thead className="bg-gradient-to-r from-amber-100 to-yellow-100 sticky top-0">
+            <tr className="text-left">
+              {columns.map((c) => (
+                <th
+                  key={c.key}
+                  className="py-2.5 px-3 font-display font-bold text-amber-900 whitespace-nowrap text-xs uppercase tracking-wide border-b border-amber-200"
+                >
                   {c.label}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b border-border/50 hover:bg-amber-50/50">
-              {cells.map((c) => (
-                <td key={c.label} className="py-2 px-2 text-xs text-foreground whitespace-nowrap">
-                  {c.value}
+            {loading && (
+              <tr>
+                <td colSpan={columns.length} className="py-6 text-center text-muted-foreground text-sm">
+                  Carregando usuários...
                 </td>
+              </tr>
+            )}
+            {!loading && filtered.length === 0 && (
+              <tr>
+                <td colSpan={columns.length} className="py-6 text-center text-muted-foreground text-sm">
+                  Nenhum usuário encontrado.
+                </td>
+              </tr>
+            )}
+            {!loading &&
+              filtered.map((r, idx) => (
+                <tr
+                  key={r.id}
+                  className={`border-b border-border/50 hover:bg-amber-50 transition ${
+                    idx % 2 === 0 ? "bg-white" : "bg-amber-50/30"
+                  }`}
+                >
+                  {columns.map((c) => (
+                    <td
+                      key={c.key}
+                      className="py-2 px-3 text-xs text-foreground whitespace-nowrap max-w-[220px] truncate"
+                      title={String(r[c.key] ?? "")}
+                    >
+                      {r[c.key] || "—"}
+                    </td>
+                  ))}
+                </tr>
               ))}
-            </tr>
           </tbody>
         </table>
       </div>
       <p className="text-[11px] text-muted-foreground mt-3">
-        ⚠️ Linha baseada nos dados deste dispositivo. Para consolidar todos os usuários do site, é necessário conectar o backend a esta tabela.
+        📍 Localização deste dispositivo: <strong>{location}</strong>. Dados dos usuários vêm do backend (perfis) + sessão atual.
       </p>
     </div>
   );
 }
+
