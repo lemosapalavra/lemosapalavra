@@ -243,10 +243,11 @@ export default function Estatisticas() {
                     <th className="py-2 pr-3">Função</th>
                     <th className="py-2 pr-3">IP</th>
                     <th className="py-2 pr-3">Cadastro</th>
+                    <th className="py-2 pr-3">Páginas que mais visitou</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b border-border/50">
+                  <tr className="border-b border-border/50 align-top">
                     <td className="py-2 pr-3">
                       {user.avatar ? (
                         <img src={user.avatar} alt="" className="w-9 h-9 rounded-full object-cover" />
@@ -260,6 +261,25 @@ export default function Estatisticas() {
                     <td className="py-2 pr-3 tabular-nums">{ip}</td>
                     <td className="py-2 pr-3 text-xs">
                       {user.createdAt ? new Date(user.createdAt).toLocaleString("pt-BR") : "—"}
+                    </td>
+                    <td className="py-2 pr-3 text-xs min-w-[220px]">
+                      {pages.length === 0 ? (
+                        <span className="text-muted-foreground">Sem navegação ainda</span>
+                      ) : (
+                        <ul className="space-y-1">
+                          {pages.slice(0, 5).map(([p, c], i) => (
+                            <li key={p} className="flex items-center justify-between gap-2">
+                              <span className="truncate">
+                                <span className="font-display font-bold text-primary mr-1">{i + 1}º</span>
+                                {p}
+                              </span>
+                              <span className="font-display font-bold text-emerald-600 whitespace-nowrap">
+                                {c}x
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </td>
                   </tr>
                 </tbody>
