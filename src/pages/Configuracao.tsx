@@ -145,6 +145,7 @@ export default function Configuracao() {
             <p><strong>Plataforma:</strong> {navigator.platform}</p>
             <p><strong>Idioma:</strong> {navigator.language}</p>
             <p><strong>Resolução:</strong> {window.screen.width}x{window.screen.height}</p>
+            <IpLocationLines />
           </div>
         </div>
 
