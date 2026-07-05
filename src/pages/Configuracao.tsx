@@ -231,6 +231,30 @@ export default function Configuracao() {
   );
 }
 
+function IpLocationLines() {
+  const [ip, setIp] = useState<string>("carregando...");
+  const [loc, setLoc] = useState<string>("carregando...");
+  useEffect(() => {
+    fetch("https://ipapi.co/json/")
+      .then((r) => r.json())
+      .then((j) => {
+        setIp(j.ip || "—");
+        const parts = [j.city, j.region, j.country_name].filter(Boolean);
+        setLoc(parts.length ? parts.join(", ") : "—");
+      })
+      .catch(() => {
+        setIp("indisponível");
+        setLoc("indisponível");
+      });
+  }, []);
+  return (
+    <>
+      <p><strong>IP:</strong> {ip}</p>
+      <p><strong>Localização:</strong> {loc}</p>
+    </>
+  );
+}
+
 function LiveVisitsBanner({ totalVisits, elapsed }: { totalVisits: number; elapsed: number }) {
   // "Visitantes ativos agora" — heurística local: sessão atual conta como 1,
   // somada a um pulso simulado baseado no horário (suave, 1-4 visitantes).
