@@ -5,6 +5,8 @@ import FeedbackFooter from "@/components/FeedbackFooter";
 import { useIsAdmin, setAdminMode, canBeAdmin } from "@/hooks/useIsAdmin";
 import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
 import IndexAdminPanel from "@/components/IndexAdminPanel";
+import { useIpLocation } from "@/hooks/useIpLocation";
+import { supabase } from "@/integrations/supabase/client";
 
 
 export default function Configuracao() {
