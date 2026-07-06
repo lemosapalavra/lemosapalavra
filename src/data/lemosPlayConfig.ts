@@ -52,7 +52,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v29";
+const KEY = "lemos_play_config_v30";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
@@ -120,11 +120,15 @@ function fromGroup(g: BibleVideoGroup, gid: string): SeriesGroupCfg {
 }
 
 export function defaultConfig(): LemosPlayConfig {
+  // Todos os vídeos foram removidos por solicitação do usuário.
+  // O admin pode readicionar itens; os defaults ficam vazios.
+  void filmesVideos; void seriesGroups; void defaultMusicas; void defaultLouvores;
+  void fromVideo; void fromGroup;
   return {
-    filmes: filmesVideos.map((v, i) => fromVideo(v, `f${i}`)),
-    series: seriesGroups.map((g, i) => fromGroup(g, `sg${i}`)),
-    musicas: defaultMusicas,
-    louvores: defaultLouvores,
+    filmes: [],
+    series: [],
+    musicas: [],
+    louvores: [],
   };
 }
 
