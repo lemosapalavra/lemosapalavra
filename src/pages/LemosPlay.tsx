@@ -578,10 +578,20 @@ export default function LemosPlay() {
         />
 
         {(() => {
-          // Rows Gênesis e Jesus temporariamente vazios — aguardando novo lote
-          // de vídeos do administrador. Mantemos os cabeçalhos para preservar
-          // a ordem/UX do menu de categorias.
-          const genesisItems: PlayItem[] = [];
+          // Gênesis: montamos a partir dos filmes já cadastrados, casando por título.
+          const wanted = [
+            "A Batalha dos Anjos",
+            "A Criação",
+            "Adão e Eva",
+            "Noé e a Arca",
+            "Os 10 Mandamentos — Parte I",
+            "Os 10 Mandamentos — Parte II",
+          ];
+          const pool = [...filmesPlay, ...seriesGroupItems.flatMap((g) => g.videos)];
+          const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+          const genesisItems: PlayItem[] = wanted
+            .map((w) => pool.find((p) => norm(p.title).includes(norm(w))))
+            .filter((v): v is PlayItem => !!v);
           const jesusItems: PlayItem[] = [];
           return (
             <>
