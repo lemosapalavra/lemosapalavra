@@ -578,21 +578,31 @@ export default function LemosPlay() {
         />
 
         {(() => {
-          // Gênesis: montamos a partir dos filmes já cadastrados, casando por título.
+          // Gênesis: apenas histórias do livro de Gênesis (Criação → José do Egito).
+          // Os 10 Mandamentos pertencem ao Êxodo e foram removidos daqui.
           const wanted = [
-            "A Batalha dos Anjos",
             "A Criação",
+            "A Batalha dos Anjos",
             "Adão e Eva",
-            "Noé e a Arca",
-            "Os 10 Mandamentos — Parte I",
-            "Os 10 Mandamentos — Parte II",
+            "Noé e a Arca — Filme",
+            "Noé — Parte I",
+            "Noé — Parte II",
+            "Abraão — Parte I",
+            "Abraão — Parte II",
+            "Esaú e Jacó — Parte I",
+            "Esaú e Jacó — Parte II",
+            "Esaú e Jacó — Parte III",
+            "José do Egito — Parte I",
+            "José do Egito — Parte II",
+            "José do Egito — Parte III",
           ];
           const pool = [...filmesPlay, ...seriesGroupItems.flatMap((g) => g.videos)];
           const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
           const genesisItems: PlayItem[] = wanted
-            .map((w) => pool.find((p) => norm(p.title).includes(norm(w))))
+            .map((w) => pool.find((p) => norm(p.title) === norm(w)) || pool.find((p) => norm(p.title).includes(norm(w))))
             .filter((v): v is PlayItem => !!v);
           const jesusItems: PlayItem[] = [];
+
           return (
             <>
               <div id="genesis"><Row title="📖 Gênesis" items={genesisItems} onPlay={(item) => requestPlay(item)} progress={progress} emptyMessage="✨ Novos vídeos em breve — envie os arquivos para o administrador." /></div>
