@@ -120,12 +120,9 @@ function fromGroup(g: BibleVideoGroup, gid: string): SeriesGroupCfg {
 }
 
 export function defaultConfig(): LemosPlayConfig {
-  // Todos os vídeos foram removidos por solicitação do usuário.
-  // O admin pode readicionar itens; os defaults ficam vazios.
-  void filmesVideos; void seriesGroups; void defaultMusicas; void defaultLouvores;
-  void fromVideo; void fromGroup;
+  void seriesGroups; void defaultMusicas; void defaultLouvores; void fromGroup;
   return {
-    filmes: [],
+    filmes: filmesVideos.map((v, i) => fromVideo(v, `f${i + 1}`)),
     series: [],
     musicas: [],
     louvores: [],
