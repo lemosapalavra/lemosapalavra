@@ -52,7 +52,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v28";
+const KEY = "lemos_play_config_v29";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
@@ -88,18 +88,17 @@ const attachedThumbByTitle: Record<string, string> = {
 };
 
 const defaultMusicas: PlayEntry[] = [
-  { id: "m1", title: "Do meu Jeito", src: doMeuJeitoVid.url, poster: attachedThumbByTitle["Do meu Jeito"] },
-  { id: "m2", title: "Pai e Filho", src: paiEFilhoVid.url, poster: attachedThumbByTitle["Pai e Filho"] },
-  { id: "m3", title: "Um de Nós", src: umDeNosVid.url, poster: attachedThumbByTitle["Um de Nós"] },
+  { id: "m1", title: "Do meu Jeito", src: doMeuJeitoVid.url, poster: attachedThumbByTitle["Do meu Jeito"], section: "Músicas" },
+  { id: "m2", title: "Pai e Filho", src: paiEFilhoVid.url, poster: attachedThumbByTitle["Pai e Filho"], section: "Músicas" },
+  { id: "m3", title: "Um de Nós", src: umDeNosVid.url, poster: attachedThumbByTitle["Um de Nós"], section: "Músicas" },
 ];
 
 const defaultLouvores: PlayEntry[] = [
-  { id: "lv1", title: "Faz um Milagre em Mim", src: fazMilagreVid.url, poster: attachedThumbByTitle["Faz um Milagre em Mim"] },
-  
-  { id: "lv3", title: "Espírito Santo", src: espiritoSantoVid.url, poster: attachedThumbByTitle["Espírito Santo"] },
-  { id: "lv4", title: "Sou Fiel", src: souFielVid.url, poster: attachedThumbByTitle["Sou Fiel"] },
-  { id: "lv5", title: "Graça Aleluia", src: aleluiaVid.url, poster: attachedThumbByTitle["Graça Aleluia"] },
-  { id: "lv6", title: "Palavra Eterna", src: palavraEternaVid.url, poster: attachedThumbByTitle["Palavra Eterna"] },
+  { id: "lv1", title: "Faz um Milagre em Mim", src: fazMilagreVid.url, poster: attachedThumbByTitle["Faz um Milagre em Mim"], section: "Louvores" },
+  { id: "lv3", title: "Espírito Santo", src: espiritoSantoVid.url, poster: attachedThumbByTitle["Espírito Santo"], section: "Louvores" },
+  { id: "lv4", title: "Sou Fiel", src: souFielVid.url, poster: attachedThumbByTitle["Sou Fiel"], section: "Louvores" },
+  { id: "lv5", title: "Graça Aleluia", src: aleluiaVid.url, poster: attachedThumbByTitle["Graça Aleluia"], section: "Louvores" },
+  { id: "lv6", title: "Palavra Eterna", src: palavraEternaVid.url, poster: attachedThumbByTitle["Palavra Eterna"], section: "Louvores" },
 ];
 
 function resolvePoster(title: string, fallback?: string): string | undefined {

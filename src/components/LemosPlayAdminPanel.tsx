@@ -114,21 +114,104 @@ export default function LemosPlayAdminPanel({ open, onClose }: Props) {
 }
 
 function PlayList({ items, onChange }: { items: PlayEntry[]; onChange: (v: PlayEntry[]) => void }) {
-  const add = () => onChange([...items, { id: newId(), title: "Novo vídeo", src: "" }]);
+  const add = (section?: string) =>
+    onChange([...items, { id: newId(), title: "Novo vídeo", src: "", ...(section ? { section } : {}) }]);
   const remove = (id: string) => onChange(items.filter((x) => x.id !== id));
   const patch = (id: string, p: Partial<PlayEntry>) => onChange(items.map((x) => (x.id === id ? { ...x, ...p } : x)));
-  const move = (idx: number, dir: -1 | 1) => {
+  const move = (id: string, dir: -1 | 1) => {
+    const idx = items.findIndex((x) => x.id === id);
     const j = idx + dir;
-    if (j < 0 || j >= items.length) return;
+    if (idx < 0 || j < 0 || j >= items.length) return;
     const next = [...items];
     [next[idx], next[j]] = [next[j], next[idx]];
     onChange(next);
   };
   const [editingId, setEditingId] = useState<string | null>(null);
   const [picker, setPicker] = useState<{ id: string; field: "src" | "poster" } | null>(null);
+  const [filter, setFilter] = useState<string>("all");
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
+
+  const SECTION_ORDER = ["Gênesis", "Êxodo", "Jó", "Daniel", "Profetas", "Vida de Jesus", "Milagres de Jesus", "Parábolas", "Apocalipse", "Louvores", "Músicas"];
+  const OTHER = "Sem categoria";
+  const groups = new Map<string, { item: PlayEntry; idx: number }[]>();
+  items.forEach((it, idx) => {
+    const s = (it.section && it.section.trim()) || OTHER;
+    if (!groups.has(s)) groups.set(s, []);
+    groups.get(s)!.push({ item: it, idx });
+  });
+  const sortedKeys = Array.from(groups.keys()).sort((a, b) => {
+    const ia = SECTION_ORDER.indexOf(a);
+    const ib = SECTION_ORDER.indexOf(b);
+    if (ia === -1 && ib === -1) return a.localeCompare(b);
+    if (ia === -1) return 1;
+    if (ib === -1) return -1;
+    return ia - ib;
+  });
+  const visibleKeys = filter === "all" ? sortedKeys : sortedKeys.filter((k) => k === filter);
+
+  const isOpen = (k: string) => openSections[k] !== false; // default open
+
+  const renderCard = (it: PlayEntry, idx: number) => {
+    const editing = editingId === it.id;
+    return (
+      <div key={it.id} className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-xs text-zinc-500 font-mono w-8">#{String(idx + 1).padStart(2, "0")}</span>
+          <input value={it.title} onChange={(e) => patch(it.id, { title: e.target.value })} placeholder="Título" className={inputCls + " flex-1"} />
+          <button onClick={() => move(it.id, -1)} className="w-9 h-9 rounded bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center" title="Mover para cima">
+            <ArrowUp className="w-4 h-4" />
+          </button>
+          <button onClick={() => move(it.id, 1)} className="w-9 h-9 rounded bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center" title="Mover para baixo">
+            <ArrowDown className="w-4 h-4" />
+          </button>
+          <button onClick={() => setEditingId(editing ? null : it.id)} className={`w-9 h-9 rounded flex items-center justify-center ${editing ? "bg-amber-600 hover:bg-amber-700" : "bg-zinc-800 hover:bg-zinc-700"}`} title="Editar URL e capa">
+            <Pencil className="w-4 h-4" />
+          </button>
+          {it.src && (
+            <a href={it.src} target="_blank" rel="noreferrer" className="w-9 h-9 rounded bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center" title="Abrir URL">
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          )}
+          <button onClick={() => remove(it.id)} className="w-9 h-9 rounded bg-red-900/40 hover:bg-red-900/70 flex items-center justify-center" title="Remover">
+            <Trash2 className="w-4 h-4 text-red-300" />
+          </button>
+        </div>
+        {editing && (
+          <div className="space-y-2 pt-2 border-t border-zinc-800">
+            <label className="block text-[11px] text-zinc-400">Livro / Tema</label>
+            <input value={it.section ?? ""} onChange={(e) => patch(it.id, { section: e.target.value })} placeholder="Ex: Gênesis, Êxodo, Vida de Jesus…" className={inputCls} />
+            <label className="block text-[11px] text-zinc-400">URL do vídeo</label>
+            <div className="flex gap-2">
+              <input value={it.src} onChange={(e) => patch(it.id, { src: e.target.value })} placeholder="YouTube, Vimeo, /videos/arquivo.mp4 ou clique em Procurar" className={inputCls + " flex-1"} />
+              <button
+                type="button"
+                onClick={() => setPicker({ id: it.id, field: "src" })}
+                className="px-3 py-1.5 rounded bg-red-600 hover:bg-red-700 text-xs font-bold flex items-center gap-1 whitespace-nowrap"
+                title="Procurar vídeo já existente no site"
+              >
+                <Search className="w-3.5 h-3.5" /> Procurar
+              </button>
+            </div>
+            <label className="block text-[11px] text-zinc-400">URL da capa / ícone (opcional)</label>
+            <div className="flex gap-2">
+              <input value={it.poster ?? ""} onChange={(e) => patch(it.id, { poster: e.target.value })} placeholder="https://... ou clique em Procurar" className={inputCls + " flex-1"} />
+              <button
+                type="button"
+                onClick={() => setPicker({ id: it.id, field: "poster" })}
+                className="px-3 py-1.5 rounded bg-zinc-700 hover:bg-zinc-600 text-xs font-bold flex items-center gap-1 whitespace-nowrap"
+                title="Procurar capa já existente no site"
+              >
+                <Search className="w-3.5 h-3.5" /> Procurar
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       <MediaPickerModal
         open={!!picker}
         kind={picker?.field === "poster" ? "image" : "video"}
@@ -136,64 +219,52 @@ function PlayList({ items, onChange }: { items: PlayEntry[]; onChange: (v: PlayE
         onClose={() => setPicker(null)}
         onSelect={(url) => picker && patch(picker.id, { [picker.field]: url } as Partial<PlayEntry>)}
       />
-      {items.map((it, idx) => {
-        const editing = editingId === it.id;
-        return (
-          <div key={it.id} className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs text-zinc-500 font-mono w-8">#{String(idx + 1).padStart(2, "0")}</span>
-              <input value={it.title} onChange={(e) => patch(it.id, { title: e.target.value })} placeholder="Título" className={inputCls + " flex-1"} />
-              <button onClick={() => move(idx, -1)} disabled={idx === 0} className="w-9 h-9 rounded bg-zinc-800 hover:bg-zinc-700 disabled:opacity-30 flex items-center justify-center" title="Mover para cima">
-                <ArrowUp className="w-4 h-4" />
-              </button>
-              <button onClick={() => move(idx, 1)} disabled={idx === items.length - 1} className="w-9 h-9 rounded bg-zinc-800 hover:bg-zinc-700 disabled:opacity-30 flex items-center justify-center" title="Mover para baixo">
-                <ArrowDown className="w-4 h-4" />
-              </button>
-              <button onClick={() => setEditingId(editing ? null : it.id)} className={`w-9 h-9 rounded flex items-center justify-center ${editing ? "bg-amber-600 hover:bg-amber-700" : "bg-zinc-800 hover:bg-zinc-700"}`} title="Editar URL e capa">
-                <Pencil className="w-4 h-4" />
-              </button>
-              {it.src && (
-                <a href={it.src} target="_blank" rel="noreferrer" className="w-9 h-9 rounded bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center" title="Abrir URL">
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-              )}
-              <button onClick={() => remove(it.id)} className="w-9 h-9 rounded bg-red-900/40 hover:bg-red-900/70 flex items-center justify-center" title="Remover">
-                <Trash2 className="w-4 h-4 text-red-300" />
+
+      {/* Filtro por livro/tema */}
+      <div className="flex flex-wrap gap-2 items-center bg-zinc-900/70 border border-zinc-800 rounded-lg p-2">
+        <span className="text-xs text-zinc-400 px-1">Livro / Tema:</span>
+        <button
+          onClick={() => setFilter("all")}
+          className={`px-2.5 py-1 rounded text-xs font-semibold ${filter === "all" ? "bg-red-600 text-white" : "bg-zinc-800 text-zinc-300 hover:bg-zinc-700"}`}
+        >
+          Todos ({items.length})
+        </button>
+        {sortedKeys.map((k) => (
+          <button
+            key={k}
+            onClick={() => setFilter(k)}
+            className={`px-2.5 py-1 rounded text-xs font-semibold ${filter === k ? "bg-red-600 text-white" : "bg-zinc-800 text-zinc-300 hover:bg-zinc-700"}`}
+          >
+            {k} ({groups.get(k)!.length})
+          </button>
+        ))}
+      </div>
+
+      {visibleKeys.map((k) => (
+        <div key={k} className="space-y-2">
+          <button
+            onClick={() => setOpenSections((s) => ({ ...s, [k]: !isOpen(k) }))}
+            className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-md bg-zinc-800/60 hover:bg-zinc-800 border border-zinc-700"
+          >
+            <span className="text-sm font-bold text-white">📚 {k}</span>
+            <span className="text-xs text-zinc-400">{groups.get(k)!.length} vídeo(s) {isOpen(k) ? "▾" : "▸"}</span>
+          </button>
+          {isOpen(k) && (
+            <div className="space-y-2 pl-2 border-l-2 border-zinc-800">
+              {groups.get(k)!.map(({ item, idx }) => renderCard(item, idx))}
+              <button
+                onClick={() => add(k === OTHER ? undefined : k)}
+                className="w-full flex items-center justify-center gap-2 py-2 border border-dashed border-zinc-700 hover:border-red-600 hover:text-red-400 rounded text-xs text-zinc-400 transition"
+              >
+                <Plus className="w-3.5 h-3.5" /> Adicionar em {k}
               </button>
             </div>
-            {editing && (
-              <div className="space-y-2 pt-2 border-t border-zinc-800">
-                <label className="block text-[11px] text-zinc-400">URL do vídeo</label>
-                <div className="flex gap-2">
-                  <input value={it.src} onChange={(e) => patch(it.id, { src: e.target.value })} placeholder="YouTube, Vimeo, /videos/arquivo.mp4 ou clique em Procurar" className={inputCls + " flex-1"} />
-                  <button
-                    type="button"
-                    onClick={() => setPicker({ id: it.id, field: "src" })}
-                    className="px-3 py-1.5 rounded bg-red-600 hover:bg-red-700 text-xs font-bold flex items-center gap-1 whitespace-nowrap"
-                    title="Procurar vídeo já existente no site"
-                  >
-                    <Search className="w-3.5 h-3.5" /> Procurar
-                  </button>
-                </div>
-                <label className="block text-[11px] text-zinc-400">URL da capa / ícone (opcional)</label>
-                <div className="flex gap-2">
-                  <input value={it.poster ?? ""} onChange={(e) => patch(it.id, { poster: e.target.value })} placeholder="https://... ou clique em Procurar" className={inputCls + " flex-1"} />
-                  <button
-                    type="button"
-                    onClick={() => setPicker({ id: it.id, field: "poster" })}
-                    className="px-3 py-1.5 rounded bg-zinc-700 hover:bg-zinc-600 text-xs font-bold flex items-center gap-1 whitespace-nowrap"
-                    title="Procurar capa já existente no site"
-                  >
-                    <Search className="w-3.5 h-3.5" /> Procurar
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        );
-      })}
-      <button onClick={add} className="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-zinc-700 hover:border-red-600 hover:text-red-400 rounded-lg text-sm text-zinc-400 transition">
-        <Plus className="w-4 h-4" /> Adicionar vídeo
+          )}
+        </div>
+      ))}
+
+      <button onClick={() => add()} className="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-zinc-700 hover:border-red-600 hover:text-red-400 rounded-lg text-sm text-zinc-400 transition">
+        <Plus className="w-4 h-4" /> Adicionar vídeo (sem categoria)
       </button>
     </div>
   );
