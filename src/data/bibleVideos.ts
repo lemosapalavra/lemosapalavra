@@ -79,6 +79,8 @@ import apocalipseThumb from "@/assets/lemos-play/apocalipse-batalha-final-thumb.
 import eleVive1Thumb from "@/assets/lemos-play/ele-vive-parte1-thumb.png.asset.json";
 import eleVive2Thumb from "@/assets/lemos-play/ele-vive-parte2-thumb.png.asset.json";
 import eleVive3Thumb from "@/assets/lemos-play/ele-vive-parte3-thumb.png.asset.json";
+import vidDiluvio1 from "@/assets/lemos-play/diluvio-1.mp4.asset.json";
+import vidDiluvio2 from "@/assets/lemos-play/diluvio-2.mp4.asset.json";
 
 
 export interface BibleVideo {
@@ -90,9 +92,9 @@ export interface BibleVideo {
 
 
 export const seriesVideos: BibleVideo[] = [
-  { title: "Moisés — Parte I", icon: moisesP1.url, src: vidMoises1.url },
-  { title: "Moisés — Parte II", icon: moisesP2.url, src: vidMoises2.url },
-  { title: "Moisés — Parte III", icon: moisesP3.url, src: vidMoises3.url },
+  { title: "Moisés — Parte I", icon: moisesP1.url, src: vidMoises1.url, section: "Êxodo" },
+  { title: "Moisés — Parte II", icon: moisesP2.url, src: vidMoises2.url, section: "Êxodo" },
+  { title: "Moisés — Parte III", icon: moisesP3.url, src: vidMoises3.url, section: "Êxodo" },
 ];
 
 export interface BibleVideoGroup {
@@ -103,91 +105,84 @@ export interface BibleVideoGroup {
 
 export const seriesGroups: BibleVideoGroup[] = [
   {
-    title: "Os Irmãos Esaú e Jacó",
-    icon: esauJacoIcon.url,
+    title: "O Dilúvio",
+    icon: iconNoe1,
     videos: [
-      { title: "Esaú e Jacó — Parte I", icon: esauJacoP1.url, src: vidEJ1.url },
-      { title: "Esaú e Jacó — Parte II", icon: esauJacoP2.url, src: vidEJ2.url },
-      { title: "Esaú e Jacó — Parte III", icon: esauJacoP3.url, src: vidEJ3.url },
-    ],
-  },
-  {
-    title: "Moisés",
-    icon: moisesP1.url,
-    videos: [
-      { title: "Moisés — Parte I", icon: moisesP1.url, src: vidMoises1.url },
-      { title: "Moisés — Parte II", icon: moisesP2.url, src: vidMoises2.url },
-      { title: "Moisés — Parte III", icon: moisesP3.url, src: vidMoises3.url },
-    ],
-  },
-  {
-    title: "José do Egito",
-    icon: joseEgitoCover.url,
-    videos: [
-      { title: "José do Egito — Parte I", icon: joseEgitoP1.url, src: vidJose1.url },
-      { title: "José do Egito — Parte II", icon: joseEgitoP2.url, src: vidJose2.url },
-      { title: "José do Egito — Parte III", icon: joseEgitoP3.url, src: vidJose3.url },
-    ],
-  },
-  {
-    title: "Jó",
-    icon: joP1.url,
-    videos: [
-      { title: "Jó — Parte I", icon: joP1.url, src: vidJo1.url },
-      { title: "Jó — Parte II", icon: joP2.url, src: vidJo2.url },
-      { title: "Jó — Parte III", icon: joP3.url, src: vidJo3.url },
+      { title: "O Dilúvio — Parte I", icon: iconNoe1, src: vidDiluvio1.url, section: "Gênesis" },
+      { title: "O Dilúvio — Parte II", icon: iconNoe1, src: vidDiluvio2.url, section: "Gênesis" },
     ],
   },
   {
     title: "Abraão",
     icon: iconAbraao.url,
     videos: [
-      { title: "Abraão — Parte I", icon: iconAbraao.url, src: vidAbraao1.url },
-      { title: "Abraão — Parte II", icon: iconAbraao.url, src: vidAbraao2.url },
+      { title: "Abraão — Parte I", icon: iconAbraao.url, src: vidAbraao1.url, section: "Gênesis" },
+      { title: "Abraão — Parte II", icon: iconAbraao.url, src: vidAbraao2.url, section: "Gênesis" },
+    ],
+  },
+  {
+    title: "Os Irmãos Esaú e Jacó",
+    icon: esauJacoIcon.url,
+    videos: [
+      { title: "Esaú e Jacó — Parte I", icon: esauJacoP1.url, src: vidEJ1.url, section: "Gênesis" },
+      { title: "Esaú e Jacó — Parte II", icon: esauJacoP2.url, src: vidEJ2.url, section: "Gênesis" },
+      { title: "Esaú e Jacó — Parte III", icon: esauJacoP3.url, src: vidEJ3.url, section: "Gênesis" },
+    ],
+  },
+  {
+    title: "José do Egito",
+    icon: joseEgitoCover.url,
+    videos: [
+      { title: "José do Egito — Parte I", icon: joseEgitoP1.url, src: vidJose1.url, section: "Gênesis" },
+      { title: "José do Egito — Parte II", icon: joseEgitoP2.url, src: vidJose2.url, section: "Gênesis" },
+      { title: "José do Egito — Parte III", icon: joseEgitoP3.url, src: vidJose3.url, section: "Gênesis" },
+    ],
+  },
+  {
+    title: "Moisés",
+    icon: moisesP1.url,
+    videos: [
+      { title: "Moisés — Parte I", icon: moisesP1.url, src: vidMoises1.url, section: "Êxodo" },
+      { title: "Moisés — Parte II", icon: moisesP2.url, src: vidMoises2.url, section: "Êxodo" },
+      { title: "Moisés — Parte III", icon: moisesP3.url, src: vidMoises3.url, section: "Êxodo" },
+    ],
+  },
+  {
+    title: "Jó",
+    icon: joP1.url,
+    videos: [
+      { title: "Jó — Parte I", icon: joP1.url, src: vidJo1.url, section: "Jó" },
+      { title: "Jó — Parte II", icon: joP2.url, src: vidJo2.url, section: "Jó" },
+      { title: "Jó — Parte III", icon: joP3.url, src: vidJo3.url, section: "Jó" },
     ],
   },
   {
     title: "A Prova de Fogo",
     icon: iconProvaFogo.url,
     videos: [
-      { title: "A Prova de Fogo — Parte I", icon: iconProvaFogo.url, src: vidProvaFogo1.url },
-      { title: "A Prova de Fogo — Parte II", icon: iconProvaFogo.url, src: vidProvaFogo2.url },
+      { title: "A Prova de Fogo — Parte I", icon: iconProvaFogo.url, src: vidProvaFogo1.url, section: "Daniel" },
+      { title: "A Prova de Fogo — Parte II", icon: iconProvaFogo.url, src: vidProvaFogo2.url, section: "Daniel" },
     ],
   },
-  // Removidos por solicitação: Noé e a Arca, Davi e Golias, Os 10 Mandamentos,
-  // Jesus - A Série Ele está Vivo!, O Filho Pródigo.
 ];
 
 export const filmesVideos: BibleVideo[] = [
-  { title: "A Criação", icon: iconCriacao, src: vidCriacao.url },
-  { title: "A Batalha dos Anjos", icon: iconBatalha, src: vidBatalha.url },
-  { title: "Adão e Eva", icon: iconAdaoEva1, src: vidAdaoEva.url },
-  { title: "Jonas e a Baleia", icon: iconJonas.url, src: vidJonasFilme.url },
-  { title: "Jesus", icon: nascimentoJesusThumb.url, src: vidNascimentoJesus.url },
-  { title: "O Semeador", icon: semeadorThumb.url, src: vidSemeador.url },
-  { title: "Apocalipse — A Batalha Final", icon: apocalipseThumb.url, src: vidApocalipse.url },
+  { title: "A Criação", icon: iconCriacao, src: vidCriacao.url, section: "Gênesis" },
+  { title: "A Batalha dos Anjos", icon: iconBatalha, src: vidBatalha.url, section: "Gênesis" },
+  { title: "Adão e Eva", icon: iconAdaoEva1, src: vidAdaoEva.url, section: "Gênesis" },
+  { title: "Noé e a Arca", icon: iconNoe1, src: vidNoeArcaFilme.url, section: "Gênesis" },
+  { title: "Jonas e a Baleia", icon: iconJonas.url, src: vidJonasFilme.url, section: "Profetas" },
+  { title: "Jesus", icon: nascimentoJesusThumb.url, src: vidNascimentoJesus.url, section: "Vida de Jesus" },
+  { title: "O Semeador", icon: semeadorThumb.url, src: vidSemeador.url, section: "Parábolas" },
+  { title: "Apocalipse — A Batalha Final", icon: apocalipseThumb.url, src: vidApocalipse.url, section: "Apocalipse" },
 ];
 
 
-// Movido de "filmes" para "séries": cada filme principal vira o episódio
-// inicial e ganha as partes complementares, formando uma mini-série completa.
-export const noeSeries: BibleVideo[] = [
-  { title: "Noé e a Arca — Filme", icon: iconNoe1, src: vidNoeArcaFilme.url },
-  { title: "Noé — Parte I", icon: iconNoe1, src: vidNoe1.url },
-  { title: "Noé — Parte II", icon: iconNoe1, src: vidNoe2.url },
-];
-export const daviSeries: BibleVideo[] = [
-  { title: "Davi e Golias — Filme", icon: iconDaviGolias, src: vidDaviFilme.url },
-  { title: "Davi e Golias — Parte I", icon: iconDaviGolias, src: vidDavi1.url },
-  { title: "Davi e Golias — Parte II", icon: iconDaviGolias, src: vidDavi2.url },
-];
-export const mandamentosSeries: BibleVideo[] = [
-  { title: "Os 10 Mandamentos — Filme", icon: icon10Mandamentos, src: vid10mFilme.url },
-  { title: "Os 10 Mandamentos — Parte I", icon: icon10Mandamentos, src: vid10m1.url },
-  { title: "Os 10 Mandamentos — Parte II", icon: icon10Mandamentos, src: vid10m2.url },
-  { title: "Os 10 Mandamentos — Parte III", icon: icon10Mandamentos, src: vid10m3.url },
-];
+// Compat exports (não referenciados na UI atual, mantidos para code splitting)
+export const noeSeries: BibleVideo[] = [];
+export const daviSeries: BibleVideo[] = [];
+export const mandamentosSeries: BibleVideo[] = [];
 
-// Mantido para compatibilidade — agora vazio porque os filmes viraram séries.
 export const filmeContinuations: Record<string, BibleVideo[]> = {};
+
 
