@@ -78,7 +78,6 @@ export default function LemosPlayAdminPanel({ open, onClose }: Props) {
     { key: "louvores", label: "🙌 Louvores" },
     ...cfg.series.map((g) => ({ key: `series:${g.id}` as CatKey, label: `📺 Série: ${g.title}` })),
   ];
-...
         {/* Body */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
           {tab === "filmes" && <PlayList items={cfg.filmes} onChange={(v) => updateList("filmes", v)} currentCategory="filmes" moveTargets={moveTargets} onMove={(id, to) => moveEntry("filmes", id, to)} />}
