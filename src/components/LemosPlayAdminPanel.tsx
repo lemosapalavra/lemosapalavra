@@ -37,6 +37,15 @@ export default function LemosPlayAdminPanel({ open, onClose }: Props) {
     update({ ...cfg, [key]: items });
   };
 
+  const handleSave = () => { saveConfig(cfg); setDirty(false); };
+  const handleReset = () => {
+    if (!confirm("Restaurar configurações padrão? Suas edições serão perdidas.")) return;
+    resetConfig();
+    setCfg(defaultConfig());
+    setDirty(false);
+  };
+
+
   type CatKey = "filmes" | "musicas" | "louvores" | `series:${string}`;
   const CAT_LABEL: Record<"filmes" | "musicas" | "louvores", string> = {
     filmes: "Filmes",
