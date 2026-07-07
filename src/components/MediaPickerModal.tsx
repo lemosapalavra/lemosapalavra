@@ -82,16 +82,46 @@ export default function MediaPickerModal({ open, kind, currentUrl, onClose, onSe
           </button>
         </div>
 
-        <div className="p-3 border-b border-zinc-800 relative">
-          <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-          <input
-            autoFocus
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Buscar por nome, série ou URL..."
-            className="w-full bg-zinc-800 border border-zinc-700 rounded pl-9 pr-3 py-2 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-red-500"
-          />
+        <div className="p-3 border-b border-zinc-800 space-y-2">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            <input
+              autoFocus
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="Buscar por nome, série ou URL..."
+              className="w-full bg-zinc-800 border border-zinc-700 rounded pl-9 pr-3 py-2 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-red-500"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              ref={fileRef}
+              type="file"
+              accept={kind === "video" ? "video/*" : "image/*"}
+              className="hidden"
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) handleUpload(f);
+              }}
+            />
+            <button
+              type="button"
+              disabled={uploading}
+              onClick={() => fileRef.current?.click()}
+              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded bg-red-600 hover:bg-red-700 disabled:opacity-60 text-sm font-bold"
+            >
+              {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+              {uploading ? "Enviando…" : `📁 Enviar ${kind === "video" ? "vídeo" : "capa"} do computador`}
+            </button>
+          </div>
+          {uploadErr && <p className="text-xs text-red-400">Erro no upload: {uploadErr}</p>}
+          {uploading && uploadPct > 0 && (
+            <div className="w-full h-1 bg-zinc-800 rounded overflow-hidden">
+              <div className="h-full bg-red-600 transition-all" style={{ width: `${uploadPct}%` }} />
+            </div>
+          )}
         </div>
+
 
         <div className="flex-1 overflow-y-auto p-3 space-y-4">
           {grouped.length === 0 && (
