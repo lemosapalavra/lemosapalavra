@@ -120,12 +120,12 @@ function fromGroup(g: BibleVideoGroup, gid: string): SeriesGroupCfg {
 }
 
 export function defaultConfig(): LemosPlayConfig {
-  void seriesGroups; void defaultMusicas; void defaultLouvores; void fromGroup; void fromVideo; void filmesVideos;
+  void seriesGroups; void fromGroup;
   return {
-    filmes: [],
+    filmes: filmesVideos.map((v, i) => fromVideo(v, `f${i}`)),
     series: [],
-    musicas: [],
-    louvores: [],
+    musicas: defaultMusicas,
+    louvores: defaultLouvores,
   };
 }
 
