@@ -87,6 +87,14 @@ import eleVive2Thumb from "@/assets/lemos-play/ele-vive-parte2-thumb.png.asset.j
 import eleVive3Thumb from "@/assets/lemos-play/ele-vive-parte3-thumb.png.asset.json";
 import vidDiluvio1 from "@/assets/lemos-play/diluvio-1.mp4.asset.json";
 import vidDiluvio2 from "@/assets/lemos-play/diluvio-2.mp4.asset.json";
+import vidLazaro from "@/assets/lemos-play/lazaro.mp4.asset.json";
+import vidDanielCova from "@/assets/lemos-play/daniel-cova-leoes.mp4.asset.json";
+import vidTorreBabel from "@/assets/lemos-play/torre-babel.mp4.asset.json";
+import vidJoaoBatista from "@/assets/lemos-play/joao-batista-decaptado.mp4.asset.json";
+import lazaroThumb from "@/assets/lemos-play/lazaro-thumb.jpg.asset.json";
+import torreBabelThumb from "@/assets/lemos-play/torre-babel-thumb.jpg.asset.json";
+import joaoBatistaThumb from "@/assets/lemos-play/joao-batista-thumb.png.asset.json";
+import danielLeoesImg from "@/assets/lemos-play/daniel-na-cova-dos-leoes.png.asset.json";
 
 
 export interface BibleVideo {
@@ -180,6 +188,12 @@ export const filmesVideos: BibleVideo[] = [
   { title: "Os 10 Mandamentos — Parte I", icon: icon10Mandamentos, src: vidGen10m1.url, section: "Gênesis" },
   { title: "Os 10 Mandamentos — Parte II", icon: icon10Mandamentos, src: vidGen10m2.url, section: "Gênesis" },
   { title: "Davi e Golias", icon: iconDaviGolias, src: vidGenDavi.url, section: "Gênesis" },
+  { title: "Torre de Babel", icon: torreBabelThumb.url, src: vidTorreBabel.url, section: "Gênesis" },
+  { title: "Jonas e a Baleia", icon: iconJonas.url, src: vidJonasFilme.url, section: "Jonas" },
+  { title: "Lázaro", icon: lazaroThumb.url, src: vidLazaro.url, section: "Novo Testamento" },
+  { title: "Daniel na Cova dos Leões", icon: danielLeoesImg.url, src: vidDanielCova.url, section: "Daniel" },
+  { title: "João Batista Decapitado", icon: joaoBatistaThumb.url, src: vidJoaoBatista.url, section: "Novo Testamento" },
+  { title: "Apocalipse — A Batalha Final", icon: apocalipseThumb.url, src: vidApocalipse.url, section: "Apocalipse" },
 ];
 
 
