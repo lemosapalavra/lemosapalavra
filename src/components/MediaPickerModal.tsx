@@ -13,7 +13,43 @@ interface Props {
 
 export default function MediaPickerModal({ open, kind, currentUrl, onClose, onSelect }: Props) {
   const [q, setQ] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [uploadErr, setUploadErr] = useState<string | null>(null);
+  const [uploadPct, setUploadPct] = useState<number>(0);
+  const fileRef = useRef<HTMLInputElement | null>(null);
   const all = kind === "video" ? availableVideos : availablePosters;
+
+  const handleUpload = async (file: File) => {
+    setUploadErr(null);
+    setUploading(true);
+    setUploadPct(0);
+    try {
+      const ext = file.name.split(".").pop()?.toLowerCase() || (kind === "video" ? "mp4" : "png");
+      const safe = file.name.replace(/\.[^.]+$/, "").replace(/[^a-zA-Z0-9-_]/g, "-").slice(0, 60);
+      const path = `${kind}/${Date.now()}-${safe}.${ext}`;
+      const { error } = await supabase.storage.from("lemos-play-videos").upload(path, file, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: file.type || undefined,
+      });
+      if (error) throw error;
+      // URL assinada de longa duração (10 anos) para reprodução pública controlada.
+      const { data: signed, error: sErr } = await supabase.storage
+        .from("lemos-play-videos")
+        .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+      if (sErr || !signed?.signedUrl) throw sErr ?? new Error("Falha ao gerar URL");
+      setUploadPct(100);
+      onSelect(signed.signedUrl);
+      onClose();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      setUploadErr(msg);
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  };
+
 
   const filtered = useMemo(() => {
     const s = q.trim().toLowerCase();
