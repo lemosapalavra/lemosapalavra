@@ -37,61 +37,55 @@ export default function LemosPlayAdminPanel({ open, onClose }: Props) {
     update({ ...cfg, [key]: items });
   };
 
-  const handleSave = () => {
-    saveConfig(cfg);
-    setDirty(false);
+  type CatKey = "filmes" | "musicas" | "louvores" | `series:${string}`;
+  const CAT_LABEL: Record<"filmes" | "musicas" | "louvores", string> = {
+    filmes: "Filmes",
+    musicas: "Músicas",
+    louvores: "Louvores",
+  };
+  const moveEntry = (from: CatKey, id: string, to: CatKey) => {
+    if (from === to) return;
+    // pull entry
+    let entry: PlayEntry | undefined;
+    const next: LemosPlayConfig = { ...cfg, series: cfg.series.map((g) => ({ ...g, videos: [...g.videos] })), filmes: [...cfg.filmes], musicas: [...cfg.musicas], louvores: [...cfg.louvores] };
+    const pull = (arr: PlayEntry[]) => {
+      const i = arr.findIndex((x) => x.id === id);
+      if (i >= 0) { entry = arr[i]; arr.splice(i, 1); }
+    };
+    if (from === "filmes") pull(next.filmes);
+    else if (from === "musicas") pull(next.musicas);
+    else if (from === "louvores") pull(next.louvores);
+    else {
+      const gid = from.slice(7);
+      const g = next.series.find((x) => x.id === gid);
+      if (g) pull(g.videos);
+    }
+    if (!entry) return;
+    if (to === "filmes") next.filmes.push(entry);
+    else if (to === "musicas") next.musicas.push(entry);
+    else if (to === "louvores") next.louvores.push(entry);
+    else {
+      const gid = to.slice(7);
+      const g = next.series.find((x) => x.id === gid);
+      if (g) g.videos.push(entry);
+    }
+    update(next);
   };
 
-  const handleReset = () => {
-    if (!confirm("Restaurar configurações padrão? Suas edições serão perdidas.")) return;
-    resetConfig();
-    setCfg(defaultConfig());
-    setDirty(false);
-  };
-
-  const tabs: { key: Tab; label: string; count: number }[] = [
-    { key: "filmes", label: "Filmes", count: cfg.filmes.length },
-    { key: "series", label: "Séries", count: cfg.series.reduce((a, g) => a + g.videos.length, 0) },
-    { key: "musicas", label: "Músicas", count: cfg.musicas.length },
-    { key: "louvores", label: "Louvores", count: cfg.louvores.length },
+  const moveTargets: { key: CatKey; label: string }[] = [
+    { key: "filmes", label: "🎬 Filmes" },
+    { key: "musicas", label: "🎵 Músicas" },
+    { key: "louvores", label: "🙌 Louvores" },
+    ...cfg.series.map((g) => ({ key: `series:${g.id}` as CatKey, label: `📺 Série: ${g.title}` })),
   ];
-
-  return (
-    <div className="fixed inset-0 z-[80] bg-black/85 backdrop-blur-sm flex items-center justify-center p-3" onClick={onClose}>
-      <div className="bg-zinc-950 border border-zinc-800 rounded-xl w-full max-w-4xl max-h-[92vh] flex flex-col text-white" onClick={(e) => e.stopPropagation()}>
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-zinc-800">
-          <div>
-            <h2 className="text-lg font-bold">⚙️ Configuração — Lemos Play</h2>
-            <p className="text-xs text-zinc-400">Edite títulos, links e adicione novos vídeos por categoria.</p>
-          </div>
-          <button onClick={onClose} className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center" aria-label="Fechar">
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* Tabs */}
-        <div className="flex gap-1 px-4 pt-3 border-b border-zinc-800">
-          {tabs.map((t) => (
-            <button
-              key={t.key}
-              onClick={() => setTab(t.key)}
-              className={`px-3 py-2 text-sm font-semibold rounded-t-md transition ${
-                tab === t.key ? "bg-zinc-800 text-white border-b-2 border-red-600" : "text-zinc-400 hover:text-white"
-              }`}
-            >
-              {t.label} <span className="text-xs opacity-60">({t.count})</span>
-            </button>
-          ))}
-        </div>
-
+...
         {/* Body */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
-          {tab === "filmes" && <PlayList items={cfg.filmes} onChange={(v) => updateList("filmes", v)} />}
-          {tab === "musicas" && <PlayList items={cfg.musicas} onChange={(v) => updateList("musicas", v)} />}
-          {tab === "louvores" && <PlayList items={cfg.louvores} onChange={(v) => updateList("louvores", v)} />}
+          {tab === "filmes" && <PlayList items={cfg.filmes} onChange={(v) => updateList("filmes", v)} currentCategory="filmes" moveTargets={moveTargets} onMove={(id, to) => moveEntry("filmes", id, to)} />}
+          {tab === "musicas" && <PlayList items={cfg.musicas} onChange={(v) => updateList("musicas", v)} currentCategory="musicas" moveTargets={moveTargets} onMove={(id, to) => moveEntry("musicas", id, to)} />}
+          {tab === "louvores" && <PlayList items={cfg.louvores} onChange={(v) => updateList("louvores", v)} currentCategory="louvores" moveTargets={moveTargets} onMove={(id, to) => moveEntry("louvores", id, to)} />}
           {tab === "series" && (
-            <SeriesEditor groups={cfg.series} onChange={(g) => update({ ...cfg, series: g })} />
+            <SeriesEditor groups={cfg.series} onChange={(g) => update({ ...cfg, series: g })} moveTargets={moveTargets} onMoveFromGroup={(gid, id, to) => moveEntry(`series:${gid}`, id, to)} />
           )}
         </div>
 
