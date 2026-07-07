@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
-import { X, Search, Check } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { X, Search, Check, Upload, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { availableVideos, availablePosters, type MediaItem } from "@/data/availableMedia";
 
 interface Props {
@@ -12,7 +13,43 @@ interface Props {
 
 export default function MediaPickerModal({ open, kind, currentUrl, onClose, onSelect }: Props) {
   const [q, setQ] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [uploadErr, setUploadErr] = useState<string | null>(null);
+  const [uploadPct, setUploadPct] = useState<number>(0);
+  const fileRef = useRef<HTMLInputElement | null>(null);
   const all = kind === "video" ? availableVideos : availablePosters;
+
+  const handleUpload = async (file: File) => {
+    setUploadErr(null);
+    setUploading(true);
+    setUploadPct(0);
+    try {
+      const ext = file.name.split(".").pop()?.toLowerCase() || (kind === "video" ? "mp4" : "png");
+      const safe = file.name.replace(/\.[^.]+$/, "").replace(/[^a-zA-Z0-9-_]/g, "-").slice(0, 60);
+      const path = `${kind}/${Date.now()}-${safe}.${ext}`;
+      const { error } = await supabase.storage.from("lemos-play-videos").upload(path, file, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: file.type || undefined,
+      });
+      if (error) throw error;
+      // URL assinada de longa duração (10 anos) para reprodução pública controlada.
+      const { data: signed, error: sErr } = await supabase.storage
+        .from("lemos-play-videos")
+        .createSignedUrl(path, 60 * 60 * 24 * 365 * 10);
+      if (sErr || !signed?.signedUrl) throw sErr ?? new Error("Falha ao gerar URL");
+      setUploadPct(100);
+      onSelect(signed.signedUrl);
+      onClose();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      setUploadErr(msg);
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  };
+
 
   const filtered = useMemo(() => {
     const s = q.trim().toLowerCase();
@@ -45,16 +82,46 @@ export default function MediaPickerModal({ open, kind, currentUrl, onClose, onSe
           </button>
         </div>
 
-        <div className="p-3 border-b border-zinc-800 relative">
-          <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-          <input
-            autoFocus
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Buscar por nome, série ou URL..."
-            className="w-full bg-zinc-800 border border-zinc-700 rounded pl-9 pr-3 py-2 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-red-500"
-          />
+        <div className="p-3 border-b border-zinc-800 space-y-2">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            <input
+              autoFocus
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="Buscar por nome, série ou URL..."
+              className="w-full bg-zinc-800 border border-zinc-700 rounded pl-9 pr-3 py-2 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-red-500"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              ref={fileRef}
+              type="file"
+              accept={kind === "video" ? "video/*" : "image/*"}
+              className="hidden"
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) handleUpload(f);
+              }}
+            />
+            <button
+              type="button"
+              disabled={uploading}
+              onClick={() => fileRef.current?.click()}
+              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded bg-red-600 hover:bg-red-700 disabled:opacity-60 text-sm font-bold"
+            >
+              {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+              {uploading ? "Enviando…" : `📁 Enviar ${kind === "video" ? "vídeo" : "capa"} do computador`}
+            </button>
+          </div>
+          {uploadErr && <p className="text-xs text-red-400">Erro no upload: {uploadErr}</p>}
+          {uploading && uploadPct > 0 && (
+            <div className="w-full h-1 bg-zinc-800 rounded overflow-hidden">
+              <div className="h-full bg-red-600 transition-all" style={{ width: `${uploadPct}%` }} />
+            </div>
+          )}
         </div>
+
 
         <div className="flex-1 overflow-y-auto p-3 space-y-4">
           {grouped.length === 0 && (
