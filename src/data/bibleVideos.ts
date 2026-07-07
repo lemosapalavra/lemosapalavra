@@ -87,6 +87,14 @@ import eleVive2Thumb from "@/assets/lemos-play/ele-vive-parte2-thumb.png.asset.j
 import eleVive3Thumb from "@/assets/lemos-play/ele-vive-parte3-thumb.png.asset.json";
 import vidDiluvio1 from "@/assets/lemos-play/diluvio-1.mp4.asset.json";
 import vidDiluvio2 from "@/assets/lemos-play/diluvio-2.mp4.asset.json";
+import vidLazaro from "@/assets/lemos-play/lazaro.mp4.asset.json";
+import vidDanielCova from "@/assets/lemos-play/daniel-cova-leoes.mp4.asset.json";
+import vidTorreBabel from "@/assets/lemos-play/torre-babel.mp4.asset.json";
+import vidJoaoBatista from "@/assets/lemos-play/joao-batista-decaptado.mp4.asset.json";
+import lazaroThumb from "@/assets/lemos-play/lazaro-thumb.jpg.asset.json";
+import torreBabelThumb from "@/assets/lemos-play/torre-babel-thumb.jpg.asset.json";
+import joaoBatistaThumb from "@/assets/lemos-play/joao-batista-thumb.png.asset.json";
+import danielLeoesImg from "@/assets/lemos-play/daniel-na-cova-dos-leoes.png.asset.json";
 
 
 export interface BibleVideo {
