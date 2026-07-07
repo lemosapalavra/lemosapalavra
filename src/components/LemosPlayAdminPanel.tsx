@@ -152,7 +152,8 @@ export default function LemosPlayAdminPanel({ open, onClose }: Props) {
   );
 }
 
-function PlayList({ items, onChange }: { items: PlayEntry[]; onChange: (v: PlayEntry[]) => void }) {
+type MoveTarget = { key: string; label: string };
+function PlayList({ items, onChange, currentCategory, moveTargets, onMove }: { items: PlayEntry[]; onChange: (v: PlayEntry[]) => void; currentCategory?: string; moveTargets?: MoveTarget[]; onMove?: (id: string, to: string) => void }) {
   const add = (section?: string) =>
     onChange([...items, { id: newId(), title: "Novo vídeo", src: "", ...(section ? { section } : {}) }]);
   const remove = (id: string) => onChange(items.filter((x) => x.id !== id));
