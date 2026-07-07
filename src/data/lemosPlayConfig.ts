@@ -53,7 +53,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v35";
+const KEY = "lemos_play_config_v36";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
@@ -85,6 +85,7 @@ const attachedThumbByTitle: Record<string, string> = {
   "Ressuscita Me": ressuscitaMeThumb.url,
   "A Cura do Paralítico": curaParaliticoThumb.url,
   "A Tempestade": aTempestadeThumb.url,
+  "Tempestades": aTempestadeThumb.url,
   "Jesus Expulsa Demônios": expulsaDemoniosThumb.url,
 };
 
@@ -100,7 +101,7 @@ const defaultLouvores: PlayEntry[] = [
   { id: "lv4", title: "Sou Fiel", src: souFielVid.url, poster: attachedThumbByTitle["Sou Fiel"], section: "Louvores" },
   { id: "lv5", title: "Graça Aleluia", src: aleluiaVid.url, poster: attachedThumbByTitle["Graça Aleluia"], section: "Louvores" },
   { id: "lv6", title: "Palavra Eterna", src: palavraEternaVid.url, poster: attachedThumbByTitle["Palavra Eterna"], section: "Louvores" },
-  { id: "lv7", title: "Tempestades", src: tempestadesVid.url, section: "Louvores" },
+  { id: "lv7", title: "Tempestades", src: tempestadesVid.url, poster: aTempestadeThumb.url, section: "Louvores" },
 ];
 
 function resolvePoster(title: string, fallback?: string): string | undefined {
