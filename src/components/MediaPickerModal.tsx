@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
-import { X, Search, Check } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { X, Search, Check, Upload, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { availableVideos, availablePosters, type MediaItem } from "@/data/availableMedia";
 
 interface Props {
