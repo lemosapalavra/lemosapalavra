@@ -188,6 +188,12 @@ export const filmesVideos: BibleVideo[] = [
   { title: "Os 10 Mandamentos — Parte I", icon: icon10Mandamentos, src: vidGen10m1.url, section: "Gênesis" },
   { title: "Os 10 Mandamentos — Parte II", icon: icon10Mandamentos, src: vidGen10m2.url, section: "Gênesis" },
   { title: "Davi e Golias", icon: iconDaviGolias, src: vidGenDavi.url, section: "Gênesis" },
+  { title: "Torre de Babel", icon: torreBabelThumb.url, src: vidTorreBabel.url, section: "Gênesis" },
+  { title: "Jonas e a Baleia", icon: iconJonas.url, src: vidJonasFilme.url, section: "Jonas" },
+  { title: "Lázaro", icon: lazaroThumb.url, src: vidLazaro.url, section: "Novo Testamento" },
+  { title: "Daniel na Cova dos Leões", icon: danielLeoesImg.url, src: vidDanielCova.url, section: "Daniel" },
+  { title: "João Batista Decapitado", icon: joaoBatistaThumb.url, src: vidJoaoBatista.url, section: "Novo Testamento" },
+  { title: "Apocalipse — A Batalha Final", icon: apocalipseThumb.url, src: vidApocalipse.url, section: "Apocalipse" },
 ];
 
 
