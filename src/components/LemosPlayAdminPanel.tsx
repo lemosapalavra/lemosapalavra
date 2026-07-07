@@ -310,7 +310,7 @@ function PlayList({ items, onChange, currentCategory, moveTargets, onMove }: { i
   );
 }
 
-function SeriesEditor({ groups, onChange }: { groups: SeriesGroupCfg[]; onChange: (g: SeriesGroupCfg[]) => void }) {
+function SeriesEditor({ groups, onChange, moveTargets, onMoveFromGroup }: { groups: SeriesGroupCfg[]; onChange: (g: SeriesGroupCfg[]) => void; moveTargets?: MoveTarget[]; onMoveFromGroup?: (groupId: string, id: string, to: string) => void }) {
   const addGroup = () =>
     onChange([...groups, { id: newId(), title: "Nova Série", videos: [] }]);
   const removeGroup = (id: string) => {
