@@ -27,6 +27,7 @@ import palavraEternaVid from "@/assets/lemos-play/palavra-eterna.mp4.asset.json"
 import souFielVid from "@/assets/lemos-play/sou-fiel.mp4.asset.json";
 import fazMilagreVid from "@/assets/lemos-play/faz-um-milagre-em-mim.mp4.asset.json";
 import ressuscitaMeVid from "@/assets/lemos-play/ressuscita-me.mp4.asset.json";
+import tempestadesVid from "@/assets/lemos-play/tempestades.mp4.asset.json";
 import fazMilagreThumb from "@/assets/lemos-play/faz-um-milagre-em-mim.png.asset.json";
 import ressuscitaMeThumb from "@/assets/lemos-play/ressuscita-me.png.asset.json";
 
@@ -52,7 +53,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v34";
+const KEY = "lemos_play_config_v35";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
@@ -99,6 +100,7 @@ const defaultLouvores: PlayEntry[] = [
   { id: "lv4", title: "Sou Fiel", src: souFielVid.url, poster: attachedThumbByTitle["Sou Fiel"], section: "Louvores" },
   { id: "lv5", title: "Graça Aleluia", src: aleluiaVid.url, poster: attachedThumbByTitle["Graça Aleluia"], section: "Louvores" },
   { id: "lv6", title: "Palavra Eterna", src: palavraEternaVid.url, poster: attachedThumbByTitle["Palavra Eterna"], section: "Louvores" },
+  { id: "lv7", title: "Tempestades", src: tempestadesVid.url, section: "Louvores" },
 ];
 
 function resolvePoster(title: string, fallback?: string): string | undefined {
