@@ -100,7 +100,7 @@ const defaultLouvores: PlayEntry[] = [
   { id: "lv4", title: "Sou Fiel", src: souFielVid.url, poster: attachedThumbByTitle["Sou Fiel"], section: "Louvores" },
   { id: "lv5", title: "Graça Aleluia", src: aleluiaVid.url, poster: attachedThumbByTitle["Graça Aleluia"], section: "Louvores" },
   { id: "lv6", title: "Palavra Eterna", src: palavraEternaVid.url, poster: attachedThumbByTitle["Palavra Eterna"], section: "Louvores" },
-  { id: "lv7", title: "Tempestades", src: tempestadesVid.url, section: "Louvores" },
+  { id: "lv7", title: "Tempestades", src: tempestadesVid.url, poster: aTempestadeThumb.url, section: "Louvores" },
 ];
 
 function resolvePoster(title: string, fallback?: string): string | undefined {
