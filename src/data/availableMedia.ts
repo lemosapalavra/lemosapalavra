@@ -1,23 +1,7 @@
-// Catálogo de vídeos/imagens já disponíveis no site para uso no painel admin.
-import vidCriacao from "@/assets/lemos-play/a-criacao.mp4.asset.json";
-import vidBatalha from "@/assets/lemos-play/a-batalha-dos-anjos.mp4.asset.json";
-import vid10mFilme from "@/assets/lemos-play/10-mandamentos-filme.mp4.asset.json";
-import vidEJ1 from "@/assets/lemos-play/esau-jaco-1.mp4.asset.json";
-import vidEJ2 from "@/assets/lemos-play/esau-jaco-2.mp4.asset.json";
-import vidEJ3 from "@/assets/lemos-play/esau-jaco-3.mp4.asset.json";
-import vidJose1 from "@/assets/lemos-play/jose-egito-1.mp4.asset.json";
-import vidJose2 from "@/assets/lemos-play/jose-egito-2.mp4.asset.json";
-import vidJose3 from "@/assets/lemos-play/jose-egito-3.mp4.asset.json";
-import vidJo1 from "@/assets/lemos-play/jo-1.mp4.asset.json";
-import vidJo2 from "@/assets/lemos-play/jo-2.mp4.asset.json";
-import vidJo3 from "@/assets/lemos-play/jo-3.mp4.asset.json";
-import vidDavi1 from "@/assets/lemos-play/davi-golias-1.mp4.asset.json";
-import vidDavi2 from "@/assets/lemos-play/davi-golias-2.mp4.asset.json";
-import vidAdaoEva from "@/assets/lemos-play/adao-eva.mp4.asset.json";
-import vidNoeArcaFilme from "@/assets/lemos-play/noe-arca-filme.mp4.asset.json";
-import vidMoises1 from "@/assets/lemos-play/moises-1.mp4.asset.json";
-import vidMoises2 from "@/assets/lemos-play/moises-2.mp4.asset.json";
-import vidMoises3 from "@/assets/lemos-play/moises-3.mp4.asset.json";
+// Catálogo dinâmico de vídeos/imagens disponíveis no site para uso no painel admin.
+// Fonte da verdade: bibleVideos.ts (filmes + séries) + defaultConfig (músicas/louvores).
+import { filmesVideos, seriesGroups } from "@/data/bibleVideos";
+import { defaultConfig } from "@/data/lemosPlayConfig";
 
 import moises3d from "@/assets/lemos-play/moises-3d.png.asset.json";
 import jonasBaleia from "@/assets/lemos-play/jonas-e-a-baleia.png.asset.json";
@@ -43,30 +27,38 @@ export interface MediaItem {
   group: string;
 }
 
-export const availableVideos: MediaItem[] = [
-  { label: "A Criação", url: vidCriacao.url, kind: "video", group: "Filmes" },
-  { label: "A Batalha dos Anjos", url: vidBatalha.url, kind: "video", group: "Filmes" },
-  { label: "Adão e Eva (filme)", url: vidAdaoEva.url, kind: "video", group: "Filmes" },
-  { label: "Noé e a Arca (filme)", url: vidNoeArcaFilme.url, kind: "video", group: "Filmes" },
-  { label: "Os 10 Mandamentos (filme)", url: vid10mFilme.url, kind: "video", group: "Filmes" },
-  { label: "Moisés — Parte I", url: vidMoises1.url, kind: "video", group: "Séries · Moisés" },
-  { label: "Moisés — Parte II", url: vidMoises2.url, kind: "video", group: "Séries · Moisés" },
-  { label: "Moisés — Parte III", url: vidMoises3.url, kind: "video", group: "Séries · Moisés" },
-  { label: "Esaú e Jacó — Parte I", url: vidEJ1.url, kind: "video", group: "Séries · Esaú e Jacó" },
-  { label: "Esaú e Jacó — Parte II", url: vidEJ2.url, kind: "video", group: "Séries · Esaú e Jacó" },
-  { label: "Esaú e Jacó — Parte III", url: vidEJ3.url, kind: "video", group: "Séries · Esaú e Jacó" },
-  { label: "José do Egito — Parte I", url: vidJose1.url, kind: "video", group: "Séries · José do Egito" },
-  { label: "José do Egito — Parte II", url: vidJose2.url, kind: "video", group: "Séries · José do Egito" },
-  { label: "José do Egito — Parte III", url: vidJose3.url, kind: "video", group: "Séries · José do Egito" },
-  { label: "Jó — Parte I", url: vidJo1.url, kind: "video", group: "Séries · Jó" },
-  { label: "Jó — Parte II", url: vidJo2.url, kind: "video", group: "Séries · Jó" },
-  { label: "Jó — Parte III", url: vidJo3.url, kind: "video", group: "Séries · Jó" },
-  { label: "Davi e Golias — Parte I", url: vidDavi1.url, kind: "video", group: "Séries · Davi e Golias" },
-  { label: "Davi e Golias — Parte II", url: vidDavi2.url, kind: "video", group: "Séries · Davi e Golias" },
-  { label: "Sou Fiel (louvor)", url: "/videos/ser-fiel.mp4", kind: "video", group: "Louvores" },
-  { label: "Graça Aleluia (louvor)", url: "/videos/aleluia.mp4", kind: "video", group: "Louvores" },
-  { label: "Palavra Eterna (louvor)", url: "/videos/palavra-eterna.mp4", kind: "video", group: "Louvores" },
-];
+const buildVideos = (): MediaItem[] => {
+  const items: MediaItem[] = [];
+  const seen = new Set<string>();
+  const push = (m: MediaItem) => {
+    if (!m.url || seen.has(m.url)) return;
+    seen.add(m.url);
+    items.push(m);
+  };
+
+  // Filmes
+  filmesVideos.forEach((v) =>
+    push({ label: v.title, url: v.src, kind: "video", group: `Filmes · ${v.section ?? "Geral"}` }),
+  );
+
+  // Séries (agrupadas por série)
+  seriesGroups.forEach((g) =>
+    g.videos.forEach((v) =>
+      push({ label: v.title, url: v.src, kind: "video", group: `Séries · ${g.title}` }),
+    ),
+  );
+
+  // Músicas & Louvores (a partir do default config)
+  try {
+    const def = defaultConfig();
+    def.musicas.forEach((m) => push({ label: m.title, url: m.src, kind: "video", group: "Músicas" }));
+    def.louvores.forEach((m) => push({ label: m.title, url: m.src, kind: "video", group: "Louvores" }));
+  } catch {}
+
+  return items;
+};
+
+export const availableVideos: MediaItem[] = buildVideos();
 
 export const availablePosters: MediaItem[] = [
   { label: "Moisés 3D", url: moises3d.url, kind: "image", group: "Capas" },

@@ -8,7 +8,13 @@ import esauJacoIcon from "@/assets/lemos-play/esau-e-jaco.png.asset.json";
 import esauJacoP1 from "@/assets/lemos-play/esau-jaco-parte-1.png.asset.json";
 import esauJacoP2 from "@/assets/lemos-play/esau-jaco-parte-2.png.asset.json";
 import esauJacoP3 from "@/assets/lemos-play/esau-jaco-parte-3.png.asset.json";
-import vidCriacao from "@/assets/lemos-play/a-criacao.mp4.asset.json";
+import vidCriacao from "@/assets/lemos-play/genesis-2-criacao.mp4.asset.json";
+import vidGenBatalha from "@/assets/lemos-play/genesis-1-batalha-anjos.mp4.asset.json";
+import vidGenAdaoEva from "@/assets/lemos-play/genesis-3-adao-eva.mp4.asset.json";
+import vidGenNoe from "@/assets/lemos-play/genesis-4-noe-arca.mp4.asset.json";
+import vidGen10m1 from "@/assets/lemos-play/genesis-5-10mand-1.mp4.asset.json";
+import vidGen10m2 from "@/assets/lemos-play/genesis-6-10mand-2.mp4.asset.json";
+import vidGenDavi from "@/assets/lemos-play/genesis-7-davi-golias.mp4.asset.json";
 import vidBatalha from "@/assets/lemos-play/a-batalha-dos-anjos.mp4.asset.json";
 import vid10mFilme from "@/assets/lemos-play/10-mandamentos-filme.mp4.asset.json";
 import vidEJ1 from "@/assets/lemos-play/esau-jaco-1.mp4.asset.json";
@@ -167,12 +173,13 @@ export const seriesGroups: BibleVideoGroup[] = [
 ];
 
 export const filmesVideos: BibleVideo[] = [
-  { title: "A Batalha dos Anjos", icon: iconBatalha, src: vidBatalha.url, section: "Gênesis" },
+  { title: "A Batalha dos Anjos", icon: iconBatalha, src: vidGenBatalha.url, section: "Gênesis" },
   { title: "A Criação", icon: iconCriacao, src: vidCriacao.url, section: "Gênesis" },
-  { title: "Adão e Eva", icon: iconAdaoEva1, src: vidAdaoEva.url, section: "Gênesis" },
-  { title: "Noé e a Arca", icon: iconNoe1, src: vidNoeArcaFilme.url, section: "Gênesis" },
-  { title: "Os 10 Mandamentos — Parte I", icon: icon10Mandamentos, src: vid10m1.url, section: "Gênesis" },
-  { title: "Os 10 Mandamentos — Parte II", icon: icon10Mandamentos, src: vid10m2.url, section: "Gênesis" },
+  { title: "Adão e Eva", icon: iconAdaoEva1, src: vidGenAdaoEva.url, section: "Gênesis" },
+  { title: "Noé e a Arca", icon: iconNoe1, src: vidGenNoe.url, section: "Gênesis" },
+  { title: "Os 10 Mandamentos — Parte I", icon: icon10Mandamentos, src: vidGen10m1.url, section: "Gênesis" },
+  { title: "Os 10 Mandamentos — Parte II", icon: icon10Mandamentos, src: vidGen10m2.url, section: "Gênesis" },
+  { title: "Davi e Golias", icon: iconDaviGolias, src: vidGenDavi.url, section: "Gênesis" },
 ];
 
 
