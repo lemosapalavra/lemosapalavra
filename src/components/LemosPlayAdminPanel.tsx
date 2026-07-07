@@ -37,17 +37,56 @@ export default function LemosPlayAdminPanel({ open, onClose }: Props) {
     update({ ...cfg, [key]: items });
   };
 
-  const handleSave = () => {
-    saveConfig(cfg);
-    setDirty(false);
-  };
-
+  const handleSave = () => { saveConfig(cfg); setDirty(false); };
   const handleReset = () => {
     if (!confirm("Restaurar configurações padrão? Suas edições serão perdidas.")) return;
     resetConfig();
     setCfg(defaultConfig());
     setDirty(false);
   };
+
+
+  type CatKey = "filmes" | "musicas" | "louvores" | `series:${string}`;
+  const CAT_LABEL: Record<"filmes" | "musicas" | "louvores", string> = {
+    filmes: "Filmes",
+    musicas: "Músicas",
+    louvores: "Louvores",
+  };
+  const moveEntry = (from: CatKey, id: string, to: CatKey) => {
+    if (from === to) return;
+    // pull entry
+    let entry: PlayEntry | undefined;
+    const next: LemosPlayConfig = { ...cfg, series: cfg.series.map((g) => ({ ...g, videos: [...g.videos] })), filmes: [...cfg.filmes], musicas: [...cfg.musicas], louvores: [...cfg.louvores] };
+    const pull = (arr: PlayEntry[]) => {
+      const i = arr.findIndex((x) => x.id === id);
+      if (i >= 0) { entry = arr[i]; arr.splice(i, 1); }
+    };
+    if (from === "filmes") pull(next.filmes);
+    else if (from === "musicas") pull(next.musicas);
+    else if (from === "louvores") pull(next.louvores);
+    else {
+      const gid = from.slice(7);
+      const g = next.series.find((x) => x.id === gid);
+      if (g) pull(g.videos);
+    }
+    if (!entry) return;
+    if (to === "filmes") next.filmes.push(entry);
+    else if (to === "musicas") next.musicas.push(entry);
+    else if (to === "louvores") next.louvores.push(entry);
+    else {
+      const gid = to.slice(7);
+      const g = next.series.find((x) => x.id === gid);
+      if (g) g.videos.push(entry);
+    }
+    update(next);
+  };
+
+  const moveTargets: { key: CatKey; label: string }[] = [
+    { key: "filmes", label: "🎬 Filmes" },
+    { key: "musicas", label: "🎵 Músicas" },
+    { key: "louvores", label: "🙌 Louvores" },
+    ...cfg.series.map((g) => ({ key: `series:${g.id}` as CatKey, label: `📺 Série: ${g.title}` })),
+  ];
 
   const tabs: { key: Tab; label: string; count: number }[] = [
     { key: "filmes", label: "Filmes", count: cfg.filmes.length },
@@ -87,11 +126,11 @@ export default function LemosPlayAdminPanel({ open, onClose }: Props) {
 
         {/* Body */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
-          {tab === "filmes" && <PlayList items={cfg.filmes} onChange={(v) => updateList("filmes", v)} />}
-          {tab === "musicas" && <PlayList items={cfg.musicas} onChange={(v) => updateList("musicas", v)} />}
-          {tab === "louvores" && <PlayList items={cfg.louvores} onChange={(v) => updateList("louvores", v)} />}
+          {tab === "filmes" && <PlayList items={cfg.filmes} onChange={(v) => updateList("filmes", v)} currentCategory="filmes" moveTargets={moveTargets} onMove={(id, to) => moveEntry("filmes", id, to as CatKey)} />}
+          {tab === "musicas" && <PlayList items={cfg.musicas} onChange={(v) => updateList("musicas", v)} currentCategory="musicas" moveTargets={moveTargets} onMove={(id, to) => moveEntry("musicas", id, to as CatKey)} />}
+          {tab === "louvores" && <PlayList items={cfg.louvores} onChange={(v) => updateList("louvores", v)} currentCategory="louvores" moveTargets={moveTargets} onMove={(id, to) => moveEntry("louvores", id, to as CatKey)} />}
           {tab === "series" && (
-            <SeriesEditor groups={cfg.series} onChange={(g) => update({ ...cfg, series: g })} />
+            <SeriesEditor groups={cfg.series} onChange={(g) => update({ ...cfg, series: g })} moveTargets={moveTargets} onMoveFromGroup={(gid, id, to) => moveEntry(`series:${gid}` as CatKey, id, to as CatKey)} />
           )}
         </div>
 
@@ -113,7 +152,8 @@ export default function LemosPlayAdminPanel({ open, onClose }: Props) {
   );
 }
 
-function PlayList({ items, onChange }: { items: PlayEntry[]; onChange: (v: PlayEntry[]) => void }) {
+type MoveTarget = { key: string; label: string };
+function PlayList({ items, onChange, currentCategory, moveTargets, onMove }: { items: PlayEntry[]; onChange: (v: PlayEntry[]) => void; currentCategory?: string; moveTargets?: MoveTarget[]; onMove?: (id: string, to: string) => void }) {
   const add = (section?: string) =>
     onChange([...items, { id: newId(), title: "Novo vídeo", src: "", ...(section ? { section } : {}) }]);
   const remove = (id: string) => onChange(items.filter((x) => x.id !== id));
@@ -204,6 +244,28 @@ function PlayList({ items, onChange }: { items: PlayEntry[]; onChange: (v: PlayE
                 <Search className="w-3.5 h-3.5" /> Procurar
               </button>
             </div>
+            {moveTargets && onMove && moveTargets.some((t) => t.key !== currentCategory) && (
+              <>
+                <label className="block text-[11px] text-zinc-400 pt-1">Mover para outra categoria</label>
+                <div className="flex gap-2">
+                  <select
+                    defaultValue=""
+                    onChange={(e) => {
+                      const to = e.target.value;
+                      if (!to) return;
+                      onMove(it.id, to);
+                      setEditingId(null);
+                    }}
+                    className={inputCls + " flex-1"}
+                  >
+                    <option value="">— Selecionar categoria destino —</option>
+                    {moveTargets.filter((t) => t.key !== currentCategory).map((t) => (
+                      <option key={t.key} value={t.key}>{t.label}</option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>
@@ -270,7 +332,7 @@ function PlayList({ items, onChange }: { items: PlayEntry[]; onChange: (v: PlayE
   );
 }
 
-function SeriesEditor({ groups, onChange }: { groups: SeriesGroupCfg[]; onChange: (g: SeriesGroupCfg[]) => void }) {
+function SeriesEditor({ groups, onChange, moveTargets, onMoveFromGroup }: { groups: SeriesGroupCfg[]; onChange: (g: SeriesGroupCfg[]) => void; moveTargets?: MoveTarget[]; onMoveFromGroup?: (groupId: string, id: string, to: string) => void }) {
   const addGroup = () =>
     onChange([...groups, { id: newId(), title: "Nova Série", videos: [] }]);
   const removeGroup = (id: string) => {
@@ -305,7 +367,7 @@ function SeriesEditor({ groups, onChange }: { groups: SeriesGroupCfg[]; onChange
           </div>
           <input value={g.icon ?? ""} onChange={(e) => patchGroup(g.id, { icon: e.target.value })} placeholder="URL da capa da série (opcional)" className={inputCls + " mb-3"} />
           <div className="pl-3 border-l-2 border-zinc-700">
-            <PlayList items={g.videos} onChange={(videos) => patchGroup(g.id, { videos })} />
+            <PlayList items={g.videos} onChange={(videos) => patchGroup(g.id, { videos })} currentCategory={`series:${g.id}`} moveTargets={moveTargets} onMove={onMoveFromGroup ? (id, to) => onMoveFromGroup(g.id, id, to) : undefined} />
           </div>
         </div>
       ))}
