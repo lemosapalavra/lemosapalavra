@@ -244,6 +244,28 @@ function PlayList({ items, onChange, currentCategory, moveTargets, onMove }: { i
                 <Search className="w-3.5 h-3.5" /> Procurar
               </button>
             </div>
+            {moveTargets && onMove && moveTargets.some((t) => t.key !== currentCategory) && (
+              <>
+                <label className="block text-[11px] text-zinc-400 pt-1">Mover para outra categoria</label>
+                <div className="flex gap-2">
+                  <select
+                    defaultValue=""
+                    onChange={(e) => {
+                      const to = e.target.value;
+                      if (!to) return;
+                      onMove(it.id, to);
+                      setEditingId(null);
+                    }}
+                    className={inputCls + " flex-1"}
+                  >
+                    <option value="">— Selecionar categoria destino —</option>
+                    {moveTargets.filter((t) => t.key !== currentCategory).map((t) => (
+                      <option key={t.key} value={t.key}>{t.label}</option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>
