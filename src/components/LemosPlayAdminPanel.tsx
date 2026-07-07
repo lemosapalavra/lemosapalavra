@@ -345,7 +345,7 @@ function SeriesEditor({ groups, onChange, moveTargets, onMoveFromGroup }: { grou
           </div>
           <input value={g.icon ?? ""} onChange={(e) => patchGroup(g.id, { icon: e.target.value })} placeholder="URL da capa da série (opcional)" className={inputCls + " mb-3"} />
           <div className="pl-3 border-l-2 border-zinc-700">
-            <PlayList items={g.videos} onChange={(videos) => patchGroup(g.id, { videos })} />
+            <PlayList items={g.videos} onChange={(videos) => patchGroup(g.id, { videos })} currentCategory={`series:${g.id}`} moveTargets={moveTargets} onMove={onMoveFromGroup ? (id, to) => onMoveFromGroup(g.id, id, to) : undefined} />
           </div>
         </div>
       ))}
