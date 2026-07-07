@@ -126,11 +126,11 @@ export default function LemosPlayAdminPanel({ open, onClose }: Props) {
 
         {/* Body */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
-          {tab === "filmes" && <PlayList items={cfg.filmes} onChange={(v) => updateList("filmes", v)} currentCategory="filmes" moveTargets={moveTargets} onMove={(id, to) => moveEntry("filmes", id, to)} />}
-          {tab === "musicas" && <PlayList items={cfg.musicas} onChange={(v) => updateList("musicas", v)} currentCategory="musicas" moveTargets={moveTargets} onMove={(id, to) => moveEntry("musicas", id, to)} />}
-          {tab === "louvores" && <PlayList items={cfg.louvores} onChange={(v) => updateList("louvores", v)} currentCategory="louvores" moveTargets={moveTargets} onMove={(id, to) => moveEntry("louvores", id, to)} />}
+          {tab === "filmes" && <PlayList items={cfg.filmes} onChange={(v) => updateList("filmes", v)} currentCategory="filmes" moveTargets={moveTargets} onMove={(id, to) => moveEntry("filmes", id, to as CatKey)} />}
+          {tab === "musicas" && <PlayList items={cfg.musicas} onChange={(v) => updateList("musicas", v)} currentCategory="musicas" moveTargets={moveTargets} onMove={(id, to) => moveEntry("musicas", id, to as CatKey)} />}
+          {tab === "louvores" && <PlayList items={cfg.louvores} onChange={(v) => updateList("louvores", v)} currentCategory="louvores" moveTargets={moveTargets} onMove={(id, to) => moveEntry("louvores", id, to as CatKey)} />}
           {tab === "series" && (
-            <SeriesEditor groups={cfg.series} onChange={(g) => update({ ...cfg, series: g })} moveTargets={moveTargets} onMoveFromGroup={(gid, id, to) => moveEntry(`series:${gid}`, id, to)} />
+            <SeriesEditor groups={cfg.series} onChange={(g) => update({ ...cfg, series: g })} moveTargets={moveTargets} onMoveFromGroup={(gid, id, to) => moveEntry(`series:${gid}` as CatKey, id, to as CatKey)} />
           )}
         </div>
 
