@@ -173,12 +173,13 @@ export const seriesGroups: BibleVideoGroup[] = [
 ];
 
 export const filmesVideos: BibleVideo[] = [
-  { title: "A Batalha dos Anjos", icon: iconBatalha, src: vidBatalha.url, section: "Gênesis" },
+  { title: "A Batalha dos Anjos", icon: iconBatalha, src: vidGenBatalha.url, section: "Gênesis" },
   { title: "A Criação", icon: iconCriacao, src: vidCriacao.url, section: "Gênesis" },
-  { title: "Adão e Eva", icon: iconAdaoEva1, src: vidAdaoEva.url, section: "Gênesis" },
-  { title: "Noé e a Arca", icon: iconNoe1, src: vidNoeArcaFilme.url, section: "Gênesis" },
-  { title: "Os 10 Mandamentos — Parte I", icon: icon10Mandamentos, src: vid10m1.url, section: "Gênesis" },
-  { title: "Os 10 Mandamentos — Parte II", icon: icon10Mandamentos, src: vid10m2.url, section: "Gênesis" },
+  { title: "Adão e Eva", icon: iconAdaoEva1, src: vidGenAdaoEva.url, section: "Gênesis" },
+  { title: "Noé e a Arca", icon: iconNoe1, src: vidGenNoe.url, section: "Gênesis" },
+  { title: "Os 10 Mandamentos — Parte I", icon: icon10Mandamentos, src: vidGen10m1.url, section: "Gênesis" },
+  { title: "Os 10 Mandamentos — Parte II", icon: icon10Mandamentos, src: vidGen10m2.url, section: "Gênesis" },
+  { title: "Davi e Golias", icon: iconDaviGolias, src: vidGenDavi.url, section: "Gênesis" },
 ];
 
 
