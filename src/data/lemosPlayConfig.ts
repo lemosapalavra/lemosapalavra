@@ -85,6 +85,7 @@ const attachedThumbByTitle: Record<string, string> = {
   "Ressuscita Me": ressuscitaMeThumb.url,
   "A Cura do Paralítico": curaParaliticoThumb.url,
   "A Tempestade": aTempestadeThumb.url,
+  "Tempestades": aTempestadeThumb.url,
   "Jesus Expulsa Demônios": expulsaDemoniosThumb.url,
 };
 
