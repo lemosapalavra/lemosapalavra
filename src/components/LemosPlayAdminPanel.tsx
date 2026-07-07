@@ -78,6 +78,43 @@ export default function LemosPlayAdminPanel({ open, onClose }: Props) {
     { key: "louvores", label: "🙌 Louvores" },
     ...cfg.series.map((g) => ({ key: `series:${g.id}` as CatKey, label: `📺 Série: ${g.title}` })),
   ];
+
+  const tabs: { key: Tab; label: string; count: number }[] = [
+    { key: "filmes", label: "Filmes", count: cfg.filmes.length },
+    { key: "series", label: "Séries", count: cfg.series.reduce((a, g) => a + g.videos.length, 0) },
+    { key: "musicas", label: "Músicas", count: cfg.musicas.length },
+    { key: "louvores", label: "Louvores", count: cfg.louvores.length },
+  ];
+
+  return (
+    <div className="fixed inset-0 z-[80] bg-black/85 backdrop-blur-sm flex items-center justify-center p-3" onClick={onClose}>
+      <div className="bg-zinc-950 border border-zinc-800 rounded-xl w-full max-w-4xl max-h-[92vh] flex flex-col text-white" onClick={(e) => e.stopPropagation()}>
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 border-b border-zinc-800">
+          <div>
+            <h2 className="text-lg font-bold">⚙️ Configuração — Lemos Play</h2>
+            <p className="text-xs text-zinc-400">Edite títulos, links e adicione novos vídeos por categoria.</p>
+          </div>
+          <button onClick={onClose} className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center" aria-label="Fechar">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex gap-1 px-4 pt-3 border-b border-zinc-800">
+          {tabs.map((t) => (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key)}
+              className={`px-3 py-2 text-sm font-semibold rounded-t-md transition ${
+                tab === t.key ? "bg-zinc-800 text-white border-b-2 border-red-600" : "text-zinc-400 hover:text-white"
+              }`}
+            >
+              {t.label} <span className="text-xs opacity-60">({t.count})</span>
+            </button>
+          ))}
+        </div>
+
         {/* Body */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
           {tab === "filmes" && <PlayList items={cfg.filmes} onChange={(v) => updateList("filmes", v)} currentCategory="filmes" moveTargets={moveTargets} onMove={(id, to) => moveEntry("filmes", id, to)} />}
