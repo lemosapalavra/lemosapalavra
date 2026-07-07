@@ -27,6 +27,7 @@ import palavraEternaVid from "@/assets/lemos-play/palavra-eterna.mp4.asset.json"
 import souFielVid from "@/assets/lemos-play/sou-fiel.mp4.asset.json";
 import fazMilagreVid from "@/assets/lemos-play/faz-um-milagre-em-mim.mp4.asset.json";
 import ressuscitaMeVid from "@/assets/lemos-play/ressuscita-me.mp4.asset.json";
+import tempestadesVid from "@/assets/lemos-play/tempestades.mp4.asset.json";
 import fazMilagreThumb from "@/assets/lemos-play/faz-um-milagre-em-mim.png.asset.json";
 import ressuscitaMeThumb from "@/assets/lemos-play/ressuscita-me.png.asset.json";
 
