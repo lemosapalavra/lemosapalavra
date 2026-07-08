@@ -1,47 +1,79 @@
-## 1. Caça-Palavras em Atividades
-- Subir 4 imagens anexas via `lovable-assets`:
-  - `Icone Caça Palavras.png` → ícone da atividade
-  - `Icone ligue as cores.png` → substitui ícone atual de "Ligue as cores"
-  - `Caça Palavras-1/2/3.jpg` → conteúdo da atividade
-- Em `src/pages/Atividades.tsx`:
-  - Adicionar nova atividade "Caça-Palavras" ao menu orbital com o novo ícone
-  - Trocar ícone de "Ligue as cores" pelo novo
-- Criar componente `WordSearchActivity` que mostra as 3 imagens (rotação diária), com seleção de células arrastando para "circular" palavras, validação automática, e recompensa em moedinhas ao completar cada uma.
+# Plano de execução
 
-## 2. Cabeçalhos full-width
-- Em `src/components/PageHeader.tsx`: remover qualquer `max-w-*` / paddings laterais que limitam a largura. Header passa a ocupar 100% da viewport (igual ao da página "Atividades Educacionais").
-- Verificar páginas que envolvem o header em containers (`Album`, `LemosPlay`, `Atividades`, `Biblia`, `Devocionais`, etc.) e mover o `PageHeader` para fora do container central quando necessário.
+Executarei nesta ordem, uma frente por vez, para você validar cada uma antes de seguir.
 
-## 3. Login / Cadastro redesenhados
-- Reescrever `src/pages/Login.tsx` no estilo da imagem anexa:
-  - Card claro centralizado (bg creme), borda fina arredondada
-  - Título "Login" / "Criar conta"
-  - Campos E-mail e Senha (com olho para mostrar/ocultar)
-  - Checkbox "Manter-me logado" + link "Esqueci minha senha"
-  - Botões "ENTRAR" (preto sólido) e "CRIAR UMA CONTA" (outline)
-  - Divisor "Ou entre/cadastre-se com a sua conta do:" + botão Google
-- Manter o cadastro completo (nome, data, papel, avatar) num segundo passo após "CRIAR UMA CONTA".
-- **Atalho de admin**: adicionar pequeno botão "⚙ Admin" no rodapé do card que leva para `/config` (após validar credencial admin local).
-- **Atalhos para páginas configuráveis**: na página `/config` (já existente), adicionar uma seção "Atalhos" com links rápidos para configurar cada página principal (Atividades, Álbum, LemosPlay, Bíblia, Devocionais, Pedidos de Oração).
+---
 
-## 4 + 5. Álbum: 104 figurinhas (13 × 8) refeitas
-Estado atual: `src/data/stickers.ts` tem 12 categorias × 8 = 96. Falta 1 categoria para chegar a 13 × 8 = 104.
+## 1) Correções de mobile e tablet (base para tudo)
 
-- Adicionar 13ª categoria: **"Profetas e Sábios"** (8 figurinhas).
-- Renumerar todas (1–104) globalmente.
-- Cada figurinha:
-  - Estilo 3D Pixar/cartoon, infantil e religioso
-  - Imagem ocupa 100% do recipiente (object-cover sem distorção, pois geramos no aspect ratio do card)
-  - Moldura temática por categoria (cor + ornamento) — ex.: Criação=céu/nuvens, Heróis=dourado, Milagres=ciano brilhante, Parábolas=rosa pergaminho, Animais=verde folha, Momentos=âmbar estrelado, Louvores=roxo musical, Versículos=violeta pergaminho, Antigo Test.=marrom pedra, Novo Test.=azul vitral, Missões=teal mapa, Ultra Raras=fúchsia coroa, Profetas=cinza-ouro
-  - Sobreposição no card mostrando: **nº** (canto superior), **título** (rodapé), **selo de raridade** (NORMAL / RARA / ESPECIAL)
-- **Geração de imagens (custo)**: 104 imagens via `imagegen--generate_image` (tier `fast`) é caro e lento. Proponho:
-  - **Opção A**: gerar **13 ilustrações de moldura/template** (uma por categoria) e renderizar a arte de cada figurinha por cima usando os emojis/títulos existentes em estilo cartoon CSS (rápido e barato).
-  - **Opção B**: gerar as 104 figurinhas individualmente (mais bonito, porém demorado e mais caro — ~5–10 min de geração).
-- Em `src/pages/Album.tsx`: reescrever o card para o novo layout (moldura + número + título + selo) e usar `object-cover` já que as imagens serão geradas no formato certo.
+Auditoria e correção geral de layout responsivo em todas as páginas principais:
 
-## Confirmação necessária
-Antes de começar o item 5, preciso confirmar:
-- **(a)** Vai a Opção A (moldura por categoria + arte estilizada por figurinha, rápido) ou Opção B (104 imagens individuais geradas, mais caro/demorado)?
-- **(b)** Confirma a 13ª categoria como "Profetas e Sábios", ou prefere outro tema?
+- **Home (`src/pages/Index.tsx`, `CategoryOrbit`, `OrbitMenu`):** o menu orbital estoura em telas <400px. Vou usar `clamp()` para o raio da órbita e ajustar tamanho dos ícones por viewport (baseado em `useIsMobile`).
+- **Header e KwaiSideActions:** garantir que botões não fiquem sobre o conteúdo em tablet (768–1024px).
+- **Lemos Play (`src/pages/LemosPlay.tsx`, `VideoCentralLayout`):** player travando no mobile — vou desativar autoplay agressivo, adicionar `playsInline`, `preload="metadata"` e lazy-loading das capas com `loading="lazy" decoding="async"`.
+- **Atividades:** grids que hoje quebram (`grid-cols-3` fixo) → `grid-cols-2 sm:grid-cols-3 md:grid-cols-4`.
+- **Performance de imagens:** capas do Lemos Play e ícones grandes ganham `loading="lazy"`, `decoding="async"`, e `fetchpriority` só na primeira dobra.
 
-Os itens 1, 2 e 3 começo imediatamente após sua aprovação do plano; o item 4/5 aguarda as respostas (a) e (b).
+**Como vou verificar:** rodar Playwright em 3 viewports (390×844 iPhone, 820×1180 iPad, 1280×800 desktop) e comparar screenshots.
+
+---
+
+## 2) Lemos Play — reduzir para 5 categorias
+
+Novas categorias exclusivas: **Gênesis · Jesus · Mini séries · Músicas · Louvores**.
+
+Regra de migração conforme você escolheu ("mover só o que é de Jesus, descartar o resto"):
+
+- **Gênesis:** mantém vídeos com `section === "Gênesis"` (Criação, Adão e Eva, Noé, Torre de Babel, Dilúvio, Abraão, Esaú e Jacó, José do Egito).
+- **Jesus (categoria nova):** consolida Vida de Jesus + Milagres de Jesus + Parábolas + Nascimento + Batismo + Ele Vive + Lázaro + João Batista + o filme "E se ele fosse um de nós".
+- **Mini séries:** mantém apenas as séries multi-parte existentes (10 Mandamentos, Davi e Golias, Moisés, Jó, Prova de Fogo, Filho Pródigo — as que já estão em `cfg.series`).
+- **Músicas** e **Louvores:** mantêm-se como estão.
+- **Descartados:** Êxodo, Jó (filme avulso — a série de Jó fica em Mini séries), Daniel, Profetas, Apocalipse, Jonas, e qualquer outro fora dessas 5 categorias.
+
+Mudanças de código:
+- `src/data/lemosPlayConfig.ts`: reescrever `defaultConfig()` com só essas 5 categorias, bump para `v38`.
+- `src/pages/LemosPlay.tsx`: abas fixas nas 5 categorias.
+- `LemosPlayAdminPanel.tsx`: tabs reduzidas e `SECTION_ORDER` atualizado.
+- Nada é apagado dos arquivos-fonte — só sai da config default. Se você quiser algum removido de volta, dá para mover pelo Admin.
+
+---
+
+## 3) Atividades — reorganização + imagens novas
+
+- **Novas ilustrações geradas** (contornos simples, poucos detalhes, ideais para colorir): vou gerar 6–8 PNGs com fundo branco e linhas pretas grossas usando o `imagegen` tier `fast`, salvar em `src/assets/atividades/` via `lovable-assets`.
+- **Performance:** imagens novas serão otimizadas (1024×1024 max, PNG leve) e todas com `loading="lazy"` + `decoding="async"`. Preload só da primeira.
+- **Bug "nada acontece ao terminar de pintar":** hoje falta o gatilho de conclusão. Vou adicionar detecção (contagem de pixels não-brancos ≥ 95% da área colorível) → dispara celebração + moedas + modal "Parabéns!" com botão "Próxima atividade".
+- **Reorganização visual:** grid mais limpo (Colorir · Ligar pontos · Caça-palavras · 7 erros), cada uma com ícone próprio.
+
+---
+
+## 4) Página inicial — Murais (Reflexão, Motivação, Sabedoria)
+
+- Nova seção **"Murais"** na home, entre a órbita e o conteúdo secundário.
+- 3 quadros lado a lado no desktop, empilhados no mobile, todos centralizados.
+- Cada mural usa a imagem que você anexou como moldura de fundo:
+  - Mural da Reflexão → quadro preto com iluminação (imagem 2)
+  - Mural da Motivação → moldura de madeira com fundo verde-azulado (imagem 1)
+  - Mural Sabedoria → quadro branco com sofá turquesa (imagem 3)
+- Frases centralizadas dentro de cada quadro com tipografia adequada ao fundo (branco no Reflexão, escuro no Sabedoria, claro no Motivação).
+- **Editor no Admin:** nova aba "Murais" no `IndexAdminPanel` onde você edita array de frases por mural. Salva em `localStorage` (mesma pattern do resto do site) + rotação diária opcional (uma frase por dia por mural) — me confirma se quer rotação ou uma frase fixa por mural.
+- Placeholders iniciais: "Adicione sua frase aqui no painel Admin".
+
+---
+
+## 5) Segurança (auto-fix obrigatório)
+
+Corrigir a política do bucket `lemos-play-videos` para exigir `authenticated` em vez de `public`. Faço junto com a frente 2.
+
+---
+
+## Detalhes técnicos
+
+- Nenhum arquivo auto-gerado será tocado (`supabase/client.ts`, `types.ts`, `.env`).
+- Nenhuma migration de tabela nova — tudo em `localStorage` como o resto do admin.
+- Config keys serão bumpadas (`v38`) para forçar reload.
+- Verificação final com Playwright em 3 viewports + inspeção visual dos screenshots.
+
+---
+
+**Confirma que posso seguir?** Ou quer que eu comece só por uma frente específica primeiro (recomendo: 1 → 2 → 4 → 3, porque atividades demora mais por gerar imagens)?
