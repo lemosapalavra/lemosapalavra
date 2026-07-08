@@ -4,6 +4,7 @@ import { Settings, LogOut } from "lucide-react";
 import OrbitMenu from "@/components/OrbitMenu";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import IndexAdminPanel from "@/components/IndexAdminPanel";
+import MuraisSection from "@/components/MuraisSection";
 
 import { useCoins, ensureInitialCoins, addCoins } from "@/hooks/useCoins";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
@@ -149,6 +150,9 @@ export default function Index() {
             <img src={iconDedicatoria} alt="Dedicatória" className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl" />
           </button>
         </div>
+
+        {/* Murais motivacionais — Reflexão, Motivação, Sabedoria */}
+        <MuraisSection />
       </div>
 
       <DedicatoriaModal open={dedicatoriaOpen} onOpenChange={setDedicatoriaOpen} />
