@@ -30,6 +30,9 @@ import ressuscitaMeVid from "@/assets/lemos-play/ressuscita-me.mp4.asset.json";
 import tempestadesVid from "@/assets/lemos-play/tempestades.mp4.asset.json";
 import fazMilagreThumb from "@/assets/lemos-play/faz-um-milagre-em-mim.png.asset.json";
 import ressuscitaMeThumb from "@/assets/lemos-play/ressuscita-me.png.asset.json";
+import deusEstaAquiVid from "@/assets/lemos-play/deus-esta-aqui.mp4.asset.json";
+import yeshuaVid from "@/assets/lemos-play/yeshua.mp4.asset.json";
+import ressuscitaMe2Vid from "@/assets/lemos-play/ressuscita-me-2.mp4.asset.json";
 
 export interface PlayEntry {
   id: string;
