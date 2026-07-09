@@ -30,6 +30,9 @@ import ressuscitaMeVid from "@/assets/lemos-play/ressuscita-me.mp4.asset.json";
 import tempestadesVid from "@/assets/lemos-play/tempestades.mp4.asset.json";
 import fazMilagreThumb from "@/assets/lemos-play/faz-um-milagre-em-mim.png.asset.json";
 import ressuscitaMeThumb from "@/assets/lemos-play/ressuscita-me.png.asset.json";
+import deusEstaAquiVid from "@/assets/lemos-play/deus-esta-aqui.mp4.asset.json";
+import yeshuaVid from "@/assets/lemos-play/yeshua.mp4.asset.json";
+import ressuscitaMe2Vid from "@/assets/lemos-play/ressuscita-me-2.mp4.asset.json";
 
 export interface PlayEntry {
   id: string;
@@ -53,7 +56,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v37";
+const KEY = "lemos_play_config_v38";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
@@ -102,6 +105,9 @@ const defaultLouvores: PlayEntry[] = [
   { id: "lv5", title: "Graça Aleluia", src: aleluiaVid.url, poster: attachedThumbByTitle["Graça Aleluia"], section: "Louvores" },
   { id: "lv6", title: "Palavra Eterna", src: palavraEternaVid.url, poster: attachedThumbByTitle["Palavra Eterna"], section: "Louvores" },
   { id: "lv7", title: "Tempestades", src: tempestadesVid.url, poster: aTempestadeThumb.url, section: "Louvores" },
+  { id: "lv8", title: "Deus Está Aqui", src: deusEstaAquiVid.url, section: "Louvores" },
+  { id: "lv9", title: "Yeshua", src: yeshuaVid.url, section: "Louvores" },
+  { id: "lv10", title: "Ressuscita-Me (Versão 2)", src: ressuscitaMe2Vid.url, poster: ressuscitaMeThumb.url, section: "Louvores" },
 ];
 
 function resolvePoster(title: string, fallback?: string): string | undefined {

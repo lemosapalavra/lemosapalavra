@@ -75,14 +75,16 @@ function renderRich(text: string) {
     if (tok.startsWith("{{signature}}") && tok.endsWith("{{/signature}}")) {
       const name = tok.slice("{{signature}}".length, -"{{/signature}}".length);
       return (
-        <span
+      <span
           key={i}
           style={{
-            fontFamily: "'Kaufmann BT', 'Kaufmann', 'Allura', 'Pinyon Script', cursive",
-            fontSize: "1.9em",
-            color: "#5a2a05",
+            fontFamily: "'Yellowtail', 'Kaufmann BT', 'Kaufmann', 'Allura', cursive",
+            fontSize: "2.2em",
+            fontWeight: 400,
+            color: "#3d2208",
             display: "inline-block",
-            lineHeight: 1.2,
+            lineHeight: 1.1,
+            letterSpacing: "0.01em",
           }}
         >
           {name}
@@ -258,7 +260,7 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
       )}
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400;0,700;1,400;1,700&family=Allura&family=Pinyon+Script&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400;0,700;1,400;1,700&family=Allura&family=Pinyon+Script&family=Yellowtail&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap');
         @keyframes scrollOpen {
           0% { transform: scaleY(0.01) scaleX(0.6); opacity: 0; }
           40% { transform: scaleY(0.4) scaleX(0.85); opacity: 0.7; }

@@ -563,19 +563,6 @@ export default function LemosPlay() {
       </section>
 
       <div className="-mt-20 sm:-mt-32 relative z-10 pb-16">
-        {continueItems.length > 0 && <Row title="Continuar assistindo" items={continueItems} onPlay={(item) => requestPlay(item)} progress={progress} />}
-
-        {/* Top 10 — destaques */}
-        <TopTenRow
-          items={(() => {
-            const seriesFirsts = seriesGroupItems.map((g) => g.videos[0]).filter((v): v is PlayItem => !!v);
-            const pool = [...filmesPlay, ...seriesFirsts, ...louvoresPlay, ...musicasPlay].filter((p) => !!p.poster);
-            const seen = new Set<string>();
-            return pool.filter((p) => (seen.has(p.id) ? false : (seen.add(p.id), true))).slice(0, 10);
-          })()}
-          onPlay={(item) => requestPlay(item)}
-          progress={progress}
-        />
 
         {(() => {
           // Gênesis: apenas histórias do livro de Gênesis (Criação → José do Egito).
