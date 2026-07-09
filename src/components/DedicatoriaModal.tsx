@@ -75,14 +75,16 @@ function renderRich(text: string) {
     if (tok.startsWith("{{signature}}") && tok.endsWith("{{/signature}}")) {
       const name = tok.slice("{{signature}}".length, -"{{/signature}}".length);
       return (
-        <span
+      <span
           key={i}
           style={{
-            fontFamily: "'Kaufmann BT', 'Kaufmann', 'Allura', 'Pinyon Script', cursive",
-            fontSize: "1.9em",
-            color: "#5a2a05",
+            fontFamily: "'Yellowtail', 'Kaufmann BT', 'Kaufmann', 'Allura', cursive",
+            fontSize: "2.2em",
+            fontWeight: 400,
+            color: "#3d2208",
             display: "inline-block",
-            lineHeight: 1.2,
+            lineHeight: 1.1,
+            letterSpacing: "0.01em",
           }}
         >
           {name}
