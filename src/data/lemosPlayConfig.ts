@@ -58,7 +58,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v38";
+const KEY = "lemos_play_config_v39";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
@@ -107,8 +107,8 @@ const defaultLouvores: PlayEntry[] = [
   { id: "lv5", title: "Graça Aleluia", src: aleluiaVid.url, poster: attachedThumbByTitle["Graça Aleluia"], section: "Louvores" },
   { id: "lv6", title: "Palavra Eterna", src: palavraEternaVid.url, poster: attachedThumbByTitle["Palavra Eterna"], section: "Louvores" },
   { id: "lv7", title: "Tempestades", src: tempestadesVid.url, poster: aTempestadeThumb.url, section: "Louvores" },
-  { id: "lv8", title: "Deus Está Aqui", src: deusEstaAquiVid.url, section: "Louvores" },
-  { id: "lv9", title: "Yeshua", src: yeshuaVid.url, section: "Louvores" },
+  { id: "lv8", title: "Deus Está Aqui", src: deusEstaAquiVid.url, poster: deusEstaAquiThumb.url, section: "Louvores" },
+  { id: "lv9", title: "Yeshua", src: yeshuaVid.url, poster: yeshuaThumb.url, section: "Louvores" },
   { id: "lv10", title: "Ressuscita-Me (Versão 2)", src: ressuscitaMe2Vid.url, poster: ressuscitaMeThumb.url, section: "Louvores" },
 ];
 
