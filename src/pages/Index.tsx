@@ -151,9 +151,6 @@ export default function Index() {
           </button>
         </div>
 
-        {/* Murais motivacionais — Reflexão, Motivação, Sabedoria */}
-        <MuraisSection />
-      </div>
 
       <DedicatoriaModal open={dedicatoriaOpen} onOpenChange={setDedicatoriaOpen} />
       <IndexAdminPanel open={adminOpen} onClose={() => setAdminOpen(false)} />
