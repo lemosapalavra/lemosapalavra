@@ -603,7 +603,17 @@ export default function LemosPlay() {
           const genesisItems: PlayItem[] = wanted
             .map((w) => pool.find((p) => norm(p.title) === norm(w)) || pool.find((p) => norm(p.title).includes(norm(w))))
             .filter((v): v is PlayItem => !!v);
-          const jesusItems: PlayItem[] = [];
+          const jesusItems: PlayItem[] = [
+            { id: "je1", title: "A Cura do Paralítico", src: vidCuraParaliticoJ.url, poster: curaParaliticoThumbJ.url, category: "Filme" },
+            { id: "je2", title: "Jesus Expulsa Demônios", src: vidExpulsaDemoniosJ.url, poster: expulsaDemoniosThumbJ.url, category: "Filme" },
+            { id: "je3", title: "Jesus, o Semeador", src: vidSemeadorJ.url, poster: semeadorThumbJ.url, category: "Filme" },
+            { id: "je4", title: "Jesus no Getsêmani", src: vidGetsemani.url, poster: jesusSerieLogoJ.url, category: "Filme" },
+            { id: "je5", title: "Jesus — A Última Ceia", src: vidUltimaCeia.url, poster: jesusSerieLogoJ.url, category: "Filme" },
+            { id: "je6", title: "Jesus Crucificado", src: vidCrucificado.url, poster: jesusSerieLogoJ.url, category: "Filme" },
+            { id: "je7", title: "Jesus Vive", src: vidJesusVive.url, poster: jesusSerieLogoJ.url, category: "Filme" },
+            { id: "je8", title: "Paulo de Tarso", src: vidPauloTarso.url, poster: jesusSerieLogoJ.url, category: "Filme" },
+            { id: "je9", title: "O Filho Pródigo", src: vidOFilhoProdigo.url, poster: jesusSerieLogoJ.url, category: "Filme" },
+          ];
 
           return (
             <>
