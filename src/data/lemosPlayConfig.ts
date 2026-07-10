@@ -10,12 +10,12 @@ import danielLeoes from "@/assets/lemos-play/daniel-na-cova-dos-leoes.png.asset.
 import doMeuJeito3d from "@/assets/lemos-play/do-meu-jeito-3d.png.asset.json";
 import paiEFilhoThumb from "@/assets/lemos-play/pai-e-filho.png.asset.json";
 import umDeNosThumb from "@/assets/lemos-play/e-se-ele-fosse-um-de-nos.png.asset.json";
-import espiritoSantoThumb from "@/assets/lemos-play/espirito-santo-i.png.asset.json";
-import serFielThumb from "@/assets/lemos-play/ser-fiel-thumb.png.asset.json";
-import gracaAleluiaThumb from "@/assets/lemos-play/graca-aleluia.png.asset.json";
-import palavraEternaThumb from "@/assets/lemos-play/palavra-eterna.png.asset.json";
+import espiritoSantoThumb from "@/assets/lemos-play/espirito-santo-v2.jpg.asset.json";
+import serFielThumb from "@/assets/lemos-play/ser-fiel-v2.png.asset.json";
+import gracaAleluiaThumb from "@/assets/lemos-play/aleluia-v2.png.asset.json";
+import palavraEternaThumb from "@/assets/lemos-play/palavra-eterna-v2.png.asset.json";
 import curaParaliticoThumb from "@/assets/lemos-play/cura-paralitico-thumb.png.asset.json";
-import aTempestadeThumb from "@/assets/lemos-play/a-tempestade-thumb.png.asset.json";
+import aTempestadeThumb from "@/assets/lemos-play/tempestades-v2.png.asset.json";
 import expulsaDemoniosThumb from "@/assets/lemos-play/jesus-expulsa-demonios-thumb.png.asset.json";
 import doMeuJeitoVid from "@/assets/lemos-play/do-meu-jeito.mp4.asset.json";
 import paiEFilhoVid from "@/assets/lemos-play/pai-e-filho.mp4.asset.json";
@@ -28,13 +28,13 @@ import souFielVid from "@/assets/lemos-play/sou-fiel.mp4.asset.json";
 import fazMilagreVid from "@/assets/lemos-play/faz-um-milagre-em-mim.mp4.asset.json";
 import ressuscitaMeVid from "@/assets/lemos-play/ressuscita-me.mp4.asset.json";
 import tempestadesVid from "@/assets/lemos-play/tempestades.mp4.asset.json";
-import fazMilagreThumb from "@/assets/lemos-play/faz-um-milagre-em-mim.png.asset.json";
-import ressuscitaMeThumb from "@/assets/lemos-play/ressuscita-me.png.asset.json";
+import fazMilagreThumb from "@/assets/lemos-play/faz-milagre-v2.png.asset.json";
+import ressuscitaMeThumb from "@/assets/lemos-play/ressuscita-me-v2.png.asset.json";
 import deusEstaAquiVid from "@/assets/lemos-play/deus-esta-aqui.mp4.asset.json";
 import yeshuaVid from "@/assets/lemos-play/yeshua.mp4.asset.json";
 import ressuscitaMe2Vid from "@/assets/lemos-play/ressuscita-me-2.mp4.asset.json";
-import deusEstaAquiThumb from "@/assets/lemos-play/deus-esta-aqui-thumb.jpg.asset.json";
-import yeshuaThumb from "@/assets/lemos-play/yeshua-thumb-v2.png.asset.json";
+import deusEstaAquiThumb from "@/assets/lemos-play/deus-esta-aqui-v2.png.asset.json";
+import yeshuaThumb from "@/assets/lemos-play/yeshua-v3.png.asset.json";
 
 export interface PlayEntry {
   id: string;
@@ -58,7 +58,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v40";
+const KEY = "lemos_play_config_v41";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
