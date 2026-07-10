@@ -4,7 +4,7 @@ import { Settings, LogOut } from "lucide-react";
 import OrbitMenu from "@/components/OrbitMenu";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import IndexAdminPanel from "@/components/IndexAdminPanel";
-import MuraisSection from "@/components/MuraisSection";
+
 
 import { useCoins, ensureInitialCoins, addCoins } from "@/hooks/useCoins";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
