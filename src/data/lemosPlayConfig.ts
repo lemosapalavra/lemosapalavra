@@ -35,6 +35,8 @@ import yeshuaVid from "@/assets/lemos-play/yeshua.mp4.asset.json";
 import ressuscitaMe2Vid from "@/assets/lemos-play/ressuscita-me-2.mp4.asset.json";
 import deusEstaAquiThumb from "@/assets/lemos-play/deus-esta-aqui-v2.png.asset.json";
 import yeshuaThumb from "@/assets/lemos-play/yeshua-v3.png.asset.json";
+import oAdorareiVid from "@/assets/lemos-play/o-adorarei.mp4.asset.json";
+import oAdorareiThumb from "@/assets/lemos-play/o-adorarei.png.asset.json";
 
 export interface PlayEntry {
   id: string;
