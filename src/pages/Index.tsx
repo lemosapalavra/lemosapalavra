@@ -150,6 +150,9 @@ export default function Index() {
             <img src={iconDedicatoria} alt="Dedicatória" className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl" />
           </button>
         </div>
+      </div>
+
+
 
 
       <DedicatoriaModal open={dedicatoriaOpen} onOpenChange={setDedicatoriaOpen} />
