@@ -9,6 +9,12 @@ import { loadConfig, type PlayEntry, type SeriesGroupCfg } from "@/data/lemosPla
 import { awardOnce } from "@/hooks/useCoins";
 
 import { normalizeVideo } from "@/lib/videoEmbed";
+import batalhaAnjosVid from "@/assets/lemos-play/a-batalha-dos-anjos.mp4.asset.json";
+import batalhaAnjosThumb from "@/assets/lemos-play/batalha-anjos-thumb.png.asset.json";
+import nascimentoJesusVid from "@/assets/lemos-play/nascimento-jesus.mp4.asset.json";
+import nascimentoJesusThumb from "@/assets/lemos-play/nascimento-jesus-thumb.jpg.asset.json";
+
+
 
 
 // Coin reward per category when finishing/watching content
@@ -481,7 +487,15 @@ export default function LemosPlay() {
     return byCategory[hero.category] ?? "Histórias bíblicas, filmes e músicas para inspirar e fortalecer a sua fé.";
   }, [hero]);
 
+  const genesisItems: PlayItem[] = [
+    { id: "gn1", title: "A Batalha dos Anjos no Céu", src: batalhaAnjosVid.url, poster: batalhaAnjosThumb.url, category: "Filme" },
+  ];
+  const jesusItems: PlayItem[] = [
+    { id: "je1", title: "Nascimento de Jesus", src: nascimentoJesusVid.url, poster: nascimentoJesusThumb.url, category: "Filme" },
+  ];
+
   return (
+
     <div className="min-h-screen bg-black text-white">
       <PageHeader title="Histórias Bíblicas" subtitle="Filmes, Séries e Músicas" />
       {isAdmin && (
@@ -565,9 +579,12 @@ export default function LemosPlay() {
 
       <div className="-mt-20 sm:-mt-32 relative z-10 pb-16">
 
+        <div id="genesis"><Row title="Gênesis" items={genesisItems} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
+        <div id="jesus"><Row title="Jesus" items={jesusItems} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
         <div id="musicas"><Row title="Músicas" items={musicasPlay} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
         <div id="louvores"><Row title="Louvores" items={louvoresPlay} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
       </div>
+
 
 
       {openGroup && (
