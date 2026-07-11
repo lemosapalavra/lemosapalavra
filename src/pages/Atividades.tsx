@@ -1394,9 +1394,10 @@ function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgSt
                     key={k}
                     onClick={() => clickCell(x, y)}
                     onMouseEnter={() => start && setHoverEnd({ x, y })}
-                    className={`aspect-square w-full min-w-0 flex items-center justify-center rounded-md sm:rounded-lg font-display font-extrabold text-sm sm:text-base md:text-lg leading-none select-none transition overflow-hidden ${cls} border border-amber-200`}
+                    className={`aspect-square w-full min-w-0 flex items-center justify-center rounded-md sm:rounded-lg font-display font-extrabold leading-none select-none transition overflow-hidden ${cls} border border-amber-200`}
+                    style={{ fontSize: "clamp(11px, 4.2vw, 20px)" }}
                   >
-                    <span className="pointer-events-none">{ch}</span>
+                    <span className="pointer-events-none block w-full text-center overflow-hidden whitespace-nowrap" style={{ lineHeight: 1 }}>{ch}</span>
                   </button>
                 );
               })
