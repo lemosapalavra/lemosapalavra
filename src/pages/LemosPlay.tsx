@@ -487,7 +487,15 @@ export default function LemosPlay() {
     return byCategory[hero.category] ?? "Histórias bíblicas, filmes e músicas para inspirar e fortalecer a sua fé.";
   }, [hero]);
 
+  const genesisItems: PlayItem[] = [
+    { id: "gn1", title: "A Batalha dos Anjos no Céu", src: batalhaAnjosVid.url, poster: batalhaAnjosThumb.url, category: "Filme" },
+  ];
+  const jesusItems: PlayItem[] = [
+    { id: "je1", title: "Nascimento de Jesus", src: nascimentoJesusVid.url, poster: nascimentoJesusThumb.url, category: "Filme" },
+  ];
+
   return (
+
     <div className="min-h-screen bg-black text-white">
       <PageHeader title="Histórias Bíblicas" subtitle="Filmes, Séries e Músicas" />
       {isAdmin && (
