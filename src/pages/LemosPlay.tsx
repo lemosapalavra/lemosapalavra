@@ -10,20 +10,6 @@ import { awardOnce } from "@/hooks/useCoins";
 
 import { normalizeVideo } from "@/lib/videoEmbed";
 
-// Jesus row videos
-import vidCuraParaliticoJ from "@/assets/lemos-play/cura-paralitico.mp4.asset.json";
-import vidExpulsaDemoniosJ from "@/assets/lemos-play/jesus-expulsa-demonios.mp4.asset.json";
-import vidSemeadorJ from "@/assets/lemos-play/jesus-semeador.mp4.asset.json";
-import vidGetsemani from "@/assets/lemos-play/jesus-getsemani.mp4.asset.json";
-import vidUltimaCeia from "@/assets/lemos-play/jesus-ultima-ceia.mp4.asset.json";
-import vidCrucificado from "@/assets/lemos-play/jesus-crucificado.mp4.asset.json";
-import vidJesusVive from "@/assets/lemos-play/jesus-vive.mp4.asset.json";
-import vidPauloTarso from "@/assets/lemos-play/paulo-de-tarso.mp4.asset.json";
-import vidOFilhoProdigo from "@/assets/lemos-play/o-filho-prodigo.mp4.asset.json";
-import curaParaliticoThumbJ from "@/assets/lemos-play/cura-paralitico-thumb.png.asset.json";
-import expulsaDemoniosThumbJ from "@/assets/lemos-play/jesus-expulsa-demonios-thumb.png.asset.json";
-import semeadorThumbJ from "@/assets/lemos-play/o-semeador-cover.jpg.asset.json";
-import jesusSerieLogoJ from "@/assets/lemos-play/jesus-serie-logo.png.asset.json";
 
 // Coin reward per category when finishing/watching content
 const COIN_REWARDS: Record<string, number> = {
