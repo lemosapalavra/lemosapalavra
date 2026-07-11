@@ -571,9 +571,12 @@ export default function LemosPlay() {
 
       <div className="-mt-20 sm:-mt-32 relative z-10 pb-16">
 
+        <div id="genesis"><Row title="Gênesis" items={genesisItems} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
+        <div id="jesus"><Row title="Jesus" items={jesusItems} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
         <div id="musicas"><Row title="Músicas" items={musicasPlay} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
         <div id="louvores"><Row title="Louvores" items={louvoresPlay} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
       </div>
+
 
 
       {openGroup && (
