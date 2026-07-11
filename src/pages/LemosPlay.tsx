@@ -10,20 +10,6 @@ import { awardOnce } from "@/hooks/useCoins";
 
 import { normalizeVideo } from "@/lib/videoEmbed";
 
-// Jesus row videos
-import vidCuraParaliticoJ from "@/assets/lemos-play/cura-paralitico.mp4.asset.json";
-import vidExpulsaDemoniosJ from "@/assets/lemos-play/jesus-expulsa-demonios.mp4.asset.json";
-import vidSemeadorJ from "@/assets/lemos-play/jesus-semeador.mp4.asset.json";
-import vidGetsemani from "@/assets/lemos-play/jesus-getsemani.mp4.asset.json";
-import vidUltimaCeia from "@/assets/lemos-play/jesus-ultima-ceia.mp4.asset.json";
-import vidCrucificado from "@/assets/lemos-play/jesus-crucificado.mp4.asset.json";
-import vidJesusVive from "@/assets/lemos-play/jesus-vive.mp4.asset.json";
-import vidPauloTarso from "@/assets/lemos-play/paulo-de-tarso.mp4.asset.json";
-import vidOFilhoProdigo from "@/assets/lemos-play/o-filho-prodigo.mp4.asset.json";
-import curaParaliticoThumbJ from "@/assets/lemos-play/cura-paralitico-thumb.png.asset.json";
-import expulsaDemoniosThumbJ from "@/assets/lemos-play/jesus-expulsa-demonios-thumb.png.asset.json";
-import semeadorThumbJ from "@/assets/lemos-play/o-semeador-cover.jpg.asset.json";
-import jesusSerieLogoJ from "@/assets/lemos-play/jesus-serie-logo.png.asset.json";
 
 // Coin reward per category when finishing/watching content
 const COIN_REWARDS: Record<string, number> = {
@@ -579,61 +565,6 @@ export default function LemosPlay() {
 
       <div className="-mt-20 sm:-mt-32 relative z-10 pb-16">
 
-        {(() => {
-          // Gênesis: apenas histórias do livro de Gênesis (Criação → José do Egito).
-          // Os 10 Mandamentos pertencem ao Êxodo e foram removidos daqui.
-          const wanted = [
-            "A Criação",
-            "A Batalha dos Anjos",
-            "Adão e Eva",
-            "Noé e a Arca",
-            "O Dilúvio — Parte I",
-            "O Dilúvio — Parte II",
-            "Abraão — Parte I",
-            "Abraão — Parte II",
-            "Esaú e Jacó — Parte I",
-            "Esaú e Jacó — Parte II",
-            "Esaú e Jacó — Parte III",
-            "José do Egito — Parte I",
-            "José do Egito — Parte II",
-            "José do Egito — Parte III",
-          ];
-          const pool = [...filmesPlay, ...seriesGroupItems.flatMap((g) => g.videos)];
-          const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-          const genesisItems: PlayItem[] = wanted
-            .map((w) => pool.find((p) => norm(p.title) === norm(w)) || pool.find((p) => norm(p.title).includes(norm(w))))
-            .filter((v): v is PlayItem => !!v);
-          const jesusItems: PlayItem[] = [
-            { id: "je1", title: "A Cura do Paralítico", src: vidCuraParaliticoJ.url, poster: curaParaliticoThumbJ.url, category: "Filme" },
-            { id: "je2", title: "Jesus Expulsa Demônios", src: vidExpulsaDemoniosJ.url, poster: expulsaDemoniosThumbJ.url, category: "Filme" },
-            { id: "je3", title: "Jesus, o Semeador", src: vidSemeadorJ.url, poster: semeadorThumbJ.url, category: "Filme" },
-            { id: "je4", title: "Jesus no Getsêmani", src: vidGetsemani.url, poster: jesusSerieLogoJ.url, category: "Filme" },
-            { id: "je5", title: "Jesus — A Última Ceia", src: vidUltimaCeia.url, poster: jesusSerieLogoJ.url, category: "Filme" },
-            { id: "je6", title: "Jesus Crucificado", src: vidCrucificado.url, poster: jesusSerieLogoJ.url, category: "Filme" },
-            { id: "je7", title: "Jesus Vive", src: vidJesusVive.url, poster: jesusSerieLogoJ.url, category: "Filme" },
-            { id: "je8", title: "Paulo de Tarso", src: vidPauloTarso.url, poster: jesusSerieLogoJ.url, category: "Filme" },
-            { id: "je9", title: "O Filho Pródigo", src: vidOFilhoProdigo.url, poster: jesusSerieLogoJ.url, category: "Filme" },
-          ];
-
-          return (
-            <>
-              <div id="genesis"><Row title="📖 Gênesis" items={genesisItems} onPlay={(item) => requestPlay(item)} progress={progress} emptyMessage="✨ Novos vídeos em breve — envie os arquivos para o administrador." /></div>
-              <div id="jesus"><Row title="✝️ Jesus" items={jesusItems} onPlay={(item) => requestPlay(item)} progress={progress} emptyMessage="✨ Novos vídeos em breve — envie os arquivos para o administrador." /></div>
-            </>
-          );
-        })()}
-
-        <div id="series">
-          <Row
-            title="Séries"
-            items={seriesGroupItems.map((g) => ({ id: g.id, title: g.title, poster: g.poster, src: "", category: g.category }))}
-            onPlay={(item) => {
-              const g = seriesGroupItems.find((x) => x.id === item.id);
-              if (g) setOpenGroup(g);
-            }}
-            progress={progress}
-          />
-        </div>
         <div id="musicas"><Row title="Músicas" items={musicasPlay} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
         <div id="louvores"><Row title="Louvores" items={louvoresPlay} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
       </div>
