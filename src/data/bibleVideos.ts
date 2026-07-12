@@ -59,7 +59,7 @@ import vid10m1 from "@/assets/lemos-play/10-mandamentos-1.mp4.asset.json";
 import vid10m2 from "@/assets/lemos-play/10-mandamentos-2.mp4.asset.json";
 import vid10m3 from "@/assets/lemos-play/10-mandamentos-3.mp4.asset.json";
 import vidNascimentoJesus from "@/assets/lemos-play/nascimento-jesus.mp4.asset.json";
-import nascimentoJesusThumb from "@/assets/lemos-play/nascimento-jesus-thumb.jpg.asset.json";
+import nascimentoJesusThumb from "@/assets/lemos-play/nascimento-jesus-thumb.png.asset.json";
 import vidBatismoP1 from "@/assets/lemos-play/batismo-jesus-parte1.mp4.asset.json";
 import vidBatismoP2 from "@/assets/lemos-play/batismo-jesus-parte2.mp4.asset.json";
 import batismoP1Thumb from "@/assets/lemos-play/batismo-jesus-parte1-thumb.png.asset.json";
