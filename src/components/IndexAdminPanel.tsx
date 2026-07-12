@@ -9,6 +9,13 @@ import {
   resetMurais,
   saveMurais,
 } from "@/data/muraisConfig";
+import {
+  EventBannerConfig,
+  defaultEventBanner,
+  loadEventBanner,
+  resetEventBanner,
+  saveEventBanner,
+} from "@/data/eventBannerConfig";
 
 interface Props {
   open: boolean;
@@ -18,7 +25,7 @@ interface Props {
 const inputCls =
   "w-full bg-white border border-zinc-300 rounded px-2 py-1.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-primary";
 
-type Tab = "menu" | "murais";
+type Tab = "menu" | "murais" | "aviaozinho";
 
 export default function IndexAdminPanel({ open, onClose }: Props) {
   const [tab, setTab] = useState<Tab>("menu");
