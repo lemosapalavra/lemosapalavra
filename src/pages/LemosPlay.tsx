@@ -12,7 +12,7 @@ import { normalizeVideo } from "@/lib/videoEmbed";
 import batalhaAnjosVid from "@/assets/lemos-play/a-batalha-dos-anjos.mp4.asset.json";
 import batalhaAnjosThumb from "@/assets/lemos-play/batalha-anjos-thumb.png.asset.json";
 import nascimentoJesusVid from "@/assets/lemos-play/nascimento-jesus.mp4.asset.json";
-import nascimentoJesusThumb from "@/assets/lemos-play/nascimento-jesus-thumb.jpg.asset.json";
+import nascimentoJesusThumb from "@/assets/lemos-play/nascimento-jesus-thumb.png.asset.json";
 
 
 

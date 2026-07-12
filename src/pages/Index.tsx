@@ -4,6 +4,7 @@ import { Settings, LogOut } from "lucide-react";
 import OrbitMenu from "@/components/OrbitMenu";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import IndexAdminPanel from "@/components/IndexAdminPanel";
+import EventBannerPlane from "@/components/EventBannerPlane";
 
 
 import { useCoins, ensureInitialCoins, addCoins } from "@/hooks/useCoins";
@@ -129,6 +130,8 @@ export default function Index() {
           </div>
         )}
       </header>
+
+      <EventBannerPlane />
 
       <div className="flex-1 flex flex-col items-center justify-center w-full py-4">
         <OrbitMenu

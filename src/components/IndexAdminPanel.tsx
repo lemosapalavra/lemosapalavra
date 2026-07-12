@@ -9,6 +9,13 @@ import {
   resetMurais,
   saveMurais,
 } from "@/data/muraisConfig";
+import {
+  EventBannerConfig,
+  defaultEventBanner,
+  loadEventBanner,
+  resetEventBanner,
+  saveEventBanner,
+} from "@/data/eventBannerConfig";
 
 interface Props {
   open: boolean;
@@ -18,18 +25,20 @@ interface Props {
 const inputCls =
   "w-full bg-white border border-zinc-300 rounded px-2 py-1.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-primary";
 
-type Tab = "menu" | "murais";
+type Tab = "menu" | "murais" | "aviaozinho";
 
 export default function IndexAdminPanel({ open, onClose }: Props) {
   const [tab, setTab] = useState<Tab>("menu");
   const [items, setItems] = useState<OrbitItem[]>(() => loadOrbit());
   const [murais, setMurais] = useState<MuraisConfig>(() => loadMurais());
+  const [banner, setBanner] = useState<EventBannerConfig>(() => loadEventBanner());
   const [dirty, setDirty] = useState(false);
 
   useEffect(() => {
     if (open) {
       setItems(loadOrbit());
       setMurais(loadMurais());
+      setBanner(loadEventBanner());
       setDirty(false);
     }
   }, [open]);
@@ -46,18 +55,26 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
     setDirty(true);
   };
 
+  const patchBanner = (p: Partial<EventBannerConfig>) => {
+    setBanner((b) => ({ ...b, ...p }));
+    setDirty(true);
+  };
+
   const handleSave = () => {
     saveOrbit(items);
     saveMurais(murais);
+    saveEventBanner(banner);
     setDirty(false);
   };
 
   const handleReset = () => {
-    if (!confirm("Restaurar tudo (menu + murais) ao padrão?")) return;
+    if (!confirm("Restaurar tudo (menu + murais + aviãozinho) ao padrão?")) return;
     resetOrbit();
     resetMurais();
+    resetEventBanner();
     setItems(defaultOrbit());
     setMurais(defaultMurais());
+    setBanner(defaultEventBanner());
     setDirty(false);
   };
 
@@ -75,7 +92,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
         </div>
 
         <div className="flex gap-1 px-4 pt-3 border-b">
-          {(["menu", "murais"] as Tab[]).map((t) => (
+          {(["menu", "murais", "aviaozinho"] as Tab[]).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -83,7 +100,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
                 tab === t ? "bg-zinc-100 text-foreground border-b-2 border-primary" : "text-zinc-500 hover:text-foreground"
               }`}
             >
-              {t === "menu" ? "🌐 Menu Órbita" : "🖼️ Murais"}
+              {t === "menu" ? "🌐 Menu Órbita" : t === "murais" ? "🖼️ Murais" : "✈️ Aviãozinho"}
             </button>
           ))}
         </div>
@@ -166,6 +183,50 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
                   </div>
                 );
               })}
+            </div>
+          )}
+
+          {tab === "aviaozinho" && (
+            <div className="space-y-3">
+              <p className="text-xs text-zinc-500">
+                Um aviãozinho puxa uma faixa "Clique aqui" e a mensagem sazonal.
+                Clicando, abre o vídeo configurado (YouTube, Vimeo, MP4 direto, etc.).
+              </p>
+              <label className="flex items-center gap-2 text-sm font-semibold text-zinc-700">
+                <input
+                  type="checkbox"
+                  checked={banner.enabled}
+                  onChange={(e) => patchBanner({ enabled: e.target.checked })}
+                />
+                Exibir aviãozinho na página inicial
+              </label>
+              <label className="text-xs font-semibold text-zinc-700 block">
+                Chamada (texto da faixa)
+                <input
+                  value={banner.callToAction}
+                  onChange={(e) => patchBanner({ callToAction: e.target.value })}
+                  placeholder="Clique aqui"
+                  className={inputCls + " mt-1"}
+                />
+              </label>
+              <label className="text-xs font-semibold text-zinc-700 block">
+                Mensagem sazonal / tema do evento
+                <input
+                  value={banner.message}
+                  onChange={(e) => patchBanner({ message: e.target.value })}
+                  placeholder="Feliz Dia dos Pais"
+                  className={inputCls + " mt-1"}
+                />
+              </label>
+              <label className="text-xs font-semibold text-zinc-700 block">
+                Link do vídeo (YouTube, Vimeo, MP4, etc.)
+                <input
+                  value={banner.videoUrl}
+                  onChange={(e) => patchBanner({ videoUrl: e.target.value })}
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  className={inputCls + " mt-1"}
+                />
+              </label>
             </div>
           )}
         </div>
