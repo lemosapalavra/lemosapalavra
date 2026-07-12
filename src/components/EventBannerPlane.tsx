@@ -92,16 +92,16 @@ export default function EventBannerPlane() {
             className="w-full max-w-4xl aspect-video bg-black rounded-lg overflow-hidden shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            {video.type === "iframe" ? (
+            {video.kind === "mp4" ? (
+              <video src={video.embedUrl} controls autoPlay className="w-full h-full" />
+            ) : (
               <iframe
-                src={video.src}
+                src={video.embedUrl}
                 title={cfg.message || "Vídeo"}
                 className="w-full h-full"
                 allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
                 allowFullScreen
               />
-            ) : (
-              <video src={video.src} controls autoPlay className="w-full h-full" />
             )}
           </div>
         </div>
