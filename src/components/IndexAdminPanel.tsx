@@ -31,12 +31,14 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
   const [tab, setTab] = useState<Tab>("menu");
   const [items, setItems] = useState<OrbitItem[]>(() => loadOrbit());
   const [murais, setMurais] = useState<MuraisConfig>(() => loadMurais());
+  const [banner, setBanner] = useState<EventBannerConfig>(() => loadEventBanner());
   const [dirty, setDirty] = useState(false);
 
   useEffect(() => {
     if (open) {
       setItems(loadOrbit());
       setMurais(loadMurais());
+      setBanner(loadEventBanner());
       setDirty(false);
     }
   }, [open]);
@@ -53,18 +55,26 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
     setDirty(true);
   };
 
+  const patchBanner = (p: Partial<EventBannerConfig>) => {
+    setBanner((b) => ({ ...b, ...p }));
+    setDirty(true);
+  };
+
   const handleSave = () => {
     saveOrbit(items);
     saveMurais(murais);
+    saveEventBanner(banner);
     setDirty(false);
   };
 
   const handleReset = () => {
-    if (!confirm("Restaurar tudo (menu + murais) ao padrão?")) return;
+    if (!confirm("Restaurar tudo (menu + murais + aviãozinho) ao padrão?")) return;
     resetOrbit();
     resetMurais();
+    resetEventBanner();
     setItems(defaultOrbit());
     setMurais(defaultMurais());
+    setBanner(defaultEventBanner());
     setDirty(false);
   };
 
@@ -82,7 +92,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
         </div>
 
         <div className="flex gap-1 px-4 pt-3 border-b">
-          {(["menu", "murais"] as Tab[]).map((t) => (
+          {(["menu", "murais", "aviaozinho"] as Tab[]).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -90,7 +100,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
                 tab === t ? "bg-zinc-100 text-foreground border-b-2 border-primary" : "text-zinc-500 hover:text-foreground"
               }`}
             >
-              {t === "menu" ? "🌐 Menu Órbita" : "🖼️ Murais"}
+              {t === "menu" ? "🌐 Menu Órbita" : t === "murais" ? "🖼️ Murais" : "✈️ Aviãozinho"}
             </button>
           ))}
         </div>
