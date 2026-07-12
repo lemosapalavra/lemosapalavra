@@ -185,6 +185,50 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
               })}
             </div>
           )}
+
+          {tab === "aviaozinho" && (
+            <div className="space-y-3">
+              <p className="text-xs text-zinc-500">
+                Um aviãozinho puxa uma faixa "Clique aqui" e a mensagem sazonal.
+                Clicando, abre o vídeo configurado (YouTube, Vimeo, MP4 direto, etc.).
+              </p>
+              <label className="flex items-center gap-2 text-sm font-semibold text-zinc-700">
+                <input
+                  type="checkbox"
+                  checked={banner.enabled}
+                  onChange={(e) => patchBanner({ enabled: e.target.checked })}
+                />
+                Exibir aviãozinho na página inicial
+              </label>
+              <label className="text-xs font-semibold text-zinc-700 block">
+                Chamada (texto da faixa)
+                <input
+                  value={banner.callToAction}
+                  onChange={(e) => patchBanner({ callToAction: e.target.value })}
+                  placeholder="Clique aqui"
+                  className={inputCls + " mt-1"}
+                />
+              </label>
+              <label className="text-xs font-semibold text-zinc-700 block">
+                Mensagem sazonal / tema do evento
+                <input
+                  value={banner.message}
+                  onChange={(e) => patchBanner({ message: e.target.value })}
+                  placeholder="Feliz Dia dos Pais"
+                  className={inputCls + " mt-1"}
+                />
+              </label>
+              <label className="text-xs font-semibold text-zinc-700 block">
+                Link do vídeo (YouTube, Vimeo, MP4, etc.)
+                <input
+                  value={banner.videoUrl}
+                  onChange={(e) => patchBanner({ videoUrl: e.target.value })}
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  className={inputCls + " mt-1"}
+                />
+              </label>
+            </div>
+          )}
         </div>
 
         <div className="flex items-center justify-between p-4 border-t gap-2">
