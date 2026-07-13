@@ -11,6 +11,12 @@ import { awardOnce } from "@/hooks/useCoins";
 import { normalizeVideo } from "@/lib/videoEmbed";
 import batalhaAnjosVid from "@/assets/lemos-play/a-batalha-dos-anjos.mp4.asset.json";
 import batalhaAnjosThumb from "@/assets/lemos-play/batalha-anjos-thumb.png.asset.json";
+import criacaoVid from "@/assets/lemos-play/a-criacao.mp4.asset.json";
+import criacaoThumb from "@/assets/lemos-play/a-criacao-thumb.png.asset.json";
+import dezMandVid from "@/assets/lemos-play/os-10-mandamentos.mp4.asset.json";
+import dezMandThumb from "@/assets/lemos-play/os-10-mandamentos-thumb.png.asset.json";
+import noeVid from "@/assets/lemos-play/noe-e-a-arca.mp4.asset.json";
+import noeThumb from "@/assets/lemos-play/noe-e-a-arca-thumb.png.asset.json";
 import nascimentoJesusVid from "@/assets/lemos-play/nascimento-jesus.mp4.asset.json";
 import nascimentoJesusThumb from "@/assets/lemos-play/nascimento-jesus-thumb.png.asset.json";
 
@@ -489,6 +495,9 @@ export default function LemosPlay() {
 
   const genesisItems: PlayItem[] = [
     { id: "gn1", title: "A Batalha dos Anjos no Céu", src: batalhaAnjosVid.url, poster: batalhaAnjosThumb.url, category: "Filme" },
+    { id: "gn2", title: "A Criação", src: criacaoVid.url, poster: criacaoThumb.url, category: "Filme" },
+    { id: "gn3", title: "Os 10 Mandamentos", src: dezMandVid.url, poster: dezMandThumb.url, category: "Filme" },
+    { id: "gn4", title: "Noé e a Arca", src: noeVid.url, poster: noeThumb.url, category: "Filme" },
   ];
   const jesusItems: PlayItem[] = [
     { id: "je1", title: "Nascimento de Jesus", src: nascimentoJesusVid.url, poster: nascimentoJesusThumb.url, category: "Filme" },
