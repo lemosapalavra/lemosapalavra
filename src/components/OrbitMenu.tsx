@@ -62,15 +62,23 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                     onClick={() => isAuthenticated && onItemClick?.(item.label)}
                     className={`flex flex-col items-center gap-1 ${isAuthenticated ? "cursor-pointer hover:scale-110 transition-transform" : "cursor-default"}`}
                   >
-                    <img
-                      src={item.icon}
-                      alt={item.label}
-                      width={iconSize}
-                      height={iconSize}
-                      loading="lazy"
-                      style={{ objectFit: "cover" }}
-                      className={`rounded-full shadow-xl border-2 border-primary/30 w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
-                    />
+                    <div
+                      className={`relative overflow-hidden rounded-full shadow-xl border-2 border-primary/30 w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] bg-white ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
+                    >
+                      <img
+                        src={item.icon}
+                        alt={item.label}
+                        width={iconSize}
+                        height={iconSize}
+                        loading="lazy"
+                        style={{
+                          objectFit: "cover",
+                          transform: item.route === "/lemosplay" ? "scale(1.35)" : "scale(1)",
+                          transformOrigin: "center",
+                        }}
+                        className="w-full h-full"
+                      />
+                    </div>
                     <span className="orbit-label whitespace-pre-line text-xs sm:text-sm text-center font-bold leading-tight">
                       {item.label}
                     </span>
