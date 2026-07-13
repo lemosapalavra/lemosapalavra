@@ -11,6 +11,12 @@ import { awardOnce } from "@/hooks/useCoins";
 import { normalizeVideo } from "@/lib/videoEmbed";
 import batalhaAnjosVid from "@/assets/lemos-play/a-batalha-dos-anjos.mp4.asset.json";
 import batalhaAnjosThumb from "@/assets/lemos-play/batalha-anjos-thumb.png.asset.json";
+import criacaoVid from "@/assets/lemos-play/a-criacao.mp4.asset.json";
+import criacaoThumb from "@/assets/lemos-play/a-criacao-thumb.png.asset.json";
+import dezMandVid from "@/assets/lemos-play/os-10-mandamentos.mp4.asset.json";
+import dezMandThumb from "@/assets/lemos-play/os-10-mandamentos-thumb.png.asset.json";
+import noeVid from "@/assets/lemos-play/noe-e-a-arca.mp4.asset.json";
+import noeThumb from "@/assets/lemos-play/noe-e-a-arca-thumb.png.asset.json";
 import nascimentoJesusVid from "@/assets/lemos-play/nascimento-jesus.mp4.asset.json";
 import nascimentoJesusThumb from "@/assets/lemos-play/nascimento-jesus-thumb.png.asset.json";
 
