@@ -129,9 +129,9 @@ export const seriesGroups: BibleVideoGroup[] = [
   },
   {
     title: "Abraão",
-    icon: iconAbraao.url,
+    icon: abraaoTesteThumb.url,
     videos: [
-      { title: "Abraão — Parte I", icon: iconAbraao.url, src: vidAbraao1.url, section: "Gênesis" },
+      { title: "Abraão — Parte I", icon: abraaoTesteThumb.url, src: vidAbraao1.url, section: "Gênesis" },
       { title: "Abraão — Parte II", icon: iconAbraao.url, src: vidAbraao2.url, section: "Gênesis" },
     ],
   },
