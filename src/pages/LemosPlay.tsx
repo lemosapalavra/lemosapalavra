@@ -590,6 +590,15 @@ export default function LemosPlay() {
 
         <div id="genesis"><Row title="Gênesis" items={genesisItems} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
         <div id="jesus"><Row title="Jesus" items={jesusItems} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
+        <div id="series"><Row
+          title="Séries"
+          items={seriesGroupItems.map((g) => ({ id: g.id, title: g.title, src: "", poster: g.poster, category: "Série" }))}
+          onPlay={(item) => {
+            const g = seriesGroupItems.find((x) => x.id === item.id);
+            if (g) setOpenGroup(g);
+          }}
+          progress={progress}
+        /></div>
         <div id="musicas"><Row title="Músicas" items={musicasPlay} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
         <div id="louvores"><Row title="Louvores" items={louvoresPlay} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
       </div>
