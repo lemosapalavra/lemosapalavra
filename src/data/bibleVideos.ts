@@ -123,14 +123,6 @@ export interface BibleVideoGroup {
 
 export const seriesGroups: BibleVideoGroup[] = [
   {
-    title: "O Dilúvio",
-    icon: iconNoe1,
-    videos: [
-      { title: "O Dilúvio — Parte I", icon: iconNoe1, src: vidDiluvio1.url, section: "Gênesis" },
-      { title: "O Dilúvio — Parte II", icon: iconNoe1, src: vidDiluvio2.url, section: "Gênesis" },
-    ],
-  },
-  {
     title: "Abraão",
     icon: abraaoTesteThumb.url,
     videos: [
