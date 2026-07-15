@@ -83,8 +83,18 @@ export default function EventBannerPlane() {
       window.removeEventListener("pointerdown", resume);
     };
     window.addEventListener("pointerdown", resume, { once: true });
+    const onVis = () => {
+      if (document.hidden) stopPlaneSound();
+      else if (!audioRef.current) startPlaneSound();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    window.addEventListener("pagehide", stopPlaneSound);
+    window.addEventListener("beforeunload", stopPlaneSound);
     return () => {
       window.removeEventListener("pointerdown", resume);
+      document.removeEventListener("visibilitychange", onVis);
+      window.removeEventListener("pagehide", stopPlaneSound);
+      window.removeEventListener("beforeunload", stopPlaneSound);
       stopPlaneSound();
     };
   }, [cfg.enabled]);

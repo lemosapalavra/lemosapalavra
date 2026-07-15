@@ -34,13 +34,16 @@ import joIcon from "@/assets/lemos-play/jo.png.asset.json";
 import joP1 from "@/assets/lemos-play/jo-parte-1-v3.png.asset.json";
 import joP2 from "@/assets/lemos-play/jo-parte-2-v3.png.asset.json";
 import joP3 from "@/assets/lemos-play/jo-parte-3-v3.png.asset.json";
-import vidAdaoEva from "@/assets/lemos-play/adao-eva.mp4.asset.json";
+import vidAdaoEva from "@/assets/lemos-play/adao-eva-v2.mp4.asset.json";
 import vidNoeArcaFilme from "@/assets/lemos-play/noe-arca-filme.mp4.asset.json";
 import vidMoises1 from "@/assets/lemos-play/moises-1.mp4.asset.json";
 import vidMoises2 from "@/assets/lemos-play/moises-2.mp4.asset.json";
 import vidMoises3 from "@/assets/lemos-play/moises-3.mp4.asset.json";
-import vidDaviFilme from "@/assets/lemos-play/davi-golias-filme.mp4.asset.json";
-import vidJonasFilme from "@/assets/lemos-play/jonas-baleia-filme.mp4.asset.json";
+import vidDaviFilme from "@/assets/lemos-play/davi-golias-v2.mp4.asset.json";
+import vidJonasFilme from "@/assets/lemos-play/jonas-baleia-v2.mp4.asset.json";
+import adaoEvaThumbV2 from "@/assets/lemos-play/adao-eva-thumb-v2.jpg.asset.json";
+import daviGoliasThumbV2 from "@/assets/lemos-play/davi-golias-thumb-v2.png.asset.json";
+import jonasBaleiaThumbV2 from "@/assets/lemos-play/jonas-baleia-thumb-v2.png.asset.json";
 import vidAbraao1 from "@/assets/lemos-play/abraao-parte-1-v2.mp4.asset.json";
 import vidAbraao2 from "@/assets/lemos-play/abraao-parte-2-v2.mp4.asset.json";
 import vidProvaFogo1 from "@/assets/lemos-play/prova-fogo-parte-1-v2.mp4.asset.json";
@@ -120,14 +123,6 @@ export interface BibleVideoGroup {
 
 export const seriesGroups: BibleVideoGroup[] = [
   {
-    title: "O Dilúvio",
-    icon: iconNoe1,
-    videos: [
-      { title: "O Dilúvio — Parte I", icon: iconNoe1, src: vidDiluvio1.url, section: "Gênesis" },
-      { title: "O Dilúvio — Parte II", icon: iconNoe1, src: vidDiluvio2.url, section: "Gênesis" },
-    ],
-  },
-  {
     title: "Abraão",
     icon: abraaoTesteThumb.url,
     videos: [
@@ -184,13 +179,13 @@ export const seriesGroups: BibleVideoGroup[] = [
 export const filmesVideos: BibleVideo[] = [
   { title: "A Batalha dos Anjos", icon: iconBatalha, src: vidGenBatalha.url, section: "Gênesis" },
   { title: "A Criação", icon: iconCriacao, src: vidCriacao.url, section: "Gênesis" },
-  { title: "Adão e Eva", icon: iconAdaoEva1, src: vidGenAdaoEva.url, section: "Gênesis" },
+  { title: "Adão e Eva", icon: adaoEvaThumbV2.url, src: vidAdaoEva.url, section: "Gênesis" },
   { title: "Noé e a Arca", icon: iconNoe1, src: vidGenNoe.url, section: "Gênesis" },
   { title: "Os 10 Mandamentos — Parte I", icon: icon10Mandamentos, src: vidGen10m1.url, section: "Gênesis" },
   { title: "Os 10 Mandamentos — Parte II", icon: icon10Mandamentos, src: vidGen10m2.url, section: "Gênesis" },
-  { title: "Davi e Golias", icon: iconDaviGolias, src: vidGenDavi.url, section: "Gênesis" },
+  { title: "Davi e Golias", icon: daviGoliasThumbV2.url, src: vidDaviFilme.url, section: "Gênesis" },
   { title: "Torre de Babel", icon: torreBabelThumb.url, src: vidTorreBabel.url, section: "Gênesis" },
-  { title: "Jonas e a Baleia", icon: iconJonas.url, src: vidJonasFilme.url, section: "Jonas" },
+  { title: "Jonas e a Baleia", icon: jonasBaleiaThumbV2.url, src: vidJonasFilme.url, section: "Jonas" },
   { title: "Lázaro", icon: lazaroThumb.url, src: vidLazaro.url, section: "Novo Testamento" },
   { title: "Daniel na Cova dos Leões", icon: danielLeoesImg.url, src: vidDanielCova.url, section: "Daniel" },
   { title: "João Batista Decapitado", icon: joaoBatistaThumb.url, src: vidJoaoBatista.url, section: "Novo Testamento" },

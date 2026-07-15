@@ -73,7 +73,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                         loading="lazy"
                         style={{
                           objectFit: "cover",
-                          transform: item.route === "/lemosplay" ? "scale(1.35)" : "scale(1)",
+                          transform: item.route === "/lemosplay" ? "scale(1.35)" : item.route === "/album" ? "scale(1.35)" : "scale(1)",
                           transformOrigin: "center",
                         }}
                         className="w-full h-full"

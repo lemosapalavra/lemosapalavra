@@ -7,6 +7,7 @@ import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
 import IndexAdminPanel from "@/components/IndexAdminPanel";
 import { useIpLocation } from "@/hooks/useIpLocation";
 import { supabase } from "@/integrations/supabase/client";
+import { loadWhatsappCfg, saveWhatsappCfg } from "@/components/FloatingWhatsapp";
 
 
 export default function Configuracao() {
@@ -197,7 +198,11 @@ export default function Configuracao() {
             <button onClick={handleClearVisits} className="w-full text-left px-4 py-3 rounded-xl border border-border bg-background hover:bg-destructive/10 transition-colors font-body text-sm text-foreground">
               📊 Zerar estatísticas de visitas
             </button>
-          </div>
+        </div>
+
+        {/* WhatsApp flutuante */}
+        <WhatsappToggle />
+
         </div>
 
         {/* Atalhos para páginas configuráveis */}
@@ -229,6 +234,41 @@ export default function Configuracao() {
         </div>
       </div>
       <FeedbackFooter />
+    </div>
+  );
+}
+
+function WhatsappToggle() {
+  const [cfg, setCfg] = useState(() => loadWhatsappCfg());
+  const update = (patch: Partial<typeof cfg>) => {
+    const next = { ...cfg, ...patch };
+    setCfg(next);
+    saveWhatsappCfg(next);
+  };
+  return (
+    <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
+      <h3 className="font-display text-lg font-bold text-foreground mb-2">💬 Botão flutuante do WhatsApp</h3>
+      <p className="text-xs text-muted-foreground mb-3">
+        Aparece em todas as páginas. Ative/desative e defina o número de contato.
+      </p>
+      <button
+        onClick={() => update({ enabled: !cfg.enabled })}
+        className={`px-4 py-2 rounded-xl font-display font-bold text-sm transition mb-3 ${
+          cfg.enabled ? "bg-emerald-600 text-white hover:bg-emerald-700" : "bg-zinc-200 text-foreground hover:bg-zinc-300"
+        }`}
+      >
+        {cfg.enabled ? "✓ Ativo (clique para desativar)" : "Ativar botão do WhatsApp"}
+      </button>
+      <div>
+        <label className="block text-xs font-display font-bold mb-1">Telefone (com DDI, ex: 5511999999999)</label>
+        <input
+          type="tel"
+          value={cfg.phone}
+          onChange={(e) => update({ phone: e.target.value })}
+          className="w-full px-3 py-2 rounded-lg border border-border bg-white text-sm"
+          placeholder="5511999999999"
+        />
+      </div>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import MysticBackground from "@/components/MysticBackground";
+import FloatingWhatsapp from "@/components/FloatingWhatsapp";
 import Index from "./pages/Index.tsx";
 import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
 import { supabase } from "@/integrations/supabase/client";
@@ -88,6 +89,7 @@ const App = () => (
         <AuthBootstrap />
         <AnalyticsTracker />
         <MysticBackground />
+        <FloatingWhatsapp />
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />
