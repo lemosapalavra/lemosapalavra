@@ -7,6 +7,7 @@ import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
 import IndexAdminPanel from "@/components/IndexAdminPanel";
 import { useIpLocation } from "@/hooks/useIpLocation";
 import { supabase } from "@/integrations/supabase/client";
+import { loadWhatsappCfg, saveWhatsappCfg } from "@/components/FloatingWhatsapp";
 
 
 export default function Configuracao() {
