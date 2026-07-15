@@ -198,7 +198,11 @@ export default function Configuracao() {
             <button onClick={handleClearVisits} className="w-full text-left px-4 py-3 rounded-xl border border-border bg-background hover:bg-destructive/10 transition-colors font-body text-sm text-foreground">
               📊 Zerar estatísticas de visitas
             </button>
-          </div>
+        </div>
+
+        {/* WhatsApp flutuante */}
+        <WhatsappToggle />
+
         </div>
 
         {/* Atalhos para páginas configuráveis */}
