@@ -89,6 +89,7 @@ const App = () => (
         <AuthBootstrap />
         <AnalyticsTracker />
         <MysticBackground />
+        <FloatingWhatsapp />
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />
