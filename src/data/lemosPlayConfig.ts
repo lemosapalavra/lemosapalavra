@@ -60,7 +60,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v42";
+const KEY = "lemos_play_config_v43";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
@@ -104,7 +104,7 @@ const defaultMusicas: PlayEntry[] = [
 
 const defaultLouvores: PlayEntry[] = [
   { id: "lv1", title: "Faz um Milagre em Mim", src: fazMilagreVid.url, poster: attachedThumbByTitle["Faz um Milagre em Mim"], section: "Louvores" },
-  { id: "lv3", title: "Espírito Santo", src: espiritoSantoVid.url, poster: attachedThumbByTitle["Espírito Santo"], section: "Louvores" },
+  
   { id: "lv4", title: "Sou Fiel", src: souFielVid.url, poster: attachedThumbByTitle["Sou Fiel"], section: "Louvores" },
   { id: "lv5", title: "Graça Aleluia", src: aleluiaVid.url, poster: attachedThumbByTitle["Graça Aleluia"], section: "Louvores" },
   { id: "lv6", title: "Palavra Eterna", src: palavraEternaVid.url, poster: attachedThumbByTitle["Palavra Eterna"], section: "Louvores" },
