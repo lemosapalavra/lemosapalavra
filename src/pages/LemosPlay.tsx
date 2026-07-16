@@ -493,15 +493,24 @@ export default function LemosPlay() {
     return byCategory[hero.category] ?? "Histórias bíblicas, filmes e músicas para inspirar e fortalecer a sua fé.";
   }, [hero]);
 
-  const genesisItems: PlayItem[] = [
-    { id: "gn1", title: "A Batalha dos Anjos no Céu", src: batalhaAnjosVid.url, poster: batalhaAnjosThumb.url, category: "Filme" },
-    { id: "gn2", title: "A Criação", src: criacaoVid.url, poster: criacaoThumb.url, category: "Filme" },
-    { id: "gn3", title: "Os 10 Mandamentos", src: dezMandVid.url, poster: dezMandThumb.url, category: "Filme" },
-    { id: "gn4", title: "Noé e a Arca", src: noeVid.url, poster: noeThumb.url, category: "Filme" },
-  ];
-  const jesusItems: PlayItem[] = [
-    { id: "je1", title: "Nascimento de Jesus", src: nascimentoJesusVid.url, poster: nascimentoJesusThumb.url, category: "Filme" },
-  ];
+  const genesisItems: PlayItem[] = useMemo(
+    () =>
+      cfg.filmes
+        .filter((v) => (v.section || "").toLowerCase() === "gênesis" || (v.section || "").toLowerCase() === "genesis")
+        .map((v) => toPlay(v, "Filme")),
+    [cfg]
+  );
+  const jesusItems: PlayItem[] = useMemo(
+    () =>
+      cfg.filmes
+        .filter((v) => {
+          const s = (v.section || "").toLowerCase();
+          return s === "jesus" || s === "novo testamento";
+        })
+        .map((v) => toPlay(v, "Filme")),
+    [cfg]
+  );
+
 
   return (
 
