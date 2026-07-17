@@ -99,7 +99,7 @@ import vidLazaro from "@/assets/lemos-play/lazaro-v2.mp4.asset.json";
 import vidDanielCova from "@/assets/lemos-play/daniel-cova-v2.mp4.asset.json";
 import vidTorreBabel from "@/assets/lemos-play/torre-babel-v2.mp4.asset.json";
 import vidJoaoBatista from "@/assets/lemos-play/joao-batista-v2.mp4.asset.json";
-import lazaroThumb from "@/assets/lemos-play/lazaro-thumb-v2.png.asset.json";
+import lazaroThumb from "@/assets/lemos-play/lazaro-thumb-v3.png.asset.json";
 import torreBabelThumb from "@/assets/lemos-play/torre-babel-thumb.jpg.asset.json";
 import joaoBatistaThumb from "@/assets/lemos-play/joao-batista-thumb.png.asset.json";
 import danielLeoesImg from "@/assets/lemos-play/daniel-na-cova-dos-leoes.png.asset.json";
