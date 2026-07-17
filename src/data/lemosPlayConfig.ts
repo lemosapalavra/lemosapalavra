@@ -7,9 +7,9 @@ import provadosPeloFogoThumb from "@/assets/lemos-play/provados-pelo-fogo.png.as
 import esauEJacoThumb from "@/assets/lemos-play/esau-e-jaco.png.asset.json";
 import joThumb from "@/assets/lemos-play/jo.png.asset.json";
 import danielLeoes from "@/assets/lemos-play/daniel-na-cova-dos-leoes.png.asset.json";
-import doMeuJeito3d from "@/assets/lemos-play/do-meu-jeito-3d.png.asset.json";
-import paiEFilhoThumb from "@/assets/lemos-play/pai-e-filho.png.asset.json";
-import umDeNosThumb from "@/assets/lemos-play/e-se-ele-fosse-um-de-nos.png.asset.json";
+import doMeuJeito3d from "@/assets/lemos-play/do-meu-jeito-thumb-v2.png.asset.json";
+import paiEFilhoThumb from "@/assets/lemos-play/pai-e-filho-thumb-v2.png.asset.json";
+import umDeNosThumb from "@/assets/lemos-play/um-de-nos-thumb-v2.png.asset.json";
 import espiritoSantoThumb from "@/assets/lemos-play/espirito-santo-v2.jpg.asset.json";
 import serFielThumb from "@/assets/lemos-play/ser-fiel-v2.png.asset.json";
 import gracaAleluiaThumb from "@/assets/lemos-play/aleluia-v2.png.asset.json";
@@ -17,9 +17,9 @@ import palavraEternaThumb from "@/assets/lemos-play/palavra-eterna-v2.png.asset.
 import curaParaliticoThumb from "@/assets/lemos-play/cura-paralitico-thumb.png.asset.json";
 import aTempestadeThumb from "@/assets/lemos-play/tempestades-v2.png.asset.json";
 import expulsaDemoniosThumb from "@/assets/lemos-play/jesus-expulsa-demonios-thumb.png.asset.json";
-import doMeuJeitoVid from "@/assets/lemos-play/do-meu-jeito.mp4.asset.json";
-import paiEFilhoVid from "@/assets/lemos-play/pai-e-filho.mp4.asset.json";
-import umDeNosVid from "@/assets/lemos-play/um-de-nos.mp4.asset.json";
+import doMeuJeitoVid from "@/assets/lemos-play/do-meu-jeito-v2.mp4.asset.json";
+import paiEFilhoVid from "@/assets/lemos-play/pai-e-filho-v2.mp4.asset.json";
+import umDeNosVid from "@/assets/lemos-play/um-de-nos-v2.mp4.asset.json";
 import entraCasaVid from "@/assets/lemos-play/entra-na-minha-casa.mp4.asset.json";
 import espiritoSantoVid from "@/assets/lemos-play/espirito-santo.mp4.asset.json";
 import aleluiaVid from "@/assets/lemos-play/aleluia.mp4.asset.json";
@@ -60,7 +60,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v43";
+const KEY = "lemos_play_config_v44";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
@@ -116,7 +116,9 @@ const defaultLouvores: PlayEntry[] = [
 ];
 
 function resolvePoster(title: string, fallback?: string): string | undefined {
-  return attachedThumbByTitle[title] ?? fallback;
+  // User-provided poster wins; only fall back to attached thumbs when empty.
+  if (fallback && fallback.trim()) return fallback;
+  return attachedThumbByTitle[title];
 }
 
 function fromVideo(v: BibleVideo, id: string): PlayEntry {
@@ -152,13 +154,7 @@ const flattenDefaults = (cfg: LemosPlayConfig) => [
 ];
 
 const normalizeItemsWithDefaults = (items: PlayEntry[], defaultsById: Map<string, PlayEntry>) =>
-  items.map((item) => {
-    const fallback = defaultsById.get(item.id);
-    return {
-      ...item,
-      poster: resolvePoster(item.title, item.poster ?? fallback?.poster),
-    };
-  });
+  items.map((item) => ({ ...item }));
 
 const mergeById = (userItems: PlayEntry[], defaults: PlayEntry[]): PlayEntry[] => {
   const map = new Map<string, PlayEntry>();
@@ -166,28 +162,26 @@ const mergeById = (userItems: PlayEntry[], defaults: PlayEntry[]): PlayEntry[] =
   userItems.forEach((u) => {
     const ex = map.get(u.id);
     if (ex) {
-      // Defaults (code) are the source of truth for title, poster, src, and section.
-      // User-saved data only fills in fields that don't exist in defaults — this way,
-      // renames in code (e.g. "O Nascimento de Jesus" → "Jesus") appear immediately
-      // without bumping the storage version key.
-      const src = ex.src && ex.src.trim() ? ex.src : (u.src || "");
+      // User edits take precedence for title, src, poster, and section. Defaults
+      // only fill in fields the user left blank. This way changes made via the
+      // Lemos Play admin panel persist on the site until the user resets.
       map.set(u.id, {
-        ...u,
         ...ex,
-        src,
-        title: ex.title,
-        poster: resolvePoster(ex.title, ex.poster ?? u.poster),
-        section: ex.section ?? u.section,
+        ...u,
+        title: u.title?.trim() ? u.title : ex.title,
+        src: u.src?.trim() ? u.src : ex.src,
+        poster: u.poster?.trim() ? u.poster : (ex.poster ?? resolvePoster(u.title || ex.title)),
+        section: u.section ?? ex.section,
       });
     } else {
-      map.set(u.id, { ...u, poster: resolvePoster(u.title, u.poster) });
+      map.set(u.id, { ...u, poster: u.poster?.trim() ? u.poster : resolvePoster(u.title) });
     }
   });
-  // Keep ordering aligned with defaults so reordering in code also takes effect.
+  // Preserve user's ordering when items exist there; append new defaults at the end.
   const ordered: PlayEntry[] = [];
   const seen = new Set<string>();
-  defaults.forEach((d) => { const it = map.get(d.id); if (it) { ordered.push(it); seen.add(d.id); } });
-  map.forEach((v, k) => { if (!seen.has(k)) ordered.push(v); });
+  userItems.forEach((u) => { const it = map.get(u.id); if (it) { ordered.push(it); seen.add(u.id); } });
+  defaults.forEach((d) => { if (!seen.has(d.id)) { const it = map.get(d.id); if (it) { ordered.push(it); seen.add(d.id); } } });
   return ordered;
 };
 
@@ -199,19 +193,15 @@ const repairConfig = (cfg: LemosPlayConfig, def: LemosPlayConfig): LemosPlayConf
     musicas: mergeById(norm(cfg.musicas), def.musicas),
     louvores: mergeById(norm(cfg.louvores), def.louvores),
     series: (() => {
-      // Defaults drive series presence, titles, icons, and ordering.
       const out: SeriesGroupCfg[] = def.series.map((g) => {
         const userG = cfg.series.find((s) => s.id === g.id);
         return {
           ...g,
-          title: g.title,
-          icon: resolvePoster(g.title, g.icon),
+          title: userG?.title?.trim() ? userG.title : g.title,
+          icon: userG?.icon?.trim() ? userG.icon : resolvePoster(g.title, g.icon),
           videos: mergeById(userG ? norm(userG.videos) : [], g.videos),
         };
       });
-      // Ignoramos grupos extras que só existam no localStorage do usuário —
-      // dessa forma, remoções feitas no código (ex.: Noé, Davi, 10 Mandamentos,
-      // Jesus, O Filho Pródigo) desaparecem imediatamente da UI.
       return out;
     })(),
   };

@@ -108,7 +108,7 @@ export default function EventBannerPlane() {
 
   return (
     <>
-      <div className="pointer-events-none fixed inset-x-0 top-24 sm:top-28 z-40 h-56 overflow-hidden">
+      <div className="pointer-events-none fixed inset-x-0 top-4 sm:top-6 z-10 h-40 overflow-hidden">
         <div
           key={dir}
           className="absolute top-0"
@@ -118,7 +118,7 @@ export default function EventBannerPlane() {
             <img
               src={planeSrc}
               alt={dir === "rtl" ? "Aviãozinho voando da direita para a esquerda" : "Aviãozinho voando da esquerda para a direita"}
-              className="h-40 sm:h-48 md:h-56 w-auto drop-shadow-2xl select-none"
+              className="h-28 sm:h-32 md:h-36 w-auto drop-shadow-2xl select-none"
               draggable={false}
             />
             {cfg.message && (

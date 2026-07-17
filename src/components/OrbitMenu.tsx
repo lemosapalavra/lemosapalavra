@@ -41,7 +41,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
         style={{
           width: "min(92vw, 720px)",
           height: "min(92vw, 720px)",
-          ["--orbit-radius" as any]: "min(38vw, 300px)",
+          ["--orbit-radius" as any]: "min(32vw, 250px)",
         }}
       >
         <div

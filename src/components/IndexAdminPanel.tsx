@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { X, RotateCcw, Save, Plus, Trash2 } from "lucide-react";
+import { X, RotateCcw, Save, Plus, Trash2, Search } from "lucide-react";
+import MediaPickerModal from "@/components/MediaPickerModal";
 import { OrbitItem, defaultOrbit, loadOrbit, resetOrbit, saveOrbit } from "@/data/orbitConfig";
 import {
   MuraisConfig,
@@ -33,6 +34,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
   const [murais, setMurais] = useState<MuraisConfig>(() => loadMurais());
   const [banner, setBanner] = useState<EventBannerConfig>(() => loadEventBanner());
   const [dirty, setDirty] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -220,13 +222,30 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
               </label>
               <label className="text-xs font-semibold text-zinc-700 block">
                 Link do vídeo (YouTube, Vimeo, MP4, etc.)
-                <input
-                  value={banner.videoUrl}
-                  onChange={(e) => patchBanner({ videoUrl: e.target.value })}
-                  placeholder="https://www.youtube.com/watch?v=..."
-                  className={inputCls + " mt-1"}
-                />
+                <div className="flex gap-2 mt-1">
+                  <input
+                    value={banner.videoUrl}
+                    onChange={(e) => patchBanner({ videoUrl: e.target.value })}
+                    placeholder="https://www.youtube.com/watch?v=..."
+                    className={inputCls + " flex-1"}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setPickerOpen(true)}
+                    className="px-3 py-1.5 rounded bg-primary text-primary-foreground hover:opacity-90 text-xs font-bold flex items-center gap-1 whitespace-nowrap"
+                    title="Procurar vídeo já existente no site"
+                  >
+                    <Search className="w-3.5 h-3.5" /> Procurar no site
+                  </button>
+                </div>
               </label>
+              <MediaPickerModal
+                open={pickerOpen}
+                kind="video"
+                currentUrl={banner.videoUrl}
+                onClose={() => setPickerOpen(false)}
+                onSelect={(url) => patchBanner({ videoUrl: url })}
+              />
             </div>
           )}
         </div>
