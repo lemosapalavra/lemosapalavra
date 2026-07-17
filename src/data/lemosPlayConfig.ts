@@ -193,19 +193,15 @@ const repairConfig = (cfg: LemosPlayConfig, def: LemosPlayConfig): LemosPlayConf
     musicas: mergeById(norm(cfg.musicas), def.musicas),
     louvores: mergeById(norm(cfg.louvores), def.louvores),
     series: (() => {
-      // Defaults drive series presence, titles, icons, and ordering.
       const out: SeriesGroupCfg[] = def.series.map((g) => {
         const userG = cfg.series.find((s) => s.id === g.id);
         return {
           ...g,
-          title: g.title,
-          icon: resolvePoster(g.title, g.icon),
+          title: userG?.title?.trim() ? userG.title : g.title,
+          icon: userG?.icon?.trim() ? userG.icon : resolvePoster(g.title, g.icon),
           videos: mergeById(userG ? norm(userG.videos) : [], g.videos),
         };
       });
-      // Ignoramos grupos extras que só existam no localStorage do usuário —
-      // dessa forma, remoções feitas no código (ex.: Noé, Davi, 10 Mandamentos,
-      // Jesus, O Filho Pródigo) desaparecem imediatamente da UI.
       return out;
     })(),
   };
