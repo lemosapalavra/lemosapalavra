@@ -34,6 +34,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
   const [murais, setMurais] = useState<MuraisConfig>(() => loadMurais());
   const [banner, setBanner] = useState<EventBannerConfig>(() => loadEventBanner());
   const [dirty, setDirty] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   useEffect(() => {
     if (open) {
