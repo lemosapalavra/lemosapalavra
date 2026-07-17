@@ -7,7 +7,7 @@ import provadosPeloFogoThumb from "@/assets/lemos-play/provados-pelo-fogo.png.as
 import esauEJacoThumb from "@/assets/lemos-play/esau-e-jaco.png.asset.json";
 import joThumb from "@/assets/lemos-play/jo.png.asset.json";
 import danielLeoes from "@/assets/lemos-play/daniel-na-cova-dos-leoes.png.asset.json";
-import doMeuJeito3d from "@/assets/lemos-play/do-meu-jeito-3d.png.asset.json";
+import doMeuJeito3d from "@/assets/lemos-play/do-meu-jeito-thumb-v2.png.asset.json";
 import paiEFilhoThumb from "@/assets/lemos-play/pai-e-filho-thumb-v2.png.asset.json";
 import umDeNosThumb from "@/assets/lemos-play/um-de-nos-thumb-v2.png.asset.json";
 import espiritoSantoThumb from "@/assets/lemos-play/espirito-santo-v2.jpg.asset.json";
