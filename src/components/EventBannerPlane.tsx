@@ -118,7 +118,7 @@ export default function EventBannerPlane() {
             <img
               src={planeSrc}
               alt={dir === "rtl" ? "Aviãozinho voando da direita para a esquerda" : "Aviãozinho voando da esquerda para a direita"}
-              className="h-40 sm:h-48 md:h-56 w-auto drop-shadow-2xl select-none"
+              className="h-28 sm:h-32 md:h-36 w-auto drop-shadow-2xl select-none"
               draggable={false}
             />
             {cfg.message && (
