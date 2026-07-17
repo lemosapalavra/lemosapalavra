@@ -166,28 +166,26 @@ const mergeById = (userItems: PlayEntry[], defaults: PlayEntry[]): PlayEntry[] =
   userItems.forEach((u) => {
     const ex = map.get(u.id);
     if (ex) {
-      // Defaults (code) are the source of truth for title, poster, src, and section.
-      // User-saved data only fills in fields that don't exist in defaults — this way,
-      // renames in code (e.g. "O Nascimento de Jesus" → "Jesus") appear immediately
-      // without bumping the storage version key.
-      const src = ex.src && ex.src.trim() ? ex.src : (u.src || "");
+      // User edits take precedence for title, src, poster, and section. Defaults
+      // only fill in fields the user left blank. This way changes made via the
+      // Lemos Play admin panel persist on the site until the user resets.
       map.set(u.id, {
-        ...u,
         ...ex,
-        src,
-        title: ex.title,
-        poster: resolvePoster(ex.title, ex.poster ?? u.poster),
-        section: ex.section ?? u.section,
+        ...u,
+        title: u.title?.trim() ? u.title : ex.title,
+        src: u.src?.trim() ? u.src : ex.src,
+        poster: u.poster?.trim() ? u.poster : (ex.poster ?? resolvePoster(u.title || ex.title)),
+        section: u.section ?? ex.section,
       });
     } else {
-      map.set(u.id, { ...u, poster: resolvePoster(u.title, u.poster) });
+      map.set(u.id, { ...u, poster: u.poster?.trim() ? u.poster : resolvePoster(u.title) });
     }
   });
-  // Keep ordering aligned with defaults so reordering in code also takes effect.
+  // Preserve user's ordering when items exist there; append new defaults at the end.
   const ordered: PlayEntry[] = [];
   const seen = new Set<string>();
-  defaults.forEach((d) => { const it = map.get(d.id); if (it) { ordered.push(it); seen.add(d.id); } });
-  map.forEach((v, k) => { if (!seen.has(k)) ordered.push(v); });
+  userItems.forEach((u) => { const it = map.get(u.id); if (it) { ordered.push(it); seen.add(u.id); } });
+  defaults.forEach((d) => { if (!seen.has(d.id)) { const it = map.get(d.id); if (it) { ordered.push(it); seen.add(d.id); } } });
   return ordered;
 };
 
