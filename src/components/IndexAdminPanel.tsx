@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { X, RotateCcw, Save, Plus, Trash2 } from "lucide-react";
+import { X, RotateCcw, Save, Plus, Trash2, Search } from "lucide-react";
+import MediaPickerModal from "@/components/MediaPickerModal";
 import { OrbitItem, defaultOrbit, loadOrbit, resetOrbit, saveOrbit } from "@/data/orbitConfig";
 import {
   MuraisConfig,
