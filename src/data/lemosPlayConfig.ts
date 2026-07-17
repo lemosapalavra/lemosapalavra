@@ -116,7 +116,9 @@ const defaultLouvores: PlayEntry[] = [
 ];
 
 function resolvePoster(title: string, fallback?: string): string | undefined {
-  return attachedThumbByTitle[title] ?? fallback;
+  // User-provided poster wins; only fall back to attached thumbs when empty.
+  if (fallback && fallback.trim()) return fallback;
+  return attachedThumbByTitle[title];
 }
 
 function fromVideo(v: BibleVideo, id: string): PlayEntry {
@@ -152,13 +154,7 @@ const flattenDefaults = (cfg: LemosPlayConfig) => [
 ];
 
 const normalizeItemsWithDefaults = (items: PlayEntry[], defaultsById: Map<string, PlayEntry>) =>
-  items.map((item) => {
-    const fallback = defaultsById.get(item.id);
-    return {
-      ...item,
-      poster: resolvePoster(item.title, item.poster ?? fallback?.poster),
-    };
-  });
+  items.map((item) => ({ ...item }));
 
 const mergeById = (userItems: PlayEntry[], defaults: PlayEntry[]): PlayEntry[] => {
   const map = new Map<string, PlayEntry>();
