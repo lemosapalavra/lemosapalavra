@@ -108,7 +108,7 @@ export default function EventBannerPlane() {
 
   return (
     <>
-      <div className="pointer-events-none fixed inset-x-0 top-24 sm:top-28 z-40 h-56 overflow-hidden">
+      <div className="pointer-events-none fixed inset-x-0 top-4 sm:top-6 z-10 h-40 overflow-hidden">
         <div
           key={dir}
           className="absolute top-0"
