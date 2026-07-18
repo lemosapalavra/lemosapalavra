@@ -196,11 +196,15 @@ export const filmesVideos: BibleVideo[] = [
   { title: "Os 10 Mandamentos — Parte II", icon: icon10Mandamentos, src: vidGen10m2.url, section: "Gênesis" },
   { title: "Davi e Golias", icon: daviGoliasThumbV2.url, src: vidDaviFilme.url, section: "Gênesis" },
   { title: "Torre de Babel", icon: torreBabelThumb.url, src: vidTorreBabel.url, section: "Gênesis" },
-  { title: "Jonas e a Baleia", icon: jonasBaleiaThumbV2.url, src: vidJonasFilme.url, section: "Jonas" },
+  { title: "Jonas e a Baleia", icon: jonasBaleiaThumbV2.url, src: vidJonasV4.url, section: "Jonas" },
   { title: "Lázaro", icon: lazaroThumb.url, src: vidLazaro.url, section: "Novo Testamento" },
   { title: "Daniel na Cova dos Leões", icon: danielLeoesImg.url, src: vidDanielCova.url, section: "Daniel" },
   { title: "João Batista Decapitado", icon: joaoBatistaThumb.url, src: vidJoaoBatista.url, section: "Novo Testamento" },
-  { title: "Apocalipse — A Batalha Final", icon: apocalipseThumb.url, src: vidApocalipse.url, section: "Apocalipse" },
+  { title: "Apocalipse — A Batalha Final", icon: apocalipseThumb.url, src: vidApocalipseV3.url, section: "Apocalipse" },
+  { title: "Nascimento de Jesus", icon: nascimentoJesusThumbV2.url, src: vidNascimentoJesusV2.url, section: "Jesus" },
+  { title: "O Batismo de Jesus", icon: nascimentoJesusThumbV2.url, src: vidBatismoFull.url, section: "Jesus" },
+  { title: "Jesus no Templo", icon: nascimentoJesusThumbV2.url, src: vidJesusTemplo.url, section: "Jesus" },
+  { title: "Jesus e a Tempestade", icon: nascimentoJesusThumbV2.url, src: vidJesusTempestade.url, section: "Jesus" },
 ];
 
 
