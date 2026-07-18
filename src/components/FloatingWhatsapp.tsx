@@ -7,7 +7,7 @@ export function loadWhatsappCfg() {
   const enabled = localStorage.getItem(LS_ENABLED);
   return {
     enabled: enabled === null ? true : enabled === "1",
-    phone: localStorage.getItem(LS_PHONE) || "5511999999999",
+    phone: localStorage.getItem(LS_PHONE) || "@lemosapalavra",
   };
 }
 
