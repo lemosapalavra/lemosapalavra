@@ -444,6 +444,24 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
             <div className="rounded-2xl bg-black/20 border border-white/10 p-3">
               <p className="text-white/70 text-[11px] uppercase font-bold">Referência</p>
               <p className="font-body leading-relaxed">{sticker.reference || "Figurinha especial do álbum Heróis da Fé."}</p>
+              {(() => {
+                const ref = sticker.reference || "";
+                // Parse "Gênesis 1:1-3" → book="Gênesis", chapter=1
+                const m = ref.match(/^\s*([1-3]?\s?[A-Za-zÀ-ÿ]+(?:\s[A-Za-zÀ-ÿ]+)?)\s+(\d+)/);
+                if (!m) return null;
+                const book = m[1].trim();
+                const chapter = m[2];
+                const url = `/biblia?book=${encodeURIComponent(book)}&chapter=${chapter}`;
+                return (
+                  <a
+                    href={url}
+                    className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-amber-400 hover:bg-amber-300 text-amber-950 font-display font-extrabold text-xs px-3 py-1.5 shadow"
+                    title={`Abrir ${book} ${chapter} na Bíblia`}
+                  >
+                    📖 Ler na Bíblia
+                  </a>
+                );
+              })()}
             </div>
             <div className="rounded-2xl bg-black/20 border border-white/10 p-3">
               <p className="text-white/70 text-[11px] uppercase font-bold">Quantidade no álbum</p>
