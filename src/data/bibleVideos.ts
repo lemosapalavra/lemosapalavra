@@ -95,10 +95,17 @@ import eleVive2Thumb from "@/assets/lemos-play/ele-vive-parte2-thumb.png.asset.j
 import eleVive3Thumb from "@/assets/lemos-play/ele-vive-parte3-thumb.png.asset.json";
 import vidDiluvio1 from "@/assets/lemos-play/diluvio-1.mp4.asset.json";
 import vidDiluvio2 from "@/assets/lemos-play/diluvio-2.mp4.asset.json";
-import vidLazaro from "@/assets/lemos-play/lazaro-v2.mp4.asset.json";
-import vidDanielCova from "@/assets/lemos-play/daniel-cova-v2.mp4.asset.json";
-import vidTorreBabel from "@/assets/lemos-play/torre-babel-v2.mp4.asset.json";
-import vidJoaoBatista from "@/assets/lemos-play/joao-batista-v2.mp4.asset.json";
+import vidLazaro from "@/assets/lemos-play/lazaro-v3.mp4.asset.json";
+import vidDanielCova from "@/assets/lemos-play/daniel-cova-v3.mp4.asset.json";
+import vidTorreBabel from "@/assets/lemos-play/torre-babel-v3.mp4.asset.json";
+import vidJoaoBatista from "@/assets/lemos-play/joao-batista-v3.mp4.asset.json";
+import vidApocalipseV3 from "@/assets/lemos-play/apocalipse-v3.mp4.asset.json";
+import vidJonasV4 from "@/assets/lemos-play/jonas-v4.mp4.asset.json";
+import vidNascimentoJesusV2 from "@/assets/lemos-play/nascimento-jesus-v2.mp4.asset.json";
+import vidBatismoFull from "@/assets/lemos-play/batismo-jesus-full.mp4.asset.json";
+import vidJesusTemplo from "@/assets/lemos-play/jesus-no-templo.mp4.asset.json";
+import vidJesusTempestade from "@/assets/lemos-play/jesus-e-a-tempestade.mp4.asset.json";
+import nascimentoJesusThumbV2 from "@/assets/lemos-play/nascimento-jesus-thumb-v2.png.asset.json";
 import lazaroThumb from "@/assets/lemos-play/lazaro-thumb-v3.png.asset.json";
 import torreBabelThumb from "@/assets/lemos-play/torre-babel-thumb.jpg.asset.json";
 import joaoBatistaThumb from "@/assets/lemos-play/joao-batista-thumb.png.asset.json";
@@ -189,11 +196,15 @@ export const filmesVideos: BibleVideo[] = [
   { title: "Os 10 Mandamentos — Parte II", icon: icon10Mandamentos, src: vidGen10m2.url, section: "Gênesis" },
   { title: "Davi e Golias", icon: daviGoliasThumbV2.url, src: vidDaviFilme.url, section: "Gênesis" },
   { title: "Torre de Babel", icon: torreBabelThumb.url, src: vidTorreBabel.url, section: "Gênesis" },
-  { title: "Jonas e a Baleia", icon: jonasBaleiaThumbV2.url, src: vidJonasFilme.url, section: "Jonas" },
+  { title: "Jonas e a Baleia", icon: jonasBaleiaThumbV2.url, src: vidJonasV4.url, section: "Jonas" },
   { title: "Lázaro", icon: lazaroThumb.url, src: vidLazaro.url, section: "Novo Testamento" },
   { title: "Daniel na Cova dos Leões", icon: danielLeoesImg.url, src: vidDanielCova.url, section: "Daniel" },
   { title: "João Batista Decapitado", icon: joaoBatistaThumb.url, src: vidJoaoBatista.url, section: "Novo Testamento" },
-  { title: "Apocalipse — A Batalha Final", icon: apocalipseThumb.url, src: vidApocalipse.url, section: "Apocalipse" },
+  { title: "Apocalipse — A Batalha Final", icon: apocalipseThumb.url, src: vidApocalipseV3.url, section: "Apocalipse" },
+  { title: "Nascimento de Jesus", icon: nascimentoJesusThumbV2.url, src: vidNascimentoJesusV2.url, section: "Jesus" },
+  { title: "O Batismo de Jesus", icon: nascimentoJesusThumbV2.url, src: vidBatismoFull.url, section: "Jesus" },
+  { title: "Jesus no Templo", icon: nascimentoJesusThumbV2.url, src: vidJesusTemplo.url, section: "Jesus" },
+  { title: "Jesus e a Tempestade", icon: nascimentoJesusThumbV2.url, src: vidJesusTempestade.url, section: "Jesus" },
 ];
 
 

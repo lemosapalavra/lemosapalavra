@@ -125,7 +125,7 @@ export default function EventBannerPlane() {
               <button
                 onClick={handleClick}
                 disabled={!cfg.videoUrl}
-                className="pointer-events-auto absolute bottom-2 rounded-full bg-amber-400 hover:bg-amber-300 disabled:opacity-70 border-2 border-white shadow-lg px-3 py-1 font-display font-extrabold text-[11px] sm:text-xs text-amber-900 whitespace-nowrap animate-pulse"
+                className="pointer-events-auto absolute bottom-2 rounded-full bg-[#1e5bd6] hover:bg-[#1747a6] disabled:opacity-70 border-2 border-white shadow-lg px-3 py-1 font-display font-extrabold text-[11px] sm:text-xs text-white whitespace-nowrap animate-pulse"
                 style={dir === "rtl"
                   ? { right: "12%" }   // faixa fica à direita do avião
                   : { left: "12%" }}   // faixa fica à esquerda do avião

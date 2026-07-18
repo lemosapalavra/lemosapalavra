@@ -260,7 +260,7 @@ function WhatsappToggle() {
         {cfg.enabled ? "✓ Ativo (clique para desativar)" : "Ativar botão do WhatsApp"}
       </button>
       <div>
-        <label className="block text-xs font-display font-bold mb-1">Telefone (com DDI, ex: 5511999999999)</label>
+        <label className="block text-xs font-display font-bold mb-1">Telefone (com DDI, ex: 5511999999999) ou @usuário (ex: @lemosapalavra)</label>
         <input
           type="tel"
           value={cfg.phone}

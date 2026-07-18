@@ -7,7 +7,7 @@ export function loadWhatsappCfg() {
   const enabled = localStorage.getItem(LS_ENABLED);
   return {
     enabled: enabled === null ? true : enabled === "1",
-    phone: localStorage.getItem(LS_PHONE) || "5511999999999",
+    phone: localStorage.getItem(LS_PHONE) || "@lemosapalavra",
   };
 }
 
@@ -31,9 +31,14 @@ export default function FloatingWhatsapp() {
   }, []);
 
   if (!cfg.enabled) return null;
-  const phone = (cfg.phone || "").replace(/\D/g, "");
-  const href = phone
-    ? `https://wa.me/${phone}?text=${encodeURIComponent("Olá! Vim pelo app Lemos a Palavra 🙏")}`
+  const raw = (cfg.phone || "").trim();
+  // Suporte a username (ex.: "@lemosapalavra") — WhatsApp resolve via wa.me/<username>.
+  const isUsername = /[a-zA-Z]/.test(raw);
+  const username = raw.replace(/^@/, "");
+  const phone = raw.replace(/\D/g, "");
+  const target = isUsername ? username : phone;
+  const href = target
+    ? `https://wa.me/${target}?text=${encodeURIComponent("Olá! Vim pelo app Lemos a Palavra 🙏")}`
     : "https://wa.me/";
 
   return (

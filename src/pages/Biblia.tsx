@@ -136,6 +136,18 @@ export default function Biblia() {
   const [verseError, setVerseError] = useState<string | null>(null);
   const [fontSize, setFontSize] = useState(16);
 
+  // Deep-link via ?book=Gênesis&chapter=1 (usado a partir do Álbum)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const b = params.get("book");
+    const c = params.get("chapter");
+    if (b && bookIdMap[b]) {
+      setSelectedBook(b);
+      if (c && Number(c) > 0) setSelectedChapter(Number(c));
+    }
+  }, []);
+
+
   // Fetch verses from bible-api.com when chapter is selected
   useEffect(() => {
     if (!selectedBook || !selectedChapter) {
