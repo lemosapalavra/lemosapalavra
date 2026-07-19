@@ -4,6 +4,9 @@ import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import { loadAnalytics, resetAnalytics, type AnalyticsData } from "@/hooks/useAnalyticsTracker";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
+import { supabase } from "@/integrations/supabase/client";
+
+type GlobalRow = { page: string; total: number; uniqueUsers: number };
 
 const fmtTime = (s: number) => {
   if (s < 60) return `${s}s`;
@@ -20,6 +23,11 @@ export default function Estatisticas() {
   const [data, setData] = useState<AnalyticsData>(() => loadAnalytics());
   const [ip, setIp] = useState<string>("—");
   const [user, setUser] = useState<any>(null);
+  const [globalRows, setGlobalRows] = useState<GlobalRow[]>([]);
+  const [globalRange, setGlobalRange] = useState<7 | 30 | 90>(30);
+  const [globalTotal, setGlobalTotal] = useState<number>(0);
+  const [globalUsers, setGlobalUsers] = useState<number>(0);
+  const [loadingGlobal, setLoadingGlobal] = useState<boolean>(false);
 
   useEffect(() => {
     if (!admin) {
@@ -36,7 +44,50 @@ export default function Estatisticas() {
       .catch(() => setIp("indisponível"));
   }, [admin, navigate]);
 
-  const refresh = () => setData(loadAnalytics());
+  const loadGlobal = async () => {
+    setLoadingGlobal(true);
+    try {
+      const since = new Date();
+      since.setDate(since.getDate() - globalRange);
+      const { data: rows, error } = await supabase
+        .from("page_analytics")
+        .select("page,user_id,user_email,visited_at")
+        .gte("visited_at", since.toISOString())
+        .limit(10000);
+      if (error) throw error;
+      const agg = new Map<string, { total: number; users: Set<string> }>();
+      const allUsers = new Set<string>();
+      (rows || []).forEach((r: any) => {
+        const key = r.page || "—";
+        const uid = r.user_id || r.user_email || "anon";
+        if (!agg.has(key)) agg.set(key, { total: 0, users: new Set() });
+        const a = agg.get(key)!;
+        a.total += 1;
+        a.users.add(uid);
+        allUsers.add(uid);
+      });
+      const out: GlobalRow[] = Array.from(agg.entries())
+        .map(([page, v]) => ({ page, total: v.total, uniqueUsers: v.users.size }))
+        .sort((a, b) => b.total - a.total);
+      setGlobalRows(out);
+      setGlobalTotal(rows?.length || 0);
+      setGlobalUsers(allUsers.size);
+    } catch (e) {
+      console.error("global analytics", e);
+    } finally {
+      setLoadingGlobal(false);
+    }
+  };
+
+  useEffect(() => {
+    if (admin) loadGlobal();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [admin, globalRange]);
+
+  const refresh = () => {
+    setData(loadAnalytics());
+    loadGlobal();
+  };
 
   const pages = useMemo(
     () => Object.entries(data.pageViews).sort((a, b) => b[1] - a[1]),
@@ -106,6 +157,73 @@ export default function Estatisticas() {
           >
             🗑️ Zerar dados
           </button>
+        </div>
+
+        {/* Global cross-user analytics */}
+        <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
+          <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
+            <h3 className="font-display text-lg font-bold text-foreground">
+              🌐 O que os usuários mais estão vendo
+            </h3>
+            <div className="flex gap-1">
+              {[7, 30, 90].map((d) => (
+                <button
+                  key={d}
+                  onClick={() => setGlobalRange(d as 7 | 30 | 90)}
+                  className={`px-3 py-1 rounded-lg text-xs font-display font-bold transition ${
+                    globalRange === d
+                      ? "bg-primary text-primary-foreground shadow"
+                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  }`}
+                >
+                  {d}d
+                </button>
+              ))}
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground font-body mb-3">
+            Agregado de <strong>todos os usuários</strong> do site nos últimos {globalRange} dias.
+          </p>
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            <div className="bg-background/60 rounded-xl p-3 text-center border border-border">
+              <p className="font-display text-2xl font-bold text-primary">{globalTotal}</p>
+              <p className="font-body text-xs text-muted-foreground">Visualizações totais</p>
+            </div>
+            <div className="bg-background/60 rounded-xl p-3 text-center border border-border">
+              <p className="font-display text-2xl font-bold text-primary">{globalUsers}</p>
+              <p className="font-body text-xs text-muted-foreground">Visitantes únicos</p>
+            </div>
+          </div>
+          {loadingGlobal ? (
+            <p className="text-sm text-muted-foreground font-body">Carregando…</p>
+          ) : globalRows.length === 0 ? (
+            <p className="text-sm text-muted-foreground font-body">
+              Ainda não há dados globais suficientes. Assim que os usuários navegarem, aparecerá aqui.
+            </p>
+          ) : (
+            <div className="space-y-2">
+              {globalRows.map((r) => {
+                const max = globalRows[0].total || 1;
+                return (
+                  <div key={r.page}>
+                    <div className="flex justify-between text-sm font-body text-foreground">
+                      <span className="truncate">{r.page}</span>
+                      <span className="whitespace-nowrap ml-2">
+                        <span className="font-display font-bold text-primary">{r.total}</span>
+                        <span className="text-xs text-muted-foreground"> visitas · {r.uniqueUsers} pessoas</span>
+                      </span>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-fuchsia-400 to-purple-500"
+                        style={{ width: `${(r.total / max) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* KPIs */}

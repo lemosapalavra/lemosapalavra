@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 /**
  * Local-device analytics tracker.
@@ -119,6 +120,25 @@ export function useAnalyticsTracker() {
       const visits = JSON.parse(localStorage.getItem("lemos_page_visits") || "{}");
       visits[label] = (visits[label] || 0) + 1;
       localStorage.setItem("lemos_page_visits", JSON.stringify(visits));
+    } catch {}
+
+    // Log to backend for cross-user aggregated analytics (fire-and-forget)
+    try {
+      let userId: string | null = null;
+      let userEmail: string | null = null;
+      try {
+        const raw = localStorage.getItem("lemos_user");
+        if (raw) userEmail = JSON.parse(raw)?.email || null;
+      } catch {}
+      supabase.auth.getSession().then(({ data }) => {
+        userId = data.session?.user?.id || null;
+        if (!userEmail) userEmail = data.session?.user?.email || null;
+        supabase.from("page_analytics").insert({
+          page: label,
+          user_id: userId,
+          user_email: userEmail,
+        }).then(() => {}, () => {});
+      });
     } catch {}
 
     currentRef.current = location.pathname;

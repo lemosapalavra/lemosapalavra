@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      page_analytics: {
+        Row: {
+          id: string
+          page: string
+          user_email: string | null
+          user_id: string | null
+          visited_at: string
+        }
+        Insert: {
+          id?: string
+          page: string
+          user_email?: string | null
+          user_id?: string | null
+          visited_at?: string
+        }
+        Update: {
+          id?: string
+          page?: string
+          user_email?: string | null
+          user_id?: string | null
+          visited_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           age_range: string | null
@@ -55,7 +79,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_admin: { Args: { _uid: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
