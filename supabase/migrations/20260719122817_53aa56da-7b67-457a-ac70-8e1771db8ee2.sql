@@ -1,0 +1,2 @@
+DROP POLICY IF EXISTS "lemos-play-videos: authenticated read" ON storage.objects;
+CREATE POLICY "lemos-play-videos: authenticated read own" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'lemos-play-videos' AND auth.uid() = owner);
