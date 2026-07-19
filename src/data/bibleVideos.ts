@@ -105,7 +105,10 @@ import vidNascimentoJesusV2 from "@/assets/lemos-play/nascimento-jesus-v2.mp4.as
 import vidBatismoFull from "@/assets/lemos-play/batismo-jesus-full.mp4.asset.json";
 import vidJesusTemplo from "@/assets/lemos-play/jesus-no-templo.mp4.asset.json";
 import vidJesusTempestade from "@/assets/lemos-play/jesus-e-a-tempestade.mp4.asset.json";
-import nascimentoJesusThumbV2 from "@/assets/lemos-play/nascimento-jesus-thumb-v2.png.asset.json";
+import nascimentoJesusThumbV2 from "@/assets/lemos-play/nascimento-jesus-thumb-v3.png.asset.json";
+import batismoJesusThumbV3 from "@/assets/lemos-play/batismo-jesus-thumb-v3.png.asset.json";
+import jesusTemploThumb from "@/assets/lemos-play/jesus-templo-thumb.png.asset.json";
+import jesusTempestadeThumb from "@/assets/lemos-play/jesus-tempestade-thumb.png.asset.json";
 import lazaroThumb from "@/assets/lemos-play/lazaro-thumb-v3.png.asset.json";
 import torreBabelThumb from "@/assets/lemos-play/torre-babel-thumb.jpg.asset.json";
 import joaoBatistaThumb from "@/assets/lemos-play/joao-batista-thumb.png.asset.json";
@@ -210,9 +213,9 @@ export const filmesVideos: BibleVideo[] = [
   { title: "João Batista Decapitado", icon: joaoBatistaThumb.url, src: vidJoaoBatista.url, section: "Novo Testamento" },
   { title: "Apocalipse — A Batalha Final", icon: apocalipseThumb.url, src: vidApocalipseV3.url, section: "Apocalipse" },
   { title: "Nascimento de Jesus", icon: nascimentoJesusThumbV2.url, src: vidNascimentoJesusV2.url, section: "Jesus" },
-  { title: "O Batismo de Jesus", icon: nascimentoJesusThumbV2.url, src: vidBatismoFull.url, section: "Jesus" },
-  { title: "Jesus no Templo", icon: nascimentoJesusThumbV2.url, src: vidJesusTemplo.url, section: "Jesus" },
-  { title: "Jesus e a Tempestade", icon: nascimentoJesusThumbV2.url, src: vidJesusTempestade.url, section: "Jesus" },
+  { title: "O Batismo de Jesus", icon: batismoJesusThumbV3.url, src: vidBatismoFull.url, section: "Jesus" },
+  { title: "Jesus no Templo", icon: jesusTemploThumb.url, src: vidJesusTemplo.url, section: "Jesus" },
+  { title: "Jesus e a Tempestade", icon: jesusTempestadeThumb.url, src: vidJesusTempestade.url, section: "Jesus" },
   { title: "A Última Ceia", icon: ultimaCeiaThumb.url, src: vidUltimaCeia.url, section: "Jesus" },
   { title: "Paulo de Tarso", icon: pauloTarsoThumb.url, src: vidPauloTarso.url, section: "Jesus" },
   { title: "O Bom Samaritano", icon: bomSamaritanoThumb.url, src: vidBomSamaritano.url, section: "Jesus" },
