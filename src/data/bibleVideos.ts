@@ -105,7 +105,10 @@ import vidNascimentoJesusV2 from "@/assets/lemos-play/nascimento-jesus-v2.mp4.as
 import vidBatismoFull from "@/assets/lemos-play/batismo-jesus-full.mp4.asset.json";
 import vidJesusTemplo from "@/assets/lemos-play/jesus-no-templo.mp4.asset.json";
 import vidJesusTempestade from "@/assets/lemos-play/jesus-e-a-tempestade.mp4.asset.json";
-import nascimentoJesusThumbV2 from "@/assets/lemos-play/nascimento-jesus-thumb-v2.png.asset.json";
+import nascimentoJesusThumbV2 from "@/assets/lemos-play/nascimento-jesus-thumb-v3.png.asset.json";
+import batismoJesusThumbV3 from "@/assets/lemos-play/batismo-jesus-thumb-v3.png.asset.json";
+import jesusTemploThumb from "@/assets/lemos-play/jesus-templo-thumb.png.asset.json";
+import jesusTempestadeThumb from "@/assets/lemos-play/jesus-tempestade-thumb.png.asset.json";
 import lazaroThumb from "@/assets/lemos-play/lazaro-thumb-v3.png.asset.json";
 import torreBabelThumb from "@/assets/lemos-play/torre-babel-thumb.jpg.asset.json";
 import joaoBatistaThumb from "@/assets/lemos-play/joao-batista-thumb.png.asset.json";
