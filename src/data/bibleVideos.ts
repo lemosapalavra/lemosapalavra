@@ -110,6 +110,14 @@ import lazaroThumb from "@/assets/lemos-play/lazaro-thumb-v3.png.asset.json";
 import torreBabelThumb from "@/assets/lemos-play/torre-babel-thumb.jpg.asset.json";
 import joaoBatistaThumb from "@/assets/lemos-play/joao-batista-thumb.png.asset.json";
 import danielLeoesImg from "@/assets/lemos-play/daniel-na-cova-dos-leoes.png.asset.json";
+import vidUltimaCeia from "@/assets/lemos-play/ultima-ceia.mp4.asset.json";
+import ultimaCeiaThumb from "@/assets/lemos-play/ultima-ceia-thumb.png.asset.json";
+import vidPauloTarso from "@/assets/lemos-play/paulo-de-tarso.mp4.asset.json";
+import pauloTarsoThumb from "@/assets/lemos-play/paulo-de-tarso-thumb.png.asset.json";
+import vidBomSamaritano from "@/assets/lemos-play/bom-samaritano.mp4.asset.json";
+import bomSamaritanoThumb from "@/assets/lemos-play/bom-samaritano-thumb.jpg.asset.json";
+import vidFilhoProdigo from "@/assets/lemos-play/filho-prodigo.mp4.asset.json";
+import filhoProdigoThumb from "@/assets/lemos-play/filho-prodigo-thumb.png.asset.json";
 
 
 export interface BibleVideo {
