@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import MysticBackground from "@/components/MysticBackground";
+// import MysticBackground from "@/components/MysticBackground"; // disabled for performance
 import FloatingWhatsapp from "@/components/FloatingWhatsapp";
 import Index from "./pages/Index.tsx";
 import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
@@ -88,7 +88,7 @@ const App = () => (
       <BrowserRouter>
         <AuthBootstrap />
         <AnalyticsTracker />
-        <MysticBackground />
+        {/* MysticBackground removed to improve page load performance */}
         <FloatingWhatsapp />
         <Suspense fallback={<PageFallback />}>
           <Routes>

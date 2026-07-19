@@ -62,7 +62,7 @@ function isAndroid() {
 }
 
 export default function InstallShortcut() {
-  const [wanted, setWanted] = useState(false);
+  // Always show the clickable logo shortcut on the login screen
   const [installable, setInstallable] = useState<boolean>(
     typeof window !== "undefined" && !!window.__lemosDeferredInstall
   );
@@ -124,39 +124,30 @@ export default function InstallShortcut() {
   };
 
   return (
-    <div className="mt-4 rounded-xl border-2 border-amber-300/70 bg-amber-50/70 p-3">
-      <label className="flex items-start gap-2 cursor-pointer select-none">
-        <input
-          type="checkbox"
-          checked={wanted}
-          onChange={(e) => { setWanted(e.target.checked); setDone(""); }}
-          className="accent-amber-600 w-4 h-4 mt-0.5"
+    <div className="mt-4 flex flex-col items-center gap-2">
+      <button
+        type="button"
+        onClick={handleClick}
+        disabled={busy}
+        aria-label="Baixar atalho clicável da Lemos a Palavra"
+        title="Clique para baixar o atalho da Lemos a Palavra"
+        className="relative group rounded-2xl p-1 bg-gradient-to-br from-amber-200 to-amber-400 shadow-lg hover:scale-105 active:scale-95 transition disabled:opacity-60"
+      >
+        <img
+          src="/favicon.png"
+          alt="Lemos a Palavra"
+          className="w-20 h-20 rounded-xl bg-white object-contain"
         />
-        <span className="text-xs font-body text-amber-950 leading-snug">
-          <strong>Quero um atalho clicável</strong> da <em>Lemos a Palavra</em> no meu dispositivo — com a logo,
-          para entrar no site sem digitar o endereço nem escanear código.
+        <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap bg-amber-500 text-white text-[10px] font-display font-bold px-2 py-0.5 rounded-full shadow">
+          {busy ? "Preparando…" : "📥 Baixar atalho"}
         </span>
-      </label>
-
-      {wanted && (
-        <div className="mt-3 flex flex-col gap-2">
-          <button
-            type="button"
-            onClick={handleClick}
-            disabled={busy}
-            className="w-full bg-amber-500 hover:bg-amber-600 disabled:opacity-60 text-white font-display font-bold text-sm py-2.5 rounded-lg shadow transition flex items-center justify-center gap-2"
-          >
-            <img src="/favicon.png" alt="" className="w-6 h-6 rounded" />
-            {busy
-              ? "Preparando…"
-              : installable
-                ? "Instalar atalho na tela inicial"
-                : "Baixar atalho com a logo"}
-          </button>
-          {done && (
-            <p className="text-[11px] font-body text-amber-900 leading-snug">{done}</p>
-          )}
-        </div>
+      </button>
+      <p className="text-[11px] font-body text-amber-900 text-center leading-snug max-w-[220px] mt-2">
+        Clique na logo para <strong>baixar o atalho</strong> da Lemos a Palavra
+        e entrar direto no site, sem digitar o endereço.
+      </p>
+      {done && (
+        <p className="text-[11px] font-body text-amber-900 text-center leading-snug max-w-[240px]">{done}</p>
       )}
     </div>
   );
