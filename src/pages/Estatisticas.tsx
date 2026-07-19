@@ -23,6 +23,11 @@ export default function Estatisticas() {
   const [data, setData] = useState<AnalyticsData>(() => loadAnalytics());
   const [ip, setIp] = useState<string>("—");
   const [user, setUser] = useState<any>(null);
+  const [globalRows, setGlobalRows] = useState<GlobalRow[]>([]);
+  const [globalRange, setGlobalRange] = useState<7 | 30 | 90>(30);
+  const [globalTotal, setGlobalTotal] = useState<number>(0);
+  const [globalUsers, setGlobalUsers] = useState<number>(0);
+  const [loadingGlobal, setLoadingGlobal] = useState<boolean>(false);
 
   useEffect(() => {
     if (!admin) {
@@ -39,7 +44,50 @@ export default function Estatisticas() {
       .catch(() => setIp("indisponível"));
   }, [admin, navigate]);
 
-  const refresh = () => setData(loadAnalytics());
+  const loadGlobal = async () => {
+    setLoadingGlobal(true);
+    try {
+      const since = new Date();
+      since.setDate(since.getDate() - globalRange);
+      const { data: rows, error } = await supabase
+        .from("page_analytics")
+        .select("page,user_id,user_email,visited_at")
+        .gte("visited_at", since.toISOString())
+        .limit(10000);
+      if (error) throw error;
+      const agg = new Map<string, { total: number; users: Set<string> }>();
+      const allUsers = new Set<string>();
+      (rows || []).forEach((r: any) => {
+        const key = r.page || "—";
+        const uid = r.user_id || r.user_email || "anon";
+        if (!agg.has(key)) agg.set(key, { total: 0, users: new Set() });
+        const a = agg.get(key)!;
+        a.total += 1;
+        a.users.add(uid);
+        allUsers.add(uid);
+      });
+      const out: GlobalRow[] = Array.from(agg.entries())
+        .map(([page, v]) => ({ page, total: v.total, uniqueUsers: v.users.size }))
+        .sort((a, b) => b.total - a.total);
+      setGlobalRows(out);
+      setGlobalTotal(rows?.length || 0);
+      setGlobalUsers(allUsers.size);
+    } catch (e) {
+      console.error("global analytics", e);
+    } finally {
+      setLoadingGlobal(false);
+    }
+  };
+
+  useEffect(() => {
+    if (admin) loadGlobal();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [admin, globalRange]);
+
+  const refresh = () => {
+    setData(loadAnalytics());
+    loadGlobal();
+  };
 
   const pages = useMemo(
     () => Object.entries(data.pageViews).sort((a, b) => b[1] - a[1]),
