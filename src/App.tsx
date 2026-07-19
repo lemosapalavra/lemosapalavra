@@ -88,7 +88,7 @@ const App = () => (
       <BrowserRouter>
         <AuthBootstrap />
         <AnalyticsTracker />
-        <MysticBackground />
+        {/* MysticBackground removed to improve page load performance */}
         <FloatingWhatsapp />
         <Suspense fallback={<PageFallback />}>
           <Routes>
