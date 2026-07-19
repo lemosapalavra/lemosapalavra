@@ -4,6 +4,9 @@ import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import { loadAnalytics, resetAnalytics, type AnalyticsData } from "@/hooks/useAnalyticsTracker";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
+import { supabase } from "@/integrations/supabase/client";
+
+type GlobalRow = { page: string; total: number; uniqueUsers: number };
 
 const fmtTime = (s: number) => {
   if (s < 60) return `${s}s`;
