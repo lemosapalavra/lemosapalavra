@@ -159,6 +159,73 @@ export default function Estatisticas() {
           </button>
         </div>
 
+        {/* Global cross-user analytics */}
+        <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
+          <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
+            <h3 className="font-display text-lg font-bold text-foreground">
+              🌐 O que os usuários mais estão vendo
+            </h3>
+            <div className="flex gap-1">
+              {[7, 30, 90].map((d) => (
+                <button
+                  key={d}
+                  onClick={() => setGlobalRange(d as 7 | 30 | 90)}
+                  className={`px-3 py-1 rounded-lg text-xs font-display font-bold transition ${
+                    globalRange === d
+                      ? "bg-primary text-primary-foreground shadow"
+                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  }`}
+                >
+                  {d}d
+                </button>
+              ))}
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground font-body mb-3">
+            Agregado de <strong>todos os usuários</strong> do site nos últimos {globalRange} dias.
+          </p>
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            <div className="bg-background/60 rounded-xl p-3 text-center border border-border">
+              <p className="font-display text-2xl font-bold text-primary">{globalTotal}</p>
+              <p className="font-body text-xs text-muted-foreground">Visualizações totais</p>
+            </div>
+            <div className="bg-background/60 rounded-xl p-3 text-center border border-border">
+              <p className="font-display text-2xl font-bold text-primary">{globalUsers}</p>
+              <p className="font-body text-xs text-muted-foreground">Visitantes únicos</p>
+            </div>
+          </div>
+          {loadingGlobal ? (
+            <p className="text-sm text-muted-foreground font-body">Carregando…</p>
+          ) : globalRows.length === 0 ? (
+            <p className="text-sm text-muted-foreground font-body">
+              Ainda não há dados globais suficientes. Assim que os usuários navegarem, aparecerá aqui.
+            </p>
+          ) : (
+            <div className="space-y-2">
+              {globalRows.map((r) => {
+                const max = globalRows[0].total || 1;
+                return (
+                  <div key={r.page}>
+                    <div className="flex justify-between text-sm font-body text-foreground">
+                      <span className="truncate">{r.page}</span>
+                      <span className="whitespace-nowrap ml-2">
+                        <span className="font-display font-bold text-primary">{r.total}</span>
+                        <span className="text-xs text-muted-foreground"> visitas · {r.uniqueUsers} pessoas</span>
+                      </span>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-fuchsia-400 to-purple-500"
+                        style={{ width: `${(r.total / max) * 100}%` }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
         {/* KPIs */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
           {[
