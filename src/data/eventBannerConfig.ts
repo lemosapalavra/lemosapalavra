@@ -9,7 +9,7 @@ export interface EventBannerConfig {
   videoUrl: string;      // link do vídeo a abrir
 }
 
-const KEY = "lemos_event_banner_v1";
+const KEY = "lemos_event_banner_v2";
 
 import diaDosPaisVideo from "@/assets/aviaozinho/dia-dos-pais/dia-dos-pais.mp4.asset.json";
 
