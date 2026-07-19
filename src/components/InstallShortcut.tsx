@@ -62,7 +62,7 @@ function isAndroid() {
 }
 
 export default function InstallShortcut() {
-  const [wanted, setWanted] = useState(false);
+  // Always show the clickable logo shortcut on the login screen
   const [installable, setInstallable] = useState<boolean>(
     typeof window !== "undefined" && !!window.__lemosDeferredInstall
   );
