@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Shield } from "lucide-react";
 import { setAdminMode } from "@/hooks/useIsAdmin";
 import { supabase } from "@/integrations/supabase/client";
+import InstallShortcut from "@/components/InstallShortcut";
 
 import avatarAbraao from "@/assets/avatar-abraao.png";
 import avatarAnjo from "@/assets/avatar-anjo.png";
