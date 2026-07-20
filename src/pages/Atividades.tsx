@@ -481,7 +481,7 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
       if (idx + 1 >= questions.length) {
         setDone(true);
         const final = correct ? score + 1 : score;
-        const coins = Math.max(1, Math.floor(final / 2));
+        const coins = Math.max(3, Math.min(5, Math.ceil(final / 2)));
         celebrate(`Você acertou ${final} de ${questions.length}!`, coins, "🧠");
       } else setIdx((n) => n + 1);
     }, 1600);
