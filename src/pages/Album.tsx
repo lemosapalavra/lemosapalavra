@@ -270,13 +270,8 @@ export default function Album() {
   const currentCatName = currentPage?.kind === "category" ? currentPage.cat.name : "";
 
   return (
-    <div className="fixed inset-0 z-40 flex flex-col"
-      style={{
-        backgroundImage: `url(${pergaminhoAsset.url})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundColor: "hsl(40,55%,82%)",
-      }}>
+    <div className="fixed inset-0 z-40 flex flex-col bg-amber-50">
+
       <div className="px-3 pt-3">
         <StandardHeader onHome={() => navigate("/")} coins={coins} />
       </div>
@@ -408,20 +403,33 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
         <X className="w-6 h-6" />
       </button>
       <div className="relative w-full max-w-5xl grid lg:grid-cols-[minmax(0,1fr)_320px] gap-4 items-center" onClick={(e) => e.stopPropagation()}>
-        <div className="relative rounded-[28px] bg-white/5 border border-white/10 p-4 backdrop-blur-sm flex items-center justify-center min-h-[60vh]">
-          {sticker.image ? (
-            <img
-              src={sticker.image}
-              alt={sticker.name}
-              className="max-w-full max-h-[78vh] object-contain drop-shadow-2xl"
-            />
-          ) : (
-            <div className="text-[200px]">{sticker.emoji}</div>
-          )}
-          {owned > 1 && (
-            <span className="absolute top-4 left-4 z-10 text-xs bg-red-500 text-white px-3 py-1 rounded-full font-bold shadow">×{owned}</span>
-          )}
-        </div>
+        {(() => {
+          const frame =
+            sticker.rarity === "reliquia"
+              ? { ring: "bg-gradient-to-br from-fuchsia-400 via-yellow-300 to-emerald-400", inner: "from-purple-900/40 to-amber-900/40", glow: "shadow-[0_0_60px_rgba(250,204,21,0.55)]" }
+              : sticker.rarity === "rara"
+              ? { ring: "bg-gradient-to-br from-yellow-200 via-amber-400 to-yellow-600", inner: "from-amber-900/40 to-yellow-900/30", glow: "shadow-[0_0_50px_rgba(251,191,36,0.55)]" }
+              : { ring: "bg-gradient-to-br from-slate-200 via-slate-400 to-slate-500", inner: "from-slate-800/40 to-slate-900/40", glow: "shadow-[0_0_30px_rgba(148,163,184,0.45)]" };
+          return (
+            <div className={`relative rounded-[32px] p-[6px] ${frame.ring} ${frame.glow}`}>
+              <div className={`relative rounded-[26px] bg-gradient-to-br ${frame.inner} border border-white/10 p-4 backdrop-blur-sm flex items-center justify-center min-h-[60vh]`}>
+                {sticker.image ? (
+                  <img
+                    src={sticker.image}
+                    alt={sticker.name}
+                    className="max-w-full max-h-[78vh] object-contain drop-shadow-2xl"
+                  />
+                ) : (
+                  <div className="text-[200px]">{sticker.emoji}</div>
+                )}
+                {owned > 1 && (
+                  <span className="absolute top-4 left-4 z-10 text-xs bg-red-500 text-white px-3 py-1 rounded-full font-bold shadow">×{owned}</span>
+                )}
+              </div>
+            </div>
+          );
+        })()}
+
 
         <aside className="rounded-[28px] border border-white/10 bg-white/10 backdrop-blur-md p-5 text-white shadow-2xl">
           <div className="flex items-center gap-2 mb-3">
@@ -478,20 +486,12 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
 
 function PageShell({ children, side }: { children: React.ReactNode; side: "left" | "right" }) {
   return (
-    <div
-      className="relative w-full h-full overflow-hidden rounded-2xl"
-      style={{
-        backgroundImage: `url(${pergaminhoAsset.url})`,
-        backgroundSize: "100% 100%",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.35))",
-      }}
-    >
-      <div className="relative w-full h-full p-6 sm:p-10">{children}</div>
+    <div className="relative w-full h-full overflow-hidden rounded-2xl bg-transparent">
+      <div className="relative w-full h-full p-3 sm:p-6">{children}</div>
     </div>
   );
 }
+
 
 /* -------- Page bodies -------- */
 
