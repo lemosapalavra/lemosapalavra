@@ -31,9 +31,6 @@ const AGE_RANGES: { id: AgeRange; label: string; emoji: string }[] = [
   { id: "adultos",       label: "Adultos (25 e mais)",      emoji: "🧔" },
 ];
 
-const ADMIN_EMAIL = "admin@lemos.local";
-const ADMIN_SHORTCUT_LOGIN = "admin";
-const ADMIN_SHORTCUT_PASSWORD = "1234";
 const OWNER_FLAG_KEY = "lemos_owner_unlocked";
 
 // Hydrate the legacy localStorage profile object that the rest of the
@@ -111,30 +108,10 @@ export default function Login() {
 
   const finalAvatar = customAvatar || selectedAvatar;
 
-  const loginAsAdmin = () => {
-    const adminUser = {
-      name: "Administrador",
-      ageRange: "adultos",
-      phone: "",
-      role: "admin",
-      avatar: "",
-      email: ADMIN_EMAIL,
-      createdAt: new Date().toISOString(),
-    };
-    localStorage.setItem("lemos_user", JSON.stringify(adminUser));
-    setAdminMode(true);
-    navigate("/");
-  };
-
   const doLogin = async (overrideEmail?: string, overridePassword?: string) => {
     const raw = (overrideEmail ?? email).trim();
     const pw = overridePassword ?? password;
     if (!raw || !pw) { alert("Informe seu celular e a senha."); return; }
-    // 🔐 Atalho de administrador (login "admin" / senha "1234")
-    if (raw.toLowerCase() === ADMIN_SHORTCUT_LOGIN && pw === ADMIN_SHORTCUT_PASSWORD) {
-      loginAsAdmin();
-      return;
-    }
     // Aceita celular (padrão) ou e-mail (compatibilidade com contas antigas).
     const em = raw.includes("@") ? raw : phoneToEmail(raw);
     const phoneDigits = raw.replace(/\D/g, "");
@@ -153,7 +130,7 @@ export default function Login() {
       return;
     }
     await hydrateLocalProfile(data.user.id, data.user.email || em);
-    if ((data.user.email || "").toLowerCase() === ADMIN_EMAIL) setAdminMode(true);
+    // Admin state is derived from the database (user_roles) — no client toggle.
     const { logEvent } = await import("@/lib/logEvent");
     logEvent("Login", { userId: data.user.id, email: data.user.email || em });
     navigate("/");
@@ -235,7 +212,7 @@ export default function Login() {
       const { data } = await supabase.auth.getUser();
       if (data.user) {
         await hydrateLocalProfile(data.user.id, data.user.email || "");
-        if ((data.user.email || "").toLowerCase() === ADMIN_EMAIL) setAdminMode(true);
+        // Admin state is derived from the database (user_roles) — no client toggle.
       }
       navigate("/");
     } catch (e: any) {
@@ -474,17 +451,13 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Admin shortcut — visível apenas para o dono do site (?owner=1) */}
+          {/* Admin access is granted server-side via the user_roles table. */}
           {ownerUnlocked && (
-            <div className="mt-5 pt-4 border-t border-amber-200/60 flex flex-col items-center gap-2">
-              <button
-                onClick={loginAsAdmin}
-                className="flex items-center gap-2 text-sm bg-amber-500 hover:bg-amber-600 text-white font-display font-bold px-4 py-2 rounded-lg shadow transition"
-                title="Entrar como administrador"
-              >
-                <Shield className="w-4 h-4" />
-                Entrar como Admin
-              </button>
+            <div className="mt-5 pt-4 border-t border-amber-200/60 flex flex-col items-center gap-2 text-center">
+              <p className="text-xs text-muted-foreground max-w-xs">
+                <Shield className="w-3 h-3 inline mr-1" />
+                O acesso de administrador é liberado no banco de dados (tabela <code>user_roles</code>). Faça login normalmente com sua conta administradora.
+              </p>
             </div>
           )}
 
