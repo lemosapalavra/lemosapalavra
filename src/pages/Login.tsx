@@ -130,7 +130,7 @@ export default function Login() {
       return;
     }
     await hydrateLocalProfile(data.user.id, data.user.email || em);
-    if ((data.user.email || "").toLowerCase() === ADMIN_EMAIL) setAdminMode(true);
+    // Admin state is derived from the database (user_roles) — no client toggle.
     const { logEvent } = await import("@/lib/logEvent");
     logEvent("Login", { userId: data.user.id, email: data.user.email || em });
     navigate("/");
