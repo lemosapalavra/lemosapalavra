@@ -122,6 +122,9 @@ import vidBomSamaritano from "@/assets/lemos-play/bom-samaritano.mp4.asset.json"
 import bomSamaritanoThumb from "@/assets/lemos-play/bom-samaritano-thumb.jpg.asset.json";
 import vidFilhoProdigo from "@/assets/lemos-play/filho-prodigo.mp4.asset.json";
 import filhoProdigoThumb from "@/assets/lemos-play/filho-prodigo-thumb.png.asset.json";
+import vidJesusCrucificado from "@/assets/lemos-play/jesus-crucificado.mp4.asset.json";
+import vidJesusVive from "@/assets/lemos-play/jesus-vive.mp4.asset.json";
+import vidGetsemani from "@/assets/lemos-play/jesus-getsemani.mp4.asset.json";
 
 
 export interface BibleVideo {
@@ -216,7 +219,13 @@ export const filmesVideos: BibleVideo[] = [
   { title: "O Batismo de Jesus", icon: batismoJesusThumbV3.url, src: vidBatismoFull.url, section: "Jesus" },
   { title: "Jesus no Templo", icon: jesusTemploThumb.url, src: vidJesusTemplo.url, section: "Jesus" },
   { title: "Jesus e a Tempestade", icon: jesusTempestadeThumb.url, src: vidJesusTempestade.url, section: "Jesus" },
+  { title: "A Cura do Paralítico", icon: curaParaliticoThumb.url, src: vidCuraParalitico.url, section: "Jesus" },
+  { title: "Jesus Expulsa Demônios", icon: expulsaDemoniosThumb.url, src: vidExpulsaDemonios.url, section: "Jesus" },
+  { title: "Jesus, o Semeador", icon: semeadorThumb.url, src: vidSemeador.url, section: "Jesus" },
+  { title: "Jesus no Getsêmani", icon: jesusSerieLogo.url, src: vidGetsemani.url, section: "Jesus" },
   { title: "Jesus - A Última Ceia", icon: ultimaCeiaThumb.url, src: vidUltimaCeia.url, section: "Jesus" },
+  { title: "Jesus Crucificado", icon: jesusSerieLogo.url, src: vidJesusCrucificado.url, section: "Jesus" },
+  { title: "Jesus Vive", icon: jesusSerieLogo.url, src: vidJesusVive.url, section: "Jesus" },
   { title: "Paulo de Tarso", icon: pauloTarsoThumb.url, src: vidPauloTarso.url, section: "Jesus" },
   { title: "O Bom Samaritano", icon: bomSamaritanoThumb.url, src: vidBomSamaritano.url, section: "Jesus" },
   { title: "O Filho Pródigo", icon: filhoProdigoThumb.url, src: vidFilhoProdigo.url, section: "Jesus" },
