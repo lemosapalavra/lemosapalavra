@@ -26,10 +26,12 @@ import nascimentoJesusThumb from "@/assets/lemos-play/nascimento-jesus-thumb.png
 
 // Coin reward per category when finishing/watching content
 const COIN_REWARDS: Record<string, number> = {
-  Filme: 8,
-  Série: 5,
+  Gênesis: 3,
+  Jesus: 5,
+  Filme: 3,
+  Série: 3,
   Música: 3,
-  Louvor: 3,
+  Louvor: 5,
 };
 
 interface PlayItem {
