@@ -155,6 +155,8 @@ export default function Login() {
     }
     await hydrateLocalProfile(data.user.id, data.user.email || em);
     if ((data.user.email || "").toLowerCase() === ADMIN_EMAIL) setAdminMode(true);
+    const { logEvent } = await import("@/lib/logEvent");
+    logEvent("Login", { userId: data.user.id, email: data.user.email || em });
     navigate("/");
   };
 
