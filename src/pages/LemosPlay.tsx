@@ -510,7 +510,7 @@ export default function LemosPlay() {
           const s = (v.section || "").toLowerCase();
           return s === "jesus" || s === "novo testamento";
         })
-        .map((v) => toPlay(v, "Filme")),
+        .map((v) => toPlay(v, "Jesus")),
     [cfg]
   );
 
