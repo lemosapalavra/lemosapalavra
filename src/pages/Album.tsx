@@ -82,9 +82,9 @@ export default function Album() {
   const [showCompletion, setShowCompletion] = useState(false);
 
   useEffect(() => { ensureInitialCoins(); }, []);
-  useEffect(() => {
-    categories.forEach((c) => c.bgs?.forEach((b) => { if (b) { const i = new Image(); i.src = b; } }));
-  }, []);
+  // (Removido) preload de backgrounds de categoria — os fundos não são renderizados
+  // e a pré-carga baixava ~14 imagens à toa, atrasando a abertura do álbum.
+
 
   const validIds = useMemo(() => new Set(allStickers.map((s) => s.id)), []);
   const totalOwned = useMemo(
