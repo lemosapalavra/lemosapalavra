@@ -358,13 +358,9 @@ export default function Login() {
                   />
                   <span className="font-body text-foreground">Manter-me logado</span>
                 </label>
-                <button
-                  type="button"
-                  onClick={handleForgotPwd}
-                  className="text-rose-600 font-body font-semibold hover:underline"
-                >
-                  Esqueci minha senha
-                </button>
+                <span className="text-muted-foreground font-body">
+                  Entre com o mesmo celular do cadastro
+                </span>
               </div>
             )}
 
