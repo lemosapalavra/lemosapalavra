@@ -44,6 +44,8 @@ export default function Estatisticas() {
   const [globalTotal, setGlobalTotal] = useState<number>(0);
   const [globalUsers, setGlobalUsers] = useState<number>(0);
   const [loadingGlobal, setLoadingGlobal] = useState<boolean>(false);
+  const [userStats, setUserStats] = useState<UserStat[]>([]);
+  const [expandedUser, setExpandedUser] = useState<string | null>(null);
 
   useEffect(() => {
     if (!admin) {
