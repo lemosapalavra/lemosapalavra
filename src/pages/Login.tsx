@@ -488,6 +488,27 @@ export default function Login() {
               </button>
             </div>
           )}
+
+          {/* Gatilho secreto: 5 toques rápidos aqui destravam o Admin (só o dono conhece) */}
+          {!ownerUnlocked && (
+            <button
+              aria-label="."
+              onClick={() => {
+                const now = Date.now();
+                const w = window as any;
+                if (!w.__ownerTaps || now - w.__ownerTapsAt > 1500) w.__ownerTaps = 0;
+                w.__ownerTaps += 1;
+                w.__ownerTapsAt = now;
+                if (w.__ownerTaps >= 5) {
+                  try { localStorage.setItem(OWNER_FLAG_KEY, "1"); } catch {}
+                  setOwnerUnlocked(true);
+                  w.__ownerTaps = 0;
+                }
+              }}
+              className="mt-4 mx-auto block w-3 h-3 rounded-full bg-transparent hover:bg-amber-200/40"
+              tabIndex={-1}
+            />
+          )}
         </div>
       </div>
     </div>
