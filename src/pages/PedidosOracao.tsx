@@ -51,6 +51,7 @@ export default function PedidosOracao() {
     localStorage.setItem("lemos_pedidos_v2", JSON.stringify(updated));
     setTexto("");
     setTipoSelecionado("");
+    awardOnce(`oracao:${Date.now()}`, 5, "Oração registrada com carinho 🙏");
     toast({
       title: "🙏 Oração registrada!",
       description: "Seu pedido foi guardado com carinho no seu mural de oração.",
