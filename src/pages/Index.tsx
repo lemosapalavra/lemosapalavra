@@ -132,29 +132,31 @@ export default function Index() {
       </header>
 
       <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
-      <EventBannerPlane />
+      <main className="w-full flex-1 flex flex-col items-center">
+        <EventBannerPlane />
 
-      <div className="flex-1 flex flex-col items-center justify-center w-full py-4">
-        <OrbitMenu
-          isAuthenticated={!!user}
-          userName={user?.name}
-          userAvatar={user?.avatar}
-          onLoginClick={() => navigate("/login")}
-          onLogout={handleLogout}
-          onItemClick={handleItemClick}
-        />
+        <div className="flex-1 flex flex-col items-center justify-center w-full py-4">
+          <OrbitMenu
+            isAuthenticated={!!user}
+            userName={user?.name}
+            userAvatar={user?.avatar}
+            onLoginClick={() => navigate("/login")}
+            onLogout={handleLogout}
+            onItemClick={handleItemClick}
+          />
 
-        <div className="mt-6 flex items-center justify-center">
-          <button
-            onClick={() => setDedicatoriaOpen(true)}
-            className="animate-pulse hover:animate-none hover:scale-110 transition-transform"
-            style={{ filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.35))" }}
-            title="Dedicatória"
-          >
-            <img src={iconDedicatoria} alt="Ver dedicatória" className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl" />
-          </button>
+          <div className="mt-6 flex items-center justify-center">
+            <button
+              onClick={() => setDedicatoriaOpen(true)}
+              className="animate-pulse hover:animate-none hover:scale-110 transition-transform"
+              style={{ filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.35))" }}
+              title="Dedicatória"
+            >
+              <img src={iconDedicatoria} alt="Ver dedicatória" className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl" />
+            </button>
+          </div>
         </div>
-      </div>
+      </main>
 
 
 
