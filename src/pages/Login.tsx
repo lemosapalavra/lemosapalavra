@@ -31,9 +31,6 @@ const AGE_RANGES: { id: AgeRange; label: string; emoji: string }[] = [
   { id: "adultos",       label: "Adultos (25 e mais)",      emoji: "🧔" },
 ];
 
-const ADMIN_EMAIL = "admin@lemos.local";
-const ADMIN_SHORTCUT_LOGIN = "admin";
-const ADMIN_SHORTCUT_PASSWORD = "1234";
 const OWNER_FLAG_KEY = "lemos_owner_unlocked";
 
 // Hydrate the legacy localStorage profile object that the rest of the
