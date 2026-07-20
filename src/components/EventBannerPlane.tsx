@@ -4,6 +4,7 @@ import { loadEventBanner, type EventBannerConfig } from "@/data/eventBannerConfi
 import { normalizeVideo } from "@/lib/videoEmbed";
 import planeRtl from "@/assets/aviao-rtl.png.asset.json";
 import planeLtr from "@/assets/aviao-ltr.png.asset.json";
+import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 
 /**
  * Aviãozinhos animados alternando direções:
@@ -160,18 +161,20 @@ export default function EventBannerPlane() {
           >
             <X className="w-5 h-5" />
           </button>
-          <div className="h-[90vh] max-h-[90vh] aspect-[9/16] bg-black rounded-lg overflow-hidden shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            {video.kind === "mp4" ? (
-              <video src={video.embedUrl} controls autoPlay playsInline className="w-full h-full object-contain" />
-            ) : (
-              <iframe
-                src={video.embedUrl}
-                title={cfg.message || "Vídeo"}
-                className="w-full h-full"
-                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-                allowFullScreen
-              />
-            )}
+          <div onClick={(e) => e.stopPropagation()}>
+            <ColonialVideoFrame>
+              {video.kind === "mp4" ? (
+                <video src={video.embedUrl} controls autoPlay playsInline className="w-full h-full object-contain" />
+              ) : (
+                <iframe
+                  src={video.embedUrl}
+                  title={cfg.message || "Vídeo"}
+                  className="w-full h-full"
+                  allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+                  allowFullScreen
+                />
+              )}
+            </ColonialVideoFrame>
           </div>
         </div>
       )}
