@@ -4,21 +4,22 @@ const assetJsonModules = import.meta.glob("@/assets/album/generated/*.png.asset.
   eager: true,
 }) as Record<string, { default: { url: string } }>;
 
-const pngModules = import.meta.glob("@/assets/album/generated/*.png", {
+const webpModules = import.meta.glob("@/assets/album/generated/*.webp", {
   eager: true,
   import: "default",
 }) as Record<string, string>;
 
 const map: Record<string, string> = {};
 
-// Local PNGs are a fallback for categories that don't have a CDN-hosted artwork yet.
-for (const [path, url] of Object.entries(pngModules)) {
-  const m = path.match(/\/generated\/([a-z]+)-(\d+)\.png$/);
+// Local WebP images (converted from PNG) — smaller, faster to load.
+for (const [path, url] of Object.entries(webpModules)) {
+  const m = path.match(/\/generated\/([a-z]+)-(\d+)\.webp$/);
   if (!m) continue;
   const cat = m[1];
   const idx = parseInt(m[2], 10) - 1;
   map[`${cat}:${idx}`] = url;
 }
+
 
 // CDN .asset.json pointers (curated Pixar artworks) take priority over local placeholders.
 for (const [path, mod] of Object.entries(assetJsonModules)) {
