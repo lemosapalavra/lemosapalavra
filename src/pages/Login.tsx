@@ -128,12 +128,19 @@ export default function Login() {
   };
 
   const doLogin = async (overrideEmail?: string, overridePassword?: string) => {
-    const em = (overrideEmail ?? email).trim();
+    const raw = (overrideEmail ?? email).trim();
     const pw = overridePassword ?? password;
-    if (!em || !pw) { alert("Informe e-mail e senha."); return; }
-    // 🔐 Atalho de administrador
-    if (em.toLowerCase() === ADMIN_SHORTCUT_LOGIN && pw === ADMIN_SHORTCUT_PASSWORD) {
+    if (!raw || !pw) { alert("Informe seu celular e a senha."); return; }
+    // 🔐 Atalho de administrador (login "admin" / senha "1234")
+    if (raw.toLowerCase() === ADMIN_SHORTCUT_LOGIN && pw === ADMIN_SHORTCUT_PASSWORD) {
       loginAsAdmin();
+      return;
+    }
+    // Aceita celular (padrão) ou e-mail (compatibilidade com contas antigas).
+    const em = raw.includes("@") ? raw : phoneToEmail(raw);
+    const phoneDigits = raw.replace(/\D/g, "");
+    if (!raw.includes("@") && phoneDigits.length < 10) {
+      alert("Informe um celular válido com DDD (ex.: 11 99999-9999).");
       return;
     }
     setBusy(true);
@@ -143,7 +150,7 @@ export default function Login() {
     });
     setBusy(false);
     if (error || !data.user) {
-      alert("E-mail ou senha incorretos. Se ainda não tem cadastro, clique em CRIAR UMA CONTA.");
+      alert("Celular ou senha incorretos. Se ainda não tem cadastro, clique em CRIAR UMA CONTA.");
       return;
     }
     await hydrateLocalProfile(data.user.id, data.user.email || em);
@@ -306,13 +313,15 @@ export default function Login() {
             )}
 
             {mode === "login" && (
-              <Field label="E-mail *">
+              <Field label="Celular *">
                 <input
-                  type="email"
+                  type="tel"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
-                  placeholder="seuemail@exemplo.com"
+                  placeholder="(11) 99999-9999"
+                  autoComplete="tel"
+                  inputMode="tel"
                 />
               </Field>
             )}
@@ -349,13 +358,9 @@ export default function Login() {
                   />
                   <span className="font-body text-foreground">Manter-me logado</span>
                 </label>
-                <button
-                  type="button"
-                  onClick={handleForgotPwd}
-                  className="text-rose-600 font-body font-semibold hover:underline"
-                >
-                  Esqueci minha senha
-                </button>
+                <span className="text-muted-foreground font-body">
+                  Entre com o mesmo celular do cadastro
+                </span>
               </div>
             )}
 
