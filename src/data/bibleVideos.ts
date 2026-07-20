@@ -109,10 +109,10 @@ import nascimentoJesusThumbV2 from "@/assets/lemos-play/nascimento-jesus-thumb-v
 import batismoJesusThumbV3 from "@/assets/lemos-play/batismo-jesus-thumb-v3.png.asset.json";
 import jesusTemploThumb from "@/assets/lemos-play/jesus-templo-thumb.png.asset.json";
 import jesusTempestadeThumb from "@/assets/lemos-play/jesus-tempestade-thumb.png.asset.json";
-import lazaroThumb from "@/assets/lemos-play/lazaro-thumb-v3.png.asset.json";
+import lazaroThumb from "@/assets/lemos-play/lazaro-thumb-v4.png.asset.json";
 import torreBabelThumb from "@/assets/lemos-play/torre-babel-thumb.jpg.asset.json";
-import joaoBatistaThumb from "@/assets/lemos-play/joao-batista-thumb-v4.png.asset.json";
-import danielLeoesImg from "@/assets/lemos-play/daniel-na-cova-dos-leoes.png.asset.json";
+import joaoBatistaThumb from "@/assets/lemos-play/joao-batista-thumb-v5.png.asset.json";
+import danielLeoesImg from "@/assets/lemos-play/daniel-cova-thumb-v2.png.asset.json";
 import vidUltimaCeia from "@/assets/lemos-play/ultima-ceia.mp4.asset.json";
 import ultimaCeiaThumb from "@/assets/lemos-play/ultima-ceia-thumb.png.asset.json";
 import vidPauloTarso from "@/assets/lemos-play/paulo-de-tarso.mp4.asset.json";
