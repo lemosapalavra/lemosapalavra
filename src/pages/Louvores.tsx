@@ -72,7 +72,7 @@ export default function Louvores() {
           <ArrowLeft className="w-6 h-6" />
         </button>
         {playing.src ? (
-          <video src={playing.src} className="absolute inset-0 w-full h-full bg-black" controls autoPlay />
+          <ColonialVideoFrame><video src={playing.src} className="w-full h-full bg-black object-contain" controls autoPlay /></ColonialVideoFrame>
         ) : (
           <div className="max-w-md mx-auto text-center text-white p-6">
             <h2 className="font-display text-3xl font-bold mb-3">Vídeo em atualização</h2>
