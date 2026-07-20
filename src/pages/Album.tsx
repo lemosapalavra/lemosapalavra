@@ -8,7 +8,7 @@ import AlbumCompletion, { getEarnedMedals, isAlbumComplete } from "@/components/
 import AramaicBackdrop from "@/components/AramaicBackdrop";
 import { categories, allStickers, rarityBorder, rarityLabel, type Rarity, type Sticker } from "@/data/stickers";
 import { useCoins, ensureInitialCoins } from "@/hooks/useCoins";
-import albumCapa from "@/assets/album-capa.png";
+import albumCapa from "@/assets/album-capa.webp";
 
 import iconInicio from "@/assets/icon-inicio.jpg";
 import iconUsuario from "@/assets/icon-usuario.png";
