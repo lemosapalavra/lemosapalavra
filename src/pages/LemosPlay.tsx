@@ -500,7 +500,7 @@ export default function LemosPlay() {
     () =>
       cfg.filmes
         .filter((v) => (v.section || "").toLowerCase() === "gênesis" || (v.section || "").toLowerCase() === "genesis")
-        .map((v) => toPlay(v, "Filme")),
+        .map((v) => toPlay(v, "Gênesis")),
     [cfg]
   );
   const jesusItems: PlayItem[] = useMemo(
