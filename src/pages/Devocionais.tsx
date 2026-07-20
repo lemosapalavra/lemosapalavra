@@ -79,7 +79,7 @@ export default function Devocionais() {
             </section>
 
             <div
-              onClick={() => setSelected(todayIdx)}
+              onClick={() => { setSelected(todayIdx); awardOnce(todayKey(`devo:${todayIdx}`), DEVO_COINS, "Devocional lido"); }}
               className="relative overflow-hidden rounded-[28px] border-2 border-amber-200 bg-gradient-to-br from-amber-100 via-yellow-50 to-orange-100 p-6 shadow-xl mb-6 cursor-pointer hover:scale-[1.01] transition-all"
             >
               <div className="absolute right-4 top-4 w-20 h-20 rounded-full bg-white/40 blur-2xl" />
