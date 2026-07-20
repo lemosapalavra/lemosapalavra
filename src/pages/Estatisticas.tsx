@@ -90,6 +90,82 @@ export default function Estatisticas() {
       setGlobalRows(out);
       setGlobalTotal(rows?.length || 0);
       setGlobalUsers(allUsers.size);
+
+      // Per-user aggregation
+      const perUser = new Map<
+        string,
+        {
+          userId: string | null;
+          email: string | null;
+          pages: Map<string, number>;
+          events: { login: number; cadastro: number; download: number };
+          totalViews: number;
+          firstSeen: string | null;
+          lastSeen: string | null;
+        }
+      >();
+      (rows || []).forEach((r: any) => {
+        const uid = r.user_id || r.user_email;
+        if (!uid) return; // skip anonymous
+        if (!perUser.has(uid)) {
+          perUser.set(uid, {
+            userId: r.user_id || null,
+            email: r.user_email || null,
+            pages: new Map(),
+            events: { login: 0, cadastro: 0, download: 0 },
+            totalViews: 0,
+            firstSeen: r.visited_at,
+            lastSeen: r.visited_at,
+          });
+        }
+        const u = perUser.get(uid)!;
+        const p = r.page || "—";
+        if (p === "Evento: Login") u.events.login += 1;
+        else if (p === "Evento: Cadastro") u.events.cadastro += 1;
+        else if (p === "Evento: Baixar Atalho") u.events.download += 1;
+        else {
+          u.pages.set(p, (u.pages.get(p) || 0) + 1);
+          u.totalViews += 1;
+        }
+        if (!u.firstSeen || r.visited_at < u.firstSeen) u.firstSeen = r.visited_at;
+        if (!u.lastSeen || r.visited_at > u.lastSeen) u.lastSeen = r.visited_at;
+      });
+
+      // Fetch profile data for these users
+      const uids = Array.from(perUser.values())
+        .map((v) => v.userId)
+        .filter(Boolean) as string[];
+      let profilesById = new Map<string, any>();
+      if (uids.length > 0) {
+        const { data: profs } = await supabase
+          .from("profiles")
+          .select("id,name,email,phone,age_range,role,avatar,created_at")
+          .in("id", uids);
+        (profs || []).forEach((p: any) => profilesById.set(p.id, p));
+      }
+
+      const stats: UserStat[] = Array.from(perUser.entries()).map(([key, v]) => {
+        const prof = v.userId ? profilesById.get(v.userId) : null;
+        return {
+          key,
+          name: prof?.name || "(sem cadastro)",
+          email: prof?.email || v.email,
+          phone: prof?.phone || null,
+          ageRange: prof?.age_range || null,
+          role: prof?.role || null,
+          avatar: prof?.avatar || null,
+          createdAt: prof?.created_at || null,
+          events: v.events,
+          pages: Array.from(v.pages.entries())
+            .map(([page, count]) => ({ page, count }))
+            .sort((a, b) => b.count - a.count),
+          totalViews: v.totalViews,
+          firstSeen: v.firstSeen,
+          lastSeen: v.lastSeen,
+        };
+      });
+      stats.sort((a, b) => (b.totalViews + b.events.login) - (a.totalViews + a.events.login));
+      setUserStats(stats);
     } catch (e) {
       console.error("global analytics", e);
     } finally {
