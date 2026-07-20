@@ -313,13 +313,15 @@ export default function Login() {
             )}
 
             {mode === "login" && (
-              <Field label="E-mail *">
+              <Field label="Celular *">
                 <input
-                  type="email"
+                  type="tel"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
-                  placeholder="seuemail@exemplo.com"
+                  placeholder="(11) 99999-9999"
+                  autoComplete="tel"
+                  inputMode="tel"
                 />
               </Field>
             )}
