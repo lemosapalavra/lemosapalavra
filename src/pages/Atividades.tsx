@@ -141,9 +141,9 @@ const memorySets = {
   dificil: memoryImages.slice(0, 12),
 };
 const memoryConfig = {
-  facil: { cols: 4, label: "Fácil (12 cartas)", coins: 2 },
+  facil: { cols: 4, label: "Fácil (12 cartas)", coins: 3 },
   medio: { cols: 4, label: "Médio (16 cartas)", coins: 4 },
-  dificil: { cols: 6, label: "Difícil (24 cartas)", coins: 7 },
+  dificil: { cols: 6, label: "Difícil (24 cartas)", coins: 5 },
 };
 
 /* =========================================================
@@ -325,12 +325,12 @@ export default function Atividades() {
 
   const allActivities = [
     { title: "Quiz Bíblico",        icon: iconQuiz,             id: "quiz",        coins: 5  },
-    { title: "Memória",             icon: iconMemoria,          id: "memory",      coins: 7  },
+    { title: "Memória",             icon: iconMemoria,          id: "memory",      coins: 5  },
     { title: "Colorir",             icon: iconColorir,          id: "coloring",    coins: 3  },
-    { title: "Quebra-Cabeça",       icon: iconQuebraCabeca,     id: "jigsaw",      coins: 10 },
-    { title: "Caça-Palavras",       icon: iconCacaPalavras.url, id: "wordsearch",  coins: 8  },
-    { title: "Pinte os Círculos",   icon: iconPinteCirculos.url, id: "edu:circles", coins: 5  },
-    { title: "Ligue as Cores",      icon: iconLigueCores.url,   id: "edu:connect", coins: 6  },
+    { title: "Quebra-Cabeça",       icon: iconQuebraCabeca,     id: "jigsaw",      coins: 5  },
+    { title: "Caça-Palavras",       icon: iconCacaPalavras.url, id: "wordsearch",  coins: 5  },
+    { title: "Pinte os Círculos",   icon: iconPinteCirculos.url, id: "edu:circles", coins: 4  },
+    { title: "Ligue as Cores",      icon: iconLigueCores.url,   id: "edu:connect", coins: 4  },
   ];
 
   // Atividades do dia: dias com data par mostram 4 atividades, dias ímpares
@@ -481,7 +481,7 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
       if (idx + 1 >= questions.length) {
         setDone(true);
         const final = correct ? score + 1 : score;
-        const coins = Math.max(1, Math.floor(final / 2));
+        const coins = Math.max(3, Math.min(5, Math.ceil(final / 2)));
         celebrate(`Você acertou ${final} de ${questions.length}!`, coins, "🧠");
       } else setIdx((n) => n + 1);
     }, 1600);
@@ -655,8 +655,8 @@ function MemoryGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
         if (nm.length === board.length) {
           setRunning(false);
           const baseCoins = memoryConfig[level!].coins;
-          const bonus = moves + 1 <= board.length * 0.75 ? 2 : 0;
-          celebrate(`Concluído em ${moves + 1} jogadas e ${seconds}s!`, baseCoins + bonus, "🃏");
+          const bonus = moves + 1 <= board.length * 0.75 ? 1 : 0;
+          celebrate(`Concluído em ${moves + 1} jogadas e ${seconds}s!`, Math.min(5, baseCoins + bonus), "🃏");
         }
       } else setTimeout(() => setFlipped([]), 800);
     }
@@ -1063,7 +1063,7 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
     setTiles(nt); setSelectedTile(null); setMoves((m) => m + 1);
     if (nt.every((t, i) => t === i)) {
       setRunning(false);
-      const baseCoins = difficulty === 3 ? 3 : difficulty === 4 ? 6 : 10;
+      const baseCoins = difficulty === 3 ? 3 : difficulty === 4 ? 4 : 5;
       celebrate(`Quebra-cabeça completo em ${moves + 1} movimentos!`, baseCoins, "🧩");
     }
   };
@@ -1322,7 +1322,7 @@ function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgSt
   useEffect(() => {
     if (completed && celebratedRef.current !== card.title) {
       celebratedRef.current = card.title;
-      const coins = Math.max(5, wordsInPlay.length);
+      const coins = Math.max(3, Math.min(5, wordsInPlay.length));
       // small delay so the last "ok" flash is visible
       setTimeout(() => {
         celebrate(`Você achou todas as ${wordsInPlay.length} palavras!`, coins, "🔎");

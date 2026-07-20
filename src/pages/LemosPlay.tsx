@@ -26,10 +26,12 @@ import nascimentoJesusThumb from "@/assets/lemos-play/nascimento-jesus-thumb.png
 
 // Coin reward per category when finishing/watching content
 const COIN_REWARDS: Record<string, number> = {
-  Filme: 8,
-  Série: 5,
+  Gênesis: 3,
+  Jesus: 5,
+  Filme: 3,
+  Série: 3,
   Música: 3,
-  Louvor: 3,
+  Louvor: 5,
 };
 
 interface PlayItem {
@@ -498,7 +500,7 @@ export default function LemosPlay() {
     () =>
       cfg.filmes
         .filter((v) => (v.section || "").toLowerCase() === "gênesis" || (v.section || "").toLowerCase() === "genesis")
-        .map((v) => toPlay(v, "Filme")),
+        .map((v) => toPlay(v, "Gênesis")),
     [cfg]
   );
   const jesusItems: PlayItem[] = useMemo(
@@ -508,7 +510,7 @@ export default function LemosPlay() {
           const s = (v.section || "").toLowerCase();
           return s === "jesus" || s === "novo testamento";
         })
-        .map((v) => toPlay(v, "Filme")),
+        .map((v) => toPlay(v, "Jesus")),
     [cfg]
   );
 

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import { toast } from "@/hooks/use-toast";
+import { awardOnce } from "@/hooks/useCoins";
 import iconPedidos from "@/assets/icon-pedidos-oracao.png";
 
 const tiposOracao = [
@@ -50,6 +51,7 @@ export default function PedidosOracao() {
     localStorage.setItem("lemos_pedidos_v2", JSON.stringify(updated));
     setTexto("");
     setTipoSelecionado("");
+    awardOnce(`oracao:${Date.now()}`, 5, "Oração registrada com carinho 🙏");
     toast({
       title: "🙏 Oração registrada!",
       description: "Seu pedido foi guardado com carinho no seu mural de oração.",

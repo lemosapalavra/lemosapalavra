@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import CoinBadge from "@/components/CoinBadge";
+import { awardOnce, todayKey } from "@/hooks/useCoins";
 import iconDevocionais from "@/assets/icon-devocionais.png";
 
 const DEVO_COINS = 2;
@@ -78,7 +79,7 @@ export default function Devocionais() {
             </section>
 
             <div
-              onClick={() => setSelected(todayIdx)}
+              onClick={() => { setSelected(todayIdx); awardOnce(todayKey(`devo:${todayIdx}`), DEVO_COINS, "Devocional lido"); }}
               className="relative overflow-hidden rounded-[28px] border-2 border-amber-200 bg-gradient-to-br from-amber-100 via-yellow-50 to-orange-100 p-6 shadow-xl mb-6 cursor-pointer hover:scale-[1.01] transition-all"
             >
               <div className="absolute right-4 top-4 w-20 h-20 rounded-full bg-white/40 blur-2xl" />
@@ -105,7 +106,7 @@ export default function Devocionais() {
               {devos.map((d, i) => (
                 <div
                   key={i}
-                  onClick={() => setSelected(i)}
+                  onClick={() => { setSelected(i); awardOnce(todayKey(`devo:${i}`), DEVO_COINS, "Devocional lido"); }}
                   className={`rounded-[24px] p-5 shadow-md hover:shadow-xl hover:scale-[1.02] transition-all cursor-pointer border-2 bg-gradient-to-br ${
                     i === todayIdx ? "from-amber-100 to-orange-100 border-amber-300" : "from-white to-sky-50 border-sky-200"
                   }`}
