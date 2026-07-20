@@ -45,14 +45,20 @@ const AuthBootstrap = () => {
         .eq("id", userId)
         .maybeSingle();
       if (cancelled) return;
+      let existing: Record<string, any> = {};
+      try {
+        const raw = localStorage.getItem("lemos_user");
+        if (raw) existing = JSON.parse(raw) || {};
+      } catch { existing = {}; }
       const u = {
-        name: profile?.name || "",
-        ageRange: profile?.age_range || "",
-        phone: profile?.phone || "",
-        role: profile?.role || "",
-        avatar: profile?.avatar || "",
-        email: profile?.email || email || "",
-        createdAt: profile?.created_at || new Date().toISOString(),
+        ...existing,
+        name: profile?.name || existing.name || "",
+        ageRange: profile?.age_range || existing.ageRange || "",
+        phone: profile?.phone || existing.phone || "",
+        role: profile?.role || existing.role || "",
+        avatar: profile?.avatar || existing.avatar || "",
+        email: profile?.email || email || existing.email || "",
+        createdAt: profile?.created_at || existing.createdAt || new Date().toISOString(),
       };
       localStorage.setItem("lemos_user", JSON.stringify(u));
       window.dispatchEvent(new Event("lemos_admin_change"));
