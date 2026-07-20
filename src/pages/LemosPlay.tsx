@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { Play, Info, ChevronLeft, ChevronRight, X, Settings, UserPlus, Heart, MessageCircle, Share2, Download, Send, ListVideo, SkipForward, RotateCcw } from "lucide-react";
 import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 import PageHeader from "@/components/PageHeader";
+import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
 import CoinBadge from "@/components/CoinBadge";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
@@ -692,47 +693,51 @@ export default function LemosPlay() {
           </button>
 
           {/* Video stage — leaves room for the suggestions strip below */}
-          <div className="relative flex-1 min-h-0 bg-black">
-            {playInfo?.kind === "mp4" ? (
-              <video
-                key={playing.id}
-                src={playSrc}
-                className="absolute inset-0 w-full h-full bg-black"
-                controls
-                autoPlay
-                playsInline
-                onLoadedMetadata={(e) => {
-                  if (initialStart > 0 && initialStart < e.currentTarget.duration - 1) {
-                    e.currentTarget.currentTime = initialStart;
-                  }
-                }}
-                onError={() => setPlayError(true)}
-                onTimeUpdate={(e) => {
-                  const v = e.currentTarget;
-                  if (v.duration > 0) {
-                    writeProgress(playing.id, v.currentTime, v.duration);
-                    if (v.currentTime / v.duration >= 0.9) {
+          <div className="relative flex-1 min-h-0 bg-black flex items-center justify-center">
+            {(playInfo?.kind === "mp4" || playSrc) && (
+              <ColonialVideoFrame>
+                {playInfo?.kind === "mp4" ? (
+                  <video
+                    key={playing.id}
+                    src={playSrc}
+                    className="w-full h-full bg-black object-contain"
+                    controls
+                    autoPlay
+                    playsInline
+                    onLoadedMetadata={(e) => {
+                      if (initialStart > 0 && initialStart < e.currentTarget.duration - 1) {
+                        e.currentTarget.currentTime = initialStart;
+                      }
+                    }}
+                    onError={() => setPlayError(true)}
+                    onTimeUpdate={(e) => {
+                      const v = e.currentTarget;
+                      if (v.duration > 0) {
+                        writeProgress(playing.id, v.currentTime, v.duration);
+                        if (v.currentTime / v.duration >= 0.9) {
+                          const reward = COIN_REWARDS[playing.category] ?? 3;
+                          awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
+                        }
+                      }
+                    }}
+                    onEnded={() => {
                       const reward = COIN_REWARDS[playing.category] ?? 3;
                       awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
-                    }
-                  }
-                }}
-                onEnded={() => {
-                  const reward = COIN_REWARDS[playing.category] ?? 3;
-                  awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
-                }}
-              />
-            ) : playSrc ? (
-              <iframe
-                ref={iframeRef}
-                src={playSrc}
-                className="absolute inset-0 w-full h-full border-0"
-                allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-                allowFullScreen
-                title={playing.title}
-                onError={() => setPlayError(true)}
-              />
-            ) : null}
+                    }}
+                  />
+                ) : playSrc ? (
+                  <iframe
+                    ref={iframeRef}
+                    src={playSrc}
+                    className="w-full h-full border-0"
+                    allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+                    allowFullScreen
+                    title={playing.title}
+                    onError={() => setPlayError(true)}
+                  />
+                ) : null}
+              </ColonialVideoFrame>
+            )}
             <VideoSideActions itemId={playing.id} title={playing.title} src={playing.src} className="absolute right-4 top-1/2 -translate-y-1/2" />
             {nextInGroup && (
               <button
