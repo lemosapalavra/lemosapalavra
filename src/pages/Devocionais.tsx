@@ -106,7 +106,7 @@ export default function Devocionais() {
               {devos.map((d, i) => (
                 <div
                   key={i}
-                  onClick={() => setSelected(i)}
+                  onClick={() => { setSelected(i); awardOnce(todayKey(`devo:${i}`), DEVO_COINS, "Devocional lido"); }}
                   className={`rounded-[24px] p-5 shadow-md hover:shadow-xl hover:scale-[1.02] transition-all cursor-pointer border-2 bg-gradient-to-br ${
                     i === todayIdx ? "from-amber-100 to-orange-100 border-amber-300" : "from-white to-sky-50 border-sky-200"
                   }`}
