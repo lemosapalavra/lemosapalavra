@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -29,6 +29,53 @@ const queryClient = new QueryClient();
 
 const AnalyticsTracker = () => {
   useAnalyticsTracker();
+  return null;
+};
+
+const BASE_URL = "https://lemosapalavra.live";
+const ROUTE_META: Record<string, { title: string; description: string }> = {
+  "/": { title: "Lemos a Palavra — Histórias Bíblicas para Crianças", description: "Histórias bíblicas em cartoon, louvores, devocionais e atividades para crianças." },
+  "/login": { title: "Entrar — Lemos a Palavra", description: "Acesse sua conta para acompanhar seu progresso e figurinhas." },
+  "/biblia": { title: "Bíblia — Lemos a Palavra", description: "Leia a Bíblia (Almeida) com resumos temáticos e dicionário bíblico." },
+  "/louvores": { title: "Louvores — Lemos a Palavra", description: "Vídeos de louvor infantil para toda a família." },
+  "/devocionais": { title: "Devocionais — Lemos a Palavra", description: "Devocionais diários para crianças e famílias." },
+  "/pedidos-oracao": { title: "Pedidos de Oração — Lemos a Palavra", description: "Envie e acompanhe pedidos de oração com carinho." },
+  "/atividades": { title: "Atividades — Lemos a Palavra", description: "Jogos interativos: colorir, caça-palavras, memória e quebra-cabeça." },
+  "/album": { title: "Álbum de Figurinhas — Lemos a Palavra", description: "Colecione figurinhas bíblicas com raridades e molduras especiais." },
+  "/lemosplay": { title: "Lemos Play — Vídeos Bíblicos", description: "Vídeos animados de histórias bíblicas: Gênesis, Jesus, Séries, Músicas e Louvores." },
+  "/historias-biblicas": { title: "Histórias Bíblicas — Lemos a Palavra", description: "Histórias bíblicas ilustradas para crianças." },
+  "/config": { title: "Configurações — Lemos a Palavra", description: "Configurações do site." },
+  "/estatisticas": { title: "Estatísticas — Lemos a Palavra", description: "Painel de estatísticas de uso." },
+};
+
+const RouteMetaSync = () => {
+  const location = useLocation();
+  useEffect(() => {
+    const meta = ROUTE_META[location.pathname] || ROUTE_META["/"];
+    document.title = meta.title;
+    const setMeta = (selector: string, attr: string, key: string, value: string) => {
+      let el = document.head.querySelector<HTMLMetaElement>(selector);
+      if (!el) {
+        el = document.createElement("meta");
+        el.setAttribute(attr, key);
+        document.head.appendChild(el);
+      }
+      el.setAttribute("content", value);
+    };
+    setMeta('meta[name="description"]', "name", "description", meta.description);
+    setMeta('meta[property="og:title"]', "property", "og:title", meta.title);
+    setMeta('meta[property="og:description"]', "property", "og:description", meta.description);
+    setMeta('meta[property="og:url"]', "property", "og:url", `${BASE_URL}${location.pathname}`);
+    setMeta('meta[name="twitter:title"]', "name", "twitter:title", meta.title);
+    setMeta('meta[name="twitter:description"]', "name", "twitter:description", meta.description);
+    let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute("href", `${BASE_URL}${location.pathname}`);
+  }, [location.pathname]);
   return null;
 };
 
@@ -94,6 +141,7 @@ const App = () => (
       <BrowserRouter>
         <AuthBootstrap />
         <AnalyticsTracker />
+        <RouteMetaSync />
         {/* MysticBackground removed to improve page load performance */}
         <FloatingWhatsapp />
         <Suspense fallback={<PageFallback />}>
