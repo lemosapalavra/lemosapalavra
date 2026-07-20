@@ -1,0 +1,1 @@
+CREATE POLICY admins_can_read_all_profiles ON public.profiles FOR SELECT TO authenticated USING (public.is_admin(auth.uid()));
