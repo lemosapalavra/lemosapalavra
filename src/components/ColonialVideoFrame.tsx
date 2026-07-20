@@ -1,42 +1,88 @@
 import { ReactNode } from "react";
 
+export type FrameVariant = "gold" | "green" | "silver";
+
+const PALETTES: Record<
+  FrameVariant,
+  {
+    outer: string;
+    ring1: string; // dark ring
+    ring2: string; // light ring
+    innerBevel: string; // inset shadow layers
+    corner: string;
+    cornerRing: string;
+  }
+> = {
+  gold: {
+    outer:
+      "linear-gradient(145deg,#f7d774 0%,#c9962b 22%,#8a5a15 48%,#e9c66a 72%,#7a4a10 100%)",
+    ring1: "#4a2a05",
+    ring2: "#f2c766",
+    innerBevel:
+      "inset 0 0 0 2px #4a2a05, inset 0 0 0 4px #e9c66a, inset 0 0 0 6px #7a4a10, inset 0 0 22px rgba(0,0,0,0.55)",
+    corner:
+      "radial-gradient(circle at 30% 30%, #fff2b8 0%, #f2c766 35%, #8a5a15 75%, #3a2005 100%)",
+    cornerRing: "#3a2005",
+  },
+  green: {
+    outer:
+      "linear-gradient(145deg,#b6f0b0 0%,#3f9c46 22%,#0f5a1c 48%,#8fd48a 72%,#0a4014 100%)",
+    ring1: "#0a2e10",
+    ring2: "#8fd48a",
+    innerBevel:
+      "inset 0 0 0 2px #0a2e10, inset 0 0 0 4px #8fd48a, inset 0 0 0 6px #0f5a1c, inset 0 0 22px rgba(0,0,0,0.55)",
+    corner:
+      "radial-gradient(circle at 30% 30%, #e2ffd8 0%, #8fd48a 35%, #0f5a1c 75%, #062010 100%)",
+    cornerRing: "#062010",
+  },
+  silver: {
+    outer:
+      "linear-gradient(145deg,#f7f7f7 0%,#c9c9cf 22%,#6a6d75 48%,#e8e8ee 72%,#5a5c62 100%)",
+    ring1: "#2a2c30",
+    ring2: "#e8e8ee",
+    innerBevel:
+      "inset 0 0 0 2px #2a2c30, inset 0 0 0 4px #e8e8ee, inset 0 0 0 6px #6a6d75, inset 0 0 22px rgba(0,0,0,0.55)",
+    corner:
+      "radial-gradient(circle at 30% 30%, #ffffff 0%, #e8e8ee 35%, #6a6d75 75%, #202024 100%)",
+    cornerRing: "#202024",
+  },
+};
+
 /**
- * Golden colonial frame around videos, sized 9:16.
+ * Colonial ornate frame around videos, sized 9:16.
  * The child (video/iframe) fills the inner stage.
  */
 export default function ColonialVideoFrame({
   children,
   className = "",
+  variant = "gold",
 }: {
   children: ReactNode;
   className?: string;
+  variant?: FrameVariant;
 }) {
+  const p = PALETTES[variant];
   return (
     <div
       className={`relative aspect-[9/16] h-[90vh] max-h-[90vh] max-w-[95vw] ${className}`}
       style={{
         padding: "clamp(10px, 2.2vh, 22px)",
         borderRadius: "18px",
-        background:
-          "linear-gradient(145deg,#f7d774 0%,#c9962b 22%,#8a5a15 48%,#e9c66a 72%,#7a4a10 100%)",
-        boxShadow:
-          "0 0 0 2px #4a2a05, 0 0 0 4px #f2c766, 0 20px 60px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,235,180,0.6)",
+        background: p.outer,
+        boxShadow: `0 0 0 2px ${p.ring1}, 0 0 0 4px ${p.ring2}, 0 20px 60px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.5)`,
       }}
     >
-      {/* Inner bevel + ornamental inner border */}
       <div
         className="relative w-full h-full overflow-hidden"
         style={{
           borderRadius: "10px",
-          boxShadow:
-            "inset 0 0 0 2px #4a2a05, inset 0 0 0 4px #e9c66a, inset 0 0 0 6px #7a4a10, inset 0 0 22px rgba(0,0,0,0.55)",
+          boxShadow: p.innerBevel,
           background: "#000",
         }}
       >
         {children}
       </div>
 
-      {/* Four ornamental corners */}
       {[
         { top: -6, left: -6 },
         { top: -6, right: -6 },
@@ -49,10 +95,8 @@ export default function ColonialVideoFrame({
           style={{
             ...pos,
             borderRadius: "50%",
-            background:
-              "radial-gradient(circle at 30% 30%, #fff2b8 0%, #f2c766 35%, #8a5a15 75%, #3a2005 100%)",
-            boxShadow:
-              "0 0 0 1.5px #3a2005, 0 2px 6px rgba(0,0,0,0.6), inset 0 0 4px rgba(255,255,255,0.4)",
+            background: p.corner,
+            boxShadow: `0 0 0 1.5px ${p.cornerRing}, 0 2px 6px rgba(0,0,0,0.6), inset 0 0 4px rgba(255,255,255,0.4)`,
           }}
         />
       ))}
