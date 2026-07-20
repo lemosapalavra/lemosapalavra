@@ -131,6 +131,7 @@ export default function Index() {
         )}
       </header>
 
+      <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
       <EventBannerPlane />
 
       <div className="flex-1 flex flex-col items-center justify-center w-full py-4">
