@@ -4,6 +4,7 @@ import { loadEventBanner, type EventBannerConfig } from "@/data/eventBannerConfi
 import { normalizeVideo } from "@/lib/videoEmbed";
 import planeRtl from "@/assets/aviao-rtl.png.asset.json";
 import planeLtr from "@/assets/aviao-ltr.png.asset.json";
+import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 
 /**
  * Aviãozinhos animados alternando direções:
