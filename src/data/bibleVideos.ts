@@ -216,7 +216,7 @@ export const filmesVideos: BibleVideo[] = [
   { title: "O Batismo de Jesus", icon: batismoJesusThumbV3.url, src: vidBatismoFull.url, section: "Jesus" },
   { title: "Jesus no Templo", icon: jesusTemploThumb.url, src: vidJesusTemplo.url, section: "Jesus" },
   { title: "Jesus e a Tempestade", icon: jesusTempestadeThumb.url, src: vidJesusTempestade.url, section: "Jesus" },
-  { title: "A Última Ceia", icon: ultimaCeiaThumb.url, src: vidUltimaCeia.url, section: "Jesus" },
+  { title: "Jesus - A Última Ceia", icon: ultimaCeiaThumb.url, src: vidUltimaCeia.url, section: "Jesus" },
   { title: "Paulo de Tarso", icon: pauloTarsoThumb.url, src: vidPauloTarso.url, section: "Jesus" },
   { title: "O Bom Samaritano", icon: bomSamaritanoThumb.url, src: vidBomSamaritano.url, section: "Jesus" },
   { title: "O Filho Pródigo", icon: filhoProdigoThumb.url, src: vidFilhoProdigo.url, section: "Jesus" },
