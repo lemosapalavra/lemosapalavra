@@ -1,22 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Shield } from "lucide-react";
+import { Eye, EyeOff, Shield, Copy } from "lucide-react";
 import { setAdminMode } from "@/hooks/useIsAdmin";
 import { supabase } from "@/integrations/supabase/client";
 import InstallShortcut from "@/components/InstallShortcut";
 
-import avatarAbraao from "@/assets/avatar-abraao.png";
-import avatarAnjo from "@/assets/avatar-anjo.png";
-import avatarDaniel from "@/assets/avatar-daniel.png";
-import avatarDavi from "@/assets/avatar-davi.png";
 import avatarJesus from "@/assets/avatar-jesus.png";
-import avatarJoao from "@/assets/avatar-joao.png";
-import avatarJose from "@/assets/avatar-jose.png";
 import avatarMaria from "@/assets/avatar-maria.png";
-import avatarMateus from "@/assets/avatar-mateus.png";
+import avatarDavi from "@/assets/avatar-davi.png";
+import avatarDaniel from "@/assets/avatar-daniel.png";
 import avatarMoises from "@/assets/avatar-moises.png";
-import avatarPedro from "@/assets/avatar-pedro.png";
-import avatarTiago from "@/assets/avatar-tiago.png";
+import avatarAnjo from "@/assets/avatar-anjo.png";
 
 const avatars = [
   { src: avatarJesus, name: "Jesus" },
@@ -24,16 +18,9 @@ const avatars = [
   { src: avatarDavi, name: "Davi" },
   { src: avatarDaniel, name: "Daniel" },
   { src: avatarMoises, name: "Moisés" },
-  { src: avatarAbraao, name: "Abraão" },
-  { src: avatarJose, name: "José" },
-  { src: avatarJoao, name: "João" },
-  { src: avatarMateus, name: "Mateus" },
-  { src: avatarPedro, name: "Pedro" },
-  { src: avatarTiago, name: "Tiago" },
   { src: avatarAnjo, name: "Anjo" },
 ];
 
-type Role = "mãe" | "pai" | "filho" | "filha";
 type Mode = "login" | "register";
 type AgeRange = "criancas" | "adolescentes" | "jovens" | "adultos" | "idosos";
 
@@ -48,6 +35,7 @@ const AGE_RANGES: { id: AgeRange; label: string; emoji: string }[] = [
 const ADMIN_EMAIL = "admin@lemos.local";
 const ADMIN_SHORTCUT_LOGIN = "admin";
 const ADMIN_SHORTCUT_PASSWORD = "1234";
+const OWNER_FLAG_KEY = "lemos_owner_unlocked";
 
 // Hydrate the legacy localStorage profile object that the rest of the
 // app already reads from (`lemos_user`) using the Supabase profile row.
@@ -70,6 +58,13 @@ async function hydrateLocalProfile(userId: string, fallbackEmail: string) {
   return u;
 }
 
+// Auto-derive a valid e-mail from the phone number so the register form
+// no longer needs to expose an e-mail field to the end user.
+function phoneToEmail(phone: string) {
+  const digits = phone.replace(/\D/g, "");
+  return `celular${digits}@lemosapalavra.app`;
+}
+
 export default function Login() {
   const navigate = useNavigate();
   const [mode, setMode] = useState<Mode>("login");
@@ -83,9 +78,25 @@ export default function Login() {
   const [name, setName] = useState("");
   const [ageRange, setAgeRange] = useState<AgeRange | "">("");
   const [phone, setPhone] = useState("");
-  const [role, setRole] = useState<Role | "">("");
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const [customAvatar, setCustomAvatar] = useState<string>("");
+
+  // Owner-only UI (Admin shortcut) — hidden unless unlocked with ?owner=1.
+  const [ownerUnlocked, setOwnerUnlocked] = useState<boolean>(false);
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("owner") === "1") {
+        localStorage.setItem(OWNER_FLAG_KEY, "1");
+      }
+      if (params.get("owner") === "0") {
+        localStorage.removeItem(OWNER_FLAG_KEY);
+      }
+      setOwnerUnlocked(localStorage.getItem(OWNER_FLAG_KEY) === "1");
+    } catch { /* ignore */ }
+  }, []);
+
+  const shortcutUrl = typeof window !== "undefined" ? `${window.location.origin}/` : "";
 
   const handleCustomAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -127,62 +138,67 @@ export default function Login() {
     }
     setBusy(true);
     const { data, error } = await supabase.auth.signInWithPassword({
-      email: email.trim(),
-      password,
+      email: em,
+      password: pw,
     });
     setBusy(false);
     if (error || !data.user) {
       alert("E-mail ou senha incorretos. Se ainda não tem cadastro, clique em CRIAR UMA CONTA.");
       return;
     }
-    await hydrateLocalProfile(data.user.id, data.user.email || email);
+    await hydrateLocalProfile(data.user.id, data.user.email || em);
     if ((data.user.email || "").toLowerCase() === ADMIN_EMAIL) setAdminMode(true);
     navigate("/");
   };
 
   const doRegister = async () => {
-    if (!name || !role || !ageRange || !finalAvatar) {
-      alert("Preencha nome, faixa etária, função e escolha um avatar.");
+    if (!name || !ageRange || !finalAvatar) {
+      alert("Preencha nome, faixa etária e escolha um avatar.");
       return;
     }
-    if (!email || !password || password.length < 6) {
-      alert("Informe um e-mail válido e uma senha com pelo menos 6 caracteres.");
+    const phoneDigits = phone.replace(/\D/g, "");
+    if (phoneDigits.length < 10) {
+      alert("Informe um número de celular válido (com DDD).");
       return;
     }
+    if (!password || password.length < 6) {
+      alert("Informe uma senha com pelo menos 6 caracteres.");
+      return;
+    }
+    const derivedEmail = phoneToEmail(phone);
     setBusy(true);
     const { data, error } = await supabase.auth.signUp({
-      email: email.trim(),
+      email: derivedEmail,
       password,
       options: {
         emailRedirectTo: `${window.location.origin}/`,
-        data: { name, age_range: ageRange, phone, role, avatar: finalAvatar },
+        data: { name, age_range: ageRange, phone, role: "", avatar: finalAvatar },
       },
     });
     if (error) {
       setBusy(false);
       if (/registered|already/i.test(error.message)) {
-        alert("Este e-mail já tem cadastro. Faça login com sua senha.");
+        alert("Este celular já tem cadastro. Faça login com sua senha.");
         setMode("login");
+        setEmail(derivedEmail);
       } else {
         alert("Não foi possível criar sua conta: " + error.message);
       }
       return;
     }
-    // Auto-confirm está ativo → já temos sessão. Garantimos sessão ativa
-    // (fallback: tenta login imediato) e hidratamos o perfil local.
     let userId = data.user?.id;
     if (!data.session) {
-      const { data: signIn } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+      const { data: signIn } = await supabase.auth.signInWithPassword({ email: derivedEmail, password });
       userId = signIn.user?.id ?? userId;
     }
     setBusy(false);
     if (!userId) {
       alert("Cadastro criado! Faça login para continuar.");
       setMode("login");
+      setEmail(derivedEmail);
       return;
     }
-    await hydrateLocalProfile(userId, email);
-    if (email.toLowerCase() === ADMIN_EMAIL) setAdminMode(true);
+    await hydrateLocalProfile(userId, derivedEmail);
     navigate("/");
   };
 
@@ -195,17 +211,6 @@ export default function Login() {
     else alert("📧 Enviamos um link para redefinir sua senha. Verifique seu e-mail.");
   };
 
-  const handleAdminShortcut = () => {
-    const pwd = prompt("🔐 Acesso administrador\n\nDigite a senha de admin:");
-    if (pwd === "admin123" || pwd === "lemos2025") {
-      setAdminMode(true);
-      alert("✓ Modo administrador ativado. Indo para configurações...");
-      navigate("/config");
-    } else if (pwd !== null) {
-      alert("Senha incorreta.");
-    }
-  };
-
   const handleGoogle = async () => {
     try {
       const { lovable } = await import("@/integrations/lovable/index");
@@ -216,8 +221,7 @@ export default function Login() {
         alert("Não foi possível entrar com o Google: " + (result.error as any)?.message);
         return;
       }
-      if (result.redirected) return; // browser will redirect
-      // Sessão pronta — hidrata o perfil local
+      if (result.redirected) return;
       const { data } = await supabase.auth.getUser();
       if (data.user) {
         await hydrateLocalProfile(data.user.id, data.user.email || "");
@@ -229,6 +233,14 @@ export default function Login() {
     }
   };
 
+  const copyShortcutUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(shortcutUrl);
+      alert("🔗 Link copiado! Cole no navegador para abrir o site.");
+    } catch {
+      alert(`Link do atalho: ${shortcutUrl}`);
+    }
+  };
 
   return (
     <div
@@ -280,45 +292,30 @@ export default function Login() {
                     ))}
                   </div>
                 </Field>
-                <Field label="Telefone">
+                <Field label="Celular *">
                   <input
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
                     placeholder="(11) 99999-9999"
+                    required
                   />
-                </Field>
-                <Field label="Você é:">
-                  <div className="flex gap-2 flex-wrap">
-                    {(["mãe", "pai", "filho", "filha"] as Role[]).map((r) => (
-                      <button
-                        key={r}
-                        type="button"
-                        onClick={() => setRole(r)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-body border-2 transition capitalize ${
-                          role === r
-                            ? "bg-amber-500 text-white border-amber-600"
-                            : "bg-white text-foreground border-amber-300 hover:border-amber-400"
-                        }`}
-                      >
-                        {r === "mãe" ? "👩 Mãe" : r === "pai" ? "👨 Pai" : r === "filho" ? "👦 Filho" : "👧 Filha"}
-                      </button>
-                    ))}
-                  </div>
                 </Field>
               </>
             )}
 
-            <Field label="E-mail *">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
-                placeholder="seuemail@exemplo.com"
-              />
-            </Field>
+            {mode === "login" && (
+              <Field label="E-mail *">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                  placeholder="seuemail@exemplo.com"
+                />
+              </Field>
+            )}
 
             <Field label="Senha *">
               <div className="relative">
@@ -365,7 +362,7 @@ export default function Login() {
             {mode === "register" && (
               <>
                 <Field label="Escolha seu avatar:">
-                  <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
+                  <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
                     {avatars.map((av) => (
                       <button
                         key={av.name}
@@ -444,6 +441,21 @@ export default function Login() {
 
             {/* Optional: install a clickable shortcut with the Lemos a Palavra logo */}
             <InstallShortcut />
+
+            {/* Show the shortcut/site link so the user can see & share it */}
+            <div className="mt-1 flex items-center gap-2 justify-center">
+              <span className="text-[11px] font-body text-amber-900 truncate max-w-[220px]" title={shortcutUrl}>
+                🔗 {shortcutUrl}
+              </span>
+              <button
+                type="button"
+                onClick={copyShortcutUrl}
+                className="inline-flex items-center gap-1 text-[11px] font-display font-bold px-2 py-1 rounded-full bg-amber-100 text-amber-900 hover:bg-amber-200 transition"
+                title="Copiar link"
+              >
+                <Copy className="w-3 h-3" /> Copiar
+              </button>
+            </div>
           </div>
 
           {/* Divider + Google */}
@@ -468,25 +480,19 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Admin shortcut */}
-          <div className="mt-5 pt-4 border-t border-amber-200/60 flex flex-col items-center gap-2">
-            <button
-              onClick={loginAsAdmin}
-              className="flex items-center gap-2 text-sm bg-amber-500 hover:bg-amber-600 text-white font-display font-bold px-4 py-2 rounded-lg shadow transition"
-              title="Entrar como administrador"
-            >
-              <Shield className="w-4 h-4" />
-              Entrar como Admin
-            </button>
-            <button
-              onClick={handleAdminShortcut}
-              className="flex items-center gap-1.5 text-[11px] text-muted-foreground hover:text-amber-700 transition font-body"
-              title="Acesso administrador avançado"
-            >
-              <Shield className="w-3 h-3" />
-              Acesso administrador avançado
-            </button>
-          </div>
+          {/* Admin shortcut — visível apenas para o dono do site (?owner=1) */}
+          {ownerUnlocked && (
+            <div className="mt-5 pt-4 border-t border-amber-200/60 flex flex-col items-center gap-2">
+              <button
+                onClick={loginAsAdmin}
+                className="flex items-center gap-2 text-sm bg-amber-500 hover:bg-amber-600 text-white font-display font-bold px-4 py-2 rounded-lg shadow transition"
+                title="Entrar como administrador"
+              >
+                <Shield className="w-4 h-4" />
+                Entrar como Admin
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
