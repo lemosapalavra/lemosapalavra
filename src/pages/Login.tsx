@@ -108,30 +108,10 @@ export default function Login() {
 
   const finalAvatar = customAvatar || selectedAvatar;
 
-  const loginAsAdmin = () => {
-    const adminUser = {
-      name: "Administrador",
-      ageRange: "adultos",
-      phone: "",
-      role: "admin",
-      avatar: "",
-      email: ADMIN_EMAIL,
-      createdAt: new Date().toISOString(),
-    };
-    localStorage.setItem("lemos_user", JSON.stringify(adminUser));
-    setAdminMode(true);
-    navigate("/");
-  };
-
   const doLogin = async (overrideEmail?: string, overridePassword?: string) => {
     const raw = (overrideEmail ?? email).trim();
     const pw = overridePassword ?? password;
     if (!raw || !pw) { alert("Informe seu celular e a senha."); return; }
-    // 🔐 Atalho de administrador (login "admin" / senha "1234")
-    if (raw.toLowerCase() === ADMIN_SHORTCUT_LOGIN && pw === ADMIN_SHORTCUT_PASSWORD) {
-      loginAsAdmin();
-      return;
-    }
     // Aceita celular (padrão) ou e-mail (compatibilidade com contas antigas).
     const em = raw.includes("@") ? raw : phoneToEmail(raw);
     const phoneDigits = raw.replace(/\D/g, "");
