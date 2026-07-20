@@ -111,7 +111,7 @@ import batismoJesusThumbV3 from "@/assets/lemos-play/batismo-jesus-thumb-v3.png.
 import jesusTemploThumb from "@/assets/lemos-play/jesus-templo-thumb.png.asset.json";
 import jesusTempestadeThumb from "@/assets/lemos-play/jesus-tempestade-thumb.png.asset.json";
 import lazaroThumb from "@/assets/lemos-play/lazaro-thumb-v4.png.asset.json";
-import torreBabelThumb from "@/assets/lemos-play/torre-babel-thumb.jpg.asset.json";
+import torreBabelThumb from "@/assets/lemos-play/torre-babel-thumb-v2.png.asset.json";
 import joaoBatistaThumb from "@/assets/lemos-play/joao-batista-thumb-v5.png.asset.json";
 import danielLeoesImg from "@/assets/lemos-play/daniel-cova-thumb-v2.png.asset.json";
 import vidUltimaCeia from "@/assets/lemos-play/ultima-ceia.mp4.asset.json";
