@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 
 import PageHeader from "@/components/PageHeader";
 import CoinBadge from "@/components/CoinBadge";

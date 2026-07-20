@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 import logoCentral from "@/assets/logo-central.png";
 import type { BibleVideo } from "@/data/bibleVideos";
 
@@ -36,13 +37,15 @@ export default function VideoCentralLayout({ title, subtitle, videos }: Props) {
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
-        <iframe
-          src={playing.src}
-          className="w-full h-full"
-          allow="autoplay; encrypted-media; fullscreen"
-          allowFullScreen
-          title={playing.title}
-        />
+        <ColonialVideoFrame>
+          <iframe
+            src={playing.src}
+            className="w-full h-full"
+            allow="autoplay; encrypted-media; fullscreen"
+            allowFullScreen
+            title={playing.title}
+          />
+        </ColonialVideoFrame>
       </div>
     );
   }
