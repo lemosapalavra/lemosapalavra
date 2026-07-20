@@ -3,7 +3,8 @@ import iconBatalhaAsset from "@/assets/lemos-play/batalha-anjos-thumb-v3.png.ass
 import iconAdaoEva1 from "@/assets/historia-adao-eva-1.png";
 import iconNoeAsset from "@/assets/lemos-play/noe-arca-thumb-v3.png.asset.json";
 import iconDaviGolias from "@/assets/historia-davi-golias.png";
-import icon10MandamentosAsset from "@/assets/lemos-play/dez-mandamentos-thumb-v3.png.asset.json";
+import icon10MandamentosAsset from "@/assets/lemos-play/10-mandamentos-thumb-v5.png.asset.json";
+import vid10MandamentosV5 from "@/assets/lemos-play/10-mandamentos-v5.mp4.asset.json";
 const iconCriacao = iconCriacaoAsset.url;
 const iconBatalha = iconBatalhaAsset.url;
 const iconNoe1 = iconNoeAsset.url;
@@ -203,8 +204,7 @@ export const filmesVideos: BibleVideo[] = [
   { title: "A Criação", icon: iconCriacao, src: vidCriacao.url, section: "Gênesis" },
   { title: "Adão e Eva", icon: adaoEvaThumbV2.url, src: vidAdaoEva.url, section: "Gênesis" },
   { title: "Noé e a Arca", icon: iconNoe1, src: vidGenNoe.url, section: "Gênesis" },
-  { title: "Os 10 Mandamentos — Parte I", icon: icon10Mandamentos, src: vidGen10m1.url, section: "Gênesis" },
-  { title: "Os 10 Mandamentos — Parte II", icon: icon10Mandamentos, src: vidGen10m2.url, section: "Gênesis" },
+  { title: "Os 10 Mandamentos", icon: icon10Mandamentos, src: vid10MandamentosV5.url, section: "Gênesis" },
   { title: "Davi e Golias", icon: daviGoliasThumbV2.url, src: vidDaviFilme.url, section: "Gênesis" },
   { title: "Jonas e a Baleia", icon: jonasBaleiaThumbV2.url, src: vidJonasV4.url, section: "Jonas" },
   { title: "Lázaro", icon: lazaroThumb.url, src: vidLazaro.url, section: "Novo Testamento" },
