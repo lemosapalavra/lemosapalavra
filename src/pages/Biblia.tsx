@@ -272,7 +272,7 @@ export default function Biblia() {
                 </button>
               ))}
             </div>
-            <img src={iconBiblia} alt="Bíblia" className="w-28 sm:w-36 drop-shadow-xl" />
+            <img src={iconBiblia} alt="Explorar a Bíblia" className="w-28 sm:w-36 drop-shadow-xl" />
           </div>
         )}
 
