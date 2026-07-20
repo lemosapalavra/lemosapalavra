@@ -1,0 +1,15 @@
+# Lemos a Palavra
+
+> Histórias bíblicas em cartoon, louvores, devocionais e atividades interativas para crianças, ensinando fé e valores cristãos de forma divertida.
+
+## Pages
+
+- [Início](/): Página inicial com acesso rápido a todas as seções.
+- [Bíblia](/biblia): Leitura da Bíblia (tradução Almeida) com resumos temáticos e dicionário.
+- [Lemos Play](/lemosplay): Vídeos animados de histórias bíblicas — Gênesis, Jesus, Séries, Músicas e Louvores.
+- [Histórias Bíblicas](/historias-biblicas): Coleção de histórias bíblicas ilustradas para crianças.
+- [Louvores](/louvores): Vídeos de louvor infantil.
+- [Devocionais](/devocionais): Devocionais diários para crianças e famílias.
+- [Pedidos de Oração](/pedidos-oracao): Envie e acompanhe pedidos de oração.
+- [Atividades](/atividades): Jogos interativos — colorir, caça-palavras, memória, quebra-cabeça.
+- [Álbum](/album): Álbum de figurinhas bíblicas com raridades.
