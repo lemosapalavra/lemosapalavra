@@ -325,12 +325,12 @@ export default function Atividades() {
 
   const allActivities = [
     { title: "Quiz Bíblico",        icon: iconQuiz,             id: "quiz",        coins: 5  },
-    { title: "Memória",             icon: iconMemoria,          id: "memory",      coins: 7  },
+    { title: "Memória",             icon: iconMemoria,          id: "memory",      coins: 5  },
     { title: "Colorir",             icon: iconColorir,          id: "coloring",    coins: 3  },
-    { title: "Quebra-Cabeça",       icon: iconQuebraCabeca,     id: "jigsaw",      coins: 10 },
-    { title: "Caça-Palavras",       icon: iconCacaPalavras.url, id: "wordsearch",  coins: 8  },
-    { title: "Pinte os Círculos",   icon: iconPinteCirculos.url, id: "edu:circles", coins: 5  },
-    { title: "Ligue as Cores",      icon: iconLigueCores.url,   id: "edu:connect", coins: 6  },
+    { title: "Quebra-Cabeça",       icon: iconQuebraCabeca,     id: "jigsaw",      coins: 5  },
+    { title: "Caça-Palavras",       icon: iconCacaPalavras.url, id: "wordsearch",  coins: 5  },
+    { title: "Pinte os Círculos",   icon: iconPinteCirculos.url, id: "edu:circles", coins: 4  },
+    { title: "Ligue as Cores",      icon: iconLigueCores.url,   id: "edu:connect", coins: 4  },
   ];
 
   // Atividades do dia: dias com data par mostram 4 atividades, dias ímpares
