@@ -8,6 +8,22 @@ import { supabase } from "@/integrations/supabase/client";
 
 type GlobalRow = { page: string; total: number; uniqueUsers: number };
 
+type UserStat = {
+  key: string;
+  name: string;
+  email: string | null;
+  phone: string | null;
+  ageRange: string | null;
+  role: string | null;
+  avatar: string | null;
+  createdAt: string | null;
+  events: { login: number; cadastro: number; download: number };
+  pages: { page: string; count: number }[];
+  totalViews: number;
+  firstSeen: string | null;
+  lastSeen: string | null;
+};
+
 const fmtTime = (s: number) => {
   if (s < 60) return `${s}s`;
   const m = Math.floor(s / 60);
