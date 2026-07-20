@@ -1063,7 +1063,7 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
     setTiles(nt); setSelectedTile(null); setMoves((m) => m + 1);
     if (nt.every((t, i) => t === i)) {
       setRunning(false);
-      const baseCoins = difficulty === 3 ? 3 : difficulty === 4 ? 6 : 10;
+      const baseCoins = difficulty === 3 ? 3 : difficulty === 4 ? 4 : 5;
       celebrate(`Quebra-cabeça completo em ${moves + 1} movimentos!`, baseCoins, "🧩");
     }
   };
