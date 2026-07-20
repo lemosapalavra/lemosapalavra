@@ -503,6 +503,101 @@ export default function Estatisticas() {
           )}
         </div>
 
+        {/* Per-user panel (all users of the site) */}
+        <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
+          <h3 className="font-display text-lg font-bold text-foreground mb-3">
+            🧑‍🤝‍🧑 Usuários do site — perfil, acessos e navegação
+          </h3>
+          <p className="text-xs text-muted-foreground font-body mb-3">
+            Dados dos últimos {globalRange} dias, agregados por usuário. Inclui
+            logins, cadastros e downloads do atalho, além do histórico de páginas
+            navegadas.
+          </p>
+          {userStats.length === 0 ? (
+            <p className="text-sm text-muted-foreground font-body">
+              Ainda não há atividade suficiente para exibir por usuário.
+            </p>
+          ) : (
+            <div className="space-y-3">
+              {userStats.map((u) => {
+                const open = expandedUser === u.key;
+                return (
+                  <div key={u.key} className="rounded-xl border border-border bg-background/60 overflow-hidden">
+                    <button
+                      onClick={() => setExpandedUser(open ? null : u.key)}
+                      className="w-full flex items-center gap-3 p-3 text-left hover:bg-muted/40 transition"
+                    >
+                      {u.avatar ? (
+                        <img src={u.avatar} alt="" className="w-10 h-10 rounded-full object-cover flex-shrink-0" />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-lg flex-shrink-0">👤</div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="font-display font-bold text-foreground truncate">{u.name}</p>
+                        <p className="text-xs text-muted-foreground font-body truncate">
+                          {u.phone || u.email || "—"}
+                        </p>
+                      </div>
+                      <div className="flex gap-2 text-xs font-body flex-shrink-0">
+                        <span className="px-2 py-1 rounded-lg bg-emerald-100 text-emerald-800" title="Logins">
+                          🔑 {u.events.login}
+                        </span>
+                        <span className="px-2 py-1 rounded-lg bg-sky-100 text-sky-800" title="Cadastros">
+                          📝 {u.events.cadastro}
+                        </span>
+                        <span className="px-2 py-1 rounded-lg bg-amber-100 text-amber-800" title="Downloads do atalho">
+                          📥 {u.events.download}
+                        </span>
+                        <span className="px-2 py-1 rounded-lg bg-purple-100 text-purple-800" title="Páginas vistas">
+                          👁️ {u.totalViews}
+                        </span>
+                      </div>
+                      <span className="ml-2 text-muted-foreground">{open ? "▲" : "▼"}</span>
+                    </button>
+                    {open && (
+                      <div className="p-4 border-t border-border bg-background/30 space-y-3">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs font-body">
+                          <div><strong>Nome:</strong> {u.name}</div>
+                          <div><strong>Celular:</strong> {u.phone || "—"}</div>
+                          <div><strong>E-mail:</strong> <span className="break-all">{u.email || "—"}</span></div>
+                          <div><strong>Faixa etária:</strong> {u.ageRange || "—"}</div>
+                          <div><strong>Função:</strong> {u.role || "—"}</div>
+                          <div><strong>Cadastro:</strong> {u.createdAt ? new Date(u.createdAt).toLocaleString("pt-BR") : "—"}</div>
+                          <div><strong>1ª atividade:</strong> {u.firstSeen ? new Date(u.firstSeen).toLocaleString("pt-BR") : "—"}</div>
+                          <div><strong>Últ. atividade:</strong> {u.lastSeen ? new Date(u.lastSeen).toLocaleString("pt-BR") : "—"}</div>
+                        </div>
+                        <div>
+                          <p className="font-display font-bold text-sm text-foreground mb-2">
+                            📄 Páginas visitadas ({u.pages.length})
+                          </p>
+                          {u.pages.length === 0 ? (
+                            <p className="text-xs text-muted-foreground font-body">
+                              Nenhuma navegação registrada neste período.
+                            </p>
+                          ) : (
+                            <ul className="space-y-1 text-xs font-body">
+                              {u.pages.map((p, i) => (
+                                <li key={p.page} className="flex justify-between border-b border-border/40 py-1">
+                                  <span className="truncate">
+                                    <span className="font-display font-bold text-primary mr-1">{i + 1}º</span>
+                                    {p.page}
+                                  </span>
+                                  <span className="font-display font-bold text-emerald-600 whitespace-nowrap">{p.count}x</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+
         <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
           <h3 className="font-display text-lg font-bold text-foreground mb-3">ℹ️ Informações da sessão</h3>
           <div className="text-sm font-body text-foreground space-y-1">
