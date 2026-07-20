@@ -260,15 +260,24 @@ function WhatsappToggle() {
         {cfg.enabled ? "✓ Ativo (clique para desativar)" : "Ativar botão do WhatsApp"}
       </button>
       <div>
-        <label className="block text-xs font-display font-bold mb-1">Telefone (com DDI, ex: 5511999999999) ou @usuário (ex: @lemosapalavra)</label>
+        <label className="block text-xs font-display font-bold mb-1">
+          Número do WhatsApp com DDI (ex: 5511999999999)
+        </label>
         <input
           type="tel"
+          inputMode="numeric"
           value={cfg.phone}
-          onChange={(e) => update({ phone: e.target.value })}
+          onChange={(e) => update({ phone: e.target.value.replace(/\D/g, "") })}
           className="w-full px-3 py-2 rounded-lg border border-border bg-white text-sm"
           placeholder="5511999999999"
         />
+        <p className="text-[11px] text-muted-foreground mt-1">
+          ⚠️ O WhatsApp só aceita <strong>número de telefone</strong> no link (não funciona com @usuário).
+          Enquanto o número não estiver preenchido, o botão flutuante fica oculto.
+          Digite com código do país (55 para Brasil) + DDD + número, sem espaços.
+        </p>
       </div>
+
     </div>
   );
 }
