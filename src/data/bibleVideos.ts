@@ -1,9 +1,9 @@
-import iconCriacaoAsset from "@/assets/lemos-play/a-criacao-thumb-v2.png.asset.json";
-import iconBatalhaAsset from "@/assets/lemos-play/batalha-anjos-thumb-v2.png.asset.json";
+import iconCriacaoAsset from "@/assets/lemos-play/a-criacao-thumb-v3.png.asset.json";
+import iconBatalhaAsset from "@/assets/lemos-play/batalha-anjos-thumb-v3.png.asset.json";
 import iconAdaoEva1 from "@/assets/historia-adao-eva-1.png";
-import iconNoeAsset from "@/assets/lemos-play/noe-arca-thumb-v2.png.asset.json";
+import iconNoeAsset from "@/assets/lemos-play/noe-arca-thumb-v3.png.asset.json";
 import iconDaviGolias from "@/assets/historia-davi-golias.png";
-import icon10MandamentosAsset from "@/assets/lemos-play/dez-mandamentos-thumb-v2.jpg.asset.json";
+import icon10MandamentosAsset from "@/assets/lemos-play/dez-mandamentos-thumb-v3.png.asset.json";
 const iconCriacao = iconCriacaoAsset.url;
 const iconBatalha = iconBatalhaAsset.url;
 const iconNoe1 = iconNoeAsset.url;
@@ -45,9 +45,9 @@ import vidMoises2 from "@/assets/lemos-play/moises-2.mp4.asset.json";
 import vidMoises3 from "@/assets/lemos-play/moises-3.mp4.asset.json";
 import vidDaviFilme from "@/assets/lemos-play/davi-golias-v3.mp4.asset.json";
 import vidJonasFilme from "@/assets/lemos-play/jonas-baleia-v3.mp4.asset.json";
-import adaoEvaThumbV2 from "@/assets/lemos-play/adao-eva-thumb-v3.png.asset.json";
-import daviGoliasThumbV2 from "@/assets/lemos-play/davi-golias-thumb-v3.png.asset.json";
-import jonasBaleiaThumbV2 from "@/assets/lemos-play/jonas-baleia-thumb-v3.png.asset.json";
+import adaoEvaThumbV2 from "@/assets/lemos-play/adao-eva-thumb-v4.png.asset.json";
+import daviGoliasThumbV2 from "@/assets/lemos-play/davi-golias-thumb-v4.png.asset.json";
+import jonasBaleiaThumbV2 from "@/assets/lemos-play/jonas-baleia-thumb-v4.png.asset.json";
 import vidAbraao1 from "@/assets/lemos-play/abraao-parte-1-v2.mp4.asset.json";
 import vidAbraao2 from "@/assets/lemos-play/abraao-parte-2-v2.mp4.asset.json";
 import vidProvaFogo1 from "@/assets/lemos-play/prova-fogo-parte-1-v2.mp4.asset.json";
@@ -109,10 +109,10 @@ import nascimentoJesusThumbV2 from "@/assets/lemos-play/nascimento-jesus-thumb-v
 import batismoJesusThumbV3 from "@/assets/lemos-play/batismo-jesus-thumb-v3.png.asset.json";
 import jesusTemploThumb from "@/assets/lemos-play/jesus-templo-thumb.png.asset.json";
 import jesusTempestadeThumb from "@/assets/lemos-play/jesus-tempestade-thumb.png.asset.json";
-import lazaroThumb from "@/assets/lemos-play/lazaro-thumb-v3.png.asset.json";
+import lazaroThumb from "@/assets/lemos-play/lazaro-thumb-v4.png.asset.json";
 import torreBabelThumb from "@/assets/lemos-play/torre-babel-thumb.jpg.asset.json";
-import joaoBatistaThumb from "@/assets/lemos-play/joao-batista-thumb-v4.png.asset.json";
-import danielLeoesImg from "@/assets/lemos-play/daniel-na-cova-dos-leoes.png.asset.json";
+import joaoBatistaThumb from "@/assets/lemos-play/joao-batista-thumb-v5.png.asset.json";
+import danielLeoesImg from "@/assets/lemos-play/daniel-cova-thumb-v2.png.asset.json";
 import vidUltimaCeia from "@/assets/lemos-play/ultima-ceia.mp4.asset.json";
 import ultimaCeiaThumb from "@/assets/lemos-play/ultima-ceia-thumb.png.asset.json";
 import vidPauloTarso from "@/assets/lemos-play/paulo-de-tarso.mp4.asset.json";
@@ -206,11 +206,11 @@ export const filmesVideos: BibleVideo[] = [
   { title: "Os 10 Mandamentos — Parte I", icon: icon10Mandamentos, src: vidGen10m1.url, section: "Gênesis" },
   { title: "Os 10 Mandamentos — Parte II", icon: icon10Mandamentos, src: vidGen10m2.url, section: "Gênesis" },
   { title: "Davi e Golias", icon: daviGoliasThumbV2.url, src: vidDaviFilme.url, section: "Gênesis" },
-  { title: "Torre de Babel", icon: torreBabelThumb.url, src: vidTorreBabel.url, section: "Gênesis" },
   { title: "Jonas e a Baleia", icon: jonasBaleiaThumbV2.url, src: vidJonasV4.url, section: "Jonas" },
   { title: "Lázaro", icon: lazaroThumb.url, src: vidLazaro.url, section: "Novo Testamento" },
   { title: "Daniel na Cova dos Leões", icon: danielLeoesImg.url, src: vidDanielCova.url, section: "Daniel" },
   { title: "João Batista Decapitado", icon: joaoBatistaThumb.url, src: vidJoaoBatista.url, section: "Novo Testamento" },
+  { title: "Torre de Babel", icon: torreBabelThumb.url, src: vidTorreBabel.url, section: "Gênesis" },
   { title: "Apocalipse — A Batalha Final", icon: apocalipseThumb.url, src: vidApocalipseV3.url, section: "Apocalipse" },
   { title: "Nascimento de Jesus", icon: nascimentoJesusThumbV2.url, src: vidNascimentoJesusV2.url, section: "Jesus" },
   { title: "O Batismo de Jesus", icon: batismoJesusThumbV3.url, src: vidBatismoFull.url, section: "Jesus" },
