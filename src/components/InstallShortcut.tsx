@@ -83,6 +83,7 @@ export default function InstallShortcut() {
   const handleClick = async () => {
     setBusy(true);
     try {
+      import("@/lib/logEvent").then(({ logEvent }) => logEvent("Baixar Atalho"));
       // 1) Native PWA install (Chrome/Edge/Android): real icon on home screen.
       if (window.__lemosDeferredInstall) {
         const p = window.__lemosDeferredInstall;
