@@ -212,7 +212,7 @@ export default function Login() {
       const { data } = await supabase.auth.getUser();
       if (data.user) {
         await hydrateLocalProfile(data.user.id, data.user.email || "");
-        if ((data.user.email || "").toLowerCase() === ADMIN_EMAIL) setAdminMode(true);
+        // Admin state is derived from the database (user_roles) — no client toggle.
       }
       navigate("/");
     } catch (e: any) {
