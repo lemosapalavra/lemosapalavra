@@ -208,6 +208,8 @@ export default function Login() {
       return;
     }
     await hydrateLocalProfile(userId, derivedEmail);
+    const { logEvent } = await import("@/lib/logEvent");
+    logEvent("Cadastro", { userId, email: derivedEmail });
     navigate("/");
   };
 
