@@ -1322,7 +1322,7 @@ function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgSt
   useEffect(() => {
     if (completed && celebratedRef.current !== card.title) {
       celebratedRef.current = card.title;
-      const coins = Math.max(5, wordsInPlay.length);
+      const coins = Math.max(3, Math.min(5, wordsInPlay.length));
       // small delay so the last "ok" flash is visible
       setTimeout(() => {
         celebrate(`Você achou todas as ${wordsInPlay.length} palavras!`, coins, "🔎");
