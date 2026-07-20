@@ -568,7 +568,7 @@ export default function LemosPlay() {
                 </p>
                 <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-extrabold drop-shadow-2xl mb-3 leading-tight text-white">
                   {hero?.title}
-                </h1>
+                </h2>
                 <p className="text-zinc-200 text-sm sm:text-base mb-5 leading-relaxed drop-shadow-lg">
                   {heroDescription}
                 </p>
