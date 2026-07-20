@@ -451,17 +451,13 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Admin shortcut — visível apenas para o dono do site (?owner=1) */}
+          {/* Admin access is granted server-side via the user_roles table. */}
           {ownerUnlocked && (
-            <div className="mt-5 pt-4 border-t border-amber-200/60 flex flex-col items-center gap-2">
-              <button
-                onClick={loginAsAdmin}
-                className="flex items-center gap-2 text-sm bg-amber-500 hover:bg-amber-600 text-white font-display font-bold px-4 py-2 rounded-lg shadow transition"
-                title="Entrar como administrador"
-              >
-                <Shield className="w-4 h-4" />
-                Entrar como Admin
-              </button>
+            <div className="mt-5 pt-4 border-t border-amber-200/60 flex flex-col items-center gap-2 text-center">
+              <p className="text-xs text-muted-foreground max-w-xs">
+                <Shield className="w-3 h-3 inline mr-1" />
+                O acesso de administrador é liberado no banco de dados (tabela <code>user_roles</code>). Faça login normalmente com sua conta administradora.
+              </p>
             </div>
           )}
 
