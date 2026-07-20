@@ -69,6 +69,7 @@ export default function Louvores() {
           onClick={() => setPlaying(null)}
           className="absolute top-4 left-4 z-20 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white transition"
           title="Voltar"
+          aria-label="Voltar"
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
