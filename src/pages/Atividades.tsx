@@ -655,8 +655,8 @@ function MemoryGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
         if (nm.length === board.length) {
           setRunning(false);
           const baseCoins = memoryConfig[level!].coins;
-          const bonus = moves + 1 <= board.length * 0.75 ? 2 : 0;
-          celebrate(`Concluído em ${moves + 1} jogadas e ${seconds}s!`, baseCoins + bonus, "🃏");
+          const bonus = moves + 1 <= board.length * 0.75 ? 1 : 0;
+          celebrate(`Concluído em ${moves + 1} jogadas e ${seconds}s!`, Math.min(5, baseCoins + bonus), "🃏");
         }
       } else setTimeout(() => setFlipped([]), 800);
     }
