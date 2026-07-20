@@ -122,6 +122,9 @@ import vidBomSamaritano from "@/assets/lemos-play/bom-samaritano.mp4.asset.json"
 import bomSamaritanoThumb from "@/assets/lemos-play/bom-samaritano-thumb.jpg.asset.json";
 import vidFilhoProdigo from "@/assets/lemos-play/filho-prodigo.mp4.asset.json";
 import filhoProdigoThumb from "@/assets/lemos-play/filho-prodigo-thumb.png.asset.json";
+import vidJesusCrucificado from "@/assets/lemos-play/jesus-crucificado.mp4.asset.json";
+import vidJesusVive from "@/assets/lemos-play/jesus-vive.mp4.asset.json";
+import vidGetsemani from "@/assets/lemos-play/jesus-getsemani.mp4.asset.json";
 
 
 export interface BibleVideo {
