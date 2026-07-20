@@ -22,14 +22,13 @@ const avatars = [
 ];
 
 type Mode = "login" | "register";
-type AgeRange = "criancas" | "adolescentes" | "jovens" | "adultos" | "idosos";
+type AgeRange = "criancas" | "adolescentes" | "jovens" | "adultos";
 
 const AGE_RANGES: { id: AgeRange; label: string; emoji: string }[] = [
   { id: "criancas",      label: "Crianças (0–12)",          emoji: "🧒" },
   { id: "adolescentes",  label: "Adolescentes (13–17)",     emoji: "🧑" },
   { id: "jovens",        label: "Jovens adultos (18–24)",   emoji: "🧑‍🎓" },
-  { id: "adultos",       label: "Adultos (25–59)",          emoji: "🧔" },
-  { id: "idosos",        label: "Idosos (60+)",             emoji: "🧓" },
+  { id: "adultos",       label: "Adultos (25 e mais)",      emoji: "🧔" },
 ];
 
 const ADMIN_EMAIL = "admin@lemos.local";
@@ -276,13 +275,13 @@ export default function Login() {
           <div className="space-y-4">
             {mode === "register" && (
               <>
-                <Field label="Nome completo *">
+                <Field label="Nome *">
                   <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
-                    placeholder="Nome e sobrenome"
+                    placeholder="Seu nome"
                   />
                 </Field>
                 <Field label="Faixa etária *">
