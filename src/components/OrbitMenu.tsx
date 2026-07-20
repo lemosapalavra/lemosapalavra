@@ -39,9 +39,9 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
       <div
         className="relative orbit-area"
         style={{
-          width: "min(92vw, 720px)",
-          height: "min(92vw, 720px)",
-          ["--orbit-radius" as any]: "min(32vw, 250px)",
+          width: "min(96vw, 720px)",
+          height: "min(96vw, 720px)",
+          ["--orbit-radius" as any]: "clamp(140px, 40vw, 260px)",
         }}
       >
         <div
