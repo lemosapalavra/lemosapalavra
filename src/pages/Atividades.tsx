@@ -141,9 +141,9 @@ const memorySets = {
   dificil: memoryImages.slice(0, 12),
 };
 const memoryConfig = {
-  facil: { cols: 4, label: "Fácil (12 cartas)", coins: 2 },
+  facil: { cols: 4, label: "Fácil (12 cartas)", coins: 3 },
   medio: { cols: 4, label: "Médio (16 cartas)", coins: 4 },
-  dificil: { cols: 6, label: "Difícil (24 cartas)", coins: 7 },
+  dificil: { cols: 6, label: "Difícil (24 cartas)", coins: 5 },
 };
 
 /* =========================================================
