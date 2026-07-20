@@ -270,13 +270,8 @@ export default function Album() {
   const currentCatName = currentPage?.kind === "category" ? currentPage.cat.name : "";
 
   return (
-    <div className="fixed inset-0 z-40 flex flex-col"
-      style={{
-        backgroundImage: `url(${pergaminhoAsset.url})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundColor: "hsl(40,55%,82%)",
-      }}>
+    <div className="fixed inset-0 z-40 flex flex-col bg-amber-50">
+
       <div className="px-3 pt-3">
         <StandardHeader onHome={() => navigate("/")} coins={coins} />
       </div>
