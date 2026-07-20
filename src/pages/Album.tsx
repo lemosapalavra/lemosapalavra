@@ -473,20 +473,12 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
 
 function PageShell({ children, side }: { children: React.ReactNode; side: "left" | "right" }) {
   return (
-    <div
-      className="relative w-full h-full overflow-hidden rounded-2xl"
-      style={{
-        backgroundImage: `url(${pergaminhoAsset.url})`,
-        backgroundSize: "100% 100%",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.35))",
-      }}
-    >
-      <div className="relative w-full h-full p-6 sm:p-10">{children}</div>
+    <div className="relative w-full h-full overflow-hidden rounded-2xl bg-transparent">
+      <div className="relative w-full h-full p-3 sm:p-6">{children}</div>
     </div>
   );
 }
+
 
 /* -------- Page bodies -------- */
 
