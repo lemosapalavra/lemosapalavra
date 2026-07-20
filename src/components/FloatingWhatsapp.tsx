@@ -5,9 +5,14 @@ const LS_PHONE = "lemos_whatsapp_phone";
 
 export function loadWhatsappCfg() {
   const enabled = localStorage.getItem(LS_ENABLED);
+  const stored = localStorage.getItem(LS_PHONE);
+  // Migração: se o valor salvo era um @username (não suportado pelo wa.me),
+  // limpamos para forçar o admin a informar um telefone real.
+  const phone =
+    stored && !/^@/.test(stored.trim()) && /\d/.test(stored) ? stored : "";
   return {
     enabled: enabled === null ? true : enabled === "1",
-    phone: localStorage.getItem(LS_PHONE) || "@lemosapalavra",
+    phone,
   };
 }
 
@@ -31,15 +36,13 @@ export default function FloatingWhatsapp() {
   }, []);
 
   if (!cfg.enabled) return null;
-  const raw = (cfg.phone || "").trim();
-  // Suporte a username (ex.: "@lemosapalavra") — WhatsApp resolve via wa.me/<username>.
-  const isUsername = /[a-zA-Z]/.test(raw);
-  const username = raw.replace(/^@/, "");
-  const phone = raw.replace(/\D/g, "");
-  const target = isUsername ? username : phone;
-  const href = target
-    ? `https://wa.me/${target}?text=${encodeURIComponent("Olá! Vim pelo app Lemos a Palavra 🙏")}`
-    : "https://wa.me/";
+  // wa.me só funciona com número de telefone (com DDI). Usernames como
+  // "@lemosapalavra" produzem o erro "esse número não está no WhatsApp".
+  const phone = (cfg.phone || "").replace(/\D/g, "");
+  if (phone.length < 10) return null;
+  const href = `https://wa.me/${phone}?text=${encodeURIComponent(
+    "Olá! Vim pelo app Lemos a Palavra 🙏"
+  )}`;
 
   return (
     <a
