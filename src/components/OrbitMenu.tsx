@@ -29,7 +29,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
       {!isAuthenticated && (
         <div className="mb-4 flex flex-col items-center gap-1 z-20">
           <button onClick={onLoginClick} className="flex flex-col items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
-            <img src={iconLogin} alt="Entrar" width={80} height={80} className="rounded-lg shadow-lg" />
+            <img src={iconLogin} alt="Acessar conta" width={80} height={80} className="rounded-lg shadow-lg" />
             <span className="orbit-label text-secondary">Entre ou Cadastre-se</span>
             <span className="orbit-label font-extrabold text-xs">PARA ATIVAR O SITE</span>
           </button>
