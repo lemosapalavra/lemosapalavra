@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { QRCodeCanvas } from "qrcode.react";
 
 declare global {
   interface Window {
