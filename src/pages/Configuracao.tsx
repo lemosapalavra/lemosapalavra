@@ -239,12 +239,18 @@ export default function Configuracao() {
 }
 
 function WhatsappToggle() {
-  const [cfg, setCfg] = useState(() => loadWhatsappCfg());
-  const update = (patch: Partial<typeof cfg>) => {
-    const next = { ...cfg, ...patch };
-    setCfg(next);
-    saveWhatsappCfg(next);
+  const [saved, setSaved] = useState(() => loadWhatsappCfg());
+  const [draft, setDraft] = useState(saved);
+  const [flash, setFlash] = useState("");
+  const dirty = draft.enabled !== saved.enabled || draft.phone !== saved.phone;
+
+  const handleSave = () => {
+    saveWhatsappCfg(draft);
+    setSaved(draft);
+    setFlash("✓ Mudanças salvas com sucesso!");
+    setTimeout(() => setFlash(""), 2500);
   };
+
   return (
     <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
       <h3 className="font-display text-lg font-bold text-foreground mb-2">💬 Botão flutuante do WhatsApp</h3>
@@ -252,32 +258,45 @@ function WhatsappToggle() {
         Aparece em todas as páginas. Ative/desative e defina o número de contato.
       </p>
       <button
-        onClick={() => update({ enabled: !cfg.enabled })}
+        onClick={() => setDraft({ ...draft, enabled: !draft.enabled })}
         className={`px-4 py-2 rounded-xl font-display font-bold text-sm transition mb-3 ${
-          cfg.enabled ? "bg-emerald-600 text-white hover:bg-emerald-700" : "bg-zinc-200 text-foreground hover:bg-zinc-300"
+          draft.enabled ? "bg-emerald-600 text-white hover:bg-emerald-700" : "bg-zinc-200 text-foreground hover:bg-zinc-300"
         }`}
       >
-        {cfg.enabled ? "✓ Ativo (clique para desativar)" : "Ativar botão do WhatsApp"}
+        {draft.enabled ? "✓ Ativo (clique para desativar)" : "Ativar botão do WhatsApp"}
       </button>
       <div>
         <label className="block text-xs font-display font-bold mb-1">
-          Número do WhatsApp com DDI (ex: 5511999999999)
+          Número do WhatsApp com DDI (ex: 5515981842767)
         </label>
         <input
           type="tel"
           inputMode="numeric"
-          value={cfg.phone}
-          onChange={(e) => update({ phone: e.target.value.replace(/\D/g, "") })}
+          value={draft.phone}
+          onChange={(e) => setDraft({ ...draft, phone: e.target.value.replace(/\D/g, "") })}
           className="w-full px-3 py-2 rounded-lg border border-border bg-white text-sm"
-          placeholder="5511999999999"
+          placeholder="5515981842767"
         />
         <p className="text-[11px] text-muted-foreground mt-1">
           ⚠️ O WhatsApp só aceita <strong>número de telefone</strong> no link (não funciona com @usuário).
-          Enquanto o número não estiver preenchido, o botão flutuante fica oculto.
           Digite com código do país (55 para Brasil) + DDD + número, sem espaços.
         </p>
       </div>
 
+      <div className="flex items-center gap-3 mt-4">
+        <button
+          onClick={handleSave}
+          disabled={!dirty}
+          className={`px-5 py-2 rounded-xl font-display font-bold text-sm transition ${
+            dirty
+              ? "bg-amber-500 text-white hover:bg-amber-600 shadow"
+              : "bg-zinc-200 text-muted-foreground cursor-not-allowed"
+          }`}
+        >
+          💾 Salvar mudanças
+        </button>
+        {flash && <span className="text-xs font-body text-emerald-700">{flash}</span>}
+      </div>
     </div>
   );
 }
