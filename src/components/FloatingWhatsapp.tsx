@@ -25,10 +25,8 @@ export function saveWhatsappCfg(cfg: { enabled: boolean; phone: string }) {
 function buildHref(value: string): string {
   const text = encodeURIComponent("Olá! Vim pelo app Lemos a Palavra 🙏");
   const digits = (value || "").replace(/\D/g, "");
-  if (digits.length >= 10) return `https://wa.me/${digits}?text=${text}`;
-  // Username fallback (e.g. @lemosapalavra) → open WhatsApp profile/search
-  const username = (value || DEFAULT_USERNAME).replace(/^@/, "").trim() || "lemosapalavra";
-  return `https://wa.me/${username}?text=${text}`;
+  const phone = digits.length >= 10 ? digits : DEFAULT_PHONE;
+  return `https://wa.me/${phone}?text=${text}`;
 }
 
 export default function FloatingWhatsapp() {
