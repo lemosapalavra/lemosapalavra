@@ -125,6 +125,8 @@ export default function InstallShortcut() {
     }
   };
 
+  const siteUrl = typeof window !== "undefined" ? `${window.location.origin}/` : "https://lemosapalavra.live/";
+
   return (
     <div className="mt-4 flex flex-col items-center gap-3">
       <div className="relative flex items-center justify-center">
@@ -158,6 +160,21 @@ export default function InstallShortcut() {
         Clique na logo para <strong>baixar o atalho</strong> da Lemos a Palavra
         e entrar direto no site, sem digitar o endereço.
       </p>
+
+      {/* QR code: aponta câmera do celular para abrir/instalar */}
+      <div className="mt-3 flex flex-col items-center gap-2 bg-white rounded-2xl p-3 shadow-md border border-amber-300">
+        <QRCodeCanvas value={siteUrl} size={140} includeMargin bgColor="#ffffff" fgColor="#78350f" />
+        <p className="text-[11px] font-body text-amber-900 text-center leading-snug max-w-[200px]">
+          Aponte a câmera do celular para abrir e instalar o atalho da Lemos a Palavra.
+        </p>
+        <a
+          href={siteUrl}
+          className="text-xs font-display font-bold text-amber-800 underline break-all text-center"
+        >
+          {siteUrl}
+        </a>
+      </div>
+
       {done && (
         <p className="text-[11px] font-body text-amber-900 text-center leading-snug max-w-[260px]">{done}</p>
       )}
