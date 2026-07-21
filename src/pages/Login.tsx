@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Shield, Copy } from "lucide-react";
-import { setAdminMode } from "@/hooks/useIsAdmin";
+import { setAdminMode, useIsAdmin } from "@/hooks/useIsAdmin";
 import { supabase } from "@/integrations/supabase/client";
 import InstallShortcut from "@/components/InstallShortcut";
 
@@ -63,6 +63,7 @@ function phoneToEmail(phone: string) {
 
 export default function Login() {
   const navigate = useNavigate();
+  const isAdmin = useIsAdmin();
   const [mode, setMode] = useState<Mode>("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -425,7 +426,9 @@ export default function Login() {
             </div>
 
             {/* Optional: install a clickable shortcut with the Lemos a Palavra logo */}
-            <InstallShortcut />
+            {isAdmin && <InstallShortcut />}
+
+
 
           </div>
 
