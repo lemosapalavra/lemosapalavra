@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 
 const LS_ENABLED = "lemos_whatsapp_enabled";
 const LS_PHONE = "lemos_whatsapp_phone";
-const DEFAULT_USERNAME = "@lemosapalavra";
+const DEFAULT_PHONE = "5515981842767";
 
 export function loadWhatsappCfg() {
   const enabled = localStorage.getItem(LS_ENABLED);
   const stored = localStorage.getItem(LS_PHONE);
+  // If the previous stored value was the legacy @username, upgrade to the
+  // real phone number so the floating button actually opens WhatsApp.
+  const phone = !stored || stored.startsWith("@") ? DEFAULT_PHONE : stored;
   return {
     enabled: enabled === null ? true : enabled === "1",
-    phone: stored ?? DEFAULT_USERNAME,
+    phone,
   };
 }
 
