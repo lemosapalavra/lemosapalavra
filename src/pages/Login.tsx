@@ -63,6 +63,7 @@ function phoneToEmail(phone: string) {
 
 export default function Login() {
   const navigate = useNavigate();
+  const isAdmin = useIsAdmin();
   const [mode, setMode] = useState<Mode>("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
