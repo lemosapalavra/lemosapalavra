@@ -426,7 +426,9 @@ export default function Login() {
             </div>
 
             {/* Optional: install a clickable shortcut with the Lemos a Palavra logo */}
-            <InstallShortcut />
+            {isAdmin && <InstallShortcut />}
+
+
 
           </div>
 
