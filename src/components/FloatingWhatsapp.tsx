@@ -2,17 +2,14 @@ import { useEffect, useState } from "react";
 
 const LS_ENABLED = "lemos_whatsapp_enabled";
 const LS_PHONE = "lemos_whatsapp_phone";
+const DEFAULT_USERNAME = "@lemosapalavra";
 
 export function loadWhatsappCfg() {
   const enabled = localStorage.getItem(LS_ENABLED);
   const stored = localStorage.getItem(LS_PHONE);
-  // Migração: se o valor salvo era um @username (não suportado pelo wa.me),
-  // limpamos para forçar o admin a informar um telefone real.
-  const phone =
-    stored && !/^@/.test(stored.trim()) && /\d/.test(stored) ? stored : "";
   return {
     enabled: enabled === null ? true : enabled === "1",
-    phone,
+    phone: stored ?? DEFAULT_USERNAME,
   };
 }
 
@@ -20,6 +17,15 @@ export function saveWhatsappCfg(cfg: { enabled: boolean; phone: string }) {
   localStorage.setItem(LS_ENABLED, cfg.enabled ? "1" : "0");
   localStorage.setItem(LS_PHONE, cfg.phone);
   window.dispatchEvent(new Event("lemos_whatsapp_change"));
+}
+
+function buildHref(value: string): string {
+  const text = encodeURIComponent("Olá! Vim pelo app Lemos a Palavra 🙏");
+  const digits = (value || "").replace(/\D/g, "");
+  if (digits.length >= 10) return `https://wa.me/${digits}?text=${text}`;
+  // Username fallback (e.g. @lemosapalavra) → open WhatsApp profile/search
+  const username = (value || DEFAULT_USERNAME).replace(/^@/, "").trim() || "lemosapalavra";
+  return `https://wa.me/${username}?text=${text}`;
 }
 
 export default function FloatingWhatsapp() {
@@ -36,20 +42,14 @@ export default function FloatingWhatsapp() {
   }, []);
 
   if (!cfg.enabled) return null;
-  // wa.me só funciona com número de telefone (com DDI). Usernames como
-  // "@lemosapalavra" produzem o erro "esse número não está no WhatsApp".
-  const phone = (cfg.phone || "").replace(/\D/g, "");
-  if (phone.length < 10) return null;
-  const href = `https://wa.me/${phone}?text=${encodeURIComponent(
-    "Olá! Vim pelo app Lemos a Palavra 🙏"
-  )}`;
+  const href = buildHref(cfg.phone);
 
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Fale conosco no WhatsApp"
+      aria-label="Fale conosco no WhatsApp @lemosapalavra"
       className="fixed bottom-5 right-5 z-[80] w-14 h-14 rounded-full bg-emerald-500 hover:bg-emerald-600 shadow-2xl border-2 border-white flex items-center justify-center transition-transform hover:scale-110"
     >
       <svg viewBox="0 0 32 32" className="w-8 h-8 fill-white" aria-hidden="true">
