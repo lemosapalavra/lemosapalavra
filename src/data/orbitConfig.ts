@@ -11,7 +11,7 @@ export interface OrbitItem {
   route: string;
 }
 
-const KEY = "lemos_orbit_config_v3";
+const KEY = "lemos_orbit_config_v4";
 
 export function defaultOrbit(): OrbitItem[] {
   return [
@@ -29,9 +29,13 @@ export function loadOrbit(): OrbitItem[] {
     if (!raw) return defaultOrbit();
     const parsed = JSON.parse(raw) as Partial<OrbitItem>[];
     const def = defaultOrbit();
+    // NEVER trust stored icon URLs — bundler hashes change on every build,
+    // so an older cached URL will 404. Only labels/sublabels/routes are editable.
     return def.map((d, i) => ({
       ...d,
-      ...parsed[i],
+      label: parsed[i]?.label ?? d.label,
+      sublabel: parsed[i]?.sublabel ?? d.sublabel,
+      route: parsed[i]?.route ?? d.route,
     }));
   } catch {
     return defaultOrbit();
@@ -39,12 +43,11 @@ export function loadOrbit(): OrbitItem[] {
 }
 
 export function saveOrbit(items: OrbitItem[]) {
-  // store only editable fields to keep default icons
+  // Store only editable fields — never the icon URL (see loadOrbit).
   const editable = items.map((it) => ({
     label: it.label,
     sublabel: it.sublabel,
     route: it.route,
-    icon: it.icon,
   }));
   localStorage.setItem(KEY, JSON.stringify(editable));
   window.dispatchEvent(new Event("lemos_orbit_change"));

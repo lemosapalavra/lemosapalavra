@@ -425,8 +425,8 @@ export default function Login() {
               )}
             </div>
 
-            {/* Optional: install a clickable shortcut with the Lemos a Palavra logo */}
-            {isAdmin && <InstallShortcut />}
+            {/* Admin-only: QR Code + botão para baixar/instalar o atalho */}
+            {(isAdmin || ownerUnlocked) && <InstallShortcut />}
 
 
 
