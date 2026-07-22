@@ -657,7 +657,7 @@ export default function LemosPlay() {
                       return (
                         <button key={v.id} onClick={() => { const gid = openGroup.id; setOpenGroup(null); requestPlay(v, gid); }} className="relative aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 hover:ring-2 hover:ring-white transition">
                           {v.poster ? <img src={v.poster} alt={v.title} className="w-full h-full object-cover" /> : <div className="absolute inset-0 bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center"><Play className="w-10 h-10 text-white/40" /></div>}
-                          <VideoSideActions itemId={v.id} title={v.title} src={v.src} />
+                          
                           {next && (
                             <span title={`Em seguida: ${next.title}`} className="absolute top-1 left-1 z-20 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-600/95 text-white text-[10px] font-bold shadow-lg">
                               <SkipForward className="w-3 h-3" />
@@ -704,6 +704,9 @@ export default function LemosPlay() {
                     src={playSrc}
                     className="w-full h-full bg-black object-contain"
                     controls
+                    controlsList="nodownload noremoteplayback noplaybackrate"
+                    disablePictureInPicture
+                    onContextMenu={(e) => e.preventDefault()}
                     autoPlay
                     playsInline
                     onLoadedMetadata={(e) => {
@@ -740,7 +743,7 @@ export default function LemosPlay() {
                 ) : null}
               </ColonialVideoFrame>
             )}
-            <VideoSideActions itemId={playing.id} title={playing.title} src={playing.src} className="absolute right-4 top-1/2 -translate-y-1/2" />
+            
             {nextInGroup && (
               <button
                 onClick={() => requestPlay(nextInGroup, playingGroupId)}
@@ -780,55 +783,7 @@ export default function LemosPlay() {
             )}
           </div>
 
-          {/* Próximos vídeos — escolha o próximo */}
-          {nextSuggestions.length > 0 && (
-            <div className="shrink-0 bg-gradient-to-t from-black via-black/95 to-black/70 border-t border-white/10 px-4 sm:px-8 py-3">
-              <div className="flex items-center gap-2 mb-2">
-                <SkipForward className="w-4 h-4 text-red-500" />
-                <h3 className="font-display font-extrabold text-white text-sm sm:text-base">
-                  Assista ao próximo vídeo
-                </h3>
-                <span className="text-white/60 text-xs hidden sm:inline">
-                  · escolha um da sequência ou outro vídeo
-                </span>
-              </div>
-              <div className="flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
-                {nextSuggestions.map((v) => {
-                  const p = progress[v.id];
-                  const pct = p && p.d > 0 ? Math.min(100, Math.round((p.t / p.d) * 100)) : 0;
-                  const gid = seriesGroupItems.find((g) => g.videos.some((x) => x.id === v.id))?.id ?? null;
-                  return (
-                    <button
-                      key={v.id}
-                      onClick={() => requestPlay(v, gid)}
-                      className="relative shrink-0 w-[100px] sm:w-[130px] aspect-[2/3] rounded-md overflow-hidden bg-zinc-900 hover:ring-2 hover:ring-white transition group/sug"
-                      title={v.title}
-                    >
-                      {v.poster ? (
-                        <img src={v.poster} alt={v.title} className="w-full h-full object-cover" loading="lazy" />
-                      ) : (
-                        <div className="absolute inset-0 bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center">
-                          <Play className="w-8 h-8 text-white/40" />
-                        </div>
-                      )}
-                      <div className="absolute inset-0 bg-black/30 opacity-0 group-hover/sug:opacity-100 flex items-center justify-center transition">
-                        <Play className="w-8 h-8 text-white fill-white" />
-                      </div>
-                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-2">
-                        <p className="text-white text-[11px] sm:text-xs font-bold text-left line-clamp-1">{v.title}</p>
-                        <p className="text-zinc-300 text-[10px] text-left">{v.category}</p>
-                      </div>
-                      {pct > 0 && (
-                        <div className="absolute bottom-0 inset-x-0 h-1 bg-white/20">
-                          <div className="h-full" style={{ width: `${pct}%`, background: "#e50914" }} />
-                        </div>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          {/* Sugestões abaixo do player removidas a pedido do usuário. */}
         </div>
       )}
 

@@ -161,19 +161,7 @@ export default function InstallShortcut() {
         e entrar direto no site, sem digitar o endereço.
       </p>
 
-      {/* QR code: aponta câmera do celular para abrir/instalar */}
-      <div className="mt-3 flex flex-col items-center gap-2 bg-white rounded-2xl p-3 shadow-md border border-amber-300">
-        <QRCodeCanvas value={siteUrl} size={140} includeMargin bgColor="#ffffff" fgColor="#78350f" />
-        <p className="text-[11px] font-body text-amber-900 text-center leading-snug max-w-[200px]">
-          Aponte a câmera do celular para abrir e instalar o atalho da Lemos a Palavra.
-        </p>
-        <a
-          href={siteUrl}
-          className="text-xs font-display font-bold text-amber-800 underline break-all text-center"
-        >
-          {siteUrl}
-        </a>
-      </div>
+      {/* QR code + URL removidos a pedido do usuário. */}
 
       {done && (
         <p className="text-[11px] font-body text-amber-900 text-center leading-snug max-w-[260px]">{done}</p>
