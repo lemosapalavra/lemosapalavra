@@ -4,42 +4,46 @@ import { supabase } from "@/integrations/supabase/client";
 // Server-verified admin state. We never trust localStorage for privilege
 // decisions — the source of truth is the `user_roles` table on the backend,
 // queried via the security-definer `has_role()` RPC.
+// The `lemos_owner_unlocked` local flag is used strictly for the UI-only
+// "owner" convenience mode (site-owner gesture on the login screen) so that
+// the site owner can see the gear icons on their own device even when the
+// admin role in the database is missing — it does NOT grant server access.
 
 const CACHE_KEY = "lemos_admin_verified";
+const OWNER_FLAG_KEY = "lemos_owner_unlocked";
+
+function ownerUnlockedLocal(): boolean {
+  try { return localStorage.getItem(OWNER_FLAG_KEY) === "1"; } catch { return false; }
+}
 
 async function fetchIsAdmin(): Promise<boolean> {
   const { data: sess } = await supabase.auth.getSession();
   const uid = sess.session?.user?.id;
-  if (!uid) return false;
+  if (!uid) return ownerUnlockedLocal();
   const { data, error } = await supabase.rpc("has_role", {
     _user_id: uid,
     _role: "admin",
   });
-  if (error) return false;
-  return data === true;
+  if (error) return ownerUnlockedLocal();
+  return data === true || ownerUnlockedLocal();
 }
 
 export function canBeAdmin(): boolean {
-  // Kept for backwards compatibility with existing callers; the real check
-  // is async and lives in useIsAdmin(). This just reflects the cached value.
   try {
-    return sessionStorage.getItem(CACHE_KEY) === "1";
+    return sessionStorage.getItem(CACHE_KEY) === "1" || ownerUnlockedLocal();
   } catch {
-    return false;
+    return ownerUnlockedLocal();
   }
 }
 
 export function isAdminNow(): boolean {
   try {
-    return sessionStorage.getItem(CACHE_KEY) === "1";
+    return sessionStorage.getItem(CACHE_KEY) === "1" || ownerUnlockedLocal();
   } catch {
-    return false;
+    return ownerUnlockedLocal();
   }
 }
 
-// Kept as a no-op for backwards compatibility. Admin state is derived from
-// the database, not toggled from the client. Any call to enable admin mode
-// without a matching `user_roles` row is silently ignored.
 export function setAdminMode(_v: boolean) {
   window.dispatchEvent(new Event("lemos_admin_change"));
 }
