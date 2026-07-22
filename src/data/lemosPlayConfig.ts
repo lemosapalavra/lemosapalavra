@@ -115,7 +115,7 @@ const defaultLouvores: PlayEntry[] = [
   { id: "lv6", title: "Palavra Eterna", src: palavraEternaVid.url, poster: attachedThumbByTitle["Palavra Eterna"], section: "Louvores" },
   { id: "lv7", title: "Tempestades", src: tempestadesVid.url, poster: aTempestadeThumb.url, section: "Louvores" },
   { id: "lv8", title: "Deus Está Aqui", src: deusEstaAquiVid.url, poster: deusEstaAquiThumb.url, section: "Louvores" },
-  { id: "lv9", title: "Yeshua", src: yeshuaVid.url, poster: yeshuaThumb.url, section: "Louvores" },
+  { id: "lv9", title: "Yeshua", src: yeshua2Vid.url, poster: yeshua3Thumb.url, section: "Louvores" },
   { id: "lv10", title: "Ressuscita-Me (Versão 2)", src: ressuscitaMe2Vid.url, poster: ressuscitaMeThumb.url, section: "Louvores" },
   { id: "lv11", title: "O Adorarei", src: oAdorareiVid.url, poster: oAdorareiThumb.url, section: "Louvores" },
 ];
