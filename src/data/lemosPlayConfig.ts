@@ -37,6 +37,10 @@ import deusEstaAquiThumb from "@/assets/lemos-play/deus-esta-aqui-v2.png.asset.j
 import yeshuaThumb from "@/assets/lemos-play/yeshua-v3.png.asset.json";
 import oAdorareiVid from "@/assets/lemos-play/o-adorarei.mp4.asset.json";
 import oAdorareiThumb from "@/assets/lemos-play/o-adorarei.png.asset.json";
+import meuQueridoSenhorVid from "@/assets/lemos-play/meu-querido-senhor.mp4.asset.json";
+import meuQueridoSenhorThumb from "@/assets/lemos-play/meu-querido-senhor.png.asset.json";
+import yeshua2Vid from "@/assets/lemos-play/yeshua-2.mp4.asset.json";
+import yeshua3Thumb from "@/assets/lemos-play/yeshua-3.png.asset.json";
 
 export interface PlayEntry {
   id: string;
