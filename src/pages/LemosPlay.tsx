@@ -166,7 +166,7 @@ function Row({ title, items, onPlay, progress, onContinueSeries, getContinuation
                     <Play className="w-12 h-12 text-white/40" />
                   </div>
                 )}
-                <VideoSideActions itemId={item.id} title={item.title} src={item.src} />
+                
                 {contCount > 0 && onContinueSeries && (
                   <span
                     role="button"
