@@ -101,6 +101,7 @@ const attachedThumbByTitle: Record<string, string> = {
 };
 
 const defaultMusicas: PlayEntry[] = [
+  { id: "m4", title: "Meu Querido Senhor", src: meuQueridoSenhorVid.url, poster: meuQueridoSenhorThumb.url, section: "Músicas" },
   { id: "m1", title: "Do meu Jeito", src: doMeuJeitoVid.url, poster: attachedThumbByTitle["Do meu Jeito"], section: "Músicas" },
   { id: "m2", title: "Pai e Filho", src: paiEFilhoVid.url, poster: attachedThumbByTitle["Pai e Filho"], section: "Músicas" },
   { id: "m3", title: "Um de Nós", src: umDeNosVid.url, poster: attachedThumbByTitle["Um de Nós"], section: "Músicas" },
