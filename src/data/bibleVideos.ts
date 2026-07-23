@@ -117,19 +117,19 @@ import danielSonhoReiThumb from "@/assets/lemos-play/daniel-sonho-rei.png.asset.
 import joaoBatistaThumb from "@/assets/lemos-play/joao-batista-thumb-v5.png.asset.json";
 import danielLeoesImg from "@/assets/lemos-play/daniel-cova-thumb-v2.png.asset.json";
 import vidUltimaCeia from "@/assets/lemos-play/ultima-ceia.mp4.asset.json";
-import ultimaCeiaThumb from "@/assets/lemos-play/ultima-ceia-thumb.png.asset.json";
+import ultimaCeiaThumb from "@/assets/lemos-play/ultima-ceia-thumb-v3.png.asset.json";
 import vidPauloTarso from "@/assets/lemos-play/paulo-de-tarso.mp4.asset.json";
-import pauloTarsoThumb from "@/assets/lemos-play/paulo-de-tarso-thumb.png.asset.json";
+import pauloTarsoThumb from "@/assets/lemos-play/paulo-tarso-thumb-v3.png.asset.json";
 import vidBomSamaritano from "@/assets/lemos-play/bom-samaritano.mp4.asset.json";
-import bomSamaritanoThumb from "@/assets/lemos-play/bom-samaritano-thumb.jpg.asset.json";
+import bomSamaritanoThumb from "@/assets/lemos-play/bom-samaritano-thumb-v3.png.asset.json";
 import vidFilhoProdigo from "@/assets/lemos-play/filho-prodigo.mp4.asset.json";
 import filhoProdigoThumb from "@/assets/lemos-play/filho-prodigo-thumb.png.asset.json";
 import vidJesusCrucificado from "@/assets/lemos-play/jesus-crucificado.mp4.asset.json";
 import vidJesusVive from "@/assets/lemos-play/jesus-vive.mp4.asset.json";
 import vidGetsemani from "@/assets/lemos-play/jesus-getsemani.mp4.asset.json";
-import getsemaniThumb from "@/assets/lemos-play/getsemani-thumb.png.asset.json";
-import jesusCrucificadoThumb from "@/assets/lemos-play/jesus-crucificado-thumb.png.asset.json";
-import jesusViveThumb from "@/assets/lemos-play/jesus-vive-thumb.png.asset.json";
+import getsemaniThumb from "@/assets/lemos-play/getsemani-thumb-v3.png.asset.json";
+import jesusCrucificadoThumb from "@/assets/lemos-play/jesus-crucificado-thumb-v3.png.asset.json";
+import jesusViveThumb from "@/assets/lemos-play/jesus-vive-thumb-v3.png.asset.json";
 
 
 export interface BibleVideo {
