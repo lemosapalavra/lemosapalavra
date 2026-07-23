@@ -74,7 +74,7 @@ import vidBatismoP2 from "@/assets/lemos-play/batismo-jesus-parte2.mp4.asset.jso
 import batismoP1Thumb from "@/assets/lemos-play/batismo-jesus-parte1-thumb.png.asset.json";
 import batismoP2Thumb from "@/assets/lemos-play/batismo-jesus-parte2-thumb.png.asset.json";
 import vidSemeador from "@/assets/lemos-play/jesus-semeador.mp4.asset.json";
-import semeadorThumb from "@/assets/lemos-play/o-semeador-cover.jpg.asset.json";
+import semeadorThumb from "@/assets/lemos-play/semeador-thumb-v3.png.asset.json";
 import jesusSerieLogo from "@/assets/lemos-play/jesus-serie-logo.png.asset.json";
 import curaParaliticoThumb from "@/assets/lemos-play/cura-paralitico-thumb.png.asset.json";
 import aTempestadeThumb from "@/assets/lemos-play/a-tempestade-thumb.png.asset.json";
