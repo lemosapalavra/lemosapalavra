@@ -242,7 +242,7 @@ function WhatsappToggle() {
   const [saved, setSaved] = useState(() => loadWhatsappCfg());
   const [draft, setDraft] = useState(saved);
   const [flash, setFlash] = useState("");
-  const dirty = draft.enabled !== saved.enabled || draft.phone !== saved.phone;
+  const dirty = draft.enabled !== saved.enabled || draft.email !== saved.email;
 
   const handleSave = () => {
     saveWhatsappCfg(draft);
@@ -253,35 +253,34 @@ function WhatsappToggle() {
 
   return (
     <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
-      <h3 className="font-display text-lg font-bold text-foreground mb-2">💬 Botão flutuante do WhatsApp</h3>
+      <h3 className="font-display text-lg font-bold text-foreground mb-2">✉️ Botão flutuante de E-mail</h3>
       <p className="text-xs text-muted-foreground mb-3">
-        Aparece em todas as páginas. Ative/desative e defina o número de contato.
+        Aparece em todas as páginas. Ative/desative e defina o e-mail de contato.
       </p>
       <button
         onClick={() => setDraft({ ...draft, enabled: !draft.enabled })}
         className={`px-4 py-2 rounded-xl font-display font-bold text-sm transition mb-3 ${
-          draft.enabled ? "bg-emerald-600 text-white hover:bg-emerald-700" : "bg-zinc-200 text-foreground hover:bg-zinc-300"
+          draft.enabled ? "bg-amber-600 text-white hover:bg-amber-700" : "bg-zinc-200 text-foreground hover:bg-zinc-300"
         }`}
       >
-        {draft.enabled ? "✓ Ativo (clique para desativar)" : "Ativar botão do WhatsApp"}
+        {draft.enabled ? "✓ Ativo (clique para desativar)" : "Ativar botão de E-mail"}
       </button>
       <div>
         <label className="block text-xs font-display font-bold mb-1">
-          Número do WhatsApp com DDI (ex: 5515981842767)
+          E-mail de contato
         </label>
         <input
-          type="tel"
-          inputMode="numeric"
-          value={draft.phone}
-          onChange={(e) => setDraft({ ...draft, phone: e.target.value.replace(/\D/g, "") })}
+          type="email"
+          value={draft.email}
+          onChange={(e) => setDraft({ ...draft, email: e.target.value })}
           className="w-full px-3 py-2 rounded-lg border border-border bg-white text-sm"
-          placeholder="5515981842767"
+          placeholder="contato@lemosapalavra.live"
         />
         <p className="text-[11px] text-muted-foreground mt-1">
-          ⚠️ O WhatsApp só aceita <strong>número de telefone</strong> no link (não funciona com @usuário).
-          Digite com código do país (55 para Brasil) + DDD + número, sem espaços.
+          Ao clicar, o app abre o cliente de e-mail padrão do dispositivo.
         </p>
       </div>
+
 
       <div className="flex items-center gap-3 mt-4">
         <button
