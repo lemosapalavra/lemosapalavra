@@ -107,7 +107,7 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
           )}
           {user?.name && (
             <div className="flex items-center gap-1.5">
-              <span className={`font-display font-bold text-xs hidden sm:inline max-w-[100px] truncate ${isLemosPlay ? "text-white" : "text-foreground"}`}>
+              <span className={`font-display font-bold text-xs max-w-[100px] truncate ${isLemosPlay ? "text-white" : "text-foreground"}`}>
                 {user.name}
               </span>
               <img
