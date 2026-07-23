@@ -139,8 +139,13 @@ export default function Login() {
   };
 
   const doRegister = async () => {
-    if (!name || !ageRange || !finalAvatar) {
-      alert("Preencha nome, faixa etária e escolha um avatar.");
+    if (!name || !username.trim() || !ageRange || !finalAvatar) {
+      alert("Preencha nome, nome de usuário, faixa etária e escolha um avatar.");
+      return;
+    }
+    const uname = username.trim().replace(/^@+/, "");
+    if (uname.length < 3) {
+      alert("O nome de usuário deve ter pelo menos 3 caracteres.");
       return;
     }
     const phoneDigits = phone.replace(/\D/g, "");
@@ -159,7 +164,7 @@ export default function Login() {
       password,
       options: {
         emailRedirectTo: `${window.location.origin}/`,
-        data: { name, age_range: ageRange, phone, role: "", avatar: finalAvatar },
+        data: { name, username: uname, age_range: ageRange, phone, role: "", avatar: finalAvatar },
       },
     });
     if (error) {
