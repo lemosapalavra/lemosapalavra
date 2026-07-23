@@ -3,7 +3,7 @@ import { Mail } from "lucide-react";
 
 const LS_ENABLED = "lemos_whatsapp_enabled";
 const LS_EMAIL = "lemos_contact_email";
-const DEFAULT_EMAIL = "contato@lemosapalavra.live";
+const DEFAULT_EMAIL = "lemosapalavra@gmail.com";
 
 export function loadWhatsappCfg() {
   const enabled = localStorage.getItem(LS_ENABLED);

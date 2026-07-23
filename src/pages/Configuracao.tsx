@@ -274,7 +274,7 @@ function WhatsappToggle() {
           value={draft.email}
           onChange={(e) => setDraft({ ...draft, email: e.target.value })}
           className="w-full px-3 py-2 rounded-lg border border-border bg-white text-sm"
-          placeholder="contato@lemosapalavra.live"
+          placeholder="lemosapalavra@gmail.com"
         />
         <p className="text-[11px] text-muted-foreground mt-1">
           Ao clicar, o app abre o cliente de e-mail padrão do dispositivo.

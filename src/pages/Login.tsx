@@ -73,6 +73,7 @@ export default function Login() {
 
   // register-only fields
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [ageRange, setAgeRange] = useState<AgeRange | "">("");
   const [phone, setPhone] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
@@ -138,8 +139,13 @@ export default function Login() {
   };
 
   const doRegister = async () => {
-    if (!name || !ageRange || !finalAvatar) {
-      alert("Preencha nome, faixa etária e escolha um avatar.");
+    if (!name || !username.trim() || !ageRange || !finalAvatar) {
+      alert("Preencha nome, nome de usuário, faixa etária e escolha um avatar.");
+      return;
+    }
+    const uname = username.trim().replace(/^@+/, "");
+    if (uname.length < 3) {
+      alert("O nome de usuário deve ter pelo menos 3 caracteres.");
       return;
     }
     const phoneDigits = phone.replace(/\D/g, "");
@@ -158,7 +164,7 @@ export default function Login() {
       password,
       options: {
         emailRedirectTo: `${window.location.origin}/`,
-        data: { name, age_range: ageRange, phone, role: "", avatar: finalAvatar },
+        data: { name, username: uname, age_range: ageRange, phone, role: "", avatar: finalAvatar },
       },
     });
     if (error) {
@@ -279,6 +285,18 @@ export default function Login() {
                       </button>
                     ))}
                   </div>
+                </Field>
+                <Field label="Nome de usuário *">
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value.replace(/\s+/g, ""))}
+                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    placeholder="ex.: joao123"
+                    autoComplete="username"
+                    required
+                    minLength={3}
+                  />
                 </Field>
                 <Field label="Celular *">
                   <input
