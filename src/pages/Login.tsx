@@ -312,18 +312,31 @@ export default function Login() {
             )}
 
             {mode === "login" && (
-              <Field label="Celular *">
-                <input
-                  type="tel"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
-                  placeholder="(11) 99999-9999"
-                  autoComplete="tel"
-                  inputMode="tel"
-                />
-              </Field>
+              <>
+                <Field label="Nome">
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    placeholder="Seu nome (opcional)"
+                    autoComplete="name"
+                  />
+                </Field>
+                <Field label="Celular *">
+                  <input
+                    type="tel"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    placeholder="(11) 99999-9999"
+                    autoComplete="tel"
+                    inputMode="tel"
+                  />
+                </Field>
+              </>
             )}
+
 
             <Field label="Senha *">
               <div className="relative">
