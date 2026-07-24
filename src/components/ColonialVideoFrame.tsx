@@ -56,12 +56,12 @@ export default function ColonialVideoFrame({
   children,
   className = "",
   variant = "gold",
-  aspect = "16/9",
+  aspect = "9/16",
 }: {
   children: ReactNode;
   className?: string;
   variant?: FrameVariant;
-  /** CSS aspect-ratio for the frame. Defaults to 16/9 (YouTube). */
+  /** CSS aspect-ratio for the frame. Defaults to 9/16 (vertical). */
   aspect?: string;
 }) {
   const p = PALETTES[variant];
