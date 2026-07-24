@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Shield, Copy } from "lucide-react";
+import { Eye, EyeOff, Shield } from "lucide-react";
 import { setAdminMode, useIsAdmin } from "@/hooks/useIsAdmin";
 import { supabase } from "@/integrations/supabase/client";
 import InstallShortcut from "@/components/InstallShortcut";
@@ -312,18 +312,31 @@ export default function Login() {
             )}
 
             {mode === "login" && (
-              <Field label="Celular *">
-                <input
-                  type="tel"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
-                  placeholder="(11) 99999-9999"
-                  autoComplete="tel"
-                  inputMode="tel"
-                />
-              </Field>
+              <>
+                <Field label="Nome">
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    placeholder="Seu nome (opcional)"
+                    autoComplete="name"
+                  />
+                </Field>
+                <Field label="Celular *">
+                  <input
+                    type="tel"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    placeholder="(11) 99999-9999"
+                    autoComplete="tel"
+                    inputMode="tel"
+                  />
+                </Field>
+              </>
             )}
+
 
             <Field label="Senha *">
               <div className="relative">
@@ -450,58 +463,39 @@ export default function Login() {
 
           </div>
 
-          {/* Divider + Google */}
-          <div className="mt-6 pt-5 border-t border-amber-200/80">
-            <p className="text-center text-xs text-muted-foreground mb-3">
-              Ou entre/cadastre-se com a sua conta do:
-            </p>
-            <div className="flex justify-center">
+          {/* Admin unlock — visible dot at the bottom, only the owner knows what it does */}
+          <div className="mt-6 pt-4 border-t border-amber-200/60 flex flex-col items-center gap-2">
+            {ownerUnlocked ? (
               <button
-                onClick={handleGoogle}
-                className="bg-white border border-amber-200 rounded-lg px-5 py-2 shadow-sm hover:shadow-md transition"
+                onClick={() => navigate("/config")}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-display font-extrabold text-xs shadow"
+                title="Acesso de administrador"
               >
-                <span className="font-display text-base">
-                  <span style={{ color: "#4285F4" }}>G</span>
-                  <span style={{ color: "#EA4335" }}>o</span>
-                  <span style={{ color: "#FBBC05" }}>o</span>
-                  <span style={{ color: "#4285F4" }}>g</span>
-                  <span style={{ color: "#34A853" }}>l</span>
-                  <span style={{ color: "#EA4335" }}>e</span>
-                </span>
+                <Shield className="w-4 h-4" /> Entrar como Administrador
               </button>
-            </div>
+            ) : (
+              <button
+                aria-label="Admin"
+                onClick={() => {
+                  const now = Date.now();
+                  const w = window as any;
+                  if (!w.__ownerTaps || now - w.__ownerTapsAt > 1500) w.__ownerTaps = 0;
+                  w.__ownerTaps += 1;
+                  w.__ownerTapsAt = now;
+                  if (w.__ownerTaps >= 3) {
+                    try { localStorage.setItem(OWNER_FLAG_KEY, "1"); } catch {}
+                    setOwnerUnlocked(true);
+                    w.__ownerTaps = 0;
+                  }
+                }}
+                className="w-8 h-8 rounded-full bg-amber-100 hover:bg-amber-200 border border-amber-300 flex items-center justify-center text-amber-700 shadow-sm"
+                title="."
+              >
+                <Shield className="w-4 h-4" />
+              </button>
+            )}
           </div>
 
-          {/* Admin access is granted server-side via the user_roles table. */}
-          {ownerUnlocked && (
-            <div className="mt-5 pt-4 border-t border-amber-200/60 flex flex-col items-center gap-2 text-center">
-              <p className="text-xs text-muted-foreground max-w-xs">
-                <Shield className="w-3 h-3 inline mr-1" />
-                O acesso de administrador é liberado no banco de dados (tabela <code>user_roles</code>). Faça login normalmente com sua conta administradora.
-              </p>
-            </div>
-          )}
-
-          {/* Gatilho secreto: 5 toques rápidos aqui destravam o Admin (só o dono conhece) */}
-          {!ownerUnlocked && (
-            <button
-              aria-label="."
-              onClick={() => {
-                const now = Date.now();
-                const w = window as any;
-                if (!w.__ownerTaps || now - w.__ownerTapsAt > 1500) w.__ownerTaps = 0;
-                w.__ownerTaps += 1;
-                w.__ownerTapsAt = now;
-                if (w.__ownerTaps >= 5) {
-                  try { localStorage.setItem(OWNER_FLAG_KEY, "1"); } catch {}
-                  setOwnerUnlocked(true);
-                  w.__ownerTaps = 0;
-                }
-              }}
-              className="mt-4 mx-auto block w-3 h-3 rounded-full bg-transparent hover:bg-amber-200/40"
-              tabIndex={-1}
-            />
-          )}
         </div>
       </div>
     </div>

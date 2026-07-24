@@ -135,6 +135,9 @@ export default function Biblia() {
   const [loadingVerses, setLoadingVerses] = useState(false);
   const [verseError, setVerseError] = useState<string | null>(null);
   const [fontSize, setFontSize] = useState(16);
+  const [fromSticker, setFromSticker] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
+
 
   // Deep-link via ?book=Gênesis&chapter=1 (usado a partir do Álbum)
   useEffect(() => {
@@ -143,9 +146,44 @@ export default function Biblia() {
     const c = params.get("chapter");
     if (b && bookIdMap[b]) {
       setSelectedBook(b);
+      setFromSticker(true);
       if (c && Number(c) > 0) setSelectedChapter(Number(c));
     }
   }, []);
+
+  // Stop any TTS when leaving chapter or unmounting.
+  useEffect(() => {
+    return () => {
+      try { window.speechSynthesis?.cancel(); } catch { /* ignore */ }
+    };
+  }, []);
+  useEffect(() => {
+    if (!selectedChapter) {
+      try { window.speechSynthesis?.cancel(); } catch { /* ignore */ }
+      setSpeaking(false);
+    }
+  }, [selectedChapter]);
+
+  const toggleListen = () => {
+    try {
+      const synth = window.speechSynthesis;
+      if (!synth) { alert("Seu navegador não suporta leitura em voz alta."); return; }
+      if (speaking) { synth.cancel(); setSpeaking(false); return; }
+      const text = `${selectedBook} capítulo ${selectedChapter}. ` +
+        verses.map((v) => `Versículo ${v.verse}. ${v.text}`).join(" ");
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "pt-BR";
+      u.rate = 0.95;
+      u.onend = () => setSpeaking(false);
+      u.onerror = () => setSpeaking(false);
+      synth.cancel();
+      synth.speak(u);
+      setSpeaking(true);
+    } catch {
+      setSpeaking(false);
+    }
+  };
+
 
 
   // Fetch verses from bible-api.com when chapter is selected
@@ -294,14 +332,24 @@ export default function Biblia() {
         {selectedBook && selectedChapter && (
           <div
             className="relative rounded-2xl shadow-2xl border border-amber-900/30 mb-4 mx-[-1rem] sm:mx-[-2rem]"
-            style={{
-              backgroundImage: `url(${pergaminhoBg})`,
-              backgroundSize: "100% 100%",
-              backgroundRepeat: "no-repeat",
-              minHeight: "600px",
-              color: "hsl(25 50% 22%)",
-              padding: "clamp(2.5rem, 6vw, 5rem) clamp(1.25rem, 5vw, 4rem)",
-            }}>
+            style={
+              fromSticker
+                ? {
+                    background: "hsl(45,60%,97%)",
+                    minHeight: "600px",
+                    color: "hsl(25 50% 22%)",
+                    padding: "clamp(2rem, 5vw, 4rem) clamp(1.25rem, 5vw, 4rem)",
+                  }
+                : {
+                    backgroundImage: `url(${pergaminhoBg})`,
+                    backgroundSize: "100% 100%",
+                    backgroundRepeat: "no-repeat",
+                    minHeight: "600px",
+                    color: "hsl(25 50% 22%)",
+                    padding: "clamp(2.5rem, 6vw, 5rem) clamp(1.25rem, 5vw, 4rem)",
+                  }
+            }>
+
 
             <button
               onClick={() => setSelectedChapter(null)}
@@ -337,7 +385,20 @@ export default function Biblia() {
               >
                 A+
               </button>
+              <button
+                onClick={toggleListen}
+                disabled={!verses.length}
+                className={`ml-auto inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-display font-extrabold shadow transition ${
+                  speaking
+                    ? "bg-rose-500 text-white hover:bg-rose-600"
+                    : "bg-amber-400 text-amber-950 hover:bg-amber-300"
+                } disabled:opacity-50 disabled:cursor-not-allowed`}
+                title={speaking ? "Parar leitura" : "Ouvir capítulo"}
+              >
+                {speaking ? "⏸️ Parar" : "🔊 Ouvir"}
+              </button>
             </div>
+
 
             {/* Verses */}
             {loadingVerses && (

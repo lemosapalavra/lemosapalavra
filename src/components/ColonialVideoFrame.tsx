@@ -56,17 +56,22 @@ export default function ColonialVideoFrame({
   children,
   className = "",
   variant = "gold",
+  aspect = "16/9",
 }: {
   children: ReactNode;
   className?: string;
   variant?: FrameVariant;
+  /** CSS aspect-ratio for the frame. Defaults to 16/9 (YouTube). */
+  aspect?: string;
 }) {
   const p = PALETTES[variant];
   return (
     <div
-      className={`relative aspect-[9/16] h-[90vh] max-h-[90vh] max-w-[95vw] ${className}`}
+      className={`relative w-full max-w-[95vw] max-h-[90vh] ${className}`}
       style={{
-        padding: "clamp(10px, 2.2vh, 22px)",
+        aspectRatio: aspect,
+        padding: "clamp(8px, 1.6vh, 18px)",
+
         borderRadius: "18px",
         background: p.outer,
         boxShadow: `0 0 0 2px ${p.ring1}, 0 0 0 4px ${p.ring2}, 0 20px 60px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.5)`,
