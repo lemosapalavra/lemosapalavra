@@ -135,6 +135,9 @@ export default function Biblia() {
   const [loadingVerses, setLoadingVerses] = useState(false);
   const [verseError, setVerseError] = useState<string | null>(null);
   const [fontSize, setFontSize] = useState(16);
+  const [fromSticker, setFromSticker] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
+
 
   // Deep-link via ?book=Gênesis&chapter=1 (usado a partir do Álbum)
   useEffect(() => {
