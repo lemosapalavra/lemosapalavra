@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Shield, Copy } from "lucide-react";
+import { Eye, EyeOff, Shield } from "lucide-react";
 import { setAdminMode, useIsAdmin } from "@/hooks/useIsAdmin";
 import { supabase } from "@/integrations/supabase/client";
 import InstallShortcut from "@/components/InstallShortcut";
