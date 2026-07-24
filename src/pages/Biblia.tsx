@@ -332,14 +332,24 @@ export default function Biblia() {
         {selectedBook && selectedChapter && (
           <div
             className="relative rounded-2xl shadow-2xl border border-amber-900/30 mb-4 mx-[-1rem] sm:mx-[-2rem]"
-            style={{
-              backgroundImage: `url(${pergaminhoBg})`,
-              backgroundSize: "100% 100%",
-              backgroundRepeat: "no-repeat",
-              minHeight: "600px",
-              color: "hsl(25 50% 22%)",
-              padding: "clamp(2.5rem, 6vw, 5rem) clamp(1.25rem, 5vw, 4rem)",
-            }}>
+            style={
+              fromSticker
+                ? {
+                    background: "hsl(45,60%,97%)",
+                    minHeight: "600px",
+                    color: "hsl(25 50% 22%)",
+                    padding: "clamp(2rem, 5vw, 4rem) clamp(1.25rem, 5vw, 4rem)",
+                  }
+                : {
+                    backgroundImage: `url(${pergaminhoBg})`,
+                    backgroundSize: "100% 100%",
+                    backgroundRepeat: "no-repeat",
+                    minHeight: "600px",
+                    color: "hsl(25 50% 22%)",
+                    padding: "clamp(2.5rem, 6vw, 5rem) clamp(1.25rem, 5vw, 4rem)",
+                  }
+            }>
+
 
             <button
               onClick={() => setSelectedChapter(null)}
