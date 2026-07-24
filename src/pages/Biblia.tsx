@@ -385,7 +385,20 @@ export default function Biblia() {
               >
                 A+
               </button>
+              <button
+                onClick={toggleListen}
+                disabled={!verses.length}
+                className={`ml-auto inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-display font-extrabold shadow transition ${
+                  speaking
+                    ? "bg-rose-500 text-white hover:bg-rose-600"
+                    : "bg-amber-400 text-amber-950 hover:bg-amber-300"
+                } disabled:opacity-50 disabled:cursor-not-allowed`}
+                title={speaking ? "Parar leitura" : "Ouvir capítulo"}
+              >
+                {speaking ? "⏸️ Parar" : "🔊 Ouvir"}
+              </button>
             </div>
+
 
             {/* Verses */}
             {loadingVerses && (
