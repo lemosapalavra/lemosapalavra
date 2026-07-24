@@ -146,9 +146,44 @@ export default function Biblia() {
     const c = params.get("chapter");
     if (b && bookIdMap[b]) {
       setSelectedBook(b);
+      setFromSticker(true);
       if (c && Number(c) > 0) setSelectedChapter(Number(c));
     }
   }, []);
+
+  // Stop any TTS when leaving chapter or unmounting.
+  useEffect(() => {
+    return () => {
+      try { window.speechSynthesis?.cancel(); } catch { /* ignore */ }
+    };
+  }, []);
+  useEffect(() => {
+    if (!selectedChapter) {
+      try { window.speechSynthesis?.cancel(); } catch { /* ignore */ }
+      setSpeaking(false);
+    }
+  }, [selectedChapter]);
+
+  const toggleListen = () => {
+    try {
+      const synth = window.speechSynthesis;
+      if (!synth) { alert("Seu navegador não suporta leitura em voz alta."); return; }
+      if (speaking) { synth.cancel(); setSpeaking(false); return; }
+      const text = `${selectedBook} capítulo ${selectedChapter}. ` +
+        verses.map((v) => `Versículo ${v.verse}. ${v.text}`).join(" ");
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "pt-BR";
+      u.rate = 0.95;
+      u.onend = () => setSpeaking(false);
+      u.onerror = () => setSpeaking(false);
+      synth.cancel();
+      synth.speak(u);
+      setSpeaking(true);
+    } catch {
+      setSpeaking(false);
+    }
+  };
+
 
 
   // Fetch verses from bible-api.com when chapter is selected
