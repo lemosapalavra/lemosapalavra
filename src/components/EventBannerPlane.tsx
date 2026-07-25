@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { loadEventBanner, type EventBannerConfig } from "@/data/eventBannerConfig";
 import { normalizeVideo } from "@/lib/videoEmbed";
-import planeRtl from "@/assets/aviao-rtl.png.asset.json";
-import planeLtr from "@/assets/aviao-ltr.png.asset.json";
+import planeRtl from "@/assets/aviao-rtl-v3.png.asset.json";
+import planeLtr from "@/assets/aviao-ltr-v3.png.asset.json";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 
 /**
