@@ -118,35 +118,37 @@ export default function EventBannerPlane() {
   return (
     <>
       <div className="pointer-events-none fixed inset-x-0 top-4 sm:top-6 z-10 h-40 overflow-hidden">
-        <div
-          key={dir}
-          className="absolute top-0"
-          style={{ animation: `${animName} 14s linear forwards`, willChange: "transform" }}
-        >
-          <div className="relative">
-            <img
-              src={planeSrc}
-              onClick={handleClick}
-              alt={dir === "rtl" ? "Aviãozinho voando da direita para a esquerda" : "Aviãozinho voando da esquerda para a direita"}
-              className={`h-28 sm:h-32 md:h-36 w-auto drop-shadow-2xl select-none ${cfg.videoUrl ? "pointer-events-auto cursor-pointer" : ""}`}
-              draggable={false}
-            />
-            {cfg.message && (
-              <button
+        {flying && (
+          <div
+            key={dir}
+            className="absolute top-0"
+            style={{ animation: `${animName} 14s linear forwards`, willChange: "transform" }}
+          >
+            <div className="relative">
+              <img
+                src={planeSrc}
                 onClick={handleClick}
-                disabled={!cfg.videoUrl}
-                className="pointer-events-auto absolute bottom-2 rounded-full bg-[#1e5bd6] hover:bg-[#1747a6] disabled:opacity-70 border-2 border-white shadow-lg px-3 py-1 font-display font-extrabold text-[11px] sm:text-xs text-white whitespace-nowrap animate-pulse"
-                style={dir === "rtl"
-                  ? { right: "12%" }   // faixa fica à direita do avião
-                  : { left: "12%" }}   // faixa fica à esquerda do avião
-                title={cfg.videoUrl ? "Assistir vídeo" : "Sem vídeo configurado"}
-                aria-label={cfg.message}
-              >
-                {cfg.message}
-              </button>
-            )}
+                alt={dir === "rtl" ? "Aviãozinho voando da direita para a esquerda" : "Aviãozinho voando da esquerda para a direita"}
+                className={`h-28 sm:h-32 md:h-36 w-auto drop-shadow-2xl select-none ${cfg.videoUrl ? "pointer-events-auto cursor-pointer" : ""}`}
+                draggable={false}
+              />
+              {cfg.message && (
+                <button
+                  onClick={handleClick}
+                  disabled={!cfg.videoUrl}
+                  className="pointer-events-auto absolute rounded-full bg-[#1e5bd6] hover:bg-[#1747a6] disabled:opacity-70 border-2 border-white shadow-lg px-3 py-1 font-display font-extrabold text-[11px] sm:text-xs text-white whitespace-nowrap animate-pulse"
+                  style={dir === "rtl"
+                    ? { right: "4%", bottom: "38%" }   // acima da mãozinha (canto inferior direito da faixa)
+                    : { left: "4%", bottom: "38%" }}   // acima da mãozinha (canto inferior esquerdo da faixa)
+                  title={cfg.videoUrl ? "Assistir vídeo" : "Sem vídeo configurado"}
+                  aria-label={cfg.message}
+                >
+                  {cfg.message}
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <style>{`
