@@ -113,6 +113,7 @@ export default function Login() {
   const doLogin = async (overrideEmail?: string, overridePassword?: string) => {
     const raw = (overrideEmail ?? email).trim();
     const pw = overridePassword ?? password;
+    if (!name.trim()) { alert("Informe seu nome."); return; }
     if (!raw || !pw) { alert("Informe seu celular e a senha."); return; }
     // Aceita celular (padrão) ou e-mail (compatibilidade com contas antigas).
     const em = raw.includes("@") ? raw : phoneToEmail(raw);
@@ -313,14 +314,15 @@ export default function Login() {
 
             {mode === "login" && (
               <>
-                <Field label="Nome">
+                <Field label="Nome *">
                   <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
-                    placeholder="Seu nome (opcional)"
+                    placeholder="Seu nome"
                     autoComplete="name"
+                    required
                   />
                 </Field>
                 <Field label="Celular *">
@@ -463,11 +465,23 @@ export default function Login() {
 
           </div>
 
-          {/* Admin unlock — visible ONLY to the owner (localStorage flag set via ?owner=1). Single tap enters admin. */}
+          {/* Admin shortcut — always visible for the site owner. Single tap unlocks owner mode + goes to Config. */}
           {ownerUnlocked && (
             <div className="mt-6 pt-4 border-t border-amber-200/60 flex flex-col items-center gap-2">
               <button
-                onClick={() => navigate("/config")}
+                onClick={() => {
+                  try { localStorage.setItem(OWNER_FLAG_KEY, "1"); } catch {}
+                  // Garante que Configuracao (que exige lemos_user) permita entrada do dono.
+                  try {
+                    if (!localStorage.getItem("lemos_user")) {
+                      localStorage.setItem("lemos_user", JSON.stringify({
+                        name: "Administrador", role: "admin", avatar: "", email: "", createdAt: new Date().toISOString(),
+                      }));
+                    }
+                  } catch {}
+                  setAdminMode(true);
+                  navigate("/config");
+                }}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-display font-extrabold text-xs shadow"
                 title="Acesso de administrador"
               >

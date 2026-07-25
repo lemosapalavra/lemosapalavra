@@ -113,6 +113,7 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
   const [internalOpen, setInternalOpen] = useState(false);
   const [translatedCount, setTranslatedCount] = useState(0);
   const [allAramaicVisible, setAllAramaicVisible] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
 
   const isControlled = externalOpen !== undefined;
   const open = isControlled ? externalOpen : internalOpen;
@@ -135,7 +136,42 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
     if (open) startAnimation();
   }, [open, startAnimation]);
 
+  const stopSpeak = useCallback(() => {
+    try { window.speechSynthesis?.cancel(); } catch {}
+    setSpeaking(false);
+  }, []);
+
+  const toggleListen = () => {
+    if (speaking) { stopSpeak(); return; }
+    try {
+      const synth = window.speechSynthesis;
+      if (!synth) { alert("Seu navegador não suporta leitura em voz alta."); return; }
+      synth.cancel();
+      const plain = dedicatoriaTexts
+        .map((t) => t.pt
+          .replace(/\{\{signature\}\}|\{\{\/signature\}\}/g, "")
+          .replace(/\*\*|__|\*/g, "")
+        )
+        .join(". ");
+      const u = new SpeechSynthesisUtterance(plain);
+      u.lang = "pt-BR";
+      u.rate = 0.95;
+      u.onend = () => setSpeaking(false);
+      u.onerror = () => setSpeaking(false);
+      synth.speak(u);
+      setSpeaking(true);
+    } catch {
+      setSpeaking(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!open) stopSpeak();
+    return () => stopSpeak();
+  }, [open, stopSpeak]);
+
   const handleClose = () => {
+    stopSpeak();
     if (isControlled) onOpenChange?.(false);
     else setInternalOpen(false);
     setTranslatedCount(0);
@@ -170,6 +206,15 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
                 aria-label="Fechar"
               >
                 ✕
+              </button>
+              <button
+                onClick={toggleListen}
+                className="absolute top-4 left-4 h-9 px-3 rounded-full flex items-center gap-1.5 text-xs font-bold hover:scale-105 transition-transform z-20"
+                style={{ background: speaking ? "#8b2b2b" : "#6b3a0a", color: "#f7e9c9", boxShadow: "0 2px 6px rgba(0,0,0,0.4)" }}
+                aria-label={speaking ? "Parar leitura" : "Ouvir dedicatória"}
+                title={speaking ? "Parar leitura" : "Ouvir dedicatória"}
+              >
+                {speaking ? "⏹️ Parar" : "🔊 Ouvir"}
               </button>
 
               <div

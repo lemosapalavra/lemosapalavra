@@ -98,10 +98,11 @@ export default function InstallShortcut() {
           return;
         }
       }
-      // 2) iOS Safari: no programmatic install, guide the user.
+      // 2) iOS Safari: sem instalação programática — baixa o atalho HTML e mostra a dica.
       if (isIOS()) {
+        downloadShortcutFile();
         setDone(
-          "📱 No iPhone/iPad, toque no botão Compartilhar do Safari e escolha “Adicionar à Tela de Início”. O ícone da Lemos a Palavra aparecerá na tela inicial."
+          "📱 No iPhone/iPad: baixamos um atalho da Lemos a Palavra. Você também pode tocar no botão Compartilhar do Safari e escolher “Adicionar à Tela de Início” para criar o ícone da logo na tela inicial."
         );
         setBusy(false);
         return;
