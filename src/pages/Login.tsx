@@ -113,6 +113,7 @@ export default function Login() {
   const doLogin = async (overrideEmail?: string, overridePassword?: string) => {
     const raw = (overrideEmail ?? email).trim();
     const pw = overridePassword ?? password;
+    if (!name.trim()) { alert("Informe seu nome."); return; }
     if (!raw || !pw) { alert("Informe seu celular e a senha."); return; }
     // Aceita celular (padrão) ou e-mail (compatibilidade com contas antigas).
     const em = raw.includes("@") ? raw : phoneToEmail(raw);
