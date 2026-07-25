@@ -16,6 +16,7 @@ export default function EventBannerPlane() {
   const [cfg, setCfg] = useState<EventBannerConfig>(() => loadEventBanner());
   const [open, setOpen] = useState(false);
   const [dir, setDir] = useState<"rtl" | "ltr">("rtl");
+  const [flying, setFlying] = useState(true);
   const audioRef = useRef<{ ctx: AudioContext; stop: () => void } | null>(null);
 
   useEffect(() => {
@@ -28,11 +29,18 @@ export default function EventBannerPlane() {
     };
   }, []);
 
-  // Alterna direção a cada travessia (~14s)
+  // Ciclo: 14s voando + 2s pausa (sem som), depois inverte direção
   useEffect(() => {
     if (!cfg.enabled) return;
-    const id = setInterval(() => setDir((d) => (d === "rtl" ? "ltr" : "rtl")), 14000);
-    return () => clearInterval(id);
+    let t2: any;
+    const t1 = setInterval(() => {
+      setFlying(false);
+      t2 = setTimeout(() => {
+        setDir((d) => (d === "rtl" ? "ltr" : "rtl"));
+        setFlying(true);
+      }, 2000);
+    }, 16000);
+    return () => { clearInterval(t1); clearTimeout(t2); };
   }, [cfg.enabled]);
 
   // Som de motor de avião (síntese WebAudio)
