@@ -85,16 +85,16 @@ export default function EventBannerPlane() {
   const stopPlaneSound = () => { audioRef.current?.stop(); audioRef.current = null; };
 
   useEffect(() => {
-    if (!cfg.enabled) { stopPlaneSound(); return; }
+    if (!cfg.enabled || !flying) { stopPlaneSound(); return; }
     startPlaneSound();
     const resume = () => {
-      if (!audioRef.current) startPlaneSound();
+      if (flying && !audioRef.current) startPlaneSound();
       window.removeEventListener("pointerdown", resume);
     };
     window.addEventListener("pointerdown", resume, { once: true });
     const onVis = () => {
       if (document.hidden) stopPlaneSound();
-      else if (!audioRef.current) startPlaneSound();
+      else if (flying && !audioRef.current) startPlaneSound();
     };
     document.addEventListener("visibilitychange", onVis);
     window.addEventListener("pagehide", stopPlaneSound);
@@ -106,7 +106,7 @@ export default function EventBannerPlane() {
       window.removeEventListener("beforeunload", stopPlaneSound);
       stopPlaneSound();
     };
-  }, [cfg.enabled]);
+  }, [cfg.enabled, flying]);
 
   if (!cfg.enabled) return null;
 
