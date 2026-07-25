@@ -389,6 +389,10 @@ function renderPage(p: (BookPage & { startIndex?: number }) | undefined, owned: 
 function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; owned: number; onClose: () => void }) {
   const stickerNumber = String(allStickers.findIndex((s) => s.id === sticker.id) + 1).padStart(3, "0");
   const category = categories.find((cat) => cat.stickers.some((s) => s.id === sticker.id));
+  const [zoom, setZoom] = useState(1);
+  const zoomIn = () => setZoom((z) => Math.min(3, +(z + 0.25).toFixed(2)));
+  const zoomOut = () => setZoom((z) => Math.max(1, +(z - 0.25).toFixed(2)));
+  const zoomReset = () => setZoom(1);
 
   return (
     <div
@@ -412,12 +416,14 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
               : { ring: "bg-gradient-to-br from-slate-200 via-slate-400 to-slate-500", inner: "from-slate-800/40 to-slate-900/40", glow: "shadow-[0_0_30px_rgba(148,163,184,0.45)]" };
           return (
             <div className={`relative rounded-[32px] p-[6px] ${frame.ring} ${frame.glow}`}>
-              <div className={`relative rounded-[26px] bg-gradient-to-br ${frame.inner} border border-white/10 p-4 backdrop-blur-sm flex items-center justify-center min-h-[60vh]`}>
+              <div className={`relative rounded-[26px] bg-gradient-to-br ${frame.inner} border border-white/10 p-4 backdrop-blur-sm flex items-center justify-center min-h-[60vh] overflow-hidden`}>
                 {sticker.image ? (
                   <img
                     src={sticker.image}
                     alt={sticker.name}
-                    className="max-w-full max-h-[78vh] object-contain drop-shadow-2xl"
+                    onClick={(e) => { e.stopPropagation(); zoomIn(); }}
+                    className="max-w-full max-h-[78vh] object-contain drop-shadow-2xl transition-transform duration-200 cursor-zoom-in select-none"
+                    style={{ transform: `scale(${zoom})` }}
                   />
                 ) : (
                   <div className="text-[200px]">{sticker.emoji}</div>
@@ -425,6 +431,13 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
                 {owned > 1 && (
                   <span className="absolute top-4 left-4 z-10 text-xs bg-red-500 text-white px-3 py-1 rounded-full font-bold shadow">×{owned}</span>
                 )}
+                {/* Zoom controls */}
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-black/60 border border-white/15 rounded-full px-2 py-1 backdrop-blur-sm">
+                  <button onClick={(e) => { e.stopPropagation(); zoomOut(); }} className="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 text-white font-bold" aria-label="Diminuir zoom">−</button>
+                  <span className="text-white text-xs font-bold w-10 text-center tabular-nums">{Math.round(zoom * 100)}%</span>
+                  <button onClick={(e) => { e.stopPropagation(); zoomIn(); }} className="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 text-white font-bold" aria-label="Aumentar zoom">+</button>
+                  <button onClick={(e) => { e.stopPropagation(); zoomReset(); }} className="ml-1 h-8 px-2 rounded-full bg-white/15 hover:bg-white/25 text-white text-[11px] font-bold" aria-label="Resetar zoom">Reset</button>
+                </div>
               </div>
             </div>
           );
