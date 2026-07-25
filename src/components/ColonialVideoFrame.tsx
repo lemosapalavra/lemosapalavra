@@ -67,10 +67,10 @@ export default function ColonialVideoFrame({
   const p = PALETTES[variant];
   return (
     <div
-      className={`relative w-full max-w-[95vw] max-h-[90vh] ${className}`}
+      className={`relative w-full max-w-[min(95vw,calc(90vh*9/16))] max-h-[90vh] ${className}`}
       style={{
         aspectRatio: aspect,
-        padding: "clamp(8px, 1.6vh, 18px)",
+        padding: "clamp(6px, 1.2vh, 14px)",
 
         borderRadius: "18px",
         background: p.outer,
