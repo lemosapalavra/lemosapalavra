@@ -176,11 +176,13 @@ export default function Login() {
       alert("O nome de usuário deve ter pelo menos 3 caracteres.");
       return;
     }
-    const phoneDigits = phone.replace(/\D/g, "");
-    if (phoneDigits.length < 10) {
-      alert("Informe um número de celular válido (com DDD).");
+    const phoneErr = validatePhone(phone);
+    if (phoneErr) {
+      setPhoneError(phoneErr);
+      toast({ title: "Celular inválido", description: phoneErr, variant: "destructive" });
       return;
     }
+    setPhoneError(null);
     if (!password || password.length < 6) {
       alert("Informe uma senha com pelo menos 6 caracteres.");
       return;
