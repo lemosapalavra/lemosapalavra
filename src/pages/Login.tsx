@@ -140,10 +140,14 @@ export default function Login() {
     if (!raw || !pw) { alert("Informe seu celular e a senha."); return; }
     // Aceita celular (padrão) ou e-mail (compatibilidade com contas antigas).
     const em = raw.includes("@") ? raw : phoneToEmail(raw);
-    const phoneDigits = raw.replace(/\D/g, "");
-    if (!raw.includes("@") && phoneDigits.length < 10) {
-      alert("Informe um celular válido com DDD (ex.: 11 99999-9999).");
-      return;
+    if (!raw.includes("@")) {
+      const err = validatePhone(raw);
+      if (err) {
+        setPhoneError(err);
+        toast({ title: "Celular inválido", description: err, variant: "destructive" });
+        return;
+      }
+      setPhoneError(null);
     }
     setBusy(true);
     const { data, error } = await supabase.auth.signInWithPassword({
