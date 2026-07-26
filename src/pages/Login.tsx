@@ -98,6 +98,7 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [ageRange, setAgeRange] = useState<AgeRange | "">("");
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState<string | null>(null);
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const [customAvatar, setCustomAvatar] = useState<string>("");
 
