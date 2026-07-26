@@ -332,12 +332,21 @@ export default function Login() {
                   <input
                     type="tel"
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    onChange={(e) => {
+                      const v = maskPhone(e.target.value);
+                      setPhone(v);
+                      setPhoneError(v ? validatePhone(v) : null);
+                    }}
+                    onBlur={() => setPhoneError(validatePhone(phone))}
+                    className={`w-full bg-sky-50 border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 ${phoneError ? "border-destructive focus:ring-destructive" : "border-amber-300/60 focus:ring-amber-400"}`}
                     placeholder="(11) 99999-9999"
+                    inputMode="numeric"
+                    maxLength={15}
                     required
                   />
+                  {phoneError && <p className="mt-1 text-xs font-body text-destructive">{phoneError}</p>}
                 </Field>
+
               </>
             )}
 
