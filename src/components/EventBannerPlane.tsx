@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { loadEventBanner, type EventBannerConfig } from "@/data/eventBannerConfig";
 import { normalizeVideo } from "@/lib/videoEmbed";
-import planeRtl from "@/assets/aviao-rtl-v3.png.asset.json";
-import planeLtr from "@/assets/aviao-ltr-v3.png.asset.json";
+import planeRtl from "@/assets/aviao-rtl-v4.png.asset.json";
+import planeLtr from "@/assets/aviao-ltr-v4.png.asset.json";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 
 /**
@@ -85,23 +85,29 @@ export default function EventBannerPlane() {
   const stopPlaneSound = () => { audioRef.current?.stop(); audioRef.current = null; };
 
   useEffect(() => {
+    // Som apenas enquanto o avião cruza a tela E a página está visível/em foco.
+    const pageActive = () => !document.hidden && document.hasFocus();
     if (!cfg.enabled || !flying) { stopPlaneSound(); return; }
-    startPlaneSound();
+    if (pageActive()) startPlaneSound();
     const resume = () => {
-      if (flying && !audioRef.current) startPlaneSound();
+      if (flying && pageActive() && !audioRef.current) startPlaneSound();
       window.removeEventListener("pointerdown", resume);
     };
     window.addEventListener("pointerdown", resume, { once: true });
-    const onVis = () => {
-      if (document.hidden) stopPlaneSound();
+    const sync = () => {
+      if (!pageActive()) stopPlaneSound();
       else if (flying && !audioRef.current) startPlaneSound();
     };
-    document.addEventListener("visibilitychange", onVis);
+    document.addEventListener("visibilitychange", sync);
+    window.addEventListener("focus", sync);
+    window.addEventListener("blur", stopPlaneSound);
     window.addEventListener("pagehide", stopPlaneSound);
     window.addEventListener("beforeunload", stopPlaneSound);
     return () => {
       window.removeEventListener("pointerdown", resume);
-      document.removeEventListener("visibilitychange", onVis);
+      document.removeEventListener("visibilitychange", sync);
+      window.removeEventListener("focus", sync);
+      window.removeEventListener("blur", stopPlaneSound);
       window.removeEventListener("pagehide", stopPlaneSound);
       window.removeEventListener("beforeunload", stopPlaneSound);
       stopPlaneSound();

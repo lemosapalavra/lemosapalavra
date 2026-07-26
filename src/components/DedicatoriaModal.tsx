@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import dedicatoriaBg from "@/assets/pergaminho.png";
 
 const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
@@ -109,14 +109,40 @@ interface DedicatoriaModalProps {
   onOpenChange?: (open: boolean) => void;
 }
 
+const PROGRESS_KEY = "lemos_dedicatoria_progress_v1";
+
+type Progress = { charIndex: number; scrollTop: number };
+
+function loadProgress(): Progress | null {
+  try {
+    const raw = localStorage.getItem(PROGRESS_KEY);
+    if (!raw) return null;
+    const p = JSON.parse(raw) as Progress;
+    if (typeof p?.charIndex !== "number") return null;
+    return p;
+  } catch { return null; }
+}
+
+function saveProgress(p: Progress) {
+  try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(p)); } catch {}
+}
+
 export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: DedicatoriaModalProps = {}) {
   const [internalOpen, setInternalOpen] = useState(false);
   const [translatedCount, setTranslatedCount] = useState(0);
   const [allAramaicVisible, setAllAramaicVisible] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+  const [resumed, setResumed] = useState(false);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const charRef = useRef(0);
+  const offsetRef = useRef(0);
 
   const isControlled = externalOpen !== undefined;
   const open = isControlled ? externalOpen : internalOpen;
+
+  const plainText = dedicatoriaTexts
+    .map((t) => t.pt.replace(/\{\{signature\}\}|\{\{\/signature\}\}/g, "").replace(/\*\*|__|\*/g, ""))
+    .join(". ");
 
   const startAnimation = useCallback(() => {
     setTranslatedCount(0);
@@ -132,38 +158,66 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
     });
   }, []);
 
-  useEffect(() => {
-    if (open) startAnimation();
-  }, [open, startAnimation]);
-
   const stopSpeak = useCallback(() => {
     try { window.speechSynthesis?.cancel(); } catch {}
     setSpeaking(false);
   }, []);
 
-  const toggleListen = () => {
-    if (speaking) { stopSpeak(); return; }
+  const speakFrom = useCallback((from: number) => {
     try {
       const synth = window.speechSynthesis;
       if (!synth) { alert("Seu navegador não suporta leitura em voz alta."); return; }
       synth.cancel();
-      const plain = dedicatoriaTexts
-        .map((t) => t.pt
-          .replace(/\{\{signature\}\}|\{\{\/signature\}\}/g, "")
-          .replace(/\*\*|__|\*/g, "")
-        )
-        .join(". ");
-      const u = new SpeechSynthesisUtterance(plain);
+      const start = Math.max(0, Math.min(from, Math.max(0, plainText.length - 1)));
+      offsetRef.current = start;
+      charRef.current = start;
+      const u = new SpeechSynthesisUtterance(plainText.slice(start));
       u.lang = "pt-BR";
       u.rate = 0.95;
-      u.onend = () => setSpeaking(false);
+      u.onboundary = (e) => {
+        charRef.current = start + (e.charIndex || 0);
+        saveProgress({ charIndex: charRef.current, scrollTop: scrollRef.current?.scrollTop ?? 0 });
+      };
+      u.onend = () => {
+        setSpeaking(false);
+        saveProgress({ charIndex: 0, scrollTop: 0 });
+      };
       u.onerror = () => setSpeaking(false);
       synth.speak(u);
       setSpeaking(true);
     } catch {
       setSpeaking(false);
     }
+  }, [plainText]);
+
+  const toggleListen = () => {
+    if (speaking) {
+      saveProgress({ charIndex: charRef.current, scrollTop: scrollRef.current?.scrollTop ?? 0 });
+      stopSpeak();
+      return;
+    }
+    speakFrom(charRef.current);
   };
+
+  // Ao abrir: retoma do último ponto salvo (rolagem + leitura automática).
+  useEffect(() => {
+    if (!open) return;
+    const prog = loadProgress();
+    if (prog && prog.charIndex > 0) {
+      setResumed(true);
+      setAllAramaicVisible(true);
+      setTranslatedCount(dedicatoriaTexts.length);
+      charRef.current = prog.charIndex;
+      const t = setTimeout(() => {
+        if (scrollRef.current) scrollRef.current.scrollTop = prog.scrollTop || 0;
+        speakFrom(prog.charIndex);
+      }, 400);
+      return () => clearTimeout(t);
+    }
+    setResumed(false);
+    charRef.current = 0;
+    startAnimation();
+  }, [open, startAnimation, speakFrom]);
 
   useEffect(() => {
     if (!open) stopSpeak();
@@ -171,11 +225,21 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
   }, [open, stopSpeak]);
 
   const handleClose = () => {
+    saveProgress({ charIndex: speaking ? charRef.current : charRef.current, scrollTop: scrollRef.current?.scrollTop ?? 0 });
     stopSpeak();
     if (isControlled) onOpenChange?.(false);
     else setInternalOpen(false);
     setTranslatedCount(0);
     setAllAramaicVisible(false);
+  };
+
+  const restartFromStart = () => {
+    charRef.current = 0;
+    saveProgress({ charIndex: 0, scrollTop: 0 });
+    setResumed(false);
+    stopSpeak();
+    if (scrollRef.current) scrollRef.current.scrollTop = 0;
+    startAnimation();
   };
 
   return (
@@ -207,17 +271,30 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
               >
                 ✕
               </button>
-              <button
-                onClick={toggleListen}
-                className="absolute top-4 left-4 h-9 px-3 rounded-full flex items-center gap-1.5 text-xs font-bold hover:scale-105 transition-transform z-20"
-                style={{ background: speaking ? "#8b2b2b" : "#6b3a0a", color: "#f7e9c9", boxShadow: "0 2px 6px rgba(0,0,0,0.4)" }}
-                aria-label={speaking ? "Parar leitura" : "Ouvir dedicatória"}
-                title={speaking ? "Parar leitura" : "Ouvir dedicatória"}
-              >
-                {speaking ? "⏹️ Parar" : "🔊 Ouvir"}
-              </button>
+              <div className="absolute top-4 left-4 flex items-center gap-2 z-20">
+                <button
+                  onClick={toggleListen}
+                  className="h-9 px-3 rounded-full flex items-center gap-1.5 text-xs font-bold hover:scale-105 transition-transform"
+                  style={{ background: speaking ? "#8b2b2b" : "#6b3a0a", color: "#f7e9c9", boxShadow: "0 2px 6px rgba(0,0,0,0.4)" }}
+                  aria-label={speaking ? "Parar leitura" : charRef.current > 0 ? "Continuar leitura" : "Ouvir dedicatória"}
+                  title={speaking ? "Parar leitura" : charRef.current > 0 ? "Continuar de onde parou" : "Ouvir dedicatória"}
+                >
+                  {speaking ? "⏹️ Parar" : charRef.current > 0 ? "▶️ Continuar" : "🔊 Ouvir"}
+                </button>
+                {resumed && (
+                  <button
+                    onClick={restartFromStart}
+                    className="h-9 px-3 rounded-full text-xs font-bold hover:scale-105 transition-transform"
+                    style={{ background: "#8a6a2a", color: "#f7e9c9", boxShadow: "0 2px 6px rgba(0,0,0,0.4)" }}
+                    title="Recomeçar do início"
+                  >
+                    ↺ Início
+                  </button>
+                )}
+              </div>
 
               <div
+                ref={scrollRef}
                 className="overflow-y-auto relative"
                 style={{
                   maxHeight: "78vh",

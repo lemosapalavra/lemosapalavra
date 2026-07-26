@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Shield } from "lucide-react";
 import { setAdminMode, useIsAdmin } from "@/hooks/useIsAdmin";
+import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import InstallShortcut from "@/components/InstallShortcut";
 
@@ -61,6 +62,27 @@ function phoneToEmail(phone: string) {
   return `celular${digits}@lemosapalavra.app`;
 }
 
+/** Mantém apenas dígitos e formata como (11) 99999-9999 (máx. 11 dígitos). */
+export function maskPhone(value: string) {
+  const d = value.replace(/\D/g, "").slice(0, 11);
+  if (d.length <= 2) return d.length ? `(${d}` : "";
+  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+}
+
+/** Retorna mensagem de erro ou null quando o celular é válido. */
+export function validatePhone(value: string): string | null {
+  const d = value.replace(/\D/g, "");
+  if (!d) return "Informe seu celular.";
+  if (/[^\d\s()\-+]/.test(value)) return "O celular deve conter apenas números.";
+  if (d.length < 10) return "Celular incompleto — use DDD + número (ex.: (11) 99999-9999).";
+  if (d.length > 11) return "Celular inválido — máximo de 11 dígitos.";
+  if (Number(d[0]) === 0 || Number(d[1]) === 0) return "DDD inválido.";
+  if (d.length === 11 && d[2] !== "9") return "Celular inválido — o número deve começar com 9 após o DDD.";
+  return null;
+}
+
 export default function Login() {
   const navigate = useNavigate();
   const isAdmin = useIsAdmin();
@@ -76,6 +98,7 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [ageRange, setAgeRange] = useState<AgeRange | "">("");
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState<string | null>(null);
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const [customAvatar, setCustomAvatar] = useState<string>("");
 
@@ -117,10 +140,14 @@ export default function Login() {
     if (!raw || !pw) { alert("Informe seu celular e a senha."); return; }
     // Aceita celular (padrão) ou e-mail (compatibilidade com contas antigas).
     const em = raw.includes("@") ? raw : phoneToEmail(raw);
-    const phoneDigits = raw.replace(/\D/g, "");
-    if (!raw.includes("@") && phoneDigits.length < 10) {
-      alert("Informe um celular válido com DDD (ex.: 11 99999-9999).");
-      return;
+    if (!raw.includes("@")) {
+      const err = validatePhone(raw);
+      if (err) {
+        setPhoneError(err);
+        toast({ title: "Celular inválido", description: err, variant: "destructive" });
+        return;
+      }
+      setPhoneError(null);
     }
     setBusy(true);
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -149,11 +176,13 @@ export default function Login() {
       alert("O nome de usuário deve ter pelo menos 3 caracteres.");
       return;
     }
-    const phoneDigits = phone.replace(/\D/g, "");
-    if (phoneDigits.length < 10) {
-      alert("Informe um número de celular válido (com DDD).");
+    const phoneErr = validatePhone(phone);
+    if (phoneErr) {
+      setPhoneError(phoneErr);
+      toast({ title: "Celular inválido", description: phoneErr, variant: "destructive" });
       return;
     }
+    setPhoneError(null);
     if (!password || password.length < 6) {
       alert("Informe uma senha com pelo menos 6 caracteres.");
       return;
@@ -303,12 +332,21 @@ export default function Login() {
                   <input
                     type="tel"
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    onChange={(e) => {
+                      const v = maskPhone(e.target.value);
+                      setPhone(v);
+                      setPhoneError(v ? validatePhone(v) : null);
+                    }}
+                    onBlur={() => setPhoneError(validatePhone(phone))}
+                    className={`w-full bg-sky-50 border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 ${phoneError ? "border-destructive focus:ring-destructive" : "border-amber-300/60 focus:ring-amber-400"}`}
                     placeholder="(11) 99999-9999"
+                    inputMode="numeric"
+                    maxLength={15}
                     required
                   />
+                  {phoneError && <p className="mt-1 text-xs font-body text-destructive">{phoneError}</p>}
                 </Field>
+
               </>
             )}
 
@@ -329,13 +367,21 @@ export default function Login() {
                   <input
                     type="tel"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    onChange={(e) => {
+                      const v = e.target.value.includes("@") ? e.target.value : maskPhone(e.target.value);
+                      setEmail(v);
+                      setPhoneError(v && !v.includes("@") ? validatePhone(v) : null);
+                    }}
+                    onBlur={() => setPhoneError(email && !email.includes("@") ? validatePhone(email) : null)}
+                    className={`w-full bg-sky-50 border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 ${phoneError ? "border-destructive focus:ring-destructive" : "border-amber-300/60 focus:ring-amber-400"}`}
                     placeholder="(11) 99999-9999"
                     autoComplete="tel"
                     inputMode="tel"
+                    maxLength={15}
                   />
+                  {phoneError && <p className="mt-1 text-xs font-body text-destructive">{phoneError}</p>}
                 </Field>
+
               </>
             )}
 
@@ -480,7 +526,11 @@ export default function Login() {
                     }
                   } catch {}
                   setAdminMode(true);
-                  navigate("/config");
+                  toast({
+                    title: "Modo administrador ativado ✅",
+                    description: "Sessão de dono aplicada. Abrindo as Configurações...",
+                  });
+                  setTimeout(() => navigate("/config"), 300);
                 }}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-display font-extrabold text-xs shadow"
                 title="Acesso de administrador"

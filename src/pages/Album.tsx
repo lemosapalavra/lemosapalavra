@@ -390,9 +390,73 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
   const stickerNumber = String(allStickers.findIndex((s) => s.id === sticker.id) + 1).padStart(3, "0");
   const category = categories.find((cat) => cat.stickers.some((s) => s.id === sticker.id));
   const [zoom, setZoom] = useState(1);
-  const zoomIn = () => setZoom((z) => Math.min(3, +(z + 0.25).toFixed(2)));
-  const zoomOut = () => setZoom((z) => Math.max(1, +(z - 0.25).toFixed(2)));
-  const zoomReset = () => setZoom(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const gesture = useRef<{ dist: number; zoom: number } | null>(null);
+  const drag = useRef<{ x: number; y: number; px: number; py: number } | null>(null);
+  const clamp = (z: number) => Math.min(5, Math.max(1, +z.toFixed(2)));
+  const zoomIn = () => setZoom((z) => clamp(z + 0.25));
+  const zoomOut = () => setZoom((z) => { const n = clamp(z - 0.25); if (n === 1) setPan({ x: 0, y: 0 }); return n; });
+  const zoomReset = () => { setZoom(1); setPan({ x: 0, y: 0 }); };
+
+  const dist = (t: React.TouchList) =>
+    Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    e.stopPropagation();
+    if (e.touches.length === 2) {
+      gesture.current = { dist: dist(e.touches), zoom };
+      drag.current = null;
+    } else if (e.touches.length === 1 && zoom > 1) {
+      drag.current = { x: e.touches[0].clientX, y: e.touches[0].clientY, px: pan.x, py: pan.y };
+    }
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 2 && gesture.current) {
+      e.preventDefault();
+      const ratio = dist(e.touches) / (gesture.current.dist || 1);
+      setZoom(clamp(gesture.current.zoom * ratio));
+    } else if (e.touches.length === 1 && drag.current) {
+      e.preventDefault();
+      setPan({
+        x: drag.current.px + (e.touches[0].clientX - drag.current.x),
+        y: drag.current.py + (e.touches[0].clientY - drag.current.y),
+      });
+    }
+  };
+
+  const onTouchEnd = () => {
+    gesture.current = null;
+    drag.current = null;
+    if (zoom <= 1) setPan({ x: 0, y: 0 });
+  };
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    if (zoom <= 1) return;
+    e.preventDefault();
+    e.stopPropagation();
+    drag.current = { x: e.clientX, y: e.clientY, px: pan.x, py: pan.y };
+    const move = (ev: MouseEvent) => {
+      if (!drag.current) return;
+      setPan({ x: drag.current.px + (ev.clientX - drag.current.x), y: drag.current.py + (ev.clientY - drag.current.y) });
+    };
+    const up = () => {
+      drag.current = null;
+      window.removeEventListener("mousemove", move);
+      window.removeEventListener("mouseup", up);
+    };
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mouseup", up);
+  };
+
+  const onWheel = (e: React.WheelEvent) => {
+    e.stopPropagation();
+    setZoom((z) => {
+      const n = clamp(z + (e.deltaY < 0 ? 0.2 : -0.2));
+      if (n === 1) setPan({ x: 0, y: 0 });
+      return n;
+    });
+  };
 
   return (
     <div
@@ -416,14 +480,23 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
               : { ring: "bg-gradient-to-br from-slate-200 via-slate-400 to-slate-500", inner: "from-slate-800/40 to-slate-900/40", glow: "shadow-[0_0_30px_rgba(148,163,184,0.45)]" };
           return (
             <div className={`relative rounded-[32px] p-[6px] ${frame.ring} ${frame.glow}`}>
-              <div className={`relative rounded-[26px] bg-gradient-to-br ${frame.inner} border border-white/10 p-4 backdrop-blur-sm flex items-center justify-center min-h-[60vh] overflow-hidden`}>
+              <div
+                className={`relative rounded-[26px] bg-gradient-to-br ${frame.inner} border border-white/10 p-4 backdrop-blur-sm flex items-center justify-center min-h-[60vh] overflow-hidden touch-none`}
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+                onWheel={onWheel}
+              >
                 {sticker.image ? (
                   <img
                     src={sticker.image}
                     alt={sticker.name}
                     onClick={(e) => { e.stopPropagation(); zoomIn(); }}
-                    className="max-w-full max-h-[78vh] object-contain drop-shadow-2xl transition-transform duration-200 cursor-zoom-in select-none"
-                    style={{ transform: `scale(${zoom})` }}
+                    onMouseDown={onMouseDown}
+                    onDoubleClick={(e) => { e.stopPropagation(); zoomReset(); }}
+                    draggable={false}
+                    className={`max-w-full max-h-[78vh] object-contain drop-shadow-2xl select-none ${zoom > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"}`}
+                    style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`, transition: drag.current || gesture.current ? "none" : "transform 0.15s ease-out" }}
                   />
                 ) : (
                   <div className="text-[200px]">{sticker.emoji}</div>
