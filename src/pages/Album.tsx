@@ -480,14 +480,23 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
               : { ring: "bg-gradient-to-br from-slate-200 via-slate-400 to-slate-500", inner: "from-slate-800/40 to-slate-900/40", glow: "shadow-[0_0_30px_rgba(148,163,184,0.45)]" };
           return (
             <div className={`relative rounded-[32px] p-[6px] ${frame.ring} ${frame.glow}`}>
-              <div className={`relative rounded-[26px] bg-gradient-to-br ${frame.inner} border border-white/10 p-4 backdrop-blur-sm flex items-center justify-center min-h-[60vh] overflow-hidden`}>
+              <div
+                className={`relative rounded-[26px] bg-gradient-to-br ${frame.inner} border border-white/10 p-4 backdrop-blur-sm flex items-center justify-center min-h-[60vh] overflow-hidden touch-none`}
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+                onWheel={onWheel}
+              >
                 {sticker.image ? (
                   <img
                     src={sticker.image}
                     alt={sticker.name}
                     onClick={(e) => { e.stopPropagation(); zoomIn(); }}
-                    className="max-w-full max-h-[78vh] object-contain drop-shadow-2xl transition-transform duration-200 cursor-zoom-in select-none"
-                    style={{ transform: `scale(${zoom})` }}
+                    onMouseDown={onMouseDown}
+                    onDoubleClick={(e) => { e.stopPropagation(); zoomReset(); }}
+                    draggable={false}
+                    className={`max-w-full max-h-[78vh] object-contain drop-shadow-2xl select-none ${zoom > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"}`}
+                    style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`, transition: drag.current || gesture.current ? "none" : "transform 0.15s ease-out" }}
                   />
                 ) : (
                   <div className="text-[200px]">{sticker.emoji}</div>
