@@ -367,13 +367,21 @@ export default function Login() {
                   <input
                     type="tel"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    onChange={(e) => {
+                      const v = e.target.value.includes("@") ? e.target.value : maskPhone(e.target.value);
+                      setEmail(v);
+                      setPhoneError(v && !v.includes("@") ? validatePhone(v) : null);
+                    }}
+                    onBlur={() => setPhoneError(email && !email.includes("@") ? validatePhone(email) : null)}
+                    className={`w-full bg-sky-50 border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 ${phoneError ? "border-destructive focus:ring-destructive" : "border-amber-300/60 focus:ring-amber-400"}`}
                     placeholder="(11) 99999-9999"
                     autoComplete="tel"
                     inputMode="tel"
+                    maxLength={15}
                   />
+                  {phoneError && <p className="mt-1 text-xs font-body text-destructive">{phoneError}</p>}
                 </Field>
+
               </>
             )}
 
