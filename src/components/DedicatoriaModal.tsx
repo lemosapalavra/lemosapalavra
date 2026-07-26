@@ -271,17 +271,30 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
               >
                 ✕
               </button>
-              <button
-                onClick={toggleListen}
-                className="absolute top-4 left-4 h-9 px-3 rounded-full flex items-center gap-1.5 text-xs font-bold hover:scale-105 transition-transform z-20"
-                style={{ background: speaking ? "#8b2b2b" : "#6b3a0a", color: "#f7e9c9", boxShadow: "0 2px 6px rgba(0,0,0,0.4)" }}
-                aria-label={speaking ? "Parar leitura" : "Ouvir dedicatória"}
-                title={speaking ? "Parar leitura" : "Ouvir dedicatória"}
-              >
-                {speaking ? "⏹️ Parar" : "🔊 Ouvir"}
-              </button>
+              <div className="absolute top-4 left-4 flex items-center gap-2 z-20">
+                <button
+                  onClick={toggleListen}
+                  className="h-9 px-3 rounded-full flex items-center gap-1.5 text-xs font-bold hover:scale-105 transition-transform"
+                  style={{ background: speaking ? "#8b2b2b" : "#6b3a0a", color: "#f7e9c9", boxShadow: "0 2px 6px rgba(0,0,0,0.4)" }}
+                  aria-label={speaking ? "Parar leitura" : charRef.current > 0 ? "Continuar leitura" : "Ouvir dedicatória"}
+                  title={speaking ? "Parar leitura" : charRef.current > 0 ? "Continuar de onde parou" : "Ouvir dedicatória"}
+                >
+                  {speaking ? "⏹️ Parar" : charRef.current > 0 ? "▶️ Continuar" : "🔊 Ouvir"}
+                </button>
+                {resumed && (
+                  <button
+                    onClick={restartFromStart}
+                    className="h-9 px-3 rounded-full text-xs font-bold hover:scale-105 transition-transform"
+                    style={{ background: "#8a6a2a", color: "#f7e9c9", boxShadow: "0 2px 6px rgba(0,0,0,0.4)" }}
+                    title="Recomeçar do início"
+                  >
+                    ↺ Início
+                  </button>
+                )}
+              </div>
 
               <div
+                ref={scrollRef}
                 className="overflow-y-auto relative"
                 style={{
                   maxHeight: "78vh",
