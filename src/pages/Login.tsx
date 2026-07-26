@@ -526,7 +526,11 @@ export default function Login() {
                     }
                   } catch {}
                   setAdminMode(true);
-                  navigate("/config");
+                  toast({
+                    title: "Modo administrador ativado ✅",
+                    description: "Sessão de dono aplicada. Abrindo as Configurações...",
+                  });
+                  setTimeout(() => navigate("/config"), 300);
                 }}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-display font-extrabold text-xs shadow"
                 title="Acesso de administrador"
