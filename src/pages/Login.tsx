@@ -62,6 +62,27 @@ function phoneToEmail(phone: string) {
   return `celular${digits}@lemosapalavra.app`;
 }
 
+/** Mantém apenas dígitos e formata como (11) 99999-9999 (máx. 11 dígitos). */
+export function maskPhone(value: string) {
+  const d = value.replace(/\D/g, "").slice(0, 11);
+  if (d.length <= 2) return d.length ? `(${d}` : "";
+  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+}
+
+/** Retorna mensagem de erro ou null quando o celular é válido. */
+export function validatePhone(value: string): string | null {
+  const d = value.replace(/\D/g, "");
+  if (!d) return "Informe seu celular.";
+  if (/[^\d\s()\-+]/.test(value)) return "O celular deve conter apenas números.";
+  if (d.length < 10) return "Celular incompleto — use DDD + número (ex.: (11) 99999-9999).";
+  if (d.length > 11) return "Celular inválido — máximo de 11 dígitos.";
+  if (Number(d[0]) === 0 || Number(d[1]) === 0) return "DDD inválido.";
+  if (d.length === 11 && d[2] !== "9") return "Celular inválido — o número deve começar com 9 após o DDD.";
+  return null;
+}
+
 export default function Login() {
   const navigate = useNavigate();
   const isAdmin = useIsAdmin();
