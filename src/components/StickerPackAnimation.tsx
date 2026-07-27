@@ -324,7 +324,6 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
                   <div
                     key={i}
                     className="relative w-28 sm:w-32 h-40 sm:h-44"
-                    style-marker=""
                     style={{ perspective: "800px" }}
                   >
                     <div
