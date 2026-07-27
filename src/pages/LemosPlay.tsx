@@ -7,6 +7,7 @@ import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
 import CoinBadge from "@/components/CoinBadge";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { loadConfig, type PlayEntry, type SeriesGroupCfg } from "@/data/lemosPlayConfig";
+import { COINS } from "@/data/coinRewards";
 import { awardOnce } from "@/hooks/useCoins";
 
 import { normalizeVideo } from "@/lib/videoEmbed";
@@ -26,12 +27,12 @@ import nascimentoJesusThumb from "@/assets/lemos-play/nascimento-jesus-thumb.png
 
 // Coin reward per category when finishing/watching content
 const COIN_REWARDS: Record<string, number> = {
-  Gênesis: 3,
-  Jesus: 5,
-  Filme: 3,
-  Série: 3,
-  Música: 3,
-  Louvor: 5,
+  Gênesis: COINS.genesis,
+  Jesus: COINS.jesus,
+  Filme: COINS.filme,
+  Série: COINS.serie,
+  Música: COINS.musica,
+  Louvor: COINS.louvor,
 };
 
 interface PlayItem {
