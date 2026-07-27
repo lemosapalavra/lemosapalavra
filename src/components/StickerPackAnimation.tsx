@@ -284,9 +284,15 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
         )}
 
         {phase === "burst" && (
-          <div className="relative w-56 sm:w-72 h-72 flex items-center justify-center">
+          <div className="relative w-56 sm:w-72 h-72 flex items-center justify-center animate-[screenShake_0.65s_ease-out]">
+            <div className="fixed inset-0 pointer-events-none bg-white animate-[whiteFlash_0.5s_ease-out_forwards]" />
+            <GodRays opacity={0.5} />
+            <Shockwaves />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-72 h-72 rounded-full bg-gradient-to-br from-yellow-300 via-orange-300 to-pink-300 blur-3xl animate-ping" />
+            </div>
+            <div className="fixed inset-0 pointer-events-none">
+              <Confetti count={70} />
             </div>
             <div className="absolute inset-0 pointer-events-none">
               <Sparkles count={36} />
@@ -300,6 +306,12 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
 
         {phase === "reveal" && (
           <div className="flex flex-col items-center gap-4 w-full">
+            {hasSpecial && <GodRays opacity={0.22} />}
+            {hasSpecial && allRevealed && (
+              <div className="fixed inset-0 pointer-events-none">
+                <Confetti count={50} />
+              </div>
+            )}
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-white drop-shadow-lg animate-[fadeDown_0.5s]">
               ✨ Suas Figurinhas! ✨
             </h2>
@@ -312,6 +324,7 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
                   <div
                     key={i}
                     className="relative w-28 sm:w-32 h-40 sm:h-44"
+                    style-marker=""
                     style={{ perspective: "800px" }}
                   >
                     <div
@@ -362,8 +375,23 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
                         {s.isRepeat && (
                           <span className="absolute top-7 left-1.5 z-10 text-[8px] font-bold text-red-100 bg-red-500/90 px-1.5 py-0.5 rounded-full">REPETIDA</span>
                         )}
+                        {s.rarity !== "normal" && (
+                          <span
+                            className="pointer-events-none absolute inset-0 z-20"
+                            style={{
+                              background:
+                                "linear-gradient(115deg, transparent 35%, rgba(255,255,255,0.75) 48%, transparent 62%)",
+                              backgroundSize: "260% 100%",
+                              animation: "holoSweep 2.4s linear infinite",
+                              mixBlendMode: "screen",
+                            }}
+                          />
+                        )}
                         {s.rarity === "reliquia" && (
-                          <span className="absolute -top-2 -right-2 z-20 text-2xl animate-bounce">⭐</span>
+                          <>
+                            <span className="pointer-events-none absolute -inset-3 z-0 rounded-3xl bg-yellow-300/40 blur-xl animate-pulse" />
+                            <span className="absolute -top-2 -right-2 z-30 text-2xl animate-bounce">⭐</span>
+                          </>
                         )}
                       </div>
                     </div>
@@ -430,6 +458,30 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
           40%{transform:translate(-50%,-50%) scale(1.2) rotate(0deg);opacity:1}
           70%{transform:translate(-50%,-50%) scale(1) rotate(15deg);opacity:1}
           100%{transform:translate(-50%,-50%) scale(0.8) rotate(0deg);opacity:0}
+        }
+        @keyframes confettiFly {
+          0%{transform:translate(0,0) rotate(0deg);opacity:1}
+          100%{transform:translate(var(--cx),calc(var(--cy) + 160px)) rotate(var(--crot));opacity:0}
+        }
+        @keyframes raySpin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+        @keyframes shockwave {
+          0%{transform:scale(0.2);opacity:0.9}
+          100%{transform:scale(6);opacity:0}
+        }
+        @keyframes whiteFlash {
+          0%{opacity:0.85} 100%{opacity:0}
+        }
+        @keyframes screenShake {
+          0%,100%{transform:translate(0,0)}
+          15%{transform:translate(-8px,4px)}
+          30%{transform:translate(7px,-5px)}
+          45%{transform:translate(-6px,-3px)}
+          60%{transform:translate(5px,4px)}
+          80%{transform:translate(-3px,2px)}
+        }
+        @keyframes holoSweep {
+          0%{background-position:200% 0}
+          100%{background-position:-60% 0}
         }
         @keyframes handPull {
           0%{transform:translate(-50%,40px) scale(0.6);opacity:0}
