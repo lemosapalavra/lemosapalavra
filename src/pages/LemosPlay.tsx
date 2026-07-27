@@ -259,6 +259,9 @@ function TopTenRow({ items, onPlay, progress }: { items: PlayItem[]; onPlay: (it
   );
 }
 
+/** Vídeos desativados pelo admin não aparecem no site. */
+const isOn = (v: PlayEntry) => v.enabled !== false;
+
 export default function LemosPlay() {
   const isAdmin = useIsAdmin();
   const [adminOpen, setAdminOpen] = useState(false);
@@ -270,9 +273,9 @@ export default function LemosPlay() {
     return () => window.removeEventListener("lemos_play_config_change", h);
   }, []);
 
-  const filmesPlay = useMemo(() => cfg.filmes.map((v) => toPlay(v, "Filme")), [cfg]);
-  const musicasPlay = useMemo(() => cfg.musicas.map((v) => toPlay(v, "Música")), [cfg]);
-  const louvoresPlay = useMemo(() => cfg.louvores.map((v) => toPlay(v, "Louvor")), [cfg]);
+  const filmesPlay = useMemo(() => cfg.filmes.filter(isOn).map((v) => toPlay(v, "Filme")), [cfg]);
+  const musicasPlay = useMemo(() => cfg.musicas.filter(isOn).map((v) => toPlay(v, "Música")), [cfg]);
+  const louvoresPlay = useMemo(() => cfg.louvores.filter(isOn).map((v) => toPlay(v, "Louvor")), [cfg]);
   const seriesGroupItems = useMemo(
     () =>
       cfg.series.map((g: SeriesGroupCfg) => ({
@@ -280,7 +283,7 @@ export default function LemosPlay() {
         title: g.title,
         poster: g.icon,
         category: "Série",
-        videos: g.videos.map((v) => toPlay(v, "Série")),
+        videos: g.videos.filter(isOn).map((v) => toPlay(v, "Série")),
       })),
     [cfg]
   );
@@ -499,6 +502,7 @@ export default function LemosPlay() {
   const genesisItems: PlayItem[] = useMemo(
     () =>
       cfg.filmes
+        .filter(isOn)
         .filter((v) => (v.section || "").toLowerCase() === "gênesis" || (v.section || "").toLowerCase() === "genesis")
         .map((v) => toPlay(v, "Gênesis")),
     [cfg]
@@ -506,6 +510,7 @@ export default function LemosPlay() {
   const jesusItems: PlayItem[] = useMemo(
     () =>
       cfg.filmes
+        .filter(isOn)
         .filter((v) => {
           const s = (v.section || "").toLowerCase();
           return s === "jesus" || s === "novo testamento";
