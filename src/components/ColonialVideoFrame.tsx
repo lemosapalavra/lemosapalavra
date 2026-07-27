@@ -78,13 +78,18 @@ export default function ColonialVideoFrame({
     >
 
       <div
-        className="relative w-full h-full overflow-hidden"
+        className="relative overflow-hidden"
         style={{
+          aspectRatio: aspect,
+          height: `min(88vh, calc(95vw * 16 / 9))`,
+          maxHeight: "88vh",
+          maxWidth: "95vw",
           borderRadius: "10px",
           boxShadow: p.innerBevel,
           background: "#000",
         }}
       >
+
         {children}
       </div>
 
