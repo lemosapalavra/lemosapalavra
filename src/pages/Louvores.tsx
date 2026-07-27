@@ -30,11 +30,12 @@ interface Louvor {
 
 const allLouvores: Louvor[] = [
   { title: "Faz um Milagre em Mim", src: fazMilagreVid.url, thumb: fazMilagreThumb.url },
-  
+  { title: "Espírito Santo", src: espiritoSantoVid.url, thumb: espiritoSantoCover.url },
   { title: "Sou Fiel", src: souFielVid.url, thumb: serFielThumb.url },
   { title: "Graça Aleluia", src: aleluiaVid.url, thumb: gracaAleluiaThumb.url },
   { title: "Palavra Eterna", src: palavraEternaVid.url, thumb: palavraEternaThumb.url },
 ];
+
 // Esconde os louvores cujo link está quebrado
 const louvores: Louvor[] = allLouvores.filter((l) => !!l.src);
 
