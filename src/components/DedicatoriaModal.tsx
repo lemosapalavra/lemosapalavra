@@ -171,24 +171,27 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
       const start = Math.max(0, Math.min(from, Math.max(0, plainText.length - 1)));
       offsetRef.current = start;
       charRef.current = start;
-      const u = new SpeechSynthesisUtterance(plainText.slice(start));
-      u.lang = "pt-BR";
-      u.rate = 0.95;
-      u.onboundary = (e) => {
-        charRef.current = start + (e.charIndex || 0);
-        saveProgress({ charIndex: charRef.current, scrollTop: scrollRef.current?.scrollTop ?? 0 });
-      };
-      u.onend = () => {
-        setSpeaking(false);
-        saveProgress({ charIndex: 0, scrollTop: 0 });
-      };
-      u.onerror = () => setSpeaking(false);
-      synth.speak(u);
       setSpeaking(true);
+      ensureVoicesLoaded(() => {
+        const u = new SpeechSynthesisUtterance(plainText.slice(start));
+        applySoftVoice(u);
+        u.onboundary = (e) => {
+          charRef.current = start + (e.charIndex || 0);
+          saveProgress({ charIndex: charRef.current, scrollTop: scrollRef.current?.scrollTop ?? 0 });
+        };
+        u.onend = () => {
+          setSpeaking(false);
+          saveProgress({ charIndex: 0, scrollTop: 0 });
+          awardOnce("dedicatoria:ouvida", DEDICATORIA_COINS, "Você assistiu e ouviu a Dedicatória!");
+        };
+        u.onerror = () => setSpeaking(false);
+        synth.speak(u);
+      });
     } catch {
       setSpeaking(false);
     }
   }, [plainText]);
+
 
   const toggleListen = () => {
     if (speaking) {
