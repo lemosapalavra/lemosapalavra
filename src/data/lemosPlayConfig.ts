@@ -90,8 +90,9 @@ const attachedThumbByTitle: Record<string, string> = {
   "Pai e Filho": paiEFilhoThumb.url,
   "Um de Nós": umDeNosThumb.url,
   "E se Ele Fosse Um de Nós": umDeNosThumb.url,
-  "Espírito Santo": espiritoSantoThumb.url,
-  "Espirito Santo": espiritoSantoThumb.url,
+  "Espírito Santo": espiritoSantoCover.url,
+  "Espirito Santo": espiritoSantoCover.url,
+
   "Sou Fiel": serFielThumb.url,
   "Graça Aleluia": gracaAleluiaThumb.url,
   "Graca Aleluia": gracaAleluiaThumb.url,
