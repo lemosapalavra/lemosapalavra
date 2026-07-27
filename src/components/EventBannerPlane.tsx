@@ -1,23 +1,23 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { loadEventBanner, type EventBannerConfig } from "@/data/eventBannerConfig";
 import { normalizeVideo } from "@/lib/videoEmbed";
-import planeRtl from "@/assets/aviao-rtl-v4.png.asset.json";
-import planeLtr from "@/assets/aviao-ltr-v4.png.asset.json";
+import planeRtl from "@/assets/aviao-rtl-v5.png.asset.json";
+import planeLtr from "@/assets/aviao-ltr-v5.png.asset.json";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 
 /**
  * Aviãozinhos animados alternando direções:
  *  1) RTL (direita → esquerda), 2) LTR (esquerda → direita), e repete.
- * Cada avião já traz a faixa "Clique aqui" na arte. Abaixo da faixa,
- * um botão sazonal (ex.: "Feliz Dia dos Pais") abre o vídeo configurado.
+ * Sem som — apenas um rastro de fumaça acompanhando o avião.
+ * O texto sazonal (ex.: "Dia dos Pais") aparece sobre a faixa, em azul,
+ * sem recipiente, e é clicável para abrir o vídeo configurado.
  */
 export default function EventBannerPlane() {
   const [cfg, setCfg] = useState<EventBannerConfig>(() => loadEventBanner());
   const [open, setOpen] = useState(false);
   const [dir, setDir] = useState<"rtl" | "ltr">("rtl");
   const [flying, setFlying] = useState(true);
-  const audioRef = useRef<{ ctx: AudioContext; stop: () => void } | null>(null);
 
   useEffect(() => {
     const h = () => setCfg(loadEventBanner());
@@ -29,7 +29,7 @@ export default function EventBannerPlane() {
     };
   }, []);
 
-  // Ciclo: 14s voando + 2s pausa (sem som), depois inverte direção
+  // Ciclo: 14s voando + 2s pausa, depois inverte a direção
   useEffect(() => {
     if (!cfg.enabled) return;
     let t2: any;
@@ -43,83 +43,15 @@ export default function EventBannerPlane() {
     return () => { clearInterval(t1); clearTimeout(t2); };
   }, [cfg.enabled]);
 
-  // Som de motor de avião (síntese WebAudio)
-  const startPlaneSound = () => {
-    try {
-      const AC = (window.AudioContext || (window as any).webkitAudioContext);
-      const ctx = new AC();
-      const bufferSize = 2 * ctx.sampleRate;
-      const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-      const data = noiseBuffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-      const noise = ctx.createBufferSource();
-      noise.buffer = noiseBuffer;
-      noise.loop = true;
-      const bandpass = ctx.createBiquadFilter();
-      bandpass.type = "bandpass";
-      bandpass.frequency.value = 220;
-      bandpass.Q.value = 1.5;
-      const lfo = ctx.createOscillator();
-      lfo.frequency.value = 18;
-      const lfoGain = ctx.createGain();
-      lfoGain.gain.value = 60;
-      lfo.connect(lfoGain).connect(bandpass.frequency);
-      const master = ctx.createGain();
-      master.gain.value = 0.0;
-      master.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 0.6);
-      noise.connect(bandpass).connect(master).connect(ctx.destination);
-      lfo.start();
-      noise.start();
-      audioRef.current = {
-        ctx,
-        stop: () => {
-          try {
-            master.gain.cancelScheduledValues(ctx.currentTime);
-            master.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.4);
-            setTimeout(() => { try { noise.stop(); lfo.stop(); ctx.close(); } catch {} }, 500);
-          } catch {}
-        },
-      };
-    } catch { /* audio bloqueado */ }
-  };
-  const stopPlaneSound = () => { audioRef.current?.stop(); audioRef.current = null; };
-
-  useEffect(() => {
-    // Som apenas enquanto o avião cruza a tela E a página está visível/em foco.
-    const pageActive = () => !document.hidden && document.hasFocus();
-    if (!cfg.enabled || !flying) { stopPlaneSound(); return; }
-    if (pageActive()) startPlaneSound();
-    const resume = () => {
-      if (flying && pageActive() && !audioRef.current) startPlaneSound();
-      window.removeEventListener("pointerdown", resume);
-    };
-    window.addEventListener("pointerdown", resume, { once: true });
-    const sync = () => {
-      if (!pageActive()) stopPlaneSound();
-      else if (flying && !audioRef.current) startPlaneSound();
-    };
-    document.addEventListener("visibilitychange", sync);
-    window.addEventListener("focus", sync);
-    window.addEventListener("blur", stopPlaneSound);
-    window.addEventListener("pagehide", stopPlaneSound);
-    window.addEventListener("beforeunload", stopPlaneSound);
-    return () => {
-      window.removeEventListener("pointerdown", resume);
-      document.removeEventListener("visibilitychange", sync);
-      window.removeEventListener("focus", sync);
-      window.removeEventListener("blur", stopPlaneSound);
-      window.removeEventListener("pagehide", stopPlaneSound);
-      window.removeEventListener("beforeunload", stopPlaneSound);
-      stopPlaneSound();
-    };
-  }, [cfg.enabled, flying]);
-
   if (!cfg.enabled) return null;
 
   const handleClick = () => { if (cfg.videoUrl) setOpen(true); };
   const video = cfg.videoUrl ? normalizeVideo(cfg.videoUrl, false) : null;
   const planeSrc = dir === "rtl" ? planeRtl.url : planeLtr.url;
   const animName = dir === "rtl" ? "plane-rtl" : "plane-ltr";
+
+  // Puffs de fumaça atrás do avião (lado oposto ao sentido do voo)
+  const puffs = [0, 1, 2, 3, 4, 5];
 
   return (
     <>
@@ -131,21 +63,45 @@ export default function EventBannerPlane() {
             style={{ animation: `${animName} 14s linear forwards`, willChange: "transform" }}
           >
             <div className="relative">
+              {/* Rastro de fumaça */}
+              <div
+                className="pointer-events-none absolute top-1/2 -translate-y-1/2"
+                style={dir === "rtl" ? { left: "100%" } : { right: "100%" }}
+              >
+                <div className="relative flex items-center" style={{ flexDirection: dir === "rtl" ? "row" : "row-reverse" }}>
+                  {puffs.map((i) => (
+                    <span
+                      key={i}
+                      className="block rounded-full bg-white/70"
+                      style={{
+                        width: 10 + i * 6,
+                        height: 10 + i * 6,
+                        marginLeft: 4,
+                        marginRight: 4,
+                        filter: "blur(3px)",
+                        animation: `smoke-puff 1.6s ${i * 0.18}s ease-out infinite`,
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+
               <img
                 src={planeSrc}
                 onClick={handleClick}
                 alt={dir === "rtl" ? "Aviãozinho voando da direita para a esquerda" : "Aviãozinho voando da esquerda para a direita"}
-                className={`h-28 sm:h-32 md:h-36 w-auto drop-shadow-2xl select-none ${cfg.videoUrl ? "pointer-events-auto cursor-pointer" : ""}`}
+                className={`relative h-28 sm:h-32 md:h-36 w-auto drop-shadow-2xl select-none ${cfg.videoUrl ? "pointer-events-auto cursor-pointer" : ""}`}
                 draggable={false}
               />
+
               {cfg.message && (
                 <button
                   onClick={handleClick}
                   disabled={!cfg.videoUrl}
-                  className="pointer-events-auto absolute rounded-full bg-[#1e5bd6] hover:bg-[#1747a6] disabled:opacity-70 border-2 border-white shadow-lg px-3 py-1 font-display font-extrabold text-[11px] sm:text-xs text-white whitespace-nowrap animate-pulse"
+                  className="pointer-events-auto absolute bg-transparent border-0 p-0 font-display font-extrabold text-sm sm:text-base md:text-lg text-[#1e5bd6] whitespace-nowrap hover:scale-110 transition-transform disabled:opacity-70"
                   style={dir === "rtl"
-                    ? { right: "4%", bottom: "38%" }   // acima da mãozinha (canto inferior direito da faixa)
-                    : { left: "4%", bottom: "38%" }}   // acima da mãozinha (canto inferior esquerdo da faixa)
+                    ? { right: "12%", top: "46%", transform: "translateY(-50%)" }
+                    : { left: "12%", top: "46%", transform: "translateY(-50%)" }}
                   title={cfg.videoUrl ? "Assistir vídeo" : "Sem vídeo configurado"}
                   aria-label={cfg.message}
                 >
@@ -165,6 +121,10 @@ export default function EventBannerPlane() {
         @keyframes plane-ltr {
           0%   { transform: translateX(-90vw); }
           100% { transform: translateX(105vw); }
+        }
+        @keyframes smoke-puff {
+          0%   { opacity: 0.75; transform: scale(0.6) translateY(0); }
+          100% { opacity: 0; transform: scale(1.6) translateY(-14px); }
         }
       `}</style>
 
