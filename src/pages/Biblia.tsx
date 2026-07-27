@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { applySoftVoice, ensureVoicesLoaded } from "@/lib/speak";
+
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import CategoryOrbit from "@/components/CategoryOrbit";
