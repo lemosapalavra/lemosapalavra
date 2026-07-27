@@ -48,7 +48,10 @@ export interface PlayEntry {
   src: string; // full iframe embed url
   poster?: string; // optional image url
   section?: string;
+  /** Quando false, o vídeo fica oculto no site (desativado pelo admin). */
+  enabled?: boolean;
 }
+
 
 export interface SeriesGroupCfg {
   id: string;
