@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import PageHeader from "@/components/PageHeader";
 import CelebrationAnimation from "@/components/CelebrationAnimation";
 import CoinBadge from "@/components/CoinBadge";
+import { COINS } from "@/data/coinRewards";
 import EducacionalActivities from "@/components/EducacionalActivities";
 import ActivityNav from "@/components/ActivityNav";
 import iconQuiz from "@/assets/icon-quiz.png";
@@ -324,13 +325,13 @@ export default function Atividades() {
   const closeCelebration = () => setCelebration({ show: false, message: "", coins: 0, emoji: "🏆" });
 
   const allActivities = [
-    { title: "Quiz Bíblico",        icon: iconQuiz,             id: "quiz",        coins: 5  },
-    { title: "Memória",             icon: iconMemoria,          id: "memory",      coins: 5  },
-    { title: "Colorir",             icon: iconColorir,          id: "coloring",    coins: 3  },
-    { title: "Quebra-Cabeça",       icon: iconQuebraCabeca,     id: "jigsaw",      coins: 5  },
-    { title: "Caça-Palavras",       icon: iconCacaPalavras.url, id: "wordsearch",  coins: 5  },
-    { title: "Pinte os Círculos",   icon: iconPinteCirculos.url, id: "edu:circles", coins: 4  },
-    { title: "Ligue as Cores",      icon: iconLigueCores.url,   id: "edu:connect", coins: 4  },
+    { title: "Quiz Bíblico",        icon: iconQuiz,             id: "quiz",        coins: COINS.quiz,       zoom: 1 },
+    { title: "Memória",             icon: iconMemoria,          id: "memory",      coins: COINS.memory,     zoom: 1 },
+    { title: "Colorir",             icon: iconColorir,          id: "coloring",    coins: COINS.coloring,   zoom: 1 },
+    { title: "Quebra-Cabeça",       icon: iconQuebraCabeca,     id: "jigsaw",      coins: COINS.jigsaw,     zoom: 1 },
+    { title: "Caça-Palavras",       icon: iconCacaPalavras.url, id: "wordsearch",  coins: COINS.wordsearch, zoom: 1 },
+    { title: "Pinte os Círculos",   icon: iconPinteCirculos.url, id: "edu:circles", coins: COINS.circles,   zoom: 1.28 },
+    { title: "Ligue as Cores",      icon: iconLigueCores.url,   id: "edu:connect", coins: COINS.connect,    zoom: 1.28 },
   ];
 
   // Atividades do dia: dias com data par mostram 4 atividades, dias ímpares
@@ -407,8 +408,11 @@ export default function Atividades() {
                 <div className="orbit-anim" style={{ animation: `orbit-spin-reverse ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}>
                   <button type="button" onClick={() => setActiveGame(a.id)}
                     className="flex flex-col items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
-                    <img src={a.icon} alt={a.title} loading="lazy"
-                      className="rounded-full border-2 border-primary/30 shadow-xl bg-white object-cover w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px]" />
+                    <span className="block rounded-full border-2 border-primary/30 shadow-xl bg-white overflow-hidden w-[96px] h-[96px] sm:w-[118px] sm:h-[118px] md:w-[140px] md:h-[140px]">
+                      <img src={a.icon} alt={a.title} loading="lazy"
+                        className="w-full h-full object-cover"
+                        style={{ transform: `scale(${(a as any).zoom ?? 1})`, transformOrigin: "center" }} />
+                    </span>
                     <span className="font-display text-xs sm:text-sm font-bold text-foreground text-center leading-tight">{a.title}</span>
                     <CoinBadge amount={a.coins} size="xs" />
                   </button>
