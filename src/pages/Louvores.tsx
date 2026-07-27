@@ -5,6 +5,8 @@ import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 
 import PageHeader from "@/components/PageHeader";
 import CoinBadge from "@/components/CoinBadge";
+import { awardOnce } from "@/hooks/useCoins";
+import { COINS } from "@/data/coinRewards";
 import iconLouvores from "@/assets/icon-louvores.png";
 import iconLouvoresCat from "@/assets/icon-louvores-cat.png";
 import iconPlaylists from "@/assets/icon-playlists.png";
@@ -15,7 +17,8 @@ import serFielThumb from "@/assets/lemos-play/ser-fiel-thumb.png.asset.json";
 import gracaAleluiaThumb from "@/assets/lemos-play/graca-aleluia.png.asset.json";
 import palavraEternaThumb from "@/assets/lemos-play/palavra-eterna.png.asset.json";
 import fazMilagreThumb from "@/assets/lemos-play/faz-um-milagre-em-mim.png.asset.json";
-import espiritoSantoVid from "@/assets/lemos-play/espirito-santo.mp4.asset.json";
+import espiritoSantoVid from "@/assets/lemos-play/espirito-santo-v2.mp4.asset.json";
+import espiritoSantoCover from "@/assets/lemos-play/espirito-santo-cover.jpg.asset.json";
 import aleluiaVid from "@/assets/lemos-play/aleluia.mp4.asset.json";
 import palavraEternaVid from "@/assets/lemos-play/palavra-eterna.mp4.asset.json";
 import souFielVid from "@/assets/lemos-play/sou-fiel.mp4.asset.json";
@@ -29,11 +32,12 @@ interface Louvor {
 
 const allLouvores: Louvor[] = [
   { title: "Faz um Milagre em Mim", src: fazMilagreVid.url, thumb: fazMilagreThumb.url },
-  
+  { title: "Espírito Santo", src: espiritoSantoVid.url, thumb: espiritoSantoCover.url },
   { title: "Sou Fiel", src: souFielVid.url, thumb: serFielThumb.url },
   { title: "Graça Aleluia", src: aleluiaVid.url, thumb: gracaAleluiaThumb.url },
   { title: "Palavra Eterna", src: palavraEternaVid.url, thumb: palavraEternaThumb.url },
 ];
+
 // Esconde os louvores cujo link está quebrado
 const louvores: Louvor[] = allLouvores.filter((l) => !!l.src);
 
@@ -91,7 +95,7 @@ export default function Louvores() {
   const renderItem = (l: Louvor, i: number) => (
     <button
       key={i}
-      onClick={() => setPlaying(l)}
+      onClick={() => { setPlaying(l); awardOnce(`louvor:${l.title}`, COINS.louvor, `Você assistiu "${l.title}"`); }}
       className="flex flex-col items-center gap-2 hover:scale-105 transition-transform group"
     >
       <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-primary/30 shadow-lg bg-black">
@@ -101,7 +105,7 @@ export default function Louvores() {
       <p className="text-xs sm:text-sm font-bold text-primary text-center leading-tight drop-shadow max-w-[120px]">
         {l.title}
       </p>
-      <CoinBadge amount={3} size="xs" />
+      <CoinBadge amount={COINS.louvor} size="xs" />
     </button>
   );
 

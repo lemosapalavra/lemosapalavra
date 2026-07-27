@@ -6,7 +6,9 @@ import CoinBadge from "@/components/CoinBadge";
 import { awardOnce, todayKey } from "@/hooks/useCoins";
 import iconDevocionais from "@/assets/icon-devocionais.png";
 
-const DEVO_COINS = 2;
+import { COINS } from "@/data/coinRewards";
+
+const DEVO_COINS = COINS.devocional;
 
 const devos = [
   { title: "Deus me Ama", verse: "João 3:16", text: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.", reflection: "Deus nos ama de um jeito tão grande que enviou Jesus para nos salvar. Quando você se sentir sozinho, lembre-se: Deus te ama mais do que qualquer pessoa neste mundo!", prayer: "Querido Deus, obrigado por me amar tanto. Ajude-me a sentir Seu amor todos os dias. Amém.", emoji: "💛", accent: "from-amber-300 to-yellow-400" },
@@ -96,7 +98,7 @@ export default function Devocionais() {
                   <p className="font-body text-sm text-amber-900/90 mt-2 line-clamp-2 italic">"{devos[todayIdx].text}"</p>
                 </div>
                 <div className="shrink-0 self-center">
-                  <CoinBadge amount={DEVO_COINS + 1} size="xs" label="ao ler" />
+                  <CoinBadge amount={DEVO_COINS} size="xs" label="ao ler" />
                 </div>
               </div>
             </div>

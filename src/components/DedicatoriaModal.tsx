@@ -1,5 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import dedicatoriaBg from "@/assets/pergaminho.png";
+import { applySoftVoice, ensureVoicesLoaded } from "@/lib/speak";
+import { awardOnce } from "@/hooks/useCoins";
+import { DEDICATORIA_COINS } from "@/data/coinRewards";
+
 
 const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   {
@@ -171,24 +175,27 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
       const start = Math.max(0, Math.min(from, Math.max(0, plainText.length - 1)));
       offsetRef.current = start;
       charRef.current = start;
-      const u = new SpeechSynthesisUtterance(plainText.slice(start));
-      u.lang = "pt-BR";
-      u.rate = 0.95;
-      u.onboundary = (e) => {
-        charRef.current = start + (e.charIndex || 0);
-        saveProgress({ charIndex: charRef.current, scrollTop: scrollRef.current?.scrollTop ?? 0 });
-      };
-      u.onend = () => {
-        setSpeaking(false);
-        saveProgress({ charIndex: 0, scrollTop: 0 });
-      };
-      u.onerror = () => setSpeaking(false);
-      synth.speak(u);
       setSpeaking(true);
+      ensureVoicesLoaded(() => {
+        const u = new SpeechSynthesisUtterance(plainText.slice(start));
+        applySoftVoice(u);
+        u.onboundary = (e) => {
+          charRef.current = start + (e.charIndex || 0);
+          saveProgress({ charIndex: charRef.current, scrollTop: scrollRef.current?.scrollTop ?? 0 });
+        };
+        u.onend = () => {
+          setSpeaking(false);
+          saveProgress({ charIndex: 0, scrollTop: 0 });
+          awardOnce("dedicatoria:ouvida", DEDICATORIA_COINS, "Você assistiu e ouviu a Dedicatória!");
+        };
+        u.onerror = () => setSpeaking(false);
+        synth.speak(u);
+      });
     } catch {
       setSpeaking(false);
     }
   }, [plainText]);
+
 
   const toggleListen = () => {
     if (speaking) {
@@ -271,16 +278,17 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
               >
                 ✕
               </button>
-              <div className="absolute top-4 left-4 flex items-center gap-2 z-20">
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 flex items-center gap-2 z-30">
                 <button
                   onClick={toggleListen}
-                  className="h-9 px-3 rounded-full flex items-center gap-1.5 text-xs font-bold hover:scale-105 transition-transform"
-                  style={{ background: speaking ? "#8b2b2b" : "#6b3a0a", color: "#f7e9c9", boxShadow: "0 2px 6px rgba(0,0,0,0.4)" }}
+                  className="h-11 px-5 rounded-full flex items-center gap-2 text-sm font-extrabold hover:scale-110 transition-transform ring-2 ring-white/70"
+                  style={{ background: speaking ? "#8b2b2b" : "#1e5bd6", color: "#ffffff", boxShadow: "0 6px 18px rgba(0,0,0,0.45)" }}
                   aria-label={speaking ? "Parar leitura" : charRef.current > 0 ? "Continuar leitura" : "Ouvir dedicatória"}
-                  title={speaking ? "Parar leitura" : charRef.current > 0 ? "Continuar de onde parou" : "Ouvir dedicatória"}
+                  title={speaking ? "Parar leitura" : charRef.current > 0 ? "Continuar de onde parou" : "Ouvir dedicatória (+5 🪙)"}
                 >
-                  {speaking ? "⏹️ Parar" : charRef.current > 0 ? "▶️ Continuar" : "🔊 Ouvir"}
+                  {speaking ? "⏹️ Parar" : charRef.current > 0 ? "▶️ Continuar" : "🔊 Ouvir  🪙 +5"}
                 </button>
+
                 {resumed && (
                   <button
                     onClick={restartFromStart}

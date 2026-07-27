@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { applySoftVoice, ensureVoicesLoaded } from "@/lib/speak";
+
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import CategoryOrbit from "@/components/CategoryOrbit";
@@ -171,18 +173,20 @@ export default function Biblia() {
       if (speaking) { synth.cancel(); setSpeaking(false); return; }
       const text = `${selectedBook} capítulo ${selectedChapter}. ` +
         verses.map((v) => `Versículo ${v.verse}. ${v.text}`).join(" ");
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = "pt-BR";
-      u.rate = 0.95;
-      u.onend = () => setSpeaking(false);
-      u.onerror = () => setSpeaking(false);
-      synth.cancel();
-      synth.speak(u);
       setSpeaking(true);
+      ensureVoicesLoaded(() => {
+        const u = new SpeechSynthesisUtterance(text);
+        applySoftVoice(u);
+        u.onend = () => setSpeaking(false);
+        u.onerror = () => setSpeaking(false);
+        synth.cancel();
+        synth.speak(u);
+      });
     } catch {
       setSpeaking(false);
     }
   };
+
 
 
 

@@ -65,26 +65,31 @@ export default function ColonialVideoFrame({
   aspect?: string;
 }) {
   const p = PALETTES[variant];
+  const pad = "clamp(4px, 0.7vh, 9px)";
   return (
     <div
-      className={`relative w-full max-w-[min(95vw,calc(90vh*9/16))] max-h-[90vh] ${className}`}
+      className={`relative ${className}`}
       style={{
-        aspectRatio: aspect,
-        padding: "clamp(6px, 1.2vh, 14px)",
-
+        padding: pad,
         borderRadius: "18px",
         background: p.outer,
         boxShadow: `0 0 0 2px ${p.ring1}, 0 0 0 4px ${p.ring2}, 0 20px 60px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.5)`,
       }}
     >
+
       <div
-        className="relative w-full h-full overflow-hidden"
+        className="relative overflow-hidden"
         style={{
+          aspectRatio: aspect,
+          height: `min(82vh, calc(92vw * 16 / 9))`,
+          maxHeight: "82vh",
+          maxWidth: "92vw",
           borderRadius: "10px",
           boxShadow: p.innerBevel,
           background: "#000",
         }}
       >
+
         {children}
       </div>
 

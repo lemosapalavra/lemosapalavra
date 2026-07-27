@@ -7,6 +7,7 @@ import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
 import CoinBadge from "@/components/CoinBadge";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { loadConfig, type PlayEntry, type SeriesGroupCfg } from "@/data/lemosPlayConfig";
+import { COINS } from "@/data/coinRewards";
 import { awardOnce } from "@/hooks/useCoins";
 
 import { normalizeVideo } from "@/lib/videoEmbed";
@@ -26,12 +27,12 @@ import nascimentoJesusThumb from "@/assets/lemos-play/nascimento-jesus-thumb.png
 
 // Coin reward per category when finishing/watching content
 const COIN_REWARDS: Record<string, number> = {
-  Gênesis: 3,
-  Jesus: 5,
-  Filme: 3,
-  Série: 3,
-  Música: 3,
-  Louvor: 5,
+  Gênesis: COINS.genesis,
+  Jesus: COINS.jesus,
+  Filme: COINS.filme,
+  Série: COINS.serie,
+  Música: COINS.musica,
+  Louvor: COINS.louvor,
 };
 
 interface PlayItem {
@@ -259,6 +260,9 @@ function TopTenRow({ items, onPlay, progress }: { items: PlayItem[]; onPlay: (it
   );
 }
 
+/** Vídeos desativados pelo admin não aparecem no site. */
+const isOn = (v: PlayEntry) => v.enabled !== false;
+
 export default function LemosPlay() {
   const isAdmin = useIsAdmin();
   const [adminOpen, setAdminOpen] = useState(false);
@@ -270,9 +274,9 @@ export default function LemosPlay() {
     return () => window.removeEventListener("lemos_play_config_change", h);
   }, []);
 
-  const filmesPlay = useMemo(() => cfg.filmes.map((v) => toPlay(v, "Filme")), [cfg]);
-  const musicasPlay = useMemo(() => cfg.musicas.map((v) => toPlay(v, "Música")), [cfg]);
-  const louvoresPlay = useMemo(() => cfg.louvores.map((v) => toPlay(v, "Louvor")), [cfg]);
+  const filmesPlay = useMemo(() => cfg.filmes.filter(isOn).map((v) => toPlay(v, "Filme")), [cfg]);
+  const musicasPlay = useMemo(() => cfg.musicas.filter(isOn).map((v) => toPlay(v, "Música")), [cfg]);
+  const louvoresPlay = useMemo(() => cfg.louvores.filter(isOn).map((v) => toPlay(v, "Louvor")), [cfg]);
   const seriesGroupItems = useMemo(
     () =>
       cfg.series.map((g: SeriesGroupCfg) => ({
@@ -280,7 +284,7 @@ export default function LemosPlay() {
         title: g.title,
         poster: g.icon,
         category: "Série",
-        videos: g.videos.map((v) => toPlay(v, "Série")),
+        videos: g.videos.filter(isOn).map((v) => toPlay(v, "Série")),
       })),
     [cfg]
   );
@@ -499,6 +503,7 @@ export default function LemosPlay() {
   const genesisItems: PlayItem[] = useMemo(
     () =>
       cfg.filmes
+        .filter(isOn)
         .filter((v) => (v.section || "").toLowerCase() === "gênesis" || (v.section || "").toLowerCase() === "genesis")
         .map((v) => toPlay(v, "Gênesis")),
     [cfg]
@@ -506,6 +511,7 @@ export default function LemosPlay() {
   const jesusItems: PlayItem[] = useMemo(
     () =>
       cfg.filmes
+        .filter(isOn)
         .filter((v) => {
           const s = (v.section || "").toLowerCase();
           return s === "jesus" || s === "novo testamento";

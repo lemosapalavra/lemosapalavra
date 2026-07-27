@@ -61,6 +61,77 @@ const Sparkles = ({ count = 20 }: { count?: number }) => {
   );
 };
 
+// Confetti explosion (papelotes coloridos voando em todas as direções)
+const Confetti = ({ count = 60 }: { count?: number }) => {
+  const bits = useMemo(
+    () =>
+      Array.from({ length: count }, (_, i) => {
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 140 + Math.random() * 320;
+        return {
+          id: i,
+          x: Math.cos(angle) * dist,
+          y: Math.sin(angle) * dist,
+          rot: (Math.random() * 900 - 450).toFixed(0),
+          delay: Math.random() * 0.35,
+          dur: 1.1 + Math.random() * 0.9,
+          w: 5 + Math.random() * 7,
+          h: 9 + Math.random() * 13,
+          color: ["#ffd54a", "#ff7a59", "#5ad2ff", "#b984ff", "#7dffa5", "#fff"][i % 6],
+        };
+      }),
+    [count]
+  );
+  return (
+    <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
+      {bits.map((b) => (
+        <span
+          key={b.id}
+          className="absolute rounded-[2px]"
+          style={{
+            width: b.w,
+            height: b.h,
+            background: b.color,
+            ["--cx" as any]: `${b.x}px`,
+            ["--cy" as any]: `${b.y}px`,
+            ["--crot" as any]: `${b.rot}deg`,
+            animation: `confettiFly ${b.dur}s ${b.delay}s cubic-bezier(.15,.7,.35,1) forwards`,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// Raios de luz girando (god rays) atrás das cartas
+const GodRays = ({ opacity = 0.35 }: { opacity?: number }) => (
+  <div
+    className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[190vmax] h-[190vmax]"
+    style={{
+      opacity,
+      animation: "raySpin 18s linear infinite",
+      background:
+        "repeating-conic-gradient(from 0deg, rgba(255,225,140,0.5) 0deg 5deg, transparent 5deg 16deg)",
+      maskImage: "radial-gradient(circle, #000 0%, transparent 62%)",
+      WebkitMaskImage: "radial-gradient(circle, #000 0%, transparent 62%)",
+    }}
+  />
+);
+
+// Ondas de choque concêntricas
+const Shockwaves = () => (
+  <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+    {[0, 0.18, 0.36].map((d) => (
+      <span
+        key={d}
+        className="absolute rounded-full border-[3px] border-yellow-200/80"
+        style={{ width: 120, height: 120, animation: `shockwave 1.1s ${d}s ease-out forwards` }}
+      />
+    ))}
+  </div>
+);
+
+
 export default function StickerPackAnimation({ stickers, onClose }: StickerPackAnimationProps) {
   const packImg = useMemo(() => PACKS[Math.floor(Math.random() * PACKS.length)], []);
   const [phase, setPhase] = useState<"pack" | "shaking" | "tearing" | "burst" | "reveal">("pack");
@@ -213,9 +284,15 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
         )}
 
         {phase === "burst" && (
-          <div className="relative w-56 sm:w-72 h-72 flex items-center justify-center">
+          <div className="relative w-56 sm:w-72 h-72 flex items-center justify-center animate-[screenShake_0.65s_ease-out]">
+            <div className="fixed inset-0 pointer-events-none bg-white animate-[whiteFlash_0.5s_ease-out_forwards]" />
+            <GodRays opacity={0.5} />
+            <Shockwaves />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-72 h-72 rounded-full bg-gradient-to-br from-yellow-300 via-orange-300 to-pink-300 blur-3xl animate-ping" />
+            </div>
+            <div className="fixed inset-0 pointer-events-none">
+              <Confetti count={70} />
             </div>
             <div className="absolute inset-0 pointer-events-none">
               <Sparkles count={36} />
@@ -229,6 +306,12 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
 
         {phase === "reveal" && (
           <div className="flex flex-col items-center gap-4 w-full">
+            {hasSpecial && <GodRays opacity={0.22} />}
+            {hasSpecial && allRevealed && (
+              <div className="fixed inset-0 pointer-events-none">
+                <Confetti count={50} />
+              </div>
+            )}
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-white drop-shadow-lg animate-[fadeDown_0.5s]">
               ✨ Suas Figurinhas! ✨
             </h2>
@@ -291,8 +374,23 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
                         {s.isRepeat && (
                           <span className="absolute top-7 left-1.5 z-10 text-[8px] font-bold text-red-100 bg-red-500/90 px-1.5 py-0.5 rounded-full">REPETIDA</span>
                         )}
+                        {s.rarity !== "normal" && (
+                          <span
+                            className="pointer-events-none absolute inset-0 z-20"
+                            style={{
+                              background:
+                                "linear-gradient(115deg, transparent 35%, rgba(255,255,255,0.75) 48%, transparent 62%)",
+                              backgroundSize: "260% 100%",
+                              animation: "holoSweep 2.4s linear infinite",
+                              mixBlendMode: "screen",
+                            }}
+                          />
+                        )}
                         {s.rarity === "reliquia" && (
-                          <span className="absolute -top-2 -right-2 z-20 text-2xl animate-bounce">⭐</span>
+                          <>
+                            <span className="pointer-events-none absolute -inset-3 z-0 rounded-3xl bg-yellow-300/40 blur-xl animate-pulse" />
+                            <span className="absolute -top-2 -right-2 z-30 text-2xl animate-bounce">⭐</span>
+                          </>
                         )}
                       </div>
                     </div>
@@ -359,6 +457,30 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
           40%{transform:translate(-50%,-50%) scale(1.2) rotate(0deg);opacity:1}
           70%{transform:translate(-50%,-50%) scale(1) rotate(15deg);opacity:1}
           100%{transform:translate(-50%,-50%) scale(0.8) rotate(0deg);opacity:0}
+        }
+        @keyframes confettiFly {
+          0%{transform:translate(0,0) rotate(0deg);opacity:1}
+          100%{transform:translate(var(--cx),calc(var(--cy) + 160px)) rotate(var(--crot));opacity:0}
+        }
+        @keyframes raySpin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+        @keyframes shockwave {
+          0%{transform:scale(0.2);opacity:0.9}
+          100%{transform:scale(6);opacity:0}
+        }
+        @keyframes whiteFlash {
+          0%{opacity:0.85} 100%{opacity:0}
+        }
+        @keyframes screenShake {
+          0%,100%{transform:translate(0,0)}
+          15%{transform:translate(-8px,4px)}
+          30%{transform:translate(7px,-5px)}
+          45%{transform:translate(-6px,-3px)}
+          60%{transform:translate(5px,4px)}
+          80%{transform:translate(-3px,2px)}
+        }
+        @keyframes holoSweep {
+          0%{background-position:200% 0}
+          100%{background-position:-60% 0}
         }
         @keyframes handPull {
           0%{transform:translate(-50%,40px) scale(0.6);opacity:0}

@@ -21,7 +21,9 @@ import doMeuJeitoVid from "@/assets/lemos-play/do-meu-jeito-v2.mp4.asset.json";
 import paiEFilhoVid from "@/assets/lemos-play/pai-e-filho-v2.mp4.asset.json";
 import umDeNosVid from "@/assets/lemos-play/um-de-nos-v2.mp4.asset.json";
 import entraCasaVid from "@/assets/lemos-play/entra-na-minha-casa.mp4.asset.json";
-import espiritoSantoVid from "@/assets/lemos-play/espirito-santo.mp4.asset.json";
+import espiritoSantoVid from "@/assets/lemos-play/espirito-santo-v2.mp4.asset.json";
+import espiritoSantoCover from "@/assets/lemos-play/espirito-santo-cover.jpg.asset.json";
+
 import aleluiaVid from "@/assets/lemos-play/aleluia.mp4.asset.json";
 import palavraEternaVid from "@/assets/lemos-play/palavra-eterna.mp4.asset.json";
 import souFielVid from "@/assets/lemos-play/sou-fiel.mp4.asset.json";
@@ -48,7 +50,10 @@ export interface PlayEntry {
   src: string; // full iframe embed url
   poster?: string; // optional image url
   section?: string;
+  /** Quando false, o vídeo fica oculto no site (desativado pelo admin). */
+  enabled?: boolean;
 }
+
 
 export interface SeriesGroupCfg {
   id: string;
@@ -64,7 +69,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v58";
+const KEY = "lemos_play_config_v59";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
@@ -85,8 +90,9 @@ const attachedThumbByTitle: Record<string, string> = {
   "Pai e Filho": paiEFilhoThumb.url,
   "Um de Nós": umDeNosThumb.url,
   "E se Ele Fosse Um de Nós": umDeNosThumb.url,
-  "Espírito Santo": espiritoSantoThumb.url,
-  "Espirito Santo": espiritoSantoThumb.url,
+  "Espírito Santo": espiritoSantoCover.url,
+  "Espirito Santo": espiritoSantoCover.url,
+
   "Sou Fiel": serFielThumb.url,
   "Graça Aleluia": gracaAleluiaThumb.url,
   "Graca Aleluia": gracaAleluiaThumb.url,
@@ -109,6 +115,8 @@ const defaultMusicas: PlayEntry[] = [
 
 const defaultLouvores: PlayEntry[] = [
   { id: "lv1", title: "Faz um Milagre em Mim", src: fazMilagreVid.url, poster: attachedThumbByTitle["Faz um Milagre em Mim"], section: "Louvores" },
+  { id: "lv2", title: "Espírito Santo", src: espiritoSantoVid.url, poster: espiritoSantoCover.url, section: "Louvores" },
+
   
   { id: "lv4", title: "Sou Fiel", src: souFielVid.url, poster: attachedThumbByTitle["Sou Fiel"], section: "Louvores" },
   { id: "lv5", title: "Graça Aleluia", src: aleluiaVid.url, poster: attachedThumbByTitle["Graça Aleluia"], section: "Louvores" },

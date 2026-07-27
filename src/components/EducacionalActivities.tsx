@@ -1,5 +1,6 @@
 import { useState, useRef, useMemo, useEffect } from "react";
 import CoinBadge from "@/components/CoinBadge";
+import { COINS } from "@/data/coinRewards";
 import ActivityNav from "@/components/ActivityNav";
 import logoAsset from "@/assets/educacionais/logo.png.asset.json";
 import edu1 from "@/assets/educacionais/educacional-1.jpg.asset.json";
@@ -22,13 +23,13 @@ interface Props {
 export type ActivityId = "circles" | "connect" | "differences" | "count" | "paint" | "draw";
 
 export const ACTIVITIES: { key: string; id: ActivityId; title: string; icon: string; image: string; coins: number; desc: string }[] = [
-  { key: "circles-1", id: "circles", title: "Pinte os Círculos", icon: "🎨", image: edu1.url, coins: 5, desc: "Pinte cada círculo com a cor do seu número." },
-  { key: "connect-1", id: "connect", title: "Ligue as Cores", icon: "🔗", image: edu2.url, coins: 6, desc: "Ligue os pontos seguindo a ordem dos números." },
-  { key: "differences-1", id: "differences", title: "Ache os Diferentes", icon: "🔍", image: edu3.url, coins: 5, desc: "Encontre as figuras que estão diferentes em cada bloco." },
-  { key: "count-1", id: "count", title: "Conte e Registre", icon: "🔢", image: edu4.url, coins: 6, desc: "Conte quantas figuras de cada tipo existem." },
-  { key: "paint-1", id: "paint", title: "Pinte por Números", icon: "🖍️", image: edu5.url, coins: 6, desc: "Escolha as cores certas e complete o desenho." },
-  { key: "draw-1", id: "draw", title: "Desenhe e Trace", icon: "✏️", image: edu6.url, coins: 5, desc: "Desenhe livremente seguindo o modelo do dia." },
-  { key: "circles-2", id: "circles", title: "Pinte os Círculos", icon: "🌈", image: edu7.url, coins: 5, desc: "Mais uma cartela colorida para alternar durante a semana." },
+  { key: "circles-1", id: "circles", title: "Pinte os Círculos", icon: "🎨", image: edu1.url, coins: COINS.circles, desc: "Pinte cada círculo com a cor do seu número." },
+  { key: "connect-1", id: "connect", title: "Ligue as Cores", icon: "🔗", image: edu2.url, coins: COINS.connect, desc: "Ligue os pontos seguindo a ordem dos números." },
+  { key: "differences-1", id: "differences", title: "Ache os Diferentes", icon: "🔍", image: edu3.url, coins: COINS.differences, desc: "Encontre as figuras que estão diferentes em cada bloco." },
+  { key: "count-1", id: "count", title: "Conte e Registre", icon: "🔢", image: edu4.url, coins: COINS.count, desc: "Conte quantas figuras de cada tipo existem." },
+  { key: "paint-1", id: "paint", title: "Pinte por Números", icon: "🖍️", image: edu5.url, coins: COINS.paint, desc: "Escolha as cores certas e complete o desenho." },
+  { key: "draw-1", id: "draw", title: "Desenhe e Trace", icon: "✏️", image: edu6.url, coins: COINS.draw, desc: "Desenhe livremente seguindo o modelo do dia." },
+  { key: "circles-2", id: "circles", title: "Pinte os Círculos", icon: "🌈", image: edu7.url, coins: COINS.circles, desc: "Mais uma cartela colorida para alternar durante a semana." },
 ];
 
 function dayOfYear(d = new Date()) {

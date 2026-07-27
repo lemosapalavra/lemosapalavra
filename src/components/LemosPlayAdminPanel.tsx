@@ -193,11 +193,21 @@ function PlayList({ items, onChange, currentCategory, moveTargets, onMove }: { i
 
   const renderCard = (it: PlayEntry, idx: number) => {
     const editing = editingId === it.id;
+    const on = it.enabled !== false;
     return (
-      <div key={it.id} className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
+      <div key={it.id} className={`bg-zinc-900 border rounded-lg p-3 ${on ? "border-zinc-800" : "border-red-900/60 opacity-70"}`}>
         <div className="flex items-center gap-2 mb-2">
           <span className="text-xs text-zinc-500 font-mono w-8">#{String(idx + 1).padStart(2, "0")}</span>
+          <button
+            onClick={() => patch(it.id, { enabled: !on })}
+            className={`relative w-12 h-6 shrink-0 rounded-full transition-colors ${on ? "bg-emerald-600" : "bg-zinc-700"}`}
+            title={on ? "Vídeo ativo — clique para desativar" : "Vídeo desativado — clique para ativar"}
+            aria-label={on ? "Desativar vídeo" : "Ativar vídeo"}
+          >
+            <span className={`absolute top-0.5 w-5 h-5 rounded-full bg-white transition-all ${on ? "left-6" : "left-0.5"}`} />
+          </button>
           <input value={it.title} onChange={(e) => patch(it.id, { title: e.target.value })} placeholder="Título" className={inputCls + " flex-1"} />
+
           <button onClick={() => move(it.id, -1)} className="w-9 h-9 rounded bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center" title="Mover para cima">
             <ArrowUp className="w-4 h-4" />
           </button>

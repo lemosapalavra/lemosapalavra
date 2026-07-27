@@ -215,6 +215,13 @@ export default function Album() {
                 <div className="text-[10px] sm:text-xs font-bold leading-tight opacity-90">
                   Você completou o Volume I — em breve, Volume II com muitas novidades!
                 </div>
+                {repeats.length > 0 && (
+                  <div className="mt-1 text-[10px] sm:text-xs font-extrabold bg-white/80 text-amber-900 rounded-xl px-2 py-1">
+                    🔁 Você tem {repeats.reduce((a, r) => a + r.count, 0)} figurinha(s) sobrando — elas ficarão guardadas
+                    e poderão ser usadas no <strong>Volume II</strong> do próximo álbum!
+                  </div>
+                )}
+
               </div>
             )}
           </div>
