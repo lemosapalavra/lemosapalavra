@@ -61,6 +61,77 @@ const Sparkles = ({ count = 20 }: { count?: number }) => {
   );
 };
 
+// Confetti explosion (papelotes coloridos voando em todas as direções)
+const Confetti = ({ count = 60 }: { count?: number }) => {
+  const bits = useMemo(
+    () =>
+      Array.from({ length: count }, (_, i) => {
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 140 + Math.random() * 320;
+        return {
+          id: i,
+          x: Math.cos(angle) * dist,
+          y: Math.sin(angle) * dist,
+          rot: (Math.random() * 900 - 450).toFixed(0),
+          delay: Math.random() * 0.35,
+          dur: 1.1 + Math.random() * 0.9,
+          w: 5 + Math.random() * 7,
+          h: 9 + Math.random() * 13,
+          color: ["#ffd54a", "#ff7a59", "#5ad2ff", "#b984ff", "#7dffa5", "#fff"][i % 6],
+        };
+      }),
+    [count]
+  );
+  return (
+    <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
+      {bits.map((b) => (
+        <span
+          key={b.id}
+          className="absolute rounded-[2px]"
+          style={{
+            width: b.w,
+            height: b.h,
+            background: b.color,
+            ["--cx" as any]: `${b.x}px`,
+            ["--cy" as any]: `${b.y}px`,
+            ["--crot" as any]: `${b.rot}deg`,
+            animation: `confettiFly ${b.dur}s ${b.delay}s cubic-bezier(.15,.7,.35,1) forwards`,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// Raios de luz girando (god rays) atrás das cartas
+const GodRays = ({ opacity = 0.35 }: { opacity?: number }) => (
+  <div
+    className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[190vmax] h-[190vmax]"
+    style={{
+      opacity,
+      animation: "raySpin 18s linear infinite",
+      background:
+        "repeating-conic-gradient(from 0deg, rgba(255,225,140,0.5) 0deg 5deg, transparent 5deg 16deg)",
+      maskImage: "radial-gradient(circle, #000 0%, transparent 62%)",
+      WebkitMaskImage: "radial-gradient(circle, #000 0%, transparent 62%)",
+    }}
+  />
+);
+
+// Ondas de choque concêntricas
+const Shockwaves = () => (
+  <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+    {[0, 0.18, 0.36].map((d) => (
+      <span
+        key={d}
+        className="absolute rounded-full border-[3px] border-yellow-200/80"
+        style={{ width: 120, height: 120, animation: `shockwave 1.1s ${d}s ease-out forwards` }}
+      />
+    ))}
+  </div>
+);
+
+
 export default function StickerPackAnimation({ stickers, onClose }: StickerPackAnimationProps) {
   const packImg = useMemo(() => PACKS[Math.floor(Math.random() * PACKS.length)], []);
   const [phase, setPhase] = useState<"pack" | "shaking" | "tearing" | "burst" | "reveal">("pack");
