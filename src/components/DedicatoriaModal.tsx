@@ -1,5 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import dedicatoriaBg from "@/assets/pergaminho.png";
+import { applySoftVoice, ensureVoicesLoaded } from "@/lib/speak";
+import { awardOnce } from "@/hooks/useCoins";
+import { DEDICATORIA_COINS } from "@/data/coinRewards";
+
 
 const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   {
