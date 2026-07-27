@@ -21,7 +21,9 @@ import doMeuJeitoVid from "@/assets/lemos-play/do-meu-jeito-v2.mp4.asset.json";
 import paiEFilhoVid from "@/assets/lemos-play/pai-e-filho-v2.mp4.asset.json";
 import umDeNosVid from "@/assets/lemos-play/um-de-nos-v2.mp4.asset.json";
 import entraCasaVid from "@/assets/lemos-play/entra-na-minha-casa.mp4.asset.json";
-import espiritoSantoVid from "@/assets/lemos-play/espirito-santo.mp4.asset.json";
+import espiritoSantoVid from "@/assets/lemos-play/espirito-santo-v2.mp4.asset.json";
+import espiritoSantoCover from "@/assets/lemos-play/espirito-santo-cover.jpg.asset.json";
+
 import aleluiaVid from "@/assets/lemos-play/aleluia.mp4.asset.json";
 import palavraEternaVid from "@/assets/lemos-play/palavra-eterna.mp4.asset.json";
 import souFielVid from "@/assets/lemos-play/sou-fiel.mp4.asset.json";
