@@ -17,7 +17,7 @@ export function defaultEventBanner(): EventBannerConfig {
   return {
     enabled: true,
     callToAction: "Clique aqui",
-    message: "Feliz Dia dos Pais",
+    message: "Dia dos Pais",
     videoUrl: diaDosPaisVideo.url,
   };
 }
