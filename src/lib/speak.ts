@@ -43,7 +43,7 @@ export function splitByPunctuation(text: string): { text: string; start: number;
     const chunk = m[0];
     if (!chunk.trim()) continue;
     const last = chunk.trim().slice(-1);
-    const pause = /[.!?\n]/.test(last) ? 650 : /[;:]/.test(last) ? 450 : /,/.test(last) ? 300 : 200;
+    const pause = /[.!?\n]/.test(last) ? 90 : /[;:]/.test(last) ? 60 : /,/.test(last) ? 40 : 20;
     parts.push({ text: chunk, start: m.index, pause });
   }
   return parts.length ? parts : [{ text, start: 0, pause: 0 }];
