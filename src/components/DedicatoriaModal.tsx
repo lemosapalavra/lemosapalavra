@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import dedicatoriaBg from "@/assets/pergaminho.png";
-import { applySoftVoice, ensureVoicesLoaded } from "@/lib/speak";
+import { speakSoftly } from "@/lib/speak";
 import { awardOnce } from "@/hooks/useCoins";
 import { DEDICATORIA_COINS } from "@/data/coinRewards";
 
@@ -169,32 +169,29 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
 
   const speakFrom = useCallback((from: number) => {
     try {
-      const synth = window.speechSynthesis;
-      if (!synth) { alert("Seu navegador não suporta leitura em voz alta."); return; }
-      synth.cancel();
+      if (!window.speechSynthesis) { alert("Seu navegador não suporta leitura em voz alta."); return; }
       const start = Math.max(0, Math.min(from, Math.max(0, plainText.length - 1)));
       offsetRef.current = start;
       charRef.current = start;
       setSpeaking(true);
-      ensureVoicesLoaded(() => {
-        const u = new SpeechSynthesisUtterance(plainText.slice(start));
-        applySoftVoice(u);
-        u.onboundary = (e) => {
-          charRef.current = start + (e.charIndex || 0);
-          saveProgress({ charIndex: charRef.current, scrollTop: scrollRef.current?.scrollTop ?? 0 });
-        };
-        u.onend = () => {
+      speakSoftly(plainText, {
+        from: start,
+        onProgress: (idx) => {
+          charRef.current = idx;
+          saveProgress({ charIndex: idx, scrollTop: scrollRef.current?.scrollTop ?? 0 });
+        },
+        onEnd: () => {
           setSpeaking(false);
           saveProgress({ charIndex: 0, scrollTop: 0 });
           awardOnce("dedicatoria:ouvida", DEDICATORIA_COINS, "Você assistiu e ouviu a Dedicatória!");
-        };
-        u.onerror = () => setSpeaking(false);
-        synth.speak(u);
+        },
+        onError: () => setSpeaking(false),
       });
     } catch {
       setSpeaking(false);
     }
   }, [plainText]);
+
 
 
   const toggleListen = () => {
@@ -253,12 +250,12 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
     <>
       {open && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+          className="fixed inset-0 z-[100] flex items-start justify-center bg-black/70 backdrop-blur-sm p-4 pt-24 sm:pt-28 overflow-y-auto"
           onClick={handleClose}
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative max-w-2xl w-full max-h-[90vh]"
+            className="relative max-w-2xl w-full max-h-[85vh]"
             style={{ animation: "scrollOpen 0.9s ease-out forwards" }}
           >
             <div
