@@ -4,8 +4,8 @@
  */
 
 const PREFERRED = [
-  "luciana", "francisca", "maria", "helena", "fernanda", "camila", "joana",
-  "google português do brasil", "microsoft maria", "female",
+  "daniel", "felipe", "ricardo", "antonio", "joão", "joao", "male", "homem",
+  "google português do brasil", "microsoft daniel",
 ];
 
 export function pickSoftVoice(): SpeechSynthesisVoice | null {
@@ -23,12 +23,12 @@ export function pickSoftVoice(): SpeechSynthesisVoice | null {
   }
 }
 
-/** Aplica voz suave, ritmo calmo e tom acolhedor a um utterance. */
+/** Aplica voz masculina suave, ritmo calmo e tom acolhedor a um utterance. */
 export function applySoftVoice(u: SpeechSynthesisUtterance) {
   u.lang = "pt-BR";
-  u.rate = 0.74;   // bem devagar e calmo
-  u.pitch = 1.04;  // tom suave e natural
-  u.volume = 0.9;
+  u.rate = 0.9;    // fluido, sem arrastar
+  u.pitch = 0.82;  // tom masculino e suave
+  u.volume = 0.95;
   const v = pickSoftVoice();
   if (v) u.voice = v;
   return u;
