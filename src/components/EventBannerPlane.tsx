@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { loadEventBanner, type EventBannerConfig } from "@/data/eventBannerConfig";
 import { normalizeVideo } from "@/lib/videoEmbed";
-import planeRtl from "@/assets/aviao-rtl-v6.png.asset.json";
-import planeLtr from "@/assets/aviao-ltr-v6.png.asset.json";
+import planeRtl from "@/assets/aviao-rtl-v7.png.asset.json";
+import planeLtr from "@/assets/aviao-ltr-v7.png.asset.json";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 
 /**
@@ -98,10 +98,10 @@ export default function EventBannerPlane() {
                 <button
                   onClick={handleClick}
                   disabled={!cfg.videoUrl}
-                  className="pointer-events-auto absolute bg-transparent border-0 p-0 font-display font-extrabold text-xs sm:text-sm md:text-base text-[#1e5bd6] whitespace-nowrap hover:scale-110 transition-transform disabled:opacity-70"
+                  className="pointer-events-auto absolute bg-transparent border-0 p-0 font-display font-extrabold text-xs sm:text-sm md:text-base text-[#1e5bd6] whitespace-nowrap hover:scale-110 transition-transform disabled:opacity-70 text-center"
                   style={dir === "rtl"
-                    ? { right: "26%", top: "50%", transform: "translateY(-50%)" }
-                    : { left: "22%", top: "50%", transform: "translateY(-50%)" }}
+                    ? { left: "72%", top: "48%", transform: "translate(-50%, -50%)" }
+                    : { left: "28%", top: "48%", transform: "translate(-50%, -50%)" }}
                   title={cfg.videoUrl ? "Assistir vídeo" : "Sem vídeo configurado"}
                   aria-label={cfg.message}
                 >
