@@ -26,9 +26,9 @@ export function pickSoftVoice(): SpeechSynthesisVoice | null {
 /** Aplica voz masculina suave, ritmo calmo e tom acolhedor a um utterance. */
 export function applySoftVoice(u: SpeechSynthesisUtterance) {
   u.lang = "pt-BR";
-  u.rate = 0.9;    // fluido, sem arrastar
-  u.pitch = 0.82;  // tom masculino e suave
-  u.volume = 0.95;
+  u.rate = 0.95;   // fluido, sem pausas na pontuação
+  u.pitch = 0.86;  // tom masculino e suave
+  u.volume = 0.8;  // som mais suave
   const v = pickSoftVoice();
   if (v) u.voice = v;
   return u;
@@ -42,9 +42,8 @@ export function splitByPunctuation(text: string): { text: string; start: number;
   while ((m = re.exec(text))) {
     const chunk = m[0];
     if (!chunk.trim()) continue;
-    const last = chunk.trim().slice(-1);
-    const pause = /[.!?\n]/.test(last) ? 90 : /[;:]/.test(last) ? 60 : /,/.test(last) ? 40 : 20;
-    parts.push({ text: chunk, start: m.index, pause });
+    // Sem pausas extras na pontuação — leitura contínua
+    parts.push({ text: chunk, start: m.index, pause: 0 });
   }
   return parts.length ? parts : [{ text, start: 0, pause: 0 }];
 }
