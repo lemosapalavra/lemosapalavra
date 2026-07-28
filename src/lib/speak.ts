@@ -26,13 +26,63 @@ export function pickSoftVoice(): SpeechSynthesisVoice | null {
 /** Aplica voz suave, ritmo calmo e tom acolhedor a um utterance. */
 export function applySoftVoice(u: SpeechSynthesisUtterance) {
   u.lang = "pt-BR";
-  u.rate = 0.82;   // mais devagar e calmo
-  u.pitch = 1.08;  // tom levemente mais doce
-  u.volume = 0.95;
+  u.rate = 0.74;   // bem devagar e calmo
+  u.pitch = 1.04;  // tom suave e natural
+  u.volume = 0.9;
   const v = pickSoftVoice();
   if (v) u.voice = v;
   return u;
 }
+
+/** Divide o texto em trechos respeitando a pontuação (., !, ?, ;, :, ,). */
+export function splitByPunctuation(text: string): { text: string; start: number; pause: number }[] {
+  const parts: { text: string; start: number; pause: number }[] = [];
+  const re = /[^.!?;:,\n]+[.!?;:,\n]*/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text))) {
+    const chunk = m[0];
+    if (!chunk.trim()) continue;
+    const last = chunk.trim().slice(-1);
+    const pause = /[.!?\n]/.test(last) ? 650 : /[;:]/.test(last) ? 450 : /,/.test(last) ? 300 : 200;
+    parts.push({ text: chunk, start: m.index, pause });
+  }
+  return parts.length ? parts : [{ text, start: 0, pause: 0 }];
+}
+
+/**
+ * Fala o texto em trechos, com pausas naturais na pontuação.
+ * onProgress recebe o índice absoluto do caractere atual.
+ */
+export function speakSoftly(
+  text: string,
+  opts: { from?: number; onProgress?: (charIndex: number) => void; onEnd?: () => void; onError?: () => void } = {}
+) {
+  const synth = window.speechSynthesis;
+  if (!synth) { opts.onError?.(); return () => {}; }
+  const from = Math.max(0, opts.from ?? 0);
+  const chunks = splitByPunctuation(text).filter((c) => c.start + c.text.length > from);
+  let cancelled = false;
+  let i = 0;
+
+  const next = () => {
+    if (cancelled) return;
+    if (i >= chunks.length) { opts.onEnd?.(); return; }
+    const c = chunks[i++];
+    const offset = Math.max(0, from - c.start);
+    const piece = c.text.slice(offset);
+    if (!piece.trim()) { next(); return; }
+    const u = new SpeechSynthesisUtterance(piece);
+    applySoftVoice(u);
+    u.onboundary = (e) => opts.onProgress?.(c.start + offset + (e.charIndex || 0));
+    u.onend = () => { if (!cancelled) setTimeout(next, c.pause); };
+    u.onerror = () => { if (!cancelled) opts.onError?.(); };
+    synth.speak(u);
+  };
+
+  ensureVoicesLoaded(() => { synth.cancel(); next(); });
+  return () => { cancelled = true; try { synth.cancel(); } catch {} };
+}
+
 
 /** Garante que a lista de vozes já foi carregada antes de falar. */
 export function ensureVoicesLoaded(cb: () => void) {
