@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { loadEventBanner, type EventBannerConfig } from "@/data/eventBannerConfig";
 import { normalizeVideo } from "@/lib/videoEmbed";
-import planeRtl from "@/assets/aviao-rtl-v7.png.asset.json";
-import planeLtr from "@/assets/aviao-ltr-v7.png.asset.json";
+import planeRtl from "@/assets/aviao-rtl-v8.png.asset.json";
+import planeLtr from "@/assets/aviao-ltr-v8.png.asset.json";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 
 /**
@@ -55,7 +55,7 @@ export default function EventBannerPlane() {
 
   return (
     <>
-      <div className="pointer-events-none fixed inset-x-0 top-24 sm:top-28 z-10 h-40 overflow-hidden">
+      <div className="pointer-events-none fixed inset-x-0 top-28 sm:top-32 z-10 h-44 overflow-hidden">
         {flying && (
           <div
             key={dir}
@@ -98,7 +98,7 @@ export default function EventBannerPlane() {
                 <button
                   onClick={handleClick}
                   disabled={!cfg.videoUrl}
-                  className="pointer-events-auto absolute bg-transparent border-0 p-0 font-display font-extrabold text-xs sm:text-sm md:text-base text-[#1e5bd6] whitespace-nowrap hover:scale-110 transition-transform disabled:opacity-70 text-center"
+                  className="pointer-events-auto absolute bg-transparent border-0 p-0 font-display font-extrabold text-base sm:text-xl md:text-2xl text-[#1e5bd6] whitespace-nowrap hover:scale-110 transition-transform disabled:opacity-70 text-center"
                   style={dir === "rtl"
                     ? { left: "72%", top: "48%", transform: "translate(-50%, -50%)" }
                     : { left: "28%", top: "48%", transform: "translate(-50%, -50%)" }}
