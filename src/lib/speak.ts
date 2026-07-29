@@ -70,7 +70,9 @@ export function speakSoftly(
     const offset = Math.max(0, from - c.start);
     const piece = c.text.slice(offset);
     if (!piece.trim()) { next(); return; }
-    const u = new SpeechSynthesisUtterance(piece);
+    // Sem considerar a pontuação: substitui por espaço (mesmo tamanho, índices preservados)
+    const spoken = piece.replace(/[.,;:!?\u2026\u2014\u2013]/g, " ");
+    const u = new SpeechSynthesisUtterance(spoken);
     applySoftVoice(u);
     u.onboundary = (e) => opts.onProgress?.(c.start + offset + (e.charIndex || 0));
     u.onend = () => { if (!cancelled) setTimeout(next, c.pause); };
