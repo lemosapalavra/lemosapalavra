@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
+import VideoInteractions from "@/components/VideoInteractions";
 import logoCentral from "@/assets/logo-central.png";
 import type { BibleVideo } from "@/data/bibleVideos";
 
@@ -46,6 +47,9 @@ export default function VideoCentralLayout({ title, subtitle, videos }: Props) {
             title={playing.title}
           />
         </ColonialVideoFrame>
+        <div className="absolute bottom-4 inset-x-0 px-4 z-20">
+          <VideoInteractions videoId={`central:${playing.title}`} />
+        </div>
       </div>
     );
   }
