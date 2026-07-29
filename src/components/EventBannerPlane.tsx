@@ -98,10 +98,10 @@ export default function EventBannerPlane() {
                 <button
                   onClick={handleClick}
                   disabled={!cfg.videoUrl}
-                  className="pointer-events-auto absolute bg-transparent border-0 p-0 font-display font-extrabold text-[10px] sm:text-xs md:text-sm text-[#1e5bd6] whitespace-nowrap hover:scale-110 transition-transform disabled:opacity-70 text-center"
+                  className="pointer-events-auto absolute bg-transparent border-0 p-0 font-display font-extrabold text-[8px] sm:text-[10px] md:text-xs leading-[1.05] text-[#1e5bd6] hover:scale-110 transition-transform disabled:opacity-70 text-center break-words"
                   style={dir === "rtl"
-                    ? { left: "72%", top: "48%", transform: "translate(-50%, -50%)" }
-                    : { left: "28%", top: "48%", transform: "translate(-50%, -50%)" }}
+                    ? { left: "72%", top: "48%", transform: "translate(-50%, -50%)", maxWidth: "34%", whiteSpace: "normal" }
+                    : { left: "28%", top: "48%", transform: "translate(-50%, -50%)", maxWidth: "34%", whiteSpace: "normal" }}
                   title={cfg.videoUrl ? "Assistir vídeo" : "Sem vídeo configurado"}
                   aria-label={cfg.message}
                 >
