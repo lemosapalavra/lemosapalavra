@@ -26,9 +26,9 @@ export function pickSoftVoice(): SpeechSynthesisVoice | null {
 /** Aplica voz masculina suave, ritmo calmo e tom acolhedor a um utterance. */
 export function applySoftVoice(u: SpeechSynthesisUtterance) {
   u.lang = "pt-BR";
-  u.rate = 0.95;   // fluido, sem pausas na pontuação
-  u.pitch = 0.86;  // tom masculino e suave
-  u.volume = 0.8;  // som mais suave
+  u.rate = 0.88;   // dicção mais pausada e articulada
+  u.pitch = 0.72;  // voz masculina mais grave e aprofundada
+  u.volume = 0.9;  // presença sem estridência
   const v = pickSoftVoice();
   if (v) u.voice = v;
   return u;
