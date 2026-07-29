@@ -3,6 +3,7 @@ import { Play, Info, ChevronLeft, ChevronRight, X, Settings, UserPlus, Heart, Me
 import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 import PageHeader from "@/components/PageHeader";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
+import VideoInteractions from "@/components/VideoInteractions";
 import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
 import CoinBadge from "@/components/CoinBadge";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
@@ -749,6 +750,12 @@ export default function LemosPlay() {
                 ) : null}
               </ColonialVideoFrame>
             )}
+
+            <div className="absolute bottom-4 inset-x-0 px-4 z-20 pointer-events-none">
+              <div className="pointer-events-auto">
+                <VideoInteractions videoId={`lemosplay:${playing.id}`} />
+              </div>
+            </div>
             
             {nextInGroup && (
               <button

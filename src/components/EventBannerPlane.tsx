@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
-import { loadEventBanner, type EventBannerConfig } from "@/data/eventBannerConfig";
+import { loadEventBanner, isBannerActive, type EventBannerConfig } from "@/data/eventBannerConfig";
 import { normalizeVideo } from "@/lib/videoEmbed";
-import planeRtl from "@/assets/aviao-rtl-v8.png.asset.json";
-import planeLtr from "@/assets/aviao-ltr-v8.png.asset.json";
+import planeRtl from "@/assets/aviao-rtl-v9.png.asset.json";
+import planeLtr from "@/assets/aviao-ltr-v9.png.asset.json";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 
 /**
@@ -31,7 +31,7 @@ export default function EventBannerPlane() {
 
   // Ciclo: 14s voando + 2s pausa, depois inverte a direção
   useEffect(() => {
-    if (!cfg.enabled) return;
+    if (!isBannerActive(cfg)) return;
     let t2: any;
     const t1 = setInterval(() => {
       setFlying(false);
@@ -41,9 +41,9 @@ export default function EventBannerPlane() {
       }, 2000);
     }, 16000);
     return () => { clearInterval(t1); clearTimeout(t2); };
-  }, [cfg.enabled]);
+  }, [cfg]);
 
-  if (!cfg.enabled) return null;
+  if (!isBannerActive(cfg)) return null;
 
   const handleClick = () => { if (cfg.videoUrl) setOpen(true); };
   const video = cfg.videoUrl ? normalizeVideo(cfg.videoUrl, false) : null;
@@ -98,7 +98,7 @@ export default function EventBannerPlane() {
                 <button
                   onClick={handleClick}
                   disabled={!cfg.videoUrl}
-                  className="pointer-events-auto absolute bg-transparent border-0 p-0 font-display font-extrabold text-base sm:text-xl md:text-2xl text-[#1e5bd6] whitespace-nowrap hover:scale-110 transition-transform disabled:opacity-70 text-center"
+                  className="pointer-events-auto absolute bg-transparent border-0 p-0 font-display font-extrabold text-[10px] sm:text-xs md:text-sm text-[#1e5bd6] whitespace-nowrap hover:scale-110 transition-transform disabled:opacity-70 text-center"
                   style={dir === "rtl"
                     ? { left: "72%", top: "48%", transform: "translate(-50%, -50%)" }
                     : { left: "28%", top: "48%", transform: "translate(-50%, -50%)" }}

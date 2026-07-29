@@ -202,6 +202,41 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
                 />
                 Exibir aviãozinho na página inicial
               </label>
+              <div className="rounded-lg border border-zinc-200 p-3 space-y-2">
+                <label className="flex items-center gap-2 text-sm font-semibold text-zinc-700">
+                  <input
+                    type="checkbox"
+                    checked={banner.scheduleEnabled}
+                    onChange={(e) => patchBanner({ scheduleEnabled: e.target.checked })}
+                  />
+                  Exibir somente em data comemorativa
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <label className="text-xs font-semibold text-zinc-700 block">
+                    Início
+                    <input
+                      type="date"
+                      value={banner.startDate}
+                      disabled={!banner.scheduleEnabled}
+                      onChange={(e) => patchBanner({ startDate: e.target.value })}
+                      className={inputCls + " mt-1 disabled:opacity-50"}
+                    />
+                  </label>
+                  <label className="text-xs font-semibold text-zinc-700 block">
+                    Fim
+                    <input
+                      type="date"
+                      value={banner.endDate}
+                      disabled={!banner.scheduleEnabled}
+                      onChange={(e) => patchBanner({ endDate: e.target.value })}
+                      className={inputCls + " mt-1 disabled:opacity-50"}
+                    />
+                  </label>
+                </div>
+                <p className="text-[11px] text-zinc-500">
+                  Fora do período configurado o aviãozinho não aparece na página inicial.
+                </p>
+              </div>
               <label className="text-xs font-semibold text-zinc-700 block">
                 Chamada (texto da faixa)
                 <input

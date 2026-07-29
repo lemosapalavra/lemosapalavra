@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { ArrowLeft } from "lucide-react";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
+import VideoInteractions from "@/components/VideoInteractions";
 import PageHeader from "@/components/PageHeader";
 import iconHistorias from "@/assets/icon-historias.png";
 import logoCentral from "@/assets/logo-central.png";
@@ -95,6 +96,9 @@ export default function Historias() {
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
+        <div className="absolute bottom-4 inset-x-0 px-4 z-20">
+          <VideoInteractions videoId={`historias:${playing.title}`} />
+        </div>
         {playing.src ? (
           <ColonialVideoFrame><video src={playing.src} className="w-full h-full bg-black object-cover" controls controlsList="nodownload noremoteplayback noplaybackrate" disablePictureInPicture onContextMenu={(e) => e.preventDefault()} autoPlay /></ColonialVideoFrame>
         ) : (
