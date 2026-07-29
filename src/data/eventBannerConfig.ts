@@ -7,6 +7,9 @@ export interface EventBannerConfig {
   callToAction: string; // texto principal (ex: "Clique aqui")
   message: string;       // mensagem sazonal (ex: "Feliz Dia dos Pais")
   videoUrl: string;      // link do vídeo a abrir
+  scheduleEnabled: boolean; // exibir apenas no período comemorativo
+  startDate: string;        // YYYY-MM-DD
+  endDate: string;          // YYYY-MM-DD
 }
 
 const KEY = "lemos_event_banner_v2";
@@ -19,6 +22,9 @@ export function defaultEventBanner(): EventBannerConfig {
     callToAction: "Clique aqui",
     message: "Dia dos Pais",
     videoUrl: diaDosPaisVideo.url,
+    scheduleEnabled: false,
+    startDate: "",
+    endDate: "",
   };
 }
 
@@ -31,6 +37,23 @@ export function loadEventBanner(): EventBannerConfig {
   } catch {
     return defaultEventBanner();
   }
+}
+
+/** Data local no formato YYYY-MM-DD. */
+function today(): string {
+  const d = new Date();
+  const p = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+}
+
+/** O aviãozinho aparece? Considera o liga/desliga e o período comemorativo. */
+export function isBannerActive(cfg: EventBannerConfig): boolean {
+  if (!cfg.enabled) return false;
+  if (!cfg.scheduleEnabled) return true;
+  const t = today();
+  if (cfg.startDate && t < cfg.startDate) return false;
+  if (cfg.endDate && t > cfg.endDate) return false;
+  return true;
 }
 
 export function saveEventBanner(cfg: EventBannerConfig) {
