@@ -28,7 +28,7 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
   {
     aramaic: "ܡܘܕܐ ܐܢܐ ܠܐܠܝܬ ܘܠܝܒܠܕܘ ܘܠܐܣ̈ܘܬܐ ܘܠܕܘܟܪܢܐ ܕܐܪܠܝܢܕܘ",
-    pt: "Registro aqui um agradecimento especial à minha amiga **Eliete**, do 54, e ao seu esposo, **Livaldo**; aos profissionais da saúde que participaram da minha recuperação; e à memória de **Arlindo Francisco de Lemos** (*Arlindo de Jé*), cuja memória vem sendo uma fonte de inspiração.",
+    pt: "Registro aqui um agradecimento especial à minha amiga **Eliete**, do 54, e ao seu esposo, **Livaldo**; aos profissionais da saúde que participaram da minha recuperação; e à memória de **Arlindo Francisco de Lemos** (*Arlindo de Jé*), fonte de inspiração.",
   },
   {
     aramaic: "ܝܘܡܢܐ ܡܣܬܟܠ ܐܢܐ ܕܐܠܗܐ ܡܕܒܪ ܟܠ ܐܘܪܚܐ ܕܚ̈ܝܝܢ",
@@ -36,7 +36,7 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
   {
     aramaic: "ܨܒܝܢܝ ܕܢܡܛܐ ܗܢܐ ܥܒܕܐ ܠܛܠ̈ܝܐ ܘܠܥܠܝ̈ܡܐ ܘܠܫܪ̈ܒܬܐ",
-    pt: "Meu desejo é que este projeto alcance crianças, jovens e famílias, conduzindo-os a conhecer mais profundamente o Senhor **Jesus Cristo** e a descobrir que Sua Palavra continua viva, transformando vidas, restaurando corações e renovando a esperança.",
+    pt: "Desejo que este projeto alcance crianças, jovens e famílias, conduzindo-os a conhecer mais profundamente o Senhor **Jesus Cristo** e a descobrir que Sua Palavra continua viva, transformando vidas, restaurando corações e renovando a esperança.",
   },
   {
     aramaic: "ܘܐܢ ܚܕ ܢܦܫܐ ܬܬܩܪܒ ܠܡܫܝܚܐ ܟܠܗ ܥܡܠܐ ܫܘܐ ܗܘܐ",

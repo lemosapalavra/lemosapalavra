@@ -145,7 +145,7 @@ export default function Index() {
             onItemClick={handleItemClick}
           />
 
-          <div className="mt-6 flex items-center justify-center">
+          <div className="mt-16 sm:mt-20 flex items-center justify-center">
             <button
               onClick={() => setDedicatoriaOpen(true)}
               className="animate-pulse hover:animate-none hover:scale-110 transition-transform"
