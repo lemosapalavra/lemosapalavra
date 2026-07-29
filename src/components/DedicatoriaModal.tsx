@@ -8,69 +8,50 @@ import { DEDICATORIA_COINS } from "@/data/coinRewards";
 const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   {
     aramaic: "ܗܢܐ ܦܘܪܫܢܐ ܐܬܝܠܕ ܡܢ ܣܘܟܝܐ ܫܪܝܪܐ ܕܢܚܘܐ ܚ̈ܝܐ ܘܝܘ̈ܠܦܢܐ ܕܝܫܘܥ",
-    pt: "Este projeto nasceu do desejo sincero de apresentar a **vida**, os ensinamentos e o caminho de **Jesus**, de forma acessível, visual e fiel às Escrituras.",
+    pt: "Este projeto nasceu do sincero desejo de apresentar a **vida** e os ensinamentos de nosso Senhor **Jesus Cristo** de forma acessível, envolvente e fiel às Sagradas Escrituras.",
   },
   {
-    aramaic: "ܡܩܪܒ ܐܢܐ ܗܢܐ ܦܘܪܫܢܐ ܒܬܘܕܝܬܐ ܘܒܗܝܡܢܘܬܐ",
-    pt: "Dedico, este projeto, com **GRATIDÃO** e **FÉ** á:",
+    aramaic: "ܡܩܪܒ ܐܢܐ ܗܢܐ ܥܒܕܐ ܠܐܠܗܐ ܐܚܝܕ ܟܠ",
+    pt: "Dedico esta obra a **Deus Todo-Poderoso**, o Autor da vida e da fé, do Princípio e do Fim.",
   },
   {
-    aramaic: "ܠܐܠܗܐ ܐܚܝܕ ܟܠ ܘܠܛܠܝܐ ܝܫܘܥ ܕܚܘܒܗ ܡܫܚܠܦ ܘܡܐܣܐ ܘܦܪܩ",
-    pt: "**Deus** Todo-Poderoso e ao Menino **Jesus**, cujo amor transforma, cura e salva. Foi ele quem me sustentou nas dificuldades, guiou meus passos e fortaleceu o meu coração.",
+    aramaic: "ܘܡܩܪܒ ܐܢܐ ܠܗ ܐܦ ܠܝܫܘܥ ܡܫܝܚܐ ܡܪܝ ܘܦܪܘܩܝ",
+    pt: "Dedico-a também a **Jesus Cristo**, meu Senhor e Salvador, cuja graça, misericórdia e amor têm me sustentado em minha caminhada. A Ele toda a honra e toda a glória. Foi Ele quem me fortaleceu nas provações e tribulações, guiou meus passos e me concedeu um novo propósito de vida.",
   },
   {
-    aramaic: "ܠܐܢܬܬܝ ܡܪܬܐ ܘܠܒܪܝ ܡܬܝ ܣܡ̈ܟܐ ܕܡܣܝܒܪܢܘܬܐ ܘܕܣܒܪܐ",
-    pt: "À minha esposa **Marta** e ao meu filho **Matheus**, sustentáculo de perseverança e esperança.",
+    aramaic: "ܒܪܡ ܐܠܗܐ ܒܪ̈ܚܡܘܗܝ ܟܬܒ ܠܝ ܩܦܠܐܘܢ ܚܕܬܐ",
+    pt: "Humanamente, depois de cinco AVCs, minha história já poderia ter chegado ao fim. Mas **Deus**, em Sua infinita misericórdia, escreveu um novo capítulo, transformando minha vida em um __testemunho vivo__ de Sua fidelidade, de Seu amor e de Seu poder.",
   },
   {
-    aramaic: "ܠܚܒܪܬܝ ܐܠܝܬ ܘܠܒܥܠܗ ܠܝܒܠܕܘ ܐܝܟ ܐܝܕ̈ܐ ܕܚܘܣܝܐ ܘܦܪܢܣܐ ܕܐܠܗܐ",
-    pt: "À minha amiga **Eliete** do 54, que sem medir esforços enfrentou caminhos difíceis para me socorrer em meu quinto AVC, e a seu marido **Livaldo**, instrumentos do cuidado e da providência divina.",
+    aramaic: "ܠܐܢܬܬܝ ܡܪܬܐ ܘܠܒܪܝ ܡܬܝ ܬܘܕܝܬܐ ܕܠܥܠܡ",
+    pt: "Minha eterna gratidão à minha esposa, **Marta** (*a cuidadora*), e ao meu filho, **Matheus** (*Semper Fi*), cuja perseverança, amor e apoio foram fundamentais nessa caminhada. Agradeço também a todas as pessoas que Deus colocou em meu caminho como instrumentos de cuidado, esperança e encorajamento.",
   },
   {
-    aramaic: "ܠܫܪܒܬܐ ܕܠܝܡܘܣ ܘܠܪܓ̰ܢ ܘܠܡܪܝܣܐ ܕܗܘܘ ܣܡ̈ܟܐ ܘܚܘܣܝܐ ܒܐܘܪܚܝ",
-    pt: "À família **Lemos**, minha mãe de consideração Sra. **Rejane**, e minha irmã **Marisa**, pessoas que **Deus** os levantaram em meu caminho como instrumentos de apoio, cuidado e constância.",
+    aramaic: "ܡܘܕܐ ܐܢܐ ܠܐܠܝܬ ܘܠܝܒܠܕܘ ܘܠܐܣ̈ܘܬܐ ܘܠܕܘܟܪܢܐ ܕܐܪܠܝܢܕܘ",
+    pt: "Registro aqui um agradecimento especial à minha amiga **Eliete**, do 54, e ao seu esposo, **Livaldo**; aos profissionais da saúde que participaram da minha recuperação; e à memória de **Arlindo Francisco de Lemos** (*Arlindo de Jé*), cuja memória vem sendo uma fonte de inspiração.",
   },
   {
-    aramaic: "ܘܠܐ ܐܛܥܐ ܠܐܪܠܝܢܕܘ ܦܪܢܣܝܣܩܘ ܕܠܝܡܘܣ ܓܒܪܐ ܟܐܢܐ ܘܚܟܝܡܐ",
-    pt: "Sem, e jamais esquecer daquele que foi para mim um verdadeiro pai por consideração, homem íntegro, sábio e pescador o Sr. **Arlindo Francisco de Lemos** (*Arlindo de Jé*), cuja inspiração continua viva e presente em minha caminhada.",
+    aramaic: "ܝܘܡܢܐ ܡܣܬܟܠ ܐܢܐ ܕܐܠܗܐ ܡܕܒܪ ܟܠ ܐܘܪܚܐ ܕܚ̈ܝܝܢ",
+    pt: "Hoje compreendo que Deus, em Sua perfeita vontade, conduz cada etapa da nossa história e usa pessoas para cumprir Seus propósitos. Nada acontece fora de Sua __vontade soberana__.",
   },
   {
-    aramaic: "ܐܠܗܐ ܢܛܪ ܠܗ ܒܫܠܡܗ",
-    pt: "**Que Deus o tenha em sua paz.**",
+    aramaic: "ܨܒܝܢܝ ܕܢܡܛܐ ܗܢܐ ܥܒܕܐ ܠܛܠ̈ܝܐ ܘܠܥܠܝ̈ܡܐ ܘܠܫܪ̈ܒܬܐ",
+    pt: "Meu desejo é que este projeto alcance crianças, jovens e famílias, conduzindo-os a conhecer mais profundamente o Senhor **Jesus Cristo** e a descobrir que Sua Palavra continua viva, transformando vidas, restaurando corações e renovando a esperança.",
   },
   {
-    aramaic: "ܡܘܕܐ ܐܢܐ ܐܦ ܠܐܝܠܝܢ ܕܠܐ ܝܕ̈ܥܐ ܠܥ̈ܝܢܝ ܕܐܠܗܐ ܣܡ ܐܢܘܢ ܒܐܘܪܚܝ",
-    pt: "Agradeço ainda àqueles que, anônimos aos meus olhos, **Deus** os colocou em meu caminho: médicos, enfermeiras, técnicos, anestesistas, instrumentistas e a toda uma estrutura hospitalar por onde passei. Foi por meio dos quais o Senhor manifestou o seu amor e seu cuidado, para com os seus.",
+    aramaic: "ܘܐܢ ܚܕ ܢܦܫܐ ܬܬܩܪܒ ܠܡܫܝܚܐ ܟܠܗ ܥܡܠܐ ܫܘܐ ܗܘܐ",
+    pt: "Depois de tudo o que Deus realizou em minha vida, oro para que esta obra toque o coração de muitas pessoas. E, se por meio dela uma única vida for alcançada, transformada e aproximada de **Jesus Cristo**, então todo o caminho percorrido, todas as lutas enfrentadas e todo o esforço dedicado terão valido a pena.",
   },
   {
-    aramaic: "ܗܝܡܢܘ — ܐܠܗܐ ܗܘܐ!",
-    pt: "**Acreditem, foi Deus!**",
-  },
-  {
-    aramaic: "ܝܘܡܢܐ ܡܣܬܟܠ ܐܢܐ ܕܐܠܗܐ ܒܣܘܒܪܢܘܬܗ ܫܒܩ ܕܢܥܠܘܢ ܘܢܦܩܘܢ ܐܢܫ̈ܐ ܡܢ ܚ̈ܝܝܢ",
-    pt: "Hoje compreendo que Deus, em sua __soberania__, permite que pessoas entrem e saiam de nossas vidas, é conforme o seu propósito, e não ao meu.",
-  },
-  {
-    aramaic: "ܒܚ̈ܝܝ ܥܒܪܬ ܒܢܣ̈ܝܘܢܐ ܘܐܘ̈ܠܨܢܐ ܘܦܘܪ̈ܩܢܐ ܕܠܐ ܡܨܝܐ",
-    pt: "Em minha vida passei por muitas provações, tribulações e livramentos impossíveis de superar. Humanamente dizendo, nem era para eu ainda estar aqui.",
-  },
-  {
-    aramaic: "ܒܪܡ ܡܠܬܗ ܕܡܪܝܐ ܩܝܡܐ ܠܥܠܡ. ܐܡܪ ܕܟܠ ܗܠܝܢ ܢܥܒܪܘܢ ܘܢܩܝܡܢܝ",
-    pt: "Mas a palavra do Senhor permanece firme. Disse que tudo isso passaria e falou ao meu coração, prometeu que iria me levantar e me abençoar.",
-  },
-  {
-    aramaic: "ܟܠ ܝܘܡܐ ܚܕܬܐ ܗܘܐ ܣܗܕܘܬܐ ܚܝܬܐ ܕܚܘܒܗ ܒܝܫܘܥ ܡܫܝܚܐ",
-    pt: "Assim, cada novo dia de minha vida se torna um __testemunho vivo__ do seu amor e do seu plano manifestado por meio de seu filho, **Jesus Cristo**.",
-  },
-  {
-    aramaic: "ܠܐܠܗܐ ܟܠ ܐܝܩܪܐ ܘܟܠ ܬܫܒܘܚܬܐ ܗܫܐ ܘܠܥܠܡ ܥܠܡܝܢ. ܐܡܝܢ",
-    pt: "A Deus, toda a honra e toda glória, agora e para sempre. Amém.",
+    aramaic: "ܠܐܠܗܐ ܟܠ ܐܝܩܪܐ ܘܟܠ ܬܫܒܘܚܬܐ ܠܥܠܡ ܥܠܡܝܢ. ܐܡܝܢ",
+    pt: "A **Deus**, toda a honra, toda a glória e todo o louvor, pelos séculos dos séculos. **Amém.**",
   },
   {
     aramaic: "",
     pt: "{{signature}}Marcello Borbas{{/signature}}\n*Visionário Amante das escrituras sagradas*",
   },
 ];
+
 
 function renderRich(text: string) {
   const tokens = text.split(/(\{\{signature\}\}[^]*?\{\{\/signature\}\}|\*\*[^*]+\*\*|__[^_]+__|\*[^*]+\*|\n)/g);
