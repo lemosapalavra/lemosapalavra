@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Settings, LogOut } from "lucide-react";
 import OrbitMenu from "@/components/OrbitMenu";
+import FeedbackFooter from "@/components/FeedbackFooter";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import IndexAdminPanel from "@/components/IndexAdminPanel";
 import EventBannerPlane from "@/components/EventBannerPlane";
