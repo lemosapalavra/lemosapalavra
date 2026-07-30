@@ -158,11 +158,11 @@ export default function Index() {
         </div>
       </main>
 
-
-
+      <FeedbackFooter />
 
       <DedicatoriaModal open={dedicatoriaOpen} onOpenChange={setDedicatoriaOpen} />
       <IndexAdminPanel open={adminOpen} onClose={() => setAdminOpen(false)} />
+
     </div>
   );
 }

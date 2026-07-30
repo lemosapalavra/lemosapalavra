@@ -43,10 +43,7 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
     pt: "Depois de tudo o que Deus realizou em minha vida, oro para que esta obra toque o coração de muitas pessoas. E, se por meio dela uma única vida for alcançada, transformada e aproximada de **Jesus Cristo**, então todo o caminho percorrido, todas as lutas enfrentadas e todo o esforço dedicado terão valido a pena.",
   },
   {
-    aramaic: "ܠܐܠܗܐ ܟܠ ܐܝܩܪܐ ܘܟܠ ܬܫܒܘܚܬܐ ܠܥܠܡ ܥܠܡܝܢ. ܐܡܝܢ",
-    pt: "A **Deus**, toda a honra, toda a glória e todo o louvor, pelos séculos dos séculos. **Amém.**",
-  },
-  {
+
     aramaic: "",
     pt: "{{signature}}Marcello Borbas{{/signature}}\n*Visionário Amante das escrituras sagradas*",
   },
