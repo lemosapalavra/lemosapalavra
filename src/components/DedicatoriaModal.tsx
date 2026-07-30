@@ -7,47 +7,43 @@ import { DEDICATORIA_COINS } from "@/data/coinRewards";
 
 const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   {
-    aramaic: "ܗܢܐ ܦܘܪܫܢܐ ܐܬܝܠܕ ܡܢ ܣܘܟܝܐ ܫܪܝܪܐ ܕܢܚܘܐ ܚ̈ܝܐ ܘܝܘ̈ܠܦܢܐ ܕܝܫܘܥ",
-    pt: "Este projeto nasceu do sincero desejo de apresentar a **vida** e os ensinamentos de nosso Senhor **Jesus Cristo** de forma acessível, envolvente e fiel às Sagradas Escrituras.",
+    aramaic: "ܗܢܐ ܥܒܕܐ ܐܬܝܠܕ ܡܢ ܣܘܟܝܐ ܫܪܝܪܐ ܕܢܚܘܐ ܚ̈ܝܐ ܘܝܘ̈ܠܦܢܐ ܕܝܫܘܥ",
+    pt: "Esta obra nasceu do sincero desejo de apresentar a vida e os ensinamentos daquele que é o Caminho, a Verdade e a Vida, o mesmo ontem, hoje e para sempre: nosso **Senhor Jesus Cristo**.",
   },
   {
-    aramaic: "ܡܩܪܒ ܐܢܐ ܗܢܐ ܥܒܕܐ ܠܐܠܗܐ ܐܚܝܕ ܟܠ",
-    pt: "Dedico esta obra a **Deus Todo-Poderoso**, o Autor da vida e da fé, do Princípio e do Fim.",
-  },
-  {
-    aramaic: "ܘܡܩܪܒ ܐܢܐ ܠܗ ܐܦ ܠܝܫܘܥ ܡܫܝܚܐ ܡܪܝ ܘܦܪܘܩܝ",
-    pt: "Dedico-a também a **Jesus Cristo**, meu Senhor e Salvador, cuja graça, misericórdia e amor têm me sustentado em minha caminhada. A Ele toda a honra e toda a glória. Foi Ele quem me fortaleceu nas provações e tribulações, guiou meus passos e me concedeu um novo propósito de vida.",
+    aramaic: "ܡܩܪܒ ܐܢܐ ܗܢܐ ܥܒܕܐ ܠܐܠܗܐ ܐܚܝܕ ܟܠ ܘܠܝܫܘܥ ܡܫܝܚܐ ܡܪܝ ܘܦܪܘܩܝ",
+    pt: "Dedico esta obra a **Deus** Todo-Poderoso e a **Jesus Cristo**, meu Senhor e Salvador, cuja graça, misericórdia e amor têm sustentado minha vida.",
   },
   {
     aramaic: "ܒܪܡ ܐܠܗܐ ܒܪ̈ܚܡܘܗܝ ܟܬܒ ܠܝ ܩܦܠܐܘܢ ܚܕܬܐ",
-    pt: "Humanamente, depois de cinco AVCs, minha história já poderia ter chegado ao fim. Mas **Deus**, em Sua infinita misericórdia, escreveu um novo capítulo, transformando minha vida em um __testemunho vivo__ de Sua fidelidade, de Seu amor e de Seu poder.",
+    pt: "Após sobreviver a cinco AVCs, aos olhos humanos, minha história já poderia ter chegado ao fim. Mas **Deus**, em Sua infinita misericórdia, escreveu um novo capítulo, transformando minha vida em um __testemunho vivo__ de Sua fidelidade, de Seu amor e de Seu poder.",
   },
   {
     aramaic: "ܠܐܢܬܬܝ ܡܪܬܐ ܘܠܒܪܝ ܡܬܝ ܬܘܕܝܬܐ ܕܠܥܠܡ",
-    pt: "Minha eterna gratidão à minha esposa, **Marta** (*a cuidadora*), e ao meu filho, **Matheus** (*Semper Fi*), cuja perseverança, amor e apoio foram fundamentais nessa caminhada. Agradeço também a todas as pessoas que Deus colocou em meu caminho como instrumentos de cuidado, esperança e encorajamento.",
-  },
-  {
-    aramaic: "ܡܘܕܐ ܐܢܐ ܠܐܠܝܬ ܘܠܝܒܠܕܘ ܘܠܐܣ̈ܘܬܐ ܘܠܕܘܟܪܢܐ ܕܐܪܠܝܢܕܘ",
-    pt: "Registro aqui um agradecimento especial à minha amiga **Eliete**, do 54, e ao seu esposo, **Livaldo**; aos profissionais da saúde que participaram da minha recuperação; e à memória de **Arlindo Francisco de Lemos** (*Arlindo de Jé*), fonte de inspiração.",
+    pt: "Minha eterna gratidão à minha esposa, **Marta**, companheira incansável; ao meu filho, **Matheus**; aos profissionais da saúde que participaram da minha recuperação; à Sra. **Eliete** e ao Sr. **Livaldo**, do 54; e à memória do Sr. **Arlindo** Francisco de Lemos (*Arlindo de Jé*).",
   },
   {
     aramaic: "ܝܘܡܢܐ ܡܣܬܟܠ ܐܢܐ ܕܐܠܗܐ ܡܕܒܪ ܟܠ ܐܘܪܚܐ ܕܚ̈ܝܝܢ",
-    pt: "Hoje compreendo que Deus, em Sua perfeita vontade, conduz cada etapa da nossa história e usa pessoas para cumprir Seus propósitos. Nada acontece fora de Sua __vontade soberana__.",
+    pt: "Hoje compreendo que **Deus** conduz cada etapa de nossa história e que nada escapa à Sua __soberania__.",
   },
   {
     aramaic: "ܨܒܝܢܝ ܕܢܡܛܐ ܗܢܐ ܥܒܕܐ ܠܛܠ̈ܝܐ ܘܠܥܠܝ̈ܡܐ ܘܠܫܪ̈ܒܬܐ",
-    pt: "Desejo que este projeto alcance crianças, jovens e famílias, conduzindo-os a conhecer mais profundamente o Senhor **Jesus Cristo** e a descobrir que Sua Palavra continua viva, transformando vidas, restaurando corações e renovando a esperança.",
+    pt: "Oro para que esta obra alcance crianças, jovens e famílias, conduzindo cada pessoa a conhecer mais profundamente nosso **Senhor Jesus Cristo** e a descobrir que Sua Palavra continua viva, transformando vidas, restaurando corações e renovando a esperança.",
   },
   {
     aramaic: "ܘܐܢ ܚܕ ܢܦܫܐ ܬܬܩܪܒ ܠܡܫܝܚܐ ܟܠܗ ܥܡܠܐ ܫܘܐ ܗܘܐ",
-    pt: "Depois de tudo o que Deus realizou em minha vida, oro para que esta obra toque o coração de muitas pessoas. E, se por meio dela uma única vida for alcançada, transformada e aproximada de **Jesus Cristo**, então todo o caminho percorrido, todas as lutas enfrentadas e todo o esforço dedicado terão valido a pena.",
+    pt: "Se, por meio desta obra, uma única vida se aproximar de **Jesus Cristo**, todo o caminho percorrido, todas as provações enfrentadas e todo o esforço dedicado terão valido a pena.",
   },
   {
-
+    aramaic: "ܠܐܠܗܐ ܫܘܒܚܐ ܘܐܝܩܪܐ ܘܬܫܒܘܚܬܐ ܠܥܠܡ ܥܠܡܝܢ ܐܡܝܢ",
+    pt: "**A Deus sejam toda a honra, toda a glória e todo o louvor, pelos séculos dos séculos. Amém.**",
+  },
+  {
     aramaic: "",
     pt: "{{signature}}Marcello Borbas{{/signature}}\n*Visionário Amante das escrituras sagradas*",
   },
 ];
+
 
 
 function renderRich(text: string) {
