@@ -26,13 +26,14 @@ export function pickSoftVoice(): SpeechSynthesisVoice | null {
 /** Aplica voz masculina suave, ritmo calmo e tom acolhedor a um utterance. */
 export function applySoftVoice(u: SpeechSynthesisUtterance) {
   u.lang = "pt-BR";
-  u.rate = 0.88;   // dicção mais pausada e articulada
-  u.pitch = 0.72;  // voz masculina mais grave e aprofundada
-  u.volume = 0.9;  // presença sem estridência
+  u.rate = 0.93;   // ritmo natural e maduro
+  u.pitch = 0.82;  // voz masculina madura (~50 anos), suave
+  u.volume = 0.88; // presença sem estridência
   const v = pickSoftVoice();
   if (v) u.voice = v;
   return u;
 }
+
 
 /** Divide o texto em trechos respeitando a pontuação (., !, ?, ;, :, ,). */
 export function splitByPunctuation(text: string): { text: string; start: number; pause: number }[] {
