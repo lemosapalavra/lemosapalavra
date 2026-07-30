@@ -4,8 +4,8 @@
  */
 
 const PREFERRED = [
-  "daniel", "felipe", "ricardo", "antonio", "joão", "joao", "male", "homem",
-  "google português do brasil", "microsoft daniel",
+  "ricardo", "antonio", "antônio", "daniel", "felipe", "joão", "joao", "male", "homem",
+  "microsoft daniel", "google português do brasil",
 ];
 
 export function pickSoftVoice(): SpeechSynthesisVoice | null {
@@ -23,16 +23,17 @@ export function pickSoftVoice(): SpeechSynthesisVoice | null {
   }
 }
 
-/** Aplica voz masculina suave, ritmo calmo e tom acolhedor a um utterance. */
+/** Aplica voz masculina madura de locutor experiente, grave, pausada e acolhedora. */
 export function applySoftVoice(u: SpeechSynthesisUtterance) {
   u.lang = "pt-BR";
-  u.rate = 0.93;   // ritmo natural e maduro
-  u.pitch = 0.82;  // voz masculina madura (~50 anos), suave
-  u.volume = 0.88; // presença sem estridência
+  u.rate = 0.86;   // locução mais pausada e experiente
+  u.pitch = 0.68;  // timbre grave de locutor maduro
+  u.volume = 0.92; // presença firme e aveludada
   const v = pickSoftVoice();
   if (v) u.voice = v;
   return u;
 }
+
 
 
 /** Divide o texto em trechos respeitando a pontuação (., !, ?, ;, :, ,). */
