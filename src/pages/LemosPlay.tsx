@@ -12,6 +12,8 @@ import { COINS } from "@/data/coinRewards";
 import { awardOnce } from "@/hooks/useCoins";
 
 import { normalizeVideo } from "@/lib/videoEmbed";
+import { markSeen } from "@/lib/newContent";
+import { lemosPlayTitles } from "@/data/contentIndex";
 import batalhaAnjosVid from "@/assets/lemos-play/a-batalha-dos-anjos.mp4.asset.json";
 import batalhaAnjosThumb from "@/assets/lemos-play/batalha-anjos-thumb.png.asset.json";
 import criacaoVid from "@/assets/lemos-play/a-criacao.mp4.asset.json";
@@ -268,6 +270,8 @@ export default function LemosPlay() {
   const isAdmin = useIsAdmin();
   const [adminOpen, setAdminOpen] = useState(false);
   const [cfg, setCfg] = useState(() => loadConfig());
+
+  useEffect(() => { markSeen("lemosplay", lemosPlayTitles); }, []);
 
   useEffect(() => {
     const h = () => setCfg(loadConfig());

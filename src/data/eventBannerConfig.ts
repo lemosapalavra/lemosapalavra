@@ -12,7 +12,7 @@ export interface EventBannerConfig {
   endDate: string;          // YYYY-MM-DD
 }
 
-const KEY = "lemos_event_banner_v2";
+const KEY = "lemos_event_banner_v3";
 
 import diaDosPaisVideo from "@/assets/aviaozinho/dia-dos-pais/dia-dos-pais.mp4.asset.json";
 
@@ -20,7 +20,7 @@ export function defaultEventBanner(): EventBannerConfig {
   return {
     enabled: true,
     callToAction: "Clique aqui",
-    message: "Dia dos Pais",
+    message: "Feliz dia\nDos Pais",
     videoUrl: diaDosPaisVideo.url,
     scheduleEnabled: false,
     startDate: "",
