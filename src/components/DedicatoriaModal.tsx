@@ -20,7 +20,7 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
   {
     aramaic: "ܠܐܢܬܬܝ ܡܪܬܐ ܘܠܒܪܝ ܡܬܝ ܬܘܕܝܬܐ ܕܠܥܠܡ",
-    pt: "Minha eterna gratidão à minha esposa, **Marta**, companheira incansável; ao meu filho, **Matheus**; aos profissionais da saúde que participaram da minha recuperação; à Sra. **Eliete** e ao Sr. **Livaldo**, do 54; e à memória do Sr. **Arlindo** Francisco de Lemos (*Arlindo de Jé*).",
+    pt: "Minha eterna gratidão à minha esposa, **Marta**, companheira; ao meu filho, **Matheus**, o perseverante; aos profissionais da saúde que participaram da minha recuperação; à Sra. **Eliete** e ao Sr. **Livaldo**, do 54, instrumentos do cuidado e da providência divina. e à memória do Sr. **Arlindo** Francisco de Lemos (*Arlindo de Jé*).",
   },
   {
     aramaic: "ܝܘܡܢܐ ܡܣܬܟܠ ܐܢܐ ܕܐܠܗܐ ܡܕܒܪ ܟܠ ܐܘܪܚܐ ܕܚ̈ܝܝܢ",
