@@ -24,11 +24,11 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
   {
     aramaic: "ܝܘܡܢܐ ܡܣܬܟܠ ܐܢܐ ܕܐܠܗܐ ܡܕܒܪ ܟܠ ܐܘܪܚܐ ܕܚ̈ܝܝܢ",
-    pt: "Hoje compreendo que **Deus** conduz cada etapa de nossa história e que nada escapa à Sua __soberania__.",
+    pt: "Hoje compreendo que **Deus** conduz cada etapa de nossa história e que nada escapa à Sua soberania.",
   },
   {
     aramaic: "ܨܒܝܢܝ ܕܢܡܛܐ ܗܢܐ ܥܒܕܐ ܠܛܠ̈ܝܐ ܘܠܥܠܝ̈ܡܐ ܘܠܫܪ̈ܒܬܐ",
-    pt: "Oro para que esta obra alcance crianças, jovens e famílias, conduzindo cada pessoa a conhecer mais profundamente nosso **Senhor Jesus Cristo** e a descobrir que Sua Palavra continua viva, transformando vidas, restaurando corações e renovando a esperança.",
+    pt: "Oro para que esta obra alcance crianças, jovens e famílias, conduzindo cada pessoa a conhecer mais profundamente nosso Senhor **Jesus Cristo** e a descobrir que Sua Palavra continua viva, transformando vidas, restaurando corações e renovando a esperança.",
   },
   {
     aramaic: "ܘܐܢ ܚܕ ܢܦܫܐ ܬܬܩܪܒ ܠܡܫܝܚܐ ܟܠܗ ܥܡܠܐ ܫܘܐ ܗܘܐ",
