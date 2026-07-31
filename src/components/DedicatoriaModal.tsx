@@ -12,23 +12,23 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
   {
     aramaic: "ܡܩܪܒ ܐܢܐ ܗܢܐ ܥܒܕܐ ܠܐܠܗܐ ܐܚܝܕ ܟܠ ܘܠܝܫܘܥ ܡܫܝܚܐ ܡܪܝ ܘܦܪܘܩܝ",
-    pt: "Dedico esta obra a **Deus** Todo-Poderoso e a **Jesus Cristo**, meu Senhor e Salvador, cuja graça, misericórdia e amor têm sustentado minha vida.",
+    pt: "Dedico esta obra a **Deus Todo-Poderoso** e a **Jesus Cristo**, meu Senhor e Salvador, cuja graça, misericórdia e amor têm sustentado minha vida.",
   },
   {
     aramaic: "ܒܪܡ ܐܠܗܐ ܒܪ̈ܚܡܘܗܝ ܟܬܒ ܠܝ ܩܦܠܐܘܢ ܚܕܬܐ",
-    pt: "Após sobreviver a cinco AVCs, aos olhos humanos, minha história já poderia ter chegado ao fim. Mas **Deus**, em Sua infinita misericórdia, escreveu um novo capítulo, transformando minha vida em um __testemunho vivo__ de Sua fidelidade, de Seu amor e de Seu poder.",
+    pt: "Após sobreviver a cinco AVCs, aos olhos humanos, minha história já poderia ter chegado ao fim.\n\n**Mas Deus, em Sua infinita misericórdia, escreveu um novo capítulo**, transformando minha vida em um testemunho vivo de Sua fidelidade, de Seu amor e de Seu poder.",
   },
   {
     aramaic: "ܠܐܢܬܬܝ ܡܪܬܐ ܘܠܒܪܝ ܡܬܝ ܬܘܕܝܬܐ ܕܠܥܠܡ",
-    pt: "Minha eterna gratidão à minha esposa, **Marta**, companheira incansável; ao meu filho, **Matheus**; aos profissionais da saúde que participaram da minha recuperação; à Sra. **Eliete** e ao Sr. **Livaldo**, do 54; e à memória do Sr. **Arlindo** Francisco de Lemos (*Arlindo de Jé*).",
+    pt: "Minha eterna gratidão à minha esposa, **Marta**, companheira; ao meu filho, **Matheus**, o perseverante; aos profissionais da saúde que participaram da minha recuperação; à Sra. **Eliete** e ao Sr. **Livaldo**, do 54, instrumentos do cuidado e da providência divina. e à memória do Sr. **Arlindo** Francisco de Lemos (*Arlindo de Jé*).",
   },
   {
     aramaic: "ܝܘܡܢܐ ܡܣܬܟܠ ܐܢܐ ܕܐܠܗܐ ܡܕܒܪ ܟܠ ܐܘܪܚܐ ܕܚ̈ܝܝܢ",
-    pt: "Hoje compreendo que **Deus** conduz cada etapa de nossa história e que nada escapa à Sua __soberania__.",
+    pt: "Hoje compreendo que **Deus** conduz cada etapa de nossa história e que nada escapa à Sua soberania.",
   },
   {
     aramaic: "ܨܒܝܢܝ ܕܢܡܛܐ ܗܢܐ ܥܒܕܐ ܠܛܠ̈ܝܐ ܘܠܥܠܝ̈ܡܐ ܘܠܫܪ̈ܒܬܐ",
-    pt: "Oro para que esta obra alcance crianças, jovens e famílias, conduzindo cada pessoa a conhecer mais profundamente nosso **Senhor Jesus Cristo** e a descobrir que Sua Palavra continua viva, transformando vidas, restaurando corações e renovando a esperança.",
+    pt: "Oro para que esta obra alcance crianças, jovens e famílias, conduzindo cada pessoa a conhecer mais profundamente nosso Senhor **Jesus Cristo** e a descobrir que Sua Palavra continua viva, transformando vidas, restaurando corações e renovando a esperança.",
   },
   {
     aramaic: "ܘܐܢ ܚܕ ܢܦܫܐ ܬܬܩܪܒ ܠܡܫܝܚܐ ܟܠܗ ܥܡܠܐ ܫܘܐ ܗܘܐ",
