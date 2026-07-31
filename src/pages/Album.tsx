@@ -314,13 +314,23 @@ export default function Album() {
         </div>
       </div>
 
-      {/* Animated central chapter title */}
+      {/* Animated central chapter title / faixa ilustrada */}
       <div className="text-center px-3 pb-1">
-        <h2 key={currentCatName}
-          className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-amber-900 drop-shadow animate-[chapterPulse_2.2s_ease-in-out_infinite]">
-          {currentPage?.kind === "category" ? <>{currentPage.cat.icon} {currentCatName}</> : "📕 Resumo do Álbum"}
-        </h2>
+        {currentPage?.kind === "category" && albumFaixas[currentPage.cat.key] ? (
+          <img
+            key={currentCatName}
+            src={albumFaixas[currentPage.cat.key]}
+            alt={currentCatName}
+            className="mx-auto h-16 sm:h-20 md:h-24 w-auto object-contain drop-shadow-xl animate-[chapterPulse_2.2s_ease-in-out_infinite]"
+          />
+        ) : (
+          <h2 key={currentCatName}
+            className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-amber-900 drop-shadow animate-[chapterPulse_2.2s_ease-in-out_infinite]">
+            {currentPage?.kind === "category" ? <>{currentPage.cat.icon} {currentCatName}</> : "📕 Resumo do Álbum"}
+          </h2>
+        )}
       </div>
+
       <style>{`
         @keyframes chapterPulse {
           0%,100% { transform: scale(1); text-shadow: 0 4px 12px rgba(180,90,0,0.3); }
