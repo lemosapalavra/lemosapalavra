@@ -322,8 +322,9 @@ export default function Album() {
             key={currentCatName}
             src={albumFaixas[currentPage.cat.key]}
             alt={currentCatName}
-            className="mx-auto h-16 sm:h-20 md:h-24 w-auto object-contain drop-shadow-xl animate-[chapterPulse_2.2s_ease-in-out_infinite]"
+            className="mx-auto h-16 sm:h-20 md:h-24 w-[92vw] max-w-[760px] object-fill drop-shadow-xl animate-[chapterPulse_2.2s_ease-in-out_infinite]"
           />
+
         ) : (
           <h2 key={currentCatName}
             className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-amber-900 drop-shadow animate-[chapterPulse_2.2s_ease-in-out_infinite]">
