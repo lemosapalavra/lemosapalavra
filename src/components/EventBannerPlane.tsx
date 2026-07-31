@@ -94,20 +94,6 @@ export default function EventBannerPlane() {
                 draggable={false}
               />
 
-              {cfg.message && (
-                <button
-                  onClick={handleClick}
-                  disabled={!cfg.videoUrl}
-                  className="pointer-events-auto absolute bg-transparent border-0 p-0 font-display font-extrabold text-[10px] sm:text-xs md:text-sm leading-[1.15] text-[#1e5bd6] hover:scale-110 transition-transform disabled:opacity-70 text-center whitespace-pre-line break-words"
-                  style={dir === "rtl"
-                    ? { left: "76%", top: "50%", transform: "translate(-50%, -50%)", maxWidth: "30%" }
-                    : { left: "24%", top: "50%", transform: "translate(-50%, -50%)", maxWidth: "30%" }}
-                  title={cfg.videoUrl ? "Assistir vídeo" : "Sem vídeo configurado"}
-                  aria-label={cfg.message}
-                >
-                  {cfg.message}
-                </button>
-              )}
 
             </div>
           </div>
