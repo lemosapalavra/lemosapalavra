@@ -204,10 +204,6 @@ export default function Album() {
               alt="Capa do Álbum Heróis da Bíblia"
               className="max-h-[55vh] w-auto rounded-2xl shadow-2xl border-4 border-amber-300 animate-[coverFloat_3.6s_ease-in-out_infinite]"
             />
-            {/* Volume I sticker badge */}
-            <div className="absolute -top-3 -left-3 rotate-[-12deg] bg-gradient-to-br from-rose-500 via-red-500 to-amber-500 text-white font-display font-extrabold text-xs sm:text-sm px-3 py-1.5 rounded-full shadow-2xl border-2 border-white animate-[coverFloat_3s_ease-in-out_infinite]">
-              📘 VOLUME I
-            </div>
 
             {/* Completion banner */}
             {completed && (
@@ -322,7 +318,9 @@ export default function Album() {
             key={currentCatName}
             src={albumFaixas[currentPage.cat.key]}
             alt={currentCatName}
-            className="mx-auto h-16 sm:h-20 md:h-24 w-[92vw] max-w-[760px] object-fill drop-shadow-xl animate-[chapterPulse_2.2s_ease-in-out_infinite]"
+            loading="lazy"
+            decoding="async"
+            className="mx-auto h-16 sm:h-20 md:h-24 w-[83vw] max-w-[684px] object-fill drop-shadow-xl animate-[chapterPulse_2.2s_ease-in-out_infinite]"
           />
 
         ) : (
