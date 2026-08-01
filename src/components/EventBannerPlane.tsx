@@ -87,7 +87,7 @@ export default function EventBannerPlane() {
                 </div>
               </div>
 
-              <img
+              <img loading="lazy" decoding="async"
                 src={planeSrc}
                 onClick={handleClick}
                 alt={dir === "rtl" ? "Aviãozinho voando da direita para a esquerda" : "Aviãozinho voando da esquerda para a direita"}

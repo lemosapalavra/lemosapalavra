@@ -302,7 +302,7 @@ export default function Biblia() {
                   onClick={() => { setTab(t.key); setSelectedBook(null); setSelectedChapter(null); }}
                   className={`flex flex-col items-center gap-1 transition-transform hover:scale-110 ${tab === t.key ? "scale-110" : ""}`}
                 >
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={t.icon}
                     alt={t.label}
                     className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 shadow-lg bg-white object-cover ${tab === t.key ? "border-primary" : "border-primary/30"}`}
@@ -314,7 +314,7 @@ export default function Biblia() {
                 </button>
               ))}
             </div>
-            <img src={iconBiblia} alt="Explorar a Bíblia" className="w-28 sm:w-36 drop-shadow-xl" />
+            <img loading="lazy" decoding="async" src={iconBiblia} alt="Explorar a Bíblia" className="w-28 sm:w-36 drop-shadow-xl" />
           </div>
         )}
 

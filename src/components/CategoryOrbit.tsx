@@ -42,7 +42,7 @@ export default function CategoryOrbit({
       style={{ width: size, height: size, maxWidth: "100%" }}
     >
       {/* Central logo */}
-      <img
+      <img loading="lazy" decoding="async"
         src={logoCentral}
         alt="Lemos a Palavra"
         className="absolute z-10 drop-shadow-xl"

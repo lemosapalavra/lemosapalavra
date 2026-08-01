@@ -107,7 +107,7 @@ export default function Index() {
                 <span className="font-display font-bold text-xs sm:text-sm text-foreground hidden sm:inline max-w-[140px] truncate">
                   {user.name}
                 </span>
-                <img
+                <img loading="lazy" decoding="async"
                   src={user.avatar || iconUsuario}
                   alt={user.name || "Usuário"}
                   className="w-9 h-9 rounded-full border-2 border-amber-300 shadow object-cover"
@@ -153,7 +153,7 @@ export default function Index() {
               style={{ filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.35))" }}
               title="Dedicatória"
             >
-              <img src={iconDedicatoria} alt="Ver dedicatória" className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl" />
+              <img loading="lazy" decoding="async" src={iconDedicatoria} alt="Ver dedicatória" className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl" />
             </button>
           </div>
         </div>

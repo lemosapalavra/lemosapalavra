@@ -561,7 +561,7 @@ export default function LemosPlay() {
               preload="metadata"
             />
           ) : hero?.poster ? (
-            <img key={`hero-img-${hero.id}`} src={hero.poster} alt={hero.title} className="absolute inset-0 w-full h-full object-cover animate-fade-in" />
+            <img loading="lazy" decoding="async" key={`hero-img-${hero.id}`} src={hero.poster} alt={hero.title} className="absolute inset-0 w-full h-full object-cover animate-fade-in" />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-black" />
           )}
@@ -635,7 +635,7 @@ export default function LemosPlay() {
               <X className="w-5 h-5" />
             </button>
             <div className="flex items-center gap-4 mb-5">
-              {openGroup.poster && <img src={openGroup.poster} alt={openGroup.title} className="w-20 h-20 rounded-lg object-cover" />}
+              {openGroup.poster && <img loading="lazy" decoding="async" src={openGroup.poster} alt={openGroup.title} className="w-20 h-20 rounded-lg object-cover" />}
               <div>
                 <h3 className="text-2xl font-extrabold text-white">{openGroup.title}</h3>
                 <p className="text-zinc-400 text-sm">{openGroup.videos.length} episódios</p>
@@ -667,7 +667,7 @@ export default function LemosPlay() {
                       const next = vids[idx + 1];
                       return (
                         <button key={v.id} onClick={() => { const gid = openGroup.id; setOpenGroup(null); requestPlay(v, gid); }} className="relative aspect-[2/3] rounded-lg overflow-hidden bg-zinc-800 hover:ring-2 hover:ring-white transition">
-                          {v.poster ? <img src={v.poster} alt={v.title} className="w-full h-full object-cover" /> : <div className="absolute inset-0 bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center"><Play className="w-10 h-10 text-white/40" /></div>}
+                          {v.poster ? <img loading="lazy" decoding="async" src={v.poster} alt={v.title} className="w-full h-full object-cover" /> : <div className="absolute inset-0 bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center"><Play className="w-10 h-10 text-white/40" /></div>}
                           
                           {next && (
                             <span title={`Em seguida: ${next.title}`} className="absolute top-1 left-1 z-20 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-600/95 text-white text-[10px] font-bold shadow-lg">

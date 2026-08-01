@@ -137,7 +137,7 @@ export default function AdminWhatsapp() {
                     }`}
                   >
                     {u.avatar ? (
-                      <img src={u.avatar} alt="" className="w-10 h-10 rounded-full object-cover" />
+                      <img loading="lazy" decoding="async" src={u.avatar} alt="" className="w-10 h-10 rounded-full object-cover" />
                     ) : (
                       <div className="w-10 h-10 rounded-full bg-amber-200 flex items-center justify-center font-bold text-amber-800">
                         {(u.name || "?").charAt(0).toUpperCase()}

@@ -100,7 +100,7 @@ export default function VideoCentralLayout({ title, subtitle, videos }: Props) {
             {left.map(renderItem)}
           </div>
 
-          <img
+          <img loading="lazy" decoding="async"
             src={logoCentral}
             alt="Lemos a Palavra"
             className="w-32 sm:w-48 md:w-56 drop-shadow-xl"

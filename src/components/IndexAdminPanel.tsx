@@ -112,7 +112,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
             items.map((it, idx) => (
               <div key={idx} className="bg-zinc-50 border rounded-lg p-3">
                 <div className="flex items-center gap-3 mb-2">
-                  <img src={it.icon} alt={it.label} className="w-12 h-12 rounded-full object-cover border" />
+                  <img loading="lazy" decoding="async" src={it.icon} alt={it.label} className="w-12 h-12 rounded-full object-cover border" />
                   <span className="text-xs font-bold text-zinc-500">Item #{idx + 1}</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -146,7 +146,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
                 return (
                   <div key={id} className="bg-zinc-50 border rounded-lg p-3">
                     <div className="flex items-center gap-3 mb-3">
-                      <img src={m.bgUrl} alt={m.title} className="w-16 h-20 object-cover rounded border" />
+                      <img loading="lazy" decoding="async" src={m.bgUrl} alt={m.title} className="w-16 h-20 object-cover rounded border" />
                       <div>
                         <h3 className="font-bold text-sm text-foreground">{m.title}</h3>
                         <p className="text-[11px] text-zinc-500">{m.phrases.length} frase(s)</p>

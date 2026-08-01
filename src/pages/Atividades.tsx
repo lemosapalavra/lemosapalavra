@@ -421,7 +421,7 @@ export default function Atividades() {
             );
           })}
         </div>
-        <img src={logoCentral} alt="Lemos a Palavra"
+        <img loading="lazy" decoding="async" src={logoCentral} alt="Lemos a Palavra"
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-2xl w-[180px] sm:w-[230px] md:w-[280px]" />
       </div>
       <style>{`
@@ -552,7 +552,7 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
             </div>
             <div className="bg-gradient-to-br from-white via-amber-50 to-pink-50 rounded-3xl p-6 shadow-2xl border-[3px] border-amber-200 relative overflow-hidden">
               {/* Background biblical illustration at 25% opacity */}
-              <img
+              <img loading="lazy" decoding="async"
                 src={quizImageFor(cur.q, cur.cat)}
                 alt=""
                 aria-hidden
@@ -574,7 +574,7 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
                 {/* Question illustration (keyword-matched biblical scene) */}
                 <div className="flex justify-center mb-3">
                   <div className="relative w-32 h-32 sm:w-36 sm:h-36 rounded-2xl overflow-hidden bg-gradient-to-br from-sky-100 to-amber-100 border-[3px] border-white shadow-lg ring-2 ring-amber-300/60">
-                    <img src={quizImageFor(cur.q, cur.cat)} alt="" className="w-full h-full object-cover" />
+                    <img loading="lazy" decoding="async" src={quizImageFor(cur.q, cur.cat)} alt="" className="w-full h-full object-cover" />
                     <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/30 to-transparent" />
                     <span className="absolute bottom-1 right-2 text-2xl drop-shadow-lg">{cur.cat === "AT" ? "📜" : cur.cat === "NT" ? "✝️" : "📖"}</span>
                   </div>
@@ -801,7 +801,7 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
             onClick={handleClick}
             className="relative w-full rounded-2xl overflow-hidden border-2 border-primary/60 cursor-pointer shadow-lg bg-white select-none"
           >
-            <img src={scene.image} alt={scene.title} className="w-full h-auto pointer-events-none block" />
+            <img loading="lazy" decoding="async" src={scene.image} alt={scene.title} className="w-full h-auto pointer-events-none block" />
             {found.map((f, k) => (
               <span
                 key={`mark-${k}`}
@@ -977,7 +977,7 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
               className="absolute inset-0 w-full h-full cursor-pointer"
             />
             {/* Outline image on top with multiply blend */}
-            <img
+            <img loading="lazy" decoding="async"
               src={scene.img}
               alt={scene.title}
               draggable={false}
@@ -1090,7 +1090,7 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
                 <span className="text-xs text-muted-foreground font-body">{new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" })}</span>
               </div>
               <div className="flex gap-3 items-center">
-                <img src={daily.image} alt={daily.title} className="w-24 h-24 object-cover rounded-xl border-2 border-amber-300" />
+                <img loading="lazy" decoding="async" src={daily.image} alt={daily.title} className="w-24 h-24 object-cover rounded-xl border-2 border-amber-300" />
                 <div className="flex-1">
                   <h3 className="font-display text-lg font-bold text-foreground">{daily.emoji} {daily.title}</h3>
                   <p className="text-xs font-body text-muted-foreground mb-2">Disponível apenas hoje!</p>
@@ -1112,7 +1112,7 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
               return (
                 <button key={i} onClick={() => start(i, 3)}
                   className="bg-popover rounded-2xl p-3 shadow-md hover:shadow-lg hover:scale-105 transition-all border border-border text-center group">
-                  <img src={p.image} alt={p.title} className="w-full aspect-square object-cover rounded-xl mb-2 group-hover:brightness-110 transition" />
+                  <img loading="lazy" decoding="async" src={p.image} alt={p.title} className="w-full aspect-square object-cover rounded-xl mb-2 group-hover:brightness-110 transition" />
                   <h3 className="font-display text-sm font-bold text-foreground">{p.emoji} {p.title}</h3>
                 </button>
               );
@@ -1144,7 +1144,7 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
 
         {showRef && (
           <div className="flex justify-center mb-3">
-            <img src={puzzle.image} alt="Referência" className="w-28 h-28 rounded-xl border-4 border-primary/40 shadow-lg object-cover" />
+            <img loading="lazy" decoding="async" src={puzzle.image} alt="Referência" className="w-28 h-28 rounded-xl border-4 border-primary/40 shadow-lg object-cover" />
           </div>
         )}
 
