@@ -203,6 +203,10 @@ export default function Configuracao() {
         {/* WhatsApp flutuante */}
         <WhatsappToggle />
 
+        {/* Redes sociais do rodapé */}
+        <SocialToggle />
+
+
         </div>
 
         {/* Atalhos para páginas configuráveis */}
