@@ -36,7 +36,7 @@ function downloadShortcutFile() {
 <body>
   <div class="wrap">
     <a href="${siteUrl}">
-      <img src="${logoUrl}" alt="Lemos a Palavra">
+      <img loading="lazy" decoding="async" src="${logoUrl}" alt="Lemos a Palavra">
       <h1>Lemos a Palavra</h1>
       <p>Abrindo o site… se não abrir automaticamente, clique na logo.</p>
     </a>
@@ -147,7 +147,7 @@ export default function InstallShortcut() {
           title="Clique para baixar o atalho da Lemos a Palavra"
           className="relative group rounded-3xl p-2 bg-gradient-to-br from-amber-200 to-amber-400 shadow-2xl hover:scale-105 active:scale-95 transition disabled:opacity-60 ring-4 ring-amber-300/60 animate-pulse"
         >
-          <img
+          <img loading="lazy" decoding="async"
             src="/favicon.png"
             alt="Lemos a Palavra"
             className="w-40 h-40 sm:w-48 sm:h-48 rounded-2xl bg-white object-contain"

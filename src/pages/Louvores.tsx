@@ -106,7 +106,7 @@ export default function Louvores() {
                 tab === t.id ? "scale-110" : "opacity-70"
               }`}
             >
-              <img
+              <img loading="lazy" decoding="async"
                 src={t.icon}
                 alt={t.label}
                 className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 shadow-xl bg-white object-cover ${
@@ -123,7 +123,7 @@ export default function Louvores() {
             <div className="flex flex-col items-center gap-5 sm:gap-6">
               {louvores.slice(0, mid).map(renderItem)}
             </div>
-            <img src={logoCentral} alt="Lemos a Palavra" className="w-32 sm:w-48 md:w-56 drop-shadow-xl" />
+            <img loading="lazy" decoding="async" src={logoCentral} alt="Lemos a Palavra" className="w-32 sm:w-48 md:w-56 drop-shadow-xl" />
             <div className="flex flex-col items-center gap-5 sm:gap-6">
               {louvores.slice(mid).map(renderItem)}
             </div>
@@ -132,7 +132,7 @@ export default function Louvores() {
 
         {tab === "playlists" && (
           <div className="text-center py-12">
-            <img src={iconPlaylists} alt="Playlists" className="w-32 h-32 mx-auto mb-4 rounded-full shadow-xl" />
+            <img loading="lazy" decoding="async" src={iconPlaylists} alt="Playlists" className="w-32 h-32 mx-auto mb-4 rounded-full shadow-xl" />
             <p className="font-display text-2xl font-bold text-primary">Playlists Temáticas</p>
             <p className="font-body text-foreground/80 mt-2">Em breve: playlists para cada momento da sua jornada de fé.</p>
           </div>
@@ -140,7 +140,7 @@ export default function Louvores() {
 
         {tab === "musicais" && (
           <div className="text-center py-12">
-            <img src={iconMusicais} alt="Musicais" className="w-32 h-32 mx-auto mb-4 rounded-full shadow-xl" />
+            <img loading="lazy" decoding="async" src={iconMusicais} alt="Musicais" className="w-32 h-32 mx-auto mb-4 rounded-full shadow-xl" />
             <p className="font-display text-2xl font-bold text-primary">Musicais</p>
             <p className="font-body text-foreground/80 mt-2">Em breve: musicais bíblicos para toda a família.</p>
           </div>

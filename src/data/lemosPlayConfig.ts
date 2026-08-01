@@ -19,7 +19,7 @@ import aTempestadeThumb from "@/assets/lemos-play/tempestades-v2.png.asset.json"
 import expulsaDemoniosThumb from "@/assets/lemos-play/jesus-expulsa-demonios-thumb.png.asset.json";
 import doMeuJeitoVid from "@/assets/lemos-play/do-meu-jeito-v2.mp4.asset.json";
 import paiEFilhoVid from "@/assets/lemos-play/pai-e-filho-v2.mp4.asset.json";
-import umDeNosVid from "@/assets/lemos-play/um-de-nos-v2.mp4.asset.json";
+import umDeNosVid from "@/assets/lemos-play/um-de-nos-v3.mp4.asset.json";
 import entraCasaVid from "@/assets/lemos-play/entra-na-minha-casa.mp4.asset.json";
 import espiritoSantoVid from "@/assets/lemos-play/espirito-santo-v2.mp4.asset.json";
 import espiritoSantoCover from "@/assets/lemos-play/espirito-santo-cover.jpg.asset.json";

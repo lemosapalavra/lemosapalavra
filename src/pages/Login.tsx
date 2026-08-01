@@ -457,7 +457,7 @@ export default function Login() {
                   />
                   {finalAvatar && (
                     <div className="flex items-center gap-2 mt-2">
-                      <img src={finalAvatar} alt="Avatar" className="w-10 h-10 rounded-full border-2 border-amber-400" />
+                      <img loading="lazy" decoding="async" src={finalAvatar} alt="Avatar" className="w-10 h-10 rounded-full border-2 border-amber-400" />
                       <span className="text-xs text-muted-foreground">Avatar selecionado ✓</span>
                     </div>
                   )}

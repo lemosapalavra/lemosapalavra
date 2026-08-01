@@ -361,7 +361,7 @@ function CertificatePanel({ user }: { user: { name?: string; avatar?: string } }
         <p className="text-sm sm:text-base text-amber-900 mb-3">Conferimos este certificado a</p>
 
         {user.avatar && (
-          <img src={user.avatar} alt={name} className="mx-auto w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-amber-700 shadow-lg object-cover mb-2" />
+          <img loading="lazy" decoding="async" src={user.avatar} alt={name} className="mx-auto w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-amber-700 shadow-lg object-cover mb-2" />
         )}
 
         <p className="font-display text-2xl sm:text-3xl font-extrabold text-rose-700 my-2" style={{ fontFamily: "Georgia, serif" }}>
@@ -418,7 +418,7 @@ function HallPanel() {
             <div key={i} className="bg-gradient-to-br from-amber-100 to-orange-200 rounded-2xl p-3 text-center border-2 border-amber-400 shadow">
               {i < 3 && <div className="text-xl">{["🥇", "🥈", "🥉"][i]}</div>}
               {h.avatar ? (
-                <img src={h.avatar} alt={h.name} className="mx-auto w-14 h-14 rounded-full border-2 border-amber-600 object-cover mb-1" />
+                <img loading="lazy" decoding="async" src={h.avatar} alt={h.name} className="mx-auto w-14 h-14 rounded-full border-2 border-amber-600 object-cover mb-1" />
               ) : (
                 <div className="text-3xl">👤</div>
               )}

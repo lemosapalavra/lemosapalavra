@@ -8,6 +8,7 @@ import IndexAdminPanel from "@/components/IndexAdminPanel";
 import { useIpLocation } from "@/hooks/useIpLocation";
 import { supabase } from "@/integrations/supabase/client";
 import { loadWhatsappCfg, saveWhatsappCfg } from "@/components/FloatingWhatsapp";
+import { loadSocialCfg, saveSocialCfg } from "@/components/FeedbackFooter";
 
 
 export default function Configuracao() {
@@ -203,6 +204,10 @@ export default function Configuracao() {
         {/* WhatsApp flutuante */}
         <WhatsappToggle />
 
+        {/* Redes sociais do rodapé */}
+        <SocialToggle />
+
+
         </div>
 
         {/* Atalhos para páginas configuráveis */}
@@ -234,6 +239,49 @@ export default function Configuracao() {
         </div>
       </div>
       <FeedbackFooter />
+    </div>
+  );
+}
+
+function SocialToggle() {
+  const [saved, setSaved] = useState(() => loadSocialCfg());
+  const [draft, setDraft] = useState(saved);
+  const [flash, setFlash] = useState("");
+  const dirty = draft.enabled !== saved.enabled;
+
+  const handleSave = () => {
+    saveSocialCfg(draft);
+    setSaved(draft);
+    setFlash("✓ Mudanças salvas com sucesso!");
+    setTimeout(() => setFlash(""), 2500);
+  };
+
+  return (
+    <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
+      <h3 className="font-display text-lg font-bold text-foreground mb-2">🌐 Ícones de redes sociais (rodapé)</h3>
+      <p className="text-xs text-muted-foreground mb-3">
+        Quando desativados, os ícones aparecem apenas como ilustração (sem clique).
+      </p>
+      <button
+        onClick={() => setDraft({ enabled: !draft.enabled })}
+        className={`px-4 py-2 rounded-xl font-display font-bold text-sm transition mb-3 ${
+          draft.enabled ? "bg-amber-600 text-white hover:bg-amber-700" : "bg-zinc-200 text-foreground hover:bg-zinc-300"
+        }`}
+      >
+        {draft.enabled ? "✓ Ativos (clique para desativar)" : "Ativar links das redes sociais"}
+      </button>
+      <div className="flex items-center gap-3">
+        <button
+          onClick={handleSave}
+          disabled={!dirty}
+          className={`px-5 py-2 rounded-xl font-display font-bold text-sm transition ${
+            dirty ? "bg-amber-500 text-white hover:bg-amber-600 shadow" : "bg-zinc-200 text-muted-foreground cursor-not-allowed"
+          }`}
+        >
+          💾 Salvar mudanças
+        </button>
+        {flash && <span className="text-xs font-body text-emerald-700">{flash}</span>}
+      </div>
     </div>
   );
 }

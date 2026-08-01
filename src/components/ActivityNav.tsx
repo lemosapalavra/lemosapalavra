@@ -25,7 +25,7 @@ export default function ActivityNav({ onBack, backLabel = "Voltar às atividades
         title="Início"
         className="shrink-0 w-11 h-11 rounded-full overflow-hidden bg-white shadow-lg border-2 border-amber-300 animate-[backPulse_2.4s_ease-in-out_infinite] hover:scale-110 transition-transform"
       >
-        <img src={iconInicio} alt="Início" className="w-full h-full object-cover" />
+        <img loading="lazy" decoding="async" src={iconInicio} alt="Início" className="w-full h-full object-cover" />
       </button>
       <button
         onClick={onBack}

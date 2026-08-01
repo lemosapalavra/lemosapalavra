@@ -462,7 +462,7 @@ export default function Estatisticas() {
                   <tr className="border-b border-border/50 align-top">
                     <td className="py-2 pr-3">
                       {user.avatar ? (
-                        <img src={user.avatar} alt="" className="w-9 h-9 rounded-full object-cover" />
+                        <img loading="lazy" decoding="async" src={user.avatar} alt="" className="w-9 h-9 rounded-full object-cover" />
                       ) : "—"}
                     </td>
                     <td className="py-2 pr-3">{user.name || "—"}</td>
@@ -528,7 +528,7 @@ export default function Estatisticas() {
                       className="w-full flex items-center gap-3 p-3 text-left hover:bg-muted/40 transition"
                     >
                       {u.avatar ? (
-                        <img src={u.avatar} alt="" className="w-10 h-10 rounded-full object-cover flex-shrink-0" />
+                        <img loading="lazy" decoding="async" src={u.avatar} alt="" className="w-10 h-10 rounded-full object-cover flex-shrink-0" />
                       ) : (
                         <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-lg flex-shrink-0">👤</div>
                       )}

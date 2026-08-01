@@ -199,15 +199,11 @@ export default function Album() {
         <PageHeader title="Álbum" />
         <div className="flex-1 flex flex-col items-center justify-center px-6 text-center gap-4 w-full overflow-hidden">
           <div className="relative">
-            <img
+            <img loading="lazy" decoding="async"
               src={albumCapa}
               alt="Capa do Álbum Heróis da Bíblia"
               className="max-h-[55vh] w-auto rounded-2xl shadow-2xl border-4 border-amber-300 animate-[coverFloat_3.6s_ease-in-out_infinite]"
             />
-            {/* Volume I sticker badge */}
-            <div className="absolute -top-3 -left-3 rotate-[-12deg] bg-gradient-to-br from-rose-500 via-red-500 to-amber-500 text-white font-display font-extrabold text-xs sm:text-sm px-3 py-1.5 rounded-full shadow-2xl border-2 border-white animate-[coverFloat_3s_ease-in-out_infinite]">
-              📘 VOLUME I
-            </div>
 
             {/* Completion banner */}
             {completed && (
@@ -322,7 +318,9 @@ export default function Album() {
             key={currentCatName}
             src={albumFaixas[currentPage.cat.key]}
             alt={currentCatName}
-            className="mx-auto h-16 sm:h-20 md:h-24 w-[92vw] max-w-[760px] object-fill drop-shadow-xl animate-[chapterPulse_2.2s_ease-in-out_infinite]"
+            loading="lazy"
+            decoding="async"
+            className="mx-auto h-16 sm:h-20 md:h-24 w-[83vw] max-w-[684px] object-fill drop-shadow-xl animate-[chapterPulse_2.2s_ease-in-out_infinite]"
           />
 
         ) : (
@@ -507,7 +505,7 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
                 onWheel={onWheel}
               >
                 {sticker.image ? (
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={sticker.image}
                     alt={sticker.name}
                     onClick={(e) => { e.stopPropagation(); zoomIn(); }}
@@ -842,7 +840,7 @@ function StandardHeader({ onHome, coins, variant = "light" }: { onHome: () => vo
   return (
     <div className="flex items-center justify-between mb-3">
       <button onClick={onHome} className="flex flex-col items-center gap-1 hover:scale-110 transition-transform" aria-label="Início">
-        <img src={iconInicio} alt="Início" className="w-12 h-12 rounded-2xl shadow-lg" />
+        <img loading="lazy" decoding="async" src={iconInicio} alt="Início" className="w-12 h-12 rounded-2xl shadow-lg" />
         <span className={`font-display text-[10px] font-bold ${dark ? "text-white" : "text-foreground"}`}>Início</span>
       </button>
       <div className="flex items-center gap-3">
@@ -857,7 +855,7 @@ function StandardHeader({ onHome, coins, variant = "light" }: { onHome: () => vo
             <div className="text-right hidden sm:block">
               <p className={`font-display text-xs font-bold ${dark ? "text-white" : "text-foreground"}`}>{user.name}</p>
             </div>
-            <img src={user.avatar || iconUsuario} alt={user.name} className="w-10 h-10 rounded-full border-2 border-white/60 shadow-md" />
+            <img loading="lazy" decoding="async" src={user.avatar || iconUsuario} alt={user.name} className="w-10 h-10 rounded-full border-2 border-white/60 shadow-md" />
           </div>
         )}
       </div>
@@ -985,7 +983,7 @@ function TradePanel({
               <div className="text-center">
                 <div className="text-[10px] text-muted-foreground font-bold mb-1">VOCÊ OFERECE</div>
                 {confirm.give.image
-                  ? <img src={confirm.give.image} alt="" className="w-20 h-20 object-contain mx-auto" />
+                  ? <img loading="lazy" decoding="async" src={confirm.give.image} alt="" className="w-20 h-20 object-contain mx-auto" />
                   : <div className="text-5xl">{confirm.give.emoji}</div>}
                 <div className="text-xs font-bold mt-1">{confirm.give.name}</div>
               </div>
@@ -993,7 +991,7 @@ function TradePanel({
               <div className="text-center">
                 <div className="text-[10px] text-muted-foreground font-bold mb-1">VOCÊ RECEBE</div>
                 {confirm.get.image
-                  ? <img src={confirm.get.image} alt="" className="w-20 h-20 object-contain mx-auto" />
+                  ? <img loading="lazy" decoding="async" src={confirm.get.image} alt="" className="w-20 h-20 object-contain mx-auto" />
                   : <div className="text-5xl">{confirm.get.emoji}</div>}
                 <div className="text-xs font-bold mt-1">{confirm.get.name}</div>
               </div>

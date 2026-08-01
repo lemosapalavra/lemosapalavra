@@ -239,7 +239,7 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
                 setPhase("shaking");
               }}
             >
-              <img
+              <img loading="lazy" decoding="async"
                 src={packImg}
                 alt="Pacotinho Heróis da Fé"
                 className="w-56 sm:w-72 h-auto rounded-xl select-none drop-shadow-2xl"
@@ -255,7 +255,7 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
         {phase === "shaking" && (
           <div className="relative">
             <div className="animate-[shakeStrong_0.7s_ease-in-out]">
-              <img src={packImg} alt="" className="w-56 sm:w-72 h-auto rounded-xl drop-shadow-2xl" draggable={false} />
+              <img loading="lazy" decoding="async" src={packImg} alt="" className="w-56 sm:w-72 h-auto rounded-xl drop-shadow-2xl" draggable={false} />
             </div>
             {/* Two hands closing in with scissors */}
             <div className="pointer-events-none absolute inset-0 flex items-center justify-between -mx-10">
@@ -269,10 +269,10 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
         {phase === "tearing" && (
           <div className="relative w-56 sm:w-72">
             <div className="absolute inset-0 overflow-hidden animate-tear-left" style={{ clipPath: "polygon(0 0, 52% 0, 48% 100%, 0 100%)" }}>
-              <img src={packImg} alt="" className="w-full h-auto" draggable={false} />
+              <img loading="lazy" decoding="async" src={packImg} alt="" className="w-full h-auto" draggable={false} />
             </div>
             <div className="overflow-hidden animate-tear-right" style={{ clipPath: "polygon(52% 0, 100% 0, 100% 100%, 48% 100%)" }}>
-              <img src={packImg} alt="" className="w-full h-auto" draggable={false} />
+              <img loading="lazy" decoding="async" src={packImg} alt="" className="w-full h-auto" draggable={false} />
             </div>
             {/* Hands pulling each half outward */}
             <div className="pointer-events-none absolute top-1/2 -translate-y-1/2 -left-14 text-5xl sm:text-6xl animate-tear-left" style={{ transform: "scaleX(-1)" }}>✋</div>
@@ -352,7 +352,7 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
                         }}
                       >
                         {s.image ? (
-                          <img src={s.image} alt={s.name} className="absolute inset-0 w-full h-full object-contain bg-white p-1" draggable={false} />
+                          <img loading="lazy" decoding="async" src={s.image} alt={s.name} className="absolute inset-0 w-full h-full object-contain bg-white p-1" draggable={false} />
                         ) : (
                           <div className={`absolute inset-0 flex items-center justify-center text-5xl ${config.bg}`}>{s.emoji}</div>
                         )}

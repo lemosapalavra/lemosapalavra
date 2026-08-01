@@ -65,7 +65,7 @@ export default function EducacionalActivities({ onBack, celebrate, bgStyle, init
         <ActivityNav onBack={onBack} backLabel="Voltar às atividades" />
 
         <div className="flex flex-col items-center gap-2 mb-4">
-          <img src={logoAsset.url} alt="Atividades Educacionais" className="w-full max-w-md h-auto drop-shadow-2xl" />
+          <img loading="lazy" decoding="async" src={logoAsset.url} alt="Atividades Educacionais" className="w-full max-w-md h-auto drop-shadow-2xl" />
           <p className="text-center font-body text-sm text-amber-900 italic">
             ✨ Todo dia aparecem <span className="font-bold">5 atividades educacionais</span>, alternando as demais nos outros dias.
           </p>
@@ -392,7 +392,7 @@ function PaintNumbersGame({ onComplete, done, image }: { onComplete: () => void;
       </div>
       <div className="sm:w-48">
         <p className="text-[10px] font-bold uppercase text-amber-700 mb-1 text-center">Referência</p>
-        <img src={image} alt="Modelo" className="rounded-xl border-2 border-amber-300 shadow w-full object-contain" />
+        <img loading="lazy" decoding="async" src={image} alt="Modelo" className="rounded-xl border-2 border-amber-300 shadow w-full object-contain" />
       </div>
     </div>
   );
@@ -460,7 +460,7 @@ function DrawGame({ onComplete, done, image }: { onComplete: () => void; done: b
       </div>
       <div className="sm:w-48">
         <p className="text-[10px] font-bold uppercase text-amber-700 mb-1 text-center">Modelos</p>
-        <img src={image} alt="Modelos" className="rounded-xl border-2 border-amber-300 shadow w-full object-contain" />
+        <img loading="lazy" decoding="async" src={image} alt="Modelos" className="rounded-xl border-2 border-amber-300 shadow w-full object-contain" />
       </div>
     </div>
   );

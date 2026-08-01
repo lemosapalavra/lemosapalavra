@@ -54,7 +54,7 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
             title="Início"
             className="shrink-0 w-11 h-11 rounded-full overflow-hidden bg-white shadow-lg border-2 border-amber-300 animate-[backPulse_2.4s_ease-in-out_infinite] hover:scale-110 transition-transform"
           >
-            <img src={iconInicio} alt="Início" className="w-full h-full object-cover" />
+            <img loading="lazy" decoding="async" src={iconInicio} alt="Início" className="w-full h-full object-cover" />
           </button>
         ) : (
           <div className="w-11 h-11 shrink-0" aria-hidden />
@@ -110,7 +110,7 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
               <span className={`font-display font-bold text-xs max-w-[100px] truncate ${isLemosPlay ? "text-white" : "text-foreground"}`}>
                 {user.name}
               </span>
-              <img
+              <img loading="lazy" decoding="async"
                 src={user.avatar || iconUsuario}
                 alt={user.name || "Usuário"}
                 className="w-9 h-9 rounded-full border-2 border-amber-300 shadow-sm object-cover"
