@@ -14,7 +14,7 @@ import ColonialVideoFrame from "@/components/ColonialVideoFrame";
  * O texto sazonal (ex.: "Dia dos Pais") aparece sobre a faixa, em azul,
  * sem recipiente, e é clicável para abrir o vídeo configurado.
  */
-export default function EventBannerPlane() {
+export default function EventBannerPlane({ isAuthenticated = false }: { isAuthenticated?: boolean }) {
   const [cfg, setCfg] = useState<EventBannerConfig>(() => loadEventBanner());
   const [open, setOpen] = useState(false);
   const [dir, setDir] = useState<"rtl" | "ltr">("rtl");
@@ -46,7 +46,7 @@ export default function EventBannerPlane() {
 
   if (!isBannerActive(cfg)) return null;
 
-  const handleClick = () => { if (cfg.videoUrl) setOpen(true); };
+  const handleClick = () => { if (isAuthenticated && cfg.videoUrl) setOpen(true); };
   const video = cfg.videoUrl ? normalizeVideo(cfg.videoUrl, false) : null;
   const planeSrc = dir === "rtl" ? planeRtl.url : planeLtr.url;
   const animName = dir === "rtl" ? "plane-rtl" : "plane-ltr";
@@ -91,7 +91,9 @@ export default function EventBannerPlane() {
                 src={planeSrc}
                 onClick={handleClick}
                 alt={dir === "rtl" ? "Aviãozinho voando da direita para a esquerda" : "Aviãozinho voando da esquerda para a direita"}
-                className={`relative h-28 sm:h-32 md:h-36 w-auto drop-shadow-2xl select-none ${cfg.videoUrl ? "pointer-events-auto cursor-pointer" : ""}`}
+                className={`relative h-28 sm:h-32 md:h-36 w-auto drop-shadow-2xl select-none transition-all duration-700 ${
+                  isAuthenticated ? (cfg.videoUrl ? "pointer-events-auto cursor-pointer" : "") : "grayscale opacity-60"
+                }`}
                 draggable={false}
               />
 
