@@ -312,7 +312,7 @@ export default function Album() {
       </div>
 
       {/* Animated central chapter title / faixa ilustrada */}
-      <div className="text-center px-3 pb-1">
+      <div className="text-center px-3 py-5 sm:py-8 flex items-center justify-center">
         {currentPage?.kind === "category" && albumFaixas[currentPage.cat.key] ? (
           <img
             key={currentCatName}

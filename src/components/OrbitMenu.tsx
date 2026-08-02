@@ -50,9 +50,9 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
       <div
         className="relative orbit-area"
         style={{
-          width: "min(96vw, 720px)",
-          height: "min(96vw, 720px)",
-          ["--orbit-radius" as any]: "clamp(170px, 46vw, 300px)",
+          width: "min(92vw, 720px)",
+          height: "min(92vw, 720px)",
+          ["--orbit-radius" as any]: "clamp(135px, 36vw, 300px)",
         }}
       >
         <div
@@ -115,7 +115,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
           alt="Lemos a Palavra"
           width={320}
           height={320}
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-2xl transition-all duration-700 w-[180px] sm:w-[230px] md:w-[280px] ${!isAuthenticated ? "grayscale opacity-70" : ""}`}
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-2xl transition-all duration-700 w-[130px] sm:w-[210px] md:w-[280px] ${!isAuthenticated ? "grayscale opacity-70" : ""}`}
         />
       </div>
 

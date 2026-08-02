@@ -7,7 +7,7 @@ import { DEDICATORIA_COINS } from "@/data/coinRewards";
 const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   {
     aramaic: "ܗܢܐ ܥܒܕܐ ܐܬܝܠܕ ܡܢ ܣܘܟܝܐ ܫܪܝܪܐ ܕܢܚܘܐ ܚ̈ܝܐ ܘܝܘ̈ܠܦܢܐ ܕܝܫܘܥ",
-    pt: "Esta obra nasceu do sincero desejo de apresentar a vida e os ensinamentos daquele que é o Caminho, a Verdade e a Vida, o mesmo ontem, hoje e para sempre: nosso **Senhor Jesus Cristo**.",
+    pt: "Esta obra nasceu do sincero desejo de apresentar a vida e os ensinamentos daquele que é o Caminho, a Verdade e a Vida, o mesmo ontem, hoje e sempre: nosso **Senhor Jesus Cristo**.",
   },
   {
     aramaic: "ܡܩܪܒ ܐܢܐ ܗܢܐ ܥܒܕܐ ܠܐܠܗܐ ܐܚܝܕ ܟܠ ܘܠܝܫܘܥ ܡܫܝܚܐ ܡܪܝ ܘܦܪܘܩܝ",
@@ -19,7 +19,7 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
   {
     aramaic: "ܠܐܢܬܬܝ ܡܪܬܐ ܘܠܒܪܝ ܡܬܝ ܬܘܕܝܬܐ ܕܠܥܠܡ",
-    pt: "Minha eterna gratidão à minha esposa, **Marta**, companheira;\nao meu filho, **Matheus**, o perseverante; aos profissionais da saúde que participaram da minha recuperação;\nà Sra. **Eliete** e ao Sr. **Livaldo**, do 54, instrumentos de cuidado e providência;\nà memória do Sr. **Arlindo Francisco de Lemos** (*Arlindo de Jé*).",
+    pt: "Minha eterna gratidão à minha esposa, **Marta**, companheira;\nao meu filho, **Matheus**, o perseverante; e aos profissionais da saúde que participaram da minha recuperação;\nà Sra. **Eliete** e ao Sr. **Livaldo**, do 54, instrumentos de cuidado e providência;\nà memória do Sr. **Arlindo Francisco de Lemos** (*Arlindo de Jé*).",
   },
   {
     aramaic: "ܝܘܡܢܐ ܡܣܬܟܠ ܐܢܐ ܕܐܠܗܐ ܡܕܒܪ ܟܠ ܐܘܪܚܐ ܕܚ̈ܝܝܢ",
@@ -31,7 +31,7 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
   {
     aramaic: "ܘܐܢ ܚܕ ܢܦܫܐ ܬܬܩܪܒ ܠܡܫܝܚܐ ܟܠܗ ܥܡܠܐ ܫܘܐ ܗܘܐ",
-    pt: "Através desta obra, uma única vida se aproximar de nosso **Jesus Cristo**, todo o caminho percorrido, todas as provações enfrentadas e todo o esforço dedicado terão valido a pena.",
+    pt: "Através desta obra, se uma única vida se aproximar de nosso **Jesus Cristo**, todo o caminho percorrido, todas as provações enfrentadas e todo o esforço dedicado terão valido a pena.",
   },
   {
     aramaic: "ܠܐܠܗܐ ܫܘܒܚܐ ܘܐܝܩܪܐ ܘܬܫܒܘܚܬܐ ܠܥܠܡ ܥܠܡܝܢ ܐܡܝܢ",

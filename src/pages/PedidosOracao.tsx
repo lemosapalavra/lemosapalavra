@@ -4,6 +4,7 @@ import FeedbackFooter from "@/components/FeedbackFooter";
 import { toast } from "@/hooks/use-toast";
 import { awardOnce } from "@/hooks/useCoins";
 import iconPedidos from "@/assets/icon-pedidos-oracao.png";
+import heroKids from "@/assets/paginas/kids-oracao.png.asset.json";
 
 const tiposOracao = [
   { id: "adoracao", label: "Oração de Adoração", desc: "Louvor e amor para Deus com um coração alegre.", emoji: "🙌", color: "from-amber-300 to-yellow-400" },
@@ -73,6 +74,15 @@ export default function PedidosOracao() {
 
         <section className="relative overflow-hidden rounded-[28px] border-2 border-amber-200/80 shadow-2xl mb-6 bg-gradient-to-br from-sky-100 via-amber-50 to-pink-100">
           <div className="absolute inset-0 opacity-20" style={{ background: "radial-gradient(circle at 20% 20%, #fff6bf, transparent 25%), radial-gradient(circle at 80% 25%, #ffd2e1, transparent 22%), radial-gradient(circle at 50% 90%, #b8ecff, transparent 28%)" }} />
+          <img
+            src={heroKids.url}
+            alt="Crianças orando juntas em um campo florido"
+            width={1536}
+            height={640}
+            loading="lazy"
+            decoding="async"
+            className="relative w-full h-40 sm:h-56 md:h-64 object-cover rounded-t-[26px]"
+          />
           <div className="relative px-6 py-7 text-center">
             <div className="flex items-center justify-center gap-3 text-5xl mb-3">
               <span>☁️</span><span>🙏</span><span>✨</span>

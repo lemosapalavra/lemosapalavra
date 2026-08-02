@@ -134,7 +134,7 @@ export default function Index() {
 
       <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
       <main className="w-full flex-1 flex flex-col items-center">
-        <EventBannerPlane />
+        <EventBannerPlane isAuthenticated={!!user} />
 
         <div className="flex-1 flex flex-col items-center justify-center w-full py-4">
           <OrbitMenu
