@@ -5,6 +5,7 @@ import FeedbackFooter from "@/components/FeedbackFooter";
 import CoinBadge from "@/components/CoinBadge";
 import { awardOnce, todayKey } from "@/hooks/useCoins";
 import iconDevocionais from "@/assets/icon-devocionais.png";
+import heroKids from "@/assets/paginas/kids-devocional.png.asset.json";
 
 import { COINS } from "@/data/coinRewards";
 
@@ -65,6 +66,15 @@ export default function Devocionais() {
           <div>
             <section className="relative overflow-hidden rounded-[30px] border-2 border-amber-200 bg-gradient-to-br from-sky-100 via-amber-50 to-pink-100 shadow-2xl mb-6">
               <div className="absolute inset-0 opacity-25" style={{ background: "radial-gradient(circle at 15% 25%, #fff6bf, transparent 24%), radial-gradient(circle at 82% 22%, #c7f0ff, transparent 24%), radial-gradient(circle at 50% 85%, #ffd2e1, transparent 28%)" }} />
+              <img
+                src={heroKids.url}
+                alt="Crianças felizes lendo a Bíblia juntas"
+                width={1536}
+                height={640}
+                loading="lazy"
+                decoding="async"
+                className="relative w-full h-40 sm:h-56 md:h-64 object-cover rounded-t-[28px]"
+              />
               <div className="relative px-6 py-8 text-center">
                 <div className="flex items-center justify-center gap-3 text-5xl mb-3">
                   <span>☁️</span><span>✝️</span><span>🌈</span>
