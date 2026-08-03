@@ -146,6 +146,7 @@ const App = () => (
         <RouteMetaSync />
         {/* MysticBackground removed to improve page load performance */}
         <FloatingWhatsapp />
+        <ShareButton />
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />
@@ -165,6 +166,15 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
+        <footer className="w-full px-4 pb-24 pt-2 bg-transparent">
+          <WavyBanner
+            emoji="✝️"
+            lines={[
+              "Este projeto é cristão, sem interesses financeiros, sem vínculo político ou denominacional,",
+              "dedicado a compartilhar o Evangelho de Jesus Cristo simples para todas as gerações.",
+            ]}
+          />
+        </footer>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
