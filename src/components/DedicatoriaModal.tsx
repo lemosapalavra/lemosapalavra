@@ -122,7 +122,36 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
     }
   }, [translatedCount]);
 
+  const [speaking, setSpeaking] = useState(false);
+  const stopRef = useRef<null | (() => void)>(null);
+
+  const plainText = dedicatoriaTexts
+    .map((t) => t.pt.replace(/\{\{\/?signature\}\}/g, "").replace(/\*\*|__|\*/g, ""))
+    .join("\n");
+
+  const stopSpeech = useCallback(() => {
+    stopRef.current?.();
+    stopRef.current = null;
+    setSpeaking(false);
+  }, []);
+
+  const toggleSpeech = () => {
+    if (speaking) { stopSpeech(); return; }
+    setSpeaking(true);
+    stopRef.current = speakSoftly(plainText, {
+      gender: "female",
+      onEnd: () => setSpeaking(false),
+      onError: () => setSpeaking(false),
+    });
+  };
+
+  useEffect(() => {
+    if (!open) stopSpeech();
+    return () => stopSpeech();
+  }, [open, stopSpeech]);
+
   const handleClose = () => {
+    stopSpeech();
     if (isControlled) onOpenChange?.(false);
     else setInternalOpen(false);
     setTranslatedCount(0);
