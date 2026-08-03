@@ -6,6 +6,7 @@ import CoinBadge from "@/components/CoinBadge";
 import { COINS } from "@/data/coinRewards";
 import EducacionalActivities from "@/components/EducacionalActivities";
 import ActivityNav from "@/components/ActivityNav";
+import WavyBanner from "@/components/WavyBanner";
 import iconQuiz from "@/assets/icon-quiz.png";
 import iconAtividades from "@/assets/icon-atividades.png";
 import iconMemoria from "@/assets/icon-memoria.png";

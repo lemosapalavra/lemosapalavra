@@ -2,6 +2,7 @@ import { useState, useRef, useMemo, useEffect } from "react";
 import CoinBadge from "@/components/CoinBadge";
 import { COINS } from "@/data/coinRewards";
 import ActivityNav from "@/components/ActivityNav";
+import WavyBanner from "@/components/WavyBanner";
 import logoAsset from "@/assets/educacionais/logo.png.asset.json";
 import edu1 from "@/assets/educacionais/educacional-1.jpg.asset.json";
 import edu2 from "@/assets/educacionais/educacional-2.jpg.asset.json";
