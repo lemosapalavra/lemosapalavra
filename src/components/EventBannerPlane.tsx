@@ -94,6 +94,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
                 className={`relative h-28 sm:h-32 md:h-36 w-auto drop-shadow-2xl select-none transition-all duration-700 ${
                   isAuthenticated ? (cfg.videoUrl ? "pointer-events-auto cursor-pointer" : "") : "grayscale opacity-60"
                 }`}
+                style={{ animation: "banner-wind 3.2s ease-in-out infinite", transformOrigin: dir === "rtl" ? "100% 50%" : "0% 50%" }}
                 draggable={false}
               />
 
