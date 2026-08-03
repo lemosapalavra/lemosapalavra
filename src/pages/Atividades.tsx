@@ -388,9 +388,14 @@ export default function Atividades() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-start px-4 pt-0 pb-8" style={bgStyle}>
       <PageHeader title="Atividades Educacionais" icon={iconAtividades} />
-      <div className="mb-3 inline-flex items-center gap-2 bg-white/80 border border-amber-300 text-amber-900 font-display font-bold text-xs sm:text-sm px-4 py-2 rounded-full shadow">
-        🔄 As atividades se alternam dia a dia — novas opções a cada visita!
-      </div>
+      <WavyBanner
+        emoji="🔄"
+        lines={[
+          "Volte quando puder, saiba que as atividades se alternam dia a dia.",
+          "E você ainda ganha moedas para comprar as figurinhas do Álbum.",
+        ]}
+      />
+
       <div
         className="relative orbit-area"
         style={{
