@@ -207,11 +207,21 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
                     <p className="text-base italic tracking-wider" style={{ color: "#7a4a10", fontFamily: "'EB Garamond', serif" }}>
                       Dedicatória
                     </p>
+                    <button
+                      onClick={toggleSpeech}
+                      className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold hover:scale-105 transition-transform"
+                      style={{ background: "#6b3a0a", color: "#f7e9c9", boxShadow: "0 2px 6px rgba(0,0,0,0.35)" }}
+                      aria-label={speaking ? "Parar leitura" : "Ouvir a dedicatória"}
+                    >
+                      {speaking ? <Square className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                      {speaking ? "Parar" : "Ouvir"}
+                    </button>
                     <div
                       className="mx-auto mt-3 h-px w-2/3"
                       style={{ background: "linear-gradient(90deg, transparent, #8b5a2b, transparent)" }}
                     />
                   </div>
+
 
                   <div className="space-y-5">
                     {dedicatoriaTexts.map((item, i) => {
