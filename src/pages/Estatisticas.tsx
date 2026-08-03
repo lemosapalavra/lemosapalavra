@@ -549,6 +549,9 @@ export default function Estatisticas() {
                         <span className="px-2 py-1 rounded-lg bg-amber-100 text-amber-800" title="Downloads do atalho">
                           📥 {u.events.download}
                         </span>
+                        <span className="px-2 py-1 rounded-lg bg-teal-100 text-teal-800" title="Compartilhamentos">
+                          🔗 {u.events.share}
+                        </span>
                         <span className="px-2 py-1 rounded-lg bg-purple-100 text-purple-800" title="Páginas vistas">
                           👁️ {u.totalViews}
                         </span>
