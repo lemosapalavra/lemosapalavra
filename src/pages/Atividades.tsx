@@ -502,7 +502,13 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
       <div className="min-h-screen py-6 px-4" style={bgStyle}>
         <div className="max-w-lg mx-auto">
           <ActivityNav onBack={onBack} title="Quiz Bíblico" subtitle="Escolha uma categoria" />
-          <DailyBanner emoji="🧠" text="Perguntas de hoje — amanhã vêm novas!" />
+          <WavyBanner
+            emoji="🧠"
+            lines={[
+              "Atividades de hoje, amanhã tem novas.",
+              "Complete-as e ganhará moedinhas para a compra das figurinhas.",
+            ]}
+          />
           <div className="grid grid-cols-2 gap-3">
             {quizCategories.map((c) => (
               <button
@@ -1357,7 +1363,14 @@ function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgSt
       <div className="max-w-3xl mx-auto">
         <ActivityNav onBack={onBack} title="Caça-Palavras" subtitle={card.title} />
 
-        <DailyBanner emoji="🔎" text="Clique numa letra para iniciar e em outra para terminar. Encontre todas as palavras!" />
+        <WavyBanner
+          emoji="🔎"
+          lines={[
+            "Atividade de hoje, amanhã terá novas.",
+            "Clique na primeira e última letra da palavra para terminar.",
+            "Encontre todas as palavras e você ganhará as moedinhas.",
+          ]}
+        />
 
         {/* Card selector */}
         <div className="flex gap-2 mb-3 flex-wrap justify-center">
