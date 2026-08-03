@@ -8,12 +8,20 @@ const PREFERRED = [
   "microsoft daniel", "google português do brasil",
 ];
 
-export function pickSoftVoice(): SpeechSynthesisVoice | null {
+const PREFERRED_FEMALE = [
+  "maria", "luciana", "francisca", "fernanda", "helo", "camila", "female", "mulher",
+  "microsoft maria", "google português do brasil",
+];
+
+export type VoiceGender = "male" | "female";
+
+export function pickSoftVoice(gender: VoiceGender = "male"): SpeechSynthesisVoice | null {
   try {
     const voices = window.speechSynthesis?.getVoices?.() ?? [];
     const pt = voices.filter((v) => /pt(-|_)?BR/i.test(v.lang) || /^pt/i.test(v.lang));
     const pool = pt.length ? pt : voices;
-    for (const name of PREFERRED) {
+    const list = gender === "female" ? PREFERRED_FEMALE : PREFERRED;
+    for (const name of list) {
       const hit = pool.find((v) => v.name.toLowerCase().includes(name));
       if (hit) return hit;
     }
@@ -23,13 +31,19 @@ export function pickSoftVoice(): SpeechSynthesisVoice | null {
   }
 }
 
-/** Aplica voz masculina madura de locutor experiente, grave, pausada e acolhedora. */
-export function applySoftVoice(u: SpeechSynthesisUtterance) {
+/** Aplica voz suave e tranquila (masculina madura ou feminina serena). */
+export function applySoftVoice(u: SpeechSynthesisUtterance, gender: VoiceGender = "male") {
   u.lang = "pt-BR";
-  u.rate = 0.86;   // locução mais pausada e experiente
-  u.pitch = 0.68;  // timbre grave de locutor maduro
-  u.volume = 0.92; // presença firme e aveludada
-  const v = pickSoftVoice();
+  if (gender === "female") {
+    u.rate = 0.88;   // leitura tranquila
+    u.pitch = 1.05;  // timbre feminino suave
+    u.volume = 0.9;
+  } else {
+    u.rate = 0.86;   // locução mais pausada e experiente
+    u.pitch = 0.68;  // timbre grave de locutor maduro
+    u.volume = 0.92; // presença firme e aveludada
+  }
+  const v = pickSoftVoice(gender);
   if (v) u.voice = v;
   return u;
 }
