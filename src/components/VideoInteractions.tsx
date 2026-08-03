@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Heart, MessageCircle, UserPlus, UserCheck, Send } from "lucide-react";
+import ShareButton from "@/components/ShareButton";
 
 interface Props {
   /** Identificador único do vídeo (usado para salvar curtidas/comentários). */
@@ -79,6 +80,8 @@ export default function VideoInteractions({ videoId, className = "" }: Props) {
           <MessageCircle className="w-4 h-4" />
           Comentar{state.comments.length ? ` (${state.comments.length})` : ""}
         </button>
+
+        <ShareButton variant="inline" label={videoId} />
       </div>
 
       {openComments && (
