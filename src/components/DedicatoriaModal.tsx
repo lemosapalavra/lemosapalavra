@@ -19,7 +19,7 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
   {
     aramaic: "ܠܐܢܬܬܝ ܡܪܬܐ ܘܠܒܪܝ ܡܬܝ ܬܘܕܝܬܐ ܕܠܥܠܡ",
-    pt: "Minha eterna gratidão à minha esposa, **Marta**, companheira;\nao meu filho, **Matheus**, o perseverante; e aos profissionais da saúde que participaram da minha recuperação;\nà Sra. **Eliete** e ao Sr. **Livaldo**, do 54, instrumentos de cuidado e providência;\nà memória do Sr. **Arlindo Francisco de Lemos** (*Arlindo de Jé*).",
+    pt: "Minha eterna gratidão à minha esposa, **Marta**, companheira; ao meu filho,\n**Matheus**, o perseverante; e aos profissionais da saúde que participaram\nda minha recuperação, à Sra. **Eliete** e ao Sr. **Livaldo**, do 54,\ninstrumentos de cuidado e providência; à memória dele do\nSr. **Arlindo Francisco de Lemos** (*Arlindo de Jé*).",
   },
   {
     aramaic: "ܝܘܡܢܐ ܡܣܬܟܠ ܐܢܐ ܕܐܠܗܐ ܡܕܒܪ ܟܠ ܐܘܪܚܐ ܕܚ̈ܝܝܢ",
@@ -31,7 +31,7 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
   {
     aramaic: "ܘܐܢ ܚܕ ܢܦܫܐ ܬܬܩܪܒ ܠܡܫܝܚܐ ܟܠܗ ܥܡܠܐ ܫܘܐ ܗܘܐ",
-    pt: "Através desta obra, se uma única vida se aproximar de nosso **Jesus Cristo**, todo o caminho percorrido, todas as provações enfrentadas e todo o esforço dedicado terão valido a pena.",
+    pt: "Através desta obra, se uma única vida se aproximar de nosso Senhor **Jesus Cristo**, todo o caminho percorrido, todas as provações enfrentadas e todo o esforço dedicado terão valido a pena.",
   },
   {
     aramaic: "ܠܐܠܗܐ ܫܘܒܚܐ ܘܐܝܩܪܐ ܘܬܫܒܘܚܬܐ ܠܥܠܡ ܥܠܡܝܢ ܐܡܝܢ",
