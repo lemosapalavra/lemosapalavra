@@ -123,6 +123,7 @@ export default function Estatisticas() {
         if (p === "Evento: Login") u.events.login += 1;
         else if (p === "Evento: Cadastro") u.events.cadastro += 1;
         else if (p === "Evento: Baixar Atalho") u.events.download += 1;
+        else if (p.startsWith("Evento: Compartilhar")) u.events.share += 1;
         else {
           u.pages.set(p, (u.pages.get(p) || 0) + 1);
           u.totalViews += 1;
