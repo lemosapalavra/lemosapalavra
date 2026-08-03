@@ -135,6 +135,25 @@ function ActivityRunner({ meta, onBack, celebrate, bgStyle }:
           <CoinBadge amount={meta.coins} size="md" label="ao completar" />
         </div>
 
+        {meta.id === "circles" && (
+          <WavyBanner
+            emoji="🎨"
+            lines={[
+              "Pinte cada círculo com sua cor e seu número.",
+              "Ao completar ganhará as moedinhas.",
+            ]}
+          />
+        )}
+        {meta.id === "connect" && (
+          <WavyBanner
+            emoji="🔗"
+            lines={[
+              "Ligue os pontos seguindo a ordem dos números.",
+              "Ao completar a sequência, ganhará as moedinhas.",
+            ]}
+          />
+        )}
+
         <div className="bg-white rounded-2xl shadow-xl border-2 border-amber-200 p-3 sm:p-4">
           {meta.id === "circles" && <CirclesGame onComplete={complete} done={done} />}
           {meta.id === "connect" && <ConnectGame onComplete={complete} done={done} />}
