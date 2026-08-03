@@ -545,6 +545,17 @@ export default function LemosPlay() {
         </div>
       )}
 
+      <div className="px-4">
+        <WavyBanner
+          tone="dark"
+          emoji="🎬"
+          lines={[
+            "Assista aos vídeos e ganhe moedinhas para a compra das figurinhas do álbum.",
+            "Caso queira, encaminhe aos seus amigos e parentes.",
+          ]}
+        />
+      </div>
+
 
       {/* Hero — estilo Netflix: prévia em tela cheia do destaque, descrição à esquerda sobreposta */}
       <section className="relative w-full overflow-hidden bg-black">
