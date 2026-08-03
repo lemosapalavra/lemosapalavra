@@ -6,6 +6,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 // import MysticBackground from "@/components/MysticBackground"; // disabled for performance
 import FloatingWhatsapp from "@/components/FloatingWhatsapp";
+import ShareButton from "@/components/ShareButton";
+import WavyBanner from "@/components/WavyBanner";
 import Index from "./pages/Index.tsx";
 import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
 import { supabase } from "@/integrations/supabase/client";
@@ -144,6 +146,7 @@ const App = () => (
         <RouteMetaSync />
         {/* MysticBackground removed to improve page load performance */}
         <FloatingWhatsapp />
+        <ShareButton />
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />
@@ -163,6 +166,15 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
+        <footer className="w-full px-4 pb-24 pt-2 bg-transparent">
+          <WavyBanner
+            emoji="✝️"
+            lines={[
+              "Este projeto é cristão, sem interesses financeiros, sem vínculo político ou denominacional,",
+              "dedicado a compartilhar o Evangelho de Jesus Cristo simples para todas as gerações.",
+            ]}
+          />
+        </footer>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

@@ -17,7 +17,7 @@ type UserStat = {
   role: string | null;
   avatar: string | null;
   createdAt: string | null;
-  events: { login: number; cadastro: number; download: number };
+  events: { login: number; cadastro: number; download: number; share: number };
   pages: { page: string; count: number }[];
   totalViews: number;
   firstSeen: string | null;
@@ -98,7 +98,7 @@ export default function Estatisticas() {
           userId: string | null;
           email: string | null;
           pages: Map<string, number>;
-          events: { login: number; cadastro: number; download: number };
+          events: { login: number; cadastro: number; download: number; share: number };
           totalViews: number;
           firstSeen: string | null;
           lastSeen: string | null;
@@ -112,7 +112,7 @@ export default function Estatisticas() {
             userId: r.user_id || null,
             email: r.user_email || null,
             pages: new Map(),
-            events: { login: 0, cadastro: 0, download: 0 },
+            events: { login: 0, cadastro: 0, download: 0, share: 0 },
             totalViews: 0,
             firstSeen: r.visited_at,
             lastSeen: r.visited_at,
@@ -123,6 +123,7 @@ export default function Estatisticas() {
         if (p === "Evento: Login") u.events.login += 1;
         else if (p === "Evento: Cadastro") u.events.cadastro += 1;
         else if (p === "Evento: Baixar Atalho") u.events.download += 1;
+        else if (p.startsWith("Evento: Compartilhar")) u.events.share += 1;
         else {
           u.pages.set(p, (u.pages.get(p) || 0) + 1);
           u.totalViews += 1;
@@ -547,6 +548,9 @@ export default function Estatisticas() {
                         </span>
                         <span className="px-2 py-1 rounded-lg bg-amber-100 text-amber-800" title="Downloads do atalho">
                           📥 {u.events.download}
+                        </span>
+                        <span className="px-2 py-1 rounded-lg bg-teal-100 text-teal-800" title="Compartilhamentos">
+                          🔗 {u.events.share}
                         </span>
                         <span className="px-2 py-1 rounded-lg bg-purple-100 text-purple-800" title="Páginas vistas">
                           👁️ {u.totalViews}

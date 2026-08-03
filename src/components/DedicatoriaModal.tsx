@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { Volume2, Square } from "lucide-react";
 import dedicatoriaBg from "@/assets/pergaminho.png";
 import { awardOnce } from "@/hooks/useCoins";
+import { speakSoftly } from "@/lib/speak";
 import { DEDICATORIA_COINS } from "@/data/coinRewards";
 
 
@@ -19,7 +21,7 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
   {
     aramaic: "ܠܐܢܬܬܝ ܡܪܬܐ ܘܠܒܪܝ ܡܬܝ ܬܘܕܝܬܐ ܕܠܥܠܡ",
-    pt: "Minha eterna gratidão à minha esposa, **Marta**, companheira;\nao meu filho, **Matheus**, o perseverante; e aos profissionais da saúde que participaram da minha recuperação;\nà Sra. **Eliete** e ao Sr. **Livaldo**, do 54, instrumentos de cuidado e providência;\nà memória do Sr. **Arlindo Francisco de Lemos** (*Arlindo de Jé*).",
+    pt: "Minha eterna gratidão à minha esposa, **Marta**, companheira; ao meu filho,\n**Matheus**, o perseverante; e aos profissionais da saúde que participaram\nda minha recuperação, à Sra. **Eliete** e ao Sr. **Livaldo**, do 54,\ninstrumentos de cuidado e providência; à memória dele do\nSr. **Arlindo Francisco de Lemos** (*Arlindo de Jé*).",
   },
   {
     aramaic: "ܝܘܡܢܐ ܡܣܬܟܠ ܐܢܐ ܕܐܠܗܐ ܡܕܒܪ ܟܠ ܐܘܪܚܐ ܕܚ̈ܝܝܢ",
@@ -31,7 +33,7 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
   {
     aramaic: "ܘܐܢ ܚܕ ܢܦܫܐ ܬܬܩܪܒ ܠܡܫܝܚܐ ܟܠܗ ܥܡܠܐ ܫܘܐ ܗܘܐ",
-    pt: "Através desta obra, se uma única vida se aproximar de nosso **Jesus Cristo**, todo o caminho percorrido, todas as provações enfrentadas e todo o esforço dedicado terão valido a pena.",
+    pt: "Através desta obra, se uma única vida se aproximar de nosso Senhor **Jesus Cristo**, todo o caminho percorrido, todas as provações enfrentadas e todo o esforço dedicado terão valido a pena.",
   },
   {
     aramaic: "ܠܐܠܗܐ ܫܘܒܚܐ ܘܐܝܩܪܐ ܘܬܫܒܘܚܬܐ ܠܥܠܡ ܥܠܡܝܢ ܐܡܝܢ",
@@ -55,8 +57,8 @@ function renderRich(text: string) {
       <span
           key={i}
           style={{
-            fontFamily: "'Yellowtail', 'Kaufmann BT', 'Kaufmann', 'Allura', cursive",
-            fontSize: "2.2em",
+            fontFamily: "'Authentic Signature', 'Authentic', 'Mrs Saint Delafield', 'Yellowtail', 'Allura', cursive",
+            fontSize: "2.4em",
             fontWeight: 400,
             color: "#3d2208",
             display: "inline-block",
@@ -120,7 +122,36 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
     }
   }, [translatedCount]);
 
+  const [speaking, setSpeaking] = useState(false);
+  const stopRef = useRef<null | (() => void)>(null);
+
+  const plainText = dedicatoriaTexts
+    .map((t) => t.pt.replace(/\{\{\/?signature\}\}/g, "").replace(/\*\*|__|\*/g, ""))
+    .join("\n");
+
+  const stopSpeech = useCallback(() => {
+    stopRef.current?.();
+    stopRef.current = null;
+    setSpeaking(false);
+  }, []);
+
+  const toggleSpeech = () => {
+    if (speaking) { stopSpeech(); return; }
+    setSpeaking(true);
+    stopRef.current = speakSoftly(plainText, {
+      gender: "female",
+      onEnd: () => setSpeaking(false),
+      onError: () => setSpeaking(false),
+    });
+  };
+
+  useEffect(() => {
+    if (!open) stopSpeech();
+    return () => stopSpeech();
+  }, [open, stopSpeech]);
+
   const handleClose = () => {
+    stopSpeech();
     if (isControlled) onOpenChange?.(false);
     else setInternalOpen(false);
     setTranslatedCount(0);
@@ -176,11 +207,21 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
                     <p className="text-base italic tracking-wider" style={{ color: "#7a4a10", fontFamily: "'EB Garamond', serif" }}>
                       Dedicatória
                     </p>
+                    <button
+                      onClick={toggleSpeech}
+                      className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold hover:scale-105 transition-transform"
+                      style={{ background: "#6b3a0a", color: "#f7e9c9", boxShadow: "0 2px 6px rgba(0,0,0,0.35)" }}
+                      aria-label={speaking ? "Parar leitura" : "Ouvir a dedicatória"}
+                    >
+                      {speaking ? <Square className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                      {speaking ? "Parar" : "Ouvir"}
+                    </button>
                     <div
                       className="mx-auto mt-3 h-px w-2/3"
                       style={{ background: "linear-gradient(90deg, transparent, #8b5a2b, transparent)" }}
                     />
                   </div>
+
 
                   <div className="space-y-5">
                     {dedicatoriaTexts.map((item, i) => {

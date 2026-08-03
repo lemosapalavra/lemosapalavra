@@ -94,6 +94,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
                 className={`relative h-28 sm:h-32 md:h-36 w-auto drop-shadow-2xl select-none transition-all duration-700 ${
                   isAuthenticated ? (cfg.videoUrl ? "pointer-events-auto cursor-pointer" : "") : "grayscale opacity-60"
                 }`}
+                style={{ animation: "banner-wind 3.2s ease-in-out infinite", transformOrigin: dir === "rtl" ? "100% 50%" : "0% 50%" }}
                 draggable={false}
               />
 
@@ -116,6 +117,14 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
           0%   { opacity: 0.75; transform: scale(0.6) translateY(0); }
           100% { opacity: 0; transform: scale(1.6) translateY(-14px); }
         }
+        @keyframes banner-wind {
+          0%   { transform: rotate(0deg) skewY(0deg) translateY(0); }
+          25%  { transform: rotate(-1.2deg) skewY(1deg) translateY(-3px); }
+          50%  { transform: rotate(0.6deg) skewY(-0.8deg) translateY(2px); }
+          75%  { transform: rotate(-0.6deg) skewY(0.6deg) translateY(-2px); }
+          100% { transform: rotate(0deg) skewY(0deg) translateY(0); }
+        }
+        @media (prefers-reduced-motion: reduce) { img { animation: none !important; } }
       `}</style>
 
       {open && video && (

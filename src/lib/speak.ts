@@ -8,12 +8,20 @@ const PREFERRED = [
   "microsoft daniel", "google português do brasil",
 ];
 
-export function pickSoftVoice(): SpeechSynthesisVoice | null {
+const PREFERRED_FEMALE = [
+  "maria", "luciana", "francisca", "fernanda", "helo", "camila", "female", "mulher",
+  "microsoft maria", "google português do brasil",
+];
+
+export type VoiceGender = "male" | "female";
+
+export function pickSoftVoice(gender: VoiceGender = "male"): SpeechSynthesisVoice | null {
   try {
     const voices = window.speechSynthesis?.getVoices?.() ?? [];
     const pt = voices.filter((v) => /pt(-|_)?BR/i.test(v.lang) || /^pt/i.test(v.lang));
     const pool = pt.length ? pt : voices;
-    for (const name of PREFERRED) {
+    const list = gender === "female" ? PREFERRED_FEMALE : PREFERRED;
+    for (const name of list) {
       const hit = pool.find((v) => v.name.toLowerCase().includes(name));
       if (hit) return hit;
     }
@@ -23,13 +31,19 @@ export function pickSoftVoice(): SpeechSynthesisVoice | null {
   }
 }
 
-/** Aplica voz masculina madura de locutor experiente, grave, pausada e acolhedora. */
-export function applySoftVoice(u: SpeechSynthesisUtterance) {
+/** Aplica voz suave e tranquila (masculina madura ou feminina serena). */
+export function applySoftVoice(u: SpeechSynthesisUtterance, gender: VoiceGender = "male") {
   u.lang = "pt-BR";
-  u.rate = 0.86;   // locução mais pausada e experiente
-  u.pitch = 0.68;  // timbre grave de locutor maduro
-  u.volume = 0.92; // presença firme e aveludada
-  const v = pickSoftVoice();
+  if (gender === "female") {
+    u.rate = 0.88;   // leitura tranquila
+    u.pitch = 1.05;  // timbre feminino suave
+    u.volume = 0.9;
+  } else {
+    u.rate = 0.86;   // locução mais pausada e experiente
+    u.pitch = 0.68;  // timbre grave de locutor maduro
+    u.volume = 0.92; // presença firme e aveludada
+  }
+  const v = pickSoftVoice(gender);
   if (v) u.voice = v;
   return u;
 }
@@ -56,7 +70,7 @@ export function splitByPunctuation(text: string): { text: string; start: number;
  */
 export function speakSoftly(
   text: string,
-  opts: { from?: number; onProgress?: (charIndex: number) => void; onEnd?: () => void; onError?: () => void } = {}
+  opts: { from?: number; gender?: VoiceGender; onProgress?: (charIndex: number) => void; onEnd?: () => void; onError?: () => void } = {}
 ) {
   const synth = window.speechSynthesis;
   if (!synth) { opts.onError?.(); return () => {}; }
@@ -75,7 +89,7 @@ export function speakSoftly(
     // Sem considerar a pontuação: substitui por espaço (mesmo tamanho, índices preservados)
     const spoken = piece.replace(/[.,;:!?\u2026\u2014\u2013]/g, " ");
     const u = new SpeechSynthesisUtterance(spoken);
-    applySoftVoice(u);
+    applySoftVoice(u, opts.gender ?? "male");
     u.onboundary = (e) => opts.onProgress?.(c.start + offset + (e.charIndex || 0));
     u.onend = () => { if (!cancelled) setTimeout(next, c.pause); };
     u.onerror = () => { if (!cancelled) opts.onError?.(); };
