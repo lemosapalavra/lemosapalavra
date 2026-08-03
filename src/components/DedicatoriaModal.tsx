@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { Volume2, Square } from "lucide-react";
 import dedicatoriaBg from "@/assets/pergaminho.png";
 import { awardOnce } from "@/hooks/useCoins";
+import { speakSoftly } from "@/lib/speak";
 import { DEDICATORIA_COINS } from "@/data/coinRewards";
 
 
@@ -55,8 +57,8 @@ function renderRich(text: string) {
       <span
           key={i}
           style={{
-            fontFamily: "'Yellowtail', 'Kaufmann BT', 'Kaufmann', 'Allura', cursive",
-            fontSize: "2.2em",
+            fontFamily: "'Authentic Signature', 'Authentic', 'Mrs Saint Delafield', 'Yellowtail', 'Allura', cursive",
+            fontSize: "2.4em",
             fontWeight: 400,
             color: "#3d2208",
             display: "inline-block",
