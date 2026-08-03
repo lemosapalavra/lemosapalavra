@@ -70,7 +70,7 @@ export function splitByPunctuation(text: string): { text: string; start: number;
  */
 export function speakSoftly(
   text: string,
-  opts: { from?: number; onProgress?: (charIndex: number) => void; onEnd?: () => void; onError?: () => void } = {}
+  opts: { from?: number; gender?: VoiceGender; onProgress?: (charIndex: number) => void; onEnd?: () => void; onError?: () => void } = {}
 ) {
   const synth = window.speechSynthesis;
   if (!synth) { opts.onError?.(); return () => {}; }
@@ -89,7 +89,7 @@ export function speakSoftly(
     // Sem considerar a pontuação: substitui por espaço (mesmo tamanho, índices preservados)
     const spoken = piece.replace(/[.,;:!?\u2026\u2014\u2013]/g, " ");
     const u = new SpeechSynthesisUtterance(spoken);
-    applySoftVoice(u);
+    applySoftVoice(u, opts.gender ?? "male");
     u.onboundary = (e) => opts.onProgress?.(c.start + offset + (e.charIndex || 0));
     u.onend = () => { if (!cancelled) setTimeout(next, c.pause); };
     u.onerror = () => { if (!cancelled) opts.onError?.(); };
