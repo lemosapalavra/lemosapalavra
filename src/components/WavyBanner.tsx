@@ -18,17 +18,11 @@ interface WavyBannerProps {
 export default function WavyBanner({ lines, emoji, className = "", children }: WavyBannerProps) {
   return (
     <div className={`w-full flex justify-center my-4 ${className}`}>
-      <div className="wavy-banner relative w-full max-w-2xl">
-        <img
-          src={faixa.url}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          decoding="async"
-          className="w-full h-auto select-none pointer-events-none"
-          draggable={false}
-        />
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-[13%] py-[10%]">
+      <div
+        className="wavy-banner relative w-full max-w-2xl aspect-[883/303] bg-no-repeat bg-center bg-contain"
+        style={{ backgroundImage: `url(${faixa.url})` }}
+      >
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-[13%] py-[8%]">
           {lines.map((l, i) => (
             <p
               key={i}
@@ -41,6 +35,7 @@ export default function WavyBanner({ lines, emoji, className = "", children }: W
           {children}
         </div>
       </div>
+
 
       <style>{`
         @keyframes wind-wave {
