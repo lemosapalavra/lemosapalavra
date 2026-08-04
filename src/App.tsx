@@ -8,6 +8,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import FloatingWhatsapp from "@/components/FloatingWhatsapp";
 import ShareButton from "@/components/ShareButton";
 import WavyBanner from "@/components/WavyBanner";
+import NewContentNotice from "@/components/NewContentNotice";
 import Index from "./pages/Index.tsx";
 import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
 import { supabase } from "@/integrations/supabase/client";
@@ -146,6 +147,7 @@ const App = () => (
         <RouteMetaSync />
         {/* MysticBackground removed to improve page load performance */}
         <FloatingWhatsapp />
+        <NewContentNotice />
         <ShareButton />
         <Suspense fallback={<PageFallback />}>
           <Routes>
