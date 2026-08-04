@@ -207,6 +207,9 @@ export default function Configuracao() {
         {/* Redes sociais do rodapé */}
         <SocialToggle />
 
+        {/* Versão visual do site */}
+        <VersionToggle />
+
 
         </div>
 
@@ -239,6 +242,44 @@ export default function Configuracao() {
         </div>
       </div>
       <FeedbackFooter />
+    </div>
+  );
+}
+
+function VersionToggle() {
+  const [version, setVersion] = useState(() => loadSiteVersion());
+  const [flash, setFlash] = useState("");
+
+  const switchTo = (v: 1 | 2) => {
+    saveSiteVersion(v);
+    setVersion(v);
+    setFlash(`✓ Site agora na Versão ${v}`);
+    setTimeout(() => setFlash(""), 2500);
+  };
+
+  return (
+    <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
+      <h3 className="font-display text-lg font-bold text-foreground mb-2">🎨 Versão visual do site</h3>
+      <p className="text-xs text-muted-foreground mb-3">
+        Versão 1 = layout original (ícones em órbita). Versão 2 = novo layout com menu no topo, banner e cards.
+        A logo original é mantida nas duas versões. Troque com um clique.
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {([1, 2] as const).map((v) => (
+          <button
+            key={v}
+            onClick={() => switchTo(v)}
+            className={`px-5 py-3 rounded-xl font-display font-bold text-sm transition ${
+              version === v
+                ? "bg-amber-600 text-white shadow"
+                : "bg-zinc-200 text-foreground hover:bg-zinc-300"
+            }`}
+          >
+            {version === v ? "✓ " : ""}Versão {v}
+          </button>
+        ))}
+      </div>
+      {flash && <p className="text-xs font-body text-emerald-700 mt-3">{flash}</p>}
     </div>
   );
 }
