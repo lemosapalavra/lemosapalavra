@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Facebook, Instagram, MessageCircle } from "lucide-react";
+import { Instagram, MessageCircle } from "lucide-react";
 
 const HANDLE = "@lemosapalavra";
 const LS_SOCIAL = "lemos_social_enabled";
@@ -16,9 +16,8 @@ export function saveSocialCfg(cfg: { enabled: boolean }) {
 }
 
 const links = [
-  { href: "https://facebook.com/lemosapalavra", label: "Facebook", Icon: Facebook, bg: "#1877F2" },
-  { href: "https://instagram.com/lemosapalavra", label: "Instagram", Icon: Instagram, bg: "#E1306C" },
   { href: "https://wa.me/5515981842767", label: "WhatsApp", Icon: MessageCircle, bg: "#25D366" },
+  { href: "https://instagram.com/lemosapalavra", label: "Instagram", Icon: Instagram, bg: "#E1306C" },
 ];
 
 export default function FeedbackFooter() {
@@ -35,8 +34,8 @@ export default function FeedbackFooter() {
   }, []);
 
   return (
-    <footer className="w-full mt-10 py-6 flex flex-col items-center gap-2">
-      <div className="flex items-center gap-4">
+    <footer className="w-full mt-10 py-6 flex flex-col items-center justify-center gap-2 text-center">
+      <div className="flex items-center justify-center gap-3">
         {links.map(({ href, label, Icon, bg }) =>
           cfg.enabled ? (
             <a
@@ -63,8 +62,8 @@ export default function FeedbackFooter() {
             </span>
           )
         )}
+        <p className="font-display font-bold text-sm text-primary">{HANDLE}</p>
       </div>
-      <p className="font-display font-bold text-sm text-primary">{HANDLE}</p>
     </footer>
   );
 }
