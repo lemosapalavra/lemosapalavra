@@ -9,6 +9,7 @@ import { useIpLocation } from "@/hooks/useIpLocation";
 import { supabase } from "@/integrations/supabase/client";
 import { loadWhatsappCfg, saveWhatsappCfg } from "@/components/FloatingWhatsapp";
 import { loadSocialCfg, saveSocialCfg } from "@/components/FeedbackFooter";
+import { loadSiteVersion, saveSiteVersion } from "@/data/siteVersion";
 
 
 export default function Configuracao() {
