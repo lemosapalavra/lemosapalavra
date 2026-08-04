@@ -6,6 +6,8 @@ import FeedbackFooter from "@/components/FeedbackFooter";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import IndexAdminPanel from "@/components/IndexAdminPanel";
 import EventBannerPlane from "@/components/EventBannerPlane";
+import IndexV2 from "@/pages/IndexV2";
+import { loadSiteVersion, SITE_VERSION_EVENT } from "@/data/siteVersion";
 
 
 import { useCoins, ensureInitialCoins, addCoins } from "@/hooks/useCoins";
@@ -16,6 +18,21 @@ import iconDedicatoria from "@/assets/icon-dedicatoria.png";
 import iconUsuario from "@/assets/icon-usuario.png";
 
 export default function Index() {
+  const [version, setVersion] = useState(() => loadSiteVersion());
+  useEffect(() => {
+    const h = () => setVersion(loadSiteVersion());
+    window.addEventListener(SITE_VERSION_EVENT, h);
+    window.addEventListener("storage", h);
+    return () => {
+      window.removeEventListener(SITE_VERSION_EVENT, h);
+      window.removeEventListener("storage", h);
+    };
+  }, []);
+  if (version === 2) return <IndexV2 />;
+  return <IndexV1 />;
+}
+
+function IndexV1() {
   const navigate = useNavigate();
   const { coins } = useCoins();
   const isAdmin = useIsAdmin();
