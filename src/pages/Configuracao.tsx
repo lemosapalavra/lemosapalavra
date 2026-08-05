@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
 import FeedbackFooter from "@/components/FeedbackFooter";
+import { loadVideoInteractionsCfg, saveVideoInteractionsCfg } from "@/data/videoInteractionsConfig";
 import { useIsAdmin, setAdminMode, canBeAdmin } from "@/hooks/useIsAdmin";
 import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
 import IndexAdminPanel from "@/components/IndexAdminPanel";
@@ -208,6 +209,9 @@ export default function Configuracao() {
         {/* Redes sociais do rodapé */}
         <SocialToggle />
 
+        {/* Interações dos usuários nos vídeos */}
+        <VideoInteractionsToggle />
+
         {/* Versão visual do site */}
         <VersionToggle />
 
@@ -281,6 +285,37 @@ function VersionToggle() {
         ))}
       </div>
       {flash && <p className="text-xs font-body text-emerald-700 mt-3">{flash}</p>}
+    </div>
+  );
+}
+
+function VideoInteractionsToggle() {
+  const [cfg, setCfg] = useState(() => loadVideoInteractionsCfg());
+  const [flash, setFlash] = useState("");
+
+  const toggle = () => {
+    const next = { enabled: !cfg.enabled };
+    saveVideoInteractionsCfg(next);
+    setCfg(next);
+    setFlash(next.enabled ? "✓ Interações ativadas" : "✓ Interações desativadas");
+    setTimeout(() => setFlash(""), 2500);
+  };
+
+  return (
+    <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
+      <h3 className="font-display text-lg font-bold text-foreground mb-2">💬 Interações dos usuários nos vídeos</h3>
+      <p className="text-xs text-muted-foreground mb-3">
+        Coluna à direita de todos os vídeos (inclusive o do aviãozinho) com Gostei, Comentar e Compartilhar.
+      </p>
+      <button
+        onClick={toggle}
+        className={`px-4 py-3 rounded-xl font-display font-bold text-sm transition ${
+          cfg.enabled ? "bg-emerald-500 text-white hover:bg-emerald-600" : "bg-secondary text-foreground hover:bg-accent"
+        }`}
+      >
+        {cfg.enabled ? "Ativadas — clique para desativar" : "Desativadas — clique para ativar"}
+      </button>
+      {flash && <p className="mt-2 text-xs font-bold text-emerald-600">{flash}</p>}
     </div>
   );
 }

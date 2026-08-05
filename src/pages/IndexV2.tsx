@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { LogOut, Settings, User } from "lucide-react";
+import { LogOut, Search, Settings, User } from "lucide-react";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import { useCoins } from "@/hooks/useCoins";
@@ -23,8 +23,8 @@ const NAV = [
   { label: "Histórias", to: "/lemosplay" },
   { label: "Músicas", to: "/louvores" },
   { label: "Atividades", to: "/atividades" },
-  { label: "Álbum", to: "/album" },
-  { label: "Bíblia", to: "/biblia" },
+  { label: "Playlists", to: "/louvores" },
+  { label: "Mais", to: "/album" },
 ];
 
 const CARDS = [
@@ -91,6 +91,13 @@ export default function IndexV2() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => navigate("/biblia")}
+              className="w-10 h-10 rounded-full bg-secondary hover:bg-accent flex items-center justify-center"
+              aria-label="Buscar na Bíblia"
+            >
+              <Search className="w-5 h-5 text-foreground" />
+            </button>
             {user && (
               <div className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 border border-amber-300">
                 <span className="text-base leading-none">🪙</span>

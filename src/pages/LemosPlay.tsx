@@ -5,7 +5,7 @@ import PageHeader from "@/components/PageHeader";
 import WavyBanner from "@/components/WavyBanner";
 import ShareButton from "@/components/ShareButton";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
-import VideoInteractions from "@/components/VideoInteractions";
+import VideoActionsColumn from "@/components/VideoSideActions";
 import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
 import CoinBadge from "@/components/CoinBadge";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
@@ -18,7 +18,7 @@ import { markSeen } from "@/lib/newContent";
 import { lemosPlayTitles } from "@/data/contentIndex";
 import batalhaAnjosVid from "@/assets/lemos-play/a-batalha-dos-anjos.mp4.asset.json";
 import batalhaAnjosThumb from "@/assets/lemos-play/batalha-anjos-thumb.png.asset.json";
-import criacaoVid from "@/assets/lemos-play/a-criacao.mp4.asset.json";
+import criacaoVid from "@/assets/lemos-play/a-criacao-v5.mp4.asset.json";
 import criacaoThumb from "@/assets/lemos-play/a-criacao-thumb.png.asset.json";
 import dezMandVid from "@/assets/lemos-play/os-10-mandamentos.mp4.asset.json";
 import dezMandThumb from "@/assets/lemos-play/os-10-mandamentos-thumb.png.asset.json";
@@ -768,11 +768,7 @@ export default function LemosPlay() {
               </ColonialVideoFrame>
             )}
 
-            <div className="absolute bottom-4 inset-x-0 px-4 z-20 pointer-events-none">
-              <div className="pointer-events-auto">
-                <VideoInteractions videoId={`lemosplay:${playing.id}`} />
-              </div>
-            </div>
+            <VideoActionsColumn videoId={`lemosplay:${playing.id}`} />
             
             {nextInGroup && (
               <button

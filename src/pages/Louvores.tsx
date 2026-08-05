@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
-import VideoInteractions from "@/components/VideoInteractions";
+import VideoSideActions from "@/components/VideoSideActions";
 
 import PageHeader from "@/components/PageHeader";
 import CoinBadge from "@/components/CoinBadge";
@@ -54,9 +54,7 @@ export default function Louvores() {
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
-        <div className="absolute bottom-4 inset-x-0 px-4 z-20">
-          <VideoInteractions videoId={`louvores:${playing.title}`} />
-        </div>
+        <VideoSideActions videoId={`louvores:${playing.title}`} />
         {playing.src ? (
           <ColonialVideoFrame variant={tab === "louvores" ? "silver" : "green"}><video src={playing.src} className="w-full h-full bg-black object-cover" controls controlsList="nodownload noremoteplayback noplaybackrate" disablePictureInPicture onContextMenu={(e) => e.preventDefault()} autoPlay /></ColonialVideoFrame>
         ) : (

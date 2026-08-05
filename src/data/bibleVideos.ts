@@ -13,7 +13,7 @@ import esauJacoIcon from "@/assets/lemos-play/esau-e-jaco.png.asset.json";
 import esauJacoP1 from "@/assets/lemos-play/esau-jaco-parte-1.png.asset.json";
 import esauJacoP2 from "@/assets/lemos-play/esau-jaco-parte-2.png.asset.json";
 import esauJacoP3 from "@/assets/lemos-play/esau-jaco-parte-3.png.asset.json";
-import vidCriacao from "@/assets/lemos-play/genesis-2-criacao.mp4.asset.json";
+import vidCriacao from "@/assets/lemos-play/a-criacao-v5.mp4.asset.json";
 import vidGenBatalha from "@/assets/lemos-play/genesis-1-batalha-anjos.mp4.asset.json";
 import vidGenAdaoEva from "@/assets/lemos-play/genesis-3-adao-eva.mp4.asset.json";
 import vidGenNoe from "@/assets/lemos-play/genesis-4-noe-arca.mp4.asset.json";

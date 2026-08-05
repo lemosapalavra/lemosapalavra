@@ -6,6 +6,7 @@ import planeRtl from "@/assets/aviao-rtl-v12.png.asset.json";
 import planeLtr from "@/assets/aviao-ltr-v12.png.asset.json";
 
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
+import VideoSideActions from "@/components/VideoSideActions";
 
 /**
  * Aviãozinhos animados alternando direções:
@@ -136,7 +137,8 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
           >
             <X className="w-5 h-5" />
           </button>
-          <div onClick={(e) => e.stopPropagation()}>
+          <div className="relative" onClick={(e) => e.stopPropagation()}>
+            <VideoSideActions videoId={`aviaozinho:${cfg.message || "evento"}`} />
             <ColonialVideoFrame>
               {video.kind === "mp4" ? (
                 <video src={video.embedUrl} controls autoPlay playsInline className="w-full h-full object-contain" />
