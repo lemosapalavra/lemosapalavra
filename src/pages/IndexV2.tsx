@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { LogOut, Settings, User } from "lucide-react";
+import { LogOut, Search, Settings, User } from "lucide-react";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import { useCoins } from "@/hooks/useCoins";
