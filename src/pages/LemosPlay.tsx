@@ -5,7 +5,7 @@ import PageHeader from "@/components/PageHeader";
 import WavyBanner from "@/components/WavyBanner";
 import ShareButton from "@/components/ShareButton";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
-import VideoSideActions from "@/components/VideoSideActions";
+import VideoActionsColumn from "@/components/VideoSideActions";
 import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
 import CoinBadge from "@/components/CoinBadge";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
@@ -768,7 +768,7 @@ export default function LemosPlay() {
               </ColonialVideoFrame>
             )}
 
-            <VideoSideActions videoId={`lemosplay:${playing.id}`} />
+            <VideoActionsColumn videoId={`lemosplay:${playing.id}`} />
             
             {nextInGroup && (
               <button
