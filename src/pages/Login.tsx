@@ -136,7 +136,7 @@ export default function Login() {
   const doLogin = async (overrideEmail?: string, overridePassword?: string) => {
     const raw = (overrideEmail ?? email).trim();
     const pw = overridePassword ?? password;
-    if (!name.trim()) { alert("Informe seu nome."); return; }
+    
     if (!raw || !pw) { alert("Informe seu celular e a senha."); return; }
     // Aceita celular (padrão) ou e-mail (compatibilidade com contas antigas).
     const em = raw.includes("@") ? raw : phoneToEmail(raw);
@@ -227,8 +227,16 @@ export default function Login() {
   };
 
   const handleForgotPwd = async () => {
-    if (!email) { alert("Digite seu e-mail acima e clique novamente em 'Esqueci minha senha'."); return; }
-    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+    const raw = email.trim();
+    // Contas criadas com celular usam um e-mail interno que não recebe mensagens.
+    if (!raw.includes("@")) {
+      alert(
+        "Sua conta foi criada com celular, então não é possível enviar link por e-mail.\n\n" +
+        "Escreva para lemosapalavra@gmail.com informando seu celular e nome de usuário que ajudamos você a recuperar o acesso."
+      );
+      return;
+    }
+    const { error } = await supabase.auth.resetPasswordForEmail(raw, {
       redirectTo: `${window.location.origin}/login`,
     });
     if (error) alert("Não foi possível enviar o e-mail: " + error.message);
@@ -352,7 +360,7 @@ export default function Login() {
 
             {mode === "login" && (
               <>
-                <Field label="Nome *">
+                <Field label="Nome (opcional)">
                   <input
                     type="text"
                     value={name}
@@ -360,7 +368,6 @@ export default function Login() {
                     className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
                     placeholder="Seu nome"
                     autoComplete="name"
-                    required
                   />
                 </Field>
                 <Field label="Celular *">
@@ -418,9 +425,13 @@ export default function Login() {
                   />
                   <span className="font-body text-foreground">Manter-me logado</span>
                 </label>
-                <span className="text-muted-foreground font-body">
-                  Entre com o mesmo celular do cadastro
-                </span>
+                <button
+                  type="button"
+                  onClick={handleForgotPwd}
+                  className="text-rose-700 font-body underline underline-offset-2 hover:text-rose-800"
+                >
+                  Esqueci minha senha
+                </button>
               </div>
             )}
 
