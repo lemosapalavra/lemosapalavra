@@ -29,10 +29,10 @@ import palavraEternaVid from "@/assets/lemos-play/palavra-eterna.mp4.asset.json"
 import souFielVid from "@/assets/lemos-play/sou-fiel.mp4.asset.json";
 import fazMilagreVid from "@/assets/lemos-play/faz-um-milagre-em-mim.mp4.asset.json";
 import ressuscitaMeVid from "@/assets/lemos-play/ressuscita-me.mp4.asset.json";
-import tempestadesVid from "@/assets/lemos-play/tempestades.mp4.asset.json";
+import tempestadesVid from "@/assets/lemos-play/tempestade-v2.mp4.asset.json";
 import fazMilagreThumb from "@/assets/lemos-play/faz-milagre-v2.png.asset.json";
 import ressuscitaMeThumb from "@/assets/lemos-play/ressuscita-me-v2.png.asset.json";
-import deusEstaAquiVid from "@/assets/lemos-play/deus-esta-aqui.mp4.asset.json";
+import deusEstaAquiVid from "@/assets/lemos-play/deus-esta-aqui-v3.mp4.asset.json";
 import yeshuaVid from "@/assets/lemos-play/yeshua.mp4.asset.json";
 import ressuscitaMe2Vid from "@/assets/lemos-play/ressuscita-me-2.mp4.asset.json";
 import deusEstaAquiThumb from "@/assets/lemos-play/deus-esta-aqui-v2.png.asset.json";
@@ -121,7 +121,7 @@ const defaultLouvores: PlayEntry[] = [
   { id: "lv4", title: "Sou Fiel", src: souFielVid.url, poster: attachedThumbByTitle["Sou Fiel"], section: "Louvores" },
   { id: "lv5", title: "Graça Aleluia", src: aleluiaVid.url, poster: attachedThumbByTitle["Graça Aleluia"], section: "Louvores" },
   { id: "lv6", title: "Palavra Eterna", src: palavraEternaVid.url, poster: attachedThumbByTitle["Palavra Eterna"], section: "Louvores" },
-  { id: "lv7", title: "Tempestades", src: tempestadesVid.url, poster: aTempestadeThumb.url, section: "Louvores" },
+  { id: "lv7", title: "Tempestade", src: tempestadesVid.url, poster: aTempestadeThumb.url, section: "Louvores" },
   { id: "lv8", title: "Deus Está Aqui", src: deusEstaAquiVid.url, poster: deusEstaAquiThumb.url, section: "Louvores" },
   { id: "lv9", title: "Yeshua", src: yeshua2Vid.url, poster: yeshua3Thumb.url, section: "Louvores" },
   { id: "lv10", title: "Ressuscita-Me (Versão 2)", src: ressuscitaMe2Vid.url, poster: ressuscitaMeThumb.url, section: "Louvores" },

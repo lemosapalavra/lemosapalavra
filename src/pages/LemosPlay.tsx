@@ -18,7 +18,7 @@ import { markSeen } from "@/lib/newContent";
 import { lemosPlayTitles } from "@/data/contentIndex";
 import batalhaAnjosVid from "@/assets/lemos-play/a-batalha-dos-anjos.mp4.asset.json";
 import batalhaAnjosThumb from "@/assets/lemos-play/batalha-anjos-thumb.png.asset.json";
-import criacaoVid from "@/assets/lemos-play/a-criacao.mp4.asset.json";
+import criacaoVid from "@/assets/lemos-play/a-criacao-v5.mp4.asset.json";
 import criacaoThumb from "@/assets/lemos-play/a-criacao-thumb.png.asset.json";
 import dezMandVid from "@/assets/lemos-play/os-10-mandamentos.mp4.asset.json";
 import dezMandThumb from "@/assets/lemos-play/os-10-mandamentos-thumb.png.asset.json";
