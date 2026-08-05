@@ -47,7 +47,7 @@ export default function FloatingWhatsapp() {
     <a
       href={href}
       aria-label={`Fale conosco por e-mail ${cfg.email}`}
-      className="fixed bottom-5 right-5 z-[80] w-14 h-14 rounded-full bg-amber-500 hover:bg-amber-600 shadow-2xl border-2 border-white flex items-center justify-center transition-transform hover:scale-110"
+      className="fixed bottom-40 right-4 z-[80] w-12 h-12 rounded-full bg-amber-500 hover:bg-amber-600 shadow-2xl border-2 border-white flex items-center justify-center transition-transform hover:scale-110"
     >
       <Mail className="w-7 h-7 text-white" aria-hidden="true" />
     </a>
