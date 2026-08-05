@@ -23,8 +23,8 @@ const NAV = [
   { label: "Histórias", to: "/lemosplay" },
   { label: "Músicas", to: "/louvores" },
   { label: "Atividades", to: "/atividades" },
-  { label: "Álbum", to: "/album" },
-  { label: "Bíblia", to: "/biblia" },
+  { label: "Playlists", to: "/louvores" },
+  { label: "Mais", to: "/album" },
 ];
 
 const CARDS = [
