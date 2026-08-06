@@ -6,6 +6,8 @@ import FeedbackFooter from "@/components/FeedbackFooter";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import IndexAdminPanel from "@/components/IndexAdminPanel";
 import EventBannerPlane from "@/components/EventBannerPlane";
+import InstallShortcut from "@/components/InstallShortcut";
+import NewVideosBadge from "@/components/NewVideosBadge";
 import IndexV2 from "@/pages/IndexV2";
 import { loadSiteVersion, SITE_VERSION_EVENT } from "@/data/siteVersion";
 
@@ -163,7 +165,12 @@ function IndexV1() {
             onItemClick={handleItemClick}
           />
 
-          <div className="mt-16 sm:mt-20 flex items-center justify-center">
+          <div className="mt-6 flex justify-center">
+            <NewVideosBadge />
+          </div>
+
+          <div className="mt-16 sm:mt-20 flex items-end justify-center gap-6 sm:gap-10">
+            <InstallShortcut compact />
             <button
               onClick={() => setDedicatoriaOpen(true)}
               className="animate-pulse hover:animate-none hover:scale-110 transition-transform"

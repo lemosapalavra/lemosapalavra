@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { LogOut, Search, Settings, User } from "lucide-react";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
+import InstallShortcut from "@/components/InstallShortcut";
+import NewVideosBadge from "@/components/NewVideosBadge";
 import { useCoins } from "@/hooks/useCoins";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 
@@ -219,7 +221,12 @@ export default function IndexV2() {
           </div>
         </section>
 
-        <div className="flex justify-center pb-6">
+        <div className="flex justify-center pb-4">
+          <NewVideosBadge />
+        </div>
+
+        <div className="flex items-end justify-center gap-6 pb-6">
+          <InstallShortcut compact />
           <button
             onClick={() => setDedicatoriaOpen(true)}
             className="px-6 py-3 rounded-full border-2 border-amber-300 bg-amber-50 hover:bg-amber-100 font-display font-bold text-amber-900 transition"

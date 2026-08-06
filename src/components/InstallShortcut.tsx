@@ -62,7 +62,7 @@ function isAndroid() {
   return /Android/.test(navigator.userAgent);
 }
 
-export default function InstallShortcut() {
+export default function InstallShortcut({ compact = false }: { compact?: boolean }) {
   // Always show the clickable logo shortcut on the login screen
   const [installable, setInstallable] = useState<boolean>(
     typeof window !== "undefined" && !!window.__lemosDeferredInstall
@@ -129,38 +129,47 @@ export default function InstallShortcut() {
   const siteUrl = typeof window !== "undefined" ? `${window.location.origin}/` : "https://lemosapalavra.live/";
 
   return (
-    <div className="mt-4 flex flex-col items-center gap-3">
+    <div className={compact ? "flex flex-col items-center gap-2" : "mt-4 flex flex-col items-center gap-3"}>
       <div className="relative flex items-center justify-center">
         {/* Pointing hand indicator — same vibe as the airplane hint */}
-        <span
-          aria-hidden
-          className="absolute -left-14 sm:-left-16 text-4xl sm:text-5xl select-none"
-          style={{ animation: "point-bounce 1s ease-in-out infinite" }}
-        >
-          👉
-        </span>
+        {!compact && (
+          <span
+            aria-hidden
+            className="absolute -left-14 sm:-left-16 text-4xl sm:text-5xl select-none"
+            style={{ animation: "point-bounce 1s ease-in-out infinite" }}
+          >
+            👉
+          </span>
+        )}
         <button
           type="button"
           onClick={handleClick}
           disabled={busy}
           aria-label="Baixar atalho clicável da Lemos a Palavra"
           title="Clique para baixar o atalho da Lemos a Palavra"
-          className="relative group rounded-3xl p-2 bg-gradient-to-br from-amber-200 to-amber-400 shadow-2xl hover:scale-105 active:scale-95 transition disabled:opacity-60 ring-4 ring-amber-300/60 animate-pulse"
+          className={`relative group rounded-3xl p-2 bg-gradient-to-br from-amber-200 to-amber-400 shadow-2xl hover:scale-105 active:scale-95 transition disabled:opacity-60 ring-4 ring-amber-300/60 ${compact ? "" : "animate-pulse"}`}
         >
           <img loading="lazy" decoding="async"
             src="/favicon.png"
             alt="Lemos a Palavra"
-            className="w-40 h-40 sm:w-48 sm:h-48 rounded-2xl bg-white object-contain"
+            className={`rounded-2xl bg-white object-contain ${compact ? "w-20 h-20 sm:w-24 sm:h-24" : "w-40 h-40 sm:w-48 sm:h-48"}`}
           />
-          <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-amber-500 text-white text-xs sm:text-sm font-display font-extrabold px-3 py-1 rounded-full shadow-lg">
-            {busy ? "Preparando…" : "📥 Baixar atalho"}
+          <span className={`absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-amber-500 text-white font-display font-extrabold rounded-full shadow-lg ${compact ? "text-[10px] px-2 py-0.5" : "text-xs sm:text-sm px-3 py-1"}`}>
+            {busy ? "Preparando…" : compact ? "📥 Atalho" : "📥 Baixar atalho"}
           </span>
         </button>
       </div>
-      <p className="text-xs sm:text-sm font-body text-amber-900 text-center leading-snug max-w-[280px] mt-3">
-        Clique na logo para <strong>baixar o atalho</strong> da Lemos a Palavra
-        e entrar direto no site, sem digitar o endereço.
-      </p>
+      {!compact && (
+        <p className="text-xs sm:text-sm font-body text-amber-900 text-center leading-snug max-w-[280px] mt-3">
+          Clique na logo para <strong>baixar o atalho</strong> da Lemos a Palavra
+          e entrar direto no site, sem digitar o endereço.
+        </p>
+      )}
+      {compact && (
+        <p className="text-[11px] font-body text-amber-900 text-center leading-snug max-w-[140px] mt-2">
+          Baixe o ícone da Lemos no seu celular
+        </p>
+      )}
 
       {/* QR code + URL removidos a pedido do usuário. */}
 
