@@ -69,14 +69,21 @@ const saveProgress = (p: ProgressMap) => localStorage.setItem(PROGRESS_KEY, JSON
 
 /* ============ Estado social por vídeo (curtidas, seguidores, etc) ============ */
 const SOCIAL_KEY = "lemosplay:social";
-type SocialState = { liked: boolean; following: boolean; likes: number; comments: number; shares: number };
+type SocialState = { liked: boolean; following: boolean; views: number; likes: number; comments: number; shares: number };
 type SocialMap = Record<string, SocialState>;
 const loadSocial = (): SocialMap => { try { return JSON.parse(localStorage.getItem(SOCIAL_KEY) || "{}"); } catch { return {}; } };
 const saveSocial = (s: SocialMap) => localStorage.setItem(SOCIAL_KEY, JSON.stringify(s));
 const initialSocial = (id: string): SocialState => {
   // pseudo-random initial counts so cards look alive
   let h = 0; for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
-  return { liked: false, following: false, likes: 50 + (h % 9000), comments: 5 + (h % 400), shares: 1 + (h % 200) };
+  return {
+    liked: false,
+    following: false,
+    views: 1200 + (h % 988000),
+    likes: 50 + (h % 9000),
+    comments: 5 + (h % 400),
+    shares: 1 + (h % 200),
+  };
 };
 const fmt = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}k` : `${n}`);
 
