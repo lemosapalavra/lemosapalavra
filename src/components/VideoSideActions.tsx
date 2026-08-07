@@ -106,27 +106,37 @@ export default function VideoSideActions({ videoId, className = "" }: Props) {
   return (
     <>
       <div className={`absolute right-3 top-1/2 -translate-y-1/2 z-30 flex flex-col items-center gap-5 ${className}`}>
+        {/* Visualizações */}
+        <div className="flex flex-col items-center gap-1">
+          <span className={`${circle} bg-white/10`}>
+            <Eye className="w-6 h-6 text-white/90" />
+          </span>
+          <span className="text-white text-[10px] font-bold drop-shadow leading-none">Visualizações</span>
+          <span className="text-white/90 text-[10px] font-bold drop-shadow leading-none">{formatCount(fakeCounts.views)}</span>
+        </div>
+
         <button onClick={() => patch({ liked: !state.liked })} className="flex flex-col items-center gap-1" aria-pressed={state.liked}>
           <span className={`${circle} ${state.liked ? "bg-red-600" : "bg-white/20"}`}>
             <Heart className="w-6 h-6 text-white" fill={state.liked ? "white" : "none"} />
           </span>
-          <span className="text-white text-[10px] font-bold drop-shadow">Gostei</span>
+          <span className="text-white text-[10px] font-bold drop-shadow leading-none">Gostei</span>
+          <span className="text-white/90 text-[10px] font-bold drop-shadow leading-none">{formatCount(displayLikes)}</span>
         </button>
 
         <button onClick={() => setOpenComments(true)} className="flex flex-col items-center gap-1">
           <span className={`${circle} bg-white/20`}>
             <MessageCircle className="w-6 h-6 text-white" />
           </span>
-          <span className="text-white text-[10px] font-bold drop-shadow">
-            Comentar{state.comments.length ? ` (${state.comments.length})` : ""}
-          </span>
+          <span className="text-white text-[10px] font-bold drop-shadow leading-none">Comentar</span>
+          <span className="text-white/90 text-[10px] font-bold drop-shadow leading-none">{formatCount(displayComments)}</span>
         </button>
 
         <button onClick={() => shareSite(videoId)} className="flex flex-col items-center gap-1">
           <span className={`${circle} bg-emerald-500/90`}>
             <Share2 className="w-6 h-6 text-white" />
           </span>
-          <span className="text-white text-[10px] font-bold drop-shadow">Compartilhar</span>
+          <span className="text-white text-[10px] font-bold drop-shadow leading-none">Compartilhar</span>
+          <span className="text-white/90 text-[10px] font-bold drop-shadow leading-none">{formatCount(fakeCounts.shares)}</span>
         </button>
       </div>
 
