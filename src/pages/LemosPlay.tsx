@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { Play, Info, ChevronLeft, ChevronRight, X, Settings, UserPlus, Heart, MessageCircle, Share2, Download, Send, ListVideo, SkipForward, RotateCcw } from "lucide-react";
+import { Play, Info, ChevronLeft, ChevronRight, X, Settings, UserPlus, Heart, MessageCircle, Share2, Download, Send, ListVideo, SkipForward, RotateCcw, Eye } from "lucide-react";
 import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 import PageHeader from "@/components/PageHeader";
 import WavyBanner from "@/components/WavyBanner";
@@ -69,14 +69,21 @@ const saveProgress = (p: ProgressMap) => localStorage.setItem(PROGRESS_KEY, JSON
 
 /* ============ Estado social por vídeo (curtidas, seguidores, etc) ============ */
 const SOCIAL_KEY = "lemosplay:social";
-type SocialState = { liked: boolean; following: boolean; likes: number; comments: number; shares: number };
+type SocialState = { liked: boolean; following: boolean; views: number; likes: number; comments: number; shares: number };
 type SocialMap = Record<string, SocialState>;
 const loadSocial = (): SocialMap => { try { return JSON.parse(localStorage.getItem(SOCIAL_KEY) || "{}"); } catch { return {}; } };
 const saveSocial = (s: SocialMap) => localStorage.setItem(SOCIAL_KEY, JSON.stringify(s));
 const initialSocial = (id: string): SocialState => {
   // pseudo-random initial counts so cards look alive
   let h = 0; for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
-  return { liked: false, following: false, likes: 50 + (h % 9000), comments: 5 + (h % 400), shares: 1 + (h % 200) };
+  return {
+    liked: false,
+    following: false,
+    views: 1200 + (h % 988000),
+    likes: 50 + (h % 9000),
+    comments: 5 + (h % 400),
+    shares: 1 + (h % 200),
+  };
 };
 const fmt = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}k` : `${n}`);
 
@@ -108,27 +115,32 @@ function VideoSideActions({ itemId, title, src, className = "absolute top-1 righ
     window.open(`https://wa.me/?text=${text}`, "_blank");
   };
 
-  const Btn = ({ onClick, icon: Icon, label, active, color }: { onClick: (e: React.MouseEvent) => void; icon: typeof Heart; label: string; active?: boolean; color?: string }) => (
-    <span
-      role="button"
-      tabIndex={0}
-      onClick={onClick}
-      className="flex flex-col items-center gap-0.5 group/act cursor-pointer"
-      title={label}
-    >
-      <span className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/55 backdrop-blur flex items-center justify-center transition group-hover/act:bg-black/80 ${active ? color : "text-white"}`}>
-        <Icon className={`w-4 h-4 ${active ? "fill-current" : ""}`} />
+  const Btn = ({ onClick, icon: Icon, label, count, active, color }: { onClick?: (e: React.MouseEvent) => void; icon: typeof Heart; label: string; count?: string; active?: boolean; color?: string }) => {
+    const isInteractive = !!onClick;
+    return (
+      <span
+        role={isInteractive ? "button" : undefined}
+        tabIndex={isInteractive ? 0 : undefined}
+        onClick={onClick}
+        className={`flex flex-col items-center gap-0.5 group/act ${isInteractive ? "cursor-pointer" : ""}`}
+        title={label}
+      >
+        <span className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/55 backdrop-blur flex items-center justify-center transition ${isInteractive ? "group-hover/act:bg-black/80" : ""} ${active ? color : "text-white"}`}>
+          <Icon className={`w-4 h-4 ${active ? "fill-current" : ""}`} />
+        </span>
+        <span className="text-[9px] font-bold text-white drop-shadow text-center leading-none">{label}</span>
+        {count && <span className="text-[9px] font-bold text-white/80 drop-shadow text-center leading-none">{count}</span>}
       </span>
-      <span className="text-[9px] font-bold text-white drop-shadow text-center leading-none">{label}</span>
-    </span>
-  );
+    );
+  };
 
   return (
     <div className={`${className} z-20 flex flex-col gap-1.5 items-center`}>
+      <Btn icon={Eye} label="Visualizações" count={fmt(st.views)} />
       <Btn onClick={toggleFollow} icon={UserPlus} label={st.following ? "Seguindo" : "Seguir"} active={st.following} color="text-emerald-300" />
-      <Btn onClick={toggleLike} icon={Heart} label={fmt(st.likes)} active={st.liked} color="text-rose-400" />
-      <Btn onClick={onComment} icon={MessageCircle} label={fmt(st.comments)} />
-      <Btn onClick={onShare} icon={Share2} label={fmt(st.shares)} />
+      <Btn onClick={toggleLike} icon={Heart} label="Gostei" count={fmt(st.likes)} active={st.liked} color="text-rose-400" />
+      <Btn onClick={onComment} icon={MessageCircle} label="Comentar" count={fmt(st.comments)} />
+      <Btn onClick={onShare} icon={Share2} label="Compartilhar" count={fmt(st.shares)} />
       <Btn onClick={onDownload} icon={Download} label="Baixar" />
       <Btn onClick={onSendTo} icon={Send} label="Enviar" />
     </div>
