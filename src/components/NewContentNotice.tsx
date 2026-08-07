@@ -19,7 +19,12 @@ export default function NewContentNotice() {
       if (total === 0) return;
 
       sessionStorage.setItem("lemos_new_notice_shown", "1");
+      notifyNewContent(
+        [...novosVideos, ...novasMusicas],
+        novosVideos.length ? "/lemosplay" : "/louvores"
+      );
       const partes: string[] = [];
+
       if (novosVideos.length) partes.push(`${novosVideos.length} vídeo${novosVideos.length > 1 ? "s" : ""}`);
       if (novasMusicas.length) partes.push(`${novasMusicas.length} música${novasMusicas.length > 1 ? "s" : ""}`);
 
