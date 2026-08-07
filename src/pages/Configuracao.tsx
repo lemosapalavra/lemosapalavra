@@ -540,9 +540,12 @@ interface UserRow {
   createdAt: string;
   lastLogin: string;
   pagesTop: string;
+  visits: string;
+  lastSeen: string;
   status: string;
   source: string;
 }
+
 
 function AdminInteractionRow({
   user,
