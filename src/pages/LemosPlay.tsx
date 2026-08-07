@@ -115,7 +115,7 @@ function VideoSideActions({ itemId, title, src, className = "absolute top-1 righ
     window.open(`https://wa.me/?text=${text}`, "_blank");
   };
 
-  const Btn = ({ onClick, icon: Icon, label, active, color }: { onClick: (e: React.MouseEvent) => void; icon: typeof Heart; label: string; active?: boolean; color?: string }) => (
+  const Btn = ({ onClick, icon: Icon, label, count, active, color }: { onClick?: (e: React.MouseEvent) => void; icon: typeof Heart; label: string; count?: string; active?: boolean; color?: string }) => (
     <span
       role="button"
       tabIndex={0}
@@ -127,15 +127,17 @@ function VideoSideActions({ itemId, title, src, className = "absolute top-1 righ
         <Icon className={`w-4 h-4 ${active ? "fill-current" : ""}`} />
       </span>
       <span className="text-[9px] font-bold text-white drop-shadow text-center leading-none">{label}</span>
+      {count && <span className="text-[9px] font-bold text-white/80 drop-shadow text-center leading-none">{count}</span>}
     </span>
   );
 
   return (
     <div className={`${className} z-20 flex flex-col gap-1.5 items-center`}>
+      <Btn icon={Eye} label="Visualizações" count={fmt(st.views)} />
       <Btn onClick={toggleFollow} icon={UserPlus} label={st.following ? "Seguindo" : "Seguir"} active={st.following} color="text-emerald-300" />
-      <Btn onClick={toggleLike} icon={Heart} label={fmt(st.likes)} active={st.liked} color="text-rose-400" />
-      <Btn onClick={onComment} icon={MessageCircle} label={fmt(st.comments)} />
-      <Btn onClick={onShare} icon={Share2} label={fmt(st.shares)} />
+      <Btn onClick={toggleLike} icon={Heart} label="Gostei" count={fmt(st.likes)} active={st.liked} color="text-rose-400" />
+      <Btn onClick={onComment} icon={MessageCircle} label="Comentar" count={fmt(st.comments)} />
+      <Btn onClick={onShare} icon={Share2} label="Compartilhar" count={fmt(st.shares)} />
       <Btn onClick={onDownload} icon={Download} label="Baixar" />
       <Btn onClick={onSendTo} icon={Send} label="Enviar" />
     </div>
