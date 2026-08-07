@@ -688,8 +688,11 @@ function AdminInteractionRow({
     { key: "status", label: "Status" },
     { key: "createdAt", label: "Cadastro" },
     { key: "lastLogin", label: "Último acesso" },
+    { key: "visits", label: "Visitas" },
+    { key: "lastSeen", label: "Última atuação" },
     { key: "pagesTop", label: "Páginas mais visitadas" },
     { key: "source", label: "Origem / IP" },
+
   ];
 
   return (
