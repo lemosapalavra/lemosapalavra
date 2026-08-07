@@ -24,7 +24,34 @@ function saveAll(all: Record<string, Store>) {
 }
 
 /**
- * Coluna de interações à direita do vídeo: Gostei, Comentar e Compartilhar.
+ * Gera números fictícios determinísticos (visualizações, curtidas,
+ * comentários e compartilhamentos) para dar credibilidade aos vídeos.
+ * O mesmo vídeo sempre exibe os mesmos valores.
+ */
+function getFakeCounts(videoId: string) {
+  let hash = 0;
+  for (let i = 0; i < videoId.length; i++) {
+    hash = (hash << 5) - hash + videoId.charCodeAt(i);
+    hash |= 0;
+  }
+  const abs = Math.abs(hash);
+
+  const views = 1200 + (abs % 988000); // 1.2K a ~1M
+  const likes = Math.floor(views * (0.02 + (abs % 80) / 1000)); // 2% a 10%
+  const comments = Math.floor(views * (0.003 + (abs % 60) / 10000)); // 0.3% a 0.9%
+  const shares = Math.floor(views * (0.001 + (abs % 40) / 10000)); // 0.1% a 0.5%
+
+  return { views, likes, comments, shares };
+}
+
+function formatCount(n: number): string {
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
+  if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
+  return n.toString();
+}
+
+/**
+ * Coluna de interações à direita do vídeo: Visualizações, Gostei, Comentar e Compartilhar.
  * Pode ser desligada pelo admin em Configurações.
  */
 export default function VideoSideActions({ videoId, className = "" }: Props) {
@@ -32,6 +59,10 @@ export default function VideoSideActions({ videoId, className = "" }: Props) {
   const [state, setState] = useState<Store>({ liked: false, following: false, comments: [] });
   const [openComments, setOpenComments] = useState(false);
   const [draft, setDraft] = useState("");
+
+  const fakeCounts = useMemo(() => getFakeCounts(videoId), [videoId]);
+  const displayLikes = fakeCounts.likes + (state.liked ? 1 : 0);
+  const displayComments = fakeCounts.comments + state.comments.length;
 
   useEffect(() => {
     const h = () => setEnabled(loadVideoInteractionsCfg().enabled);
