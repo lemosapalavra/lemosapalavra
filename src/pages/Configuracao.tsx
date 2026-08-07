@@ -577,6 +577,27 @@ function AdminInteractionRow({
       setLoading(true);
       const collected: UserRow[] = [];
 
+      // Atuação dos usuários (páginas visitadas registradas no backend)
+      const act = new Map<string, { total: number; pages: Record<string, number>; last: string }>();
+      try {
+        const { data: ev } = await supabase
+          .from("page_analytics")
+          .select("user_id, user_email, page, visited_at")
+          .order("visited_at", { ascending: false })
+          .limit(5000);
+        (ev || []).forEach((e: any) => {
+          const key = (e.user_email || e.user_id || "").toLowerCase();
+          if (!key) return;
+          const cur = act.get(key) || { total: 0, pages: {}, last: e.visited_at };
+          cur.total += 1;
+          cur.pages[e.page] = (cur.pages[e.page] || 0) + 1;
+          act.set(key, cur);
+        });
+      } catch {}
+
+      const actFor = (email?: string, id?: string) =>
+        act.get((email || "").toLowerCase()) || act.get((id || "").toLowerCase());
+
       // Backend profiles
       try {
         const { data } = await supabase
@@ -584,7 +605,8 @@ function AdminInteractionRow({
           .select("id, name, email, role, phone, age_range, created_at, updated_at")
           .order("created_at", { ascending: false });
         if (data) {
-          data.forEach((p: any) =>
+          data.forEach((p: any) => {
+            const a = actFor(p.email, p.id);
             collected.push({
               id: p.id,
               name: p.name || "—",
@@ -594,16 +616,19 @@ function AdminInteractionRow({
               ageRange: p.age_range || "—",
               createdAt: p.created_at ? new Date(p.created_at).toLocaleString("pt-BR") : "—",
               lastLogin: p.updated_at ? new Date(p.updated_at).toLocaleString("pt-BR") : "—",
-              pagesTop: "—",
-              status: "🟢 Ativo",
+              pagesTop: a ? topPages(a.pages) : "—",
+              visits: a ? String(a.total) : "0",
+              lastSeen: a?.last ? new Date(a.last).toLocaleString("pt-BR") : "—",
+              status: a && a.total > 0 ? "🟢 Ativo" : "⚪ Sem atividade",
               source: "Backend",
-            })
-          );
+            });
+          });
         }
       } catch {}
 
       // Current device user (may overlap; keep as "Este dispositivo")
       if (user) {
+        const a = actFor(user.email, user.id);
         collected.push({
           id: user.id || "local",
           name: user.name || "—",
@@ -613,11 +638,14 @@ function AdminInteractionRow({
           ageRange: user.ageRange || "—",
           createdAt: user.createdAt ? new Date(user.createdAt).toLocaleString("pt-BR") : "—",
           lastLogin: lastVisit || new Date().toLocaleString("pt-BR"),
-          pagesTop: topPages(pagesVisited),
+          pagesTop: a ? topPages(a.pages) : topPages(pagesVisited),
+          visits: a ? String(a.total) : String(Object.values(pagesVisited || {}).reduce((s: number, n: any) => s + Number(n || 0), 0)),
+          lastSeen: a?.last ? new Date(a.last).toLocaleString("pt-BR") : lastVisit || "—",
           status: "🟢 Ativo agora",
           source: `Este dispositivo · ${ip}`,
         });
       }
+
 
       // Dedup by email (backend wins, but merge local pages/ip)
       const map = new Map<string, UserRow>();
