@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { lemosPlayTitles, louvoresTitles } from "@/data/contentIndex";
 import { getNewTitles, markSeen } from "@/lib/newContent";
+import { notifyNewContent } from "@/lib/pushNotify";
+
 
 /**
  * Avisa o usuário, uma vez por sessão, quando novos vídeos (Lemos Play) ou
