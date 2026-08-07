@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Heart, MessageCircle, Share2, Send, X } from "lucide-react";
+import { useEffect, useState, useMemo } from "react";
+import { Heart, MessageCircle, Share2, Send, X, Eye } from "lucide-react";
 import { shareSite } from "@/components/ShareButton";
 import {
   loadVideoInteractionsCfg,
