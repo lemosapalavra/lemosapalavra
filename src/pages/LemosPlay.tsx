@@ -115,21 +115,24 @@ function VideoSideActions({ itemId, title, src, className = "absolute top-1 righ
     window.open(`https://wa.me/?text=${text}`, "_blank");
   };
 
-  const Btn = ({ onClick, icon: Icon, label, count, active, color }: { onClick?: (e: React.MouseEvent) => void; icon: typeof Heart; label: string; count?: string; active?: boolean; color?: string }) => (
-    <span
-      role="button"
-      tabIndex={0}
-      onClick={onClick}
-      className="flex flex-col items-center gap-0.5 group/act cursor-pointer"
-      title={label}
-    >
-      <span className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/55 backdrop-blur flex items-center justify-center transition group-hover/act:bg-black/80 ${active ? color : "text-white"}`}>
-        <Icon className={`w-4 h-4 ${active ? "fill-current" : ""}`} />
+  const Btn = ({ onClick, icon: Icon, label, count, active, color }: { onClick?: (e: React.MouseEvent) => void; icon: typeof Heart; label: string; count?: string; active?: boolean; color?: string }) => {
+    const isInteractive = !!onClick;
+    return (
+      <span
+        role={isInteractive ? "button" : undefined}
+        tabIndex={isInteractive ? 0 : undefined}
+        onClick={onClick}
+        className={`flex flex-col items-center gap-0.5 group/act ${isInteractive ? "cursor-pointer" : ""}`}
+        title={label}
+      >
+        <span className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/55 backdrop-blur flex items-center justify-center transition ${isInteractive ? "group-hover/act:bg-black/80" : ""} ${active ? color : "text-white"}`}>
+          <Icon className={`w-4 h-4 ${active ? "fill-current" : ""}`} />
+        </span>
+        <span className="text-[9px] font-bold text-white drop-shadow text-center leading-none">{label}</span>
+        {count && <span className="text-[9px] font-bold text-white/80 drop-shadow text-center leading-none">{count}</span>}
       </span>
-      <span className="text-[9px] font-bold text-white drop-shadow text-center leading-none">{label}</span>
-      {count && <span className="text-[9px] font-bold text-white/80 drop-shadow text-center leading-none">{count}</span>}
-    </span>
-  );
+    );
+  };
 
   return (
     <div className={`${className} z-20 flex flex-col gap-1.5 items-center`}>
