@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { lemosPlayTitles, louvoresTitles } from "@/data/contentIndex";
 import { getNewTitles, markSeen } from "@/lib/newContent";
+import { notifyNewContent } from "@/lib/pushNotify";
+
 
 /**
  * Avisa o usuário, uma vez por sessão, quando novos vídeos (Lemos Play) ou
@@ -17,7 +19,12 @@ export default function NewContentNotice() {
       if (total === 0) return;
 
       sessionStorage.setItem("lemos_new_notice_shown", "1");
+      notifyNewContent(
+        [...novosVideos, ...novasMusicas],
+        novosVideos.length ? "/lemosplay" : "/louvores"
+      );
       const partes: string[] = [];
+
       if (novosVideos.length) partes.push(`${novosVideos.length} vídeo${novosVideos.length > 1 ? "s" : ""}`);
       if (novasMusicas.length) partes.push(`${novasMusicas.length} música${novasMusicas.length > 1 ? "s" : ""}`);
 

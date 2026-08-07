@@ -8,6 +8,7 @@ import IndexAdminPanel from "@/components/IndexAdminPanel";
 import EventBannerPlane from "@/components/EventBannerPlane";
 import InstallShortcut from "@/components/InstallShortcut";
 import NewVideosBadge from "@/components/NewVideosBadge";
+import NotifyOptIn from "@/components/NotifyOptIn";
 import IndexV2 from "@/pages/IndexV2";
 import { loadSiteVersion, SITE_VERSION_EVENT } from "@/data/siteVersion";
 
@@ -166,10 +167,10 @@ function IndexV1() {
           />
 
           <div className="mt-6 flex justify-center">
-            <NewVideosBadge />
+            <div className="flex flex-col items-center gap-2"><NewVideosBadge /><NotifyOptIn /></div>
           </div>
 
-          <div className="mt-16 sm:mt-20 flex items-end justify-center gap-6 sm:gap-10">
+          <div className="mt-16 sm:mt-20 flex flex-col items-center gap-6">
             <InstallShortcut compact />
             <button
               onClick={() => setDedicatoriaOpen(true)}
@@ -180,6 +181,7 @@ function IndexV1() {
               <img loading="lazy" decoding="async" src={iconDedicatoria} alt="Ver dedicatória" className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl" />
             </button>
           </div>
+
         </div>
       </main>
 
