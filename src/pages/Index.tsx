@@ -169,7 +169,7 @@ function IndexV1() {
             <NewVideosBadge />
           </div>
 
-          <div className="mt-16 sm:mt-20 flex items-end justify-center gap-6 sm:gap-10">
+          <div className="mt-16 sm:mt-20 flex flex-col items-center gap-6">
             <InstallShortcut compact />
             <button
               onClick={() => setDedicatoriaOpen(true)}
@@ -180,6 +180,7 @@ function IndexV1() {
               <img loading="lazy" decoding="async" src={iconDedicatoria} alt="Ver dedicatória" className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl" />
             </button>
           </div>
+
         </div>
       </main>
 
