@@ -5,6 +5,7 @@ import FeedbackFooter from "@/components/FeedbackFooter";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import InstallShortcut from "@/components/InstallShortcut";
 import NewVideosBadge from "@/components/NewVideosBadge";
+import NotifyOptIn from "@/components/NotifyOptIn";
 import { useCoins } from "@/hooks/useCoins";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 
@@ -222,7 +223,7 @@ export default function IndexV2() {
         </section>
 
         <div className="flex justify-center pb-4">
-          <NewVideosBadge />
+          <div className="flex flex-col items-center gap-2"><NewVideosBadge /><NotifyOptIn /></div>
         </div>
 
         <div className="flex items-end justify-center gap-6 pb-6">
