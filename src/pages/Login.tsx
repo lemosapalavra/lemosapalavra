@@ -227,6 +227,14 @@ export default function Login() {
       return;
     }
     setPhoneError(null);
+    if (!phoneVerified) {
+      toast({
+        title: "Confirme seu celular",
+        description: "Clique em \"Enviar código pelo WhatsApp\" e digite o código recebido.",
+        variant: "destructive",
+      });
+      return;
+    }
     if (!password || password.length < 6) {
       alert("Informe uma senha com pelo menos 6 caracteres.");
       return;
@@ -398,6 +406,44 @@ export default function Login() {
                   />
                   {phoneError && <p className="mt-1 text-xs font-body text-destructive">{phoneError}</p>}
                 </Field>
+
+                {/* Verificação em 2 etapas pelo WhatsApp */}
+                <div className="rounded-xl border-2 border-green-300 bg-green-50 p-3">
+                  {phoneVerified ? (
+                    <p className="font-display font-bold text-sm text-green-800">✅ Celular confirmado</p>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        onClick={sendWhatsappCode}
+                        className="w-full rounded-full bg-green-600 hover:bg-green-700 text-white font-display font-bold text-xs py-2 shadow"
+                      >
+                        {verifySent ? "Reenviar código pelo WhatsApp" : "Enviar código pelo WhatsApp"}
+                      </button>
+                      {verifySent && (
+                        <div className="mt-2 flex gap-2">
+                          <input
+                            type="text"
+                            value={verifyInput}
+                            onChange={(e) => setVerifyInput(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                            placeholder="Código de 6 dígitos"
+                            inputMode="numeric"
+                            maxLength={6}
+                            className="flex-1 bg-white border border-green-300 rounded-lg px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-green-400"
+                          />
+                          <button
+                            type="button"
+                            onClick={confirmWhatsappCode}
+                            className="px-4 rounded-lg bg-green-700 hover:bg-green-800 text-white font-display font-bold text-xs"
+                          >
+                            Confirmar
+                          </button>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+
 
               </>
             )}
