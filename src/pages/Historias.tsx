@@ -114,7 +114,7 @@ export default function Historias() {
     : folders.map((f) => ({ title: f.title, icon: f.icon, onClick: () => setOpenFolder(f) }));
 
   return (
-    <div className="min-h-screen py-4 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
+    <div className="min-h-screen py-4 px-4" style={{ background: "transparent" }}>
       <div className="max-w-4xl mx-auto">
         <PageHeader
           title={openFolder ? openFolder.title : "Histórias Bíblicas"}

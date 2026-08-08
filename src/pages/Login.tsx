@@ -32,7 +32,15 @@ const AGE_RANGES: { id: AgeRange; label: string; emoji: string }[] = [
   { id: "adultos",       label: "Adultos (25 e mais)",      emoji: "🧔" },
 ];
 
-const OWNER_FLAG_KEY = "lemos_owner_unlocked";
+import { useIpLocation } from "@/hooks/useIpLocation";
+import {
+  OWNER_FLAG_KEY,
+  ownerDeviceUnlocked,
+  getOwnerIp,
+  setOwnerIp,
+  ipMatchesOwner,
+  clearOwnerAccess,
+} from "@/data/ownerAccess";
 
 // Hydrate the legacy localStorage profile object that the rest of the
 // app already reads from (`lemos_user`) using the Supabase profile row.
@@ -102,8 +110,10 @@ export default function Login() {
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const [customAvatar, setCustomAvatar] = useState<string>("");
 
-  // Owner-only UI (Admin shortcut) — hidden unless unlocked with ?owner=1.
-  const [ownerUnlocked, setOwnerUnlocked] = useState<boolean>(false);
+  // Owner-only UI (Admin shortcut) — visível apenas neste aparelho (?owner=1)
+  // E somente quando o IP atual for o mesmo IP do dono registrado.
+  const { ip } = useIpLocation();
+  const [ownerDevice, setOwnerDevice] = useState<boolean>(false);
   useEffect(() => {
     try {
       const params = new URLSearchParams(window.location.search);
@@ -111,11 +121,17 @@ export default function Login() {
         localStorage.setItem(OWNER_FLAG_KEY, "1");
       }
       if (params.get("owner") === "0") {
-        localStorage.removeItem(OWNER_FLAG_KEY);
+        clearOwnerAccess();
       }
-      setOwnerUnlocked(localStorage.getItem(OWNER_FLAG_KEY) === "1");
+      setOwnerDevice(ownerDeviceUnlocked());
     } catch { /* ignore */ }
   }, []);
+  useEffect(() => {
+    // Registra o IP do dono no primeiro desbloqueio deste aparelho.
+    if (ownerDevice && !getOwnerIp()) setOwnerIp(ip);
+  }, [ownerDevice, ip]);
+  const ownerUnlocked = ownerDevice && ipMatchesOwner(ip);
+
 
   const shortcutUrl = typeof window !== "undefined" ? `${window.location.origin}/` : "";
 
@@ -277,7 +293,7 @@ export default function Login() {
   return (
     <div
       className="min-h-screen flex items-center justify-center py-8 px-4"
-      style={{ background: "linear-gradient(180deg, hsl(36, 60%, 96%), hsl(45, 80%, 92%))" }}
+      style={{ background: "transparent" }}
     >
       <div className="w-full max-w-md">
         <div className="bg-[hsl(36,60%,97%)] border border-amber-200/80 rounded-3xl shadow-2xl p-6 sm:p-8">
@@ -302,7 +318,7 @@ export default function Login() {
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    className="w-full bg-white border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
                     placeholder="Seu nome"
                   />
                 </Field>
@@ -329,7 +345,7 @@ export default function Login() {
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value.replace(/\s+/g, ""))}
-                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    className="w-full bg-white border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
                     placeholder="ex.: joao123"
                     autoComplete="username"
                     required
@@ -346,7 +362,7 @@ export default function Login() {
                       setPhoneError(v ? validatePhone(v) : null);
                     }}
                     onBlur={() => setPhoneError(validatePhone(phone))}
-                    className={`w-full bg-sky-50 border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 ${phoneError ? "border-destructive focus:ring-destructive" : "border-amber-300/60 focus:ring-amber-400"}`}
+                    className={`w-full bg-white border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 ${phoneError ? "border-destructive focus:ring-destructive" : "border-amber-300/60 focus:ring-amber-400"}`}
                     placeholder="(11) 99999-9999"
                     inputMode="numeric"
                     maxLength={15}
@@ -365,7 +381,7 @@ export default function Login() {
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    className="w-full bg-white border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
                     placeholder="Seu nome"
                     autoComplete="name"
                   />
@@ -380,7 +396,7 @@ export default function Login() {
                       setPhoneError(v && !v.includes("@") ? validatePhone(v) : null);
                     }}
                     onBlur={() => setPhoneError(email && !email.includes("@") ? validatePhone(email) : null)}
-                    className={`w-full bg-sky-50 border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 ${phoneError ? "border-destructive focus:ring-destructive" : "border-amber-300/60 focus:ring-amber-400"}`}
+                    className={`w-full bg-white border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 ${phoneError ? "border-destructive focus:ring-destructive" : "border-amber-300/60 focus:ring-amber-400"}`}
                     placeholder="(11) 99999-9999"
                     autoComplete="tel"
                     inputMode="tel"

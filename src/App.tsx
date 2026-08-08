@@ -12,6 +12,7 @@ import NewContentNotice from "@/components/NewContentNotice";
 import Index from "./pages/Index.tsx";
 import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
 import { supabase } from "@/integrations/supabase/client";
+import { needsGlobalLogout, markGlobalLogoutDone, clearLocalSession } from "@/lib/sessionReset";
 
 const Login = lazy(() => import("./pages/Login.tsx"));
 const Biblia = lazy(() => import("./pages/Biblia.tsx"));
@@ -88,6 +89,15 @@ const AuthBootstrap = () => {
   // devices and reloads instead of having to re-register every time.
   useEffect(() => {
     let cancelled = false;
+    // Reinício global: desloga todo mundo uma única vez quando a "época"
+    // de sessão muda (ver src/lib/sessionReset.ts).
+    if (needsGlobalLogout()) {
+      markGlobalLogoutDone();
+      clearLocalSession();
+      supabase.auth.signOut().catch(() => {});
+      window.dispatchEvent(new Event("lemos_admin_change"));
+    }
+
     const hydrate = async (userId: string, email: string | null) => {
       const { data: profile } = await supabase
         .from("profiles")

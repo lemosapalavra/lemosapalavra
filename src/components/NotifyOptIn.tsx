@@ -24,7 +24,7 @@ export default function NotifyOptIn() {
     setOn(ok);
     toast(
       ok
-        ? "🔔 Pronto! Avisaremos no seu celular quando houver vídeos novos."
+        ? "🔔 Pronto! Você será avisado quando houver vídeos novos."
         : "Não foi possível ativar. Permita notificações nas configurações do navegador."
     );
   };
@@ -32,12 +32,17 @@ export default function NotifyOptIn() {
   return (
     <button
       onClick={toggle}
-      className="mx-auto mt-2 flex items-center gap-2 rounded-full border-2 border-amber-300 bg-amber-50 px-4 py-1.5 shadow hover:scale-105 active:scale-95 transition"
+      className={`mx-auto mt-2 flex items-center gap-2 rounded-full border-2 px-4 py-1.5 shadow hover:scale-105 active:scale-95 transition ${
+        on
+          ? "bg-green-600 border-green-700 text-white"
+          : "bg-amber-50 border-amber-300 text-amber-900"
+      }`}
       title="Receber aviso no celular quando houver vídeos novos"
+      aria-pressed={on}
     >
       <span className="text-base leading-none">{on ? "🔔" : "🔕"}</span>
-      <span className="font-display font-bold text-xs text-amber-900">
-        {on ? "Avisos no celular ativados" : "Quero ser avisado de vídeos novos"}
+      <span className="font-display font-bold text-xs">
+        {on ? "Você será avisado de vídeos novos" : "Quero ser avisado de vídeos novos"}
       </span>
     </button>
   );

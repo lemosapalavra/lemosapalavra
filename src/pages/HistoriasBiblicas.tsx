@@ -133,7 +133,7 @@ export default function HistoriasBiblicas() {
 
       <div
         className="min-h-screen py-4 px-4"
-        style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}
+        style={{ background: "transparent" }}
       >
         <div className="max-w-3xl mx-auto">
           <PageHeader
