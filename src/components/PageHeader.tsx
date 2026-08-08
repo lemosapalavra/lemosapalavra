@@ -72,24 +72,11 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
           </button>
         )}
 
-        {/* Center: title */}
-        <div className="flex-1 min-w-0 flex items-center justify-center text-center px-2">
-          <div className="min-w-0">
-            {title && (
-              isLemosPlay ? (
-                <h1 className="font-display font-extrabold text-base sm:text-lg md:text-2xl leading-tight truncate text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)] animate-[titleGlow_2.6s_ease-in-out_infinite]">
-                  {title}
-                </h1>
-              ) : (
-                <h1 className="font-display font-extrabold text-base sm:text-lg md:text-2xl leading-tight truncate bg-clip-text text-transparent bg-gradient-to-r from-amber-600 via-orange-600 to-rose-600 drop-shadow-[0_2px_6px_rgba(180,90,0,0.25)] animate-[titleGlow_2.6s_ease-in-out_infinite]">
-                  {title}
-                </h1>
-              )
-            )}
-            {subtitle && (
-              <p className={`font-body text-[10px] sm:text-xs leading-tight truncate ${isLemosPlay ? "text-white/80" : "text-amber-900/80"}`}>{subtitle}</p>
-            )}
-          </div>
+        {/* Centro: título apenas para leitores de tela/SEO — o texto visível
+            de cada página fica na faixa (WavyBanner), evitando repetição. */}
+        <div className="flex-1 min-w-0">
+          {title && <h1 className="sr-only">{title}</h1>}
+          {subtitle && <p className="sr-only">{subtitle}</p>}
         </div>
 
         {/* Right: coins + user */}
@@ -130,18 +117,7 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
         </div>
       </div>
 
-      {/* Coin reminder */}
-      {isLemosPlay ? (
-        <div className="px-3 text-center text-[11px] sm:text-xs font-display font-bold text-white/90 drop-shadow">
-          🪙 Ganhe moedas completando atividades e assistindo aos vídeos!
-        </div>
-      ) : (
-        <div className="px-3">
-          <div className="mx-auto max-w-3xl text-center text-[10px] sm:text-xs font-display font-bold text-amber-900/90 bg-gradient-to-r from-amber-100/80 via-yellow-100/80 to-amber-100/80 rounded-full px-3 py-1 border border-amber-300/70 shadow-sm">
-            🪙 Ganhe moedas completando atividades e assistindo aos vídeos!
-          </div>
-        </div>
-      )}
+      {/* Lembrete de moedas removido: a mensagem já aparece nas faixas de cada página. */}
 
       <style>{`
         @keyframes titleGlow {
