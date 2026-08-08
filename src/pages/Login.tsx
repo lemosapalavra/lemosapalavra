@@ -32,7 +32,15 @@ const AGE_RANGES: { id: AgeRange; label: string; emoji: string }[] = [
   { id: "adultos",       label: "Adultos (25 e mais)",      emoji: "🧔" },
 ];
 
-const OWNER_FLAG_KEY = "lemos_owner_unlocked";
+import { useIpLocation } from "@/hooks/useIpLocation";
+import {
+  OWNER_FLAG_KEY,
+  ownerDeviceUnlocked,
+  getOwnerIp,
+  setOwnerIp,
+  ipMatchesOwner,
+  clearOwnerAccess,
+} from "@/data/ownerAccess";
 
 // Hydrate the legacy localStorage profile object that the rest of the
 // app already reads from (`lemos_user`) using the Supabase profile row.
