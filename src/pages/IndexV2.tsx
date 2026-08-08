@@ -222,9 +222,11 @@ export default function IndexV2() {
           </div>
         </section>
 
-        <div className="flex justify-center pb-4">
-          <div className="flex flex-col items-center gap-2"><NewVideosBadge /><NotifyOptIn /></div>
-        </div>
+        {user && (
+          <div className="flex justify-center pb-4">
+            <div className="flex flex-col items-center gap-2"><NewVideosBadge /><NotifyOptIn /></div>
+          </div>
+        )}
 
         <div className="flex items-end justify-center gap-6 pb-6">
           <InstallShortcut compact />
