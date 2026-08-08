@@ -110,6 +110,34 @@ export default function Login() {
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const [customAvatar, setCustomAvatar] = useState<string>("");
 
+  // Verificação do celular em 2 etapas (código enviado pelo WhatsApp)
+  const [verifyCode, setVerifyCode] = useState("");
+  const [verifyInput, setVerifyInput] = useState("");
+  const [verifySent, setVerifySent] = useState(false);
+  const [phoneVerified, setPhoneVerified] = useState(false);
+
+  const sendWhatsappCode = () => {
+    const err = validatePhone(phone);
+    if (err) { setPhoneError(err); toast({ title: "Celular inválido", description: err, variant: "destructive" }); return; }
+    const code = String(Math.floor(100000 + Math.random() * 900000));
+    setVerifyCode(code);
+    setVerifySent(true);
+    setVerifyInput("");
+    const digits = phone.replace(/\D/g, "");
+    const msg = encodeURIComponent(`Lemos a Palavra — seu código de verificação é ${code}. Digite-o no site para confirmar seu celular.`);
+    window.open(`https://wa.me/55${digits}?text=${msg}`, "_blank", "noopener,noreferrer");
+    toast({ title: "Código enviado pelo WhatsApp 📲", description: "Abra o WhatsApp, veja o código e digite-o aqui." });
+  };
+
+  const confirmWhatsappCode = () => {
+    if (verifyInput.replace(/\D/g, "") === verifyCode) {
+      setPhoneVerified(true);
+      toast({ title: "Celular confirmado ✅", description: "Agora é só criar sua conta." });
+    } else {
+      toast({ title: "Código incorreto", description: "Confira o código recebido no WhatsApp.", variant: "destructive" });
+    }
+  };
+
   // Owner-only UI (Admin shortcut) — visível apenas neste aparelho (?owner=1)
   // E somente quando o IP atual for o mesmo IP do dono registrado.
   const { ip } = useIpLocation();
@@ -199,6 +227,14 @@ export default function Login() {
       return;
     }
     setPhoneError(null);
+    if (!phoneVerified) {
+      toast({
+        title: "Confirme seu celular",
+        description: "Clique em \"Enviar código pelo WhatsApp\" e digite o código recebido.",
+        variant: "destructive",
+      });
+      return;
+    }
     if (!password || password.length < 6) {
       alert("Informe uma senha com pelo menos 6 caracteres.");
       return;
@@ -370,6 +406,44 @@ export default function Login() {
                   />
                   {phoneError && <p className="mt-1 text-xs font-body text-destructive">{phoneError}</p>}
                 </Field>
+
+                {/* Verificação em 2 etapas pelo WhatsApp */}
+                <div className="rounded-xl border-2 border-green-300 bg-green-50 p-3">
+                  {phoneVerified ? (
+                    <p className="font-display font-bold text-sm text-green-800">✅ Celular confirmado</p>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        onClick={sendWhatsappCode}
+                        className="w-full rounded-full bg-green-600 hover:bg-green-700 text-white font-display font-bold text-xs py-2 shadow"
+                      >
+                        {verifySent ? "Reenviar código pelo WhatsApp" : "Enviar código pelo WhatsApp"}
+                      </button>
+                      {verifySent && (
+                        <div className="mt-2 flex gap-2">
+                          <input
+                            type="text"
+                            value={verifyInput}
+                            onChange={(e) => setVerifyInput(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                            placeholder="Código de 6 dígitos"
+                            inputMode="numeric"
+                            maxLength={6}
+                            className="flex-1 bg-white border border-green-300 rounded-lg px-3 py-2 text-sm font-body focus:outline-none focus:ring-2 focus:ring-green-400"
+                          />
+                          <button
+                            type="button"
+                            onClick={confirmWhatsappCode}
+                            className="px-4 rounded-lg bg-green-700 hover:bg-green-800 text-white font-display font-bold text-xs"
+                          >
+                            Confirmar
+                          </button>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+
 
               </>
             )}
