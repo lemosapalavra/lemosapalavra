@@ -102,8 +102,10 @@ export default function Login() {
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const [customAvatar, setCustomAvatar] = useState<string>("");
 
-  // Owner-only UI (Admin shortcut) — hidden unless unlocked with ?owner=1.
-  const [ownerUnlocked, setOwnerUnlocked] = useState<boolean>(false);
+  // Owner-only UI (Admin shortcut) — visível apenas neste aparelho (?owner=1)
+  // E somente quando o IP atual for o mesmo IP do dono registrado.
+  const { ip } = useIpLocation();
+  const [ownerDevice, setOwnerDevice] = useState<boolean>(false);
   useEffect(() => {
     try {
       const params = new URLSearchParams(window.location.search);
@@ -111,11 +113,17 @@ export default function Login() {
         localStorage.setItem(OWNER_FLAG_KEY, "1");
       }
       if (params.get("owner") === "0") {
-        localStorage.removeItem(OWNER_FLAG_KEY);
+        clearOwnerAccess();
       }
-      setOwnerUnlocked(localStorage.getItem(OWNER_FLAG_KEY) === "1");
+      setOwnerDevice(ownerDeviceUnlocked());
     } catch { /* ignore */ }
   }, []);
+  useEffect(() => {
+    // Registra o IP do dono no primeiro desbloqueio deste aparelho.
+    if (ownerDevice && !getOwnerIp()) setOwnerIp(ip);
+  }, [ownerDevice, ip]);
+  const ownerUnlocked = ownerDevice && ipMatchesOwner(ip);
+
 
   const shortcutUrl = typeof window !== "undefined" ? `${window.location.origin}/` : "";
 
