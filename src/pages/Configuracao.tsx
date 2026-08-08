@@ -11,6 +11,44 @@ import { supabase } from "@/integrations/supabase/client";
 import { loadWhatsappCfg, saveWhatsappCfg } from "@/components/FloatingWhatsapp";
 import { loadSocialCfg, saveSocialCfg } from "@/components/FeedbackFooter";
 import { loadSiteVersion, saveSiteVersion } from "@/data/siteVersion";
+import { getOwnerIp, setOwnerIp, clearOwnerAccess, ownerDeviceUnlocked, ipMatchesOwner, OWNER_FLAG_KEY } from "@/data/ownerAccess";
+
+/** Painel do dono: vincula o acesso de administrador a este aparelho + IP. */
+function OwnerAccessCard() {
+  const { ip } = useIpLocation();
+  const [ownerIp, setOwnerIpState] = useState<string | null>(getOwnerIp());
+  const device = ownerDeviceUnlocked();
+  const matches = ipMatchesOwner(ip);
+
+  return (
+    <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
+      <h3 className="font-display text-lg font-bold text-foreground mb-3">🛡️ Acesso do Administrador</h3>
+      <div className="space-y-1.5 font-body text-sm text-foreground">
+        <p><strong>Este aparelho autorizado:</strong> {device ? "sim ✅" : "não"}</p>
+        <p><strong>IP autorizado:</strong> {ownerIp || "nenhum registrado"}</p>
+        <p><strong>IP atual:</strong> {ip}</p>
+        <p><strong>Situação:</strong> {device && matches ? "acesso liberado ✅" : "acesso oculto 🔒"}</p>
+      </div>
+      <div className="flex flex-wrap gap-2 mt-4">
+        <button
+          onClick={() => { try { localStorage.setItem(OWNER_FLAG_KEY, "1"); } catch {} setOwnerIp(ip); setOwnerIpState(ip); }}
+          className="px-4 py-2 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-display font-bold text-xs shadow"
+        >
+          Autorizar este IP
+        </button>
+        <button
+          onClick={() => { clearOwnerAccess(); setOwnerIpState(null); }}
+          className="px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-display font-bold text-xs shadow"
+        >
+          Revogar acesso deste aparelho
+        </button>
+      </div>
+      <p className="mt-3 font-body text-xs text-muted-foreground">
+        O botão "Entrar como Administrador" na tela de login só aparece neste aparelho e somente quando o IP atual for o IP autorizado.
+      </p>
+    </div>
+  );
+}
 
 
 export default function Configuracao() {
@@ -154,6 +192,10 @@ export default function Configuracao() {
             <IpLocationLines />
           </div>
         </div>
+
+        <OwnerAccessCard />
+
+
 
         {/* Page Visit Stats */}
         {Object.keys(stats.pagesVisited).length > 0 && (
