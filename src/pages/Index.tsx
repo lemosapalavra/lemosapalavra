@@ -166,9 +166,11 @@ function IndexV1() {
             onItemClick={handleItemClick}
           />
 
-          <div className="mt-6 flex justify-center">
-            <div className="flex flex-col items-center gap-2"><NewVideosBadge /><NotifyOptIn /></div>
-          </div>
+          {user && (
+            <div className="mt-6 flex justify-center">
+              <div className="flex flex-col items-center gap-2"><NewVideosBadge /><NotifyOptIn /></div>
+            </div>
+          )}
 
           <div className="mt-16 sm:mt-20 flex flex-col items-center gap-6">
             <InstallShortcut compact />
