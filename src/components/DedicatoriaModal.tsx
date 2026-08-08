@@ -9,31 +9,27 @@ import { DEDICATORIA_COINS } from "@/data/coinRewards";
 const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   {
     aramaic: "ܗܢܐ ܥܒܕܐ ܐܬܝܠܕ ܡܢ ܣܘܟܝܐ ܫܪܝܪܐ ܕܢܚܘܐ ܚ̈ܝܐ ܘܝܘ̈ܠܦܢܐ ܕܝܫܘܥ",
-    pt: "Esta obra nasce do sincero desejo de apresentar a vida e aos ensinamentos daquele que é o Caminho, a Verdade e a Vida, o mesmo ontem, de hoje e de sempre: nosso **Senhor Jesus Cristo**.",
+    pt: "Esta obra nasce do desejo sincero de apresentar a vida e os ensinamentos de **Jesus Cristo**, o Caminho, a Verdade e a Vida.",
   },
   {
     aramaic: "ܡܩܪܒ ܐܢܐ ܗܢܐ ܥܒܕܐ ܠܐܠܗܐ ܐܚܝܕ ܟܠ ܘܠܝܫܘܥ ܡܫܝܚܐ ܡܪܝ ܘܦܪܘܩܝ",
-    pt: "Dedico esta obra a **Deus Todo-Poderoso** e a **Jesus Cristo**, meu Senhor e Salvador, cuja graça, misericórdia e amor têm sustentado minha vida.",
+    pt: "Dedico-a a **Deus Todo-Poderoso** e a **Jesus Cristo**, meu Senhor e Salvador, cuja graça, misericórdia e amor têm sustentado minha vida.",
   },
   {
     aramaic: "ܒܪܡ ܐܠܗܐ ܒܪ̈ܚܡܘܗܝ ܟܬܒ ܠܝ ܩܦܠܐܘܢ ܚܕܬܐ",
-    pt: "Após sobreviver a cinco AVCs, aos olhos humanos, minha história já poderia ter chegado ao fim.\n\n**Mas Deus, em Sua Suprema misericórdia, escreveu um novo capítulo**, transformou minha vida em um testemunho vivo de Sua fidelidade, de Seu amor e de Seu poder.",
+    pt: "Após sobreviver a cinco AVCs, aos olhos humanos poderia ter sido o fim, **mas Deus, em Sua infinita misericórdia, escreveu um novo capítulo em minha história**, transformando minha vida em testemunho de Sua fidelidade, amor e poder.",
   },
   {
     aramaic: "ܠܐܢܬܬܝ ܡܪܬܐ ܘܠܒܪܝ ܡܬܝ ܬܘܕܝܬܐ ܕܠܥܠܡ",
-    pt: "Minha eterna gratidão à minha esposa, **Marta**, a companheira;\nao meu filho, **Matheus**, (*Semper Fi*) o perseverante;\naos profissionais da saúde que participaram de minha recuperação,\nà minha Amiga **Eliete** e a seu marido Sr. **Livaldo**, do 54,\ninstrumentos de cuidado e providência;\nà memória dele Sr. **Arlindo Francisco de Lemos** (*o Arlindo de Jé*).",
-  },
-  {
-    aramaic: "ܝܘܡܢܐ ܡܣܬܟܠ ܐܢܐ ܕܐܠܗܐ ܡܕܒܪ ܟܠ ܐܘܪܚܐ ܕܚ̈ܝܝܢ",
-    pt: "Compreendo que **Deus** conduz cada etapa de nossa história e que nada escapa à Sua soberania.",
+    pt: "Minha eterna gratidão à minha esposa **Marta** (a cuidadora), ao meu filho **Matheus** (*Semper Fi*), aos profissionais da saúde, à minha irmã **Marisa**, à minha mãe **Rejane**, à minha amiga **Eliete** e seu esposo Sr. **Livaldo**, do 54, e à memória do Sr. **Arlindo Francisco de Lemos** (*Arlindo de Jé*).",
   },
   {
     aramaic: "ܨܒܝܢܝ ܕܢܡܛܐ ܗܢܐ ܥܒܕܐ ܠܛܠ̈ܝܐ ܘܠܥܠܝ̈ܡܐ ܘܠܫܪ̈ܒܬܐ",
-    pt: "Oro e peço para que esta obra alcance crianças, jovens e famílias, conduzindo cada pessoa a conhecer os ensinamentos de nosso **Senhor Jesus Cristo**, e a descobrir que Sua Palavra continua viva, transformando vidas, restaurando e renovando a esperança.",
+    pt: "Que esta obra alcance crianças, jovens e famílias, levando cada coração a conhecer os ensinamentos de **Jesus Cristo** e a descobrir que Sua Palavra permanece viva, transformando vidas, renovando a esperança e restaurando corações.",
   },
   {
     aramaic: "ܘܐܢ ܚܕ ܢܦܫܐ ܬܬܩܪܒ ܠܡܫܝܚܐ ܟܠܗ ܥܡܠܐ ܫܘܐ ܗܘܐ",
-    pt: "Através desta obra, se uma única vida se aproximar de nosso **Senhor Jesus Cristo**, todo o caminho percorrido, todas as provações enfrentadas e todo o esforço dedicado terão valido a pena.",
+    pt: "Se, através desta obra, uma única vida se aproximar de **Jesus**, todo o caminho terá valido a pena.",
   },
   {
     aramaic: "ܠܐܠܗܐ ܫܘܒܚܐ ܘܐܝܩܪܐ ܘܬܫܒܘܚܬܐ ܠܥܠܡ ܥܠܡܝܢ ܐܡܝܢ",
