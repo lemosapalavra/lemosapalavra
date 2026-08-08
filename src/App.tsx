@@ -12,6 +12,7 @@ import NewContentNotice from "@/components/NewContentNotice";
 import Index from "./pages/Index.tsx";
 import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
 import { supabase } from "@/integrations/supabase/client";
+import { needsGlobalLogout, markGlobalLogoutDone, clearLocalSession } from "@/lib/sessionReset";
 
 const Login = lazy(() => import("./pages/Login.tsx"));
 const Biblia = lazy(() => import("./pages/Biblia.tsx"));
