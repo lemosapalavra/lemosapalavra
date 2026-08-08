@@ -83,12 +83,12 @@ function IndexV1() {
   return (
     <div
       className="min-h-screen flex flex-col items-center overflow-hidden relative"
-      style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}
+      style={{ background: "transparent" }}
     >
       {/* Home Header */}
       <header
         className="w-full sticky top-0 z-30 flex items-center justify-between px-3 sm:px-5 py-2 border-b border-amber-200/60 backdrop-blur-sm"
-        style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}
+        style={{ background: "transparent" }}
       >
         <div className="flex items-center gap-2">
           {user && isAdmin && (

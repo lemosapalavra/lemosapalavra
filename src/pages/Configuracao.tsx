@@ -118,7 +118,7 @@ export default function Configuracao() {
   ];
 
   return (
-    <div className="min-h-screen py-6 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
+    <div className="min-h-screen py-6 px-4" style={{ background: "transparent" }}>
       <div className="max-w-4xl mx-auto">
         <PageHeader title="Configurações" subtitle="Painel de administração" />
 

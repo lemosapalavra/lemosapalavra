@@ -347,7 +347,7 @@ export default function Atividades() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const bgStyle = { background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" };
+  const bgStyle = { background: "transparent" };
   const Back = () => (
     <ActivityNav onBack={() => setActiveGame(null)} backLabel="Voltar às atividades" />
   );

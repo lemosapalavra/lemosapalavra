@@ -77,7 +77,7 @@ export default function VideoCentralLayout({ title, subtitle, videos }: Props) {
   return (
     <div
       className="min-h-screen py-6 px-4"
-      style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}
+      style={{ background: "transparent" }}
     >
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-4">

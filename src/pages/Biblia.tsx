@@ -285,7 +285,7 @@ export default function Biblia() {
   );
 
   return (
-    <div className="min-h-screen py-6 px-4" style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,96%))" }}>
+    <div className="min-h-screen py-6 px-4" style={{ background: "transparent" }}>
       <div className="max-w-4xl mx-auto">
         <PageHeader title="Bíblia" subtitle="66 livros para explorar" icon={iconBiblia} />
         <p className="text-center -mt-6 mb-6 font-body text-sm italic text-primary font-semibold">

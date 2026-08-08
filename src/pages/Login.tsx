@@ -277,7 +277,7 @@ export default function Login() {
   return (
     <div
       className="min-h-screen flex items-center justify-center py-8 px-4"
-      style={{ background: "linear-gradient(180deg, hsl(36, 60%, 96%), hsl(45, 80%, 92%))" }}
+      style={{ background: "transparent" }}
     >
       <div className="w-full max-w-md">
         <div className="bg-[hsl(36,60%,97%)] border border-amber-200/80 rounded-3xl shadow-2xl p-6 sm:p-8">
@@ -302,7 +302,7 @@ export default function Login() {
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    className="w-full bg-white border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
                     placeholder="Seu nome"
                   />
                 </Field>
@@ -329,7 +329,7 @@ export default function Login() {
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value.replace(/\s+/g, ""))}
-                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    className="w-full bg-white border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
                     placeholder="ex.: joao123"
                     autoComplete="username"
                     required
@@ -346,7 +346,7 @@ export default function Login() {
                       setPhoneError(v ? validatePhone(v) : null);
                     }}
                     onBlur={() => setPhoneError(validatePhone(phone))}
-                    className={`w-full bg-sky-50 border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 ${phoneError ? "border-destructive focus:ring-destructive" : "border-amber-300/60 focus:ring-amber-400"}`}
+                    className={`w-full bg-white border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 ${phoneError ? "border-destructive focus:ring-destructive" : "border-amber-300/60 focus:ring-amber-400"}`}
                     placeholder="(11) 99999-9999"
                     inputMode="numeric"
                     maxLength={15}
@@ -365,7 +365,7 @@ export default function Login() {
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full bg-sky-50 border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    className="w-full bg-white border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
                     placeholder="Seu nome"
                     autoComplete="name"
                   />
@@ -380,7 +380,7 @@ export default function Login() {
                       setPhoneError(v && !v.includes("@") ? validatePhone(v) : null);
                     }}
                     onBlur={() => setPhoneError(email && !email.includes("@") ? validatePhone(email) : null)}
-                    className={`w-full bg-sky-50 border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 ${phoneError ? "border-destructive focus:ring-destructive" : "border-amber-300/60 focus:ring-amber-400"}`}
+                    className={`w-full bg-white border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 ${phoneError ? "border-destructive focus:ring-destructive" : "border-amber-300/60 focus:ring-amber-400"}`}
                     placeholder="(11) 99999-9999"
                     autoComplete="tel"
                     inputMode="tel"

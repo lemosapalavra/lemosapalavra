@@ -167,7 +167,7 @@ export default function IndexV2() {
         {/* Herói */}
         <section
           className="w-full"
-          style={{ background: "linear-gradient(180deg, hsl(200,80%,92%), hsl(45,100%,97%))" }}
+          style={{ background: "transparent" }}
         >
           <div className="max-w-7xl mx-auto px-5 sm:px-8 py-10 sm:py-14 grid md:grid-cols-2 gap-8 items-center">
             <div>
