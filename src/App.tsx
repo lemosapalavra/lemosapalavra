@@ -13,6 +13,7 @@ import Index from "./pages/Index.tsx";
 import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
 import { supabase } from "@/integrations/supabase/client";
 import { needsGlobalLogout, markGlobalLogoutDone, clearLocalSession } from "@/lib/sessionReset";
+import { startAutoUpdate } from "@/lib/autoUpdate";
 
 const Login = lazy(() => import("./pages/Login.tsx"));
 const Biblia = lazy(() => import("./pages/Biblia.tsx"));
@@ -146,12 +147,18 @@ const PageFallback = () => (
   </div>
 );
 
+const AutoUpdater = () => {
+  useEffect(() => startAutoUpdate(), []);
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <AutoUpdater />
         <AuthBootstrap />
         <AnalyticsTracker />
         <RouteMetaSync />
