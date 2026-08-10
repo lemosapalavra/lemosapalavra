@@ -147,6 +147,11 @@ const PageFallback = () => (
   </div>
 );
 
+const AutoUpdater = () => {
+  useEffect(() => startAutoUpdate(), []);
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
