@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "43495ef7-b1df-4145-a382-8b82fc288102",
+  "asset_id": "ea1a5772-cdd5-40dd-9fd5-8906c3c51390",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/43495ef7-b1df-4145-a382-8b82fc288102/lazaro-thumb-v3.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/43495ef7-b1df-4145-a382-8b82fc288102/lazaro-thumb-v3.png",
-  "original_filename": "lazaro-thumb-v3.png",
-  "size": 771747,
-  "content_type": "image/png",
-  "created_at": "2026-07-17T11:42:29Z"
+  "url": "/__l5e/assets-v1/ea1a5772-cdd5-40dd-9fd5-8906c3c51390/lazaro-thumb-v3.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/ea1a5772-cdd5-40dd-9fd5-8906c3c51390/lazaro-thumb-v3.webp",
+  "original_filename": "lazaro-thumb-v3.webp",
+  "size": 36588,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:24:45Z"
 }

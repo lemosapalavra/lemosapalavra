@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "1dbe5754-656f-405d-94d7-34796901858d",
+  "asset_id": "2a284258-3ac1-4d51-a725-abd42d3a0a7c",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/1dbe5754-656f-405d-94d7-34796901858d/tempestades-v2.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/1dbe5754-656f-405d-94d7-34796901858d/tempestades-v2.png",
-  "original_filename": "tempestades-v2.png",
-  "size": 1830661,
-  "content_type": "image/png",
-  "created_at": "2026-07-10T12:01:56Z"
+  "url": "/__l5e/assets-v1/2a284258-3ac1-4d51-a725-abd42d3a0a7c/tempestades-v2.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/2a284258-3ac1-4d51-a725-abd42d3a0a7c/tempestades-v2.webp",
+  "original_filename": "tempestades-v2.webp",
+  "size": 161334,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:27:06Z"
 }

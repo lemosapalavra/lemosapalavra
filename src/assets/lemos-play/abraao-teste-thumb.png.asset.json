@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "2a383366-1640-4fcb-b8f4-89ad2e16d59e",
+  "asset_id": "4f42cd38-de4f-4387-abf2-500e18ee5c9b",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/2a383366-1640-4fcb-b8f4-89ad2e16d59e/abraao-teste-thumb.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/2a383366-1640-4fcb-b8f4-89ad2e16d59e/abraao-teste-thumb.png",
-  "original_filename": "abraao-teste-thumb.png",
-  "size": 750712,
-  "content_type": "image/png",
-  "created_at": "2026-07-14T12:11:05Z"
+  "url": "/__l5e/assets-v1/4f42cd38-de4f-4387-abf2-500e18ee5c9b/abraao-teste-thumb.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/4f42cd38-de4f-4387-abf2-500e18ee5c9b/abraao-teste-thumb.webp",
+  "original_filename": "abraao-teste-thumb.webp",
+  "size": 39918,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:19:53Z"
 }

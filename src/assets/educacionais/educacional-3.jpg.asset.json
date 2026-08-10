@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "83b117a7-a3e7-4c2d-bf37-9ffb0d9a511c",
+  "asset_id": "0cc2e94a-211c-41c6-bdfc-4468cd26d106",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/83b117a7-a3e7-4c2d-bf37-9ffb0d9a511c/educacional-3.jpg",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/83b117a7-a3e7-4c2d-bf37-9ffb0d9a511c/educacional-3.jpg",
-  "original_filename": "educacional-3.jpg",
-  "size": 768766,
-  "content_type": "image/jpeg",
-  "created_at": "2026-06-03T13:39:55Z"
+  "url": "/__l5e/assets-v1/0cc2e94a-211c-41c6-bdfc-4468cd26d106/educacional-3.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/0cc2e94a-211c-41c6-bdfc-4468cd26d106/educacional-3.webp",
+  "original_filename": "educacional-3.webp",
+  "size": 83760,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:18:53Z"
 }

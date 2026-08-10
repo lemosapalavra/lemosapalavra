@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "9691e0d0-069f-4cb4-8f9a-abef1e75abb1",
+  "asset_id": "8cf83763-a46b-40b4-a2ae-e9202bd1366b",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/9691e0d0-069f-4cb4-8f9a-abef1e75abb1/jose-egito-parte-1.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/9691e0d0-069f-4cb4-8f9a-abef1e75abb1/jose-egito-parte-1.png",
-  "original_filename": "jose-egito-parte-1.png",
-  "size": 2864688,
-  "content_type": "image/png",
-  "created_at": "2026-06-16T15:28:16Z"
+  "url": "/__l5e/assets-v1/8cf83763-a46b-40b4-a2ae-e9202bd1366b/jose-egito-parte-1.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/8cf83763-a46b-40b4-a2ae-e9202bd1366b/jose-egito-parte-1.webp",
+  "original_filename": "jose-egito-parte-1.webp",
+  "size": 227774,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:24:20Z"
 }

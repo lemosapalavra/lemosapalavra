@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "505f55a9-9037-4354-89e9-6d082f04432d",
+  "asset_id": "95fc917c-849a-4281-99bd-1d168fa266cb",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/505f55a9-9037-4354-89e9-6d082f04432d/faixa-mulheres-v3.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/505f55a9-9037-4354-89e9-6d082f04432d/faixa-mulheres-v3.png",
-  "original_filename": "faixa-mulheres-v3.png",
-  "size": 1360195,
-  "content_type": "image/png",
-  "created_at": "2026-08-02T13:32:37Z"
+  "url": "/__l5e/assets-v1/95fc917c-849a-4281-99bd-1d168fa266cb/mulheres.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/95fc917c-849a-4281-99bd-1d168fa266cb/mulheres.webp",
+  "original_filename": "mulheres.webp",
+  "size": 88046,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:18:07Z"
 }

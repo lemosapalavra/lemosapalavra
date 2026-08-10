@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "65f57646-0eaa-46d1-aae0-c685ab96d1f4",
+  "asset_id": "0a3aa200-ef62-410d-8d97-a4835dc56104",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/65f57646-0eaa-46d1-aae0-c685ab96d1f4/paulo-de-tarso-thumb.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/65f57646-0eaa-46d1-aae0-c685ab96d1f4/paulo-de-tarso-thumb.png",
-  "original_filename": "paulo-de-tarso-thumb.png",
-  "size": 709212,
-  "content_type": "image/png",
-  "created_at": "2026-07-19T12:34:46Z"
+  "url": "/__l5e/assets-v1/0a3aa200-ef62-410d-8d97-a4835dc56104/paulo-de-tarso-thumb.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/0a3aa200-ef62-410d-8d97-a4835dc56104/paulo-de-tarso-thumb.webp",
+  "original_filename": "paulo-de-tarso-thumb.webp",
+  "size": 34470,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:26:29Z"
 }

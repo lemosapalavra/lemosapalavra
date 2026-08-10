@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "063af6dd-f989-4a2d-895b-fb3292b23785",
+  "asset_id": "36540c24-674d-4bef-9ae3-7ac40c82a84d",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/063af6dd-f989-4a2d-895b-fb3292b23785/aleluia-v2.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/063af6dd-f989-4a2d-895b-fb3292b23785/aleluia-v2.png",
-  "original_filename": "aleluia-v2.png",
-  "size": 1823788,
-  "content_type": "image/png",
-  "created_at": "2026-07-10T12:01:56Z"
+  "url": "/__l5e/assets-v1/36540c24-674d-4bef-9ae3-7ac40c82a84d/aleluia-v2.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/36540c24-674d-4bef-9ae3-7ac40c82a84d/aleluia-v2.webp",
+  "original_filename": "aleluia-v2.webp",
+  "size": 148838,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:20:10Z"
 }
