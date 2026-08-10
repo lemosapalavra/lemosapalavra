@@ -227,14 +227,8 @@ export default function Login() {
       return;
     }
     setPhoneError(null);
-    if (!phoneVerified) {
-      toast({
-        title: "Confirme seu celular",
-        description: "Clique em \"Enviar código pelo WhatsApp\" e digite o código recebido.",
-        variant: "destructive",
-      });
-      return;
-    }
+
+
     if (!password || password.length < 6) {
       alert("Informe uma senha com pelo menos 6 caracteres.");
       return;
