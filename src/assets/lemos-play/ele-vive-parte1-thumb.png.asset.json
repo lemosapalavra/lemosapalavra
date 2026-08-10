@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "327c738d-6b47-44ff-8de5-45b95c06dc39",
+  "asset_id": "f56be9f1-e6de-485f-859a-2dbfa6f64fda",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/327c738d-6b47-44ff-8de5-45b95c06dc39/ele-vive-parte1-thumb.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/327c738d-6b47-44ff-8de5-45b95c06dc39/ele-vive-parte1-thumb.png",
-  "original_filename": "ele-vive-parte1-thumb.png",
-  "size": 2110858,
-  "content_type": "image/png",
-  "created_at": "2026-06-25T15:24:16Z"
+  "url": "/__l5e/assets-v1/f56be9f1-e6de-485f-859a-2dbfa6f64fda/ele-vive-parte1-thumb.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/f56be9f1-e6de-485f-859a-2dbfa6f64fda/ele-vive-parte1-thumb.webp",
+  "original_filename": "ele-vive-parte1-thumb.webp",
+  "size": 289122,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:21:26Z"
 }

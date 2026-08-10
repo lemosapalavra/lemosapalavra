@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "17a0b88a-11fd-4738-80a6-387ed9f7c734",
+  "asset_id": "c50ec7cb-9bf3-417a-98b2-a4c61b17e699",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/17a0b88a-11fd-4738-80a6-387ed9f7c734/jesus-templo-thumb.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/17a0b88a-11fd-4738-80a6-387ed9f7c734/jesus-templo-thumb.png",
-  "original_filename": "jesus-templo-thumb.png",
-  "size": 868346,
-  "content_type": "image/png",
-  "created_at": "2026-07-19T12:47:10Z"
+  "url": "/__l5e/assets-v1/c50ec7cb-9bf3-417a-98b2-a4c61b17e699/jesus-templo-thumb.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/c50ec7cb-9bf3-417a-98b2-a4c61b17e699/jesus-templo-thumb.webp",
+  "original_filename": "jesus-templo-thumb.webp",
+  "size": 90078,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:22:54Z"
 }

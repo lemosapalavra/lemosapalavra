@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "929bf2ba-729e-4ac9-baf9-b73de2f539ed",
+  "asset_id": "8d62a142-9c3d-4acf-8ed3-c518cb8c5ac6",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/929bf2ba-729e-4ac9-baf9-b73de2f539ed/faixa-animais-v2.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/929bf2ba-729e-4ac9-baf9-b73de2f539ed/faixa-animais-v2.png",
-  "original_filename": "faixa-animais-v2.png",
-  "size": 1613993,
-  "content_type": "image/png",
-  "created_at": "2026-07-31T14:10:32Z"
+  "url": "/__l5e/assets-v1/8d62a142-9c3d-4acf-8ed3-c518cb8c5ac6/animais.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/8d62a142-9c3d-4acf-8ed3-c518cb8c5ac6/animais.webp",
+  "original_filename": "animais.webp",
+  "size": 106392,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:17:39Z"
 }

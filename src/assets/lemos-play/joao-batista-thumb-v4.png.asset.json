@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "ffb32b0c-c768-48e6-a64e-41a549e2de41",
+  "asset_id": "cd975a10-0062-47d6-b95f-258f9ef45cfa",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/ffb32b0c-c768-48e6-a64e-41a549e2de41/joao-batista-thumb-v4.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/ffb32b0c-c768-48e6-a64e-41a549e2de41/joao-batista-thumb-v4.png",
-  "original_filename": "joao-batista-thumb-v4.png",
-  "size": 768231,
-  "content_type": "image/png",
-  "created_at": "2026-07-19T13:49:15Z"
+  "url": "/__l5e/assets-v1/cd975a10-0062-47d6-b95f-258f9ef45cfa/joao-batista-thumb-v4.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/cd975a10-0062-47d6-b95f-258f9ef45cfa/joao-batista-thumb-v4.webp",
+  "original_filename": "joao-batista-thumb-v4.webp",
+  "size": 35526,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:23:43Z"
 }

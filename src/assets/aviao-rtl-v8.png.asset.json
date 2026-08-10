@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "d5313697-c3fe-4c26-b8ea-99ef99dda78c",
+  "asset_id": "483cacd7-0e55-413b-8195-dd67278ccc52",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/d5313697-c3fe-4c26-b8ea-99ef99dda78c/aviao-rtl-v8.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/d5313697-c3fe-4c26-b8ea-99ef99dda78c/aviao-rtl-v8.png",
-  "original_filename": "aviao-rtl-v8.png",
-  "size": 2415013,
-  "content_type": "image/png",
-  "created_at": "2026-07-28T12:08:05Z"
+  "url": "/__l5e/assets-v1/483cacd7-0e55-413b-8195-dd67278ccc52/aviao-rtl-v8.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/483cacd7-0e55-413b-8195-dd67278ccc52/aviao-rtl-v8.webp",
+  "original_filename": "aviao-rtl-v8.webp",
+  "size": 143714,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:17:12Z"
 }

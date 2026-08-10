@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "6721c718-55b2-4ebd-89d4-e64e6a148db4",
+  "asset_id": "1e3dceef-a719-4b34-86ac-adb98a6978b2",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/6721c718-55b2-4ebd-89d4-e64e6a148db4/batalha-anjos-thumb.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/6721c718-55b2-4ebd-89d4-e64e6a148db4/batalha-anjos-thumb.png",
-  "original_filename": "batalha-anjos-thumb.png",
-  "size": 865569,
-  "content_type": "image/png",
-  "created_at": "2026-07-11T11:55:08Z"
+  "url": "/__l5e/assets-v1/1e3dceef-a719-4b34-86ac-adb98a6978b2/batalha-anjos-thumb.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/1e3dceef-a719-4b34-86ac-adb98a6978b2/batalha-anjos-thumb.webp",
+  "original_filename": "batalha-anjos-thumb.webp",
+  "size": 41998,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:20:20Z"
 }

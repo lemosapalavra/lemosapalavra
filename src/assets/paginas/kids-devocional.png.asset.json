@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "2c5ac204-335b-4b29-a8a4-73ec65cb4eb9",
+  "asset_id": "62b55208-ea2c-4296-8f49-1cbc81a86630",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/2c5ac204-335b-4b29-a8a4-73ec65cb4eb9/kids-devocional-v1.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/2c5ac204-335b-4b29-a8a4-73ec65cb4eb9/kids-devocional-v1.png",
-  "original_filename": "kids-devocional-v1.png",
-  "size": 1567627,
-  "content_type": "image/png",
-  "created_at": "2026-08-02T13:33:29Z"
+  "url": "/__l5e/assets-v1/62b55208-ea2c-4296-8f49-1cbc81a86630/kids-devocional.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/62b55208-ea2c-4296-8f49-1cbc81a86630/kids-devocional.webp",
+  "original_filename": "kids-devocional.webp",
+  "size": 84434,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:27:36Z"
 }

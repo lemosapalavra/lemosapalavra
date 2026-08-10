@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "ab31c607-d0b3-4c4a-ab63-c831c9df0a06",
+  "asset_id": "71ff0caa-04e3-42f5-b04b-8da96dacd173",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/ab31c607-d0b3-4c4a-ab63-c831c9df0a06/jonas-e-a-baleia.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/ab31c607-d0b3-4c4a-ab63-c831c9df0a06/jonas-e-a-baleia.png",
-  "original_filename": "jonas-e-a-baleia.png",
-  "size": 2347263,
-  "content_type": "image/png",
-  "created_at": "2026-06-08T12:46:30Z"
+  "url": "/__l5e/assets-v1/71ff0caa-04e3-42f5-b04b-8da96dacd173/jonas-e-a-baleia.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/71ff0caa-04e3-42f5-b04b-8da96dacd173/jonas-e-a-baleia.webp",
+  "original_filename": "jonas-e-a-baleia.webp",
+  "size": 329708,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:24:08Z"
 }

@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "02cb3e15-d43c-4153-883d-1f2d047cd032",
+  "asset_id": "e2db5cc1-e10c-40eb-865b-a93344c8a538",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/02cb3e15-d43c-4153-883d-1f2d047cd032/e-se-ele-fosse-um-de-nos.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/02cb3e15-d43c-4153-883d-1f2d047cd032/e-se-ele-fosse-um-de-nos.png",
-  "original_filename": "e-se-ele-fosse-um-de-nos.png",
-  "size": 2150398,
-  "content_type": "image/png",
-  "created_at": "2026-06-08T12:46:50Z"
+  "url": "/__l5e/assets-v1/e2db5cc1-e10c-40eb-865b-a93344c8a538/e-se-ele-fosse-um-de-nos.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/e2db5cc1-e10c-40eb-865b-a93344c8a538/e-se-ele-fosse-um-de-nos.webp",
+  "original_filename": "e-se-ele-fosse-um-de-nos.webp",
+  "size": 264244,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:21:22Z"
 }

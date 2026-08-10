@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "dc1d1cfa-bf58-4ea4-ad8e-c4e1b30ae51e",
+  "asset_id": "2372fe63-b3cb-46a3-90cb-c2246c36aa72",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/dc1d1cfa-bf58-4ea4-ad8e-c4e1b30ae51e/jesus-tempestade-thumb.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/dc1d1cfa-bf58-4ea4-ad8e-c4e1b30ae51e/jesus-tempestade-thumb.png",
-  "original_filename": "jesus-tempestade-thumb.png",
-  "size": 2048876,
-  "content_type": "image/png",
-  "created_at": "2026-07-19T12:47:16Z"
+  "url": "/__l5e/assets-v1/2372fe63-b3cb-46a3-90cb-c2246c36aa72/jesus-tempestade-thumb.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/2372fe63-b3cb-46a3-90cb-c2246c36aa72/jesus-tempestade-thumb.webp",
+  "original_filename": "jesus-tempestade-thumb.webp",
+  "size": 153924,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:22:50Z"
 }

@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "asset_id": "b6a3b8b3-ebb7-4bff-b967-7bbdae05aa38",
+  "asset_id": "49ae5c33-a519-453c-895a-c0eadc818287",
   "project_id": "6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf",
-  "url": "/__l5e/assets-v1/b6a3b8b3-ebb7-4bff-b967-7bbdae05aa38/faixa-milagres-v2.png",
-  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/b6a3b8b3-ebb7-4bff-b967-7bbdae05aa38/faixa-milagres-v2.png",
-  "original_filename": "faixa-milagres-v2.png",
-  "size": 1516911,
-  "content_type": "image/png",
-  "created_at": "2026-07-31T14:10:26Z"
+  "url": "/__l5e/assets-v1/49ae5c33-a519-453c-895a-c0eadc818287/milagres.webp",
+  "r2_key": "a/v1/6c250cb7-ef6a-4ef0-a8c1-4c4ffe4b6dbf/49ae5c33-a519-453c-895a-c0eadc818287/milagres.webp",
+  "original_filename": "milagres.webp",
+  "size": 107472,
+  "content_type": "image/webp",
+  "created_at": "2026-08-10T11:17:57Z"
 }
