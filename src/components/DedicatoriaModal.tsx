@@ -9,19 +9,19 @@ import { DEDICATORIA_COINS } from "@/data/coinRewards";
 const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   {
     aramaic: "ܗܢܐ ܥܒܕܐ ܐܬܝܠܕ ܡܢ ܣܘܟܝܐ ܫܪܝܪܐ ܕܢܚܘܐ ܚ̈ܝܐ ܘܝܘ̈ܠܦܢܐ ܕܝܫܘܥ",
-    pt: "Esta obra nasce do desejo sincero de apresentar a vida e os ensinamentos de **Jesus Cristo**, o Caminho, a Verdade e a Vida.",
+    pt: "Esta obra nasce do desejo sincero de apresentar a **vida** e os ensinamentos de **Jesus Cristo**, o Caminho, a Verdade e a Vida.",
   },
   {
     aramaic: "ܡܩܪܒ ܐܢܐ ܗܢܐ ܥܒܕܐ ܠܐܠܗܐ ܐܚܝܕ ܟܠ ܘܠܝܫܘܥ ܡܫܝܚܐ ܡܪܝ ܘܦܪܘܩܝ",
-    pt: "Dedico-a a **Deus Todo-Poderoso** e a **Jesus Cristo**, meu Senhor e Salvador, cuja graça, misericórdia e amor têm sustentado minha vida.",
+    pt: "Dedico-a a **Deus** Todo-Poderoso e a **Jesus Cristo**, meu Senhor e Salvador, cuja graça, misericórdia e amor têm sustentado minha **vida**.",
   },
   {
     aramaic: "ܒܪܡ ܐܠܗܐ ܒܪ̈ܚܡܘܗܝ ܟܬܒ ܠܝ ܩܦܠܐܘܢ ܚܕܬܐ",
-    pt: "Após sobreviver a cinco AVCs, aos olhos humanos poderia ter sido o fim, **mas Deus, em Sua infinita misericórdia, escreveu um novo capítulo em minha história**, transformando minha vida em testemunho de Sua fidelidade, amor e poder.",
+    pt: "Após sobreviver a cinco AVCs, aos olhos humanos poderia ter sido o fim, mas Deus, em Sua infinita misericórdia, escreveu um novo capítulo em minha história, transformando minha vida em testemunho de Sua fidelidade, amor e poder.",
   },
   {
     aramaic: "ܠܐܢܬܬܝ ܡܪܬܐ ܘܠܒܪܝ ܡܬܝ ܬܘܕܝܬܐ ܕܠܥܠܡ",
-    pt: "Minha eterna gratidão à minha esposa **Marta** (a cuidadora), ao meu filho **Matheus** (*Semper Fi*), aos profissionais da saúde, à minha irmã **Marisa**, à minha mãe **Rejane**, à minha amiga **Eliete** e seu esposo Sr. **Livaldo**, do 54, e à memória do Sr. **Arlindo Francisco de Lemos** (*Arlindo de Jé*).",
+    pt: "Minha eterna gratidão à minha esposa **Marta**, *(a cuidadora)* ao meu filho **Matheus** *(Semper Fi)*, aos profissionais da saúde, à minha irmã **Marisa**, à minha mãe **Rejane**, à minha amiga **Eliete** e seu esposo Sr. **Livaldo**, do 54, e à memória do Sr. **Arlindo** Francisco de Lemos *(Arlindo de Jé)*.",
   },
   {
     aramaic: "ܨܒܝܢܝ ܕܢܡܛܐ ܗܢܐ ܥܒܕܐ ܠܛܠ̈ܝܐ ܘܠܥܠܝ̈ܡܐ ܘܠܫܪ̈ܒܬܐ",
@@ -29,7 +29,7 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
   },
   {
     aramaic: "ܘܐܢ ܚܕ ܢܦܫܐ ܬܬܩܪܒ ܠܡܫܝܚܐ ܟܠܗ ܥܡܠܐ ܫܘܐ ܗܘܐ",
-    pt: "Se, através desta obra, uma única vida se aproximar de **Jesus**, todo o caminho terá valido a pena.",
+    pt: "Se, através desta obra, uma única **vida** se aproximar de **Jesus**, todo o caminho terá valido a pena.",
   },
   {
     aramaic: "ܠܐܠܗܐ ܫܘܒܚܐ ܘܐܝܩܪܐ ܘܬܫܒܘܚܬܐ ܠܥܠܡ ܥܠܡܝܢ ܐܡܝܢ",
@@ -40,6 +40,7 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
     pt: "{{signature}}Marcello Borbas{{/signature}}\n*Visionário Amante das escrituras sagradas*",
   },
 ];
+
 
 
 
