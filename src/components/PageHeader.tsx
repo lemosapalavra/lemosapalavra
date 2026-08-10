@@ -27,6 +27,9 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
 
   const isHome = location.pathname === "/";
   const isLemosPlay = location.pathname.startsWith("/lemosplay");
+  // Páginas que já mostram o nome em uma faixa (WavyBanner) não repetem o título.
+  const hasBanner = isLemosPlay || location.pathname.startsWith("/atividades");
+
 
   useEffect(() => {
     const stored = localStorage.getItem("lemos_user");
