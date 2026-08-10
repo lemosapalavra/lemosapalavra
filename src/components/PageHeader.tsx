@@ -72,12 +72,32 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
           </button>
         )}
 
-        {/* Centro: título apenas para leitores de tela/SEO — o texto visível
-            de cada página fica na faixa (WavyBanner), evitando repetição. */}
-        <div className="flex-1 min-w-0">
-          {title && <h1 className="sr-only">{title}</h1>}
-          {subtitle && <p className="sr-only">{subtitle}</p>}
+        {/* Centro: título da página. Nas páginas que já exibem uma faixa
+            (WavyBanner) o título fica apenas para leitores de tela/SEO. */}
+        <div className="flex-1 min-w-0 text-center">
+          {title && (
+            hasBanner ? (
+              <h1 className="sr-only">{title}</h1>
+            ) : (
+              <h1
+                className={`font-display font-extrabold text-base sm:text-xl truncate ${isLemosPlay ? "text-white" : "text-amber-900"}`}
+                style={{ animation: "titleGlow 3s ease-in-out infinite" }}
+              >
+                {title}
+              </h1>
+            )
+          )}
+          {subtitle && (
+            hasBanner ? (
+              <p className="sr-only">{subtitle}</p>
+            ) : (
+              <p className={`font-body text-[11px] sm:text-xs truncate ${isLemosPlay ? "text-white/80" : "text-amber-800/80"}`}>
+                {subtitle}
+              </p>
+            )
+          )}
         </div>
+
 
         {/* Right: coins + user */}
         <div className="flex items-center gap-2 shrink-0">
