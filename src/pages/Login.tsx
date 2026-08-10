@@ -110,33 +110,8 @@ export default function Login() {
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
   const [customAvatar, setCustomAvatar] = useState<string>("");
 
-  // Verificação do celular em 2 etapas (código enviado pelo WhatsApp)
-  const [verifyCode, setVerifyCode] = useState("");
-  const [verifyInput, setVerifyInput] = useState("");
-  const [verifySent, setVerifySent] = useState(false);
-  const [phoneVerified, setPhoneVerified] = useState(false);
 
-  const sendWhatsappCode = () => {
-    const err = validatePhone(phone);
-    if (err) { setPhoneError(err); toast({ title: "Celular inválido", description: err, variant: "destructive" }); return; }
-    const code = String(Math.floor(100000 + Math.random() * 900000));
-    setVerifyCode(code);
-    setVerifySent(true);
-    setVerifyInput("");
-    const digits = phone.replace(/\D/g, "");
-    const msg = encodeURIComponent(`Lemos a Palavra — seu código de verificação é ${code}. Digite-o no site para confirmar seu celular.`);
-    window.open(`https://wa.me/55${digits}?text=${msg}`, "_blank", "noopener,noreferrer");
-    toast({ title: "Código enviado pelo WhatsApp 📲", description: "Abra o WhatsApp, veja o código e digite-o aqui." });
-  };
 
-  const confirmWhatsappCode = () => {
-    if (verifyInput.replace(/\D/g, "") === verifyCode) {
-      setPhoneVerified(true);
-      toast({ title: "Celular confirmado ✅", description: "Agora é só criar sua conta." });
-    } else {
-      toast({ title: "Código incorreto", description: "Confira o código recebido no WhatsApp.", variant: "destructive" });
-    }
-  };
 
   // Owner-only UI (Admin shortcut) — visível apenas neste aparelho (?owner=1)
   // E somente quando o IP atual for o mesmo IP do dono registrado.
