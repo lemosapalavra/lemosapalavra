@@ -372,6 +372,33 @@ export default function Album() {
         </button>
       </div>
 
+      {/* Faixa de ajuda visual — como colecionar */}
+      <div className="px-4 pb-6">
+        <div className="mx-auto max-w-3xl rounded-2xl border-2 border-amber-300 bg-amber-50/90 p-3 shadow">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+            {[
+              { e: "🪙", t: "Ganhe moedinhas", d: "Vídeos, devocional e atividades" },
+              { e: "🎁", t: "Abra pacotinhos", d: "3 moedinhas = 5 figurinhas" },
+              { e: "🖼️", t: "Toque na figurinha", d: "Amplie e leia a Bíblia" },
+              { e: "🔁", t: "Troque repetidas", d: "Vire figurinhas que faltam" },
+            ].map((s) => (
+              <div key={s.t} className="rounded-xl bg-white/80 p-2">
+                <span className="block text-2xl">{s.e}</span>
+                <p className="font-display text-[11px] font-bold text-amber-900">{s.t}</p>
+                <p className="font-body text-[10px] text-amber-800/80 leading-tight">{s.d}</p>
+              </div>
+            ))}
+          </div>
+          <button
+            onClick={() => window.dispatchEvent(new Event("lemos:open-guide"))}
+            className="mt-2 w-full rounded-full bg-amber-500 px-4 py-2 font-display text-xs font-bold text-white hover:bg-amber-600 transition"
+          >
+            ❓ Ver o guia completo passo a passo
+          </button>
+        </div>
+      </div>
+
+
       {packResult && (
         <StickerPackAnimation
           stickers={packResult}
