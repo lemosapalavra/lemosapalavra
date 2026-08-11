@@ -765,6 +765,14 @@ function AdminInteractionRow({
         />
       </div>
 
+      {notice && (
+        <p className="mb-3 rounded-lg bg-amber-50 border border-amber-300 px-3 py-2 text-xs text-amber-900">
+          ⚠️ {notice}
+        </p>
+      )}
+
+
+
       <div className="overflow-x-auto rounded-xl border border-border">
         <table className="min-w-full text-sm font-body border-collapse">
           <thead className="bg-gradient-to-r from-amber-100 to-yellow-100 sticky top-0">
