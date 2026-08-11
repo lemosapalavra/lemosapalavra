@@ -613,6 +613,9 @@ function AdminInteractionRow({
       .map(([p, c]) => `${p} (${c})`)
       .join(" · ") || "—";
 
+  const userKey = JSON.stringify(user || null);
+  const pagesKey = JSON.stringify(pagesVisited || {});
+
   useEffect(() => {
     if (!admin) return;
     (async () => {
