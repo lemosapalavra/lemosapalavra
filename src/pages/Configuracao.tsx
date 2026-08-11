@@ -645,10 +645,17 @@ function AdminInteractionRow({
 
       // Backend profiles
       try {
-        const { data } = await supabase
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (!sessionData.session) {
+          setNotice("Você está no modo administrador local. Faça login com sua conta para ver todos os usuários cadastrados.");
+        } else {
+          setNotice(null);
+        }
+        const { data, error } = await supabase
           .from("profiles")
           .select("id, name, email, role, phone, age_range, created_at, updated_at")
           .order("created_at", { ascending: false });
+        if (error) setNotice(`Não foi possível carregar os usuários: ${error.message}`);
         if (data) {
           data.forEach((p: any) => {
             const a = actFor(p.email, p.id);
@@ -669,7 +676,9 @@ function AdminInteractionRow({
             });
           });
         }
-      } catch {}
+      } catch (e: any) {
+        setNotice(`Não foi possível carregar os usuários: ${e?.message || e}`);
+      }
 
       // Current device user (may overlap; keep as "Este dispositivo")
       if (user) {
