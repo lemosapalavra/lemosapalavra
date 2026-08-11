@@ -9,6 +9,7 @@ import FloatingWhatsapp from "@/components/FloatingWhatsapp";
 import ShareButton from "@/components/ShareButton";
 import WavyBanner from "@/components/WavyBanner";
 import NewContentNotice from "@/components/NewContentNotice";
+import GuideTour from "@/components/GuideTour";
 import Index from "./pages/Index.tsx";
 import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
 import { supabase } from "@/integrations/supabase/client";
@@ -166,6 +167,7 @@ const App = () => (
         <FloatingWhatsapp />
         <NewContentNotice />
         <ShareButton />
+        <GuideTour />
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />
