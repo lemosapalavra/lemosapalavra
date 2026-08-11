@@ -724,7 +724,8 @@ function AdminInteractionRow({
       setRows(Array.from(map.values()));
       setLoading(false);
     })();
-  }, [admin, user, lastVisit, pagesVisited, ip]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [admin, userKey, lastVisit, pagesKey, ip]);
 
   if (!admin) return null;
 
