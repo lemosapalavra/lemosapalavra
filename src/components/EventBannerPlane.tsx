@@ -47,8 +47,9 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
 
   if (!isBannerActive(cfg)) return null;
 
-  const handleClick = () => { if (isAuthenticated && cfg.videoUrl) setOpen(true); };
-  const video = cfg.videoUrl ? normalizeVideo(cfg.videoUrl, false) : null;
+  // Vídeo do aviãozinho removido para todos os usuários — o avião é apenas decorativo.
+  const handleClick = () => {};
+  const video = null as null;
   const planeSrc = dir === "rtl" ? planeRtl.url : planeLtr.url;
   const animName = dir === "rtl" ? "plane-rtl" : "plane-ltr";
 
@@ -93,7 +94,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
                 onClick={handleClick}
                 alt={dir === "rtl" ? "Aviãozinho voando da direita para a esquerda" : "Aviãozinho voando da esquerda para a direita"}
                 className={`relative h-28 sm:h-32 md:h-36 w-auto drop-shadow-2xl select-none transition-all duration-700 ${
-                  isAuthenticated ? (cfg.videoUrl ? "pointer-events-auto cursor-pointer" : "") : "grayscale opacity-60"
+                  isAuthenticated ? "" : "grayscale opacity-60"
                 }`}
                 style={{ animation: "banner-wind 3.2s ease-in-out infinite", transformOrigin: dir === "rtl" ? "100% 50%" : "0% 50%" }}
                 draggable={false}
