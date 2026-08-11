@@ -605,6 +605,7 @@ function AdminInteractionRow({
   const [rows, setRows] = useState<UserRow[]>([]);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
+  const [notice, setNotice] = useState<string | null>(null);
 
   const topPages = (visits: Record<string, number>) =>
     Object.entries(visits || {})
