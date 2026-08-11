@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
 import { loadEventBanner, isBannerActive, type EventBannerConfig } from "@/data/eventBannerConfig";
-import { normalizeVideo } from "@/lib/videoEmbed";
 import planeRtl from "@/assets/aviao-rtl-v12.png.asset.json";
 import planeLtr from "@/assets/aviao-ltr-v12.png.asset.json";
-
-import ColonialVideoFrame from "@/components/ColonialVideoFrame";
-import VideoSideActions from "@/components/VideoSideActions";
 
 /**
  * Aviãozinhos animados alternando direções:
@@ -17,7 +12,6 @@ import VideoSideActions from "@/components/VideoSideActions";
  */
 export default function EventBannerPlane({ isAuthenticated = false }: { isAuthenticated?: boolean }) {
   const [cfg, setCfg] = useState<EventBannerConfig>(() => loadEventBanner());
-  const [open, setOpen] = useState(false);
   const [dir, setDir] = useState<"rtl" | "ltr">("rtl");
   const [flying, setFlying] = useState(true);
 
@@ -49,7 +43,6 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
 
   // Vídeo do aviãozinho removido para todos os usuários — o avião é apenas decorativo.
   const handleClick = () => {};
-  const video = null as null;
   const planeSrc = dir === "rtl" ? planeRtl.url : planeLtr.url;
   const animName = dir === "rtl" ? "plane-rtl" : "plane-ltr";
 
