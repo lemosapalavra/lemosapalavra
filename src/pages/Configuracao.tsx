@@ -605,6 +605,7 @@ function AdminInteractionRow({
   const [rows, setRows] = useState<UserRow[]>([]);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
+  const [notice, setNotice] = useState<string | null>(null);
 
   const topPages = (visits: Record<string, number>) =>
     Object.entries(visits || {})
@@ -612,6 +613,9 @@ function AdminInteractionRow({
       .slice(0, 3)
       .map(([p, c]) => `${p} (${c})`)
       .join(" · ") || "—";
+
+  const userKey = JSON.stringify(user || null);
+  const pagesKey = JSON.stringify(pagesVisited || {});
 
   useEffect(() => {
     if (!admin) return;
@@ -642,10 +646,17 @@ function AdminInteractionRow({
 
       // Backend profiles
       try {
-        const { data } = await supabase
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (!sessionData.session) {
+          setNotice("Você está no modo administrador local. Faça login com sua conta para ver todos os usuários cadastrados.");
+        } else {
+          setNotice(null);
+        }
+        const { data, error } = await supabase
           .from("profiles")
           .select("id, name, email, role, phone, age_range, created_at, updated_at")
           .order("created_at", { ascending: false });
+        if (error) setNotice(`Não foi possível carregar os usuários: ${error.message}`);
         if (data) {
           data.forEach((p: any) => {
             const a = actFor(p.email, p.id);
@@ -666,7 +677,9 @@ function AdminInteractionRow({
             });
           });
         }
-      } catch {}
+      } catch (e: any) {
+        setNotice(`Não foi possível carregar os usuários: ${e?.message || e}`);
+      }
 
       // Current device user (may overlap; keep as "Este dispositivo")
       if (user) {
@@ -711,7 +724,8 @@ function AdminInteractionRow({
       setRows(Array.from(map.values()));
       setLoading(false);
     })();
-  }, [admin, user, lastVisit, pagesVisited, ip]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [admin, userKey, lastVisit, pagesKey, ip]);
 
   if (!admin) return null;
 
@@ -750,6 +764,14 @@ function AdminInteractionRow({
           className="px-3 py-1.5 rounded-lg border border-border bg-background text-sm font-body w-full sm:w-72 focus:outline-none focus:border-amber-400"
         />
       </div>
+
+      {notice && (
+        <p className="mb-3 rounded-lg bg-amber-50 border border-amber-300 px-3 py-2 text-xs text-amber-900">
+          ⚠️ {notice}
+        </p>
+      )}
+
+
 
       <div className="overflow-x-auto rounded-xl border border-border">
         <table className="min-w-full text-sm font-body border-collapse">

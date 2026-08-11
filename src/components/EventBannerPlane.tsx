@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
 import { loadEventBanner, isBannerActive, type EventBannerConfig } from "@/data/eventBannerConfig";
-import { normalizeVideo } from "@/lib/videoEmbed";
 import planeRtl from "@/assets/aviao-rtl-v12.png.asset.json";
 import planeLtr from "@/assets/aviao-ltr-v12.png.asset.json";
-
-import ColonialVideoFrame from "@/components/ColonialVideoFrame";
-import VideoSideActions from "@/components/VideoSideActions";
 
 /**
  * Aviãozinhos animados alternando direções:
@@ -17,7 +12,6 @@ import VideoSideActions from "@/components/VideoSideActions";
  */
 export default function EventBannerPlane({ isAuthenticated = false }: { isAuthenticated?: boolean }) {
   const [cfg, setCfg] = useState<EventBannerConfig>(() => loadEventBanner());
-  const [open, setOpen] = useState(false);
   const [dir, setDir] = useState<"rtl" | "ltr">("rtl");
   const [flying, setFlying] = useState(true);
 
@@ -47,8 +41,8 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
 
   if (!isBannerActive(cfg)) return null;
 
-  const handleClick = () => { if (isAuthenticated && cfg.videoUrl) setOpen(true); };
-  const video = cfg.videoUrl ? normalizeVideo(cfg.videoUrl, false) : null;
+  // Vídeo do aviãozinho removido para todos os usuários — o avião é apenas decorativo.
+  const handleClick = () => {};
   const planeSrc = dir === "rtl" ? planeRtl.url : planeLtr.url;
   const animName = dir === "rtl" ? "plane-rtl" : "plane-ltr";
 
@@ -93,7 +87,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
                 onClick={handleClick}
                 alt={dir === "rtl" ? "Aviãozinho voando da direita para a esquerda" : "Aviãozinho voando da esquerda para a direita"}
                 className={`relative h-28 sm:h-32 md:h-36 w-auto drop-shadow-2xl select-none transition-all duration-700 ${
-                  isAuthenticated ? (cfg.videoUrl ? "pointer-events-auto cursor-pointer" : "") : "grayscale opacity-60"
+                  isAuthenticated ? "" : "grayscale opacity-60"
                 }`}
                 style={{ animation: "banner-wind 3.2s ease-in-out infinite", transformOrigin: dir === "rtl" ? "100% 50%" : "0% 50%" }}
                 draggable={false}
@@ -127,34 +121,6 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
         }
         @media (prefers-reduced-motion: reduce) { img { animation: none !important; } }
       `}</style>
-
-      {open && video && (
-        <div className="fixed inset-0 z-[90] bg-black/90 flex items-center justify-center p-3" onClick={() => setOpen(false)}>
-          <button
-            onClick={() => setOpen(false)}
-            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center"
-            aria-label="Fechar"
-          >
-            <X className="w-5 h-5" />
-          </button>
-          <div className="relative" onClick={(e) => e.stopPropagation()}>
-            <VideoSideActions videoId={`aviaozinho:${cfg.message || "evento"}`} />
-            <ColonialVideoFrame>
-              {video.kind === "mp4" ? (
-                <video src={video.embedUrl} controls autoPlay playsInline className="w-full h-full object-contain" />
-              ) : (
-                <iframe
-                  src={video.embedUrl}
-                  title={cfg.message || "Vídeo"}
-                  className="w-full h-full"
-                  allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-                  allowFullScreen
-                />
-              )}
-            </ColonialVideoFrame>
-          </div>
-        </div>
-      )}
     </>
   );
 }
