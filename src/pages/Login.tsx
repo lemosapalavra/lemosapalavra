@@ -542,8 +542,6 @@ export default function Login() {
               )}
             </div>
 
-            {/* Admin-only: QR Code + botão para baixar/instalar o atalho */}
-            {(isAdmin || ownerUnlocked) && <InstallShortcut />}
 
 
 

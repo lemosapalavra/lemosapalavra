@@ -63,17 +63,30 @@ const steps: Step[] = [
 export default function GuideTour() {
   const [open, setOpen] = useState(false);
   const [i, setI] = useState(0);
+  const [logged, setLogged] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Só fica disponível depois do login
   useEffect(() => {
+    const check = () => {
+      try { setLogged(!!localStorage.getItem("lemos_user")); } catch { setLogged(false); }
+    };
+    check();
+    window.addEventListener("storage", check);
+    const t = setInterval(check, 2000);
+    return () => { window.removeEventListener("storage", check); clearInterval(t); };
+  }, []);
+
+  useEffect(() => {
+    if (!logged) return;
     try {
       if (!localStorage.getItem(SEEN_KEY)) {
         const t = setTimeout(() => setOpen(true), 1200);
         return () => clearTimeout(t);
       }
     } catch { /* ignore */ }
-  }, []);
+  }, [logged]);
 
   useEffect(() => {
     const openIt = () => { setI(0); setOpen(true); };
@@ -86,9 +99,7 @@ export default function GuideTour() {
     try { localStorage.setItem(SEEN_KEY, "1"); } catch { /* ignore */ }
   };
 
-  if (location.pathname === "/login") {
-    // no login já existe orientação própria; mantém só o botão de ajuda
-  }
+  if (!logged) return null;
 
   const s = steps[i];
 
