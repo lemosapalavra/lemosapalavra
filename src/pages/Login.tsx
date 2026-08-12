@@ -4,7 +4,6 @@ import { Eye, EyeOff, Shield } from "lucide-react";
 import { setAdminMode, useIsAdmin } from "@/hooks/useIsAdmin";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import InstallShortcut from "@/components/InstallShortcut";
 
 import avatarJesus from "@/assets/avatar-jesus.png";
 import avatarMaria from "@/assets/avatar-maria.png";
@@ -542,8 +541,6 @@ export default function Login() {
               )}
             </div>
 
-            {/* Admin-only: QR Code + botão para baixar/instalar o atalho */}
-            {(isAdmin || ownerUnlocked) && <InstallShortcut />}
 
 
 

@@ -229,7 +229,7 @@ export default function IndexV2() {
         )}
 
         <div className="flex items-end justify-center gap-6 pb-6">
-          <InstallShortcut compact />
+          {user && <InstallShortcut compact />}
           <button
             onClick={() => setDedicatoriaOpen(true)}
             className="px-6 py-3 rounded-full border-2 border-amber-300 bg-amber-50 hover:bg-amber-100 font-display font-bold text-amber-900 transition"
