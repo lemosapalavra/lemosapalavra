@@ -173,7 +173,7 @@ function IndexV1() {
           )}
 
           <div className="mt-16 sm:mt-20 flex flex-col items-center gap-6">
-            <InstallShortcut compact />
+            {user && <InstallShortcut compact />}
             <button
               onClick={() => setDedicatoriaOpen(true)}
               className="animate-pulse hover:animate-none hover:scale-110 transition-transform"
