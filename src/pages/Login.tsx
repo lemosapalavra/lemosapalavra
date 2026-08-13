@@ -344,18 +344,8 @@ export default function Login() {
                     ))}
                   </div>
                 </Field>
-                <Field label="Nome de usuário *">
-                  <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value.replace(/\s+/g, ""))}
-                    className="w-full bg-white border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
-                    placeholder="ex.: joao123"
-                    autoComplete="username"
-                    required
-                    minLength={3}
-                  />
-                </Field>
+
+
                 <Field label="Celular *">
                   <input
                     type="tel"
