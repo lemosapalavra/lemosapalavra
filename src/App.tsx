@@ -15,6 +15,7 @@ import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
 import { supabase } from "@/integrations/supabase/client";
 import { needsGlobalLogout, markGlobalLogoutDone, clearLocalSession } from "@/lib/sessionReset";
 import { startAutoUpdate } from "@/lib/autoUpdate";
+import { startAutoTitles } from "@/lib/autoTitles";
 
 const Login = lazy(() => import("./pages/Login.tsx"));
 const Biblia = lazy(() => import("./pages/Biblia.tsx"));
@@ -150,6 +151,7 @@ const PageFallback = () => (
 
 const AutoUpdater = () => {
   useEffect(() => startAutoUpdate(), []);
+  useEffect(() => startAutoTitles(), []);
   return null;
 };
 
