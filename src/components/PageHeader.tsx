@@ -104,29 +104,37 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
 
         {/* Right: coins + user */}
         <div className="flex items-center gap-2 shrink-0">
+          {user?.name && (
+            <div className="flex items-center gap-1.5">
+              <img loading="lazy" decoding="async"
+                src={user.avatar || iconUsuario}
+                onError={(e) => { (e.currentTarget as HTMLImageElement).src = iconUsuario; }}
+                alt={user.name || "Usuário"}
+                title={`Seja Bem vindo, ${user.name}`}
+                className="w-9 h-9 rounded-full border-2 border-amber-300 shadow-sm object-cover bg-white"
+              />
+              <span className="leading-tight text-left">
+                <span className={`block font-display font-bold text-[11px] sm:text-xs max-w-[150px] truncate ${isLemosPlay ? "text-white" : "text-foreground"}`}>
+                  Seja Bem vindo, {user.name}
+                </span>
+                <span className={`block font-body text-[9px] sm:text-[10px] ${isLemosPlay ? "text-white/80" : "text-amber-800"}`}>
+                  Deus Seja Louvado!
+                </span>
+              </span>
+            </div>
+          )}
           {isLemosPlay ? (
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1" title="Suas moedinhas" aria-label="Suas moedinhas">
               <span className="text-base leading-none">🪙</span>
               <span className="font-display font-extrabold text-sm tabular-nums text-white">{coins}</span>
             </div>
           ) : (
-            <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 border border-amber-300 shadow-sm">
+            <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 border border-amber-300 shadow-sm" title="Suas moedinhas" aria-label="Suas moedinhas">
               <span className="text-base leading-none">🪙</span>
               <span className="font-display font-extrabold text-sm text-amber-900 tabular-nums">{coins}</span>
             </div>
           )}
-          {user?.name && (
-            <div className="flex items-center gap-1.5">
-              <span className={`font-display font-bold text-xs max-w-[100px] truncate ${isLemosPlay ? "text-white" : "text-foreground"}`}>
-                {user.name}
-              </span>
-              <img loading="lazy" decoding="async"
-                src={user.avatar || iconUsuario}
-                alt={user.name || "Usuário"}
-                className="w-9 h-9 rounded-full border-2 border-amber-300 shadow-sm object-cover"
-              />
-            </div>
-          )}
+
           {isAdmin && (
             <button
               onClick={() => navigate("/config")}

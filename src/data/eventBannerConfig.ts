@@ -12,11 +12,13 @@ export interface EventBannerConfig {
   endDate: string;          // YYYY-MM-DD
 }
 
-const KEY = "lemos_event_banner_v3";
+// v4: nova chave para "resetar" a configuração em todos os aparelhos.
+// O aviãozinho nasce desligado — só volta se o admin ativar de novo.
+const KEY = "lemos_event_banner_v4";
 
 export function defaultEventBanner(): EventBannerConfig {
   return {
-    enabled: true,
+    enabled: false,
     callToAction: "Clique aqui",
     message: "Feliz dia\nDos Pais",
     videoUrl: "",
@@ -28,6 +30,8 @@ export function defaultEventBanner(): EventBannerConfig {
 
 export function loadEventBanner(): EventBannerConfig {
   try {
+    // limpa configurações antigas (versões anteriores do aviãozinho)
+    try { localStorage.removeItem("lemos_event_banner_v3"); } catch { /* noop */ }
     const raw = localStorage.getItem(KEY);
     if (!raw) return defaultEventBanner();
     const parsed = JSON.parse(raw) as Partial<EventBannerConfig>;

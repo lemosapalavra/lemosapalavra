@@ -5,7 +5,7 @@
  * serão deslogados uma única vez (limpa a sessão do backend e os dados
  * locais do perfil), forçando um novo login/cadastro.
  */
-export const SESSION_EPOCH = "2026-08-08-reset-1";
+export const SESSION_EPOCH = "2026-08-12-reset-2";
 
 const EPOCH_KEY = "lemos_session_epoch";
 
