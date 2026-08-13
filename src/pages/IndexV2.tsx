@@ -123,13 +123,18 @@ export default function IndexV2() {
                   className="flex items-center gap-2 px-1.5 py-1 rounded-full hover:bg-secondary transition"
                   aria-label="Menu do usuário"
                 >
-                  <span className="font-display font-bold text-sm hidden sm:inline max-w-[130px] truncate">{user.name}</span>
                   <img
                     src={user.avatar || iconUsuario}
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = iconUsuario; }}
                     alt={user.name || "Usuário"}
-                    className="w-10 h-10 rounded-full border-2 border-amber-300 object-cover"
+                    className="w-10 h-10 rounded-full border-2 border-amber-300 object-cover bg-white"
                   />
+                  <span className="hidden sm:block text-left leading-tight">
+                    <span className="block font-display font-bold text-sm max-w-[170px] truncate">Seja Bem vindo, {user.name}</span>
+                    <span className="block font-body text-[11px] text-muted-foreground">Deus Seja Louvado!</span>
+                  </span>
                 </button>
+
                 {menuOpen && (
                   <div className="absolute right-0 mt-2 w-44 bg-popover rounded-xl shadow-lg border border-border overflow-hidden z-50">
                     <button
