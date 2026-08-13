@@ -152,7 +152,16 @@ function IndexV1() {
                 </div>
               )}
             </div>
+            <div
+              className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 border border-amber-300 shadow-sm"
+              title="Suas moedinhas"
+              aria-label="Suas moedinhas"
+            >
+              <span className="text-base leading-none">🪙</span>
+              <span className="font-display font-extrabold text-sm text-amber-900 tabular-nums">{coins}</span>
+            </div>
           </div>
+
         )}
       </header>
 
