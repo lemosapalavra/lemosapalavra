@@ -30,6 +30,8 @@ export function defaultEventBanner(): EventBannerConfig {
 
 export function loadEventBanner(): EventBannerConfig {
   try {
+    // limpa configurações antigas (versões anteriores do aviãozinho)
+    try { localStorage.removeItem("lemos_event_banner_v3"); } catch { /* noop */ }
     const raw = localStorage.getItem(KEY);
     if (!raw) return defaultEventBanner();
     const parsed = JSON.parse(raw) as Partial<EventBannerConfig>;
