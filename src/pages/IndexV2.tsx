@@ -149,7 +149,18 @@ export default function IndexV2() {
                 <User className="w-5 h-5 text-foreground" />
               </button>
             )}
+            {user && (
+              <div
+                className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 border border-amber-300"
+                title="Suas moedinhas"
+                aria-label="Suas moedinhas"
+              >
+                <span className="text-base leading-none">🪙</span>
+                <span className="font-display font-extrabold text-sm text-amber-900 tabular-nums">{coins}</span>
+              </div>
+            )}
           </div>
+
         </div>
 
         {/* Menu mobile */}
