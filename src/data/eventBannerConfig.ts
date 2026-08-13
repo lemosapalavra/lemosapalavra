@@ -12,11 +12,13 @@ export interface EventBannerConfig {
   endDate: string;          // YYYY-MM-DD
 }
 
-const KEY = "lemos_event_banner_v3";
+// v4: nova chave para "resetar" a configuração em todos os aparelhos.
+// O aviãozinho nasce desligado — só volta se o admin ativar de novo.
+const KEY = "lemos_event_banner_v4";
 
 export function defaultEventBanner(): EventBannerConfig {
   return {
-    enabled: true,
+    enabled: false,
     callToAction: "Clique aqui",
     message: "Feliz dia\nDos Pais",
     videoUrl: "",
