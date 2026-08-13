@@ -114,25 +114,29 @@ function IndexV1() {
 
         {user && (
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 border border-amber-300 shadow-sm">
-              <span className="text-base leading-none">🪙</span>
-              <span className="font-display font-extrabold text-sm text-amber-900 tabular-nums">{coins}</span>
-            </div>
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setUserMenuOpen((v) => !v)}
                 className="flex items-center gap-2 px-1.5 py-1 rounded-full hover:bg-white/60 transition"
                 aria-label="Menu do usuário"
+                title="Menu do usuário"
               >
-                <span className="font-display font-bold text-xs sm:text-sm text-foreground hidden sm:inline max-w-[140px] truncate">
-                  {user.name}
-                </span>
                 <img loading="lazy" decoding="async"
                   src={user.avatar || iconUsuario}
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = iconUsuario; }}
                   alt={user.name || "Usuário"}
-                  className="w-9 h-9 rounded-full border-2 border-amber-300 shadow object-cover"
+                  className="w-10 h-10 rounded-full border-2 border-amber-300 shadow object-cover bg-white"
                 />
+                <span className="text-left leading-tight">
+                  <span className="block font-display font-bold text-xs sm:text-sm text-foreground max-w-[180px] truncate">
+                    Seja Bem vindo, {user.name}
+                  </span>
+                  <span className="block font-body text-[10px] sm:text-[11px] text-amber-800">
+                    Deus Seja Louvado!
+                  </span>
+                </span>
               </button>
+
               {userMenuOpen && (
                 <div className="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg border border-amber-200 overflow-hidden z-50">
                   <div className="px-3 py-2 border-b border-amber-100">
