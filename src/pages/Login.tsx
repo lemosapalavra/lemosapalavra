@@ -185,28 +185,16 @@ export default function Login() {
   };
 
   const doRegister = async () => {
-    if (!name.trim() || !ageRange || !finalAvatar) {
-      alert("Preencha nome, faixa etária e escolha um avatar.");
-      return;
-    }
-    // Nome de usuário derivado automaticamente do nome informado.
-    const uname =
-      name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "") ||
-      "usuario";
-
-    const phoneErr = validatePhone(phone);
-    if (phoneErr) {
-      setPhoneError(phoneErr);
-      toast({ title: "Celular inválido", description: phoneErr, variant: "destructive" });
+    const validation = validateRegistration({ name, ageRange, avatar: finalAvatar, phone, password });
+    if (validation) {
+      setPhoneError(validation.field === "phone" ? validation.message : null);
+      toast({ title: "Confira o cadastro", description: validation.message, variant: "destructive" });
+      alert(validation.message);
       return;
     }
     setPhoneError(null);
-
-
-    if (!password || password.length < 6) {
-      alert("Informe uma senha com pelo menos 6 caracteres.");
-      return;
-    }
+    // Nome de usuário derivado automaticamente do nome informado.
+    const uname = deriveUsername(name);
     const derivedEmail = phoneToEmail(phone);
     setBusy(true);
     const { data, error } = await supabase.auth.signUp({
@@ -214,27 +202,41 @@ export default function Login() {
       password,
       options: {
         emailRedirectTo: `${window.location.origin}/`,
-        data: { name, username: uname, age_range: ageRange, phone, role: "", avatar: finalAvatar },
+        data: { name: name.trim(), username: uname, age_range: ageRange, phone, role: "", avatar: finalAvatar },
       },
     });
     if (error) {
       setBusy(false);
+      console.error("[cadastro] signUp falhou", {
+        email: derivedEmail,
+        username: uname,
+        status: (error as any)?.status,
+        code: (error as any)?.code,
+        message: error.message,
+      });
       if (/registered|already/i.test(error.message)) {
         alert("Este celular já tem cadastro. Faça login com sua senha.");
         setMode("login");
         setEmail(derivedEmail);
       } else {
+        toast({
+          title: "Não foi possível criar sua conta",
+          description: `${error.message}${(error as any)?.code ? ` (código: ${(error as any).code})` : ""}`,
+          variant: "destructive",
+        });
         alert("Não foi possível criar sua conta: " + error.message);
       }
       return;
     }
     let userId = data.user?.id;
     if (!data.session) {
-      const { data: signIn } = await supabase.auth.signInWithPassword({ email: derivedEmail, password });
-      userId = signIn.user?.id ?? userId;
+      const { data: signIn, error: signInError } = await supabase.auth.signInWithPassword({ email: derivedEmail, password });
+      if (signInError) console.error("[cadastro] login automático falhou", signInError.message);
+      userId = signIn?.user?.id ?? userId;
     }
     setBusy(false);
     if (!userId) {
+      console.warn("[cadastro] conta criada sem sessão ativa", { email: derivedEmail });
       alert("Cadastro criado! Faça login para continuar.");
       setMode("login");
       setEmail(derivedEmail);
@@ -245,6 +247,7 @@ export default function Login() {
     logEvent("Cadastro", { userId, email: derivedEmail });
     navigate("/");
   };
+
 
   const handleForgotPwd = async () => {
     const raw = email.trim();
