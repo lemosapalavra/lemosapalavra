@@ -102,7 +102,7 @@ export default function Login() {
 
   // register-only fields
   const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
+  
   const [ageRange, setAgeRange] = useState<AgeRange | "">("");
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState<string | null>(null);
