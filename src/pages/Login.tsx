@@ -102,7 +102,7 @@ export default function Login() {
 
   // register-only fields
   const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
+  
   const [ageRange, setAgeRange] = useState<AgeRange | "">("");
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState<string | null>(null);
@@ -185,15 +185,15 @@ export default function Login() {
   };
 
   const doRegister = async () => {
-    if (!name || !username.trim() || !ageRange || !finalAvatar) {
-      alert("Preencha nome, nome de usuário, faixa etária e escolha um avatar.");
+    if (!name.trim() || !ageRange || !finalAvatar) {
+      alert("Preencha nome, faixa etária e escolha um avatar.");
       return;
     }
-    const uname = username.trim().replace(/^@+/, "");
-    if (uname.length < 3) {
-      alert("O nome de usuário deve ter pelo menos 3 caracteres.");
-      return;
-    }
+    // Nome de usuário derivado automaticamente do nome informado.
+    const uname =
+      name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "") ||
+      "usuario";
+
     const phoneErr = validatePhone(phone);
     if (phoneErr) {
       setPhoneError(phoneErr);
