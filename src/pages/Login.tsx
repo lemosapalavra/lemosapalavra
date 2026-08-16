@@ -249,18 +249,25 @@ export default function Login() {
         code: (error as any)?.code,
         message: error.message,
       });
+      const code = (error as any)?.code as string | undefined;
       if (/registered|already/i.test(error.message)) {
         alert("Este celular já tem cadastro. Faça login com sua senha.");
         setMode("login");
         setEmail(derivedEmail);
+      } else if (code === "weak_password" || /weak|known to be/i.test(error.message)) {
+        const msg =
+          "Essa senha é muito fácil de adivinhar. Crie outra senha com pelo menos 6 caracteres, misturando letras e números.";
+        toast({ title: "Escolha uma senha mais forte", description: msg, variant: "destructive" });
+        alert(msg);
       } else {
         toast({
           title: "Não foi possível criar sua conta",
-          description: `${error.message}${(error as any)?.code ? ` (código: ${(error as any).code})` : ""}`,
+          description: `${error.message}${code ? ` (código: ${code})` : ""}`,
           variant: "destructive",
         });
         alert("Não foi possível criar sua conta: " + error.message);
       }
+
       return;
     }
     let userId = data.user?.id;
