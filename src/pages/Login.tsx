@@ -90,6 +90,41 @@ export function validatePhone(value: string): string | null {
   return null;
 }
 
+/** Nome de usuário derivado automaticamente do nome informado. */
+export function deriveUsername(name: string): string {
+  return (
+    name
+      .trim()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "") || "usuario"
+  );
+}
+
+export type RegistrationInput = {
+  name: string;
+  ageRange: string;
+  avatar: string;
+  phone: string;
+  password: string;
+};
+
+/** Valida o cadastro. Retorna null quando tudo está correto. */
+export function validateRegistration(
+  input: RegistrationInput,
+): { field: keyof RegistrationInput; message: string } | null {
+  if (!input.name.trim()) return { field: "name", message: "Informe seu nome." };
+  if (!input.ageRange) return { field: "ageRange", message: "Escolha sua faixa etária." };
+  const phoneErr = validatePhone(input.phone);
+  if (phoneErr) return { field: "phone", message: phoneErr };
+  if (!input.password || input.password.length < 6)
+    return { field: "password", message: "Informe uma senha com pelo menos 6 caracteres." };
+  if (!input.avatar) return { field: "avatar", message: "Escolha um avatar para o seu perfil." };
+  return null;
+}
+
+
 export default function Login() {
   const navigate = useNavigate();
   const isAdmin = useIsAdmin();
