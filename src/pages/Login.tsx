@@ -90,6 +90,41 @@ export function validatePhone(value: string): string | null {
   return null;
 }
 
+/** Nome de usuário derivado automaticamente do nome informado. */
+export function deriveUsername(name: string): string {
+  return (
+    name
+      .trim()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "") || "usuario"
+  );
+}
+
+export type RegistrationInput = {
+  name: string;
+  ageRange: string;
+  avatar: string;
+  phone: string;
+  password: string;
+};
+
+/** Valida o cadastro. Retorna null quando tudo está correto. */
+export function validateRegistration(
+  input: RegistrationInput,
+): { field: keyof RegistrationInput; message: string } | null {
+  if (!input.name.trim()) return { field: "name", message: "Informe seu nome." };
+  if (!input.ageRange) return { field: "ageRange", message: "Escolha sua faixa etária." };
+  const phoneErr = validatePhone(input.phone);
+  if (phoneErr) return { field: "phone", message: phoneErr };
+  if (!input.password || input.password.length < 6)
+    return { field: "password", message: "Informe uma senha com pelo menos 6 caracteres." };
+  if (!input.avatar) return { field: "avatar", message: "Escolha um avatar para o seu perfil." };
+  return null;
+}
+
+
 export default function Login() {
   const navigate = useNavigate();
   const isAdmin = useIsAdmin();
@@ -214,18 +249,25 @@ export default function Login() {
         code: (error as any)?.code,
         message: error.message,
       });
+      const code = (error as any)?.code as string | undefined;
       if (/registered|already/i.test(error.message)) {
         alert("Este celular já tem cadastro. Faça login com sua senha.");
         setMode("login");
         setEmail(derivedEmail);
+      } else if (code === "weak_password" || /weak|known to be/i.test(error.message)) {
+        const msg =
+          "Essa senha é muito fácil de adivinhar. Crie outra senha com pelo menos 6 caracteres, misturando letras e números.";
+        toast({ title: "Escolha uma senha mais forte", description: msg, variant: "destructive" });
+        alert(msg);
       } else {
         toast({
           title: "Não foi possível criar sua conta",
-          description: `${error.message}${(error as any)?.code ? ` (código: ${(error as any).code})` : ""}`,
+          description: `${error.message}${code ? ` (código: ${code})` : ""}`,
           variant: "destructive",
         });
         alert("Não foi possível criar sua conta: " + error.message);
       }
+
       return;
     }
     let userId = data.user?.id;
