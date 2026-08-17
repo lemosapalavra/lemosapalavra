@@ -288,6 +288,13 @@ export default function Atividades() {
   const [activeGame, setActiveGame] = useState<string | null>(null);
   const [celebration, setCelebration] = useState({ show: false, message: "", coins: 0, emoji: "🏆" });
 
+  // Avisa a LIA qual atividade está aberta para ela explicar o que fazer.
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: activeGame }));
+    return () => { window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: null })); };
+  }, [activeGame]);
+
+
   const awardCoinsRaw = (amount: number) => {
     const user = JSON.parse(localStorage.getItem("lemos_user") || "{}");
     user.coins = (user.coins || 0) + amount;
