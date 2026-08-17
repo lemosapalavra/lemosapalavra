@@ -389,12 +389,6 @@ export default function Album() {
               </div>
             ))}
           </div>
-          <button
-            onClick={() => window.dispatchEvent(new Event("lemos:open-guide"))}
-            className="mt-2 w-full rounded-full bg-amber-500 px-4 py-2 font-display text-xs font-bold text-white hover:bg-amber-600 transition"
-          >
-            ❓ Ver o guia completo passo a passo
-          </button>
         </div>
       </div>
 

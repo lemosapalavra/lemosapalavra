@@ -9,7 +9,6 @@ import FloatingWhatsapp from "@/components/FloatingWhatsapp";
 import ShareButton from "@/components/ShareButton";
 import WavyBanner from "@/components/WavyBanner";
 import NewContentNotice from "@/components/NewContentNotice";
-import GuideTour from "@/components/GuideTour";
 import MascoteLia from "@/components/MascoteLia";
 import Index from "./pages/Index.tsx";
 import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
@@ -170,7 +169,6 @@ const App = () => (
         <FloatingWhatsapp />
         <NewContentNotice />
         <ShareButton />
-        <GuideTour />
         <MascoteLia />
         <Suspense fallback={<PageFallback />}>
           <Routes>
