@@ -167,7 +167,9 @@ export default function Login() {
     // Registra o IP do dono no primeiro desbloqueio deste aparelho.
     if (ownerDevice && !getOwnerIp()) setOwnerIp(ip);
   }, [ownerDevice, ip]);
-  const ownerUnlocked = ownerDevice && ipMatchesOwner(ip);
+  // Aparelho desbloqueado com ?owner=1 basta para mostrar o atalho: o IP do
+  // dono muda (4G/Wi-Fi) e escondia o botão. O poder real continua no backend.
+  const ownerUnlocked = ownerDevice || ipMatchesOwner(ip);
 
 
   const shortcutUrl = typeof window !== "undefined" ? `${window.location.origin}/` : "";
