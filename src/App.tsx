@@ -171,6 +171,7 @@ const App = () => (
         <NewContentNotice />
         <ShareButton />
         <GuideTour />
+        <MascoteLia />
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />
