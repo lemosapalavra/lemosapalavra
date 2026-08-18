@@ -9,6 +9,7 @@ import AramaicBackdrop from "@/components/AramaicBackdrop";
 import { categories, allStickers, rarityBorder, rarityLabel, type Rarity, type Sticker } from "@/data/stickers";
 import { useCoins, ensureInitialCoins } from "@/hooks/useCoins";
 import albumCapa from "@/assets/album-capa.webp";
+import albumLivro from "@/assets/album-livro.png.asset.json";
 import { albumFaixas } from "@/data/albumFaixas";
 
 import iconInicio from "@/assets/icon-inicio.jpg";
@@ -139,16 +140,39 @@ export default function Album() {
 
   const [pageIdx, setPageIdx] = useState(0);
   const totalPages = pages.length;
-
-
+  // Direção da virada de página ("next" | "prev") para animar a folha girando.
+  const [flip, setFlip] = useState<"next" | "prev" | null>(null);
 
   const goNext = useCallback(() => {
+    setFlip("next");
     setPageIdx((i) => Math.min(i + 1, pages.length - 1));
+    setTimeout(() => setFlip(null), 620);
   }, [pages.length]);
 
   const goPrev = useCallback(() => {
+    setFlip("prev");
     setPageIdx((i) => Math.max(i - 1, 0));
+    setTimeout(() => setFlip(null), 620);
   }, []);
+
+  // Falas contextuais da LIA dentro do álbum (nunca repetidas).
+  useEffect(() => {
+    const ctx = selected
+      ? "album:sticker"
+      : packResult
+      ? "album:pack"
+      : view === "cover"
+      ? "album:cover"
+      : view === "trade"
+      ? "album:trade"
+      : "album:pages";
+    window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: ctx }));
+  }, [view, selected, packResult]);
+
+  useEffect(() => () => {
+    window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: null }));
+  }, []);
+
 
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const onTouchStart = (e: React.TouchEvent) => {
