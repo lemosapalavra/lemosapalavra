@@ -5,8 +5,6 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 // import MysticBackground from "@/components/MysticBackground"; // disabled for performance
-import FloatingWhatsapp from "@/components/FloatingWhatsapp";
-import ShareButton from "@/components/ShareButton";
 import WavyBanner from "@/components/WavyBanner";
 import NewContentNotice from "@/components/NewContentNotice";
 import MascoteLia from "@/components/MascoteLia";
@@ -166,9 +164,7 @@ const App = () => (
         <AnalyticsTracker />
         <RouteMetaSync />
         {/* MysticBackground removed to improve page load performance */}
-        <FloatingWhatsapp />
         <NewContentNotice />
-        <ShareButton />
         <MascoteLia />
         <Suspense fallback={<PageFallback />}>
           <Routes>

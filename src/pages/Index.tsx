@@ -8,7 +8,6 @@ import IndexAdminPanel from "@/components/IndexAdminPanel";
 import EventBannerPlane from "@/components/EventBannerPlane";
 import InstallShortcut from "@/components/InstallShortcut";
 import NewVideosBadge from "@/components/NewVideosBadge";
-import NotifyOptIn from "@/components/NotifyOptIn";
 import IndexV2 from "@/pages/IndexV2";
 import { loadSiteVersion, SITE_VERSION_EVENT } from "@/data/siteVersion";
 
@@ -181,7 +180,7 @@ function IndexV1() {
 
           {user && (
             <div className="mt-6 flex justify-center">
-              <div className="flex flex-col items-center gap-2"><NewVideosBadge /><NotifyOptIn /></div>
+              <div className="flex flex-col items-center gap-2"><NewVideosBadge /></div>
             </div>
           )}
 
