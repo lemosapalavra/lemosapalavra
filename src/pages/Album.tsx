@@ -360,16 +360,38 @@ export default function Album() {
           0%,100% { transform: scale(1); text-shadow: 0 4px 12px rgba(180,90,0,0.3); }
           50% { transform: scale(1.04); text-shadow: 0 8px 20px rgba(180,90,0,0.5); }
         }
+        @keyframes leafNext {
+          0%   { transform: rotateY(0deg); opacity: 1; }
+          45%  { transform: rotateY(-88deg); opacity: 0.35; }
+          55%  { transform: rotateY(88deg); opacity: 0.35; }
+          100% { transform: rotateY(0deg); opacity: 1; }
+        }
+        @keyframes leafPrev {
+          0%   { transform: rotateY(0deg); opacity: 1; }
+          45%  { transform: rotateY(88deg); opacity: 0.35; }
+          55%  { transform: rotateY(-88deg); opacity: 0.35; }
+          100% { transform: rotateY(0deg); opacity: 1; }
+        }
       `}</style>
 
-      {/* Single page area */}
+      {/* Single page area — sobre o fundo de livro aberto */}
       <div
         className="flex-1 flex items-stretch justify-center p-2 sm:p-4 overflow-hidden select-none"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
+        style={{ perspective: "1600px" }}
       >
-        <div className="relative w-full max-w-2xl flex items-stretch justify-center">
-          <div className="relative flex-1">
+        <div
+          className="relative w-full max-w-2xl flex items-stretch justify-center bg-center bg-no-repeat bg-contain sm:bg-cover rounded-xl"
+          style={{ backgroundImage: `url(${albumLivro.url})` }}
+        >
+          <div
+            className="relative flex-1 px-3 py-4 sm:px-8 sm:py-6"
+            style={{
+              transformStyle: "preserve-3d",
+              animation: flip ? `${flip === "next" ? "leafNext" : "leafPrev"} 0.6s ease-in-out` : undefined,
+            }}
+          >
             <PageShell side="left">
               {renderPage(currentPage, owned, (s) => (owned[s.id] || 0) > 0 && setSelected(s))}
 
@@ -377,6 +399,7 @@ export default function Album() {
           </div>
         </div>
       </div>
+
 
       <div className="flex items-center justify-between px-4 pb-4 gap-3">
         <button onClick={goPrev} disabled={pageIdx === 0}
