@@ -924,6 +924,9 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
     const img = ctx.getImageData(0, 0, w, h);
     const data = img.data;
     const [r, g, b] = hexToRgb(color);
+    // Se a área já estiver pintada, o clique apenas SUBSTITUI a cor (repintar).
+    const startP = (sy * w + sx) * 4;
+    const alreadyPainted = data[startP + 3] > 0;
     const visited = new Uint8Array(w * h);
     const stack: number[] = [sx, sy];
     while (stack.length) {
@@ -938,7 +941,8 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
       stack.push(x + 1, y, x - 1, y, x, y + 1, x, y - 1);
     }
     ctx.putImageData(img, 0, 0);
-    setFills((n) => n + 1);
+    if (!alreadyPainted) setFills((n) => n + 1);
+
   };
 
   const onCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
