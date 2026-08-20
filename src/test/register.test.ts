@@ -6,7 +6,6 @@ const valid = {
   ageRange: "adultos",
   avatar: "/assets/avatar-jesus.png",
   phone: "(15) 99665-5568",
-  password: "senha123",
 };
 
 describe("deriveUsername", () => {
@@ -32,7 +31,6 @@ describe("validateRegistration", () => {
     expect(validateRegistration({ ...valid, ageRange: "" })?.message).toMatch(/faixa etária/i);
     expect(validateRegistration({ ...valid, avatar: "" })?.message).toMatch(/avatar/i);
     expect(validateRegistration({ ...valid, phone: "" })?.field).toBe("phone");
-    expect(validateRegistration({ ...valid, password: "123" })?.message).toMatch(/6 caracteres/);
   });
 });
 
@@ -66,7 +64,7 @@ describe("criação de conta (integração com o cliente de auth)", () => {
 
     const { data, error } = await fakeSupabase.auth.signUp({
       email,
-      password: valid.password,
+      password: "lemos-15996655568-app",
       options: {
         emailRedirectTo: "http://localhost/",
         data: {

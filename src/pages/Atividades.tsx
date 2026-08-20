@@ -399,8 +399,8 @@ export default function Atividades() {
       <WavyBanner
         emoji="🔄"
         lines={[
-          "Volte quando puder, saiba que as atividades se alternam dia a dia.",
-          "E você ainda ganha moedas para comprar as figurinhas do Álbum.",
+          "Atividades alternadas de dia a dia.",
+          "Complete-as e ganhe moedas para compra das figurinhas do Álbum.",
         ]}
       />
 

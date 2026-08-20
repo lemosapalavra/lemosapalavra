@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Shield } from "lucide-react";
+import { Shield } from "lucide-react";
 import { setAdminMode, useIsAdmin } from "@/hooks/useIsAdmin";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -102,12 +102,16 @@ export function deriveUsername(name: string): string {
   );
 }
 
+/** Senha interna determinística — o usuário nunca digita senha. */
+export function derivePassword(phone: string): string {
+  return `lemos-${phone.replace(/\D/g, "")}-app`;
+}
+
 export type RegistrationInput = {
   name: string;
   ageRange: string;
   avatar: string;
   phone: string;
-  password: string;
 };
 
 /** Valida o cadastro. Retorna null quando tudo está correto. */
@@ -118,11 +122,10 @@ export function validateRegistration(
   if (!input.ageRange) return { field: "ageRange", message: "Escolha sua faixa etária." };
   const phoneErr = validatePhone(input.phone);
   if (phoneErr) return { field: "phone", message: phoneErr };
-  if (!input.password || input.password.length < 6)
-    return { field: "password", message: "Informe uma senha com pelo menos 6 caracteres." };
   if (!input.avatar) return { field: "avatar", message: "Escolha um avatar para o seu perfil." };
   return null;
 }
+
 
 
 export default function Login() {
@@ -130,8 +133,6 @@ export default function Login() {
   const isAdmin = useIsAdmin();
   const [mode, setMode] = useState<Mode>("login");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPwd, setShowPwd] = useState(false);
   const [remember, setRemember] = useState(true);
   const [busy, setBusy] = useState(false);
 
@@ -188,11 +189,11 @@ export default function Login() {
 
   const finalAvatar = customAvatar || selectedAvatar;
 
-  const doLogin = async (overrideEmail?: string, overridePassword?: string) => {
+  const doLogin = async (overrideEmail?: string) => {
     const raw = (overrideEmail ?? email).trim();
-    const pw = overridePassword ?? password;
-    
-    if (!raw || !pw) { alert("Informe seu celular e a senha."); return; }
+
+    if (!name.trim()) { alert("Informe seu nome."); return; }
+    if (!raw) { alert("Informe seu celular."); return; }
     // Aceita celular (padrão) ou e-mail (compatibilidade com contas antigas).
     const em = raw.includes("@") ? raw : phoneToEmail(raw);
     if (!raw.includes("@")) {
@@ -207,11 +208,11 @@ export default function Login() {
     setBusy(true);
     const { data, error } = await supabase.auth.signInWithPassword({
       email: em,
-      password: pw,
+      password: derivePassword(raw),
     });
     setBusy(false);
     if (error || !data.user) {
-      alert("Celular ou senha incorretos. Se ainda não tem cadastro, clique em CRIAR UMA CONTA.");
+      alert("Não encontramos sua conta com esse celular. Clique em CRIAR UMA CONTA.");
       return;
     }
     await hydrateLocalProfile(data.user.id, data.user.email || em);
@@ -222,7 +223,7 @@ export default function Login() {
   };
 
   const doRegister = async () => {
-    const validation = validateRegistration({ name, ageRange, avatar: finalAvatar, phone, password });
+    const validation = validateRegistration({ name, ageRange, avatar: finalAvatar, phone });
     if (validation) {
       setPhoneError(validation.field === "phone" ? validation.message : null);
       toast({ title: "Confira o cadastro", description: validation.message, variant: "destructive" });
@@ -233,10 +234,11 @@ export default function Login() {
     // Nome de usuário derivado automaticamente do nome informado.
     const uname = deriveUsername(name);
     const derivedEmail = phoneToEmail(phone);
+    const derivedPassword = derivePassword(phone);
     setBusy(true);
     const { data, error } = await supabase.auth.signUp({
       email: derivedEmail,
-      password,
+      password: derivedPassword,
       options: {
         emailRedirectTo: `${window.location.origin}/`,
         data: { name: name.trim(), username: uname, age_range: ageRange, phone, role: "", avatar: finalAvatar },
@@ -253,14 +255,9 @@ export default function Login() {
       });
       const code = (error as any)?.code as string | undefined;
       if (/registered|already/i.test(error.message)) {
-        alert("Este celular já tem cadastro. Faça login com sua senha.");
         setMode("login");
-        setEmail(derivedEmail);
-      } else if (code === "weak_password" || /weak|known to be/i.test(error.message)) {
-        const msg =
-          "Essa senha é muito fácil de adivinhar. Crie outra senha com pelo menos 6 caracteres, misturando letras e números.";
-        toast({ title: "Escolha uma senha mais forte", description: msg, variant: "destructive" });
-        alert(msg);
+        setEmail(phone);
+        await doLogin(phone);
       } else {
         toast({
           title: "Não foi possível criar sua conta",
@@ -274,16 +271,16 @@ export default function Login() {
     }
     let userId = data.user?.id;
     if (!data.session) {
-      const { data: signIn, error: signInError } = await supabase.auth.signInWithPassword({ email: derivedEmail, password });
+      const { data: signIn, error: signInError } = await supabase.auth.signInWithPassword({ email: derivedEmail, password: derivedPassword });
       if (signInError) console.error("[cadastro] login automático falhou", signInError.message);
       userId = signIn?.user?.id ?? userId;
     }
     setBusy(false);
     if (!userId) {
       console.warn("[cadastro] conta criada sem sessão ativa", { email: derivedEmail });
-      alert("Cadastro criado! Faça login para continuar.");
+      alert("Cadastro criado! Entre com seu nome e celular.");
       setMode("login");
-      setEmail(derivedEmail);
+      setEmail(phone);
       return;
     }
     await hydrateLocalProfile(userId, derivedEmail);
@@ -293,22 +290,6 @@ export default function Login() {
   };
 
 
-  const handleForgotPwd = async () => {
-    const raw = email.trim();
-    // Contas criadas com celular usam um e-mail interno que não recebe mensagens.
-    if (!raw.includes("@")) {
-      alert(
-        "Sua conta foi criada com celular, então não é possível enviar link por e-mail.\n\n" +
-        "Escreva para lemosapalavra@gmail.com informando seu celular e nome de usuário que ajudamos você a recuperar o acesso."
-      );
-      return;
-    }
-    const { error } = await supabase.auth.resetPasswordForEmail(raw, {
-      redirectTo: `${window.location.origin}/login`,
-    });
-    if (error) alert("Não foi possível enviar o e-mail: " + error.message);
-    else alert("📧 Enviamos um link para redefinir sua senha. Verifique seu e-mail.");
-  };
 
   const handleGoogle = async () => {
     try {
@@ -413,8 +394,9 @@ export default function Login() {
                 </Field>
 
                 <p className="text-xs font-body text-muted-foreground -mt-1">
-                  Usamos seu celular apenas para identificar sua conta e recuperar a senha.
+                  Usamos seu celular apenas para identificar sua conta. Não pedimos senha.
                 </p>
+
 
 
 
@@ -423,7 +405,7 @@ export default function Login() {
 
             {mode === "login" && (
               <>
-                <Field label="Nome (opcional)">
+                <Field label="Nome *">
                   <input
                     type="text"
                     value={name}
@@ -456,47 +438,10 @@ export default function Login() {
             )}
 
 
-            <Field label="Senha *">
-              <div className="relative">
-                <input
-                  type={showPwd ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-white border border-amber-300/60 rounded-lg px-3 py-2.5 pr-10 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
-                  placeholder="••••••••"
-                  minLength={6}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPwd((s) => !s)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                  aria-label={showPwd ? "Ocultar senha" : "Mostrar senha"}
-                >
-                  {showPwd ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </Field>
+            <p className="text-xs font-body text-muted-foreground">
+              Sem senha: usamos seu nome e celular para identificar sua conta.
+            </p>
 
-            {mode === "login" && (
-              <div className="flex items-center justify-between text-xs">
-                <label className="flex items-center gap-2 cursor-pointer select-none">
-                  <input
-                    type="checkbox"
-                    checked={remember}
-                    onChange={(e) => setRemember(e.target.checked)}
-                    className="accent-rose-600 w-4 h-4"
-                  />
-                  <span className="font-body text-foreground">Manter-me logado</span>
-                </label>
-                <button
-                  type="button"
-                  onClick={handleForgotPwd}
-                  className="text-rose-700 font-body underline underline-offset-2 hover:text-rose-800"
-                >
-                  Esqueci minha senha
-                </button>
-              </div>
-            )}
 
             {mode === "register" && (
               <>
