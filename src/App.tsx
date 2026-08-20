@@ -189,8 +189,9 @@ const App = () => (
           <WavyBanner
             emoji="✝️"
             lines={[
-              "Este projeto é cristão, sem interesses financeiros, sem vínculo político ou denominacional,",
-              "dedicado a compartilhar o Evangelho de Jesus Cristo simples para todas as gerações.",
+              "Projeto cristão, sem interesses financeiros, sem vínculo político.",
+              "dedicado ao Evangelho de Jesus Cristo para todas as gerações.",
+              "Faça parte, compartilhe!",
             ]}
           />
         </footer>
