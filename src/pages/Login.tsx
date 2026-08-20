@@ -188,11 +188,11 @@ export default function Login() {
 
   const finalAvatar = customAvatar || selectedAvatar;
 
-  const doLogin = async (overrideEmail?: string, overridePassword?: string) => {
+  const doLogin = async (overrideEmail?: string) => {
     const raw = (overrideEmail ?? email).trim();
-    const pw = overridePassword ?? password;
-    
-    if (!raw || !pw) { alert("Informe seu celular e a senha."); return; }
+
+    if (!name.trim()) { alert("Informe seu nome."); return; }
+    if (!raw) { alert("Informe seu celular."); return; }
     // Aceita celular (padrão) ou e-mail (compatibilidade com contas antigas).
     const em = raw.includes("@") ? raw : phoneToEmail(raw);
     if (!raw.includes("@")) {
@@ -207,11 +207,11 @@ export default function Login() {
     setBusy(true);
     const { data, error } = await supabase.auth.signInWithPassword({
       email: em,
-      password: pw,
+      password: derivePassword(raw),
     });
     setBusy(false);
     if (error || !data.user) {
-      alert("Celular ou senha incorretos. Se ainda não tem cadastro, clique em CRIAR UMA CONTA.");
+      alert("Não encontramos sua conta com esse celular. Clique em CRIAR UMA CONTA.");
       return;
     }
     await hydrateLocalProfile(data.user.id, data.user.email || em);
@@ -222,7 +222,7 @@ export default function Login() {
   };
 
   const doRegister = async () => {
-    const validation = validateRegistration({ name, ageRange, avatar: finalAvatar, phone, password });
+    const validation = validateRegistration({ name, ageRange, avatar: finalAvatar, phone });
     if (validation) {
       setPhoneError(validation.field === "phone" ? validation.message : null);
       toast({ title: "Confira o cadastro", description: validation.message, variant: "destructive" });
@@ -233,10 +233,11 @@ export default function Login() {
     // Nome de usuário derivado automaticamente do nome informado.
     const uname = deriveUsername(name);
     const derivedEmail = phoneToEmail(phone);
+    const derivedPassword = derivePassword(phone);
     setBusy(true);
     const { data, error } = await supabase.auth.signUp({
       email: derivedEmail,
-      password,
+      password: derivedPassword,
       options: {
         emailRedirectTo: `${window.location.origin}/`,
         data: { name: name.trim(), username: uname, age_range: ageRange, phone, role: "", avatar: finalAvatar },
@@ -253,14 +254,9 @@ export default function Login() {
       });
       const code = (error as any)?.code as string | undefined;
       if (/registered|already/i.test(error.message)) {
-        alert("Este celular já tem cadastro. Faça login com sua senha.");
         setMode("login");
-        setEmail(derivedEmail);
-      } else if (code === "weak_password" || /weak|known to be/i.test(error.message)) {
-        const msg =
-          "Essa senha é muito fácil de adivinhar. Crie outra senha com pelo menos 6 caracteres, misturando letras e números.";
-        toast({ title: "Escolha uma senha mais forte", description: msg, variant: "destructive" });
-        alert(msg);
+        setEmail(phone);
+        await doLogin(phone);
       } else {
         toast({
           title: "Não foi possível criar sua conta",
@@ -274,16 +270,16 @@ export default function Login() {
     }
     let userId = data.user?.id;
     if (!data.session) {
-      const { data: signIn, error: signInError } = await supabase.auth.signInWithPassword({ email: derivedEmail, password });
+      const { data: signIn, error: signInError } = await supabase.auth.signInWithPassword({ email: derivedEmail, password: derivedPassword });
       if (signInError) console.error("[cadastro] login automático falhou", signInError.message);
       userId = signIn?.user?.id ?? userId;
     }
     setBusy(false);
     if (!userId) {
       console.warn("[cadastro] conta criada sem sessão ativa", { email: derivedEmail });
-      alert("Cadastro criado! Faça login para continuar.");
+      alert("Cadastro criado! Entre com seu nome e celular.");
       setMode("login");
-      setEmail(derivedEmail);
+      setEmail(phone);
       return;
     }
     await hydrateLocalProfile(userId, derivedEmail);
@@ -291,6 +287,7 @@ export default function Login() {
     logEvent("Cadastro", { userId, email: derivedEmail });
     navigate("/");
   };
+
 
 
   const handleForgotPwd = async () => {
