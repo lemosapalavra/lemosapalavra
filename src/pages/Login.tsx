@@ -102,12 +102,16 @@ export function deriveUsername(name: string): string {
   );
 }
 
+/** Senha interna determinística — o usuário nunca digita senha. */
+export function derivePassword(phone: string): string {
+  return `lemos-${phone.replace(/\D/g, "")}-app`;
+}
+
 export type RegistrationInput = {
   name: string;
   ageRange: string;
   avatar: string;
   phone: string;
-  password: string;
 };
 
 /** Valida o cadastro. Retorna null quando tudo está correto. */
@@ -118,11 +122,10 @@ export function validateRegistration(
   if (!input.ageRange) return { field: "ageRange", message: "Escolha sua faixa etária." };
   const phoneErr = validatePhone(input.phone);
   if (phoneErr) return { field: "phone", message: phoneErr };
-  if (!input.password || input.password.length < 6)
-    return { field: "password", message: "Informe uma senha com pelo menos 6 caracteres." };
   if (!input.avatar) return { field: "avatar", message: "Escolha um avatar para o seu perfil." };
   return null;
 }
+
 
 
 export default function Login() {
