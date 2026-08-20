@@ -62,10 +62,31 @@ export default function MascoteLia() {
     return () => window.removeEventListener("lemos:lia-context", onCtx);
   }, []);
 
-  const message =
-    (context && CONTEXT_TIPS[context]) || PAGE_TIPS[location.pathname] || PAGE_TIPS["/"];
+  // Enquanto não houver usuário (site em tons de cinza), a LIA fala apenas
+  // sobre como entrar ou criar a conta.
+  const [logged, setLogged] = useState<boolean>(() => {
+    try { return !!localStorage.getItem("lemos_user"); } catch { return false; }
+  });
+  useEffect(() => {
+    const sync = () => { try { setLogged(!!localStorage.getItem("lemos_user")); } catch {} };
+    sync();
+    window.addEventListener("storage", sync);
+    window.addEventListener("lemos:coins", sync);
+    return () => {
+      window.removeEventListener("storage", sync);
+      window.removeEventListener("lemos:coins", sync);
+    };
+  }, [location.pathname]);
+
+  const LOGIN_TIP =
+    "Oi! Para começar, toque em Entrar: é só o seu nome e o seu celular. Ainda não tem conta? Toque em Criar uma conta.";
+
+  const message = !logged
+    ? LOGIN_TIP
+    : (context && CONTEXT_TIPS[context]) || PAGE_TIPS[location.pathname] || PAGE_TIPS["/"];
 
   const avatar = isHome && !context ? lia1.url : lia2.url;
+
 
   if (!expanded) {
     return (
