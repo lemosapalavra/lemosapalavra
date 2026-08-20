@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Shield } from "lucide-react";
+import { Shield } from "lucide-react";
 import { setAdminMode, useIsAdmin } from "@/hooks/useIsAdmin";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -133,8 +133,6 @@ export default function Login() {
   const isAdmin = useIsAdmin();
   const [mode, setMode] = useState<Mode>("login");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPwd, setShowPwd] = useState(false);
   const [remember, setRemember] = useState(true);
   const [busy, setBusy] = useState(false);
 
@@ -292,23 +290,6 @@ export default function Login() {
   };
 
 
-
-  const handleForgotPwd = async () => {
-    const raw = email.trim();
-    // Contas criadas com celular usam um e-mail interno que não recebe mensagens.
-    if (!raw.includes("@")) {
-      alert(
-        "Sua conta foi criada com celular, então não é possível enviar link por e-mail.\n\n" +
-        "Escreva para lemosapalavra@gmail.com informando seu celular e nome de usuário que ajudamos você a recuperar o acesso."
-      );
-      return;
-    }
-    const { error } = await supabase.auth.resetPasswordForEmail(raw, {
-      redirectTo: `${window.location.origin}/login`,
-    });
-    if (error) alert("Não foi possível enviar o e-mail: " + error.message);
-    else alert("📧 Enviamos um link para redefinir sua senha. Verifique seu e-mail.");
-  };
 
   const handleGoogle = async () => {
     try {
