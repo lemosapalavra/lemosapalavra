@@ -413,8 +413,9 @@ export default function Login() {
                 </Field>
 
                 <p className="text-xs font-body text-muted-foreground -mt-1">
-                  Usamos seu celular apenas para identificar sua conta e recuperar a senha.
+                  Usamos seu celular apenas para identificar sua conta. Não pedimos senha.
                 </p>
+
 
 
 
