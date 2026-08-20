@@ -423,7 +423,7 @@ export default function Login() {
 
             {mode === "login" && (
               <>
-                <Field label="Nome (opcional)">
+                <Field label="Nome *">
                   <input
                     type="text"
                     value={name}
