@@ -456,47 +456,10 @@ export default function Login() {
             )}
 
 
-            <Field label="Senha *">
-              <div className="relative">
-                <input
-                  type={showPwd ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-white border border-amber-300/60 rounded-lg px-3 py-2.5 pr-10 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
-                  placeholder="••••••••"
-                  minLength={6}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPwd((s) => !s)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                  aria-label={showPwd ? "Ocultar senha" : "Mostrar senha"}
-                >
-                  {showPwd ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </Field>
+            <p className="text-xs font-body text-muted-foreground">
+              Sem senha: usamos seu nome e celular para identificar sua conta.
+            </p>
 
-            {mode === "login" && (
-              <div className="flex items-center justify-between text-xs">
-                <label className="flex items-center gap-2 cursor-pointer select-none">
-                  <input
-                    type="checkbox"
-                    checked={remember}
-                    onChange={(e) => setRemember(e.target.checked)}
-                    className="accent-rose-600 w-4 h-4"
-                  />
-                  <span className="font-body text-foreground">Manter-me logado</span>
-                </label>
-                <button
-                  type="button"
-                  onClick={handleForgotPwd}
-                  className="text-rose-700 font-body underline underline-offset-2 hover:text-rose-800"
-                >
-                  Esqueci minha senha
-                </button>
-              </div>
-            )}
 
             {mode === "register" && (
               <>
