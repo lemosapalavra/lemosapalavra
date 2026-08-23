@@ -374,17 +374,14 @@ export default function Album() {
         }
       `}</style>
 
-      {/* Single page area — sobre o fundo de livro aberto */}
+      {/* Single page area + evolução do álbum ao lado */}
       <div
-        className="flex-1 flex items-stretch justify-center p-2 sm:p-4 overflow-hidden select-none"
+        className="flex-1 flex items-stretch justify-center gap-3 p-2 sm:p-4 overflow-hidden select-none"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
         style={{ perspective: "1600px" }}
       >
-        <div
-          className="relative w-full max-w-2xl flex items-stretch justify-center bg-center bg-no-repeat bg-contain sm:bg-cover rounded-xl"
-          style={{ backgroundImage: `url(${albumLivro.url})` }}
-        >
+        <div className="relative w-full max-w-2xl flex items-stretch justify-center rounded-xl">
           <div
             className="relative flex-1 px-3 py-4 sm:px-8 sm:py-6"
             style={{
@@ -398,7 +395,10 @@ export default function Album() {
             </PageShell>
           </div>
         </div>
+
+        <AlbumProgressAside page={currentPage} owned={owned} totalOwned={totalOwned} total={allStickers.length} />
       </div>
+
 
 
       <div className="flex items-center justify-between px-4 pb-4 gap-3">
