@@ -1230,26 +1230,30 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
    formando uma linha reta; se as letras formarem uma palavra da
    lista, ela é marcada como encontrada.
 ========================================================= */
-type CacaCard = { title: string; words: string[]; size: number; reference?: string };
+type CacaCard = { title: string; words: string[]; size: number; reference?: string; image: string };
 const cacaCards: CacaCard[] = [
   {
     title: "Heróis da Bíblia",
     size: 6,
     words: ["JESUS", "DAVI", "NOE", "JOSE"],
     reference: "Fácil para crianças",
+    image: imgDavi,
   },
   {
     title: "O Natal",
     size: 6,
     words: ["JESUS", "MARIA", "ANJO", "JOSE"],
     reference: "Lucas 2",
+    image: imgCriacao,
   },
   {
     title: "Bichinhos da Arca",
     size: 6,
     words: ["NOE", "LEAO", "URSO", "POMBA"],
     reference: "Gênesis 7",
+    image: imgNoe,
   },
+
 ];
 
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
