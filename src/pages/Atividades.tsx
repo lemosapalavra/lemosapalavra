@@ -1403,22 +1403,51 @@ function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgSt
           ]}
         />
 
-        {/* Card selector */}
-        <div className="flex gap-2 mb-3 flex-wrap justify-center">
+        {/* Card selector — com imagem do tema (mesmo padrão do quebra-cabeça) */}
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-3">
           {cacaCards.map((c) => (
             <button
               key={c.title}
               onClick={() => switchCard(c)}
-              className={`px-3 py-1.5 rounded-full text-xs font-display font-bold border-2 transition ${
+              className={`rounded-2xl overflow-hidden border-4 transition text-center ${
                 card.title === c.title
-                  ? "bg-amber-500 text-white border-amber-600 shadow"
-                  : "bg-white text-amber-900 border-amber-300 hover:bg-amber-50"
+                  ? "border-amber-600 shadow-xl scale-[1.02]"
+                  : "border-amber-200 hover:border-amber-400"
               }`}
             >
-              {c.title}
+              <img
+                src={c.image}
+                alt={c.title}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-16 sm:h-24 object-cover"
+              />
+              <span
+                className={`block px-1 py-1.5 text-[11px] sm:text-xs font-display font-bold ${
+                  card.title === c.title ? "bg-amber-500 text-white" : "bg-white text-amber-900"
+                }`}
+              >
+                {c.title}
+              </span>
             </button>
           ))}
         </div>
+
+        {/* Ilustração do tema atual */}
+        <div className="mb-3 flex items-center gap-3 rounded-2xl bg-white/85 border-2 border-amber-200 p-2 shadow">
+          <img
+            src={card.image}
+            alt={card.title}
+            loading="lazy"
+            decoding="async"
+            className="w-16 h-16 rounded-xl object-cover border-2 border-amber-300 shrink-0"
+          />
+          <div className="min-w-0 text-left">
+            <p className="font-display font-extrabold text-amber-950 text-sm">{card.title}</p>
+            {card.reference && <p className="font-body text-xs text-amber-800">{card.reference}</p>}
+          </div>
+        </div>
+
 
         {/* Letter grid */}
         <div className="bg-white rounded-2xl border-4 border-amber-300 shadow-2xl p-2 sm:p-3 mb-4 overflow-hidden">
