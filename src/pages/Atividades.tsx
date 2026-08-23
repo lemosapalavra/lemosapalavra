@@ -136,17 +136,20 @@ import mem09 from "@/assets/album/generated/criacao-1.webp";
 import mem10 from "@/assets/album/generated/criacao-4.webp";
 import mem11 from "@/assets/album/generated/criacao-5.webp";
 import mem12 from "@/assets/album/generated/criacao-8.webp";
-const memoryImages = [mem01, mem02, mem03, mem04, mem05, mem06, mem07, mem08, mem09, mem10, mem11, mem12];
+// Cenas bíblicas (mesmo padrão visual do quebra-cabeça) + figurinhas 3D.
+const memoryScenes = [imgCriacao, imgAdaoEva, imgNoe, imgNoe2, imgDavi, imgMoises, imgMoises2, imgMandamentos];
+const memoryImages = [...memoryScenes, mem01, mem02, mem03, mem04, mem05, mem06, mem07, mem08, mem09, mem10, mem11, mem12];
 const memorySets = {
   facil:   memoryImages.slice(0, 6),
   medio:   memoryImages.slice(0, 8),
   dificil: memoryImages.slice(0, 12),
 };
 const memoryConfig = {
-  facil: { cols: 4, label: "Fácil (12 cartas)", coins: 3 },
-  medio: { cols: 4, label: "Médio (16 cartas)", coins: 4 },
-  dificil: { cols: 6, label: "Difícil (24 cartas)", coins: 5 },
+  facil: { cols: 4, label: "Fácil (12 cartas)", coins: 3, image: imgCriacao, theme: "Criação e Gênesis" },
+  medio: { cols: 4, label: "Médio (16 cartas)", coins: 4, image: imgDavi, theme: "Heróis da Bíblia" },
+  dificil: { cols: 6, label: "Difícil (24 cartas)", coins: 5, image: imgMandamentos, theme: "Antigo Testamento" },
 };
+
 
 /* =========================================================
    7 ERROS — imagens prontas (duas cenas empilhadas verticalmente)
