@@ -107,9 +107,17 @@ export default function Devocionais() {
             >
               <div className="absolute right-4 top-4 w-20 h-20 rounded-full bg-white/40 blur-2xl" />
               <div className="relative flex flex-col sm:flex-row sm:items-center gap-4">
-                <div className={`w-20 h-20 rounded-[24px] bg-gradient-to-br ${devos[todayIdx].accent} flex items-center justify-center text-5xl shadow-lg shrink-0 mx-auto sm:mx-0`}>
-                  {devos[todayIdx].emoji}
+                <div className={`relative w-24 h-24 rounded-[24px] bg-gradient-to-br ${devos[todayIdx].accent} shadow-lg shrink-0 mx-auto sm:mx-0 overflow-hidden`}>
+                  <img
+                    src={devos[todayIdx].image}
+                    alt={devos[todayIdx].title}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover"
+                  />
+                  <span className="absolute -bottom-1 -right-1 text-3xl drop-shadow">{devos[todayIdx].emoji}</span>
                 </div>
+
                 <div className="flex-1 text-center sm:text-left">
                   <div className="inline-flex items-center gap-2 font-display text-xs font-extrabold bg-white/80 text-amber-950 px-3 py-1 rounded-full shadow mb-2">
                     🌟 Devocional de hoje
@@ -135,9 +143,11 @@ export default function Devocionais() {
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${d.accent} flex items-center justify-center text-3xl shadow-md shrink-0`}>
-                      {d.emoji}
+                    <div className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${d.accent} shadow-md shrink-0 overflow-hidden`}>
+                      <img src={d.image} alt={d.title} loading="lazy" decoding="async" className="w-full h-full object-cover" />
+                      <span className="absolute -bottom-0.5 -right-0.5 text-xl drop-shadow">{d.emoji}</span>
                     </div>
+
                     <div className="flex-1 min-w-0">
                       <h3 className="font-display text-lg font-extrabold text-foreground">{d.title}</h3>
                       <p className="font-display text-primary text-xs font-bold mt-0.5">📜 {d.verse}</p>

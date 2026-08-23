@@ -127,9 +127,11 @@ export default function PedidosOracao() {
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`w-12 h-12 shrink-0 rounded-2xl bg-gradient-to-br ${tipo.color} flex items-center justify-center text-2xl shadow-md`}>
-                      {tipo.emoji}
+                    <div className={`relative w-14 h-14 shrink-0 rounded-2xl bg-gradient-to-br ${tipo.color} shadow-md overflow-hidden`}>
+                      <img src={tipo.image} alt={tipo.label} loading="lazy" decoding="async" className="w-full h-full object-cover" />
+                      <span className="absolute -bottom-0.5 -right-0.5 text-lg drop-shadow">{tipo.emoji}</span>
                     </div>
+
                     <div>
                       <p className="font-display text-sm font-extrabold text-foreground">{tipo.label}</p>
                       <p className="font-body text-xs text-muted-foreground mt-1 leading-relaxed">{tipo.desc}</p>
