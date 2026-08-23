@@ -697,14 +697,27 @@ function MemoryGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
           <div className="grid gap-3">
             {(Object.keys(memoryConfig) as (keyof typeof memoryConfig)[]).map((k) => (
               <button key={k} onClick={() => start(k)}
-                className="bg-gradient-to-r from-purple-400 to-indigo-500 text-white rounded-2xl p-5 shadow-lg hover:scale-[1.03] transition-transform font-display text-lg font-bold text-left">
-                {memoryConfig[k].label}
-                <span className="block text-xs opacity-90 font-body font-normal mt-1">
-                  Recompensa base: {memoryConfig[k].coins} 🪙 (+ bônus se for rápido!)
+                className="bg-gradient-to-r from-purple-400 to-indigo-500 text-white rounded-2xl p-4 shadow-lg hover:scale-[1.03] transition-transform font-display text-lg font-bold text-left flex items-center gap-4">
+                <img
+                  src={memoryConfig[k].image}
+                  alt={memoryConfig[k].theme}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-4 border-white/70 shadow-md shrink-0"
+                />
+                <span className="min-w-0">
+                  {memoryConfig[k].label}
+                  <span className="block text-xs opacity-90 font-body font-normal mt-1">
+                    Cenas de {memoryConfig[k].theme}
+                  </span>
+                  <span className="block text-xs opacity-90 font-body font-normal">
+                    Recompensa base: {memoryConfig[k].coins} 🪙 (+ bônus se for rápido!)
+                  </span>
                 </span>
               </button>
             ))}
           </div>
+
           <p className="text-center text-xs text-muted-foreground font-body mt-4">
             💡 Quanto menos jogadas, mais moedinhas você ganha!
           </p>
