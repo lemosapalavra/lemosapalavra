@@ -136,17 +136,20 @@ import mem09 from "@/assets/album/generated/criacao-1.webp";
 import mem10 from "@/assets/album/generated/criacao-4.webp";
 import mem11 from "@/assets/album/generated/criacao-5.webp";
 import mem12 from "@/assets/album/generated/criacao-8.webp";
-const memoryImages = [mem01, mem02, mem03, mem04, mem05, mem06, mem07, mem08, mem09, mem10, mem11, mem12];
+// Cenas bíblicas (mesmo padrão visual do quebra-cabeça) + figurinhas 3D.
+const memoryScenes = [imgCriacao, imgAdaoEva, imgNoe, imgNoe2, imgDavi, imgMoises, imgMoises2, imgMandamentos];
+const memoryImages = [...memoryScenes, mem01, mem02, mem03, mem04, mem05, mem06, mem07, mem08, mem09, mem10, mem11, mem12];
 const memorySets = {
   facil:   memoryImages.slice(0, 6),
   medio:   memoryImages.slice(0, 8),
   dificil: memoryImages.slice(0, 12),
 };
 const memoryConfig = {
-  facil: { cols: 4, label: "Fácil (12 cartas)", coins: 3 },
-  medio: { cols: 4, label: "Médio (16 cartas)", coins: 4 },
-  dificil: { cols: 6, label: "Difícil (24 cartas)", coins: 5 },
+  facil: { cols: 4, label: "Fácil (12 cartas)", coins: 3, image: imgCriacao, theme: "Criação e Gênesis" },
+  medio: { cols: 4, label: "Médio (16 cartas)", coins: 4, image: imgDavi, theme: "Heróis da Bíblia" },
+  dificil: { cols: 6, label: "Difícil (24 cartas)", coins: 5, image: imgMandamentos, theme: "Antigo Testamento" },
 };
+
 
 /* =========================================================
    7 ERROS — imagens prontas (duas cenas empilhadas verticalmente)
@@ -694,14 +697,27 @@ function MemoryGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
           <div className="grid gap-3">
             {(Object.keys(memoryConfig) as (keyof typeof memoryConfig)[]).map((k) => (
               <button key={k} onClick={() => start(k)}
-                className="bg-gradient-to-r from-purple-400 to-indigo-500 text-white rounded-2xl p-5 shadow-lg hover:scale-[1.03] transition-transform font-display text-lg font-bold text-left">
-                {memoryConfig[k].label}
-                <span className="block text-xs opacity-90 font-body font-normal mt-1">
-                  Recompensa base: {memoryConfig[k].coins} 🪙 (+ bônus se for rápido!)
+                className="bg-gradient-to-r from-purple-400 to-indigo-500 text-white rounded-2xl p-4 shadow-lg hover:scale-[1.03] transition-transform font-display text-lg font-bold text-left flex items-center gap-4">
+                <img
+                  src={memoryConfig[k].image}
+                  alt={memoryConfig[k].theme}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-4 border-white/70 shadow-md shrink-0"
+                />
+                <span className="min-w-0">
+                  {memoryConfig[k].label}
+                  <span className="block text-xs opacity-90 font-body font-normal mt-1">
+                    Cenas de {memoryConfig[k].theme}
+                  </span>
+                  <span className="block text-xs opacity-90 font-body font-normal">
+                    Recompensa base: {memoryConfig[k].coins} 🪙 (+ bônus se for rápido!)
+                  </span>
                 </span>
               </button>
             ))}
           </div>
+
           <p className="text-center text-xs text-muted-foreground font-body mt-4">
             💡 Quanto menos jogadas, mais moedinhas você ganha!
           </p>
@@ -1214,26 +1230,30 @@ function JigsawGame({ onBack, celebrate, celebration, closeCelebration, bgStyle 
    formando uma linha reta; se as letras formarem uma palavra da
    lista, ela é marcada como encontrada.
 ========================================================= */
-type CacaCard = { title: string; words: string[]; size: number; reference?: string };
+type CacaCard = { title: string; words: string[]; size: number; reference?: string; image: string };
 const cacaCards: CacaCard[] = [
   {
     title: "Heróis da Bíblia",
     size: 6,
     words: ["JESUS", "DAVI", "NOE", "JOSE"],
     reference: "Fácil para crianças",
+    image: imgDavi,
   },
   {
     title: "O Natal",
     size: 6,
     words: ["JESUS", "MARIA", "ANJO", "JOSE"],
     reference: "Lucas 2",
+    image: imgCriacao,
   },
   {
     title: "Bichinhos da Arca",
     size: 6,
     words: ["NOE", "LEAO", "URSO", "POMBA"],
     reference: "Gênesis 7",
+    image: imgNoe,
   },
+
 ];
 
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -1383,22 +1403,51 @@ function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgSt
           ]}
         />
 
-        {/* Card selector */}
-        <div className="flex gap-2 mb-3 flex-wrap justify-center">
+        {/* Card selector — com imagem do tema (mesmo padrão do quebra-cabeça) */}
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-3">
           {cacaCards.map((c) => (
             <button
               key={c.title}
               onClick={() => switchCard(c)}
-              className={`px-3 py-1.5 rounded-full text-xs font-display font-bold border-2 transition ${
+              className={`rounded-2xl overflow-hidden border-4 transition text-center ${
                 card.title === c.title
-                  ? "bg-amber-500 text-white border-amber-600 shadow"
-                  : "bg-white text-amber-900 border-amber-300 hover:bg-amber-50"
+                  ? "border-amber-600 shadow-xl scale-[1.02]"
+                  : "border-amber-200 hover:border-amber-400"
               }`}
             >
-              {c.title}
+              <img
+                src={c.image}
+                alt={c.title}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-16 sm:h-24 object-cover"
+              />
+              <span
+                className={`block px-1 py-1.5 text-[11px] sm:text-xs font-display font-bold ${
+                  card.title === c.title ? "bg-amber-500 text-white" : "bg-white text-amber-900"
+                }`}
+              >
+                {c.title}
+              </span>
             </button>
           ))}
         </div>
+
+        {/* Ilustração do tema atual */}
+        <div className="mb-3 flex items-center gap-3 rounded-2xl bg-white/85 border-2 border-amber-200 p-2 shadow">
+          <img
+            src={card.image}
+            alt={card.title}
+            loading="lazy"
+            decoding="async"
+            className="w-16 h-16 rounded-xl object-cover border-2 border-amber-300 shrink-0"
+          />
+          <div className="min-w-0 text-left">
+            <p className="font-display font-extrabold text-amber-950 text-sm">{card.title}</p>
+            {card.reference && <p className="font-body text-xs text-amber-800">{card.reference}</p>}
+          </div>
+        </div>
+
 
         {/* Letter grid */}
         <div className="bg-white rounded-2xl border-4 border-amber-300 shadow-2xl p-2 sm:p-3 mb-4 overflow-hidden">

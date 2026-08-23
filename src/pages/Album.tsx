@@ -9,7 +9,6 @@ import AramaicBackdrop from "@/components/AramaicBackdrop";
 import { categories, allStickers, rarityBorder, rarityLabel, type Rarity, type Sticker } from "@/data/stickers";
 import { useCoins, ensureInitialCoins } from "@/hooks/useCoins";
 import albumCapa from "@/assets/album-capa.webp";
-import albumLivro from "@/assets/album-livro.png.asset.json";
 import { albumFaixas } from "@/data/albumFaixas";
 
 import iconInicio from "@/assets/icon-inicio.jpg";
@@ -374,17 +373,14 @@ export default function Album() {
         }
       `}</style>
 
-      {/* Single page area — sobre o fundo de livro aberto */}
+      {/* Single page area + evolução do álbum ao lado */}
       <div
-        className="flex-1 flex items-stretch justify-center p-2 sm:p-4 overflow-hidden select-none"
+        className="flex-1 flex items-stretch justify-center gap-3 p-2 sm:p-4 overflow-hidden select-none"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
         style={{ perspective: "1600px" }}
       >
-        <div
-          className="relative w-full max-w-2xl flex items-stretch justify-center bg-center bg-no-repeat bg-contain sm:bg-cover rounded-xl"
-          style={{ backgroundImage: `url(${albumLivro.url})` }}
-        >
+        <div className="relative w-full max-w-2xl flex items-stretch justify-center rounded-xl">
           <div
             className="relative flex-1 px-3 py-4 sm:px-8 sm:py-6"
             style={{
@@ -398,7 +394,10 @@ export default function Album() {
             </PageShell>
           </div>
         </div>
+
+        <AlbumProgressAside page={currentPage} owned={owned} totalOwned={totalOwned} total={allStickers.length} />
       </div>
+
 
 
       <div className="flex items-center justify-between px-4 pb-4 gap-3">
@@ -459,6 +458,64 @@ export default function Album() {
     </div>
   );
 }
+
+/**
+ * Coluna lateral com a evolução exata do álbum: progresso geral e a
+ * numeração completa da categoria aberta (mesma lógica do Resumo do Álbum).
+ */
+function AlbumProgressAside({
+  page, owned, totalOwned, total,
+}: {
+  page: (BookPage & { startIndex?: number }) | undefined;
+  owned: Owned;
+  totalOwned: number;
+  total: number;
+}) {
+  const pct = total ? Math.round((totalOwned / total) * 100) : 0;
+  const isCategory = page?.kind === "category";
+  const cat = isCategory ? page.cat : null;
+  const catStickers = cat ? cat.stickers : [];
+  const catOwned = catStickers.filter((s) => (owned[s.id] || 0) > 0).length;
+
+  return (
+    <aside className="hidden md:flex w-56 shrink-0 flex-col rounded-2xl border-2 border-amber-300 bg-white/90 p-3 shadow-lg overflow-y-auto">
+      <p className="font-display font-extrabold text-amber-950 text-sm text-center">📈 Evolução do álbum</p>
+      <p className="text-center font-display font-extrabold text-amber-900 tabular-nums text-lg mt-1">
+        {totalOwned} / {total}
+      </p>
+      <div className="h-2 bg-amber-200 rounded-full overflow-hidden mt-1">
+        <div className="h-full bg-gradient-to-r from-amber-400 to-orange-600" style={{ width: `${pct}%` }} />
+      </div>
+      <p className="text-center text-[11px] font-bold text-amber-800 mt-1">{pct}% completo</p>
+
+      {cat && (
+        <>
+          <div className="mt-3 flex items-center justify-between text-[11px] font-display font-bold text-amber-900">
+            <span className="truncate">{cat.icon} {cat.name}</span>
+            <span className="text-amber-700 tabular-nums">{catOwned}/{catStickers.length}</span>
+          </div>
+          <p className="mt-2 font-display text-[11px] font-extrabold text-amber-950">Numeração completa</p>
+          <div className="mt-1 grid grid-cols-1 gap-1">
+            {catStickers.map((s) => {
+              const count = owned[s.id] || 0;
+              const status = count === 0 ? "missing" : count > 1 ? "repeat" : "ok";
+              const bg = status === "ok" ? "bg-emerald-100" : status === "repeat" ? "bg-amber-100" : "bg-red-100/60";
+              const dot = status === "ok" ? "✅" : status === "repeat" ? `🔁×${count - 1}` : "❌";
+              return (
+                <div key={s.id} className={`${bg} rounded px-1.5 py-0.5 flex items-center gap-1 text-[10px]`}>
+                  <span className="font-mono font-bold">{String(s.id + 1).padStart(3, "0")}</span>
+                  <span className="truncate flex-1 text-amber-950">{s.name}</span>
+                  <span className="shrink-0">{dot}</span>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+    </aside>
+  );
+}
+
 
 function renderPage(p: (BookPage & { startIndex?: number }) | undefined, owned: Owned, onStickerClick: (s: Sticker) => void) {
   if (!p) return null;

@@ -189,14 +189,34 @@ export default function Login() {
 
   const finalAvatar = customAvatar || selectedAvatar;
 
-  const doLogin = async (overrideEmail?: string) => {
-    const raw = (overrideEmail ?? email).trim();
+  /**
+   * Garante que a conta do celular exista no backend com a senha interna
+   * correta (inclusive para contas antigas criadas com outro padrão).
+   */
+  const ensureAccount = async (
+    action: "login" | "register",
+    payload: { phone: string; name?: string; ageRange?: string; avatar?: string },
+  ): Promise<{ found: boolean; error?: string }> => {
+    const { data, error } = await supabase.functions.invoke("phone-auth", {
+      body: { action, ...payload },
+    });
+    if (error) {
+      console.error("[auth] phone-auth falhou", error.message);
+      return { found: false, error: error.message };
+    }
+    if ((data as any)?.error) return { found: false, error: (data as any).error };
+    return { found: !!(data as any)?.found };
+  };
+
+  const doLogin = async (overridePhone?: string) => {
+    const raw = (overridePhone ?? email).trim();
 
     if (!name.trim()) { alert("Informe seu nome."); return; }
     if (!raw) { alert("Informe seu celular."); return; }
     // Aceita celular (padrão) ou e-mail (compatibilidade com contas antigas).
-    const em = raw.includes("@") ? raw : phoneToEmail(raw);
-    if (!raw.includes("@")) {
+    const isEmail = raw.includes("@");
+    const em = isEmail ? raw : phoneToEmail(raw);
+    if (!isEmail) {
       const err = validatePhone(raw);
       if (err) {
         setPhoneError(err);
@@ -206,13 +226,27 @@ export default function Login() {
       setPhoneError(null);
     }
     setBusy(true);
+    if (!isEmail) {
+      const ensured = await ensureAccount("login", { phone: raw });
+      if (!ensured.found) {
+        setBusy(false);
+        toast({
+          title: "Conta não encontrada",
+          description: ensured.error || "Não localizamos uma conta com esse celular.",
+          variant: "destructive",
+        });
+        alert("Não encontramos sua conta com esse celular. Clique em CRIAR UMA CONTA.");
+        return;
+      }
+    }
     const { data, error } = await supabase.auth.signInWithPassword({
       email: em,
       password: derivePassword(raw),
     });
     setBusy(false);
     if (error || !data.user) {
-      alert("Não encontramos sua conta com esse celular. Clique em CRIAR UMA CONTA.");
+      console.error("[login] signIn falhou", { email: em, message: error?.message });
+      alert("Não conseguimos entrar agora. Confira seu celular e tente novamente.");
       return;
     }
     await hydrateLocalProfile(data.user.id, data.user.email || em);
@@ -231,63 +265,44 @@ export default function Login() {
       return;
     }
     setPhoneError(null);
-    // Nome de usuário derivado automaticamente do nome informado.
-    const uname = deriveUsername(name);
     const derivedEmail = phoneToEmail(phone);
     const derivedPassword = derivePassword(phone);
     setBusy(true);
-    const { data, error } = await supabase.auth.signUp({
-      email: derivedEmail,
-      password: derivedPassword,
-      options: {
-        emailRedirectTo: `${window.location.origin}/`,
-        data: { name: name.trim(), username: uname, age_range: ageRange, phone, role: "", avatar: finalAvatar },
-      },
+    const ensured = await ensureAccount("register", {
+      phone,
+      name: name.trim(),
+      ageRange,
+      avatar: finalAvatar,
     });
-    if (error) {
+    if (!ensured.found) {
       setBusy(false);
-      console.error("[cadastro] signUp falhou", {
-        email: derivedEmail,
-        username: uname,
-        status: (error as any)?.status,
-        code: (error as any)?.code,
-        message: error.message,
+      console.error("[cadastro] falhou", { email: derivedEmail, error: ensured.error });
+      toast({
+        title: "Não foi possível criar sua conta",
+        description: ensured.error || "Tente novamente em instantes.",
+        variant: "destructive",
       });
-      const code = (error as any)?.code as string | undefined;
-      if (/registered|already/i.test(error.message)) {
-        setMode("login");
-        setEmail(phone);
-        await doLogin(phone);
-      } else {
-        toast({
-          title: "Não foi possível criar sua conta",
-          description: `${error.message}${code ? ` (código: ${code})` : ""}`,
-          variant: "destructive",
-        });
-        alert("Não foi possível criar sua conta: " + error.message);
-      }
-
+      alert("Não foi possível criar sua conta. Tente novamente.");
       return;
     }
-    let userId = data.user?.id;
-    if (!data.session) {
-      const { data: signIn, error: signInError } = await supabase.auth.signInWithPassword({ email: derivedEmail, password: derivedPassword });
-      if (signInError) console.error("[cadastro] login automático falhou", signInError.message);
-      userId = signIn?.user?.id ?? userId;
-    }
+    const { data: signIn, error: signInError } = await supabase.auth.signInWithPassword({
+      email: derivedEmail,
+      password: derivedPassword,
+    });
     setBusy(false);
-    if (!userId) {
-      console.warn("[cadastro] conta criada sem sessão ativa", { email: derivedEmail });
+    if (signInError || !signIn.user) {
+      console.error("[cadastro] login automático falhou", signInError?.message);
       alert("Cadastro criado! Entre com seu nome e celular.");
       setMode("login");
       setEmail(phone);
       return;
     }
-    await hydrateLocalProfile(userId, derivedEmail);
+    await hydrateLocalProfile(signIn.user.id, derivedEmail);
     const { logEvent } = await import("@/lib/logEvent");
-    logEvent("Cadastro", { userId, email: derivedEmail });
+    logEvent("Cadastro", { userId: signIn.user.id, email: derivedEmail });
     navigate("/");
   };
+
 
 
 

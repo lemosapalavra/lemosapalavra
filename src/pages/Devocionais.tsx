@@ -7,20 +7,31 @@ import { awardOnce, todayKey } from "@/hooks/useCoins";
 import iconDevocionais from "@/assets/icon-devocionais.png";
 import heroKids from "@/assets/paginas/kids-devocional.png.asset.json";
 
+// Ilustrações bíblicas por tema — ajudam a criança a reconhecer o assunto.
+import imgCriacao from "@/assets/historia-criacao.png";
+import imgNoe1 from "@/assets/historia-noe-1.png";
+import imgNoe2 from "@/assets/historia-noe-2.png";
+import imgDavi from "@/assets/historia-davi-golias.png";
+import imgAdaoEva from "@/assets/historia-adao-eva-1.png";
+import imgMoises1 from "@/assets/historia-moises-1.png";
+import imgMoises2 from "@/assets/historia-moises-2.png";
+import imgAnjos from "@/assets/historia-batalha-anjos.png";
+
 import { COINS } from "@/data/coinRewards";
 
 const DEVO_COINS = COINS.devocional;
 
 const devos = [
-  { title: "Deus me Ama", verse: "João 3:16", text: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.", reflection: "Deus nos ama de um jeito tão grande que enviou Jesus para nos salvar. Quando você se sentir sozinho, lembre-se: Deus te ama mais do que qualquer pessoa neste mundo!", prayer: "Querido Deus, obrigado por me amar tanto. Ajude-me a sentir Seu amor todos os dias. Amém.", emoji: "💛", accent: "from-amber-300 to-yellow-400" },
-  { title: "Confiar em Deus", verse: "Provérbios 3:5", text: "Confia no Senhor de todo o teu coração e não te estribes no teu próprio entendimento.", reflection: "Às vezes queremos resolver tudo sozinhos, mas Deus nos pede para confiar Nele. Ele sabe o que é melhor para nós, mesmo quando não entendemos.", prayer: "Pai, ajude-me a confiar em Ti em todos os momentos, especialmente quando eu não entender o que está acontecendo. Amém.", emoji: "🌈", accent: "from-sky-300 to-cyan-400" },
-  { title: "Ser Corajoso", verse: "Josué 1:9", text: "Não fui eu que ordenei a você? Seja forte e corajoso! Não se apavore nem desanime, pois o Senhor, o seu Deus, estará com você por onde você andar.", reflection: "Deus promete estar sempre conosco. Quando tiver medo de alguma coisa, lembre-se que o Deus Todo-Poderoso caminha ao seu lado!", prayer: "Senhor, me dê coragem para enfrentar os meus medos. Sei que o Senhor está comigo em todos os lugares. Amém.", emoji: "🦁", accent: "from-orange-300 to-amber-400" },
-  { title: "Obedecer aos Pais", verse: "Efésios 6:1", text: "Filhos, obedeçam a seus pais no Senhor, pois isso é justo.", reflection: "Deus colocou nossos pais para nos proteger e ensinar. Obedecer a eles é uma forma de obedecer a Deus e mostrar que somos sábios!", prayer: "Deus, me ajude a obedecer meus pais com alegria, mesmo quando for difícil. Obrigado pela minha família. Amém.", emoji: "🏡", accent: "from-pink-300 to-rose-400" },
-  { title: "Ser Bondoso", verse: "Efésios 4:32", text: "Sejam bondosos e compassivos uns para com os outros, perdoando-se mutuamente, assim como Deus os perdoou em Cristo.", reflection: "Ser bondoso é como espalhar a luz de Jesus pelo mundo. Um sorriso, uma palavra amiga ou um abraço podem mudar o dia de alguém!", prayer: "Jesus, me ajude a ser bondoso com todos, especialmente com aqueles que são diferentes de mim. Amém.", emoji: "🫶", accent: "from-emerald-300 to-teal-400" },
-  { title: "Não Ter Medo", verse: "Isaías 41:10", text: "Não temas, porque eu sou contigo; não te assombres, porque eu sou o teu Deus; eu te fortaleço, e te ajudo, e te sustento com a minha destra fiel.", reflection: "O medo é natural, mas Deus é maior que qualquer medo! Ele promete nos fortalecer e nos segurar com Sua mão poderosa.", prayer: "Pai Celestial, quando o medo vier, me lembre de que o Senhor está comigo. Obrigado por me proteger. Amém.", emoji: "🕊️", accent: "from-violet-300 to-fuchsia-400" },
-  { title: "A Oração", verse: "Filipenses 4:6", text: "Não andem ansiosos por coisa alguma, mas em tudo, pela oração e súplicas, e com ação de graças, apresentem seus pedidos a Deus.", reflection: "A oração é como uma conversa com o melhor amigo. Podemos contar tudo para Deus — alegrias, tristezas, medos e sonhos!", prayer: "Senhor, obrigado por me ouvir sempre. Ensina-me a orar mais e a confiar que Tu cuidas de tudo. Amém.", emoji: "🙏", accent: "from-blue-300 to-indigo-400" },
-  { title: "Luz do Mundo", verse: "Mateus 5:14-16", text: "Vocês são a luz do mundo. Não se pode esconder uma cidade construída sobre um monte.", reflection: "Jesus diz que somos a luz do mundo! Quando fazemos coisas boas, é como acender uma lanterna no escuro — todos podem ver o amor de Deus em nós.", prayer: "Jesus, me ajude a brilhar a Sua luz em todas as situações, na escola, em casa e com os amigos. Amém.", emoji: "✨", accent: "from-yellow-300 to-orange-400" },
+  { title: "Deus me Ama", verse: "João 3:16", text: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.", reflection: "Deus nos ama de um jeito tão grande que enviou Jesus para nos salvar. Quando você se sentir sozinho, lembre-se: Deus te ama mais do que qualquer pessoa neste mundo!", prayer: "Querido Deus, obrigado por me amar tanto. Ajude-me a sentir Seu amor todos os dias. Amém.", emoji: "💛", accent: "from-amber-300 to-yellow-400", image: imgCriacao },
+  { title: "Confiar em Deus", verse: "Provérbios 3:5", text: "Confia no Senhor de todo o teu coração e não te estribes no teu próprio entendimento.", reflection: "Às vezes queremos resolver tudo sozinhos, mas Deus nos pede para confiar Nele. Ele sabe o que é melhor para nós, mesmo quando não entendemos.", prayer: "Pai, ajude-me a confiar em Ti em todos os momentos, especialmente quando eu não entender o que está acontecendo. Amém.", emoji: "🌈", accent: "from-sky-300 to-cyan-400", image: imgNoe1 },
+  { title: "Ser Corajoso", verse: "Josué 1:9", text: "Não fui eu que ordenei a você? Seja forte e corajoso! Não se apavore nem desanime, pois o Senhor, o seu Deus, estará com você por onde você andar.", reflection: "Deus promete estar sempre conosco. Quando tiver medo de alguma coisa, lembre-se que o Deus Todo-Poderoso caminha ao seu lado!", prayer: "Senhor, me dê coragem para enfrentar os meus medos. Sei que o Senhor está comigo em todos os lugares. Amém.", emoji: "🦁", accent: "from-orange-300 to-amber-400", image: imgDavi },
+  { title: "Obedecer aos Pais", verse: "Efésios 6:1", text: "Filhos, obedeçam a seus pais no Senhor, pois isso é justo.", reflection: "Deus colocou nossos pais para nos proteger e ensinar. Obedecer a eles é uma forma de obedecer a Deus e mostrar que somos sábios!", prayer: "Deus, me ajude a obedecer meus pais com alegria, mesmo quando for difícil. Obrigado pela minha família. Amém.", emoji: "🏡", accent: "from-pink-300 to-rose-400", image: imgAdaoEva },
+  { title: "Ser Bondoso", verse: "Efésios 4:32", text: "Sejam bondosos e compassivos uns para com os outros, perdoando-se mutuamente, assim como Deus os perdoou em Cristo.", reflection: "Ser bondoso é como espalhar a luz de Jesus pelo mundo. Um sorriso, uma palavra amiga ou um abraço podem mudar o dia de alguém!", prayer: "Jesus, me ajude a ser bondoso com todos, especialmente com aqueles que são diferentes de mim. Amém.", emoji: "🫶", accent: "from-emerald-300 to-teal-400", image: imgNoe2 },
+  { title: "Não Ter Medo", verse: "Isaías 41:10", text: "Não temas, porque eu sou contigo; não te assombres, porque eu sou o teu Deus; eu te fortaleço, e te ajudo, e te sustento com a minha destra fiel.", reflection: "O medo é natural, mas Deus é maior que qualquer medo! Ele promete nos fortalecer e nos segurar com Sua mão poderosa.", prayer: "Pai Celestial, quando o medo vier, me lembre de que o Senhor está comigo. Obrigado por me proteger. Amém.", emoji: "🕊️", accent: "from-violet-300 to-fuchsia-400", image: imgMoises1 },
+  { title: "A Oração", verse: "Filipenses 4:6", text: "Não andem ansiosos por coisa alguma, mas em tudo, pela oração e súplicas, e com ação de graças, apresentem seus pedidos a Deus.", reflection: "A oração é como uma conversa com o melhor amigo. Podemos contar tudo para Deus — alegrias, tristezas, medos e sonhos!", prayer: "Senhor, obrigado por me ouvir sempre. Ensina-me a orar mais e a confiar que Tu cuidas de tudo. Amém.", emoji: "🙏", accent: "from-blue-300 to-indigo-400", image: imgMoises2 },
+  { title: "Luz do Mundo", verse: "Mateus 5:14-16", text: "Vocês são a luz do mundo. Não se pode esconder uma cidade construída sobre um monte.", reflection: "Jesus diz que somos a luz do mundo! Quando fazemos coisas boas, é como acender uma lanterna no escuro — todos podem ver o amor de Deus em nós.", prayer: "Jesus, me ajude a brilhar a Sua luz em todas as situações, na escola, em casa e com os amigos. Amém.", emoji: "✨", accent: "from-yellow-300 to-orange-400", image: imgAnjos },
 ];
+
 
 function HistoriasBiblicasSection() {
   return (
@@ -96,9 +107,17 @@ export default function Devocionais() {
             >
               <div className="absolute right-4 top-4 w-20 h-20 rounded-full bg-white/40 blur-2xl" />
               <div className="relative flex flex-col sm:flex-row sm:items-center gap-4">
-                <div className={`w-20 h-20 rounded-[24px] bg-gradient-to-br ${devos[todayIdx].accent} flex items-center justify-center text-5xl shadow-lg shrink-0 mx-auto sm:mx-0`}>
-                  {devos[todayIdx].emoji}
+                <div className={`relative w-24 h-24 rounded-[24px] bg-gradient-to-br ${devos[todayIdx].accent} shadow-lg shrink-0 mx-auto sm:mx-0 overflow-hidden`}>
+                  <img
+                    src={devos[todayIdx].image}
+                    alt={devos[todayIdx].title}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover"
+                  />
+                  <span className="absolute -bottom-1 -right-1 text-3xl drop-shadow">{devos[todayIdx].emoji}</span>
                 </div>
+
                 <div className="flex-1 text-center sm:text-left">
                   <div className="inline-flex items-center gap-2 font-display text-xs font-extrabold bg-white/80 text-amber-950 px-3 py-1 rounded-full shadow mb-2">
                     🌟 Devocional de hoje
@@ -124,9 +143,11 @@ export default function Devocionais() {
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${d.accent} flex items-center justify-center text-3xl shadow-md shrink-0`}>
-                      {d.emoji}
+                    <div className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${d.accent} shadow-md shrink-0 overflow-hidden`}>
+                      <img src={d.image} alt={d.title} loading="lazy" decoding="async" className="w-full h-full object-cover" />
+                      <span className="absolute -bottom-0.5 -right-0.5 text-xl drop-shadow">{d.emoji}</span>
                     </div>
+
                     <div className="flex-1 min-w-0">
                       <h3 className="font-display text-lg font-extrabold text-foreground">{d.title}</h3>
                       <p className="font-display text-primary text-xs font-bold mt-0.5">📜 {d.verse}</p>
