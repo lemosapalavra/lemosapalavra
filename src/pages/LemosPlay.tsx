@@ -40,6 +40,30 @@ const COIN_REWARDS: Record<string, number> = {
   Louvor: COINS.louvor,
 };
 
+// Bônus extra por maratonar (assistir toda) a sessão.
+const MARATHON_BONUS: Record<string, number> = {
+  "Gênesis": 10,
+  Jesus: 10,
+  "Séries": 5,
+  "Músicas": 5,
+  Louvores: 5,
+};
+
+/** Aviso claro do ganho por vídeo e do bônus extra ao maratonar a sessão. */
+function MarathonNote({ section, perVideo, bonus }: { section: string; perVideo: number; bonus: number }) {
+  return (
+    <div className="mx-4 sm:mx-12 -mt-4 mb-8 rounded-xl border border-amber-400/40 bg-amber-500/10 px-4 py-3">
+      <p className="text-amber-200 font-bold text-xs sm:text-sm">
+        🪙 Cada vídeo de {section} assistido rende {perVideo} moedinha(s).
+      </p>
+      <p className="text-amber-100/90 text-xs sm:text-sm">
+        🏁 Maratone toda a sessão {section} e ganhe <strong>+{bonus} moedas extras</strong> para comprar as figurinhas do álbum.
+      </p>
+    </div>
+  );
+}
+
+
 interface PlayItem {
   id: string;
   title: string;
