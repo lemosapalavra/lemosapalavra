@@ -636,8 +636,14 @@ export default function LemosPlay() {
 
       <div className="-mt-20 sm:-mt-32 relative z-10 pb-16">
 
-        <div id="genesis"><Row title="Gênesis" items={genesisItems} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
-        <div id="jesus"><Row title="Jesus" items={jesusItems} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
+        <div id="genesis">
+          <Row title="Gênesis" items={genesisItems} onPlay={(item) => requestPlay(item)} progress={progress} />
+          <MarathonNote section="Gênesis" perVideo={COIN_REWARDS["Gênesis"]} bonus={MARATHON_BONUS["Gênesis"]} />
+        </div>
+        <div id="jesus">
+          <Row title="Jesus" items={jesusItems} onPlay={(item) => requestPlay(item)} progress={progress} />
+          <MarathonNote section="Jesus" perVideo={COIN_REWARDS["Jesus"]} bonus={MARATHON_BONUS["Jesus"]} />
+        </div>
         <div id="series"><Row
           title="Séries"
           items={seriesGroupItems.map((g) => ({ id: g.id, title: g.title, src: "", poster: g.poster, category: "Série" }))}
@@ -646,9 +652,18 @@ export default function LemosPlay() {
             if (g) setOpenGroup(g);
           }}
           progress={progress}
-        /></div>
-        <div id="musicas"><Row title="Músicas" items={musicasPlay} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
-        <div id="louvores"><Row title="Louvores" items={louvoresPlay} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
+        />
+          <MarathonNote section="Séries" perVideo={COIN_REWARDS["Série"]} bonus={MARATHON_BONUS["Séries"]} />
+        </div>
+        <div id="musicas">
+          <Row title="Músicas" items={musicasPlay} onPlay={(item) => requestPlay(item)} progress={progress} />
+          <MarathonNote section="Músicas" perVideo={COIN_REWARDS["Música"]} bonus={MARATHON_BONUS["Músicas"]} />
+        </div>
+        <div id="louvores">
+          <Row title="Louvores" items={louvoresPlay} onPlay={(item) => requestPlay(item)} progress={progress} />
+          <MarathonNote section="Louvores" perVideo={COIN_REWARDS["Louvor"]} bonus={MARATHON_BONUS["Louvores"]} />
+        </div>
+
       </div>
 
 
