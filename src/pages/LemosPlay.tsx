@@ -40,6 +40,30 @@ const COIN_REWARDS: Record<string, number> = {
   Louvor: COINS.louvor,
 };
 
+// Bônus extra por maratonar (assistir toda) a sessão.
+const MARATHON_BONUS: Record<string, number> = {
+  "Gênesis": 10,
+  Jesus: 10,
+  "Séries": 5,
+  "Músicas": 5,
+  Louvores: 5,
+};
+
+/** Aviso claro do ganho por vídeo e do bônus extra ao maratonar a sessão. */
+function MarathonNote({ section, perVideo, bonus }: { section: string; perVideo: number; bonus: number }) {
+  return (
+    <div className="mx-4 sm:mx-12 -mt-4 mb-8 rounded-xl border border-amber-400/40 bg-amber-500/10 px-4 py-3">
+      <p className="text-amber-200 font-bold text-xs sm:text-sm">
+        🪙 Cada vídeo de {section} assistido rende {perVideo} moedinha(s).
+      </p>
+      <p className="text-amber-100/90 text-xs sm:text-sm">
+        🏁 Maratone toda a sessão {section} e ganhe <strong>+{bonus} moedas extras</strong> para comprar as figurinhas do álbum.
+      </p>
+    </div>
+  );
+}
+
+
 interface PlayItem {
   id: string;
   title: string;
@@ -636,8 +660,14 @@ export default function LemosPlay() {
 
       <div className="-mt-20 sm:-mt-32 relative z-10 pb-16">
 
-        <div id="genesis"><Row title="Gênesis" items={genesisItems} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
-        <div id="jesus"><Row title="Jesus" items={jesusItems} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
+        <div id="genesis">
+          <Row title="Gênesis" items={genesisItems} onPlay={(item) => requestPlay(item)} progress={progress} />
+          <MarathonNote section="Gênesis" perVideo={COIN_REWARDS["Gênesis"]} bonus={MARATHON_BONUS["Gênesis"]} />
+        </div>
+        <div id="jesus">
+          <Row title="Jesus" items={jesusItems} onPlay={(item) => requestPlay(item)} progress={progress} />
+          <MarathonNote section="Jesus" perVideo={COIN_REWARDS["Jesus"]} bonus={MARATHON_BONUS["Jesus"]} />
+        </div>
         <div id="series"><Row
           title="Séries"
           items={seriesGroupItems.map((g) => ({ id: g.id, title: g.title, src: "", poster: g.poster, category: "Série" }))}
@@ -646,9 +676,18 @@ export default function LemosPlay() {
             if (g) setOpenGroup(g);
           }}
           progress={progress}
-        /></div>
-        <div id="musicas"><Row title="Músicas" items={musicasPlay} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
-        <div id="louvores"><Row title="Louvores" items={louvoresPlay} onPlay={(item) => requestPlay(item)} progress={progress} /></div>
+        />
+          <MarathonNote section="Séries" perVideo={COIN_REWARDS["Série"]} bonus={MARATHON_BONUS["Séries"]} />
+        </div>
+        <div id="musicas">
+          <Row title="Músicas" items={musicasPlay} onPlay={(item) => requestPlay(item)} progress={progress} />
+          <MarathonNote section="Músicas" perVideo={COIN_REWARDS["Música"]} bonus={MARATHON_BONUS["Músicas"]} />
+        </div>
+        <div id="louvores">
+          <Row title="Louvores" items={louvoresPlay} onPlay={(item) => requestPlay(item)} progress={progress} />
+          <MarathonNote section="Louvores" perVideo={COIN_REWARDS["Louvor"]} bonus={MARATHON_BONUS["Louvores"]} />
+        </div>
+
       </div>
 
 

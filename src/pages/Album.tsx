@@ -313,7 +313,13 @@ export default function Album() {
         <div className="text-center min-w-0 px-2 bg-transparent">
           <div className="text-[10px] uppercase tracking-wider font-bold text-amber-900/70 leading-tight">Figurinhas Coletadas</div>
           <div className="text-sm font-display font-extrabold text-amber-900 tabular-nums">{totalOwned} / {allStickers.length}</div>
+          {currentPage?.kind === "category" && (
+            <div className="md:hidden text-[10px] font-bold text-amber-800 tabular-nums">
+              {currentPage.cat.icon} {currentPage.cat.stickers.filter((s) => (owned[s.id] || 0) > 0).length}/{currentPage.cat.stickers.length} nesta categoria
+            </div>
+          )}
         </div>
+
 
         <div className="flex items-center gap-1.5">
           <button onClick={() => setShowCompletion(true)}
