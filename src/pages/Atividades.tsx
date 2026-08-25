@@ -153,91 +153,113 @@ const memoryConfig = {
 
 /* =========================================================
    7 ERROS — imagens prontas (duas cenas empilhadas verticalmente)
-   As coordenadas (x,y em %) referenciam o PAINEL DE BAIXO da imagem completa.
-   A imagem original ocupa ~5–50% e a versão alterada ~52–98%.
+   As diferenças são descritas em coordenadas LOCAIS do painel de baixo
+   (0–100% da largura/altura daquele painel). `panel` guarda a posição
+   exata do painel de baixo dentro da imagem completa, medida por
+   detecção da moldura de cada arquivo. `spotGlobalDiffs()` converte
+   para coordenadas da imagem inteira usada nos cliques.
 ========================================================= */
 type SpotDiff = { x: number; y: number; r: number };
-type SpotScene = { title: string; emoji: string; image: string; diffs: SpotDiff[] };
+type SpotPanel = { l: number; t: number; w: number; h: number };
+type SpotScene = { title: string; emoji: string; image: string; panel: SpotPanel; diffs: SpotDiff[] };
+
+/** Converte diferenças locais do painel de baixo para % da imagem completa. */
+function spotGlobalDiffs(scene: SpotScene): SpotDiff[] {
+  const { l, t, w, h } = scene.panel;
+  return scene.diffs.map((d) => ({
+    x: l + (d.x * w) / 100,
+    y: t + (d.y * h) / 100,
+    r: Math.max(3.5, (d.r * w) / 100),
+  }));
+}
 
 const spotScenes: SpotScene[] = [
   {
     title: "Fundo do Mar", emoji: "🐠", image: spot1.url,
+    panel: { l: 2.9, t: 53.4, w: 95.1, h: 37.0 },
     diffs: [
-      { x: 92, y: 62, r: 4 },  // tartaruga removida (canto sup. dir.)
-      { x: 27, y: 68, r: 4 },  // peixinho azul removido (perto do polvo)
-      { x: 40, y: 80, r: 5 },  // cavalo-marinho mudou de cor
-      { x: 22, y: 90, r: 5 },  // âncora removida
-      { x: 88, y: 92, r: 4 },  // estrela-do-mar mudou de cor
-      { x: 56, y: 93, r: 4 },  // concha repositionada
+      { x: 92, y: 13, r: 6 },  // tartaruga removida (canto sup. dir.)
+      { x: 20, y: 43, r: 6 },  // peixinho azul removido (perto do polvo)
+      { x: 38, y: 57, r: 7 },  // cavalo-marinho mudou de cor
+      { x: 25, y: 72, r: 7 },  // âncora removida
+      { x: 87, y: 78, r: 6 },  // estrela-do-mar mudou de cor
+      { x: 58, y: 89, r: 6 },  // concha reposicionada
     ],
   },
   {
     title: "Animais da Floresta", emoji: "🦒", image: spot2.url,
+    panel: { l: 3.3, t: 56.9, w: 96.6, h: 35.7 },
     diffs: [
-      { x: 46, y: 69, r: 6 },  // casinha do passarinho removida
-      { x: 18, y: 79, r: 5 },  // chapéu do elefante removido
-      { x: 34, y: 79, r: 5 },  // banana do macaco removida
-      { x: 80, y: 73, r: 5 },  // folha da girafa virou amarela
-      { x: 18, y: 73, r: 5 },  // borboleta extra/roxa
-      { x: 78, y: 91, r: 5 },  // flores diferentes
+      { x: 45, y: 19, r: 7 },  // casinha do passarinho removida
+      { x: 82, y: 12, r: 7 },  // folha da girafa mudou
+      { x: 34, y: 51, r: 7 },  // banana do macaco removida
+      { x: 17, y: 54, r: 7 },  // chapéu do elefante removido
+      { x: 26, y: 72, r: 7 },  // detalhe do arbusto
+      { x: 84, y: 71, r: 8 },  // juba do leão mudou de cor
     ],
   },
   {
     title: "Crianças no Parque", emoji: "🧒", image: spot3.url,
+    panel: { l: 2.4, t: 55.7, w: 93.9, h: 37.1 },
     diffs: [
-      { x: 19, y: 70, r: 6 },  // casa vermelha removida
-      { x: 30, y: 75, r: 4 },  // pintinho removido
-      { x: 40, y: 72, r: 6 },  // pipa virou azul/turquesa
-      { x: 58, y: 70, r: 5 },  // borboleta virou abelha
-      { x: 14, y: 86, r: 5 },  // ovos da cesta com outras cores
-      { x: 42, y: 87, r: 4 },  // cenoura aparece junto do coelhinho
+      { x: 17, y: 48, r: 8 },  // casinha removida
+      { x: 40, y: 25, r: 7 },  // pipa mudou de cor
+      { x: 67, y: 18, r: 7 },  // borboleta virou abelha
+      { x: 35, y: 52, r: 6 },  // pintinho removido
+      { x: 18, y: 90, r: 6 },  // ovos com outras cores
+      { x: 11, y: 78, r: 6 },  // cesta mudou
     ],
   },
   {
     title: "Na Fazenda", emoji: "🐄", image: spot4.url,
+    panel: { l: 2.1, t: 55.2, w: 95.0, h: 37.1 },
     diffs: [
-      { x: 30, y: 79, r: 6 },  // vaca virou porquinho
-      { x: 75, y: 73, r: 5 },  // pássaro azul saiu do espantalho
-      { x: 56, y: 83, r: 5 },  // menos pintinhos
-      { x: 14, y: 86, r: 5 },  // só um patinho na água
-      { x: 70, y: 92, r: 5 },  // melancia no meio das abóboras
-      { x: 47, y: 63, r: 5 },  // nuvem mudou no céu
+      { x: 31, y: 59, r: 8 },  // vaca virou porquinho
+      { x: 83, y: 48, r: 6 },  // pássaro saiu do espantalho
+      { x: 53, y: 80, r: 6 },  // menos pintinhos
+      { x: 15, y: 82, r: 6 },  // só um patinho na água
+      { x: 69, y: 95, r: 6 },  // melancia entre as abóboras
+      { x: 94, y: 9, r: 6 },   // nuvem mudou no céu
     ],
   },
   {
     title: "Aventura no Mar", emoji: "🍍", image: spot5.url,
+    panel: { l: 2.0, t: 53.4, w: 95.1, h: 37.2 },
     diffs: [
-      { x: 32, y: 75, r: 6 },  // janela do abacaxi vazia (sem Bob)
-      { x: 12, y: 71, r: 5 },  // texto do Krusty Krab apagado
-      { x: 48, y: 79, r: 4 },  // peixinho virou amarelo listrado
-      { x: 18, y: 90, r: 4 },  // caracol sem óculos
-      { x: 80, y: 84, r: 7 },  // Sr. Siriguejo no lugar do Patrick
-      { x: 90, y: 94, r: 4 },  // detalhe do coral
+      { x: 33, y: 40, r: 8 },  // janela do abacaxi mudou
+      { x: 64, y: 13, r: 6 },  // uma água-viva a menos
+      { x: 52, y: 50, r: 6 },  // peixinho mudou de cor
+      { x: 80, y: 55, r: 8 },  // personagem trocado
+      { x: 34, y: 79, r: 6 },  // alga diferente
+      { x: 91, y: 80, r: 6 },  // detalhe do coral
     ],
   },
   {
     title: "Piquenique no Parque", emoji: "🧺", image: spot6.url,
+    panel: { l: 1.1, t: 55.2, w: 94.4, h: 37.1 },
     diffs: [
-      { x: 30, y: 64, r: 6 },  // balão verde (era vermelho)
-      { x: 41, y: 65, r: 6 },  // avião no lugar do passarinho
-      { x: 75, y: 70, r: 5 },  // uma laçada a menos na pipa
-      { x: 90, y: 84, r: 5 },  // tartaruga removida no riacho
-      { x: 60, y: 84, r: 4 },  // cacho de uvas removido
-      { x: 50, y: 86, r: 4 },  // laranja removida
+      { x: 30, y: 18, r: 7 },  // balão mudou de cor
+      { x: 50, y: 17, r: 7 },  // avião no lugar do passarinho
+      { x: 94, y: 78, r: 6 },  // tartaruga removida
+      { x: 68, y: 72, r: 6 },  // cacho de uvas removido
+      { x: 62, y: 80, r: 6 },  // laranja removida
+      { x: 30, y: 85, r: 6 },  // cachorrinho mudou
     ],
   },
   {
     title: "Brincando na Rua", emoji: "🌳", image: spot7.url,
+    panel: { l: 1.7, t: 49.8, w: 94.5, h: 34.3 },
     diffs: [
-      { x: 11, y: 73, r: 5 },  // laço da menina virou amarelo
-      { x: 53, y: 73, r: 4 },  // passarinho ficou azul
-      { x: 65, y: 88, r: 5 },  // carrinho mudou de cor
-      { x: 42, y: 91, r: 5 },  // flores em cores diferentes
-      { x: 92, y: 84, r: 4 },  // detalhe do hidrante
-      { x: 30, y: 86, r: 5 },  // camiseta do menino mudou
+      { x: 9, y: 24, r: 7 },   // laço da menina mudou de cor
+      { x: 53, y: 22, r: 6 },  // passarinho ficou azul
+      { x: 79, y: 45, r: 7 },  // detalhe do menino mudou
+      { x: 65, y: 78, r: 7 },  // carrinho mudou de cor
+      { x: 42, y: 88, r: 7 },  // flores em cores diferentes
+      { x: 96, y: 75, r: 6 },  // detalhe do hidrante
     ],
   },
 ];
+
 
 /* =========================================================
    COLORIR — usa nossos próprios desenhos só de contorno.
