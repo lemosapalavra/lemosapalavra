@@ -31,6 +31,9 @@ export const COINS = {
   count: 6,
   paint: 6,
   draw: 5,
+  crossword: 6,
+  spot: 5,
+
 } as const;
 
 export const DEDICATORIA_COINS = COINS.dedicatoria;
