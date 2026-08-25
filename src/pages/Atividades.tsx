@@ -815,7 +815,9 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
   const [shakeKey, setShakeKey] = useState(0);
 
   const scene = dailyScenes[sceneIdx];
+  const sceneDiffs = useMemo(() => spotGlobalDiffs(scene), [scene]);
   const total = scene.diffs.length;
+
 
   const reset = (i: number) => { setSceneIdx(i); setFound([]); setMisses(0); };
 
