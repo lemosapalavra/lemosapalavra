@@ -800,17 +800,18 @@ export default function LemosPlay() {
                     onTimeUpdate={(e) => {
                       const v = e.currentTarget;
                       if (v.duration > 0) {
-                        writeProgress(playing.id, v.currentTime, v.duration);
+                        // Para de gravar progresso no finalzinho: evita
+                        // gravações/re-renders enquanto o vídeo encerra.
+                        if (v.currentTime < v.duration - 1.5) {
+                          writeProgress(playing.id, v.currentTime, v.duration);
+                        }
                         if (v.currentTime / v.duration >= 0.9) {
-                          const reward = COIN_REWARDS[playing.category] ?? 3;
-                          awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
+                          awardVideoOnce(playing.id, playing.category, playing.title);
                         }
                       }
                     }}
-                    onEnded={() => {
-                      const reward = COIN_REWARDS[playing.category] ?? 3;
-                      awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
-                    }}
+                    onEnded={() => awardVideoOnce(playing.id, playing.category, playing.title)}
+
                   />
                 ) : playSrc ? (
                   <iframe
