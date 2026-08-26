@@ -340,6 +340,17 @@ export default function LemosPlay() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const playerContainerRef = useRef<HTMLDivElement>(null);
   const lastProgressSave = useRef<number>(0);
+  /** Vídeos já premiados nesta sessão — evita disparar recompensa/toast
+   *  a cada `timeupdate` (4x por segundo) perto do fim, o que travava
+   *  e fechava o player. */
+  const awardedRef = useRef<Set<string>>(new Set());
+
+  const awardVideoOnce = (id: string, category: string, title: string) => {
+    if (awardedRef.current.has(id)) return;
+    awardedRef.current.add(id);
+    const reward = COIN_REWARDS[category] ?? 3;
+    awardOnce(`video:${id}`, reward, `Você assistiu "${title}"`);
+  };
 
   // Throttled progress writer: updates localStorage immediately,
   // but only triggers React state update every 5s to avoid re-renders
@@ -354,6 +365,7 @@ export default function LemosPlay() {
       setProgress(all);
     }
   };
+
 
   // NOTE: auto-fullscreen was removed. In sandboxed/preview iframes the
   // Fullscreen API is disallowed and a rejected requestFullscreen could
@@ -484,16 +496,11 @@ export default function LemosPlay() {
           const d = Number(data.value.duration);
           if (!isNaN(t) && !isNaN(d) && d > 0) {
             writeProgress(currentId, t, d);
-            if (t / d >= 0.9) {
-              const reward = COIN_REWARDS[playing.category] ?? 3;
-              awardOnce(`video:${currentId}`, reward, `Você assistiu "${playing.title}"`);
-            }
+            if (t / d >= 0.9) awardVideoOnce(currentId, playing.category, playing.title);
           }
         }
-        if (data.event === "ended") {
-          const reward = COIN_REWARDS[playing.category] ?? 3;
-          awardOnce(`video:${currentId}`, reward, `Você assistiu "${playing.title}"`);
-        }
+        if (data.event === "ended") awardVideoOnce(currentId, playing.category, playing.title);
+
 
       } catch {}
     };
@@ -793,17 +800,18 @@ export default function LemosPlay() {
                     onTimeUpdate={(e) => {
                       const v = e.currentTarget;
                       if (v.duration > 0) {
-                        writeProgress(playing.id, v.currentTime, v.duration);
+                        // Para de gravar progresso no finalzinho: evita
+                        // gravações/re-renders enquanto o vídeo encerra.
+                        if (v.currentTime < v.duration - 1.5) {
+                          writeProgress(playing.id, v.currentTime, v.duration);
+                        }
                         if (v.currentTime / v.duration >= 0.9) {
-                          const reward = COIN_REWARDS[playing.category] ?? 3;
-                          awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
+                          awardVideoOnce(playing.id, playing.category, playing.title);
                         }
                       }
                     }}
-                    onEnded={() => {
-                      const reward = COIN_REWARDS[playing.category] ?? 3;
-                      awardOnce(`video:${playing.id}`, reward, `Você assistiu "${playing.title}"`);
-                    }}
+                    onEnded={() => awardVideoOnce(playing.id, playing.category, playing.title)}
+
                   />
                 ) : playSrc ? (
                   <iframe
