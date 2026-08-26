@@ -378,9 +378,14 @@ export default function Atividades() {
     const day = today.getDate();
     const count = day % 2 === 0 ? 4 : 5;
     const offset = dayOfYear(today) % allActivities.length;
-    return Array.from({ length: count }, (_, i) => allActivities[(offset + i) % allActivities.length]);
+    const rotating = Array.from({ length: count }, (_, i) => allActivities[(offset + i) % allActivities.length]);
+    // Cruzadinha e 7 Erros ficam sempre disponíveis no menu.
+    const fixed = allActivities.filter((a) => a.id === "spot" || a.id === "crossword");
+    const seen = new Set(rotating.map((a) => a.id));
+    return [...rotating, ...fixed.filter((a) => !seen.has(a.id))];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
 
   const bgStyle = { background: "transparent" };
   const Back = () => (
