@@ -1564,3 +1564,189 @@ function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgSt
 }
 
 
+
+/* =========================================================
+   CRUZADINHA BÍBLICA — palavras cruzadas com palavra-chave vertical
+   Todas as respostas e dicas vêm das Escrituras.
+========================================================= */
+type CrossWord = {
+  answer: string;
+  clue: string;
+  emoji: string;
+  row: number;
+  col: number;
+};
+type CrossPuzzle = {
+  title: string;
+  keyword: string;
+  keyCol: number;
+  keyClue: string;
+  words: CrossWord[];
+};
+
+const crosswordPuzzles: CrossPuzzle[] = [
+  {
+    title: "O Nome acima de todo nome",
+    keyword: "JESUS",
+    keyCol: 6,
+    keyClue: "O Salvador do mundo",
+    words: [
+      { answer: "JONAS",  clue: "Profeta engolido por um grande peixe",        emoji: "🐋", row: 0, col: 6 },
+      { answer: "PEDRO",  clue: "Discípulo pescador que negou Jesus 3 vezes",  emoji: "🎣", row: 1, col: 5 },
+      { answer: "SANSAO", clue: "Juiz muito forte por causa dos cabelos",      emoji: "💪", row: 2, col: 6 },
+      { answer: "JUDAS",  clue: "Discípulo que traiu Jesus por moedas",        emoji: "🪙", row: 3, col: 5 },
+      { answer: "SALMOS", clue: "Livro de cânticos e orações de Davi",         emoji: "🎵", row: 4, col: 6 },
+    ],
+  },
+  {
+    title: "O pastorzinho corajoso",
+    keyword: "DAVI",
+    keyCol: 6,
+    keyClue: "Pastorzinho que venceu o gigante Golias",
+    words: [
+      { answer: "DANIEL", clue: "Foi lançado na cova dos leões e Deus o guardou", emoji: "🦁", row: 0, col: 6 },
+      { answer: "ARCA",   clue: "Barco enorme que Noé construiu",                 emoji: "🚢", row: 1, col: 6 },
+      { answer: "OVELHA", clue: "Animal que o Bom Pastor sai a procurar",         emoji: "🐑", row: 2, col: 5 },
+      { answer: "BIBLIA", clue: "A Palavra de Deus escrita",                      emoji: "📖", row: 3, col: 4 },
+    ],
+  },
+  {
+    title: "Mensageiro do Céu",
+    keyword: "ANJO",
+    keyCol: 6,
+    keyClue: "Mensageiro enviado por Deus",
+    words: [
+      { answer: "ABRAAO", clue: "Pai da fé, chamado por Deus",                emoji: "🌟", row: 0, col: 6 },
+      { answer: "NOE",    clue: "Construiu a arca por obediência",            emoji: "🚢", row: 1, col: 6 },
+      { answer: "JERICO", clue: "Cidade cujos muros caíram",                  emoji: "🏛️", row: 2, col: 6 },
+      { answer: "JOSE",   clue: "Vendido pelos irmãos, governou o Egito",     emoji: "👑", row: 3, col: 5 },
+    ],
+  },
+];
+
+function CrosswordGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
+  const puzzle = useMemo(() => crosswordPuzzles[dayOfYear() % crosswordPuzzles.length], []);
+
+  // Todas as células da grade + letra esperada
+  const cells = useMemo(() => {
+    const map = new Map<string, string>();
+    puzzle.words.forEach((w) => {
+      w.answer.split("").forEach((ch, i) => map.set(`${w.row}:${w.col + i}`, ch));
+    });
+    return map;
+  }, [puzzle]);
+
+  const bounds = useMemo(() => {
+    let minC = 99, maxC = 0, maxR = 0;
+    cells.forEach((_, k) => {
+      const [r, c] = k.split(":").map(Number);
+      minC = Math.min(minC, c); maxC = Math.max(maxC, c); maxR = Math.max(maxR, r);
+    });
+    return { minC, maxC, maxR };
+  }, [cells]);
+
+  const [values, setValues] = useState<Record<string, string>>({});
+  const [checked, setChecked] = useState(false);
+  const solved = puzzle.words.every((w) =>
+    w.answer.split("").every((ch, i) => (values[`${w.row}:${w.col + i}`] || "") === ch)
+  );
+
+  const setCell = (key: string, raw: string) => {
+    const ch = raw.slice(-1).toUpperCase().replace(/[^A-ZÇ]/g, "");
+    setValues((v) => ({ ...v, [key]: ch }));
+    setChecked(false);
+  };
+
+  const check = () => {
+    setChecked(true);
+    if (solved) celebrate(`Cruzadinha completa: ${puzzle.keyword}!`, COINS.crossword, "🧩");
+  };
+
+  const reveal = () => {
+    const all: Record<string, string> = {};
+    cells.forEach((ch, k) => { all[k] = ch; });
+    setValues(all);
+    setChecked(true);
+  };
+
+  const cols = bounds.maxC - bounds.minC + 1;
+
+  return (
+    <div className="min-h-screen py-6 px-4" style={bgStyle}>
+      <div className="max-w-2xl mx-auto">
+        <ActivityNav onBack={onBack} title="Cruzadinha Bíblica" subtitle={puzzle.title} />
+        <DailyBanner emoji="✏️" text="Uma cruzadinha nova a cada dia — complete e ganhe moedinhas!" />
+
+        {/* Grade */}
+        <div className="bg-popover rounded-2xl border-2 border-primary/40 shadow p-2 sm:p-4 overflow-x-auto">
+          <div className="mx-auto" style={{ width: "fit-content" }}>
+            {Array.from({ length: bounds.maxR + 1 }, (_, r) => (
+              <div key={r} className="flex">
+                {Array.from({ length: cols }, (_, ci) => {
+                  const c = bounds.minC + ci;
+                  const key = `${r}:${c}`;
+                  const expected = cells.get(key);
+                  if (!expected) return <div key={c} className="w-8 h-8 sm:w-10 sm:h-10 m-[1px]" />;
+                  const val = values[key] || "";
+                  const isKey = c === puzzle.keyCol;
+                  const wrong = checked && val !== expected;
+                  return (
+                    <input
+                      key={c}
+                      value={val}
+                      onChange={(e) => setCell(key, e.target.value)}
+                      maxLength={1}
+                      inputMode="text"
+                      aria-label={`Letra linha ${r + 1} coluna ${c + 1}`}
+                      className={`w-8 h-8 sm:w-10 sm:h-10 m-[1px] text-center font-display font-extrabold text-base sm:text-lg rounded-md border-2 outline-none transition
+                        ${isKey ? "bg-amber-100 border-amber-500 text-amber-900" : "bg-white border-primary/40 text-foreground"}
+                        ${wrong ? "border-red-500 bg-red-50" : ""}
+                        focus:ring-2 focus:ring-primary`}
+                    />
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+          <p className="text-center text-[11px] font-body text-amber-800 mt-2">
+            🔑 Coluna destacada: <b>{puzzle.keyClue}</b> ({puzzle.keyword.length} letras)
+          </p>
+        </div>
+
+        {/* Dicas */}
+        <div className="mt-4 grid gap-2">
+          {puzzle.words.map((w, i) => (
+            <div key={i} className="flex items-start gap-2 bg-popover rounded-xl border border-border px-3 py-2 shadow-sm">
+              <span className="text-xl leading-none">{w.emoji}</span>
+              <p className="font-body text-xs sm:text-sm text-foreground">
+                <b className="font-display text-primary">{i + 1}.</b> {w.clue}{" "}
+                <span className="text-muted-foreground">({w.answer.length} letras)</span>
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex gap-2 justify-center mt-4 flex-wrap">
+          <button onClick={check} className="btn-cartoon px-5 py-2.5">✅ Conferir</button>
+          <button onClick={() => { setValues({}); setChecked(false); }} className="px-5 py-2.5 rounded-full bg-popover border border-border font-display font-bold text-foreground hover:border-primary">
+            🔄 Limpar
+          </button>
+          <button onClick={reveal} className="px-5 py-2.5 rounded-full bg-popover border border-border font-display font-bold text-muted-foreground hover:border-primary">
+            💡 Mostrar respostas
+          </button>
+        </div>
+
+        {checked && (
+          <p className={`text-center font-display font-bold mt-3 ${solved ? "text-emerald-600" : "text-red-600"}`}>
+            {solved ? "🎉 Perfeito! Você completou a cruzadinha!" : "Ainda faltam letras — as erradas estão em vermelho."}
+          </p>
+        )}
+
+        <p className="text-center text-xs text-muted-foreground font-body mt-3">
+          💡 Complete a cruzadinha e ganhe {COINS.crossword} moedinhas 🪙
+        </p>
+      </div>
+      <CelebrationAnimation {...celebration} onClose={closeCelebration} />
+    </div>
+  );
+}
