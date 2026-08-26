@@ -827,13 +827,15 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
     const y = ((e.clientY - box.top) / box.height) * 100;
     const foundIdx = new Set(found.map((f) => f.i));
     // tolerância generosa para o clique acertar o erro mesmo em telas pequenas
-    const hit = scene.diffs.findIndex((d, i) =>
-      !foundIdx.has(i) && Math.hypot(d.x - x, d.y - y) <= d.r * 2 + 6
+    const hit = sceneDiffs.findIndex((d, i) =>
+      !foundIdx.has(i) && Math.hypot(d.x - x, d.y - y) <= d.r * 2 + 5
     );
     if (hit >= 0) {
-      // marcador é desenhado onde o usuário clicou, garantindo que apareça sobre o erro
-      const nf = [...found, { i: hit, x, y }];
+      // marcador é desenhado na posição exata do erro (não onde o dedo tocou)
+      const d = sceneDiffs[hit];
+      const nf = [...found, { i: hit, x: d.x, y: d.y }];
       setFound(nf);
+
       if (nf.length === total) celebrate(`Você encontrou todas as ${total} diferenças!`, 5, "🔍");
     } else {
       setMisses((m) => m + 1);
