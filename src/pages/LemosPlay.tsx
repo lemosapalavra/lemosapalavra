@@ -340,6 +340,17 @@ export default function LemosPlay() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const playerContainerRef = useRef<HTMLDivElement>(null);
   const lastProgressSave = useRef<number>(0);
+  /** Vídeos já premiados nesta sessão — evita disparar recompensa/toast
+   *  a cada `timeupdate` (4x por segundo) perto do fim, o que travava
+   *  e fechava o player. */
+  const awardedRef = useRef<Set<string>>(new Set());
+
+  const awardVideoOnce = (id: string, category: string, title: string) => {
+    if (awardedRef.current.has(id)) return;
+    awardedRef.current.add(id);
+    const reward = COIN_REWARDS[category] ?? 3;
+    awardOnce(`video:${id}`, reward, `Você assistiu "${title}"`);
+  };
 
   // Throttled progress writer: updates localStorage immediately,
   // but only triggers React state update every 5s to avoid re-renders
@@ -354,6 +365,7 @@ export default function LemosPlay() {
       setProgress(all);
     }
   };
+
 
   // NOTE: auto-fullscreen was removed. In sandboxed/preview iframes the
   // Fullscreen API is disallowed and a rejected requestFullscreen could
