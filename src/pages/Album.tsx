@@ -921,16 +921,17 @@ function CategoryPage({
                     <span className="absolute top-6 right-1 z-20 text-[9px] bg-red-500 text-white px-1.5 rounded-full leading-tight font-bold shadow">×{owned[s.id]}</span>
                   )}
 
-                  {/* Image area — fills the recipient completely */}
-                  <div className="relative flex-1 w-full overflow-hidden">
+                  {/* Image area — mostra a figurinha inteira, sem cortes */}
+                  <div className="relative flex-1 w-full overflow-hidden bg-gradient-to-b from-white to-amber-50/50">
                     {has && s.image ? (
                       <img
                         src={s.image}
                         alt={s.name}
-                        className="absolute inset-0 w-full h-full object-cover"
+                        className="absolute inset-0 w-full h-full object-contain p-0.5"
                         loading="lazy"
                         decoding="async"
                       />
+
                     ) : has ? (
                       <div className="w-full h-full flex items-center justify-center bg-gradient-to-b from-white to-amber-50/40">
                         <span className="text-4xl">{s.emoji}</span>
