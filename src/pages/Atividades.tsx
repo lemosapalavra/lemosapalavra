@@ -365,7 +365,10 @@ export default function Atividades() {
     { title: "Caça-Palavras",       icon: iconCacaPalavras.url, id: "wordsearch",  coins: COINS.wordsearch, zoom: 1 },
     { title: "Pinte os Círculos",   icon: iconPinteCirculos.url, id: "edu:circles", coins: COINS.circles,   zoom: 1.28 },
     { title: "Ligue as Cores",      icon: iconLigueCores.url,   id: "edu:connect", coins: COINS.connect,    zoom: 1.28 },
+    { title: "Jogo dos 7 Erros",    icon: icon7Erros,           id: "spot",        coins: COINS.spot,       zoom: 1.15 },
+    { title: "Cruzadinha Bíblica",  icon: iconAtividades,       id: "crossword",   coins: COINS.crossword,  zoom: 1.15 },
   ];
+
 
   // Atividades do dia: dias com data par mostram 4 atividades, dias ímpares
   // mostram 5. A janela é deslocada conforme o dia do ano, então o conjunto
