@@ -496,16 +496,11 @@ export default function LemosPlay() {
           const d = Number(data.value.duration);
           if (!isNaN(t) && !isNaN(d) && d > 0) {
             writeProgress(currentId, t, d);
-            if (t / d >= 0.9) {
-              const reward = COIN_REWARDS[playing.category] ?? 3;
-              awardOnce(`video:${currentId}`, reward, `Você assistiu "${playing.title}"`);
-            }
+            if (t / d >= 0.9) awardVideoOnce(currentId, playing.category, playing.title);
           }
         }
-        if (data.event === "ended") {
-          const reward = COIN_REWARDS[playing.category] ?? 3;
-          awardOnce(`video:${currentId}`, reward, `Você assistiu "${playing.title}"`);
-        }
+        if (data.event === "ended") awardVideoOnce(currentId, playing.category, playing.title);
+
 
       } catch {}
     };
