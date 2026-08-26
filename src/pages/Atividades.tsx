@@ -404,6 +404,9 @@ export default function Atividades() {
     return <JigsawGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "wordsearch")
     return <WordSearchGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
+  if (activeGame === "crossword")
+    return <CrosswordGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
+
   if (activeGame?.startsWith("edu:")) {
     const eduId = activeGame.split(":")[1] as "circles" | "connect" | "differences" | "count";
     return (
