@@ -173,92 +173,96 @@ function spotGlobalDiffs(scene: SpotScene): SpotDiff[] {
   }));
 }
 
+// Painéis e diferenças medidos automaticamente (alinhamento afim + diff
+// de pixels entre o painel de cima e o de baixo de cada arquivo).
 const spotScenes: SpotScene[] = [
   {
     title: "Fundo do Mar", emoji: "🐠", image: spot1.url,
-    panel: { l: 2.9, t: 53.4, w: 95.1, h: 37.0 },
+    panel: { l: 3.76, t: 53.96, w: 93.61, h: 35.94 },
     diffs: [
-      { x: 92, y: 13, r: 6 },  // tartaruga removida (canto sup. dir.)
-      { x: 20, y: 43, r: 6 },  // peixinho azul removido (perto do polvo)
-      { x: 38, y: 57, r: 7 },  // cavalo-marinho mudou de cor
-      { x: 25, y: 72, r: 7 },  // âncora removida
-      { x: 87, y: 78, r: 6 },  // estrela-do-mar mudou de cor
-      { x: 58, y: 89, r: 6 },  // concha reposicionada
+      { x: 87.3, y: 19.9, r: 11.7 },
+      { x: 37.1, y: 59.2, r: 7.8 },
+      { x: 84.7, y: 84.5, r: 5.2 },
+      { x: 63.8, y: 45.7, r: 5.7 },
+      { x: 17.5, y: 30.4, r: 5.0 },
+      { x: 23.1, y: 79.3, r: 5.8 },
+      { x: 22.0, y: 91.6, r: 5.0 },
     ],
   },
   {
     title: "Animais da Floresta", emoji: "🦒", image: spot2.url,
-    panel: { l: 3.3, t: 56.9, w: 96.6, h: 35.7 },
+    panel: { l: 4.21, t: 56.15, w: 94.36, h: 35.89 },
     diffs: [
-      { x: 45, y: 19, r: 7 },  // casinha do passarinho removida
-      { x: 82, y: 12, r: 7 },  // folha da girafa mudou
-      { x: 34, y: 51, r: 7 },  // banana do macaco removida
-      { x: 17, y: 54, r: 7 },  // chapéu do elefante removido
-      { x: 26, y: 72, r: 7 },  // detalhe do arbusto
-      { x: 84, y: 71, r: 8 },  // juba do leão mudou de cor
+      { x: 45.4, y: 19.6, r: 6.7 },
+      { x: 17.8, y: 55.4, r: 5.8 },
+      { x: 82.3, y: 92.4, r: 5.0 },
+      { x: 73.9, y: 23.4, r: 5.0 },
+      { x: 12.6, y: 22.7, r: 5.0 },
+      { x: 37.9, y: 50.3, r: 5.0 },
     ],
   },
   {
     title: "Crianças no Parque", emoji: "🧒", image: spot3.url,
-    panel: { l: 2.4, t: 55.7, w: 93.9, h: 37.1 },
+    panel: { l: 3.31, t: 56.30, w: 92.18, h: 35.94 },
     diffs: [
-      { x: 17, y: 48, r: 8 },  // casinha removida
-      { x: 40, y: 25, r: 7 },  // pipa mudou de cor
-      { x: 67, y: 18, r: 7 },  // borboleta virou abelha
-      { x: 35, y: 52, r: 6 },  // pintinho removido
-      { x: 18, y: 90, r: 6 },  // ovos com outras cores
-      { x: 11, y: 78, r: 6 },  // cesta mudou
+      { x: 15.8, y: 42.9, r: 12.3 },
+      { x: 39.0, y: 29.2, r: 12.3 },
+      { x: 67.5, y: 16.5, r: 6.9 },
+      { x: 34.5, y: 53.8, r: 5.0 },
+      { x: 10.4, y: 77.6, r: 5.0 },
+      { x: 80.5, y: 28.2, r: 6.0 },
+      { x: 17.9, y: 9.9, r: 5.0 },
     ],
   },
   {
     title: "Na Fazenda", emoji: "🐄", image: spot4.url,
-    panel: { l: 2.1, t: 55.2, w: 95.0, h: 37.1 },
+    panel: { l: 3.01, t: 55.78, w: 93.31, h: 35.99 },
     diffs: [
-      { x: 31, y: 59, r: 8 },  // vaca virou porquinho
-      { x: 83, y: 48, r: 6 },  // pássaro saiu do espantalho
-      { x: 53, y: 80, r: 6 },  // menos pintinhos
-      { x: 15, y: 82, r: 6 },  // só um patinho na água
-      { x: 69, y: 95, r: 6 },  // melancia entre as abóboras
-      { x: 94, y: 9, r: 6 },   // nuvem mudou no céu
+      { x: 31.1, y: 58.1, r: 8.6 },
+      { x: 94.8, y: 8.7, r: 5.1 },
+      { x: 16.3, y: 84.3, r: 5.0 },
+      { x: 69.1, y: 93.3, r: 5.3 },
+      { x: 53.5, y: 81.0, r: 5.0 },
+      { x: 84.1, y: 47.6, r: 5.0 },
     ],
   },
   {
     title: "Aventura no Mar", emoji: "🍍", image: spot5.url,
-    panel: { l: 2.0, t: 53.4, w: 95.1, h: 37.2 },
+    panel: { l: 2.86, t: 54.01, w: 93.68, h: 36.09 },
     diffs: [
-      { x: 33, y: 40, r: 8 },  // janela do abacaxi mudou
-      { x: 64, y: 13, r: 6 },  // uma água-viva a menos
-      { x: 52, y: 50, r: 6 },  // peixinho mudou de cor
-      { x: 80, y: 55, r: 8 },  // personagem trocado
-      { x: 34, y: 79, r: 6 },  // alga diferente
-      { x: 91, y: 80, r: 6 },  // detalhe do coral
+      { x: 76.4, y: 61.6, r: 20.2 },
+      { x: 33.7, y: 53.0, r: 8.9 },
+      { x: 50.1, y: 53.5, r: 5.0 },
+      { x: 64.6, y: 8.2, r: 5.0 },
+      { x: 57.1, y: 18.3, r: 5.0 },
+      { x: 90.8, y: 95.5, r: 5.0 },
     ],
   },
   {
     title: "Piquenique no Parque", emoji: "🧺", image: spot6.url,
-    panel: { l: 1.1, t: 55.2, w: 94.4, h: 37.1 },
+    panel: { l: 1.95, t: 55.73, w: 93.01, h: 35.99 },
     diffs: [
-      { x: 30, y: 18, r: 7 },  // balão mudou de cor
-      { x: 50, y: 17, r: 7 },  // avião no lugar do passarinho
-      { x: 94, y: 78, r: 6 },  // tartaruga removida
-      { x: 68, y: 72, r: 6 },  // cacho de uvas removido
-      { x: 62, y: 80, r: 6 },  // laranja removida
-      { x: 30, y: 85, r: 6 },  // cachorrinho mudou
+      { x: 31.0, y: 18.7, r: 8.8 },
+      { x: 50.0, y: 14.5, r: 7.3 },
+      { x: 65.6, y: 76.9, r: 7.1 },
+      { x: 94.5, y: 78.7, r: 5.0 },
+      { x: 79.2, y: 13.0, r: 5.0 },
+      { x: 29.6, y: 87.1, r: 5.0 },
     ],
   },
   {
     title: "Brincando na Rua", emoji: "🌳", image: spot7.url,
-    panel: { l: 1.7, t: 49.8, w: 94.5, h: 34.3 },
+    panel: { l: 2.56, t: 50.47, w: 92.86, h: 33.12 },
     diffs: [
-      { x: 9, y: 24, r: 7 },   // laço da menina mudou de cor
-      { x: 53, y: 22, r: 6 },  // passarinho ficou azul
-      { x: 79, y: 45, r: 7 },  // detalhe do menino mudou
-      { x: 65, y: 78, r: 7 },  // carrinho mudou de cor
-      { x: 42, y: 88, r: 7 },  // flores em cores diferentes
-      { x: 96, y: 75, r: 6 },  // detalhe do hidrante
+      { x: 31.3, y: 57.6, r: 10.3 },
+      { x: 64.8, y: 33.2, r: 5.8 },
+      { x: 6.1, y: 39.6, r: 5.3 },
+      { x: 91.4, y: 38.6, r: 5.0 },
+      { x: 80.5, y: 65.1, r: 5.0 },
     ],
   },
 ];
+
 
 
 /* =========================================================
