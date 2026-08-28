@@ -825,7 +825,7 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
   }, []);
 
   const [sceneIdx, setSceneIdx] = useState(0);
-  const [found, setFound] = useState<{ i: number; x: number; y: number }[]>([]);
+  const [found, setFound] = useState<{ i: number; x: number; y: number; r: number }[]>([]);
   const [misses, setMisses] = useState(0);
   const [shakeKey, setShakeKey] = useState(0);
 
@@ -840,15 +840,17 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
     const box = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - box.left) / box.width) * 100;
     const y = ((e.clientY - box.top) / box.height) * 100;
+    // A imagem é mais alta do que larga: 1% na vertical vale menos pixels
+    // do que 1% na horizontal. Corrigimos para o acerto ser circular de verdade.
+    const ratio = box.height / box.width;
     const foundIdx = new Set(found.map((f) => f.i));
-    // tolerância generosa para o clique acertar o erro mesmo em telas pequenas
     const hit = sceneDiffs.findIndex((d, i) =>
-      !foundIdx.has(i) && Math.hypot(d.x - x, d.y - y) <= d.r * 2 + 5
+      !foundIdx.has(i) && Math.hypot(d.x - x, (d.y - y) * ratio) <= d.r * 1.6 + 3
     );
     if (hit >= 0) {
       // marcador é desenhado na posição exata do erro (não onde o dedo tocou)
       const d = sceneDiffs[hit];
-      const nf = [...found, { i: hit, x: d.x, y: d.y }];
+      const nf = [...found, { i: hit, x: d.x, y: d.y, r: d.r }];
       setFound(nf);
 
       if (nf.length === total) celebrate(`Você encontrou todas as ${total} diferenças!`, 5, "🔍");
@@ -883,11 +885,18 @@ function SpotDifferenceGame({ onBack, celebrate, celebration, closeCelebration, 
                 key={`mark-${k}`}
                 aria-hidden
                 className="absolute pointer-events-none rounded-full border-[3px] border-red-500 animate-pulse"
-                style={{ left: `${f.x}%`, top: `${f.y}%`, width: `8%`, paddingBottom: `8%`, transform: "translate(-50%,-50%)" }}
+                style={{
+                  left: `${f.x}%`,
+                  top: `${f.y}%`,
+                  width: `${Math.max(6, f.r * 2)}%`,
+                  paddingBottom: `${Math.max(6, f.r * 2)}%`,
+                  transform: "translate(-50%,-50%)",
+                }}
               />
             ))}
           </div>
         </div>
+
 
         <div className="flex gap-2 flex-wrap mt-4 justify-center">
           {dailyScenes.map((s, i) => (
