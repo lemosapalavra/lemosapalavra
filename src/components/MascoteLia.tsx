@@ -37,6 +37,8 @@ const CONTEXT_TIPS: Record<string, string> = {
   coloring: "No Colorir, escolha uma cor e toque no desenho. Quer trocar? É só escolher outra cor e tocar de novo no mesmo lugar.",
   jigsaw: "No Quebra-Cabeça, toque em duas peças para trocá-las de lugar até montar a imagem.",
   wordsearch: "No Caça-Palavras, arraste o dedo sobre as letras para marcar as palavras da lista.",
+  spot: "Nos 7 Erros, compare a cena de cima com a de baixo e toque, na cena de BAIXO, em cada coisa diferente. Acertou? Aparece um círculo vermelho. Ache todas e ganhe moedinhas 🪙.",
+  crossword: "Na Cruzadinha, toque no número da dica, veja a figura e escreva a palavra da Bíblia nos quadradinhos.",
   "edu:circles": "Em Pinte os Círculos, escolha a cor indicada e pinte cada círculo.",
   "edu:connect": "Em Ligue as Cores, arraste ligando cada ponto à cor correspondente.",
   // Álbum
