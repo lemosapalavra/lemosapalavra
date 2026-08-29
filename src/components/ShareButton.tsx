@@ -15,23 +15,64 @@ interface Props {
   className?: string;
 }
 
-export async function shareSite(label?: string) {
-  const title = label ? `Lemos a Palavra — ${label}` : "Lemos a Palavra";
-  const url = SITE_URL;
-  const text = label ? `${TEXT}\n\n${label}` : TEXT;
+function legacyCopy(text: string) {
   try {
-    if (navigator.share) {
-      await navigator.share({ title, text, url });
-    } else {
-      await navigator.clipboard.writeText(`${text}\n${url}`);
-      toast.success("Link copiado! Agora é só enviar aos seus amigos 💙");
-    }
-    logEvent(`Compartilhar${label ? `: ${label}` : ""}`);
-    return true;
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
   } catch {
     return false;
   }
 }
+
+export async function shareSite(label?: string) {
+  const title = label ? `Lemos a Palavra — ${label}` : "Lemos a Palavra";
+  const url = SITE_URL;
+  const text = label ? `${TEXT}\n\n${label}` : TEXT;
+  const full = `${text}\n${url}`;
+
+  // 1) Compartilhamento nativo (celular)
+  if (typeof navigator !== "undefined" && navigator.share) {
+    try {
+      await navigator.share({ title, text, url });
+      logEvent(`Compartilhar${label ? `: ${label}` : ""}`);
+      return true;
+    } catch (err) {
+      // Usuário cancelou → não tenta outro caminho
+      if (err instanceof DOMException && err.name === "AbortError") return false;
+    }
+  }
+
+  // 2) Área de transferência
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(full);
+      toast.success("Link copiado! Agora é só enviar aos seus amigos 💙");
+      logEvent(`Compartilhar${label ? `: ${label}` : ""}`);
+      return true;
+    }
+  } catch {
+    /* segue para o fallback */
+  }
+
+  // 3) Fallback antigo
+  if (legacyCopy(full)) {
+    toast.success("Link copiado! Agora é só enviar aos seus amigos 💙");
+    logEvent(`Compartilhar${label ? `: ${label}` : ""}`);
+    return true;
+  }
+
+  // 4) Último recurso: mostra o link para copiar manualmente
+  toast("Copie e compartilhe este link:", { description: url, duration: 10000 });
+  return true;
+}
+
 
 /** Botão de compartilhamento disponível em todas as páginas e nos vídeos. */
 export default function ShareButton({ label, variant = "floating", className = "" }: Props) {
