@@ -43,6 +43,8 @@ import meuQueridoSenhorVid from "@/assets/lemos-play/meu-querido-senhor.mp4.asse
 import meuQueridoSenhorThumb from "@/assets/lemos-play/meu-querido-senhor.png.asset.json";
 import yeshua2Vid from "@/assets/lemos-play/yeshua-2.mp4.asset.json";
 import yeshua3Thumb from "@/assets/lemos-play/yeshua-3.png.asset.json";
+import riosBabiloniaVid from "@/assets/lemos-play/rios-babilonia-v2.mp4.asset.json";
+import riosBabiloniaThumb from "@/assets/lemos-play/rios-babilonia-v2.jpg.asset.json";
 
 export interface PlayEntry {
   id: string;
@@ -69,7 +71,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v59";
+const KEY = "lemos_play_config_v60";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
@@ -106,7 +108,8 @@ const attachedThumbByTitle: Record<string, string> = {
   "Jesus Expulsa Demônios": expulsaDemoniosThumb.url,
 };
 
-const defaultMusicas: PlayEntry[] = [
+export const defaultMusicas: PlayEntry[] = [
+  { id: "m5", title: "Rios da Babilônia", src: riosBabiloniaVid.url, poster: riosBabiloniaThumb.url, section: "Músicas" },
   { id: "m4", title: "Meu Querido Senhor", src: meuQueridoSenhorVid.url, poster: meuQueridoSenhorThumb.url, section: "Músicas" },
   { id: "m1", title: "Do meu Jeito", src: doMeuJeitoVid.url, poster: attachedThumbByTitle["Do meu Jeito"], section: "Músicas" },
   { id: "m2", title: "Pai e Filho", src: paiEFilhoVid.url, poster: attachedThumbByTitle["Pai e Filho"], section: "Músicas" },
