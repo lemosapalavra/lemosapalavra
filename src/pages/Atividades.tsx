@@ -1675,6 +1675,13 @@ function CrosswordGame({ onBack, celebrate, celebration, closeCelebration, bgSty
     return map;
   }, [puzzle]);
 
+  // Número da palavra que começa em cada célula (para casar dica ↔ grade)
+  const starts = useMemo(() => {
+    const m = new Map<string, number>();
+    puzzle.words.forEach((w, i) => m.set(`${w.row}:${w.col}`, i + 1));
+    return m;
+  }, [puzzle]);
+
   const bounds = useMemo(() => {
     let minC = 99, maxC = 0, maxR = 0;
     cells.forEach((_, k) => {
@@ -1729,19 +1736,26 @@ function CrosswordGame({ onBack, celebrate, celebration, closeCelebration, bgSty
                   const val = values[key] || "";
                   const isKey = c === puzzle.keyCol;
                   const wrong = checked && val !== expected;
+                  const startNo = starts.get(key);
                   return (
-                    <input
-                      key={c}
-                      value={val}
-                      onChange={(e) => setCell(key, e.target.value)}
-                      maxLength={1}
-                      inputMode="text"
-                      aria-label={`Letra linha ${r + 1} coluna ${c + 1}`}
-                      className={`w-8 h-8 sm:w-10 sm:h-10 m-[1px] text-center font-display font-extrabold text-base sm:text-lg rounded-md border-2 outline-none transition
-                        ${isKey ? "bg-amber-100 border-amber-500 text-amber-900" : "bg-white border-primary/40 text-foreground"}
-                        ${wrong ? "border-red-500 bg-red-50" : ""}
-                        focus:ring-2 focus:ring-primary`}
-                    />
+                    <div key={c} className="relative m-[1px]">
+                      {startNo && (
+                        <span className="absolute -top-1 -left-1 z-10 text-[9px] font-display font-extrabold bg-primary text-primary-foreground rounded-full w-4 h-4 flex items-center justify-center shadow">
+                          {startNo}
+                        </span>
+                      )}
+                      <input
+                        value={val}
+                        onChange={(e) => setCell(key, e.target.value)}
+                        maxLength={1}
+                        inputMode="text"
+                        aria-label={`Letra linha ${r + 1} coluna ${c + 1}`}
+                        className={`w-8 h-8 sm:w-10 sm:h-10 text-center font-display font-extrabold text-base sm:text-lg rounded-md border-2 outline-none transition
+                          ${isKey ? "bg-amber-100 border-amber-500 text-amber-900" : "bg-white border-primary/40 text-foreground"}
+                          ${wrong ? "border-red-500 bg-red-50" : ""}
+                          focus:ring-2 focus:ring-primary`}
+                      />
+                    </div>
                   );
                 })}
               </div>
@@ -1755,10 +1769,25 @@ function CrosswordGame({ onBack, celebrate, celebration, closeCelebration, bgSty
         {/* Dicas */}
         <div className="mt-4 grid gap-2">
           {puzzle.words.map((w, i) => (
-            <div key={i} className="flex items-start gap-2 bg-popover rounded-xl border border-border px-3 py-2 shadow-sm">
-              <span className="text-xl leading-none">{w.emoji}</span>
+            <div key={i} className="flex items-center gap-3 bg-popover rounded-xl border border-border px-3 py-2 shadow-sm">
+              <span className="shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground font-display font-extrabold text-xs flex items-center justify-center">
+                {i + 1}
+              </span>
+              {w.img ? (
+                <img
+                  src={w.img}
+                  alt={w.clue}
+                  width={512}
+                  height={512}
+                  loading="lazy"
+                  decoding="async"
+                  className="shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-contain bg-white border border-amber-200 shadow-sm"
+                />
+              ) : (
+                <span className="shrink-0 w-14 h-14 rounded-xl bg-white border border-amber-200 flex items-center justify-center text-2xl">{w.emoji}</span>
+              )}
               <p className="font-body text-xs sm:text-sm text-foreground">
-                <b className="font-display text-primary">{i + 1}.</b> {w.clue}{" "}
+                {w.clue}{" "}
                 <span className="text-muted-foreground">({w.answer.length} letras)</span>
               </p>
             </div>
