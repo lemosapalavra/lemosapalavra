@@ -902,7 +902,7 @@ function CategoryPage({
                 data-sticker
                 onClick={(e) => { e.stopPropagation(); onStickerClick(s); }}
                 disabled={!has}
-                className={`relative w-full overflow-hidden rounded-xl bg-gradient-to-br ${cat.color} p-[3px] shadow-lg flex aspect-[2/3] ${
+                className={`relative w-full h-full min-h-0 overflow-hidden rounded-xl bg-gradient-to-br ${cat.color} p-[3px] shadow-lg flex ${
                   has ? "cursor-pointer hover:scale-[1.06] hover:z-30 transition-transform" : "opacity-95"
                 }`}
               >
