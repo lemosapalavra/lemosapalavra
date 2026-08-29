@@ -883,7 +883,7 @@ function CategoryPage({
       )}
       <div className="absolute inset-0 bg-amber-50/20 pointer-events-none rounded-xl" />
       <div className="relative h-full p-2 sm:p-3 flex items-center justify-center">
-        <div className="grid grid-cols-4 gap-2 sm:gap-3 w-full" style={{ gridTemplateRows: "repeat(2, minmax(0, 1fr))" }}>
+        <div className="grid grid-cols-4 gap-2 sm:gap-3 w-full h-full" style={{ gridTemplateRows: "repeat(2, minmax(0, 1fr))" }}>
           {stickers.map((s, i) => {
             const has = (owned[s.id] || 0) > 0;
             const globalNum = String(s.id + 1).padStart(3, "0");
