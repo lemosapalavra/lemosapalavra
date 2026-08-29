@@ -1,3 +1,16 @@
+import czJonas from "@/assets/cruzadinha/jonas.jpg.asset.json";
+import czPedro from "@/assets/cruzadinha/pedro.jpg.asset.json";
+import czSansao from "@/assets/cruzadinha/sansao.jpg.asset.json";
+import czJudas from "@/assets/cruzadinha/judas.jpg.asset.json";
+import czSalmos from "@/assets/cruzadinha/salmos.jpg.asset.json";
+import czDaniel from "@/assets/cruzadinha/daniel.jpg.asset.json";
+import czArca from "@/assets/cruzadinha/arca.jpg.asset.json";
+import czOvelha from "@/assets/cruzadinha/ovelha.jpg.asset.json";
+import czBiblia from "@/assets/cruzadinha/biblia.jpg.asset.json";
+import czAbraao from "@/assets/cruzadinha/abraao.jpg.asset.json";
+import czNoe from "@/assets/cruzadinha/noe.jpg.asset.json";
+import czJerico from "@/assets/cruzadinha/jerico.jpg.asset.json";
+import czJose from "@/assets/cruzadinha/jose.jpg.asset.json";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { toast } from "sonner";
 import PageHeader from "@/components/PageHeader";
@@ -1597,6 +1610,8 @@ type CrossWord = {
   answer: string;
   clue: string;
   emoji: string;
+  /** Ilustração que ajuda a criança a descobrir a palavra. */
+  img?: string;
   row: number;
   col: number;
 };
@@ -1615,11 +1630,11 @@ const crosswordPuzzles: CrossPuzzle[] = [
     keyCol: 6,
     keyClue: "O Salvador do mundo",
     words: [
-      { answer: "JONAS",  clue: "Profeta engolido por um grande peixe",        emoji: "🐋", row: 0, col: 6 },
-      { answer: "PEDRO",  clue: "Discípulo pescador que negou Jesus 3 vezes",  emoji: "🎣", row: 1, col: 5 },
-      { answer: "SANSAO", clue: "Juiz muito forte por causa dos cabelos",      emoji: "💪", row: 2, col: 6 },
-      { answer: "JUDAS",  clue: "Discípulo que traiu Jesus por moedas",        emoji: "🪙", row: 3, col: 5 },
-      { answer: "SALMOS", clue: "Livro de cânticos e orações de Davi",         emoji: "🎵", row: 4, col: 6 },
+      { img: czJonas.url, answer: "JONAS",  clue: "Profeta engolido por um grande peixe",        emoji: "🐋", row: 0, col: 6 },
+      { img: czPedro.url, answer: "PEDRO",  clue: "Discípulo pescador que negou Jesus 3 vezes",  emoji: "🎣", row: 1, col: 5 },
+      { img: czSansao.url, answer: "SANSAO", clue: "Juiz muito forte por causa dos cabelos",      emoji: "💪", row: 2, col: 6 },
+      { img: czJudas.url, answer: "JUDAS",  clue: "Discípulo que traiu Jesus por moedas",        emoji: "🪙", row: 3, col: 5 },
+      { img: czSalmos.url, answer: "SALMOS", clue: "Livro de cânticos e orações de Davi",         emoji: "🎵", row: 4, col: 6 },
     ],
   },
   {
@@ -1628,10 +1643,10 @@ const crosswordPuzzles: CrossPuzzle[] = [
     keyCol: 6,
     keyClue: "Pastorzinho que venceu o gigante Golias",
     words: [
-      { answer: "DANIEL", clue: "Foi lançado na cova dos leões e Deus o guardou", emoji: "🦁", row: 0, col: 6 },
-      { answer: "ARCA",   clue: "Barco enorme que Noé construiu",                 emoji: "🚢", row: 1, col: 6 },
-      { answer: "OVELHA", clue: "Animal que o Bom Pastor sai a procurar",         emoji: "🐑", row: 2, col: 5 },
-      { answer: "BIBLIA", clue: "A Palavra de Deus escrita",                      emoji: "📖", row: 3, col: 4 },
+      { img: czDaniel.url, answer: "DANIEL", clue: "Foi lançado na cova dos leões e Deus o guardou", emoji: "🦁", row: 0, col: 6 },
+      { img: czArca.url, answer: "ARCA",   clue: "Barco enorme que Noé construiu",                 emoji: "🚢", row: 1, col: 6 },
+      { img: czOvelha.url, answer: "OVELHA", clue: "Animal que o Bom Pastor sai a procurar",         emoji: "🐑", row: 2, col: 5 },
+      { img: czBiblia.url, answer: "BIBLIA", clue: "A Palavra de Deus escrita",                      emoji: "📖", row: 3, col: 4 },
     ],
   },
   {
@@ -1640,10 +1655,10 @@ const crosswordPuzzles: CrossPuzzle[] = [
     keyCol: 6,
     keyClue: "Mensageiro enviado por Deus",
     words: [
-      { answer: "ABRAAO", clue: "Pai da fé, chamado por Deus",                emoji: "🌟", row: 0, col: 6 },
-      { answer: "NOE",    clue: "Construiu a arca por obediência",            emoji: "🚢", row: 1, col: 6 },
-      { answer: "JERICO", clue: "Cidade cujos muros caíram",                  emoji: "🏛️", row: 2, col: 6 },
-      { answer: "JOSE",   clue: "Vendido pelos irmãos, governou o Egito",     emoji: "👑", row: 3, col: 5 },
+      { img: czAbraao.url, answer: "ABRAAO", clue: "Pai da fé, chamado por Deus",                emoji: "🌟", row: 0, col: 6 },
+      { img: czNoe.url, answer: "NOE",    clue: "Construiu a arca por obediência",            emoji: "🚢", row: 1, col: 6 },
+      { img: czJerico.url, answer: "JERICO", clue: "Cidade cujos muros caíram",                  emoji: "🏛️", row: 2, col: 6 },
+      { img: czJose.url, answer: "JOSE",   clue: "Vendido pelos irmãos, governou o Egito",     emoji: "👑", row: 3, col: 5 },
     ],
   },
 ];
