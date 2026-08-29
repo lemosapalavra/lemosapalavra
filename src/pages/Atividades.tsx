@@ -1,3 +1,16 @@
+import czJonas from "@/assets/cruzadinha/jonas.jpg.asset.json";
+import czPedro from "@/assets/cruzadinha/pedro.jpg.asset.json";
+import czSansao from "@/assets/cruzadinha/sansao.jpg.asset.json";
+import czJudas from "@/assets/cruzadinha/judas.jpg.asset.json";
+import czSalmos from "@/assets/cruzadinha/salmos.jpg.asset.json";
+import czDaniel from "@/assets/cruzadinha/daniel.jpg.asset.json";
+import czArca from "@/assets/cruzadinha/arca.jpg.asset.json";
+import czOvelha from "@/assets/cruzadinha/ovelha.jpg.asset.json";
+import czBiblia from "@/assets/cruzadinha/biblia.jpg.asset.json";
+import czAbraao from "@/assets/cruzadinha/abraao.jpg.asset.json";
+import czNoe from "@/assets/cruzadinha/noe.jpg.asset.json";
+import czJerico from "@/assets/cruzadinha/jerico.jpg.asset.json";
+import czJose from "@/assets/cruzadinha/jose.jpg.asset.json";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { toast } from "sonner";
 import PageHeader from "@/components/PageHeader";
@@ -1597,6 +1610,8 @@ type CrossWord = {
   answer: string;
   clue: string;
   emoji: string;
+  /** Ilustração que ajuda a criança a descobrir a palavra. */
+  img?: string;
   row: number;
   col: number;
 };
@@ -1615,11 +1630,11 @@ const crosswordPuzzles: CrossPuzzle[] = [
     keyCol: 6,
     keyClue: "O Salvador do mundo",
     words: [
-      { answer: "JONAS",  clue: "Profeta engolido por um grande peixe",        emoji: "🐋", row: 0, col: 6 },
-      { answer: "PEDRO",  clue: "Discípulo pescador que negou Jesus 3 vezes",  emoji: "🎣", row: 1, col: 5 },
-      { answer: "SANSAO", clue: "Juiz muito forte por causa dos cabelos",      emoji: "💪", row: 2, col: 6 },
-      { answer: "JUDAS",  clue: "Discípulo que traiu Jesus por moedas",        emoji: "🪙", row: 3, col: 5 },
-      { answer: "SALMOS", clue: "Livro de cânticos e orações de Davi",         emoji: "🎵", row: 4, col: 6 },
+      { img: czJonas.url, answer: "JONAS",  clue: "Profeta engolido por um grande peixe",        emoji: "🐋", row: 0, col: 6 },
+      { img: czPedro.url, answer: "PEDRO",  clue: "Discípulo pescador que negou Jesus 3 vezes",  emoji: "🎣", row: 1, col: 5 },
+      { img: czSansao.url, answer: "SANSAO", clue: "Juiz muito forte por causa dos cabelos",      emoji: "💪", row: 2, col: 6 },
+      { img: czJudas.url, answer: "JUDAS",  clue: "Discípulo que traiu Jesus por moedas",        emoji: "🪙", row: 3, col: 5 },
+      { img: czSalmos.url, answer: "SALMOS", clue: "Livro de cânticos e orações de Davi",         emoji: "🎵", row: 4, col: 6 },
     ],
   },
   {
@@ -1628,10 +1643,10 @@ const crosswordPuzzles: CrossPuzzle[] = [
     keyCol: 6,
     keyClue: "Pastorzinho que venceu o gigante Golias",
     words: [
-      { answer: "DANIEL", clue: "Foi lançado na cova dos leões e Deus o guardou", emoji: "🦁", row: 0, col: 6 },
-      { answer: "ARCA",   clue: "Barco enorme que Noé construiu",                 emoji: "🚢", row: 1, col: 6 },
-      { answer: "OVELHA", clue: "Animal que o Bom Pastor sai a procurar",         emoji: "🐑", row: 2, col: 5 },
-      { answer: "BIBLIA", clue: "A Palavra de Deus escrita",                      emoji: "📖", row: 3, col: 4 },
+      { img: czDaniel.url, answer: "DANIEL", clue: "Foi lançado na cova dos leões e Deus o guardou", emoji: "🦁", row: 0, col: 6 },
+      { img: czArca.url, answer: "ARCA",   clue: "Barco enorme que Noé construiu",                 emoji: "🚢", row: 1, col: 6 },
+      { img: czOvelha.url, answer: "OVELHA", clue: "Animal que o Bom Pastor sai a procurar",         emoji: "🐑", row: 2, col: 5 },
+      { img: czBiblia.url, answer: "BIBLIA", clue: "A Palavra de Deus escrita",                      emoji: "📖", row: 3, col: 4 },
     ],
   },
   {
@@ -1640,10 +1655,10 @@ const crosswordPuzzles: CrossPuzzle[] = [
     keyCol: 6,
     keyClue: "Mensageiro enviado por Deus",
     words: [
-      { answer: "ABRAAO", clue: "Pai da fé, chamado por Deus",                emoji: "🌟", row: 0, col: 6 },
-      { answer: "NOE",    clue: "Construiu a arca por obediência",            emoji: "🚢", row: 1, col: 6 },
-      { answer: "JERICO", clue: "Cidade cujos muros caíram",                  emoji: "🏛️", row: 2, col: 6 },
-      { answer: "JOSE",   clue: "Vendido pelos irmãos, governou o Egito",     emoji: "👑", row: 3, col: 5 },
+      { img: czAbraao.url, answer: "ABRAAO", clue: "Pai da fé, chamado por Deus",                emoji: "🌟", row: 0, col: 6 },
+      { img: czNoe.url, answer: "NOE",    clue: "Construiu a arca por obediência",            emoji: "🚢", row: 1, col: 6 },
+      { img: czJerico.url, answer: "JERICO", clue: "Cidade cujos muros caíram",                  emoji: "🏛️", row: 2, col: 6 },
+      { img: czJose.url, answer: "JOSE",   clue: "Vendido pelos irmãos, governou o Egito",     emoji: "👑", row: 3, col: 5 },
     ],
   },
 ];
@@ -1658,6 +1673,13 @@ function CrosswordGame({ onBack, celebrate, celebration, closeCelebration, bgSty
       w.answer.split("").forEach((ch, i) => map.set(`${w.row}:${w.col + i}`, ch));
     });
     return map;
+  }, [puzzle]);
+
+  // Número da palavra que começa em cada célula (para casar dica ↔ grade)
+  const starts = useMemo(() => {
+    const m = new Map<string, number>();
+    puzzle.words.forEach((w, i) => m.set(`${w.row}:${w.col}`, i + 1));
+    return m;
   }, [puzzle]);
 
   const bounds = useMemo(() => {
@@ -1714,19 +1736,26 @@ function CrosswordGame({ onBack, celebrate, celebration, closeCelebration, bgSty
                   const val = values[key] || "";
                   const isKey = c === puzzle.keyCol;
                   const wrong = checked && val !== expected;
+                  const startNo = starts.get(key);
                   return (
-                    <input
-                      key={c}
-                      value={val}
-                      onChange={(e) => setCell(key, e.target.value)}
-                      maxLength={1}
-                      inputMode="text"
-                      aria-label={`Letra linha ${r + 1} coluna ${c + 1}`}
-                      className={`w-8 h-8 sm:w-10 sm:h-10 m-[1px] text-center font-display font-extrabold text-base sm:text-lg rounded-md border-2 outline-none transition
-                        ${isKey ? "bg-amber-100 border-amber-500 text-amber-900" : "bg-white border-primary/40 text-foreground"}
-                        ${wrong ? "border-red-500 bg-red-50" : ""}
-                        focus:ring-2 focus:ring-primary`}
-                    />
+                    <div key={c} className="relative m-[1px]">
+                      {startNo && (
+                        <span className="absolute -top-1 -left-1 z-10 text-[9px] font-display font-extrabold bg-primary text-primary-foreground rounded-full w-4 h-4 flex items-center justify-center shadow">
+                          {startNo}
+                        </span>
+                      )}
+                      <input
+                        value={val}
+                        onChange={(e) => setCell(key, e.target.value)}
+                        maxLength={1}
+                        inputMode="text"
+                        aria-label={`Letra linha ${r + 1} coluna ${c + 1}`}
+                        className={`w-8 h-8 sm:w-10 sm:h-10 text-center font-display font-extrabold text-base sm:text-lg rounded-md border-2 outline-none transition
+                          ${isKey ? "bg-amber-100 border-amber-500 text-amber-900" : "bg-white border-primary/40 text-foreground"}
+                          ${wrong ? "border-red-500 bg-red-50" : ""}
+                          focus:ring-2 focus:ring-primary`}
+                      />
+                    </div>
                   );
                 })}
               </div>
@@ -1740,10 +1769,25 @@ function CrosswordGame({ onBack, celebrate, celebration, closeCelebration, bgSty
         {/* Dicas */}
         <div className="mt-4 grid gap-2">
           {puzzle.words.map((w, i) => (
-            <div key={i} className="flex items-start gap-2 bg-popover rounded-xl border border-border px-3 py-2 shadow-sm">
-              <span className="text-xl leading-none">{w.emoji}</span>
+            <div key={i} className="flex items-center gap-3 bg-popover rounded-xl border border-border px-3 py-2 shadow-sm">
+              <span className="shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground font-display font-extrabold text-xs flex items-center justify-center">
+                {i + 1}
+              </span>
+              {w.img ? (
+                <img
+                  src={w.img}
+                  alt={w.clue}
+                  width={512}
+                  height={512}
+                  loading="lazy"
+                  decoding="async"
+                  className="shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-contain bg-white border border-amber-200 shadow-sm"
+                />
+              ) : (
+                <span className="shrink-0 w-14 h-14 rounded-xl bg-white border border-amber-200 flex items-center justify-center text-2xl">{w.emoji}</span>
+              )}
               <p className="font-body text-xs sm:text-sm text-foreground">
-                <b className="font-display text-primary">{i + 1}.</b> {w.clue}{" "}
+                {w.clue}{" "}
                 <span className="text-muted-foreground">({w.answer.length} letras)</span>
               </p>
             </div>

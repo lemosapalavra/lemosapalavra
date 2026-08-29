@@ -1,5 +1,6 @@
 import { filmesVideos, seriesGroups } from "./bibleVideos";
 import { louvores } from "./louvores";
+import { defaultMusicas } from "./lemosPlayConfig";
 
 /** Títulos de todos os vídeos do Lemos Play (filmes + séries). */
 export const lemosPlayTitles: string[] = [
@@ -8,4 +9,7 @@ export const lemosPlayTitles: string[] = [
 ];
 
 /** Títulos das músicas e louvores. */
-export const louvoresTitles: string[] = louvores.map((l) => l.title);
+export const louvoresTitles: string[] = [
+  ...louvores.map((l) => l.title),
+  ...defaultMusicas.map((m) => m.title),
+];
