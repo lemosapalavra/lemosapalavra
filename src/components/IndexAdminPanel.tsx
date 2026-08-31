@@ -17,6 +17,13 @@ import {
   resetEventBanner,
   saveEventBanner,
 } from "@/data/eventBannerConfig";
+import {
+  TrainBannerConfig,
+  defaultTrainBanner,
+  loadTrainBanner,
+  resetTrainBanner,
+  saveTrainBanner,
+} from "@/data/trainBannerConfig";
 
 interface Props {
   open: boolean;
@@ -26,21 +33,24 @@ interface Props {
 const inputCls =
   "w-full bg-white border border-zinc-300 rounded px-2 py-1.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-primary";
 
-type Tab = "menu" | "murais" | "aviaozinho";
+type Tab = "menu" | "murais" | "aviaozinho" | "trenzinho";
 
 export default function IndexAdminPanel({ open, onClose }: Props) {
   const [tab, setTab] = useState<Tab>("menu");
   const [items, setItems] = useState<OrbitItem[]>(() => loadOrbit());
   const [murais, setMurais] = useState<MuraisConfig>(() => loadMurais());
   const [banner, setBanner] = useState<EventBannerConfig>(() => loadEventBanner());
+  const [train, setTrain] = useState<TrainBannerConfig>(() => loadTrainBanner());
   const [dirty, setDirty] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [trainPickerOpen, setTrainPickerOpen] = useState(false);
 
   useEffect(() => {
     if (open) {
       setItems(loadOrbit());
       setMurais(loadMurais());
       setBanner(loadEventBanner());
+      setTrain(loadTrainBanner());
       setDirty(false);
     }
   }, [open]);
@@ -62,21 +72,29 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
     setDirty(true);
   };
 
+  const patchTrain = (p: Partial<TrainBannerConfig>) => {
+    setTrain((b) => ({ ...b, ...p }));
+    setDirty(true);
+  };
+
   const handleSave = () => {
     saveOrbit(items);
     saveMurais(murais);
     saveEventBanner(banner);
+    saveTrainBanner(train);
     setDirty(false);
   };
 
   const handleReset = () => {
-    if (!confirm("Restaurar tudo (menu + murais + aviãozinho) ao padrão?")) return;
+    if (!confirm("Restaurar tudo (menu + murais + aviãozinho + trenzinho) ao padrão?")) return;
     resetOrbit();
     resetMurais();
     resetEventBanner();
+    resetTrainBanner();
     setItems(defaultOrbit());
     setMurais(defaultMurais());
     setBanner(defaultEventBanner());
+    setTrain(defaultTrainBanner());
     setDirty(false);
   };
 
@@ -94,7 +112,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
         </div>
 
         <div className="flex gap-1 px-4 pt-3 border-b">
-          {(["menu", "murais", "aviaozinho"] as Tab[]).map((t) => (
+          {(["menu", "murais", "aviaozinho", "trenzinho"] as Tab[]).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -102,7 +120,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
                 tab === t ? "bg-zinc-100 text-foreground border-b-2 border-primary" : "text-zinc-500 hover:text-foreground"
               }`}
             >
-              {t === "menu" ? "🌐 Menu Órbita" : t === "murais" ? "🖼️ Murais" : "✈️ Aviãozinho"}
+              {t === "menu" ? "🌐 Menu Órbita" : t === "murais" ? "🖼️ Murais" : t === "aviaozinho" ? "✈️ Aviãozinho" : "🚂 Trenzinho"}
             </button>
           ))}
         </div>
@@ -280,6 +298,99 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
                 currentUrl={banner.videoUrl}
                 onClose={() => setPickerOpen(false)}
                 onSelect={(url) => patchBanner({ videoUrl: url })}
+              />
+            </div>
+          )}
+
+          {tab === "trenzinho" && (
+            <div className="space-y-3">
+              <p className="text-xs text-zinc-500">
+                Um trenzinho atravessa a página inicial sobre um trilho animado.
+                Clicando nele, o usuário assiste ao vídeo configurado (ex.: "Trem da Vida").
+              </p>
+              <label className="flex items-center gap-2 text-sm font-semibold text-zinc-700">
+                <input
+                  type="checkbox"
+                  checked={train.enabled}
+                  onChange={(e) => patchTrain({ enabled: e.target.checked })}
+                />
+                Exibir trenzinho na página inicial
+              </label>
+              <div className="rounded-lg border border-zinc-200 p-3 space-y-2">
+                <label className="flex items-center gap-2 text-sm font-semibold text-zinc-700">
+                  <input
+                    type="checkbox"
+                    checked={train.scheduleEnabled}
+                    onChange={(e) => patchTrain({ scheduleEnabled: e.target.checked })}
+                  />
+                  Exibir somente em data comemorativa
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <label className="text-xs font-semibold text-zinc-700 block">
+                    Início
+                    <input
+                      type="date"
+                      value={train.startDate}
+                      disabled={!train.scheduleEnabled}
+                      onChange={(e) => patchTrain({ startDate: e.target.value })}
+                      className={inputCls + " mt-1 disabled:opacity-50"}
+                    />
+                  </label>
+                  <label className="text-xs font-semibold text-zinc-700 block">
+                    Fim
+                    <input
+                      type="date"
+                      value={train.endDate}
+                      disabled={!train.scheduleEnabled}
+                      onChange={(e) => patchTrain({ endDate: e.target.value })}
+                      className={inputCls + " mt-1 disabled:opacity-50"}
+                    />
+                  </label>
+                </div>
+              </div>
+              <label className="text-xs font-semibold text-zinc-700 block">
+                Chamada (texto do convite)
+                <input
+                  value={train.callToAction}
+                  onChange={(e) => patchTrain({ callToAction: e.target.value })}
+                  placeholder="Clique aqui"
+                  className={inputCls + " mt-1"}
+                />
+              </label>
+              <label className="text-xs font-semibold text-zinc-700 block">
+                Mensagem do trenzinho
+                <input
+                  value={train.message}
+                  onChange={(e) => patchTrain({ message: e.target.value })}
+                  placeholder="Pegue o trem da Vida"
+                  className={inputCls + " mt-1"}
+                />
+              </label>
+              <label className="text-xs font-semibold text-zinc-700 block">
+                Link do vídeo (YouTube, Vimeo, MP4, etc.)
+                <div className="flex gap-2 mt-1">
+                  <input
+                    value={train.videoUrl}
+                    onChange={(e) => patchTrain({ videoUrl: e.target.value })}
+                    placeholder="https://www.youtube.com/watch?v=..."
+                    className={inputCls + " flex-1"}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setTrainPickerOpen(true)}
+                    className="px-3 py-1.5 rounded bg-primary text-primary-foreground hover:opacity-90 text-xs font-bold flex items-center gap-1 whitespace-nowrap"
+                    title="Procurar vídeo já existente no site"
+                  >
+                    <Search className="w-3.5 h-3.5" /> Procurar no site
+                  </button>
+                </div>
+              </label>
+              <MediaPickerModal
+                open={trainPickerOpen}
+                kind="video"
+                currentUrl={train.videoUrl}
+                onClose={() => setTrainPickerOpen(false)}
+                onSelect={(url) => patchTrain({ videoUrl: url })}
               />
             </div>
           )}
