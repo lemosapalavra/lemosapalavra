@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import logoCentral from "@/assets/logo-central.png";
 import iconLogin from "@/assets/icon-login.png";
 import { loadOrbit, type OrbitItem } from "@/data/orbitConfig";
-import { getNewCount } from "@/lib/newContent";
-import { lemosPlayTitles, louvoresTitles } from "@/data/contentIndex";
 
 interface OrbitMenuProps {
   isAuthenticated: boolean;
@@ -19,15 +17,6 @@ const SPIN_DURATION = "120s";
 export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }: OrbitMenuProps) {
   const iconSize = 120;
   const [items, setItems] = useState<OrbitItem[]>(() => loadOrbit());
-  const [novidades, setNovidades] = useState(0);
-
-  useEffect(() => {
-    const calc = () =>
-      setNovidades(getNewCount("lemosplay", lemosPlayTitles) + getNewCount("louvores", louvoresTitles));
-    calc();
-    window.addEventListener("lemos_new_content_change", calc);
-    return () => window.removeEventListener("lemos_new_content_change", calc);
-  }, []);
 
   useEffect(() => {
     const h = () => setItems(loadOrbit());
@@ -76,11 +65,6 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                     <div
                       className={`relative overflow-hidden rounded-full shadow-xl border-2 border-primary/30 w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] bg-white ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
                     >
-                      {item.route === "/lemosplay" && novidades > 0 && (
-                        <span className="absolute top-0 right-0 z-10 px-2 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-extrabold shadow-lg animate-bounce">
-                          {novidades} novo{novidades > 1 ? "s" : ""}
-                        </span>
-                      )}
                       <img
                         src={item.icon}
                         alt={item.label}

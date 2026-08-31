@@ -4,7 +4,6 @@ import { LogOut, Search, Settings, User } from "lucide-react";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import InstallShortcut from "@/components/InstallShortcut";
-import NewVideosBadge from "@/components/NewVideosBadge";
 import { useCoins } from "@/hooks/useCoins";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 
@@ -233,7 +232,6 @@ export default function IndexV2() {
 
         {user && (
           <div className="flex justify-center pb-4">
-            <div className="flex flex-col items-center gap-2"><NewVideosBadge /></div>
           </div>
         )}
 
