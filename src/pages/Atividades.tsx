@@ -1663,8 +1663,24 @@ const crosswordPuzzles: CrossPuzzle[] = [
   },
 ];
 
+/**
+ * Lê a coluna destacada direto da grade (linha a linha) — assim a palavra-chave
+ * mostrada é SEMPRE a que realmente sai das palavras, nunca uma divergência.
+ */
+export function crosswordKeywordFromGrid(p: CrossPuzzle): string {
+  return p.words
+    .slice()
+    .sort((a, b) => a.row - b.row)
+    .map((w) => w.answer[p.keyCol - w.col] ?? "?")
+    .join("");
+}
+
+export const __crosswordPuzzles = crosswordPuzzles;
+
 function CrosswordGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
   const puzzle = useMemo(() => crosswordPuzzles[dayOfYear() % crosswordPuzzles.length], []);
+  const keyword = useMemo(() => crosswordKeywordFromGrid(puzzle), [puzzle]);
+
 
   // Todas as células da grade + letra esperada
   const cells = useMemo(() => {
