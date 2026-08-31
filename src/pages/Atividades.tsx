@@ -1646,7 +1646,7 @@ const crosswordPuzzles: CrossPuzzle[] = [
       { img: czDaniel.url, answer: "DANIEL", clue: "Foi lançado na cova dos leões e Deus o guardou", emoji: "🦁", row: 0, col: 6 },
       { img: czArca.url, answer: "ARCA",   clue: "Barco enorme que Noé construiu",                 emoji: "🚢", row: 1, col: 6 },
       { img: czOvelha.url, answer: "OVELHA", clue: "Animal que o Bom Pastor sai a procurar",         emoji: "🐑", row: 2, col: 5 },
-      { img: czBiblia.url, answer: "BIBLIA", clue: "A Palavra de Deus escrita",                      emoji: "📖", row: 3, col: 4 },
+      { img: czBiblia.url, answer: "BIBLIA", clue: "A Palavra de Deus escrita",                      emoji: "📖", row: 3, col: 5 },
     ],
   },
   {
@@ -1663,8 +1663,24 @@ const crosswordPuzzles: CrossPuzzle[] = [
   },
 ];
 
+/**
+ * Lê a coluna destacada direto da grade (linha a linha) — assim a palavra-chave
+ * mostrada é SEMPRE a que realmente sai das palavras, nunca uma divergência.
+ */
+export function crosswordKeywordFromGrid(p: CrossPuzzle): string {
+  return p.words
+    .slice()
+    .sort((a, b) => a.row - b.row)
+    .map((w) => w.answer[p.keyCol - w.col] ?? "?")
+    .join("");
+}
+
+export const __crosswordPuzzles = crosswordPuzzles;
+
 function CrosswordGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
   const puzzle = useMemo(() => crosswordPuzzles[dayOfYear() % crosswordPuzzles.length], []);
+  const keyword = useMemo(() => crosswordKeywordFromGrid(puzzle), [puzzle]);
+
 
   // Todas as células da grade + letra esperada
   const cells = useMemo(() => {
@@ -1705,7 +1721,7 @@ function CrosswordGame({ onBack, celebrate, celebration, closeCelebration, bgSty
 
   const check = () => {
     setChecked(true);
-    if (solved) celebrate(`Cruzadinha completa: ${puzzle.keyword}!`, COINS.crossword, "🧩");
+    if (solved) celebrate(`Cruzadinha completa: ${keyword}!`, COINS.crossword, "🧩");
   };
 
   const reveal = () => {
@@ -1762,7 +1778,7 @@ function CrosswordGame({ onBack, celebrate, celebration, closeCelebration, bgSty
             ))}
           </div>
           <p className="text-center text-[11px] font-body text-amber-800 mt-2">
-            🔑 Coluna destacada: <b>{puzzle.keyClue}</b> ({puzzle.keyword.length} letras)
+            🔑 Coluna destacada: <b>{puzzle.keyClue}</b> ({keyword.length} letras)
           </p>
         </div>
 

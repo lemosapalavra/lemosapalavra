@@ -6,7 +6,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 // import MysticBackground from "@/components/MysticBackground"; // disabled for performance
 import WavyBanner from "@/components/WavyBanner";
-import NewContentNotice from "@/components/NewContentNotice";
 import MascoteLia from "@/components/MascoteLia";
 import Index from "./pages/Index.tsx";
 import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
@@ -164,7 +163,6 @@ const App = () => (
         <AnalyticsTracker />
         <RouteMetaSync />
         {/* MysticBackground removed to improve page load performance */}
-        <NewContentNotice />
         <MascoteLia />
         <Suspense fallback={<PageFallback />}>
           <Routes>
