@@ -1721,7 +1721,7 @@ function CrosswordGame({ onBack, celebrate, celebration, closeCelebration, bgSty
 
   const check = () => {
     setChecked(true);
-    if (solved) celebrate(`Cruzadinha completa: ${puzzle.keyword}!`, COINS.crossword, "🧩");
+    if (solved) celebrate(`Cruzadinha completa: ${keyword}!`, COINS.crossword, "🧩");
   };
 
   const reveal = () => {
@@ -1778,7 +1778,7 @@ function CrosswordGame({ onBack, celebrate, celebration, closeCelebration, bgSty
             ))}
           </div>
           <p className="text-center text-[11px] font-body text-amber-800 mt-2">
-            🔑 Coluna destacada: <b>{puzzle.keyClue}</b> ({puzzle.keyword.length} letras)
+            🔑 Coluna destacada: <b>{puzzle.keyClue}</b> ({keyword.length} letras)
           </p>
         </div>
 
