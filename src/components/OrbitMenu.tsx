@@ -60,10 +60,15 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                   <button
                     type="button"
                     onClick={() => isAuthenticated && onItemClick?.(item.label)}
-                    className={`flex flex-col items-center gap-1 ${isAuthenticated ? "cursor-pointer hover:scale-110 transition-transform" : "cursor-default"}`}
+                    title={`${item.label.replace(/\n/g, " ")}${item.sublabel ? " — " + item.sublabel : ""}`}
+                    className={`flex flex-col items-center gap-1 transition-transform duration-300 ${
+                      isAuthenticated
+                        ? "cursor-pointer hover:scale-110 hover:-translate-y-1 focus-visible:scale-110"
+                        : "cursor-default"
+                    }`}
                   >
                     <div
-                      className={`relative overflow-hidden rounded-full shadow-xl border-2 border-primary/30 w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] bg-white ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
+                      className={`relative overflow-hidden rounded-full shadow-xl hover:shadow-2xl transition-shadow border-2 border-primary/30 w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] bg-white ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
                     >
                       <img
                         src={item.icon}
