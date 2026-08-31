@@ -117,8 +117,9 @@ export default function Album() {
     let running = 0;
     const catPages: (BookPage & { startIndex: number })[] = [];
     categories.forEach((cat) => {
-      // Split each category into pages of 8 stickers (typically 2 pages = 16 stickers).
-      const chunkSize = 8;
+      // Páginas de 6 figurinhas (3 colunas x 2 linhas) — assim cada figurinha
+      // fica grande o bastante para ser vista por inteiro.
+      const chunkSize = 6;
       for (let off = 0; off < cat.stickers.length; off += chunkSize) {
         const stickers = cat.stickers.slice(off, off + chunkSize);
         const pageInCat = (off === 0 ? 1 : 2) as 1 | 2;
@@ -341,7 +342,7 @@ export default function Album() {
       </div>
 
       {/* Animated central chapter title / faixa ilustrada */}
-      <div className="text-center px-3 py-5 sm:py-8 flex items-center justify-center">
+      <div className="text-center px-3 py-2 sm:py-4 flex items-center justify-center">
         {currentPage?.kind === "category" && albumFaixas[currentPage.cat.key] ? (
           <img
             key={currentCatName}
@@ -388,7 +389,7 @@ export default function Album() {
       >
         <div className="relative w-full max-w-2xl flex items-stretch justify-center rounded-xl">
           <div
-            className="relative flex-1 px-3 py-4 sm:px-8 sm:py-6"
+            className="relative flex-1 px-1 py-1 sm:px-4 sm:py-2"
             style={{
               transformStyle: "preserve-3d",
               animation: flip ? `${flip === "next" ? "leafNext" : "leafPrev"} 0.6s ease-in-out` : undefined,
@@ -721,7 +722,7 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
 function PageShell({ children, side }: { children: React.ReactNode; side: "left" | "right" }) {
   return (
     <div className="relative w-full h-full overflow-hidden rounded-2xl bg-transparent">
-      <div className="relative w-full h-full p-3 sm:p-6">{children}</div>
+      <div className="relative w-full h-full p-1 sm:p-3">{children}</div>
     </div>
   );
 }
@@ -883,7 +884,7 @@ function CategoryPage({
       )}
       <div className="absolute inset-0 bg-amber-50/20 pointer-events-none rounded-xl" />
       <div className="relative h-full p-2 sm:p-3 flex items-center justify-center">
-        <div className="grid grid-cols-4 gap-2 sm:gap-3 w-full h-full" style={{ gridTemplateRows: "repeat(2, minmax(0, 1fr))" }}>
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 w-full h-full" style={{ gridTemplateRows: "repeat(2, minmax(0, 1fr))" }}>
           {stickers.map((s, i) => {
             const has = (owned[s.id] || 0) > 0;
             const globalNum = String(s.id + 1).padStart(3, "0");
