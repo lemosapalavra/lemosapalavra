@@ -1646,7 +1646,7 @@ const crosswordPuzzles: CrossPuzzle[] = [
       { img: czDaniel.url, answer: "DANIEL", clue: "Foi lançado na cova dos leões e Deus o guardou", emoji: "🦁", row: 0, col: 6 },
       { img: czArca.url, answer: "ARCA",   clue: "Barco enorme que Noé construiu",                 emoji: "🚢", row: 1, col: 6 },
       { img: czOvelha.url, answer: "OVELHA", clue: "Animal que o Bom Pastor sai a procurar",         emoji: "🐑", row: 2, col: 5 },
-      { img: czBiblia.url, answer: "BIBLIA", clue: "A Palavra de Deus escrita",                      emoji: "📖", row: 3, col: 4 },
+      { img: czBiblia.url, answer: "BIBLIA", clue: "A Palavra de Deus escrita",                      emoji: "📖", row: 3, col: 5 },
     ],
   },
   {
