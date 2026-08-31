@@ -11,15 +11,15 @@ export interface OrbitItem {
   route: string;
 }
 
-const KEY = "lemos_orbit_config_v4";
+const KEY = "lemos_orbit_config_v5";
 
 export function defaultOrbit(): OrbitItem[] {
   return [
-    { icon: lemosPlayLogo, label: "HISTÓRIAS\nBÍBLICAS", sublabel: "Filmes, Séries e Músicas", route: "/lemosplay" },
-    { icon: iconAlbum, label: "ÁLBUM", sublabel: "Heróis da Fé", route: "/album" },
-    { icon: iconDevocionais, label: "DEVOCIONAIS", route: "/devocionais" },
-    { icon: iconPedidos, label: "PEDIDOS\nDE ORAÇÃO", route: "/pedidos-oracao" },
-    { icon: iconAtividades, label: "ATIVIDADES\nEDUCACIONAIS", route: "/atividades" },
+    { icon: lemosPlayLogo, label: "HISTÓRIAS\nBÍBLICAS", sublabel: "Filmes, Séries, Louvores e Músicas", route: "/lemosplay" },
+    { icon: iconAlbum, label: "ÁLBUM", sublabel: "Colecione os Heróis da Fé", route: "/album" },
+    { icon: iconDevocionais, label: "DEVOCIONAIS", sublabel: "Cada dia com Deus", route: "/devocionais" },
+    { icon: iconPedidos, label: "PEDIDOS\nDE ORAÇÃO", sublabel: "Fale com Deus", route: "/pedidos-oracao" },
+    { icon: iconAtividades, label: "ATIVIDADES\nEDUCACIONAIS", sublabel: "Atividades Educativas", route: "/atividades" },
   ];
 }
 
