@@ -387,9 +387,9 @@ export default function Album() {
         onTouchEnd={onTouchEnd}
         style={{ perspective: "1600px" }}
       >
-        <div className="relative w-full max-w-2xl flex items-stretch justify-center rounded-xl">
+        <div className="relative w-full max-w-5xl flex items-stretch justify-center rounded-xl">
           <div
-            className="relative flex-1 px-1 py-1 sm:px-4 sm:py-2"
+            className="relative flex-1 px-0.5 py-0.5 sm:px-2 sm:py-1"
             style={{
               transformStyle: "preserve-3d",
               animation: flip ? `${flip === "next" ? "leafNext" : "leafPrev"} 0.6s ease-in-out` : undefined,
@@ -401,8 +401,6 @@ export default function Album() {
             </PageShell>
           </div>
         </div>
-
-        <AlbumProgressAside page={currentPage} owned={owned} totalOwned={totalOwned} total={allStickers.length} />
       </div>
 
 
