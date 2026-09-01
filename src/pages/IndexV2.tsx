@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { LogOut, Search, Settings, User } from "lucide-react";
 import FeedbackFooter from "@/components/FeedbackFooter";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
+import EventBannerTrain from "@/components/EventBannerTrain";
 import InstallShortcut from "@/components/InstallShortcut";
 import { useCoins } from "@/hooks/useCoins";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
