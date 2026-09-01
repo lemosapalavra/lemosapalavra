@@ -64,7 +64,7 @@ export default function EventBannerTrain({ isAuthenticated = false }: { isAuthen
                 className={`block ${canOpen ? "cursor-pointer" : "cursor-default"}`}
               >
                 <img
-                  loading="lazy"
+                  loading="eager"
                   decoding="async"
                   src={trainSrc}
                   alt={cfg.message}
