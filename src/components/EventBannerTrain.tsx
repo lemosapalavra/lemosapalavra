@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { loadTrainBanner, isTrainActive, TRAIN_BANNER_EVENT, type TrainBannerConfig } from "@/data/trainBannerConfig";
-import trainLtr from "@/assets/trenzinho/trem-ltr.png.asset.json";
-import trainRtl from "@/assets/trenzinho/trem-rtl.png.asset.json";
+import ColonialVideoFrame from "@/components/ColonialVideoFrame";
+import VideoSideActions from "@/components/VideoSideActions";
+import trainLtr from "@/assets/trenzinho/trem-ltr-v2.png.asset.json";
+import trainRtl from "@/assets/trenzinho/trem-rtl-v2.png.asset.json";
 import trainPoster from "@/assets/trenzinho/trem-da-vida-capa.png.asset.json";
 
 /**
- * Trenzinho animado que atravessa a página inicial sobre um trilho.
+ * Trenzinho animado que atravessa a página inicial.
  * Alterna o sentido a cada viagem e, ao ser clicado, abre o vídeo
- * "Trem da Vida" configurado pelo administrador.
+ * "Trem da Vida" com a mesma moldura e interações dos demais vídeos.
  */
 export default function EventBannerTrain({ isAuthenticated = false }: { isAuthenticated?: boolean }) {
   const [cfg, setCfg] = useState<TrainBannerConfig>(() => loadTrainBanner());
@@ -47,8 +49,7 @@ export default function EventBannerTrain({ isAuthenticated = false }: { isAuthen
 
   return (
     <>
-      <div className="relative w-full overflow-hidden select-none" aria-hidden={false}>
-        {/* Trenzinho */}
+      <div className="relative w-full overflow-hidden select-none">
         <div className="relative h-24 sm:h-28 md:h-32">
           {running && (
             <div
@@ -78,47 +79,36 @@ export default function EventBannerTrain({ isAuthenticated = false }: { isAuthen
             </div>
           )}
         </div>
-
-        {/* Trilho animado */}
-        <div className="relative h-3 sm:h-4 w-full">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                "repeating-linear-gradient(90deg, hsl(var(--muted-foreground)/0.55) 0 8px, transparent 8px 24px)",
-              backgroundSize: "24px 100%",
-              animation: `${dir === "rtl" ? "rail-rtl" : "rail-ltr"} 1.2s linear infinite`,
-            }}
-          />
-          <div className="absolute inset-x-0 top-0 h-[3px] bg-amber-800/70 rounded-full" />
-          <div className="absolute inset-x-0 bottom-0 h-[3px] bg-amber-800/70 rounded-full" />
-        </div>
       </div>
 
       {videoOpen && (
         <div
-          className="fixed inset-0 z-[80] bg-black/85 flex items-center justify-center p-3"
+          className="fixed inset-0 z-[80] bg-black flex items-center justify-center"
           onClick={() => setVideoOpen(false)}
         >
-          <div className="relative w-full max-w-md" onClick={(e) => e.stopPropagation()}>
-            <button
-              onClick={() => setVideoOpen(false)}
-              title="Fechar vídeo"
-              className="absolute -top-3 -right-3 z-10 w-9 h-9 rounded-full bg-background text-foreground shadow-lg font-bold"
-            >
-              ✕
-            </button>
-            <video
-              src={cfg.videoUrl}
-              poster={trainPoster.url}
-              controls
-              autoPlay
-              playsInline
-              controlsList="nodownload noplaybackrate"
-              disablePictureInPicture
-              onContextMenu={(e) => e.preventDefault()}
-              className="w-full rounded-2xl border-4 border-amber-400 shadow-2xl bg-black"
-            />
+          <button
+            onClick={() => setVideoOpen(false)}
+            title="Fechar vídeo"
+            aria-label="Fechar vídeo"
+            className="absolute top-4 left-4 z-20 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white text-xl font-bold transition"
+          >
+            ✕
+          </button>
+          <VideoSideActions videoId="trenzinho:trem-da-vida" />
+          <div onClick={(e) => e.stopPropagation()}>
+            <ColonialVideoFrame variant="silver">
+              <video
+                src={cfg.videoUrl}
+                poster={trainPoster.url}
+                controls
+                autoPlay
+                playsInline
+                controlsList="nodownload noremoteplayback noplaybackrate"
+                disablePictureInPicture
+                onContextMenu={(e) => e.preventDefault()}
+                className="w-full h-full bg-black object-cover"
+              />
+            </ColonialVideoFrame>
           </div>
         </div>
       )}
@@ -136,8 +126,6 @@ export default function EventBannerTrain({ isAuthenticated = false }: { isAuthen
           0%, 100% { transform: translateY(0); }
           50%      { transform: translateY(-2px); }
         }
-        @keyframes rail-ltr { from { background-position-x: 0; } to { background-position-x: -24px; } }
-        @keyframes rail-rtl { from { background-position-x: 0; } to { background-position-x: 24px; } }
       `}</style>
     </>
   );
