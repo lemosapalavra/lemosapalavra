@@ -172,6 +172,7 @@ export default function IndexV2() {
       </header>
 
       <main className="flex-1 w-full">
+        <EventBannerTrain isAuthenticated={!!user} />
         {/* Herói */}
         <section
           className="w-full"
