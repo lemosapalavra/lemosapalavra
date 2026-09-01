@@ -7,7 +7,8 @@ import DedicatoriaModal from "@/components/DedicatoriaModal";
 import IndexAdminPanel from "@/components/IndexAdminPanel";
 import EventBannerPlane from "@/components/EventBannerPlane";
 import InstallShortcut from "@/components/InstallShortcut";
-import NewVideosBadge from "@/components/NewVideosBadge";
+import HomeTopNav from "@/components/HomeTopNav";
+import EventBannerTrain from "@/components/EventBannerTrain";
 import IndexV2 from "@/pages/IndexV2";
 import { loadSiteVersion, SITE_VERSION_EVENT } from "@/data/siteVersion";
 
@@ -166,7 +167,28 @@ function IndexV1() {
 
       <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
       <main className="w-full flex-1 flex flex-col items-center">
+        <div className="w-full px-3 pt-2">
+          <HomeTopNav />
+        </div>
+
         <EventBannerPlane isAuthenticated={!!user} />
+        <EventBannerTrain isAuthenticated={!!user} />
+
+        <div className="w-full flex flex-col items-center gap-1 px-4 pt-3 text-center">
+          <p className="font-display font-extrabold text-base sm:text-xl text-foreground">
+            Bem-vindo ao Lemos a Palavra!
+          </p>
+          <p className="font-body text-xs sm:text-sm text-muted-foreground">
+            Aprenda, brinque e descubra a Palavra de Deus.
+          </p>
+          <button
+            onClick={() => navigate("/lemosplay")}
+            title="Começar agora — assista às histórias bíblicas"
+            className="mt-1 px-5 py-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-amber-950 font-display font-extrabold text-xs sm:text-sm shadow-lg hover:scale-105 active:scale-95 transition"
+          >
+            COMEÇAR AGORA
+          </button>
+        </div>
 
         <div className="flex-1 flex flex-col items-center justify-center w-full py-4">
           <OrbitMenu
@@ -177,12 +199,6 @@ function IndexV1() {
             onLogout={handleLogout}
             onItemClick={handleItemClick}
           />
-
-          {user && (
-            <div className="mt-6 flex justify-center">
-              <div className="flex flex-col items-center gap-2"><NewVideosBadge /></div>
-            </div>
-          )}
 
           <div className="mt-16 sm:mt-20 flex flex-col items-center gap-6">
             {user && <InstallShortcut compact />}
