@@ -23,6 +23,7 @@ import {
   loadTrainBanner,
   resetTrainBanner,
   saveTrainBanner,
+  MONTHS,
 } from "@/data/trainBannerConfig";
 
 interface Props {
