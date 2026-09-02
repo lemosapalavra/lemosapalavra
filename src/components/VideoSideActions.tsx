@@ -131,13 +131,13 @@ export default function VideoSideActions({ videoId, className = "" }: Props) {
           <span className="text-white/90 text-[10px] font-bold drop-shadow leading-none">{formatCount(displayComments)}</span>
         </button>
 
-        <button onClick={() => shareSite(videoId)} className="flex flex-col items-center gap-1">
+        <button onClick={() => shareSite(videoId)} aria-label="Compartilhar" title="Compartilhar" className="flex flex-col items-center gap-1">
           <span className={`${circle} bg-emerald-500/90`}>
             <Share2 className="w-6 h-6 text-white" />
           </span>
-          <span className="text-white text-[10px] font-bold drop-shadow leading-none">Compartilhar</span>
           <span className="text-white/90 text-[10px] font-bold drop-shadow leading-none">{formatCount(fakeCounts.shares)}</span>
         </button>
+
       </div>
 
       {openComments && (

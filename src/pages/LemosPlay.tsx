@@ -166,7 +166,7 @@ function VideoSideActions({ itemId, title, src, className = "absolute top-1 righ
       <Btn onClick={toggleFollow} icon={UserPlus} label={st.following ? "Seguindo" : "Seguir"} active={st.following} color="text-emerald-300" />
       <Btn onClick={toggleLike} icon={Heart} label="Gostei" count={fmt(st.likes)} active={st.liked} color="text-rose-400" />
       <Btn onClick={onComment} icon={MessageCircle} label="Comentar" count={fmt(st.comments)} />
-      <Btn onClick={onShare} icon={Share2} label="Compartilhar" count={fmt(st.shares)} />
+      <Btn onClick={onShare} icon={Share2} label="Compartilhar" count={fmt(st.shares)} hideLabel />
       <Btn onClick={onDownload} icon={Download} label="Baixar" />
       <Btn onClick={onSendTo} icon={Send} label="Enviar" />
     </div>

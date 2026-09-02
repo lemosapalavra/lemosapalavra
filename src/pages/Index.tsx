@@ -172,19 +172,13 @@ function IndexV1() {
 
         <div className="w-full flex flex-col items-center gap-1 px-4 pt-3 text-center">
           <p className="font-display font-extrabold text-base sm:text-xl text-foreground">
-            Bem-vindo ao Lemos a Palavra!
+            Bem vindo a Lemos a Palavra
           </p>
           <p className="font-body text-xs sm:text-sm text-muted-foreground">
-            Aprenda, brinque e descubra a Palavra de Deus.
+            Aprenda, Assista e descubra sobre a palavra de Deus
           </p>
-          <button
-            onClick={() => navigate("/lemosplay")}
-            title="Começar agora — assista às histórias bíblicas"
-            className="mt-1 px-5 py-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-amber-950 font-display font-extrabold text-xs sm:text-sm shadow-lg hover:scale-105 active:scale-95 transition"
-          >
-            COMEÇAR AGORA
-          </button>
         </div>
+
 
         <div className="flex-1 flex flex-col items-center justify-center w-full py-4">
           <OrbitMenu

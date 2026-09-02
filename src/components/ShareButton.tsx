@@ -91,13 +91,14 @@ export default function ShareButton({ label, variant = "floating", className = "
       <button
         onClick={onClick}
         aria-label="Compartilhar"
-        className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs sm:text-sm font-bold bg-emerald-500 text-white hover:bg-emerald-600 transition active:scale-95 ${className}`}
+        title="Compartilhar"
+        className={`inline-flex items-center justify-center w-9 h-9 rounded-full bg-emerald-500 text-white hover:bg-emerald-600 transition active:scale-95 ${className}`}
       >
         {done ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
-        <span>Compartilhar</span>
       </button>
     );
   }
+
 
   return (
     <button
