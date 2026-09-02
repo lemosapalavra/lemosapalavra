@@ -167,10 +167,6 @@ function IndexV1() {
 
       <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
       <main className="w-full flex-1 flex flex-col items-center">
-        <div className="w-full px-3 pt-2">
-          <HomeTopNav />
-        </div>
-
         <EventBannerPlane isAuthenticated={!!user} />
         <EventBannerTrain isAuthenticated={!!user} />
 
@@ -214,6 +210,10 @@ function IndexV1() {
 
         </div>
       </main>
+
+      <div className="w-full px-3 pt-4 pb-1">
+        <HomeTopNav />
+      </div>
 
       <FeedbackFooter />
 
