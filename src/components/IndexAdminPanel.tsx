@@ -325,30 +325,35 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
                     checked={train.scheduleEnabled}
                     onChange={(e) => patchTrain({ scheduleEnabled: e.target.checked })}
                   />
-                  Exibir somente em data comemorativa
+                  Exibir somente no mês comemorativo
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   <label className="text-xs font-semibold text-zinc-700 block">
-                    Início
-                    <input
-                      type="date"
-                      value={train.startDate}
+                    Mês inicial
+                    <select
+                      value={train.startMonth}
                       disabled={!train.scheduleEnabled}
-                      onChange={(e) => patchTrain({ startDate: e.target.value })}
+                      onChange={(e) => patchTrain({ startMonth: Number(e.target.value) })}
                       className={inputCls + " mt-1 disabled:opacity-50"}
-                    />
+                    >
+                      {MONTHS.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
+                    </select>
                   </label>
                   <label className="text-xs font-semibold text-zinc-700 block">
-                    Fim
-                    <input
-                      type="date"
-                      value={train.endDate}
+                    Mês final
+                    <select
+                      value={train.endMonth}
                       disabled={!train.scheduleEnabled}
-                      onChange={(e) => patchTrain({ endDate: e.target.value })}
+                      onChange={(e) => patchTrain({ endMonth: Number(e.target.value) })}
                       className={inputCls + " mt-1 disabled:opacity-50"}
-                    />
+                    >
+                      {MONTHS.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
+                    </select>
                   </label>
                 </div>
+                <p className="text-[11px] text-zinc-500">
+                  Vale para todos os anos, sem data final.
+                </p>
               </div>
               <label className="text-xs font-semibold text-zinc-700 block">
                 Chamada (texto do convite)
