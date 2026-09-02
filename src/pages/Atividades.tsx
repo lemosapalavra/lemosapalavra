@@ -387,19 +387,13 @@ export default function Atividades() {
   ];
 
 
-  // Atividades do dia: dias com data par mostram 4 atividades, dias ímpares
-  // mostram 5. A janela é deslocada conforme o dia do ano, então o conjunto
-  // alterna de um dia para o outro sem repetir sempre as mesmas atividades.
+  // Atividades do dia: sempre 5 atividades. A janela desliza 5 posições por
+  // dia, então as demais atividades entram nos dias seguintes, sem repetir
+  // sempre o mesmo conjunto.
   const activities = useMemo(() => {
-    const today = new Date();
-    const day = today.getDate();
-    const count = day % 2 === 0 ? 4 : 5;
-    const offset = dayOfYear(today) % allActivities.length;
-    const rotating = Array.from({ length: count }, (_, i) => allActivities[(offset + i) % allActivities.length]);
-    // Cruzadinha e 7 Erros ficam sempre disponíveis no menu.
-    const fixed = allActivities.filter((a) => a.id === "spot" || a.id === "crossword");
-    const seen = new Set(rotating.map((a) => a.id));
-    return [...rotating, ...fixed.filter((a) => !seen.has(a.id))];
+    const total = allActivities.length;
+    const offset = (dayOfYear(new Date()) * 5) % total;
+    return Array.from({ length: Math.min(5, total) }, (_, i) => allActivities[(offset + i) % total]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

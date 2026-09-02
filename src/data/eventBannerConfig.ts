@@ -2,19 +2,20 @@
 // A mensagem muda conforme o evento (Dia dos Pais, Natal, Páscoa, etc.)
 // e o link do vídeo pode ser atualizado pelo painel admin.
 
+import { monthInRange } from "@/data/trainBannerConfig";
+
 export interface EventBannerConfig {
   enabled: boolean;
   callToAction: string; // texto principal (ex: "Clique aqui")
   message: string;       // mensagem sazonal (ex: "Feliz Dia dos Pais")
   videoUrl: string;      // link do vídeo a abrir
   scheduleEnabled: boolean; // exibir apenas no período comemorativo
-  startDate: string;        // YYYY-MM-DD
-  endDate: string;          // YYYY-MM-DD
+  startMonth: number;       // 1-12 (vale para todos os anos)
+  endMonth: number;         // 1-12 (vale para todos os anos)
 }
 
-// v4: nova chave para "resetar" a configuração em todos os aparelhos.
-// O aviãozinho nasce desligado — só volta se o admin ativar de novo.
-const KEY = "lemos_event_banner_v4";
+// v5: agendamento passou a ser apenas por mês (válido em todos os anos).
+const KEY = "lemos_event_banner_v5";
 
 export function defaultEventBanner(): EventBannerConfig {
   return {
@@ -23,8 +24,8 @@ export function defaultEventBanner(): EventBannerConfig {
     message: "Feliz dia\nDos Pais",
     videoUrl: "",
     scheduleEnabled: false,
-    startDate: "",
-    endDate: "",
+    startMonth: 1,
+    endMonth: 12,
   };
 }
 
@@ -32,6 +33,7 @@ export function loadEventBanner(): EventBannerConfig {
   try {
     // limpa configurações antigas (versões anteriores do aviãozinho)
     try { localStorage.removeItem("lemos_event_banner_v3"); } catch { /* noop */ }
+    try { localStorage.removeItem("lemos_event_banner_v4"); } catch { /* noop */ }
     const raw = localStorage.getItem(KEY);
     if (!raw) return defaultEventBanner();
     const parsed = JSON.parse(raw) as Partial<EventBannerConfig>;
@@ -41,22 +43,13 @@ export function loadEventBanner(): EventBannerConfig {
   }
 }
 
-/** Data local no formato YYYY-MM-DD. */
-function today(): string {
-  const d = new Date();
-  const p = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
-}
-
-/** O aviãozinho aparece? Considera o liga/desliga e o período comemorativo. */
+/** O aviãozinho aparece? Considera o liga/desliga e o mês comemorativo. */
 export function isBannerActive(cfg: EventBannerConfig): boolean {
   if (!cfg.enabled) return false;
   if (!cfg.scheduleEnabled) return true;
-  const t = today();
-  if (cfg.startDate && t < cfg.startDate) return false;
-  if (cfg.endDate && t > cfg.endDate) return false;
-  return true;
+  return monthInRange(new Date().getMonth() + 1, cfg.startMonth, cfg.endMonth);
 }
+
 
 export function saveEventBanner(cfg: EventBannerConfig) {
   localStorage.setItem(KEY, JSON.stringify(cfg));

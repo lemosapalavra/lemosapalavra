@@ -9,11 +9,11 @@ export interface TrainBannerConfig {
   message: string;       // mensagem sazonal / convite
   videoUrl: string;      // link do vídeo a abrir ao clicar no trenzinho
   scheduleEnabled: boolean;
-  startDate: string;     // YYYY-MM-DD
-  endDate: string;       // YYYY-MM-DD
+  startMonth: number;    // 1-12 (vale para todos os anos)
+  endMonth: number;      // 1-12 (vale para todos os anos)
 }
 
-const KEY = "lemos_train_banner_v1";
+const KEY = "lemos_train_banner_v2";
 
 export function defaultTrainBanner(): TrainBannerConfig {
   return {
@@ -22,13 +22,14 @@ export function defaultTrainBanner(): TrainBannerConfig {
     message: "Pegue o trem da Vida",
     videoUrl: tremVideo.url,
     scheduleEnabled: false,
-    startDate: "",
-    endDate: "",
+    startMonth: 1,
+    endMonth: 12,
   };
 }
 
 export function loadTrainBanner(): TrainBannerConfig {
   try {
+    try { localStorage.removeItem("lemos_train_banner_v1"); } catch { /* noop */ }
     const raw = localStorage.getItem(KEY);
     if (!raw) return defaultTrainBanner();
     const parsed = JSON.parse(raw) as Partial<TrainBannerConfig>;
@@ -38,21 +39,27 @@ export function loadTrainBanner(): TrainBannerConfig {
   }
 }
 
-function today(): string {
-  const d = new Date();
-  const p = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
-}
-
-/** O trenzinho aparece? Considera o liga/desliga e o período comemorativo. */
+/**
+ * O trenzinho aparece? Considera o liga/desliga e o período comemorativo
+ * definido apenas por mês — válido em todos os anos, indefinidamente.
+ */
 export function isTrainActive(cfg: TrainBannerConfig): boolean {
   if (!cfg.enabled) return false;
   if (!cfg.scheduleEnabled) return true;
-  const t = today();
-  if (cfg.startDate && t < cfg.startDate) return false;
-  if (cfg.endDate && t > cfg.endDate) return false;
-  return true;
+  return monthInRange(new Date().getMonth() + 1, cfg.startMonth, cfg.endMonth);
 }
+
+/** Intervalo de meses, aceitando períodos que viram o ano (ex.: 11 → 2). */
+export function monthInRange(month: number, start: number, end: number): boolean {
+  if (!start || !end) return true;
+  return start <= end ? month >= start && month <= end : month >= start || month <= end;
+}
+
+export const MONTHS = [
+  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
+];
+
 
 export const TRAIN_BANNER_EVENT = "lemos_train_banner_change";
 
