@@ -671,11 +671,9 @@ export default function LemosPlay() {
 
         <div id="genesis">
           <Row title="Gênesis" items={genesisItems} onPlay={(item) => requestPlay(item)} progress={progress} />
-          <MarathonNote section="Gênesis" perVideo={COIN_REWARDS["Gênesis"]} bonus={MARATHON_BONUS["Gênesis"]} />
         </div>
         <div id="jesus">
           <Row title="Jesus" items={jesusItems} onPlay={(item) => requestPlay(item)} progress={progress} />
-          <MarathonNote section="Jesus" perVideo={COIN_REWARDS["Jesus"]} bonus={MARATHON_BONUS["Jesus"]} />
         </div>
         <div id="series"><Row
           title="Séries"
@@ -686,15 +684,12 @@ export default function LemosPlay() {
           }}
           progress={progress}
         />
-          <MarathonNote section="Séries" perVideo={COIN_REWARDS["Série"]} bonus={MARATHON_BONUS["Séries"]} />
         </div>
         <div id="musicas">
           <Row title="Músicas" items={musicasPlay} onPlay={(item) => requestPlay(item)} progress={progress} />
-          <MarathonNote section="Músicas" perVideo={COIN_REWARDS["Música"]} bonus={MARATHON_BONUS["Músicas"]} />
         </div>
         <div id="louvores">
           <Row title="Louvores" items={louvoresPlay} onPlay={(item) => requestPlay(item)} progress={progress} />
-          <MarathonNote section="Louvores" perVideo={COIN_REWARDS["Louvor"]} bonus={MARATHON_BONUS["Louvores"]} />
         </div>
 
       </div>
