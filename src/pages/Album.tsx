@@ -827,7 +827,7 @@ function CategoryPage({
       )}
       <div className="absolute inset-0 bg-amber-50/20 pointer-events-none rounded-xl" />
       <div className="relative h-full p-2 sm:p-3 flex items-center justify-center">
-        <div className="grid grid-cols-3 gap-2 sm:gap-3 w-full h-full" style={{ gridTemplateRows: "repeat(2, minmax(0, 1fr))" }}>
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 w-full h-full place-items-center" style={{ gridTemplateRows: "repeat(2, minmax(0, 1fr))" }}>
           {stickers.map((s, i) => {
             const has = (owned[s.id] || 0) > 0;
             const globalNum = String(s.id + 1).padStart(3, "0");
@@ -846,10 +846,12 @@ function CategoryPage({
                 data-sticker
                 onClick={(e) => { e.stopPropagation(); onStickerClick(s); }}
                 disabled={!has}
-                className={`relative w-full h-full min-h-0 overflow-hidden rounded-xl bg-gradient-to-br ${cat.color} p-[3px] shadow-lg flex ${
+                style={{ aspectRatio: "49 / 65" }}
+                className={`relative h-full max-w-full min-h-0 overflow-hidden rounded-xl bg-gradient-to-br ${cat.color} p-[3px] shadow-lg flex ${
                   has ? "cursor-pointer hover:scale-[1.06] hover:z-30 transition-transform" : "opacity-95"
                 }`}
               >
+
                 {/* Inner white card */}
                 <div className="relative w-full h-full bg-white rounded-[10px] flex flex-col overflow-hidden">
                   {/* Number ribbon top-left */}
