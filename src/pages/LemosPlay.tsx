@@ -40,28 +40,8 @@ const COIN_REWARDS: Record<string, number> = {
   Louvor: COINS.louvor,
 };
 
-// Bônus extra por maratonar (assistir toda) a sessão.
-const MARATHON_BONUS: Record<string, number> = {
-  "Gênesis": 10,
-  Jesus: 10,
-  "Séries": 5,
-  "Músicas": 5,
-  Louvores: 5,
-};
 
-/** Aviso claro do ganho por vídeo e do bônus extra ao maratonar a sessão. */
-function MarathonNote({ section, perVideo, bonus }: { section: string; perVideo: number; bonus: number }) {
-  return (
-    <div className="mx-4 sm:mx-12 -mt-4 mb-8 rounded-xl border border-amber-400/40 bg-amber-500/10 px-4 py-3">
-      <p className="text-amber-200 font-bold text-xs sm:text-sm">
-        🪙 Cada vídeo de {section} assistido rende {perVideo} moedinha(s).
-      </p>
-      <p className="text-amber-100/90 text-xs sm:text-sm">
-        🏁 Maratone toda a sessão {section} e ganhe <strong>+{bonus} moedas extras</strong> para comprar as figurinhas do álbum.
-      </p>
-    </div>
-  );
-}
+
 
 
 interface PlayItem {
@@ -139,20 +119,22 @@ function VideoSideActions({ itemId, title, src, className = "absolute top-1 righ
     window.open(`https://wa.me/?text=${text}`, "_blank");
   };
 
-  const Btn = ({ onClick, icon: Icon, label, count, active, color }: { onClick?: (e: React.MouseEvent) => void; icon: typeof Heart; label: string; count?: string; active?: boolean; color?: string }) => {
+  const Btn = ({ onClick, icon: Icon, label, count, active, color, hideLabel }: { onClick?: (e: React.MouseEvent) => void; icon: typeof Heart; label: string; count?: string; active?: boolean; color?: string; hideLabel?: boolean }) => {
     const isInteractive = !!onClick;
     return (
       <span
         role={isInteractive ? "button" : undefined}
         tabIndex={isInteractive ? 0 : undefined}
         onClick={onClick}
+        aria-label={label}
         className={`flex flex-col items-center gap-0.5 group/act ${isInteractive ? "cursor-pointer" : ""}`}
         title={label}
       >
         <span className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/55 backdrop-blur flex items-center justify-center transition ${isInteractive ? "group-hover/act:bg-black/80" : ""} ${active ? color : "text-white"}`}>
           <Icon className={`w-4 h-4 ${active ? "fill-current" : ""}`} />
         </span>
-        <span className="text-[9px] font-bold text-white drop-shadow text-center leading-none">{label}</span>
+        {!hideLabel && <span className="text-[9px] font-bold text-white drop-shadow text-center leading-none">{label}</span>}
+
         {count && <span className="text-[9px] font-bold text-white/80 drop-shadow text-center leading-none">{count}</span>}
       </span>
     );
@@ -164,7 +146,7 @@ function VideoSideActions({ itemId, title, src, className = "absolute top-1 righ
       <Btn onClick={toggleFollow} icon={UserPlus} label={st.following ? "Seguindo" : "Seguir"} active={st.following} color="text-emerald-300" />
       <Btn onClick={toggleLike} icon={Heart} label="Gostei" count={fmt(st.likes)} active={st.liked} color="text-rose-400" />
       <Btn onClick={onComment} icon={MessageCircle} label="Comentar" count={fmt(st.comments)} />
-      <Btn onClick={onShare} icon={Share2} label="Compartilhar" count={fmt(st.shares)} />
+      <Btn onClick={onShare} icon={Share2} label="Compartilhar" count={fmt(st.shares)} hideLabel />
       <Btn onClick={onDownload} icon={Download} label="Baixar" />
       <Btn onClick={onSendTo} icon={Send} label="Enviar" />
     </div>
@@ -669,11 +651,9 @@ export default function LemosPlay() {
 
         <div id="genesis">
           <Row title="Gênesis" items={genesisItems} onPlay={(item) => requestPlay(item)} progress={progress} />
-          <MarathonNote section="Gênesis" perVideo={COIN_REWARDS["Gênesis"]} bonus={MARATHON_BONUS["Gênesis"]} />
         </div>
         <div id="jesus">
           <Row title="Jesus" items={jesusItems} onPlay={(item) => requestPlay(item)} progress={progress} />
-          <MarathonNote section="Jesus" perVideo={COIN_REWARDS["Jesus"]} bonus={MARATHON_BONUS["Jesus"]} />
         </div>
         <div id="series"><Row
           title="Séries"
@@ -684,15 +664,12 @@ export default function LemosPlay() {
           }}
           progress={progress}
         />
-          <MarathonNote section="Séries" perVideo={COIN_REWARDS["Série"]} bonus={MARATHON_BONUS["Séries"]} />
         </div>
         <div id="musicas">
           <Row title="Músicas" items={musicasPlay} onPlay={(item) => requestPlay(item)} progress={progress} />
-          <MarathonNote section="Músicas" perVideo={COIN_REWARDS["Música"]} bonus={MARATHON_BONUS["Músicas"]} />
         </div>
         <div id="louvores">
           <Row title="Louvores" items={louvoresPlay} onPlay={(item) => requestPlay(item)} progress={progress} />
-          <MarathonNote section="Louvores" perVideo={COIN_REWARDS["Louvor"]} bonus={MARATHON_BONUS["Louvores"]} />
         </div>
 
       </div>
