@@ -7,7 +7,7 @@
  */
 
 const RELOAD_FLAG = "lemos_auto_reload_at";
-const CHECK_INTERVAL = 5 * 60 * 1000; // 5 minutos
+const CHECK_INTERVAL = 30 * 60 * 1000; // 30 minutos
 
 async function fetchCurrentBuildId(): Promise<string | null> {
   try {
@@ -50,21 +50,32 @@ async function clearCaches() {
   }
 }
 
+/** Não interrompe o usuário: vídeo/áudio tocando, tela cheia ou modal aberto. */
+function isBusy(): boolean {
+  if (document.fullscreenElement) return true;
+  const media = Array.from(document.querySelectorAll<HTMLMediaElement>("video, audio"));
+  if (media.some((m) => !m.paused && !m.ended)) return true;
+  // iframes de vídeo (YouTube/Vimeo/Bunny) — não recarrega enquanto existirem
+  if (document.querySelector('iframe[src*="youtube"], iframe[src*="vimeo"], iframe[src*="mediadelivery"]')) return true;
+  return false;
+}
+
 async function checkForUpdate() {
   if (document.visibilityState === "hidden") return;
+  if (isBusy()) return;
   const current = loadedBuildId();
   if (!current) return;
   const remote = await fetchCurrentBuildId();
   if (!remote || remote === current) return;
 
-  // trava anti-loop: no máximo um reload automático por minuto
-  const last = Number(sessionStorage.getItem(RELOAD_FLAG) || 0);
-  if (Date.now() - last < 60_000) return;
+  // trava anti-loop: no máximo um reload automático por sessão
+  if (sessionStorage.getItem(RELOAD_FLAG)) return;
   sessionStorage.setItem(RELOAD_FLAG, String(Date.now()));
 
   await clearCaches();
   window.location.reload();
 }
+
 
 /** Inicia o monitoramento de novas versões. Retorna função de limpeza. */
 export function startAutoUpdate(): () => void {

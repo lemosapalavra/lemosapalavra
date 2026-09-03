@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
-import FeedbackFooter from "@/components/FeedbackFooter";
 import { loadVideoInteractionsCfg, saveVideoInteractionsCfg } from "@/data/videoInteractionsConfig";
 import { useIsAdmin, setAdminMode, canBeAdmin } from "@/hooks/useIsAdmin";
 import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
@@ -288,7 +287,6 @@ export default function Configuracao() {
           </div>
         </div>
       </div>
-      <FeedbackFooter />
     </div>
   );
 }

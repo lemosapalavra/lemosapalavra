@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { LogOut, Search, Settings, User } from "lucide-react";
-import FeedbackFooter from "@/components/FeedbackFooter";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import EventBannerTrain from "@/components/EventBannerTrain";
 import InstallShortcut from "@/components/InstallShortcut";
@@ -248,7 +247,6 @@ export default function IndexV2() {
         </div>
       </main>
 
-      <FeedbackFooter />
       <DedicatoriaModal open={dedicatoriaOpen} onOpenChange={setDedicatoriaOpen} />
     </div>
   );

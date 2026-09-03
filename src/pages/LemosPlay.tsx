@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { Play, Info, ChevronLeft, ChevronRight, X, Settings, UserPlus, Heart, MessageCircle, Share2, Download, Send, ListVideo, SkipForward, RotateCcw, Eye } from "lucide-react";
 import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 import PageHeader from "@/components/PageHeader";
-import WavyBanner from "@/components/WavyBanner";
 import ShareButton from "@/components/ShareButton";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 import VideoActionsColumn from "@/components/VideoSideActions";
@@ -569,18 +568,6 @@ export default function LemosPlay() {
           </button>
         </div>
       )}
-
-      <div className="px-4">
-        <WavyBanner
-          tone="dark"
-          emoji="🎬"
-          lines={[
-            "Assista aos vídeos e ganhe moedinhas para a compra das figurinhas do álbum.",
-            "Caso queira, encaminhe aos seus amigos e parentes.",
-          ]}
-        />
-      </div>
-
 
       {/* Hero — estilo Netflix: prévia em tela cheia do destaque, descrição à esquerda sobreposta */}
       <section className="relative w-full overflow-hidden bg-black">

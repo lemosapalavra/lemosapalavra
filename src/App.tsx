@@ -5,7 +5,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 // import MysticBackground from "@/components/MysticBackground"; // disabled for performance
-import WavyBanner from "@/components/WavyBanner";
+import ShareButton from "@/components/ShareButton";
 import MascoteLia from "@/components/MascoteLia";
 import Index from "./pages/Index.tsx";
 import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
@@ -183,16 +183,15 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
-        <footer className="w-full px-4 pb-24 pt-2 bg-transparent">
-          <WavyBanner
-            emoji="✝️"
-            lines={[
-              "Projeto cristão, sem interesses financeiros, sem vínculo político.",
-              "dedicado ao Evangelho de Jesus Cristo para todas as gerações.",
-              "Faça parte, compartilhe!",
-            ]}
-          />
+        <footer className="w-full px-4 pb-20 pt-2 bg-transparent">
+          <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 border-t border-amber-200/60 pt-2">
+            <p className="font-body text-[11px] leading-snug text-amber-900/70">
+              ✝️ Projeto cristão dedicado ao Evangelho de Jesus Cristo.
+            </p>
+            <ShareButton variant="inline" className="w-8 h-8 bg-transparent text-amber-700 hover:bg-amber-100 shadow-none" />
+          </div>
         </footer>
+
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

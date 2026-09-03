@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
-import FeedbackFooter from "@/components/FeedbackFooter";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { MessageCircle, Send, Copy, Check } from "lucide-react";
 
@@ -246,7 +245,6 @@ export default function AdminWhatsapp() {
         </section>
       </div>
 
-      <FeedbackFooter />
     </div>
   );
 }

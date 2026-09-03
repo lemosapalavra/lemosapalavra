@@ -19,7 +19,6 @@ import CoinBadge from "@/components/CoinBadge";
 import { COINS } from "@/data/coinRewards";
 import EducacionalActivities from "@/components/EducacionalActivities";
 import ActivityNav from "@/components/ActivityNav";
-import WavyBanner from "@/components/WavyBanner";
 import iconQuiz from "@/assets/icon-quiz.png";
 import iconAtividades from "@/assets/icon-atividades.png";
 import iconMemoria from "@/assets/icon-memoria.png";
@@ -443,13 +442,6 @@ export default function Atividades() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-start px-4 pt-0 pb-8" style={bgStyle}>
       <PageHeader title="Atividades Educacionais" icon={iconAtividades} />
-      <WavyBanner
-        emoji="🔄"
-        lines={[
-          "Atividades alternadas de dia a dia.",
-          "Complete-as e ganhe moedas para compra das figurinhas do Álbum.",
-        ]}
-      />
 
       <div
         className="relative orbit-area"
@@ -556,13 +548,6 @@ function QuizGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }:
       <div className="min-h-screen py-6 px-4" style={bgStyle}>
         <div className="max-w-lg mx-auto">
           <ActivityNav onBack={onBack} title="Quiz Bíblico" subtitle="Escolha uma categoria" />
-          <WavyBanner
-            emoji="🧠"
-            lines={[
-              "Atividades de hoje, amanhã tem novas.",
-              "Complete-as e ganhará moedinhas para a compra das figurinhas.",
-            ]}
-          />
           <div className="grid grid-cols-2 gap-3">
             {quizCategories.map((c) => (
               <button
@@ -1451,14 +1436,6 @@ function WordSearchGame({ onBack, celebrate, celebration, closeCelebration, bgSt
       <div className="max-w-3xl mx-auto">
         <ActivityNav onBack={onBack} title="Caça-Palavras" subtitle={card.title} />
 
-        <WavyBanner
-          emoji="🔎"
-          lines={[
-            "Atividade de hoje, amanhã terá novas.",
-            "Clique na primeira e última letra da palavra para terminar.",
-            "Encontre todas as palavras e você ganhará as moedinhas.",
-          ]}
-        />
 
         {/* Card selector — com imagem do tema (mesmo padrão do quebra-cabeça) */}
         <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-3">

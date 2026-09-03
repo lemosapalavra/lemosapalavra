@@ -43,7 +43,8 @@ const CONTEXT_TIPS: Record<string, string> = {
   "edu:connect": "Em Ligue as Cores, arraste ligando cada ponto à cor correspondente.",
   // Álbum
   "album:cover": "Esta é a capa do seu álbum. Toque nela para abrir e começar a colecionar!",
-  "album:pages": "Toque em “Próxima” para virar a página e ver outras categorias de figurinhas.",
+  "album:pages": "Ganhe moedinhas 🪙 nos vídeos, devocionais e atividades. Com 3 moedinhas você abre um pacotinho com 5 figurinhas, toque na figurinha para ampliar e use a Sala de Trocas para trocar as repetidas. Toque em “Próxima” para virar a página.",
+
   "album:sticker": "Aqui você amplia a figurinha: use + e − para dar zoom, arraste para mover e toque em “Ler na Bíblia” para ver a passagem.",
   "album:pack": "Abrindo o pacote! Toque nas figurinhas para revelar cada uma delas.",
   "album:trade": "Aqui você troca as figurinhas repetidas por outras que ainda faltam no álbum.",
