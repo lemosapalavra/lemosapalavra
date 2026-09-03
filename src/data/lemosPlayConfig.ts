@@ -31,10 +31,10 @@ import fazMilagreVid from "@/assets/lemos-play/faz-um-milagre-em-mim.mp4.asset.j
 import ressuscitaMeVid from "@/assets/lemos-play/ressuscita-me.mp4.asset.json";
 import tempestadesVid from "@/assets/lemos-play/tempestade-v2.mp4.asset.json";
 import fazMilagreThumb from "@/assets/lemos-play/faz-milagre-v2.png.asset.json";
-import ressuscitaMeThumb from "@/assets/lemos-play/ressuscita-me-v2.png.asset.json";
+import ressuscitaMeThumb from "@/assets/lemos-play/ressuscita-me-3.png.asset.json";
 import deusEstaAquiVid from "@/assets/lemos-play/deus-esta-aqui-v3.mp4.asset.json";
 import yeshuaVid from "@/assets/lemos-play/yeshua.mp4.asset.json";
-import ressuscitaMe2Vid from "@/assets/lemos-play/ressuscita-me-2.mp4.asset.json";
+import ressuscitaMe2Vid from "@/assets/lemos-play/ressuscita-me-3.mp4.asset.json";
 import deusEstaAquiThumb from "@/assets/lemos-play/deus-esta-aqui-v2.png.asset.json";
 import yeshuaThumb from "@/assets/lemos-play/yeshua-v3.png.asset.json";
 import oAdorareiVid from "@/assets/lemos-play/o-adorarei.mp4.asset.json";
@@ -71,7 +71,7 @@ export interface LemosPlayConfig {
   louvores: PlayEntry[];
 }
 
-const KEY = "lemos_play_config_v60";
+const KEY = "lemos_play_config_v61";
 const LOCAL_VIDEO = (file: string) => `/videos/${file}`;
 const LOCAL_POSTER = (file: string) => `/videos/${file}`;
 const UNAVAILABLE_VIDEO = "";
