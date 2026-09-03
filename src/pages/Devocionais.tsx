@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
-import FeedbackFooter from "@/components/FeedbackFooter";
 import CoinBadge from "@/components/CoinBadge";
 import { awardOnce, todayKey } from "@/hooks/useCoins";
 import iconDevocionais from "@/assets/icon-devocionais.png";
@@ -247,7 +246,6 @@ export default function Devocionais() {
         </div>
       </div>
 
-      <FeedbackFooter />
     </div>
   );
 }

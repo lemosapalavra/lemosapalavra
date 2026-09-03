@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
-import FeedbackFooter from "@/components/FeedbackFooter";
 import { loadAnalytics, resetAnalytics, type AnalyticsData } from "@/hooks/useAnalyticsTracker";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { supabase } from "@/integrations/supabase/client";
@@ -611,7 +610,6 @@ export default function Estatisticas() {
           </div>
         </div>
       </div>
-      <FeedbackFooter />
     </div>
   );
 }

@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { applySoftVoice, ensureVoicesLoaded } from "@/lib/speak";
 
 import PageHeader from "@/components/PageHeader";
-import FeedbackFooter from "@/components/FeedbackFooter";
 import CategoryOrbit from "@/components/CategoryOrbit";
 import iconBiblia from "@/assets/icon-biblia.png";
 import pergaminhoBg from "@/assets/pergaminho-bg.png";
@@ -544,7 +543,6 @@ export default function Biblia() {
           </div>
         )}
       </div>
-      <FeedbackFooter />
     </div>
   );
 }
