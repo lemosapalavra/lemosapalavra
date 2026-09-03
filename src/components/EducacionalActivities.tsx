@@ -2,7 +2,6 @@ import { useState, useRef, useMemo, useEffect } from "react";
 import CoinBadge from "@/components/CoinBadge";
 import { COINS } from "@/data/coinRewards";
 import ActivityNav from "@/components/ActivityNav";
-import WavyBanner from "@/components/WavyBanner";
 import logoAsset from "@/assets/educacionais/logo.png.asset.json";
 import edu1 from "@/assets/educacionais/educacional-1.jpg.asset.json";
 import edu2 from "@/assets/educacionais/educacional-2.jpg.asset.json";
@@ -136,22 +135,8 @@ function ActivityRunner({ meta, onBack, celebrate, bgStyle }:
         </div>
 
         {meta.id === "circles" && (
-          <WavyBanner
-            emoji="🎨"
-            lines={[
-              "Pinte cada círculo com sua cor e seu número.",
-              "Ao completar ganhará as moedinhas.",
-            ]}
-          />
         )}
         {meta.id === "connect" && (
-          <WavyBanner
-            emoji="🔗"
-            lines={[
-              "Ligue os pontos seguindo a ordem dos números.",
-              "Ao completar a sequência, ganhará as moedinhas.",
-            ]}
-          />
         )}
 
         <div className="bg-white rounded-2xl shadow-xl border-2 border-amber-200 p-3 sm:p-4">
