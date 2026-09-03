@@ -134,11 +134,6 @@ function ActivityRunner({ meta, onBack, celebrate, bgStyle }:
           <CoinBadge amount={meta.coins} size="md" label="ao completar" />
         </div>
 
-        {meta.id === "circles" && (
-        )}
-        {meta.id === "connect" && (
-        )}
-
         <div className="bg-white rounded-2xl shadow-xl border-2 border-amber-200 p-3 sm:p-4">
           {meta.id === "circles" && <CirclesGame onComplete={complete} done={done} />}
           {meta.id === "connect" && <ConnectGame onComplete={complete} done={done} />}

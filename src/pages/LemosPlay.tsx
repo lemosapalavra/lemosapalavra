@@ -569,10 +569,6 @@ export default function LemosPlay() {
         </div>
       )}
 
-      <div className="px-4">
-      </div>
-
-
       {/* Hero — estilo Netflix: prévia em tela cheia do destaque, descrição à esquerda sobreposta */}
       <section className="relative w-full overflow-hidden bg-black">
         <div className="relative w-full h-[70vh] min-h-[420px] sm:h-[85vh] sm:min-h-[560px]">
