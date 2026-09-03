@@ -7,7 +7,7 @@
  */
 
 const RELOAD_FLAG = "lemos_auto_reload_at";
-const CHECK_INTERVAL = 5 * 60 * 1000; // 5 minutos
+const CHECK_INTERVAL = 30 * 60 * 1000; // 30 minutos
 
 async function fetchCurrentBuildId(): Promise<string | null> {
   try {

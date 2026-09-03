@@ -852,7 +852,7 @@ function CategoryPage({
                       <img
                         src={s.image}
                         alt={s.name}
-                        className="absolute inset-0 w-full h-full object-contain p-0.5"
+                        className="absolute inset-0 w-full h-full object-contain p-1"
                         loading="lazy"
                         decoding="async"
                       />
