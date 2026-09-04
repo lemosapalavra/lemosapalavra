@@ -9,6 +9,7 @@ import InstallShortcut from "@/components/InstallShortcut";
 import HomeTopNav from "@/components/HomeTopNav";
 import ShareButton from "@/components/ShareButton";
 import EventBannerTrain from "@/components/EventBannerTrain";
+import EventBannerKart from "@/components/EventBannerKart";
 import IndexV2 from "@/pages/IndexV2";
 import { loadSiteVersion, SITE_VERSION_EVENT } from "@/data/siteVersion";
 
@@ -169,6 +170,7 @@ function IndexV1() {
       <main className="w-full flex-1 flex flex-col items-center">
         <EventBannerPlane isAuthenticated={!!user} />
         <EventBannerTrain isAuthenticated={!!user} />
+        <EventBannerKart isAuthenticated={!!user} />
 
         <div className="w-full flex flex-col items-center gap-1 px-4 pt-3 text-center">
           <div className="flex items-center justify-center gap-2 flex-wrap">

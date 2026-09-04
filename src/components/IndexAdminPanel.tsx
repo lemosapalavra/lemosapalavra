@@ -25,6 +25,13 @@ import {
   saveTrainBanner,
   MONTHS,
 } from "@/data/trainBannerConfig";
+import {
+  KartBannerConfig,
+  defaultKartBanner,
+  loadKartBanner,
+  resetKartBanner,
+  saveKartBanner,
+} from "@/data/kartBannerConfig";
 
 interface Props {
   open: boolean;
@@ -34,7 +41,7 @@ interface Props {
 const inputCls =
   "w-full bg-white border border-zinc-300 rounded px-2 py-1.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-primary";
 
-type Tab = "menu" | "murais" | "aviaozinho" | "trenzinho";
+type Tab = "menu" | "murais" | "aviaozinho" | "trenzinho" | "kartzinho";
 
 export default function IndexAdminPanel({ open, onClose }: Props) {
   const [tab, setTab] = useState<Tab>("menu");
@@ -45,6 +52,8 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
   const [dirty, setDirty] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [trainPickerOpen, setTrainPickerOpen] = useState(false);
+  const [kart, setKart] = useState<KartBannerConfig>(() => loadKartBanner());
+  const [kartPickerOpen, setKartPickerOpen] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -52,6 +61,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
       setMurais(loadMurais());
       setBanner(loadEventBanner());
       setTrain(loadTrainBanner());
+      setKart(loadKartBanner());
       setDirty(false);
     }
   }, [open]);
@@ -78,24 +88,32 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
     setDirty(true);
   };
 
+  const patchKart = (p: Partial<KartBannerConfig>) => {
+    setKart((b) => ({ ...b, ...p }));
+    setDirty(true);
+  };
+
   const handleSave = () => {
     saveOrbit(items);
     saveMurais(murais);
     saveEventBanner(banner);
     saveTrainBanner(train);
+    saveKartBanner(kart);
     setDirty(false);
   };
 
   const handleReset = () => {
-    if (!confirm("Restaurar tudo (menu + murais + aviãozinho + trenzinho) ao padrão?")) return;
+    if (!confirm("Restaurar tudo (menu + murais + aviãozinho + trenzinho + kartzinho) ao padrão?")) return;
     resetOrbit();
     resetMurais();
     resetEventBanner();
     resetTrainBanner();
+    resetKartBanner();
     setItems(defaultOrbit());
     setMurais(defaultMurais());
     setBanner(defaultEventBanner());
     setTrain(defaultTrainBanner());
+    setKart(defaultKartBanner());
     setDirty(false);
   };
 
@@ -113,7 +131,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
         </div>
 
         <div className="flex gap-1 px-4 pt-3 border-b">
-          {(["menu", "murais", "aviaozinho", "trenzinho"] as Tab[]).map((t) => (
+          {(["menu", "murais", "aviaozinho", "trenzinho", "kartzinho"] as Tab[]).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -121,7 +139,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
                 tab === t ? "bg-zinc-100 text-foreground border-b-2 border-primary" : "text-zinc-500 hover:text-foreground"
               }`}
             >
-              {t === "menu" ? "🌐 Menu Órbita" : t === "murais" ? "🖼️ Murais" : t === "aviaozinho" ? "✈️ Aviãozinho" : "🚂 Trenzinho"}
+              {t === "menu" ? "🌐 Menu Órbita" : t === "murais" ? "🖼️ Murais" : t === "aviaozinho" ? "✈️ Aviãozinho" : t === "trenzinho" ? "🚂 Trenzinho" : "🏎️ Kartzinho"}
             </button>
           ))}
         </div>
@@ -402,7 +420,103 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
               />
             </div>
           )}
+          {tab === "kartzinho" && (
+            <div className="space-y-3">
+              <p className="text-xs text-zinc-500">
+                Um kartzinho atravessa a página inicial levando a faixa "Feliz Aniversário".
+                Clicando nele, o usuário assiste ao vídeo configurado.
+              </p>
+              <label className="flex items-center gap-2 text-sm font-semibold text-zinc-700">
+                <input
+                  type="checkbox"
+                  checked={kart.enabled}
+                  onChange={(e) => patchKart({ enabled: e.target.checked })}
+                />
+                Exibir kartzinho na página inicial
+              </label>
+              <div className="rounded-lg border border-zinc-200 p-3 space-y-2">
+                <label className="flex items-center gap-2 text-sm font-semibold text-zinc-700">
+                  <input
+                    type="checkbox"
+                    checked={kart.scheduleEnabled}
+                    onChange={(e) => patchKart({ scheduleEnabled: e.target.checked })}
+                  />
+                  Exibir somente no mês comemorativo
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <label className="text-xs font-semibold text-zinc-700 block">
+                    Mês inicial
+                    <select
+                      value={kart.startMonth}
+                      disabled={!kart.scheduleEnabled}
+                      onChange={(e) => patchKart({ startMonth: Number(e.target.value) })}
+                      className={inputCls + " mt-1 disabled:opacity-50"}
+                    >
+                      {MONTHS.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
+                    </select>
+                  </label>
+                  <label className="text-xs font-semibold text-zinc-700 block">
+                    Mês final
+                    <select
+                      value={kart.endMonth}
+                      disabled={!kart.scheduleEnabled}
+                      onChange={(e) => patchKart({ endMonth: Number(e.target.value) })}
+                      className={inputCls + " mt-1 disabled:opacity-50"}
+                    >
+                      {MONTHS.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
+                    </select>
+                  </label>
+                </div>
+                <p className="text-[11px] text-zinc-500">Vale para todos os anos, sem data final.</p>
+              </div>
+              <label className="text-xs font-semibold text-zinc-700 block">
+                Chamada (texto do convite)
+                <input
+                  value={kart.callToAction}
+                  onChange={(e) => patchKart({ callToAction: e.target.value })}
+                  placeholder="Clique aqui"
+                  className={inputCls + " mt-1"}
+                />
+              </label>
+              <label className="text-xs font-semibold text-zinc-700 block">
+                Mensagem do kartzinho
+                <input
+                  value={kart.message}
+                  onChange={(e) => patchKart({ message: e.target.value })}
+                  placeholder="Feliz Aniversário"
+                  className={inputCls + " mt-1"}
+                />
+              </label>
+              <label className="text-xs font-semibold text-zinc-700 block">
+                Link do vídeo (YouTube, Vimeo, MP4, etc.)
+                <div className="flex gap-2 mt-1">
+                  <input
+                    value={kart.videoUrl}
+                    onChange={(e) => patchKart({ videoUrl: e.target.value })}
+                    placeholder="https://www.youtube.com/watch?v=..."
+                    className={inputCls + " flex-1"}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setKartPickerOpen(true)}
+                    className="px-3 py-1.5 rounded bg-primary text-primary-foreground hover:opacity-90 text-xs font-bold flex items-center gap-1 whitespace-nowrap"
+                    title="Procurar vídeo já existente no site"
+                  >
+                    <Search className="w-3.5 h-3.5" /> Procurar no site
+                  </button>
+                </div>
+              </label>
+              <MediaPickerModal
+                open={kartPickerOpen}
+                kind="video"
+                currentUrl={kart.videoUrl}
+                onClose={() => setKartPickerOpen(false)}
+                onSelect={(url) => patchKart({ videoUrl: url })}
+              />
+            </div>
+          )}
         </div>
+
 
         <div className="flex items-center justify-between p-4 border-t gap-2">
           <button onClick={handleReset} className="flex items-center gap-2 px-3 py-2 rounded bg-zinc-100 hover:bg-zinc-200 text-sm">
