@@ -44,13 +44,13 @@ export default function HomeTopNav() {
           title="Abrir menu de navegação"
           aria-expanded={open}
           aria-label="Menu de navegação"
-          className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/70 border border-amber-200 shadow-sm font-display font-bold text-xs text-foreground"
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 border border-amber-200 shadow-sm font-display font-bold text-sm text-foreground"
         >
           {open ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />} MENU
         </button>
       </div>
       {open && (
-        <ul className="md:hidden mt-2 mx-auto max-w-xs rounded-2xl bg-white/90 border border-amber-200 shadow-lg overflow-hidden">
+        <ul className="md:hidden mt-2 mx-auto max-w-[16rem] rounded-2xl bg-white/95 border border-amber-200 shadow-lg overflow-hidden">
           {LINKS.map((l) => (
             <li key={l.to}>
               <NavLink
@@ -58,7 +58,7 @@ export default function HomeTopNav() {
                 end={l.to === "/"}
                 onClick={() => setOpen(false)}
                 title={l.label}
-                className="block px-4 py-2.5 font-display font-bold text-xs text-foreground/85 hover:bg-amber-100 transition"
+                className="block px-4 py-3 font-display font-bold text-sm text-foreground/85 hover:bg-amber-100 transition"
                 activeClassName="bg-amber-100 text-foreground"
               >
                 {l.label}
