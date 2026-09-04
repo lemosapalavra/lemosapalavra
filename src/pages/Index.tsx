@@ -7,6 +7,7 @@ import IndexAdminPanel from "@/components/IndexAdminPanel";
 import EventBannerPlane from "@/components/EventBannerPlane";
 import InstallShortcut from "@/components/InstallShortcut";
 import HomeTopNav from "@/components/HomeTopNav";
+import ShareButton from "@/components/ShareButton";
 import EventBannerTrain from "@/components/EventBannerTrain";
 import IndexV2 from "@/pages/IndexV2";
 import { loadSiteVersion, SITE_VERSION_EVENT } from "@/data/siteVersion";
