@@ -94,7 +94,9 @@ export default function EventBannerTrain({ isAuthenticated = false }: { isAuthen
           >
             ✕
           </button>
-          <VideoSideActions videoId="trenzinho:trem-da-vida" />
+          <div onClick={(e) => e.stopPropagation()}>
+            <VideoSideActions videoId="trenzinho:trem-da-vida" />
+          </div>
           <div onClick={(e) => e.stopPropagation()}>
             <ColonialVideoFrame variant="silver">
               <video
