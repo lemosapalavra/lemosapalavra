@@ -181,12 +181,12 @@ function IndexV1() {
 
       <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
 
-      <main className="w-full flex-1 flex flex-col items-center">
+      <main className="w-full flex-1 flex flex-col items-center pb-24">
         <EventBannerPlane isAuthenticated={!!user} />
         <EventBannerTrain isAuthenticated={!!user} />
         <EventBannerKart isAuthenticated={!!user} />
 
-        <div className="w-full flex flex-col items-center gap-2 px-4 pt-4 pb-2 text-center">
+        <div className="w-full flex flex-col items-center gap-1 sm:gap-2 px-4 pt-2 sm:pt-4 pb-2 text-center">
           <p className="font-display font-extrabold text-lg sm:text-2xl text-foreground">
             Bem-vindo ao Lemos a Palavra!
           </p>
@@ -195,9 +195,7 @@ function IndexV1() {
           </p>
         </div>
 
-
-
-        <div className="flex-1 flex flex-col items-center justify-center w-full py-2">
+        <div className="flex flex-col items-center w-full py-2">
           <OrbitMenu
             isAuthenticated={!!user}
             userName={user?.name}
@@ -207,7 +205,7 @@ function IndexV1() {
             onItemClick={handleItemClick}
           />
 
-          <div className="mt-10 sm:mt-14 flex flex-col items-center gap-5">
+          <div className="mt-8 sm:mt-12 flex flex-col items-center gap-5">
             {user && <InstallShortcut compact />}
             <button
               onClick={() => setDedicatoriaOpen(true)}
