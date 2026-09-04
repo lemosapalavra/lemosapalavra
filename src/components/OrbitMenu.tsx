@@ -25,25 +25,18 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
   }, []);
 
   return (
-    <div className="relative flex flex-col items-center" style={{ width: "min(95vw, 800px)" }}>
+    <div className="relative flex flex-col items-center w-full">
       {!isAuthenticated && (
-        <div className="mb-2 flex flex-col items-center gap-1 z-20">
-          <button onClick={onLoginClick} className="flex flex-col items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
-            <img loading="lazy" decoding="async" src={iconLogin} alt="Acessar conta" width={72} height={72} className="rounded-lg shadow-lg" />
-            <span className="orbit-label text-secondary">Entre ou Cadastre-se</span>
-            <span className="orbit-label font-extrabold text-[10px]">PARA ATIVAR O SITE</span>
+        <div className="mb-1 flex flex-col items-center gap-1 z-20">
+          <button onClick={onLoginClick} className="flex flex-col items-center gap-0.5 cursor-pointer hover:scale-110 transition-transform">
+            <img loading="lazy" decoding="async" src={iconLogin} alt="Acessar conta" width={64} height={64} className="rounded-lg shadow-lg" />
+            <span className="orbit-label text-secondary text-xs">Entre ou Cadastre-se</span>
+            <span className="orbit-label font-extrabold text-[9px]">PARA ATIVAR O SITE</span>
           </button>
         </div>
       )}
 
-      <div
-        className="relative orbit-area"
-        style={{
-          width: "min(92vw, 760px)",
-          height: "min(92vw, 760px)",
-          ["--orbit-radius" as any]: "clamp(150px, 34vw, 320px)",
-        }}
-      >
+      <div className="relative orbit-area w-[min(88vw,340px)] h-[min(88vw,340px)] sm:w-[min(90vw,520px)] sm:h-[min(90vw,520px)] md:w-[min(92vw,720px)] md:h-[min(92vw,720px)]">
         <div
           className="absolute inset-0 orbit-anim"
           style={{ animation: `orbit-spin ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}
@@ -68,7 +61,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                     }`}
                   >
                     <div
-                      className={`relative overflow-hidden rounded-full shadow-xl hover:shadow-2xl transition-shadow border-2 border-primary/30 w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] md:w-[120px] md:h-[120px] bg-white ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
+                      className={`relative overflow-hidden rounded-full shadow-xl hover:shadow-2xl transition-shadow border-2 border-primary/30 w-[68px] h-[68px] sm:w-[96px] sm:h-[96px] md:w-[120px] md:h-[120px] bg-white ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
                     >
                       <img
                         src={item.icon}
@@ -84,11 +77,11 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                         className="w-full h-full"
                       />
                     </div>
-                    <span className="orbit-label whitespace-pre-line text-xs sm:text-sm text-center font-bold leading-tight drop-shadow-sm">
+                    <span className="orbit-label whitespace-pre-line text-[10px] sm:text-xs md:text-sm text-center font-bold leading-tight drop-shadow-sm">
                       {item.label}
                     </span>
                     {item.sublabel && (
-                      <span className="orbit-sublabel whitespace-pre-line text-center text-[10px] sm:text-xs max-w-[110px] sm:max-w-[130px] leading-tight">
+                      <span className="orbit-sublabel whitespace-pre-line text-center text-[9px] sm:text-[10px] md:text-xs max-w-[90px] sm:max-w-[120px] md:max-w-[130px] leading-tight">
                         {item.sublabel}
                       </span>
                     )}
@@ -104,11 +97,14 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
           alt="Lemos a Palavra"
           width={320}
           height={320}
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-2xl transition-all duration-700 w-[130px] sm:w-[210px] md:w-[280px] ${!isAuthenticated ? "grayscale opacity-70" : ""}`}
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-2xl transition-all duration-700 w-[110px] sm:w-[180px] md:w-[260px] ${!isAuthenticated ? "grayscale opacity-70" : ""}`}
         />
       </div>
 
       <style>{`
+        .orbit-area { --orbit-radius: clamp(100px, 26vw, 125px); }
+        @media (min-width: 640px) { .orbit-area { --orbit-radius: clamp(145px, 30vw, 200px); } }
+        @media (min-width: 768px) { .orbit-area { --orbit-radius: clamp(190px, 32vw, 290px); } }
         @keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes orbit-spin-reverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
         .orbit-area:hover .orbit-anim,
