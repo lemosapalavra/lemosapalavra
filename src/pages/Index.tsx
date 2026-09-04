@@ -88,7 +88,7 @@ function IndexV1() {
     >
       {/* Home Header */}
       <header
-        className="w-full sticky top-0 z-30 flex items-center justify-between px-3 sm:px-5 py-2 border-b border-amber-200/60 backdrop-blur-sm"
+        className="w-full fixed top-0 left-0 right-0 z-30 bg-white/85 flex items-center justify-between px-3 sm:px-5 py-2 border-b border-amber-200/60 backdrop-blur-sm"
         style={{ background: "transparent" }}
       >
         <div className="flex items-center gap-2">
