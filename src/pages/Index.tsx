@@ -181,7 +181,7 @@ function IndexV1() {
 
       <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
 
-      <main className="w-full flex-1 flex flex-col items-center pb-24">
+      <main className="w-full flex-1 flex flex-col items-center pb-28 sm:pb-32 lg:pb-24">
         <EventBannerPlane isAuthenticated={!!user} />
         <EventBannerTrain isAuthenticated={!!user} />
         <EventBannerKart isAuthenticated={!!user} />
