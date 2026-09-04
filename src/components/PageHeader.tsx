@@ -52,62 +52,41 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
     {/* espaçador: reserva a altura do cabeçalho fixo */}
     <div aria-hidden className="h-[108px] w-full" />
     <header className={`fixed top-0 left-0 right-0 z-40 w-full ${isLemosPlay ? "bg-black/60 backdrop-blur" : "bg-white/85 backdrop-blur-sm border-b border-amber-200/60"}`}>
-      <div className="flex items-center gap-2 px-3 py-2">
-        {/* Home icon (always on, hidden only on home itself) */}
-        {!isHome ? (
-          <button
-            onClick={() => navigate("/")}
-            aria-label="Início"
-            title="Início"
-            className="shrink-0 w-11 h-11 rounded-full overflow-hidden bg-white shadow-lg border-2 border-amber-300 animate-[backPulse_2.4s_ease-in-out_infinite] hover:scale-110 transition-transform"
-          >
-            <img loading="lazy" decoding="async" src={iconInicio} alt="Início" className="w-full h-full object-cover" />
-          </button>
-        ) : (
-          <div className="w-11 h-11 shrink-0" aria-hidden />
-        )}
-
-        {/* Back arrow — hidden on Lemos Play (per request) and home */}
-        {!isHome && !isLemosPlay && (
-          <button
-            onClick={() => navigate(-1)}
-            aria-label="Voltar"
-            title="Voltar"
-            className="shrink-0 w-11 h-11 rounded-full bg-white/85 hover:bg-white shadow-lg border-2 border-amber-300 flex items-center justify-center text-amber-900 animate-[backPulse_2s_ease-in-out_infinite] hover:scale-110 transition-transform"
-          >
-            <ArrowLeft className="w-5 h-5 animate-[backNudge_1.4s_ease-in-out_infinite]" />
-          </button>
-        )}
-
-        {/* Centro: título da página. Nas páginas que já exibem uma faixa
-            (WavyBanner) o título fica apenas para leitores de tela/SEO. */}
-        <div className="flex-1 min-w-0 text-center">
-          {title && (
-            hasBanner ? (
-              <h1 className="sr-only">{title}</h1>
-            ) : (
-              <h1
-                className={`font-display font-extrabold text-base sm:text-xl truncate ${isLemosPlay ? "text-white" : "text-amber-900"}`}
-                style={{ animation: "titleGlow 3s ease-in-out infinite" }}
-              >
-                {title}
-              </h1>
-            )
+      <div className="flex items-center justify-between gap-2 px-3 py-2">
+        {/* Left: Home + Back */}
+        <div className="flex items-center gap-2 shrink-0">
+          {!isHome ? (
+            <button
+              onClick={() => navigate("/")}
+              aria-label="Início"
+              title="Início"
+              className="shrink-0 w-11 h-11 rounded-full overflow-hidden bg-white shadow-lg border-2 border-amber-300 animate-[backPulse_2.4s_ease-in-out_infinite] hover:scale-110 transition-transform"
+            >
+              <img loading="lazy" decoding="async" src={iconInicio} alt="Início" className="w-full h-full object-cover" />
+            </button>
+          ) : (
+            <div className="w-11 h-11 shrink-0" aria-hidden />
           )}
-          {subtitle && (
-            hasBanner ? (
-              <p className="sr-only">{subtitle}</p>
-            ) : (
-              <p className={`font-body text-[11px] sm:text-xs truncate ${isLemosPlay ? "text-white/80" : "text-amber-800/80"}`}>
-                {subtitle}
-              </p>
-            )
+
+          {!isHome && !isLemosPlay && (
+            <button
+              onClick={() => navigate(-1)}
+              aria-label="Voltar"
+              title="Voltar"
+              className="shrink-0 w-11 h-11 rounded-full bg-white/85 hover:bg-white shadow-lg border-2 border-amber-300 flex items-center justify-center text-amber-900 animate-[backPulse_2s_ease-in-out_infinite] hover:scale-110 transition-transform"
+            >
+              <ArrowLeft className="w-5 h-5 animate-[backNudge_1.4s_ease-in-out_infinite]" />
+            </button>
           )}
         </div>
 
+        {/* Center: main navigation */}
+        <div className="hidden md:flex flex-1 justify-center px-4">
+          <HomeTopNav />
+        </div>
 
-        {/* Right: coins + user */}
-        <div className="flex items-center gap-2 shrink-0">
+        {/* Right: user fixed to the right of the page */}
+        <div className="flex items-center gap-2 shrink-0 ml-auto">
           {user?.name && (
             <div className="flex items-center gap-1.5">
               <img loading="lazy" decoding="async"
@@ -117,7 +96,7 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
                 title={`Seja Bem vindo, ${user.name}`}
                 className="w-9 h-9 rounded-full border-2 border-amber-300 shadow-sm object-cover bg-white"
               />
-              <span className="leading-tight text-left">
+              <span className="leading-tight text-left hidden sm:inline">
                 <span className={`block font-display font-bold text-[11px] sm:text-xs max-w-[150px] truncate ${isLemosPlay ? "text-white" : "text-foreground"}`}>
                   Seja Bem vindo, {user.name}
                 </span>
@@ -151,12 +130,19 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
           )}
         </div>
       </div>
-      {/* Menu principal fixo em todas as páginas */}
-      <div className="w-full px-3 pb-1.5">
+
+      {/* Mobile: main navigation centered below */}
+      <div className="md:hidden w-full px-3 pb-1.5">
         <HomeTopNav />
       </div>
 
-      {/* Lembrete de moedas removido: a mensagem já aparece nas faixas de cada página. */}
+      {/* Page title kept accessible; visible only when no WavyBanner exists */}
+      {(title || subtitle) && (
+        <div className="sr-only">
+          {title && <h1>{title}</h1>}
+          {subtitle && <p>{subtitle}</p>}
+        </div>
+      )}
 
       <style>{`
         @keyframes titleGlow {
