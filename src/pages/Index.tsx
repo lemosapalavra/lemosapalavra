@@ -87,85 +87,95 @@ function IndexV1() {
       style={{ background: "transparent" }}
     >
       {/* espaçador do cabeçalho fixo */}
-      <div aria-hidden className="h-[104px] w-full" />
+      <div aria-hidden className="h-[108px] w-full" />
       {/* Home Header */}
       <header
-        className="w-full fixed top-0 left-0 right-0 z-30 bg-white/85 flex items-center justify-between px-3 sm:px-5 py-2 border-b border-amber-200/60 backdrop-blur-sm"
+        className="w-full fixed top-0 left-0 right-0 z-30 bg-white/85 border-b border-amber-200/60 backdrop-blur-sm"
       >
-        <div className="flex items-center gap-2">
-          {user && isAdmin && (
-            <>
-              <button
-                onClick={() => setAdminOpen(true)}
-                className="w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center transition"
-                title="Configurar página inicial"
-                aria-label="Configurar"
+        <div className="flex items-center justify-between gap-2 px-3 sm:px-5 py-2">
+          {/* Left: admin-only controls */}
+          <div className="flex items-center gap-2 shrink-0">
+            {user && isAdmin && (
+              <>
+                <button
+                  onClick={() => setAdminOpen(true)}
+                  className="w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center transition"
+                  title="Configurar página inicial"
+                  aria-label="Configurar"
+                >
+                  <Settings className="w-4 h-4 text-foreground" />
+                </button>
+                <button
+                  onClick={() => navigate("/config")}
+                  className="w-9 h-9 rounded-full bg-white/60 hover:bg-white shadow flex items-center justify-center transition text-sm"
+                  title="Configurações"
+                >
+                  ⚙️
+                </button>
+              </>
+            )}
+          </div>
+
+          {/* Center: main navigation */}
+          <div className="hidden md:flex flex-1 justify-center px-4">
+            <HomeTopNav />
+          </div>
+
+          {/* Right: user fixed to the right of the page */}
+          {user && (
+            <div className="flex items-center gap-2 shrink-0 ml-auto">
+              <div className="relative" ref={userMenuRef}>
+                <button
+                  onClick={() => setUserMenuOpen((v) => !v)}
+                  className="flex items-center gap-2 px-1.5 py-1 rounded-full hover:bg-white/60 transition"
+                  aria-label="Menu do usuário"
+                  title="Menu do usuário"
+                >
+                  <img loading="lazy" decoding="async"
+                    src={user.avatar || iconUsuario}
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = iconUsuario; }}
+                    alt={user.name || "Usuário"}
+                    className="w-10 h-10 rounded-full border-2 border-amber-300 shadow object-cover bg-white"
+                  />
+                  <span className="text-left leading-tight hidden sm:inline">
+                    <span className="block font-display font-bold text-xs sm:text-sm text-foreground max-w-[180px] truncate">
+                      Seja Bem vindo, {user.name}
+                    </span>
+                    <span className="block font-body text-[10px] sm:text-[11px] text-amber-800">
+                      Deus Seja Louvado!
+                    </span>
+                  </span>
+                </button>
+
+                {userMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg border border-amber-200 overflow-hidden z-50">
+                    <div className="px-3 py-2 border-b border-amber-100">
+                      <p className="font-display font-bold text-sm text-foreground truncate">{user.name}</p>
+                      {user.email && <p className="font-body text-[11px] text-muted-foreground truncate">{user.email}</p>}
+                    </div>
+                    <button
+                      onClick={() => { setUserMenuOpen(false); handleLogout(); }}
+                      className="w-full flex items-center gap-2 px-3 py-2 text-sm font-display font-bold text-red-600 hover:bg-red-50 transition"
+                    >
+                      <LogOut className="w-4 h-4" /> Sair
+                    </button>
+                  </div>
+                )}
+              </div>
+              <div
+                className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 border border-amber-300 shadow-sm"
+                title="Suas moedinhas"
+                aria-label="Suas moedinhas"
               >
-                <Settings className="w-4 h-4 text-foreground" />
-              </button>
-              <button
-                onClick={() => navigate("/config")}
-                className="w-9 h-9 rounded-full bg-white/60 hover:bg-white shadow flex items-center justify-center transition text-sm"
-                title="Configurações"
-              >
-                ⚙️
-              </button>
-            </>
+                <span className="text-base leading-none">🪙</span>
+                <span className="font-display font-extrabold text-sm text-amber-900 tabular-nums">{coins}</span>
+              </div>
+            </div>
           )}
         </div>
 
-        {user && (
-          <div className="flex items-center gap-2">
-            <div className="relative" ref={userMenuRef}>
-              <button
-                onClick={() => setUserMenuOpen((v) => !v)}
-                className="flex items-center gap-2 px-1.5 py-1 rounded-full hover:bg-white/60 transition"
-                aria-label="Menu do usuário"
-                title="Menu do usuário"
-              >
-                <img loading="lazy" decoding="async"
-                  src={user.avatar || iconUsuario}
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = iconUsuario; }}
-                  alt={user.name || "Usuário"}
-                  className="w-10 h-10 rounded-full border-2 border-amber-300 shadow object-cover bg-white"
-                />
-                <span className="text-left leading-tight">
-                  <span className="block font-display font-bold text-xs sm:text-sm text-foreground max-w-[180px] truncate">
-                    Seja Bem vindo, {user.name}
-                  </span>
-                  <span className="block font-body text-[10px] sm:text-[11px] text-amber-800">
-                    Deus Seja Louvado!
-                  </span>
-                </span>
-              </button>
-
-              {userMenuOpen && (
-                <div className="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg border border-amber-200 overflow-hidden z-50">
-                  <div className="px-3 py-2 border-b border-amber-100">
-                    <p className="font-display font-bold text-sm text-foreground truncate">{user.name}</p>
-                    {user.email && <p className="font-body text-[11px] text-muted-foreground truncate">{user.email}</p>}
-                  </div>
-                  <button
-                    onClick={() => { setUserMenuOpen(false); handleLogout(); }}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm font-display font-bold text-red-600 hover:bg-red-50 transition"
-                  >
-                    <LogOut className="w-4 h-4" /> Sair
-                  </button>
-                </div>
-              )}
-            </div>
-            <div
-              className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 border border-amber-300 shadow-sm"
-              title="Suas moedinhas"
-              aria-label="Suas moedinhas"
-            >
-              <span className="text-base leading-none">🪙</span>
-              <span className="font-display font-extrabold text-sm text-amber-900 tabular-nums">{coins}</span>
-            </div>
-          </div>
-
-        )}
-        <div className="w-full px-3 pb-1.5">
+        {/* Mobile: main navigation centered below */}
+        <div className="md:hidden w-full px-3 pb-1.5">
           <HomeTopNav />
         </div>
       </header>
