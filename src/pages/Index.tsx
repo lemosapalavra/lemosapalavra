@@ -186,26 +186,13 @@ function IndexV1() {
         <EventBannerTrain isAuthenticated={!!user} />
         <EventBannerKart isAuthenticated={!!user} />
 
-        <div className="w-full flex flex-col items-center gap-1.5 px-4 pt-3 text-center">
-          <div className="flex items-center justify-center gap-2 flex-wrap">
-            <p className="font-display font-extrabold text-base sm:text-xl text-foreground">
-              Bem-vindo ao Lemos a Palavra!
-            </p>
-            <span className="flex items-center gap-1">
-              <ShareButton variant="inline" />
-              <span className="font-display font-bold text-xs sm:text-sm text-emerald-700">Compartilhe !</span>
-            </span>
-          </div>
-          <p className="font-body text-xs sm:text-sm text-muted-foreground">
+        <div className="w-full flex flex-col items-center gap-2 px-4 pt-4 pb-2 text-center">
+          <p className="font-display font-extrabold text-lg sm:text-2xl text-foreground">
+            Bem-vindo ao Lemos a Palavra!
+          </p>
+          <p className="font-body text-sm sm:text-base text-muted-foreground max-w-md">
             Aprenda, brinque e descubra a Palavra de Deus.
           </p>
-          <button
-            onClick={() => navigate("/lemosplay")}
-            title="Começar agora — ir para Assista"
-            className="mt-1 px-5 py-2 rounded-full font-display font-extrabold text-xs sm:text-sm text-amber-950 bg-gradient-to-r from-amber-300 to-yellow-400 border-2 border-amber-500/70 shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg active:scale-95"
-          >
-            COMEÇAR AGORA
-          </button>
         </div>
 
 
