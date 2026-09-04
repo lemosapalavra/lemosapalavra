@@ -136,11 +136,22 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
         <HomeTopNav />
       </div>
 
-      {/* Page title kept accessible; visible only when no WavyBanner exists */}
+      {/* Page title: visible when no WavyBanner, otherwise screen-reader only */}
       {(title || subtitle) && (
-        <div className="sr-only">
-          {title && <h1>{title}</h1>}
-          {subtitle && <p>{subtitle}</p>}
+        <div className={`w-full px-3 pb-1.5 text-center ${hasBanner ? "sr-only" : ""}`}>
+          {title && (
+            <h1
+              className={`font-display font-extrabold text-base sm:text-xl truncate ${isLemosPlay ? "text-white" : "text-amber-900"}`}
+              style={{ animation: "titleGlow 3s ease-in-out infinite" }}
+            >
+              {title}
+            </h1>
+          )}
+          {subtitle && (
+            <p className={`font-body text-[11px] sm:text-xs truncate ${isLemosPlay ? "text-white/80" : "text-amber-800/80"}`}>
+              {subtitle}
+            </p>
+          )}
         </div>
       )}
 
