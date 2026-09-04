@@ -21,14 +21,14 @@ export default function HomeTopNav() {
   return (
     <nav aria-label="Navegação principal" className="w-full">
       {/* Desktop */}
-      <ul className="hidden md:flex items-center justify-center gap-1 flex-wrap">
+      <ul className="hidden md:flex items-center justify-center gap-2 lg:gap-3 flex-wrap">
         {LINKS.map((l) => (
           <li key={l.to}>
             <NavLink
               to={l.to}
               end={l.to === "/"}
               title={l.label}
-              className="px-3 py-1.5 rounded-full font-display font-bold text-[11px] tracking-wide text-foreground/80 hover:text-foreground hover:bg-amber-100/70 transition"
+              className="px-3.5 py-2 rounded-full font-display font-bold text-xs lg:text-sm tracking-wide text-foreground/85 hover:text-foreground hover:bg-amber-100/70 transition"
               activeClassName="bg-amber-200/80 text-foreground shadow-sm"
             >
               {l.label}
