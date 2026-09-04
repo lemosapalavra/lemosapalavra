@@ -174,11 +174,11 @@ const App = () => (
             <Route path="/pedidos-oracao" element={<PedidosOracao />} />
             <Route path="/atividades" element={<Atividades />} />
             <Route path="/album" element={<Album />} />
-            <Route path="/config" element={<Configuracao />} />
-            <Route path="/estatisticas" element={<Estatisticas />} />
+            <Route path="/config" element={<AdminOnly><Configuracao /></AdminOnly>} />
+            <Route path="/estatisticas" element={<AdminOnly><Estatisticas /></AdminOnly>} />
             <Route path="/lemosplay" element={<LemosPlay />} />
             <Route path="/historias-biblicas" element={<HistoriasBiblicas />} />
-            <Route path="/admin/whatsapp" element={<AdminWhatsapp />} />
+            <Route path="/admin/whatsapp" element={<AdminOnly><AdminWhatsapp /></AdminOnly>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
