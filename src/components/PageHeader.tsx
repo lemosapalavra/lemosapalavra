@@ -150,6 +150,10 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
           )}
         </div>
       </div>
+      {/* Menu principal fixo em todas as páginas */}
+      <div className="w-full px-3 pb-1.5">
+        <HomeTopNav />
+      </div>
 
       {/* Lembrete de moedas removido: a mensagem já aparece nas faixas de cada página. */}
 
