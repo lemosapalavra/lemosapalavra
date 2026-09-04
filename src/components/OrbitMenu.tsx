@@ -36,7 +36,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
         </div>
       )}
 
-      <div className="relative orbit-area w-[min(88vw,340px)] h-[min(88vw,340px)] sm:w-[min(90vw,520px)] sm:h-[min(90vw,520px)] lg:w-[min(92vw,720px)] lg:h-[min(92vw,720px)]">
+      <div className="relative orbit-area w-[min(88vw,340px)] h-[min(88vw,340px)] sm:w-[min(90vw,460px)] sm:h-[min(90vw,460px)] lg:w-[min(92vw,720px)] lg:h-[min(92vw,720px)]">
         <div
           className="absolute inset-0 orbit-anim"
           style={{ animation: `orbit-spin ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}
