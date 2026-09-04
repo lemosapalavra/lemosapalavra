@@ -185,10 +185,10 @@ const App = () => (
         </Suspense>
         <footer className="w-full px-4 pb-20 pt-2 bg-transparent">
           <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 border-t border-amber-200/60 pt-2">
-            <p className="font-body text-[11px] leading-snug text-amber-900/70">
-              ✝️ Projeto cristão dedicado ao Evangelho de Jesus Cristo.
+            <p className="font-body text-[11px] sm:text-xs leading-snug text-amber-900/80">
+              ✝️ Projeto cristão, sem interesses financeiros, sem vínculo político. dedicado ao Evangelho de Jesus Cristo para todas as gerações. Faço parte, compartilhe!
             </p>
-            <ShareButton variant="inline" className="w-8 h-8 bg-transparent text-amber-700 hover:bg-amber-100 shadow-none" />
+            <ShareButton variant="inline" className="shrink-0 w-9 h-9 shadow-md" />
           </div>
         </footer>
 
