@@ -61,7 +61,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                     }`}
                   >
                     <div
-                      className={`relative overflow-hidden rounded-full shadow-xl hover:shadow-2xl transition-shadow border-2 border-primary/30 w-[68px] h-[68px] sm:w-[96px] sm:h-[96px] md:w-[120px] md:h-[120px] bg-white ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
+                      className={`relative overflow-hidden rounded-full shadow-xl hover:shadow-2xl transition-shadow border-2 border-primary/30 w-[68px] h-[68px] sm:w-[96px] sm:h-[96px] lg:w-[120px] lg:h-[120px] bg-white ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
                     >
                       <img
                         src={item.icon}
