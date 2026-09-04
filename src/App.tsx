@@ -1,6 +1,6 @@
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation, Navigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -146,6 +146,29 @@ const PageFallback = () => (
   </div>
 );
 
+/** Rotas de administração: só o dono (aparelho autorizado ou papel admin) vê. */
+const AdminOnly = ({ children }: { children: React.ReactNode }) => {
+  const [state, setState] = useState<"checking" | "ok" | "denied">("checking");
+  useEffect(() => {
+    let cancelled = false;
+    const check = async () => {
+      const owner = (() => { try { return localStorage.getItem("lemos_owner_unlocked") === "1"; } catch { return false; } })();
+      if (owner) { if (!cancelled) setState("ok"); return; }
+      const { data: sess } = await supabase.auth.getSession();
+      const uid = sess.session?.user?.id;
+      if (!uid) { if (!cancelled) setState("denied"); return; }
+      const { data, error } = await supabase.rpc("has_role", { _user_id: uid, _role: "admin" });
+      if (!cancelled) setState(!error && data === true ? "ok" : "denied");
+    };
+    check();
+    return () => { cancelled = true; };
+  }, []);
+  if (state === "checking") return <PageFallback />;
+  if (state === "denied") return <Navigate to="/" replace />;
+  return <>{children}</>;
+};
+
+
 const AutoUpdater = () => {
   useEffect(() => startAutoUpdate(), []);
   useEffect(() => startAutoTitles(), []);
@@ -174,21 +197,21 @@ const App = () => (
             <Route path="/pedidos-oracao" element={<PedidosOracao />} />
             <Route path="/atividades" element={<Atividades />} />
             <Route path="/album" element={<Album />} />
-            <Route path="/config" element={<Configuracao />} />
-            <Route path="/estatisticas" element={<Estatisticas />} />
+            <Route path="/config" element={<AdminOnly><Configuracao /></AdminOnly>} />
+            <Route path="/estatisticas" element={<AdminOnly><Estatisticas /></AdminOnly>} />
             <Route path="/lemosplay" element={<LemosPlay />} />
             <Route path="/historias-biblicas" element={<HistoriasBiblicas />} />
-            <Route path="/admin/whatsapp" element={<AdminWhatsapp />} />
+            <Route path="/admin/whatsapp" element={<AdminOnly><AdminWhatsapp /></AdminOnly>} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
         <footer className="w-full px-4 pb-20 pt-2 bg-transparent">
           <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 border-t border-amber-200/60 pt-2">
-            <p className="font-body text-[11px] leading-snug text-amber-900/70">
-              ✝️ Projeto cristão dedicado ao Evangelho de Jesus Cristo.
+            <p className="font-body text-[11px] sm:text-xs leading-snug text-amber-900/80">
+              ✝️ Projeto cristão, sem interesses financeiros, sem vínculo político. dedicado ao Evangelho de Jesus Cristo para todas as gerações. Faço parte, compartilhe!
             </p>
-            <ShareButton variant="inline" className="w-8 h-8 bg-transparent text-amber-700 hover:bg-amber-100 shadow-none" />
+            <ShareButton variant="inline" className="shrink-0 w-9 h-9 shadow-md" />
           </div>
         </footer>
 
