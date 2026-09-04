@@ -104,7 +104,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
       <style>{`
         .orbit-area { --orbit-radius: clamp(100px, 26vw, 125px); }
         @media (min-width: 640px) { .orbit-area { --orbit-radius: clamp(145px, 30vw, 200px); } }
-        @media (min-width: 768px) { .orbit-area { --orbit-radius: clamp(190px, 32vw, 290px); } }
+        @media (min-width: 1024px) { .orbit-area { --orbit-radius: clamp(190px, 32vw, 290px); } }
         @keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes orbit-spin-reverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
         .orbit-area:hover .orbit-anim,
