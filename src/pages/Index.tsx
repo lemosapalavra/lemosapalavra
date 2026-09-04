@@ -167,15 +167,21 @@ function IndexV1() {
       </header>
 
       <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
+
+      {/* Navegação principal (usuários) — discreta, no topo */}
+      <div className="w-full px-3 pt-2">
+        <HomeTopNav />
+      </div>
+
       <main className="w-full flex-1 flex flex-col items-center">
         <EventBannerPlane isAuthenticated={!!user} />
         <EventBannerTrain isAuthenticated={!!user} />
         <EventBannerKart isAuthenticated={!!user} />
 
-        <div className="w-full flex flex-col items-center gap-1 px-4 pt-3 text-center">
+        <div className="w-full flex flex-col items-center gap-1.5 px-4 pt-3 text-center">
           <div className="flex items-center justify-center gap-2 flex-wrap">
             <p className="font-display font-extrabold text-base sm:text-xl text-foreground">
-              Bem vindo a Lemos a Palavra
+              Bem-vindo ao Lemos a Palavra!
             </p>
             <span className="flex items-center gap-1">
               <ShareButton variant="inline" />
@@ -183,9 +189,17 @@ function IndexV1() {
             </span>
           </div>
           <p className="font-body text-xs sm:text-sm text-muted-foreground">
-            Aprenda, Assista e descubra sobre a palavra de Deus
+            Aprenda, brinque e descubra a Palavra de Deus.
           </p>
+          <button
+            onClick={() => navigate("/lemosplay")}
+            title="Começar agora — ir para Assista"
+            className="mt-1 px-5 py-2 rounded-full font-display font-extrabold text-xs sm:text-sm text-amber-950 bg-gradient-to-r from-amber-300 to-yellow-400 border-2 border-amber-500/70 shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg active:scale-95"
+          >
+            COMEÇAR AGORA
+          </button>
         </div>
+
 
 
         <div className="flex-1 flex flex-col items-center justify-center w-full py-4">
