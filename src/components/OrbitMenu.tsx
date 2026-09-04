@@ -25,13 +25,13 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
   }, []);
 
   return (
-    <div className="relative flex flex-col items-center" style={{ width: "min(95vw, 780px)" }}>
+    <div className="relative flex flex-col items-center" style={{ width: "min(95vw, 800px)" }}>
       {!isAuthenticated && (
-        <div className="mb-4 flex flex-col items-center gap-1 z-20">
+        <div className="mb-2 flex flex-col items-center gap-1 z-20">
           <button onClick={onLoginClick} className="flex flex-col items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
-            <img loading="lazy" decoding="async" src={iconLogin} alt="Acessar conta" width={80} height={80} className="rounded-lg shadow-lg" />
+            <img loading="lazy" decoding="async" src={iconLogin} alt="Acessar conta" width={72} height={72} className="rounded-lg shadow-lg" />
             <span className="orbit-label text-secondary">Entre ou Cadastre-se</span>
-            <span className="orbit-label font-extrabold text-xs">PARA ATIVAR O SITE</span>
+            <span className="orbit-label font-extrabold text-[10px]">PARA ATIVAR O SITE</span>
           </button>
         </div>
       )}
@@ -39,9 +39,9 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
       <div
         className="relative orbit-area"
         style={{
-          width: "min(92vw, 720px)",
-          height: "min(92vw, 720px)",
-          ["--orbit-radius" as any]: "clamp(135px, 36vw, 300px)",
+          width: "min(92vw, 760px)",
+          height: "min(92vw, 760px)",
+          ["--orbit-radius" as any]: "clamp(150px, 34vw, 320px)",
         }}
       >
         <div
