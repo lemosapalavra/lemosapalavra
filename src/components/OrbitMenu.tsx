@@ -84,11 +84,11 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                         className="w-full h-full"
                       />
                     </div>
-                    <span className="orbit-label whitespace-pre-line text-xs sm:text-sm text-center font-bold leading-tight">
+                    <span className="orbit-label whitespace-pre-line text-xs sm:text-sm text-center font-bold leading-tight drop-shadow-sm">
                       {item.label}
                     </span>
                     {item.sublabel && (
-                      <span className="orbit-sublabel whitespace-pre-line text-center text-[10px] sm:text-xs">
+                      <span className="orbit-sublabel whitespace-pre-line text-center text-[10px] sm:text-xs max-w-[110px] sm:max-w-[130px] leading-tight">
                         {item.sublabel}
                       </span>
                     )}
