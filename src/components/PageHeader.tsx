@@ -5,6 +5,7 @@ import { useCoins } from "@/hooks/useCoins";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import iconUsuario from "@/assets/icon-usuario.png";
 import iconInicio from "@/assets/icon-inicio.jpg";
+import HomeTopNav from "@/components/HomeTopNav";
 
 interface PageHeaderProps {
   title?: string;
@@ -49,7 +50,7 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
   return (
     <>
     {/* espaçador: reserva a altura do cabeçalho fixo */}
-    <div aria-hidden className="h-[64px] w-full" />
+    <div aria-hidden className="h-[108px] w-full" />
     <header className={`fixed top-0 left-0 right-0 z-40 w-full ${isLemosPlay ? "bg-black/60 backdrop-blur" : "bg-white/85 backdrop-blur-sm border-b border-amber-200/60"}`}>
       <div className="flex items-center gap-2 px-3 py-2">
         {/* Home icon (always on, hidden only on home itself) */}
