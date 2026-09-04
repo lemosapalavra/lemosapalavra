@@ -102,7 +102,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
       </div>
 
       <style>{`
-        .orbit-area { --orbit-radius: clamp(100px, 26vw, 125px); }
+        .orbit-area { --orbit-radius: clamp(115px, 29vw, 145px); }
         @media (min-width: 640px) { .orbit-area { --orbit-radius: clamp(145px, 30vw, 200px); } }
         @media (min-width: 768px) { .orbit-area { --orbit-radius: clamp(190px, 32vw, 290px); } }
         @keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
