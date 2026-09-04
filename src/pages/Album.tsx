@@ -9,6 +9,7 @@ import AramaicBackdrop from "@/components/AramaicBackdrop";
 import { categories, allStickers, rarityBorder, rarityLabel, type Rarity, type Sticker } from "@/data/stickers";
 import { useCoins, ensureInitialCoins } from "@/hooks/useCoins";
 import albumCapa from "@/assets/album-capa.webp";
+import maozinha from "@/assets/maozinha.png.asset.json";
 import { albumFaixas } from "@/data/albumFaixas";
 
 import iconInicio from "@/assets/icon-inicio.jpg";
