@@ -334,9 +334,19 @@ export default function Album() {
             )}
           </button>
           <button onClick={() => setView("trade")}
-            aria-label="Trocas" title="Trocas"
-            className="w-11 h-11 rounded-full bg-emerald-500 hover:bg-emerald-600 shadow-lg flex items-center justify-center text-white transition">
+            aria-label="Sala de Troca de figurinhas" title="Sala de Troca de figurinhas"
+            className="relative flex items-center gap-1.5 pl-2 pr-3 h-11 rounded-full bg-emerald-500 hover:bg-emerald-600 shadow-lg text-white transition">
             <Repeat className="w-5 h-5" />
+            <span className="font-display font-bold text-[10px] leading-tight text-left max-w-[86px]">
+              Sala de Troca de figurinhas
+            </span>
+            <img
+              src={maozinha.url}
+              alt=""
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-6 -left-5 w-9 h-9 rotate-[-20deg] drop-shadow animate-[maoPulse_1.2s_ease-in-out_infinite]"
+            />
+            <style>{`@keyframes maoPulse{0%,100%{transform:translate(0,0) rotate(-20deg) scale(1)}50%{transform:translate(4px,4px) rotate(-20deg) scale(1.15)}}`}</style>
           </button>
         </div>
       </div>
