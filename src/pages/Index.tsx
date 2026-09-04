@@ -87,7 +87,7 @@ function IndexV1() {
       style={{ background: "transparent" }}
     >
       {/* espaçador do cabeçalho fixo */}
-      <div aria-hidden className="h-[56px] w-full" />
+      <div aria-hidden className="h-[104px] w-full" />
       {/* Home Header */}
       <header
         className="w-full fixed top-0 left-0 right-0 z-30 bg-white/85 flex items-center justify-between px-3 sm:px-5 py-2 border-b border-amber-200/60 backdrop-blur-sm"
@@ -165,14 +165,12 @@ function IndexV1() {
           </div>
 
         )}
+        <div className="w-full px-3 pb-1.5">
+          <HomeTopNav />
+        </div>
       </header>
 
       <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
-
-      {/* Navegação principal (usuários) — discreta, no topo */}
-      <div className="w-full px-3 pt-2">
-        <HomeTopNav />
-      </div>
 
       <main className="w-full flex-1 flex flex-col items-center">
         <EventBannerPlane isAuthenticated={!!user} />
