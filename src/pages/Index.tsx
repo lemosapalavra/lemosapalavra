@@ -170,9 +170,15 @@ function IndexV1() {
         <EventBannerTrain isAuthenticated={!!user} />
 
         <div className="w-full flex flex-col items-center gap-1 px-4 pt-3 text-center">
-          <p className="font-display font-extrabold text-base sm:text-xl text-foreground">
-            Bem vindo a Lemos a Palavra
-          </p>
+          <div className="flex items-center justify-center gap-2 flex-wrap">
+            <p className="font-display font-extrabold text-base sm:text-xl text-foreground">
+              Bem vindo a Lemos a Palavra
+            </p>
+            <span className="flex items-center gap-1">
+              <ShareButton variant="inline" />
+              <span className="font-display font-bold text-xs sm:text-sm text-emerald-700">Compartilhe !</span>
+            </span>
+          </div>
           <p className="font-body text-xs sm:text-sm text-muted-foreground">
             Aprenda, Assista e descubra sobre a palavra de Deus
           </p>
