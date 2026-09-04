@@ -227,10 +227,6 @@ function IndexV1() {
         </div>
       </main>
 
-      <div className="w-full px-3 pt-4 pb-1">
-        <HomeTopNav />
-      </div>
-
 
       <DedicatoriaModal open={dedicatoriaOpen} onOpenChange={setDedicatoriaOpen} />
       <IndexAdminPanel open={adminOpen} onClose={() => setAdminOpen(false)} />
