@@ -63,6 +63,8 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
+    /* espaço para o rodapé fixo global */
+    padding-bottom: 64px;
   }
 
   h1, h2, h3, h4, h5, h6 {

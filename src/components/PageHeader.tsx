@@ -47,7 +47,10 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
   }, []);
 
   return (
-    <header className={`sticky top-0 z-40 w-screen ml-[calc(50%-50vw)] mb-3 ${isLemosPlay ? "bg-black/60 backdrop-blur" : ""}`}>
+    <>
+    {/* espaçador: reserva a altura do cabeçalho fixo */}
+    <div aria-hidden className="h-[64px] w-full" />
+    <header className={`fixed top-0 left-0 right-0 z-40 w-full ${isLemosPlay ? "bg-black/60 backdrop-blur" : "bg-white/85 backdrop-blur-sm border-b border-amber-200/60"}`}>
       <div className="flex items-center gap-2 px-3 py-2">
         {/* Home icon (always on, hidden only on home itself) */}
         {!isHome ? (
@@ -165,5 +168,6 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
         }
       `}</style>
     </header>
+    </>
   );
 }
