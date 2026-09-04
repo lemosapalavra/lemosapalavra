@@ -86,10 +86,11 @@ function IndexV1() {
       className="min-h-screen flex flex-col items-center overflow-hidden relative"
       style={{ background: "transparent" }}
     >
+      {/* espaçador do cabeçalho fixo */}
+      <div aria-hidden className="h-[56px] w-full" />
       {/* Home Header */}
       <header
         className="w-full fixed top-0 left-0 right-0 z-30 bg-white/85 flex items-center justify-between px-3 sm:px-5 py-2 border-b border-amber-200/60 backdrop-blur-sm"
-        style={{ background: "transparent" }}
       >
         <div className="flex items-center gap-2">
           {user && isAdmin && (
