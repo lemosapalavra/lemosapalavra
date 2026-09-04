@@ -146,6 +146,29 @@ const PageFallback = () => (
   </div>
 );
 
+/** Rotas de administração: só o dono (aparelho autorizado ou papel admin) vê. */
+const AdminOnly = ({ children }: { children: React.ReactNode }) => {
+  const [state, setState] = useState<"checking" | "ok" | "denied">("checking");
+  useEffect(() => {
+    let cancelled = false;
+    const check = async () => {
+      const owner = (() => { try { return localStorage.getItem("lemos_owner_unlocked") === "1"; } catch { return false; } })();
+      if (owner) { if (!cancelled) setState("ok"); return; }
+      const { data: sess } = await supabase.auth.getSession();
+      const uid = sess.session?.user?.id;
+      if (!uid) { if (!cancelled) setState("denied"); return; }
+      const { data, error } = await supabase.rpc("has_role", { _user_id: uid, _role: "admin" });
+      if (!cancelled) setState(!error && data === true ? "ok" : "denied");
+    };
+    check();
+    return () => { cancelled = true; };
+  }, []);
+  if (state === "checking") return <PageFallback />;
+  if (state === "denied") return <Navigate to="/" replace />;
+  return <>{children}</>;
+};
+
+
 const AutoUpdater = () => {
   useEffect(() => startAutoUpdate(), []);
   useEffect(() => startAutoTitles(), []);
