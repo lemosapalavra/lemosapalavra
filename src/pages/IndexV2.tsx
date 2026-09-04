@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { LogOut, Search, Settings, User } from "lucide-react";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import EventBannerTrain from "@/components/EventBannerTrain";
+import EventBannerKart from "@/components/EventBannerKart";
 import InstallShortcut from "@/components/InstallShortcut";
 import { useCoins } from "@/hooks/useCoins";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
@@ -173,6 +174,7 @@ export default function IndexV2() {
 
       <main className="flex-1 w-full">
         <EventBannerTrain isAuthenticated={!!user} />
+        <EventBannerKart isAuthenticated={!!user} />
         {/* Herói */}
         <section
           className="w-full"
