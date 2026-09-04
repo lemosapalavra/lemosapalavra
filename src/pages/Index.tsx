@@ -197,7 +197,7 @@ function IndexV1() {
 
 
 
-        <div className="flex-1 flex flex-col items-center justify-center w-full py-4">
+        <div className="flex-1 flex flex-col items-center justify-center w-full py-2">
           <OrbitMenu
             isAuthenticated={!!user}
             userName={user?.name}
@@ -207,7 +207,7 @@ function IndexV1() {
             onItemClick={handleItemClick}
           />
 
-          <div className="mt-16 sm:mt-20 flex flex-col items-center gap-6">
+          <div className="mt-10 sm:mt-14 flex flex-col items-center gap-5">
             {user && <InstallShortcut compact />}
             <button
               onClick={() => setDedicatoriaOpen(true)}
