@@ -97,7 +97,7 @@ export default function MascoteLia() {
         onClick={() => setExpanded(true)}
         aria-label="Falar com a LIA, sua ajudante"
         title="Falar com a LIA, sua ajudante"
-        className="fixed bottom-4 left-3 z-[45] w-12 h-12 rounded-full bg-white shadow-lg border-2 border-amber-300 overflow-hidden hover:scale-110 active:scale-95 transition"
+        className="fixed bottom-24 left-3 z-[45] w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white shadow-lg border-2 border-amber-300 overflow-hidden hover:scale-110 active:scale-95 transition"
       >
         <img src={avatar} alt="LIA" className="w-full h-full object-cover object-top" loading="lazy" />
       </button>
@@ -105,7 +105,7 @@ export default function MascoteLia() {
   }
 
   return (
-    <div className="fixed bottom-3 left-2 z-[45] flex flex-col items-start gap-1 pointer-events-none">
+    <div className="fixed bottom-24 left-2 z-[45] flex flex-col items-start gap-1 pointer-events-none">
       {/* Balão acima da cabeça da LIA */}
       <div className="pointer-events-auto relative w-[68vw] max-w-xs rounded-2xl bg-white/95 backdrop-blur border-2 border-amber-300 shadow-xl px-3 py-2">
         <p className="font-body text-[11px] sm:text-xs text-amber-900 leading-snug">{message}</p>
@@ -121,7 +121,7 @@ export default function MascoteLia() {
         <img
           src={avatar}
           alt="LIA, a mascote que ajuda você a navegar"
-          className="w-20 sm:w-24 h-auto drop-shadow-xl animate-[liaFloat_3.4s_ease-in-out_infinite] select-none"
+          className="w-24 sm:w-28 h-auto drop-shadow-xl animate-[liaFloat_3.4s_ease-in-out_infinite] select-none"
           draggable={false}
         />
       </button>
