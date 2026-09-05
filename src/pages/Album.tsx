@@ -12,7 +12,6 @@ import albumCapa from "@/assets/album-capa.webp";
 import maozinha from "@/assets/maozinha.png.asset.json";
 import { albumFaixas } from "@/data/albumFaixas";
 
-import iconInicio from "@/assets/icon-inicio.jpg";
 import iconUsuario from "@/assets/icon-usuario.png";
 
 const STICKERS_KEY = "lemos_stickers_v3";
