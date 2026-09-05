@@ -97,7 +97,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
           alt="Lemos a Palavra"
           width={320}
           height={320}
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-2xl transition-all duration-700 w-[110px] sm:w-[140px] lg:w-[260px] ${!isAuthenticated ? "grayscale opacity-70" : ""}`}
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-2xl transition-all duration-700 w-[92px] sm:w-[120px] lg:w-[220px] ${!isAuthenticated ? "grayscale opacity-70" : ""}`}
         />
       </div>
 
