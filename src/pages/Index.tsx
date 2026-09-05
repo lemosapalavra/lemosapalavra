@@ -4,11 +4,9 @@ import { Settings, LogOut } from "lucide-react";
 import OrbitMenu from "@/components/OrbitMenu";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import IndexAdminPanel from "@/components/IndexAdminPanel";
-import EventBannerPlane from "@/components/EventBannerPlane";
+
 import InstallShortcut from "@/components/InstallShortcut";
 import HomeTopNav from "@/components/HomeTopNav";
-import EventBannerTrain from "@/components/EventBannerTrain";
-import EventBannerKart from "@/components/EventBannerKart";
 import IndexV2 from "@/pages/IndexV2";
 import { loadSiteVersion, SITE_VERSION_EVENT } from "@/data/siteVersion";
 
@@ -182,9 +180,6 @@ function IndexV1() {
       <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
 
       <main className="w-full flex-1 flex flex-col items-center pb-28 sm:pb-32 lg:pb-24">
-        <EventBannerPlane isAuthenticated={!!user} />
-        <EventBannerTrain isAuthenticated={!!user} />
-        <EventBannerKart isAuthenticated={!!user} />
 
         <div className="w-full flex flex-col items-center gap-1 sm:gap-2 px-4 pt-2 sm:pt-4 pb-2 text-center">
           <p className="font-display font-extrabold text-lg sm:text-2xl text-foreground">
