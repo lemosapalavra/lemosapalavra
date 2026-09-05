@@ -446,9 +446,8 @@ export default function Atividades() {
       <div
         className="relative orbit-area"
         style={{
-          width: "min(92vw, 720px)",
-          height: "min(92vw, 720px)",
-          ["--orbit-radius" as any]: "min(38vw, 300px)",
+          width: "min(88vw, 720px)",
+          height: "min(88vw, 720px)",
         }}
       >
         <div className="absolute inset-0 orbit-anim" style={{ animation: `orbit-spin ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}>
@@ -460,7 +459,7 @@ export default function Atividades() {
                 <div className="orbit-anim" style={{ animation: `orbit-spin-reverse ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}>
                   <button type="button" onClick={() => setActiveGame(a.id)}
                     className="flex flex-col items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
-                    <span className="block rounded-full border-2 border-primary/30 shadow-xl bg-white overflow-hidden w-[96px] h-[96px] sm:w-[118px] sm:h-[118px] md:w-[140px] md:h-[140px]">
+                    <span className="block rounded-full border-2 border-primary/30 shadow-xl bg-white overflow-hidden w-[68px] h-[68px] sm:w-[72px] sm:h-[72px] lg:w-[120px] lg:h-[120px]">
                       <img src={a.icon} alt={a.title} loading="lazy"
                         className="w-full h-full object-cover"
                         style={{ transform: `scale(${(a as any).zoom ?? 1})`, transformOrigin: "center" }} />
@@ -474,9 +473,12 @@ export default function Atividades() {
           })}
         </div>
         <img loading="lazy" decoding="async" src={logoCentral} alt="Lemos a Palavra"
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-2xl w-[180px] sm:w-[230px] md:w-[280px]" />
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-2xl w-[92px] sm:w-[120px] lg:w-[220px]" />
       </div>
       <style>{`
+        .orbit-area { --orbit-radius: clamp(100px, 26vw, 125px); }
+        @media (min-width: 640px) { .orbit-area { --orbit-radius: clamp(115px, 26vw, 145px); } }
+        @media (min-width: 1024px) { .orbit-area { --orbit-radius: clamp(190px, 32vw, 290px); } }
         @keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes orbit-spin-reverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
         .orbit-area:hover .orbit-anim,

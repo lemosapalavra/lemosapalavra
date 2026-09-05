@@ -12,7 +12,6 @@ import albumCapa from "@/assets/album-capa.webp";
 import maozinha from "@/assets/maozinha.png.asset.json";
 import { albumFaixas } from "@/data/albumFaixas";
 
-import iconInicio from "@/assets/icon-inicio.jpg";
 import iconUsuario from "@/assets/icon-usuario.png";
 
 const STICKERS_KEY = "lemos_stickers_v3";
@@ -542,7 +541,7 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
 
   return (
     <div
-      className="fixed inset-0 z-[60] bg-black/95 flex items-center justify-center p-4 animate-[pageInNext_0.32s_ease-out]"
+      className="fixed inset-0 z-[60] bg-black/95 overflow-y-auto overscroll-contain flex items-start justify-center p-4 pb-28 animate-[pageInNext_0.32s_ease-out]"
       onClick={onClose}
     >
       <button
@@ -552,7 +551,7 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
       >
         <X className="w-6 h-6" />
       </button>
-      <div className="relative w-full max-w-5xl grid lg:grid-cols-[minmax(0,1fr)_320px] gap-4 items-center" onClick={(e) => e.stopPropagation()}>
+      <div className="relative w-full max-w-5xl my-auto grid lg:grid-cols-[minmax(0,1fr)_320px] gap-4 items-center" onClick={(e) => e.stopPropagation()}>
         {(() => {
           const frame =
             sticker.rarity === "reliquia"
@@ -563,7 +562,7 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
           return (
             <div className={`relative rounded-[32px] p-[6px] ${frame.ring} ${frame.glow}`}>
               <div
-                className={`relative rounded-[26px] bg-gradient-to-br ${frame.inner} border border-white/10 p-4 backdrop-blur-sm flex items-center justify-center min-h-[60vh] overflow-hidden touch-none`}
+                className={`relative rounded-[26px] bg-gradient-to-br ${frame.inner} border border-white/10 p-4 backdrop-blur-sm flex items-center justify-center min-h-[42vh] sm:min-h-[52vh] overflow-hidden touch-none`}
                 onTouchStart={onTouchStart}
                 onTouchMove={onTouchMove}
                 onTouchEnd={onTouchEnd}
@@ -577,7 +576,7 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
                     onMouseDown={onMouseDown}
                     onDoubleClick={(e) => { e.stopPropagation(); zoomReset(); }}
                     draggable={false}
-                    className={`max-w-full max-h-[78vh] object-contain drop-shadow-2xl select-none ${zoom > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"}`}
+                    className={`max-w-full max-h-[52vh] sm:max-h-[64vh] object-contain drop-shadow-2xl select-none ${zoom > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"}`}
                     style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`, transition: drag.current || gesture.current ? "none" : "transform 0.15s ease-out" }}
                   />
                 ) : (
@@ -907,10 +906,7 @@ function StandardHeader({ onHome, coins, variant = "light" }: { onHome: () => vo
   const dark = variant === "dark";
   return (
     <div className="flex items-center justify-between mb-3">
-      <button onClick={onHome} className="flex flex-col items-center gap-1 hover:scale-110 transition-transform" aria-label="Início">
-        <img loading="lazy" decoding="async" src={iconInicio} alt="Início" className="w-12 h-12 rounded-2xl shadow-lg" />
-        <span className={`font-display text-[10px] font-bold ${dark ? "text-white" : "text-foreground"}`}>Início</span>
-      </button>
+      <div aria-hidden />
       <div className="flex items-center gap-3">
         <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border ${
           dark ? "bg-white/15 border-white/20 text-white" : "bg-white/90 border-amber-700/30 text-foreground"

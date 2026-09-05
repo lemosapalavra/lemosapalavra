@@ -171,13 +171,20 @@ export default function DedicatoriaModal({ open: externalOpen, onOpenChange }: D
           >
             <div
               className="relative"
-              style={{
-                backgroundImage: `url(${dedicatoriaBg})`,
-                backgroundSize: "100% 100%",
-                backgroundRepeat: "no-repeat",
-                filter: "drop-shadow(0 25px 35px rgba(0,0,0,0.55))",
-              }}
+              style={{ filter: "drop-shadow(0 25px 35px rgba(0,0,0,0.55))" }}
             >
+              {/* Pergaminho como camada de fundo translúcida */}
+              <div
+                aria-hidden
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  backgroundImage: `url(${dedicatoriaBg})`,
+                  backgroundSize: "100% 100%",
+                  backgroundRepeat: "no-repeat",
+                  opacity: 0.88,
+                  mixBlendMode: "multiply",
+                }}
+              />
               <button
                 onClick={handleClose}
                 className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center text-lg font-bold hover:scale-110 transition-transform z-20"

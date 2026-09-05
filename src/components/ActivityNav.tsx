@@ -1,6 +1,4 @@
-import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import iconInicio from "@/assets/icon-inicio.jpg";
 
 interface ActivityNavProps {
   onBack: () => void;
@@ -16,17 +14,8 @@ interface ActivityNavProps {
  * title/subtitle centered. No user info, coin badge, or admin gear.
  */
 export default function ActivityNav({ onBack, backLabel = "Voltar às atividades", title, subtitle, className = "" }: ActivityNavProps) {
-  const navigate = useNavigate();
   return (
     <div className={`flex items-center gap-2 mb-4 ${className}`}>
-      <button
-        onClick={() => navigate("/")}
-        aria-label="Início"
-        title="Início"
-        className="shrink-0 w-11 h-11 rounded-full overflow-hidden bg-white shadow-lg border-2 border-amber-300 animate-[backPulse_2.4s_ease-in-out_infinite] hover:scale-110 transition-transform"
-      >
-        <img loading="lazy" decoding="async" src={iconInicio} alt="Início" className="w-full h-full object-cover" />
-      </button>
       <button
         onClick={onBack}
         aria-label="Voltar"

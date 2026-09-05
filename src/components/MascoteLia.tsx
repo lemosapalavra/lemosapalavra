@@ -107,8 +107,8 @@ export default function MascoteLia() {
   return (
     <div className="fixed bottom-24 left-2 z-[45] flex flex-col items-start gap-1 pointer-events-none">
       {/* Balão acima da cabeça da LIA */}
-      <div className="pointer-events-auto relative w-[68vw] max-w-xs rounded-2xl bg-white/95 backdrop-blur border-2 border-amber-300 shadow-xl px-3 py-2">
-        <p className="font-body text-[11px] sm:text-xs text-amber-900 leading-snug">{message}</p>
+      <div className="pointer-events-auto relative w-[78vw] max-w-sm rounded-2xl bg-white/95 backdrop-blur border-2 border-amber-300 shadow-xl px-3 py-2">
+        <p className="font-body text-[15px] sm:text-base text-amber-900 leading-relaxed">{message}</p>
         <span className="absolute left-6 -bottom-2 w-3 h-3 rotate-45 bg-white border-r-2 border-b-2 border-amber-300" />
       </div>
 
