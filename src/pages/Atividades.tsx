@@ -1807,3 +1807,165 @@ function CrosswordGame({ onBack, celebrate, celebration, closeCelebration, bgSty
     </div>
   );
 }
+
+/* ---------- CONSTRUTOR DE PALAVRAS ---------- */
+type BuilderRound = { img: string; answer: string; syllables: string[]; extras: string[]; hint: string };
+
+const builderRounds: BuilderRound[] = [
+  { img: czJonas.url,  answer: "JONAS",  syllables: ["JO", "NAS"],        extras: ["MA", "TE"], hint: "Profeta engolido por um grande peixe" },
+  { img: czNoe.url,    answer: "NOE",    syllables: ["NO", "E"],          extras: ["CA", "RI"], hint: "Construiu a arca por obediência a Deus" },
+  { img: czPedro.url,  answer: "PEDRO",  syllables: ["PE", "DRO"],        extras: ["LA", "SO"], hint: "Discípulo pescador chamado por Jesus" },
+  { img: czDaniel.url, answer: "DANIEL", syllables: ["DA", "NI", "EL"],   extras: ["BO", "TU"], hint: "Foi guardado por Deus na cova dos leões" },
+  { img: czArca.url,   answer: "ARCA",   syllables: ["AR", "CA"],         extras: ["ME", "PI"], hint: "Barco enorme feito por Noé" },
+  { img: czOvelha.url, answer: "OVELHA", syllables: ["O", "VE", "LHA"],   extras: ["SI", "RO"], hint: "Animal que o Bom Pastor procura" },
+  { img: czBiblia.url, answer: "BIBLIA", syllables: ["BI", "BLI", "A"],   extras: ["NE", "TO"], hint: "A Palavra de Deus escrita" },
+  { img: czAbraao.url, answer: "ABRAAO", syllables: ["A", "BRA", "AO"],   extras: ["MI", "PE"], hint: "O pai da fé" },
+  { img: czJose.url,   answer: "JOSE",   syllables: ["JO", "SE"],         extras: ["VA", "TI"], hint: "Vendido pelos irmãos, governou o Egito" },
+  { img: czJerico.url, answer: "JERICO", syllables: ["JE", "RI", "CO"],   extras: ["PA", "LU"], hint: "Cidade cujos muros caíram" },
+  { img: czSalmos.url, answer: "SALMOS", syllables: ["SAL", "MOS"],       extras: ["DE", "NA"], hint: "Livro de cânticos e orações" },
+  { img: czSansao.url, answer: "SANSAO", syllables: ["SAN", "SAO"],       extras: ["CO", "RE"], hint: "Juiz muito forte por causa dos cabelos" },
+];
+
+function WordBuilderGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
+  const rounds = useMemo(() => {
+    const start = dayOfYear() % builderRounds.length;
+    return Array.from({ length: 5 }, (_, i) => builderRounds[(start + i) % builderRounds.length]);
+  }, []);
+
+  const [idx, setIdx] = useState(0);
+  const [placed, setPlaced] = useState<string[]>([]);
+  const [status, setStatus] = useState<"idle" | "ok" | "err">("idle");
+  const [done, setDone] = useState(0);
+  const round = rounds[idx];
+
+  const pool = useMemo(() => {
+    const all = [...round.syllables, ...round.extras];
+    // embaralhamento estável por rodada
+    return all
+      .map((s, i) => ({ s, k: ((i + 1) * 7919 + round.answer.length * 31) % 97 }))
+      .sort((a, b) => a.k - b.k)
+      .map((x) => x.s);
+  }, [round]);
+
+  const used = useMemo(() => {
+    const c: Record<string, number> = {};
+    placed.forEach((p) => { c[p] = (c[p] || 0) + 1; });
+    return c;
+  }, [placed]);
+
+  const add = (s: string) => {
+    if (placed.length >= round.syllables.length) return;
+    const next = [...placed, s];
+    setPlaced(next);
+    setStatus("idle");
+    if (next.length === round.syllables.length) {
+      const ok = next.join("") === round.syllables.join("");
+      setStatus(ok ? "ok" : "err");
+      if (ok) {
+        const total = done + 1;
+        setDone(total);
+        if (total >= rounds.length) {
+          setTimeout(() => celebrate("Você construiu todas as palavras!", COINS.wordbuilder, "🔤"), 500);
+        }
+      }
+    }
+  };
+
+  const removeAt = (i: number) => {
+    setPlaced((p) => p.filter((_, j) => j !== i));
+    setStatus("idle");
+  };
+
+  const next = () => {
+    setIdx((i) => (i + 1) % rounds.length);
+    setPlaced([]);
+    setStatus("idle");
+  };
+
+  return (
+    <div className="min-h-screen py-6 px-4" style={bgStyle}>
+      <div className="max-w-2xl mx-auto">
+        <ActivityNav onBack={onBack} title="Construtor de Palavras" subtitle="Monte a palavra da figura com as sílabas" />
+        <DailyBanner emoji="🔤" text="Toque nas sílabas na ordem certa e forme a palavra da imagem!" />
+
+        <div className="bg-popover rounded-2xl border-2 border-primary/40 shadow p-4 text-center">
+          <p className="font-display font-bold text-sm text-muted-foreground mb-2">
+            Palavra {idx + 1} de {rounds.length} · acertos: {done}
+          </p>
+
+          <img
+            src={round.img}
+            alt={round.hint}
+            width={512}
+            height={512}
+            loading="lazy"
+            decoding="async"
+            className="mx-auto w-40 h-40 sm:w-52 sm:h-52 object-contain rounded-2xl bg-white border-2 border-amber-200 shadow-sm"
+          />
+          <p className="font-body text-xs sm:text-sm text-muted-foreground mt-2">💡 {round.hint}</p>
+
+          {/* Espaços da palavra */}
+          <div className="flex justify-center gap-2 mt-4 flex-wrap">
+            {round.syllables.map((_, i) => {
+              const val = placed[i];
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => val && removeAt(i)}
+                  aria-label={val ? `Remover sílaba ${val}` : "Espaço vazio"}
+                  className={`w-16 h-14 sm:w-20 sm:h-16 rounded-xl border-2 border-dashed font-display font-extrabold text-lg sm:text-xl flex items-center justify-center transition
+                    ${val ? "border-solid bg-gradient-to-b from-amber-200 to-amber-300 text-amber-900 border-amber-500 shadow" : "bg-white/70 border-primary/40 text-muted-foreground"}
+                    ${status === "err" ? "border-red-400" : ""}
+                    ${status === "ok" ? "border-emerald-500" : ""}`}
+                >
+                  {val || "?"}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Sílabas disponíveis */}
+          <div className="flex justify-center gap-2 mt-5 flex-wrap">
+            {pool.map((s, i) => {
+              const available = pool.filter((x) => x === s).length - (used[s] || 0) > 0;
+              return (
+                <button
+                  key={`${s}-${i}`}
+                  type="button"
+                  disabled={!available}
+                  onClick={() => add(s)}
+                  className={`px-4 py-3 rounded-xl font-display font-extrabold text-base sm:text-lg border-2 shadow transition
+                    ${available
+                      ? "bg-gradient-to-b from-sky-200 to-sky-300 border-sky-500 text-sky-900 hover:scale-110"
+                      : "bg-muted border-border text-muted-foreground opacity-40"}`}
+                >
+                  {s}
+                </button>
+              );
+            })}
+          </div>
+
+          {status === "ok" && (
+            <p className="font-display font-bold text-emerald-600 mt-4">🎉 Isso mesmo: {round.answer}!</p>
+          )}
+          {status === "err" && (
+            <p className="font-display font-bold text-red-600 mt-4">Quase! Toque nas sílabas para trocar.</p>
+          )}
+
+          <div className="flex gap-2 justify-center mt-4 flex-wrap">
+            <button onClick={() => { setPlaced([]); setStatus("idle"); }} className="px-5 py-2.5 rounded-full bg-popover border border-border font-display font-bold text-foreground hover:border-primary">
+              🔄 Limpar
+            </button>
+            <button onClick={next} className="btn-cartoon px-5 py-2.5">➡️ Próxima palavra</button>
+          </div>
+
+          <p className="text-center text-xs text-muted-foreground font-body mt-3">
+            💡 Complete as {rounds.length} palavras e ganhe {COINS.wordbuilder} moedinhas 🪙
+          </p>
+        </div>
+      </div>
+      <CelebrationAnimation {...celebration} onClose={closeCelebration} />
+    </div>
+  );
+}
