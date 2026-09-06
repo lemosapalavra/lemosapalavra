@@ -252,11 +252,8 @@ export default function Album() {
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-amber-950 font-display font-extrabold text-sm sm:text-base px-4 py-2 rounded-full shadow-2xl border-2 border-white animate-[coverFloat_3s_ease-in-out_infinite]">
             🎴 Mais de <span className="text-lg sm:text-xl">{allStickers.length}</span> figurinhas para colecionar!
           </div>
-          <p className="font-body text-amber-100 text-sm sm:text-base italic">Toque para abrir o álbum sagrado</p>
         </div>
-        <div className="mb-8 bg-white/95 px-5 py-2.5 rounded-full font-display font-bold text-base shadow-2xl animate-pulse">
-          👆 Toque para abrir
-        </div>
+
         <style>{`
           @keyframes albumTitle {
             0%,100% { transform: scale(1) translateY(0); text-shadow: 0 4px 14px rgba(255,200,80,0.35); }

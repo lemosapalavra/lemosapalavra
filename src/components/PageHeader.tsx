@@ -54,7 +54,7 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
       <div className="flex items-center justify-between gap-2 px-3 py-2">
         {/* Left: Home + Back */}
         <div className="flex items-center gap-2 shrink-0">
-          {!isHome && !isLemosPlay && (
+          {!isHome && (
             <button
               onClick={() => navigate(-1)}
               aria-label="Voltar"
