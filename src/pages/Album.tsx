@@ -11,6 +11,7 @@ import { useCoins, ensureInitialCoins } from "@/hooks/useCoins";
 import albumCapa from "@/assets/album-capa.webp";
 import maozinha from "@/assets/maozinha.png.asset.json";
 import { albumFaixas } from "@/data/albumFaixas";
+import { toast } from "sonner";
 
 import iconUsuario from "@/assets/icon-usuario.png";
 
