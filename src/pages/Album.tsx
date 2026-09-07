@@ -261,7 +261,7 @@ export default function Album() {
                 ? "🎉 Volume II chegando em breve — suas figurinhas repetidas já estão guardadas!"
                 : "🔒 Volume II bloqueado. Complete o Volume I para liberar!");
             }}
-776          >
+>
             <img loading="lazy" decoding="async"
               src={albumCapa}
               alt="Capa do Álbum Volume II (bloqueado)"
