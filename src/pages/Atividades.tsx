@@ -393,7 +393,7 @@ export default function Atividades() {
   // sempre o mesmo conjunto.
   const activities = useMemo(() => {
     const total = allActivities.length;
-    const offset = (dayOfYear(new Date()) * 5) % total;
+    const offset = 9; // TEMP
     return Array.from({ length: Math.min(5, total) }, (_, i) => allActivities[(offset + i) % total]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
