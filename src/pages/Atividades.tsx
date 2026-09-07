@@ -30,6 +30,7 @@ import logoCentral from "@/assets/logo-central.png";
 import iconCacaPalavras from "@/assets/atividades/icone-caca-palavras.png.asset.json";
 import iconLigueCores from "@/assets/atividades/icone-ligue-cores.png.asset.json";
 import iconPinteCirculos from "@/assets/atividades/pinte-circulos.png.asset.json";
+import iconConstrutorPalavras from "@/assets/atividades/icone-construtor-palavras.png.asset.json";
 
 // Puzzle source images (real biblical scenes)
 import imgCriacao from "@/assets/historia-criacao.png";
@@ -383,6 +384,7 @@ export default function Atividades() {
     { title: "Ligue as Cores",      icon: iconLigueCores.url,   id: "edu:connect", coins: COINS.connect,    zoom: 1.28 },
     { title: "Jogo dos 7 Erros",    icon: icon7Erros,           id: "spot",        coins: COINS.spot,       zoom: 1.15 },
     { title: "Cruzadinha Bíblica",  icon: iconAtividades,       id: "crossword",   coins: COINS.crossword,  zoom: 1.15 },
+    { title: "Construtor de Palavras", icon: iconConstrutorPalavras.url, id: "wordbuilder", coins: COINS.wordbuilder, zoom: 1.05 },
   ];
 
 
@@ -419,6 +421,8 @@ export default function Atividades() {
     return <JigsawGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "wordsearch")
     return <WordSearchGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
+  if (activeGame === "wordbuilder")
+    return <WordBuilderGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "crossword")
     return <CrosswordGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
 

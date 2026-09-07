@@ -33,6 +33,7 @@ export const COINS = {
   draw: 5,
   crossword: 6,
   spot: 5,
+  wordbuilder: 5,
 
 } as const;
 
