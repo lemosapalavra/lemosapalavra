@@ -273,7 +273,7 @@ export default function Album() {
               Volume II
             </span>
             {!completed && (
-              <span className="absolute inset-0 flex items-center justify-center text-4xl sm:text-5xl drop-shadow-lg">🔒</span>
+              <span className="absolute inset-0 z-10 flex items-center justify-center"><span className="bg-white/90 rounded-full w-14 h-14 flex items-center justify-center text-3xl shadow-lg border-2 border-stone-400">🔒</span></span>
             )}
           </div>
           </div>
