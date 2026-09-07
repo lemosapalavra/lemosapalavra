@@ -183,10 +183,10 @@ function IndexV1() {
 
         <div className="w-full flex flex-col items-center gap-1 sm:gap-2 px-4 pt-2 sm:pt-4 pb-2 text-center">
           <p className="font-display font-extrabold text-lg sm:text-2xl text-foreground">
-            Bem-vindo ao Lemos a Palavra!
+            Seja Bem vindo a Lemos a Palavra !
           </p>
           <p className="font-body text-sm sm:text-base text-muted-foreground max-w-md">
-            Aprenda, brinque e descubra a Palavra de Deus.
+            Aqui você Estuda, Aprende e Brinca aprendendo sobre a Palavra de Deus.
           </p>
         </div>
 
