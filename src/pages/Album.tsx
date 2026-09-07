@@ -222,12 +222,17 @@ export default function Album() {
       >
         <PageHeader title="Álbum" />
         <div className="flex-1 flex flex-col items-center justify-center px-6 text-center gap-4 w-full overflow-hidden">
+          <div className="flex flex-row items-center justify-center gap-3 sm:gap-6">
           <div className="relative">
             <img loading="lazy" decoding="async"
               src={albumCapa}
-              alt="Capa do Álbum Heróis da Bíblia"
-              className="max-h-[55vh] w-auto rounded-2xl shadow-2xl border-4 border-amber-300 animate-[coverFloat_3.6s_ease-in-out_infinite]"
+              alt="Capa do Álbum Heróis da Bíblia — Volume I"
+              title="Volume I — toque para abrir o álbum"
+              className="max-h-[46vh] w-auto rounded-2xl shadow-2xl border-4 border-amber-300 animate-[coverFloat_3.6s_ease-in-out_infinite]"
             />
+            <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] sm:text-xs font-display font-extrabold bg-amber-300 text-amber-950 px-2 py-0.5 rounded-full shadow border border-white">
+              Volume I
+            </span>
 
             {/* Completion banner */}
             {completed && (
@@ -246,6 +251,31 @@ export default function Album() {
               </div>
             )}
           </div>
+
+          {/* Volume II — em preto e branco, liberado só ao concluir o Volume I */}
+          <div
+            className="relative"
+            onClick={(e) => {
+              e.stopPropagation();
+              toast(completed
+                ? "🎉 Volume II chegando em breve — suas figurinhas repetidas já estão guardadas!"
+                : "🔒 Volume II bloqueado. Complete o Volume I para liberar!");
+            }}
+776          >
+            <img loading="lazy" decoding="async"
+              src={albumCapa}
+              alt="Capa do Álbum Volume II (bloqueado)"
+              title={completed ? "Volume II — em breve" : "Volume II — complete o Volume I para liberar"}
+              className={`max-h-[46vh] w-auto rounded-2xl shadow-2xl border-4 border-stone-400 grayscale ${completed ? "opacity-90" : "opacity-60"}`}
+            />
+            <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] sm:text-xs font-display font-extrabold bg-stone-300 text-stone-800 px-2 py-0.5 rounded-full shadow border border-white">
+              Volume II
+            </span>
+            {!completed && (
+              <span className="absolute inset-0 flex items-center justify-center text-4xl sm:text-5xl drop-shadow-lg">🔒</span>
+            )}
+          </div>
+          </div>
           <h1 className="font-display font-extrabold text-3xl sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-yellow-100 to-amber-300 drop-shadow-lg animate-[albumTitle_2.4s_ease-in-out_infinite]">
             ✨ Heróis da Bíblia ✨
           </h1>
@@ -253,6 +283,7 @@ export default function Album() {
             🎴 Mais de <span className="text-lg sm:text-xl">{allStickers.length}</span> figurinhas para colecionar!
           </div>
         </div>
+
 
         <style>{`
           @keyframes albumTitle {
