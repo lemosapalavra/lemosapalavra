@@ -392,9 +392,12 @@ export default function Atividades() {
   // dia, então as demais atividades entram nos dias seguintes, sem repetir
   // sempre o mesmo conjunto.
   const activities = useMemo(() => {
-    const total = allActivities.length;
-    const offset = (dayOfYear(new Date()) * 5) % total;
-    return Array.from({ length: Math.min(5, total) }, (_, i) => allActivities[(offset + i) % total]);
+    const pinned = allActivities.filter((a) => a.id === "wordbuilder");
+    const rest = allActivities.filter((a) => a.id !== "wordbuilder");
+    const total = rest.length;
+    const offset = (dayOfYear(new Date()) * 4) % total;
+    const rotating = Array.from({ length: Math.min(4, total) }, (_, i) => rest[(offset + i) % total]);
+    return [...pinned, ...rotating];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
