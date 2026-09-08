@@ -10,6 +10,7 @@ import { categories, allStickers, rarityBorder, rarityLabel, type Rarity, type S
 import { useCoins, ensureInitialCoins } from "@/hooks/useCoins";
 import albumCapa from "@/assets/album-capa.webp";
 import maozinha from "@/assets/maozinha.png.asset.json";
+import capaVol2 from "@/assets/capa-album-volume-2.png.asset.json";
 import { albumFaixas } from "@/data/albumFaixas";
 import { toast } from "sonner";
 
@@ -264,7 +265,7 @@ export default function Album() {
             }}
 >
             <img loading="lazy" decoding="async"
-              src={albumCapa}
+              src={capaVol2.url}
               alt="Capa do Álbum Volume II (bloqueado)"
               title={completed ? "Volume II — em breve" : "Volume II — complete o Volume I para liberar"}
               className={`max-h-[46vh] w-auto rounded-2xl shadow-2xl border-4 border-stone-400 grayscale ${completed ? "opacity-90" : "opacity-60"}`}
