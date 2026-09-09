@@ -5,7 +5,7 @@ const LINKS = [
   { label: "ASSISTA", to: "/lemosplay" },
   { label: "ATIVIDADES", to: "/atividades" },
   { label: "ORAÇÃO", to: "/pedidos-oracao" },
-  { label: "DEVOCIONAIS", to: "/devocionais" },
+  { label: "HISTÓRIAS", to: "/historias-do-dia" },
   { label: "ÁLBUM DE FIGURINHAS", to: "/album" },
 ];
 

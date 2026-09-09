@@ -35,7 +35,7 @@ const CARDS = [
   { title: "Atividades Bíblicas", img: cardAtividades.url, to: "/atividades" },
   { title: "Parábolas de Jesus", img: cardParabolas.url, to: "/lemosplay" },
   { title: "Álbum de Figurinhas", img: cardHerois.url, to: "/album" },
-  { title: "Aprendendo com Jesus", img: cardJesus.url, to: "/devocionais" },
+  { title: "Aprendendo com Jesus", img: cardJesus.url, to: "/historias-do-dia" },
 ];
 
 /** Versão 2 do site: cabeçalho com menu, herói e cards de destaque. */
