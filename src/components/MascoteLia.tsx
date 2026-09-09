@@ -18,7 +18,8 @@ const PAGE_TIPS: Record<string, string> = {
   "/": "Toque nos ícones que giram ao redor da logo para navegar: Bíblia, Vídeos, Álbum, Atividades e mais!",
   "/biblia": "Escolha o livro e o capítulo. Toque no ícone de ouvir 🔊 e eu leio a Palavra para você.",
   "/louvores": "Escolha um louvor e aperte o play ▶️. Dá para curtir, comentar e compartilhar com a família.",
-  "/devocionais": "Leia o devocional de hoje até o fim para ganhar suas moedinhas 🪙.",
+  "/historias-do-dia": "Aqui tem duas histórias bíblicas novas todo dia! Leia até o fim para ganhar moedinhas 🪙 e depois pinte o desenho — sua pintura fica salva para você continuar depois 🎨.",
+  "/devocionais": "Aqui tem duas histórias bíblicas novas todo dia! Leia, ganhe moedinhas 🪙 e pinte o desenho 🎨.",
   "/pedidos-oracao": "Escreva seu pedido e escolha a categoria. Vamos orar juntos por você! 🙏",
   "/atividades": "Escolha uma atividade tocando no ícone. Cada uma dá moedinhas 🪙 uma vez por dia.",
   "/album": "Use 3 moedinhas 🪙 para abrir um pacote e toque em “Próxima” para virar a página do álbum.",
@@ -43,7 +44,7 @@ const CONTEXT_TIPS: Record<string, string> = {
   "edu:connect": "Em Ligue as Cores, arraste ligando cada ponto à cor correspondente.",
   // Álbum
   "album:cover": "Esta é a capa do seu álbum. Toque nela para abrir e começar a colecionar!",
-  "album:pages": "Ganhe moedinhas 🪙 nos vídeos, devocionais e atividades. Com 3 moedinhas você abre um pacotinho com 5 figurinhas, toque na figurinha para ampliar e use a Sala de Trocas para trocar as repetidas. Toque em “Próxima” para virar a página.",
+  "album:pages": "Ganhe moedinhas 🪙 nos vídeos, histórias e atividades. Com 3 moedinhas você abre um pacotinho com 5 figurinhas, toque na figurinha para ampliar e use a Sala de Trocas para trocar as repetidas. Toque em “Próxima” para virar a página.",
 
   "album:sticker": "Aqui você amplia a figurinha: use + e − para dar zoom, arraste para mover e toque em “Ler na Bíblia” para ver a passagem.",
   "album:pack": "Abrindo o pacote! Toque nas figurinhas para revelar cada uma delas.",
