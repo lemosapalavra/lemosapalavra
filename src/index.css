@@ -68,7 +68,7 @@
   }
 
   /* No Álbum não há rodapé fixo: sem espaço reservado */
-  body:has(.album-no-footer) {
+  body.no-global-footer {
     padding-bottom: 0;
   }
 
