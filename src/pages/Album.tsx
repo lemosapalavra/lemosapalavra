@@ -223,14 +223,14 @@ export default function Album() {
         className="fixed inset-0 z-40 cursor-pointer flex flex-col items-center justify-center bg-gradient-to-b from-amber-900 via-amber-800 to-stone-900"
       >
         <PageHeader title="Álbum" />
-        <div className="flex-1 flex flex-col items-center justify-center px-6 text-center gap-4 w-full overflow-hidden">
-          <div className="flex flex-row items-center justify-center gap-3 sm:gap-6">
+        <div className="flex-1 flex flex-col items-center justify-start px-4 pt-32 sm:pt-36 pb-8 text-center gap-4 w-full overflow-y-auto">
+          <div className="flex flex-row items-start justify-center gap-4 sm:gap-8 flex-wrap">
           <div className="relative">
             <img loading="lazy" decoding="async"
               src={albumCapa}
               alt="Capa do Álbum Heróis da Bíblia — Volume I"
               title="Volume I — toque para abrir o álbum"
-              className="max-h-[46vh] w-auto rounded-2xl shadow-2xl border-4 border-amber-300 animate-[coverFloat_3.6s_ease-in-out_infinite]"
+              className="max-h-[30vh] sm:max-h-[38vh] w-auto rounded-2xl shadow-2xl border-4 border-amber-300 animate-[coverFloat_3.6s_ease-in-out_infinite]"
             />
             <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] sm:text-xs font-display font-extrabold bg-amber-300 text-amber-950 px-2 py-0.5 rounded-full shadow border border-white">
               Volume I
@@ -268,7 +268,7 @@ export default function Album() {
               src={capaVol2.url}
               alt="Capa do Álbum Volume II (bloqueado)"
               title={completed ? "Volume II — em breve" : "Volume II — complete o Volume I para liberar"}
-              className={`max-h-[46vh] w-auto rounded-2xl shadow-2xl border-4 border-stone-400 grayscale ${completed ? "opacity-90" : "opacity-60"}`}
+              className={`max-h-[30vh] sm:max-h-[38vh] w-auto rounded-2xl shadow-2xl border-4 border-stone-400 grayscale ${completed ? "opacity-90" : "opacity-60"}`}
             />
             <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] sm:text-xs font-display font-extrabold bg-stone-300 text-stone-800 px-2 py-0.5 rounded-full shadow border border-white">
               Volume II
@@ -276,6 +276,11 @@ export default function Album() {
             {!completed && (
               <span className="absolute inset-0 z-10 flex items-center justify-center"><span className="bg-white/90 rounded-full w-14 h-14 flex items-center justify-center text-3xl shadow-lg border-2 border-stone-400">🔒</span></span>
             )}
+            <p className="mt-2 mx-auto max-w-[16rem] font-display text-[11px] sm:text-xs font-extrabold text-stone-100 bg-stone-800/70 rounded-xl px-2 py-1 border border-stone-500">
+              {completed
+                ? "✅ Volume I concluído — Volume II chegando em breve!"
+                : "🔒 O Volume II só será liberado depois que você concluir o Volume I."}
+            </p>
           </div>
           </div>
           <h1 className="font-display font-extrabold text-3xl sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-yellow-100 to-amber-300 drop-shadow-lg animate-[albumTitle_2.4s_ease-in-out_infinite]">
