@@ -276,6 +276,11 @@ export default function Album() {
             {!completed && (
               <span className="absolute inset-0 z-10 flex items-center justify-center"><span className="bg-white/90 rounded-full w-14 h-14 flex items-center justify-center text-3xl shadow-lg border-2 border-stone-400">🔒</span></span>
             )}
+            <p className="mt-2 mx-auto max-w-[16rem] font-display text-[11px] sm:text-xs font-extrabold text-stone-100 bg-stone-800/70 rounded-xl px-2 py-1 border border-stone-500">
+              {completed
+                ? "✅ Volume I concluído — Volume II chegando em breve!"
+                : "🔒 O Volume II só será liberado depois que você concluir o Volume I."}
+            </p>
           </div>
           </div>
           <h1 className="font-display font-extrabold text-3xl sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-yellow-100 to-amber-300 drop-shadow-lg animate-[albumTitle_2.4s_ease-in-out_infinite]">
