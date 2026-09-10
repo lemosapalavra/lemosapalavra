@@ -223,8 +223,8 @@ export default function Album() {
         className="fixed inset-0 z-40 cursor-pointer flex flex-col items-center justify-center bg-gradient-to-b from-amber-900 via-amber-800 to-stone-900"
       >
         <PageHeader title="Álbum" />
-        <div className="flex-1 flex flex-col items-center justify-center px-6 text-center gap-4 w-full overflow-hidden">
-          <div className="flex flex-row items-center justify-center gap-3 sm:gap-6">
+        <div className="flex-1 flex flex-col items-center justify-start px-4 pt-32 sm:pt-36 pb-8 text-center gap-4 w-full overflow-y-auto">
+          <div className="flex flex-row items-start justify-center gap-4 sm:gap-8 flex-wrap">
           <div className="relative">
             <img loading="lazy" decoding="async"
               src={albumCapa}
