@@ -169,6 +169,22 @@ const AdminOnly = ({ children }: { children: React.ReactNode }) => {
 };
 
 
+/** Rodapé global — escondido no Álbum para não conflitar com as figurinhas. */
+const GlobalFooter = () => {
+  const location = useLocation();
+  if (location.pathname.startsWith("/album")) return null;
+  return (
+    <footer className="fixed bottom-0 left-0 right-0 z-40 w-full px-4 py-2 bg-white/85 backdrop-blur-sm border-t border-amber-200/70 shadow-[0_-2px_10px_rgba(0,0,0,0.06)]">
+      <div className="mx-auto flex max-w-3xl items-center justify-center gap-3 text-center">
+        <p className="font-body text-[11px] sm:text-xs leading-snug text-amber-900/80">
+          ✝️ Projeto cristão, sem interesses financeiros ou político. Dedicado somente ao Evangelho de Jesus Cristo a todas gerações. Faça parte, compartilhe!
+        </p>
+        <ShareButton variant="inline" className="shrink-0 w-9 h-9 shadow-md" />
+      </div>
+    </footer>
+  );
+};
+
 const AutoUpdater = () => {
   useEffect(() => startAutoUpdate(), []);
   useEffect(() => startAutoTitles(), []);
