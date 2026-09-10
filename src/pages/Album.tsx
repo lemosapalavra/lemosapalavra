@@ -230,7 +230,7 @@ export default function Album() {
               src={albumCapa}
               alt="Capa do Álbum Heróis da Bíblia — Volume I"
               title="Volume I — toque para abrir o álbum"
-              className="max-h-[46vh] w-auto rounded-2xl shadow-2xl border-4 border-amber-300 animate-[coverFloat_3.6s_ease-in-out_infinite]"
+              className="max-h-[30vh] sm:max-h-[38vh] w-auto rounded-2xl shadow-2xl border-4 border-amber-300 animate-[coverFloat_3.6s_ease-in-out_infinite]"
             />
             <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] sm:text-xs font-display font-extrabold bg-amber-300 text-amber-950 px-2 py-0.5 rounded-full shadow border border-white">
               Volume I
@@ -268,7 +268,7 @@ export default function Album() {
               src={capaVol2.url}
               alt="Capa do Álbum Volume II (bloqueado)"
               title={completed ? "Volume II — em breve" : "Volume II — complete o Volume I para liberar"}
-              className={`max-h-[46vh] w-auto rounded-2xl shadow-2xl border-4 border-stone-400 grayscale ${completed ? "opacity-90" : "opacity-60"}`}
+              className={`max-h-[30vh] sm:max-h-[38vh] w-auto rounded-2xl shadow-2xl border-4 border-stone-400 grayscale ${completed ? "opacity-90" : "opacity-60"}`}
             />
             <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] sm:text-xs font-display font-extrabold bg-stone-300 text-stone-800 px-2 py-0.5 rounded-full shadow border border-white">
               Volume II
