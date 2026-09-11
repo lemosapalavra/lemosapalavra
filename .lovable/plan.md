@@ -1,33 +1,44 @@
-# Corrigir acesso e melhorar orientação visual
+# Concluir histórias, álbum, datas e novas atividades
 
 ## Objetivo
-Concluir os seis ajustes solicitados sem alterar a identidade atual do site.
+Finalizar os ajustes pendentes sem reconstruir as páginas nem alterar os sistemas existentes.
 
 ## Implementação
-1. **Login e cadastro por celular**
-   - Normalizar o celular de forma idêntica no cadastro e no login.
-   - Tratar contas já existentes sem repetir tentativas silenciosas de cadastro.
-   - Validar a sessão antes de abrir a página inicial e exibir mensagens claras para conta existente ou dados inválidos.
-   - Manter nome e celular obrigatórios no login e nome, faixa etária, celular e avatar no cadastro.
+1. **Histórias para ler e pintar**
+   - Recortar novamente as 52 ilustrações a partir do PDF original, mostrando apenas o desenho completo de cada história, sem trechos da página vizinha.
+   - Manter intactos os textos, a seleção de duas histórias por dia e o salvamento automático da pintura.
+   - Ajustar a área de pintura ao tamanho real de cada imagem para manter desenho e traços alinhados em celular, tablet e desktop.
 
-2. **Compartilhamento do projeto**
-   - Inserir o botão de compartilhar ao lado da frase “Projeto cristão...” no componente informativo usado pelas páginas.
+2. **Capa do Álbum Volume II**
+   - Reorganizar as capas dos dois volumes em blocos independentes, com rótulos e mensagens fora das imagens.
+   - Destacar claramente que o Volume II só será habilitado após a conclusão do Volume I.
+   - Manter o Volume II em escala de cinza enquanto bloqueado e preservar o Álbum sem rodapé global.
 
-3. **Atividades mais visuais**
-   - Associar cenas bíblicas às opções do Jogo da Memória.
-   - Adicionar imagens relacionadas a cada tema do Caça-Palavras, seguindo o padrão visual do quebra-cabeça.
+3. **Datas do aviãozinho, trenzinho e kartzinho**
+   - Trocar o agendamento atual por data inicial e final contendo somente dia e mês, recorrente todos os anos.
+   - Atualizar as regras de exibição para intervalos comuns e intervalos que atravessam o fim do ano.
+   - Manter os controles de ativar/desativar, textos e vídeos atuais.
 
-4. **Progresso do álbum**
-   - Remover definitivamente o fundo de livro que recorta as figurinhas.
-   - Mostrar em cada página a faixa numérica e o progresso exato da categoria, coerentes com o resumo do álbum.
+4. **Atividade Labirinto**
+   - Usar os labirintos do PDF enviado, alternando um desafio por dia.
+   - Criar interação simples por toque/clique para percorrer o caminho, com reinício e conclusão.
+   - Usar uma das páginas do material como ícone coerente com as demais atividades.
 
-5. **Devocionais e oração**
-   - Usar imagens e ícones coerentes com cada tema, mantendo as ilustrações infantis já existentes.
+5. **Atividade Quebra-Cabeça**
+   - Substituir o catálogo atual pelas figuras do PDF enviado e seguir o gabarito como referência.
+   - Manter a montagem digital por troca de peças, níveis de dificuldade, referência visual e rotação diária.
 
-6. **Recompensas dos vídeos**
-   - Exibir abaixo de Gênesis, Jesus, Séries, Músicas e Louvores a recompensa extra de maratona solicitada: 10 moedas em Gênesis/Jesus e 5 moedas nas demais sessões.
-   - Manter separada e clara a recompensa individual já concedida por vídeo.
+6. **Atividade Frutos do Espírito**
+   - Usar a página 1 como ícone e as demais páginas como conteúdo alternado dia a dia.
+   - Disponibilizar paleta, pincel, borracha, reinício e salvamento automático da pintura para continuar depois.
+   - Integrar as três atividades à rotação diária sem esconder o Construtor de Palavras.
+
+## Detalhes técnicos
+- Preparar imagens leves a partir dos PDFs mais recentes enviados, registrando-as no fluxo de arquivos do projeto.
+- Reaproveitar os componentes e padrões de recompensa, navegação e pintura já existentes.
+- Evitar mudanças no login, vídeos, administração, navegação global ou identidade visual.
 
 ## Verificação
-- Executar os testes de cadastro existentes e adicionar cobertura para normalização do celular.
-- Validar no navegador o login/cadastro, o álbum sem fundo, o compartilhamento e os textos de recompensa.
+- Validar tipos e testes existentes.
+- Conferir Histórias, Álbum, Configurações e Atividades em celular e desktop.
+- Testar persistência da pintura, rotação diária, quebra-cabeça, labirinto e intervalos anuais de dia/mês.
