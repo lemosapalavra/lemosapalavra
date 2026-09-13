@@ -120,18 +120,28 @@ function ColoringCanvas({ historia }: { historia: HistoriaBiblica }) {
         </button>
       </div>
 
-      <div ref={wrapRef} className="relative mx-auto w-full max-w-xl rounded-2xl overflow-hidden border-2 border-amber-200 bg-white shadow-inner">
+      <div
+        ref={wrapRef}
+        className="relative mx-auto w-full max-w-xl rounded-2xl overflow-hidden border-2 border-amber-200 bg-white shadow-inner"
+        style={dims ? { aspectRatio: `${dims.w} / ${dims.h}` } : undefined}
+      >
         <img
           src={historia.imagem}
           alt={`Desenho para colorir — ${historia.titulo}`}
           loading="lazy"
           decoding="async"
-          className="block w-full h-auto select-none pointer-events-none"
+          onLoad={(e) => {
+            const img = e.currentTarget;
+            if (img.naturalWidth && img.naturalHeight) {
+              setDims({ w: img.naturalWidth, h: img.naturalHeight });
+            }
+          }}
+          className="block w-full h-full object-contain select-none pointer-events-none"
         />
         <canvas
           ref={canvasRef}
-          width={800}
-          height={1000}
+          width={dims?.w ?? 800}
+          height={dims?.h ?? 1000}
           onPointerDown={start}
           onPointerMove={draw}
           onPointerUp={end}
