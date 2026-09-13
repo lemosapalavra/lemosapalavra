@@ -1,56 +1,56 @@
 // Histórias Bíblicas Infantis — conteúdo extraído do material "História Bíblica Infantil".
-import img01 from "@/assets/historias/hist-01.jpg.asset.json";
-import img02 from "@/assets/historias/hist-02.jpg.asset.json";
-import img03 from "@/assets/historias/hist-03.jpg.asset.json";
-import img04 from "@/assets/historias/hist-04.jpg.asset.json";
-import img05 from "@/assets/historias/hist-05.jpg.asset.json";
-import img06 from "@/assets/historias/hist-06.jpg.asset.json";
-import img07 from "@/assets/historias/hist-07.jpg.asset.json";
-import img08 from "@/assets/historias/hist-08.jpg.asset.json";
-import img09 from "@/assets/historias/hist-09.jpg.asset.json";
-import img10 from "@/assets/historias/hist-10.jpg.asset.json";
-import img11 from "@/assets/historias/hist-11.jpg.asset.json";
-import img12 from "@/assets/historias/hist-12.jpg.asset.json";
-import img13 from "@/assets/historias/hist-13.jpg.asset.json";
-import img14 from "@/assets/historias/hist-14.jpg.asset.json";
-import img15 from "@/assets/historias/hist-15.jpg.asset.json";
-import img16 from "@/assets/historias/hist-16.jpg.asset.json";
-import img17 from "@/assets/historias/hist-17.jpg.asset.json";
-import img18 from "@/assets/historias/hist-18.jpg.asset.json";
-import img19 from "@/assets/historias/hist-19.jpg.asset.json";
-import img20 from "@/assets/historias/hist-20.jpg.asset.json";
-import img21 from "@/assets/historias/hist-21.jpg.asset.json";
-import img22 from "@/assets/historias/hist-22.jpg.asset.json";
-import img23 from "@/assets/historias/hist-23.jpg.asset.json";
-import img24 from "@/assets/historias/hist-24.jpg.asset.json";
-import img25 from "@/assets/historias/hist-25.jpg.asset.json";
-import img26 from "@/assets/historias/hist-26.jpg.asset.json";
-import img27 from "@/assets/historias/hist-27.jpg.asset.json";
-import img28 from "@/assets/historias/hist-28.jpg.asset.json";
-import img29 from "@/assets/historias/hist-29.jpg.asset.json";
-import img30 from "@/assets/historias/hist-30.jpg.asset.json";
-import img31 from "@/assets/historias/hist-31.jpg.asset.json";
-import img32 from "@/assets/historias/hist-32.jpg.asset.json";
-import img33 from "@/assets/historias/hist-33.jpg.asset.json";
-import img34 from "@/assets/historias/hist-34.jpg.asset.json";
-import img35 from "@/assets/historias/hist-35.jpg.asset.json";
-import img36 from "@/assets/historias/hist-36.jpg.asset.json";
-import img37 from "@/assets/historias/hist-37.jpg.asset.json";
-import img38 from "@/assets/historias/hist-38.jpg.asset.json";
-import img39 from "@/assets/historias/hist-39.jpg.asset.json";
-import img40 from "@/assets/historias/hist-40.jpg.asset.json";
-import img41 from "@/assets/historias/hist-41.jpg.asset.json";
-import img42 from "@/assets/historias/hist-42.jpg.asset.json";
-import img43 from "@/assets/historias/hist-43.jpg.asset.json";
-import img44 from "@/assets/historias/hist-44.jpg.asset.json";
-import img45 from "@/assets/historias/hist-45.jpg.asset.json";
-import img46 from "@/assets/historias/hist-46.jpg.asset.json";
-import img47 from "@/assets/historias/hist-47.jpg.asset.json";
-import img48 from "@/assets/historias/hist-48.jpg.asset.json";
-import img49 from "@/assets/historias/hist-49.jpg.asset.json";
-import img50 from "@/assets/historias/hist-50.jpg.asset.json";
-import img51 from "@/assets/historias/hist-51.jpg.asset.json";
-import img52 from "@/assets/historias/hist-52.jpg.asset.json";
+import img01 from "@/assets/historias-recortadas/hist-01.webp";
+import img02 from "@/assets/historias-recortadas/hist-02.webp";
+import img03 from "@/assets/historias-recortadas/hist-03.webp";
+import img04 from "@/assets/historias-recortadas/hist-04.webp";
+import img05 from "@/assets/historias-recortadas/hist-05.webp";
+import img06 from "@/assets/historias-recortadas/hist-06.webp";
+import img07 from "@/assets/historias-recortadas/hist-07.webp";
+import img08 from "@/assets/historias-recortadas/hist-08.webp";
+import img09 from "@/assets/historias-recortadas/hist-09.webp";
+import img10 from "@/assets/historias-recortadas/hist-10.webp";
+import img11 from "@/assets/historias-recortadas/hist-11.webp";
+import img12 from "@/assets/historias-recortadas/hist-12.webp";
+import img13 from "@/assets/historias-recortadas/hist-13.webp";
+import img14 from "@/assets/historias-recortadas/hist-14.webp";
+import img15 from "@/assets/historias-recortadas/hist-15.webp";
+import img16 from "@/assets/historias-recortadas/hist-16.webp";
+import img17 from "@/assets/historias-recortadas/hist-17.webp";
+import img18 from "@/assets/historias-recortadas/hist-18.webp";
+import img19 from "@/assets/historias-recortadas/hist-19.webp";
+import img20 from "@/assets/historias-recortadas/hist-20.webp";
+import img21 from "@/assets/historias-recortadas/hist-21.webp";
+import img22 from "@/assets/historias-recortadas/hist-22.webp";
+import img23 from "@/assets/historias-recortadas/hist-23.webp";
+import img24 from "@/assets/historias-recortadas/hist-24.webp";
+import img25 from "@/assets/historias-recortadas/hist-25.webp";
+import img26 from "@/assets/historias-recortadas/hist-26.webp";
+import img27 from "@/assets/historias-recortadas/hist-27.webp";
+import img28 from "@/assets/historias-recortadas/hist-28.webp";
+import img29 from "@/assets/historias-recortadas/hist-29.webp";
+import img30 from "@/assets/historias-recortadas/hist-30.webp";
+import img31 from "@/assets/historias-recortadas/hist-31.webp";
+import img32 from "@/assets/historias-recortadas/hist-32.webp";
+import img33 from "@/assets/historias-recortadas/hist-33.webp";
+import img34 from "@/assets/historias-recortadas/hist-34.webp";
+import img35 from "@/assets/historias-recortadas/hist-35.webp";
+import img36 from "@/assets/historias-recortadas/hist-36.webp";
+import img37 from "@/assets/historias-recortadas/hist-37.webp";
+import img38 from "@/assets/historias-recortadas/hist-38.webp";
+import img39 from "@/assets/historias-recortadas/hist-39.webp";
+import img40 from "@/assets/historias-recortadas/hist-40.webp";
+import img41 from "@/assets/historias-recortadas/hist-41.webp";
+import img42 from "@/assets/historias-recortadas/hist-42.webp";
+import img43 from "@/assets/historias-recortadas/hist-43.webp";
+import img44 from "@/assets/historias-recortadas/hist-44.webp";
+import img45 from "@/assets/historias-recortadas/hist-45.webp";
+import img46 from "@/assets/historias-recortadas/hist-46.webp";
+import img47 from "@/assets/historias-recortadas/hist-47.webp";
+import img48 from "@/assets/historias-recortadas/hist-48.webp";
+import img49 from "@/assets/historias-recortadas/hist-49.webp";
+import img50 from "@/assets/historias-recortadas/hist-50.webp";
+import img51 from "@/assets/historias-recortadas/hist-51.webp";
+import img52 from "@/assets/historias-recortadas/hist-52.webp";
 
 export interface HistoriaBiblica {
   id: number;
@@ -82,7 +82,7 @@ export const historias: HistoriaBiblica[] = [
     pergunta: `Qual foi a coisa que Deus criou no primeiro dia? E qual foi a última?`,
     oracao: `Querido Deus, obrigado por ter criado todas as coisas com amor e perfeição. Obrigado pela natureza, pelos animais e pela minha vida. Ensina-me a cuidar do que o Senhor criou. Amém!`,
     frase: `DEUS É O CRIADOR DE TUDO! ELE FEZ TUDO COM AMOR`,
-    imagem: img01.url,
+    imagem: img01,
   },
   {
     id: 2,
@@ -98,7 +98,7 @@ Gênesis 2:16-17`,
     pergunta: `Por que é importante confiar e obedecer a Deus todos os dias?`,
     oracao: `Querido Deus, obrigado por me amar e cuidar de mim. Ajuda-me a sempre ouvir e obedecer à Tua voz. Amém!`,
     frase: `DEUS FEZ TUDO PERFEITO E NOS ENSINA A ESCOLHER O QUE É CERTO!`,
-    imagem: img02.url,
+    imagem: img02,
   },
   {
     id: 3,
@@ -113,7 +113,7 @@ Gênesis 2:16-17`,
     pergunta: `Por que Noé construiu a arca? O que o arco-íris nos ensina sobre Deus?`,
     oracao: `Senhor, me ajuda a obedecer e confiar em Ti sempre. Obrigado por Tuas promessas. Amém!`,
     frase: `DEUS CUIDA DE QUEM CONFIA NELE! OBEDEÇA • CONFIE • AGRADEÇA`,
-    imagem: img03.url,
+    imagem: img03,
   },
   {
     id: 4,
@@ -128,7 +128,7 @@ Gênesis 2:16-17`,
     pergunta: `Por que Deus confundiu a linguagem das pessoas? O que Ele queria ensinar a elas?`,
     oracao: `Senhor, me ajuda a ter um coração humilde e a usar os meus talentos para fazer o bem e te glorificar. Amém!`,
     frase: `DEUS TEM UM PLANO PERFEITO PARA CADA UM DE NÓS! SEJA HUMILDE, CONFIE E OBEDEÇA.`,
-    imagem: img04.url,
+    imagem: img04,
   },
   {
     id: 5,
@@ -143,7 +143,7 @@ Gênesis 2:16-17`,
     pergunta: `Por que você acha que Abraão obedeceu, mesmo sem saber para onde Deus o levaria?`,
     oracao: `Senhor, obrigado por falar comigo. Ajuda-me a confiar em Ti e obedecer sempre aos Teus planos. Amém!`,
     frase: `DEUS TEM PLANOS INCRÍVEIS PARA QUEM CONFIA E OBEDECE! CONFIE, OBEDEÇA E ELE GUIARÁ O SEU CAMINHO!`,
-    imagem: img05.url,
+    imagem: img05,
   },
   {
     id: 6,
@@ -158,7 +158,7 @@ Gênesis 2:16-17`,
     pergunta: `Qual promessa de Deus na Bíblia você acha que foi mais difícil de esperar para se cumprir?`,
     oracao: `Senhor, obrigado porque Tu cumpre todas as Tuas promessas! Me ajuda a confiar em Ti e esperar no Teu tempo perfeito. Amém!`,
     frase: `DEUS CUMPRE SUAS PROMESSAS E SEMPRE É FIEL! CONFIE, ESPERE E AGRADEÇA!`,
-    imagem: img06.url,
+    imagem: img06,
   },
   {
     id: 7,
@@ -173,7 +173,7 @@ Gênesis 2:16-17`,
     pergunta: `Qual promessa de Deus você mais gosta? Como você pode confiar mais nEle?`,
     oracao: `Senhor, obrigado porque Tu estás sempre comigo, onde eu for! Ajuda-me a confiar nas Tuas promessas. Amém!`,
     frase: `DEUS FAZ PROMESSAS E SEMPRE CUMPRE! CONFIE, OBEDEÇA E ELE CUIDARÁ DE VOCÊ!`,
-    imagem: img07.url,
+    imagem: img07,
   },
   {
     id: 8,
@@ -188,7 +188,7 @@ Gênesis 2:16-17`,
     pergunta: `Você já se sentiu injustiçado ou deixado de lado? O que pode te ajudar a confiar em Deus nessas horas?`,
     oracao: `Senhor, obrigado porque Tu estás sempre comigo, mesmo quando é difícil. Me ajuda a confiar que os Teus planos são bons. Amém!`,
     frase: `DEUS TEM UM PLANO PERFEITO PARA NOSSA VIDA! CONFIE, ELE CUIDA DE VOCÊ!`,
-    imagem: img08.url,
+    imagem: img08,
   },
   {
     id: 9,
@@ -203,7 +203,7 @@ Gênesis 2:16-17`,
     pergunta: `Você confia que Deus tem um plano especial para a sua vida?`,
     oracao: `Senhor, obrigado porque Tu tens um plano perfeito para mim. Ajuda-me a ser fiel e sábio em tudo o que me confias. Amém!`,
     frase: `DEUS TRANSFORMA, PREPARA E USA! CONFIE, SEJA FIEL E ELE FARÁ GRANDES COISAS!`,
-    imagem: img09.url,
+    imagem: img09,
   },
   {
     id: 10,
@@ -218,7 +218,7 @@ Gênesis 2:16-17`,
     pergunta: `Você já teve algum sonho ou ideia que parecia diferente? Como você pode confiar em Deus nesses momentos?`,
     oracao: `Senhor, obrigado porque Tens sonhos e planos maravilhosos para mim. Ajuda-me a confiar sempre em Ti. Amém!`,
     frase: `DEUS TEM SONHOS MARAVILHOSOS PARA VOCÊ! CONFIE, SEJA FIEL E ELE FARÁ GRANDES COISAS!`,
-    imagem: img10.url,
+    imagem: img10,
   },
   {
     id: 11,
@@ -234,7 +234,7 @@ Mas José os abraçou e disse que os perdoava. Ele entendeu que Deus tinha um pl
     pergunta: `Já aconteceu algo ruim com você, mas depois viu que Deus transformou em algo bom?`,
     oracao: `Senhor, obrigado porque Tu transformas o mal em bem. Ajuda-me a perdoar e confiar no Teu plano perfeito. Amém!`,
     frase: `DEUS TRANSFORMA O MAL EM BEM! PERDOE, AME E CONFIE NO PLANO DE DEUS!`,
-    imagem: img11.url,
+    imagem: img11,
   },
   {
     id: 12,
@@ -249,7 +249,7 @@ Mas José os abraçou e disse que os perdoava. Ele entendeu que Deus tinha um pl
     pergunta: `O que você faria se tivesse que ser corajoso para proteger alguém que ama?`,
     oracao: `Senhor, obrigado porque Tu cuidas de mim e tens um plano lindo para a minha vida. Amém!`,
     frase: `DEUS CUIDA, PROTEGE E TEM UM PLANO PERFEITO! CONFIE NELE SEMPRE!`,
-    imagem: img12.url,
+    imagem: img12,
   },
   {
     id: 13,
@@ -264,7 +264,7 @@ Mas José os abraçou e disse que os perdoava. Ele entendeu que Deus tinha um pl
     pergunta: `Você já sentiu que Deus estava falando com você? Como foi? Você está disposto a obedecer ao chamado dEle?`,
     oracao: `Senhor, obrigado porque Tu falas comigo e tens um propósito para a minha vida. Dá-me coragem para te obedecer. Amém!`,
     frase: `DEUS TE CHAMA PELO NOME E TEM UM PLANO INCRÍVEL PARA VOCÊ!`,
-    imagem: img13.url,
+    imagem: img13,
   },
   {
     id: 14,
@@ -279,7 +279,7 @@ Mas José os abraçou e disse que os perdoava. Ele entendeu que Deus tinha um pl
     pergunta: `Por que você acha que Faraó não queria deixar o povo de Deus sair? O que aprendemos com essas pragas?`,
     oracao: `Senhor, obrigado pelo Teu poder e por sempre cuidar de nós. Ajuda-nos a obedecer a Tua voz. Amém!`,
     frase: `O SENHOR É PODEROSO E JUSTO! CONFIE, OBEDEÇA E ELE FARÁ MARAVILHAS!`,
-    imagem: img14.url,
+    imagem: img14,
   },
   {
     id: 15,
@@ -297,7 +297,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Por que o sangue do cordeiro protegia o povo de Deus naquela noite? O que isso nos ensina sobre Jesus?`,
     oracao: `Senhor Jesus, obrigado por ter dado a Sua vida por mim. Obrigado por me salvar! Ajuda-me a sempre confiar em Ti. Amém!`,
     frase: `O SANGUE DE JESUS NOS PROTEGE! ELE É O CORDEIRO QUE NOS SALVA!`,
-    imagem: img15.url,
+    imagem: img15,
   },
   {
     id: 16,
@@ -312,7 +312,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Você já passou por alguma situação difícil? Como Deus te ajudou nessa situação?`,
     oracao: `Senhor Deus, obrigado por sempre cuidar de mim e abrir caminhos quando eu não vejo saída. Ajuda-me a confiar sempre em Ti. Amém!`,
     frase: `O SENHOR É GUERREIRO, O SENHOR É O SEU NOME! ELE LUTOU POR NÓS E NOS DEU A VITÓRIA!`,
-    imagem: img16.url,
+    imagem: img16,
   },
   {
     id: 17,
@@ -327,7 +327,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Qual mandamento você acha mais difícil de obedecer? Por quê?`,
     oracao: `Senhor Deus, obrigado por dar leis que nos ensinam a viver do jeito certo. Ajuda-me a te obedecer sempre. Amém!`,
     frase: `A LEI DO SENHOR É PERFEITA E RENOVA A VIDA! OBEDECER A DEUS É O MELHOR CAMINHO!`,
-    imagem: img17.url,
+    imagem: img17,
   },
   {
     id: 18,
@@ -342,7 +342,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Você confia que Deus pode te ajudar a vencer os "gigantes" da sua vida? Quais são eles?`,
     oracao: `Senhor, me dá coragem para confiar em Ti e acreditar nas Tuas promessas todos os dias! Amém!`,
     frase: `SEJAMOS CORAJOSOS E CONFIANTES, DEUS É FIEL E CUMPRE SUAS PROMESSAS!`,
-    imagem: img18.url,
+    imagem: img18,
   },
   {
     id: 19,
@@ -357,7 +357,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Você já quis fazer algo errado só porque outros queriam? Como Deus guiou você para o caminho certo?`,
     oracao: `Senhor, obrigado porque o Senhor é fiel e sempre faz o que é certo. Me ajuda a ouvir a Tua voz e seguir Teus caminhos todos os dias! Amém!`,
     frase: `DEUS É FIEL ÀS SUAS PROMESSAS E TRANSFORMA O MAL EM BEM PARA QUEM CONFIA NELE!`,
-    imagem: img19.url,
+    imagem: img19,
   },
   {
     id: 20,
@@ -372,7 +372,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Você confia que Deus pode fazer coisas impossíveis acontecerem na sua vida? Como pode obedecer mais a Ele?`,
     oracao: `Senhor, obrigado porque Tu és poderoso e cumpre Tuas promessas. Me ajuda a confiar e obedecer, sabendo que o Senhor sempre me dá vitória. Amém!`,
     frase: `CONFIE, OBEDEÇA E DÊ O SEU MELHOR! DEUS DERRUBA MURALHAS E FAZ MILAGRES!`,
-    imagem: img20.url,
+    imagem: img20,
   },
   {
     id: 21,
@@ -387,7 +387,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Você já se sentiu incapaz de fazer algo? Como Deus pode te dar coragem para fazer o que Ele pede?`,
     oracao: `Senhor, obrigado porque Tu me escolhe para fazer parte dos Teus planos. Me dá fé, coragem e obediência para te servir! Amém!`,
     frase: `DEUS ESCOLHE, CAPACITA E DÁ A VITÓRIA! CONFIE NELE E FAÇA A SUA PARTE!`,
-    imagem: img21.url,
+    imagem: img21,
   },
   {
     id: 22,
@@ -402,7 +402,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Você já pediu ajuda a Deus para fazer o que é certo? Como Ele pode te dar força hoje?`,
     oracao: `Senhor, obrigado porque Tu me dás forças para vencer os desafios. Me ajuda a escolher sempre o que é certo e a confiar em Ti! Amém!`,
     frase: `COM DEUS AO NOSSO LADO, SOMOS MAIS QUE VENCEDORES!`,
-    imagem: img22.url,
+    imagem: img22,
   },
   {
     id: 23,
@@ -417,7 +417,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Você já ajudou alguém sem esperar nada em troca? Como foi? O que Deus quer ensinar com isso?`,
     oracao: `Senhor, obrigado porque Tu estás sempre comigo e cuida de mim. Me ajuda a ser fiel, bondoso e a confiar nos Teus planos. Amém!`,
     frase: `DEUS TEM PLANOS MARAVILHOSOS PARA QUEM CONFIA NELE E CAMINHA COM FÉ!`,
-    imagem: img23.url,
+    imagem: img23,
   },
   {
     id: 24,
@@ -432,7 +432,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Você tem tirado tempo para falar com Deus e ouvir o que Ele quer dizer para você? Como pode fazer isso mais vezes?`,
     oracao: `Senhor, obrigado porque Tu ouves minhas orações e fazes grandes coisas! Me ajuda a ouvir Tua voz e obedecer sempre. Amém!`,
     frase: `FALE COM DEUS, OUÇA A SUA VOZ E ESTEJA PRONTO PARA O QUE ELE TEM PARA VOCÊ!`,
-    imagem: img24.url,
+    imagem: img24,
   },
   {
     id: 25,
@@ -447,7 +447,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Qual é o "gigante" que você precisa enfrentar? Como você pode confiar em Deus para vencê-lo?`,
     oracao: `Senhor, obrigado porque Tu me dás coragem e vitória! Ajuda-me a confiar sempre em Ti, não nas minhas forças. Amém!`,
     frase: `COM DEUS, SOMOS MAIS QUE VENCEDORES! CONFIE, CREIA E ELE FARÁ O IMPOSSÍVEL!`,
-    imagem: img25.url,
+    imagem: img25,
   },
   {
     id: 26,
@@ -462,7 +462,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Você teria coragem de escolher o que é certo, mesmo que seja difícil? Como Davi e Jônatas?`,
     oracao: `Deus, obrigado por ensinar através da amizade de Davi e Jônatas. Ajuda-me a ser um amigo fiel e leal. Em nome de Jesus, amém!`,
     frase: `UM AMIGO AMA EM TODO TEMPO E NAS DIFICULDADES SE FAZ PRESENTE!`,
-    imagem: img26.url,
+    imagem: img26,
   },
   {
     id: 27,
@@ -477,7 +477,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Você já viu Deus cuidar de você ou de alguém que você conhece de um jeito especial? Como foi?`,
     oracao: `Senhor, obrigado porque o Senhor cuida de mim todos os dias, como cuidou de Elias. Me ajuda a confiar sempre em Ti. Amém!`,
     frase: `DEUS CUIDA DE NÓS EM CADA DETALHE, PODEMOS CONFIAR SEMPRE EM SEU AMOR!`,
-    imagem: img27.url,
+    imagem: img27,
   },
   {
     id: 28,
@@ -492,7 +492,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `O que você tem colocado em primeiro lugar na sua vida? Como podemos ter certeza de que Deus é o nosso Deus?`,
     oracao: `Senhor, obrigado porque Tu és o único Deus verdadeiro! Ajuda-me a confiar sempre em Ti e a obedecer à Tua voz. Amém!`,
     frase: `SÓ O SENHOR É DEUS! CONFIAMOS EM TI, SENHOR!`,
-    imagem: img28.url,
+    imagem: img28,
   },
   {
     id: 29,
@@ -507,7 +507,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `O que você perdeu que era importante para você? Como Deus pode te ajudar a não desistir?`,
     oracao: `Senhor, obrigado porque o Senhor cuida de mim em cada detalhe. Me ajuda a confiar sempre em Ti, nas pequenas e nas grandes coisas. Amém!`,
     frase: `DEUS CUIDA DE CADA DETALHE DA NOSSA VIDA! PODEMOS CONFIAR SEMPRE NELE!`,
-    imagem: img29.url,
+    imagem: img29,
   },
   {
     id: 30,
@@ -522,7 +522,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Como você tem ouvido os conselhos de Deus? Você está disposto a obedecer, mesmo sem ver?`,
     oracao: `Senhor, ensina-me a confiar na Tua palavra e a obedecer. Tira de mim a resistência à Tua vontade. Cura-me e me aproxima de Ti! Amém!`,
     frase: `DEUS CURA, TRANSFORMA E SEMPRE CUMPRE O QUE PROMETE!`,
-    imagem: img30.url,
+    imagem: img30,
   },
   {
     id: 31,
@@ -537,7 +537,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Se Deus pedisse algo para você hoje, você obedeceria ou tentaria fugir? Por quê?`,
     oracao: `Senhor, ensina-me a obedecer, mesmo quando for difícil. Quero estar no centro da Tua vontade e ser usado por Ti. Em nome de Jesus, amém!`,
     frase: `QUANDO OBEDECEMOS A DEUS, VIVEMOS O MELHOR PROPÓSITO!`,
-    imagem: img31.url,
+    imagem: img31,
   },
   {
     id: 32,
@@ -552,7 +552,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Você já passou por algum momento dificil e sentiu que Deus estava cuidando de você? Conte como foi!`,
     oracao: `Senhor, obrigado porque o Senhor me protege, assim como protegeu Daniel. Me dá força para confiar em Ti em todos os momentos. Amém!`,
     frase: `DEUS PROTEGE QUEM CONFIA NELE! CONFIE, ORE E ESPERE EM DEUS!`,
-    imagem: img32.url,
+    imagem: img32,
   },
   {
     id: 33,
@@ -567,7 +567,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Você já precisou escolher entre obedecer a Deus ou agradar outras pessoas? Como foi?`,
     oracao: `Deus, obrigado porque o Senhor está comigo em todos os momentos! Me ajuda a confiar e obedecer a Ti sempre. Amém!`,
     frase: `DEUS ESTÁ CONOSCO EM TODO TEMPO! NÃO TENHA MEDO, TENHA FÉ!`,
-    imagem: img33.url,
+    imagem: img33,
   },
   {
     id: 34,
@@ -582,7 +582,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Você já precisou ter coragem para fazer o que era certo? Como foi?`,
     oracao: `Senhor, obrigado porque Tu me colocas no lugar certo para abençoar outras pessoas. Me dá sabedoria e coragem. Amém!`,
     frase: `DEUS COLOCOU VOCÊ NO LUGAR CERTO! CONFIE, ORE E TENHA CORAGEM!`,
-    imagem: img34.url,
+    imagem: img34,
   },
   {
     id: 35,
@@ -597,7 +597,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Quando você enfrenta algo difícil, como Pode confiar mais em Deus como Neemias?`,
     oracao: `Senhor, me dá coragem e sabedoria para fazer o que é certo. Usa minha vida para abençoar outras pessoas. Em nome de Jesus, amém!`,
     frase: `DEUS USA PESSOAS CORAJOSAS PARA FAZER GRANDES OBRAS! CONTE COM ELE!`,
-    imagem: img35.url,
+    imagem: img35,
   },
   {
     id: 36,
@@ -612,7 +612,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Você tem reservado tempo para ler a Bíblia? Como a Palavra de Deus pode transformar a sua vida e a vida de outros?`,
     oracao: `Senhor, obrigada porque Tua Palavra nos ensina, transforma e nos guia! Me ajuda a amar a Bíblia e obedecer sempre. Amém!`,
     frase: `DEUS USA PESSOAS QUE AMAM A SUA PALAVRA PARA TRANSFORMAR VIDAS! AMÉM!`,
-    imagem: img36.url,
+    imagem: img36,
   },
   {
     id: 37,
@@ -627,7 +627,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Por que você acha que Deus escolheu nascer em um lugar tão simples? O que isso nos ensina?`,
     oracao: `Senhor Jesus, obrigado por ter nascido e por nos amar tanto. Me ajuda a lembrar sempre do Teu amor e a compartilhar essa alegria. Amém!`,
     frase: `JESUS NASCEU PARA SER O SALVADOR! LOUVADO SEJA O NOME DO SENHOR!`,
-    imagem: img37.url,
+    imagem: img37,
   },
   {
     id: 38,
@@ -642,7 +642,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `O que você pode oferecer de melhor para Jesus assim como os reis magos fizeram?`,
     oracao: `Senhor Jesus, obrigado por ter vindo ao mundo por mim. Quero sempre te buscar e te adorar com o que tenho. Amém!`,
     frase: `JESUS É O REI DE TODOS! VAMOS ADORÁ-LO SEMPRE!`,
-    imagem: img38.url,
+    imagem: img38,
   },
   {
     id: 39,
@@ -657,7 +657,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Por que você acha que Jesus ficou no templo conversando com os mestres em vez de voltar com seus pais?`,
     oracao: `Senhor, ensina-me a amar a Tua Palavra e a buscar a Tua presença todos os dias da minha vida. Amém!`,
     frase: `BUSQUE SEMPRE A PRESENÇA DE DEUS E ELE TE ENSINARÁ GRANDES COISAS!`,
-    imagem: img39.url,
+    imagem: img39,
   },
   {
     id: 40,
@@ -672,7 +672,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Por que você acha que Deus se agradou de Jesus no batismo? O que isso nos ensina sobre como Deus nos ama?`,
     oracao: `Pai, obrigado pelo exemplo de Jesus. Ensina-me a obedecer como Ele obedeceu e a te agradar em tudo que eu fizer. Amém!`,
     frase: `ESTE É O MEU FILHO AMADO, EM QUEM ME COMPRAZO!`,
-    imagem: img40.url,
+    imagem: img40,
   },
   {
     id: 41,
@@ -687,7 +687,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Por que você acha que Deus se agradou de Jesus no batismo? O que isso nos ensina sobre como Deus nos ama?`,
     oracao: `Pai, obrigado pelo exemplo de Jesus. Ensina-me a obedecer como Ele obedeceu e a te agradar em tudo que eu fizer. Amém!`,
     frase: `ESTE É O MEU FILHO AMADO, EM QUEM ME COMPRAZO!`,
-    imagem: img41.url,
+    imagem: img41,
   },
   {
     id: 42,
@@ -702,7 +702,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Você largaria tudo para seguir Jesus, como os primeiros discípulos fizeram?`,
     oracao: `Senhor, obrigado por me chamar para te seguir. Me ajuda a ser obediente e a te servir todos os dias. Amém!`,
     frase: `DEIXARAM TUDO E O SEGUIRAM! E VOCÊ, VAI RESPONDER AO CHAMADO DE JESUS?`,
-    imagem: img42.url,
+    imagem: img42,
   },
   {
     id: 43,
@@ -717,7 +717,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `O que você faria se tivesse um amigo que não podia entrar para ver Jesus? Como podemos ajudar nossos amigos hoje?`,
     oracao: `Senhor Jesus, obrigado porque Tu tens poder para perdoar e curar! Aumenta a nossa fé e nos ajuda a confiar sempre em Ti. Amém!`,
     frase: `TENHA FÉ EM JESUS! ELE PODE FAZER O IMPOSSÍVEL NA SUA VIDA!`,
-    imagem: img43.url,
+    imagem: img43,
   },
   {
     id: 44,
@@ -732,7 +732,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `O que essa mulher precisou fazer para ser curada? Como podemos ter a mesma fé que ela teve?`,
     oracao: `Senhor Jesus, obrigado por ouvir meu coração e por ter poder para me curar em todas as áreas da minha vida. Amém!`,
     frase: `SUA FÉ PODE TE LEVAR ATÉ JESUS E ELE PODE FAZER O IMPOSSÍVEL POR VOCÊ!`,
-    imagem: img44.url,
+    imagem: img44,
   },
   {
     id: 45,
@@ -747,7 +747,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Você acredita que Jesus tem poder sobre tudo, até sobre a morte? Como isso te dá esperança?`,
     oracao: `Senhor Jesus, obrigado porque o Senhor tem poder sobre tudo e pode trazer vida onde parece não haver mais esperança. Amém!`,
     frase: `JESUS É O SENHOR DA VIDA! ELE PODE FAZER O IMPOSSÍVEL!`,
-    imagem: img45.url,
+    imagem: img45,
   },
   {
     id: 46,
@@ -762,7 +762,7 @@ Essa foi a Páscoa, uma lembrança do grande livramento que Deus deu ao Seu povo
     pergunta: `Você já sentiu medo de algo que parecia impossível? Como confiar em Jesus pode te dar coragem?`,
     oracao: `Senhor Jesus, obrigado por estar comigo até nas horas difíceis. Ajuda-me a confiar em Ti e a nunca tirar meus olhos de Você. Amém!`,
     frase: `TENHA CORAGEM! JESUS ESTÁ COM VOCÊ E NADA PODE TE AFUNDAR!`,
-    imagem: img46.url,
+    imagem: img46,
   },
   {
     id: 47,
@@ -778,7 +778,7 @@ Eles tinham apenas cinco pães e dois peixinhos. Jesus orou, deu graças, partiu
     pergunta: `Se você tivesse apenas cinco pães e dois peixes, você confiaria que Jesus poderia fazer algo incrível com isso? Por quê?`,
     oracao: `Senhor Jesus, obrigado porque o Senhor cuida de mim e supre todas as minhas necessidades. Ajuda-me a confiar em Ti e a compartilhar com alegria. Amém!`,
     frase: `DEUS PODE FAZER MUITO MAIS DO QUE IMAGINAMOS! ENTREGUE O POUCO QUE VOCÊ TEM E VEJA O MILAGRE ACONTECER!`,
-    imagem: img47.url,
+    imagem: img47,
   },
   {
     id: 48,
@@ -793,7 +793,7 @@ Eles tinham apenas cinco pães e dois peixinhos. Jesus orou, deu graças, partiu
     pergunta: `Quem são as pessoas que muitas vezes são ignoradas por outros, mas que também precisam de amor?`,
     oracao: `Senhor, me ensina a ter um coração cheio de compaixão. Me ajuda a ver o próximo com Teus olhos e a amar como Jesus amou. Amém!`,
     frase: `SEJA UM BOM SAMARITANO! AMAR É AGIR! JESUS CONTA COM VOCÊ!`,
-    imagem: img48.url,
+    imagem: img48,
   },
   {
     id: 49,
@@ -808,7 +808,7 @@ Eles tinham apenas cinco pães e dois peixinhos. Jesus orou, deu graças, partiu
     pergunta: `Já aconteceu de você fazer algo errado e depois se arrepender? Como se sentiu quando foi perdoado?`,
     oracao: `Senhor, obrigado porque Seu amor é maior do que os meus erros. Me ajuda a sempre voltar para Ti quando eu me afastar. Amém!`,
     frase: `NÃO IMPORTA ONDE VOCÊ ESTEVE OU O QUE FEZ, DEUS SEMPRE TERÁ BRAÇOS ABERTOS PARA TE RECEBER!`,
-    imagem: img49.url,
+    imagem: img49,
   },
   {
     id: 50,
@@ -823,7 +823,7 @@ Eles tinham apenas cinco pães e dois peixinhos. Jesus orou, deu graças, partiu
     pergunta: `Em qual tipo de terreno você acha que seu coração mais se parece hoje? O que você pode fazer para ser uma boa terra?`,
     oracao: `Senhor, prepara o meu coração para receber a Tua Palavra! Tira tudo que me impede de te ouvir e me ajuda a dar muitos frutos para o Teu Reino! Amém!`,
     frase: `A TUA PALAVRA É SEMENTE PODEROSA! DEIXE ELA CAIR EM UM CORAÇÃO BOM E DE FRUTOS!`,
-    imagem: img50.url,
+    imagem: img50,
   },
   {
     id: 51,
@@ -839,7 +839,7 @@ Jesus ama todas as crianças e quer que elas estejam perto dEle. Ele nos ensina 
     pergunta: `Por que você acha que Jesus ficou triste quando impediram as crianças de chegarem até Ele?`,
     oracao: `Senhor Jesus, obrigado por me amar tanto! Obrigado por me receber sempre com Teu amor. Me ajuda a ter um coração como o das crianças. Amém!`,
     frase: `COMO É BOM ESTAR PERTO DE JESUS! ELE AMA VOCÊ E SEMPRE VAI TE ABENÇOAR!`,
-    imagem: img51.url,
+    imagem: img51,
   },
   {
     id: 52,
@@ -854,7 +854,7 @@ Jesus ama todas as crianças e quer que elas estejam perto dEle. Ele nos ensina 
     pergunta: `Por que você acha que Jesus escolheu morrer na cruz por nós? O que podemos aprender com esse grande amor?`,
     oracao: `Senhor Jesus, obrigado por me amar tanto e dar a Sua vida por mim. Ajuda-me a Te seguir todos os dias e a viver o Teu amor. Amém!`,
     frase: `ELE FOI CRUCIFICADO POR AMOR, MAS RESSUSCITOU PARA NOS DAR VIDA! JESUS TE AMA DEMAIS!`,
-    imagem: img52.url,
+    imagem: img52,
   },
 ];
 
