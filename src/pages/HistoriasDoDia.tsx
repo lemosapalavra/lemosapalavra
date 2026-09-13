@@ -36,7 +36,7 @@ function ColoringCanvas({ historia }: { historia: HistoriaBiblica }) {
       img.onload = () => ctx.drawImage(img, 0, 0, c.width, c.height);
       img.src = saved;
     }
-  }, [storageKey]);
+  }, [storageKey, dims]);
 
   const save = () => {
     const c = canvasRef.current;
