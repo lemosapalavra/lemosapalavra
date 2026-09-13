@@ -20,6 +20,7 @@ function ColoringCanvas({ historia }: { historia: HistoriaBiblica }) {
   const [size, setSize] = useState(14);
   const [eraser, setEraser] = useState(false);
   const drawing = useRef(false);
+  const [dims, setDims] = useState<{ w: number; h: number } | null>(null);
   const storageKey = `lemos_pintura_hist_${historia.id}`;
 
   // Restaura a pintura salva
