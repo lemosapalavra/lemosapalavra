@@ -441,9 +441,21 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
                     checked={kart.scheduleEnabled}
                     onChange={(e) => patchKart({ scheduleEnabled: e.target.checked })}
                   />
-                  Exibir somente no mês comemorativo
+                  Exibir somente no período comemorativo
                 </label>
                 <div className="grid grid-cols-2 gap-2">
+                  <label className="text-xs font-semibold text-zinc-700 block">
+                    Dia inicial
+                    <input
+                      type="number"
+                      min={1}
+                      max={31}
+                      value={kart.startDay}
+                      disabled={!kart.scheduleEnabled}
+                      onChange={(e) => patchKart({ startDay: Number(e.target.value) })}
+                      className={inputCls + " mt-1 disabled:opacity-50"}
+                    />
+                  </label>
                   <label className="text-xs font-semibold text-zinc-700 block">
                     Mês inicial
                     <select
@@ -454,6 +466,18 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
                     >
                       {MONTHS.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
                     </select>
+                  </label>
+                  <label className="text-xs font-semibold text-zinc-700 block">
+                    Dia final
+                    <input
+                      type="number"
+                      min={1}
+                      max={31}
+                      value={kart.endDay}
+                      disabled={!kart.scheduleEnabled}
+                      onChange={(e) => patchKart({ endDay: Number(e.target.value) })}
+                      className={inputCls + " mt-1 disabled:opacity-50"}
+                    />
                   </label>
                   <label className="text-xs font-semibold text-zinc-700 block">
                     Mês final

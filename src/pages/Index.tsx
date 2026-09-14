@@ -7,6 +7,7 @@ import IndexAdminPanel from "@/components/IndexAdminPanel";
 
 import InstallShortcut from "@/components/InstallShortcut";
 import HomeTopNav from "@/components/HomeTopNav";
+import EventBannerKart from "@/components/EventBannerKart";
 import IndexV2 from "@/pages/IndexV2";
 import { loadSiteVersion, SITE_VERSION_EVENT } from "@/data/siteVersion";
 
@@ -189,6 +190,10 @@ function IndexV1() {
             Aqui você Estuda, Aprende e Brinca aprendendo sobre a Palavra de Deus.
           </p>
         </div>
+
+        <EventBannerKart isAuthenticated={!!user} />
+
+
 
         <div className="flex flex-col items-center w-full py-2">
           <OrbitMenu
