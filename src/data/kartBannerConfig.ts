@@ -1,8 +1,8 @@
 // Configuração do kartzinho ("Feliz Aniversário") exibido na página inicial.
 // Mesma estrutura do aviãozinho e do trenzinho: liga/desliga, textos e vídeo.
+// O agendamento usa apenas dia e mês, repetindo todos os anos.
 
-import kartVideo from "@/assets/kartzinho/feliz-aniversario.mp4.asset.json";
-import { monthInRange } from "@/data/trainBannerConfig";
+import kartVideo from "@/assets/kartzinho/feliz-aniversario-2.mp4.asset.json";
 
 export interface KartBannerConfig {
   enabled: boolean;
@@ -10,11 +10,13 @@ export interface KartBannerConfig {
   message: string;
   videoUrl: string;
   scheduleEnabled: boolean;
+  startDay: number;
   startMonth: number;
+  endDay: number;
   endMonth: number;
 }
 
-const KEY = "lemos_kart_banner_v1";
+const KEY = "lemos_kart_banner_v2";
 
 export const KART_BANNER_EVENT = "lemos_kart_banner_change";
 
@@ -24,9 +26,11 @@ export function defaultKartBanner(): KartBannerConfig {
     callToAction: "Clique aqui",
     message: "Feliz Aniversário",
     videoUrl: kartVideo.url,
-    scheduleEnabled: false,
-    startMonth: 1,
-    endMonth: 12,
+    scheduleEnabled: true,
+    startDay: 14,
+    startMonth: 9,
+    endDay: 14,
+    endMonth: 9,
   };
 }
 
@@ -41,10 +45,25 @@ export function loadKartBanner(): KartBannerConfig {
   }
 }
 
+/** Compara dia/mês num intervalo recorrente anual (aceita virada de ano). */
+export function dayMonthInRange(
+  today: Date,
+  startDay: number,
+  startMonth: number,
+  endDay: number,
+  endMonth: number,
+): boolean {
+  const v = (m: number, d: number) => m * 100 + d;
+  const now = v(today.getMonth() + 1, today.getDate());
+  const start = v(startMonth, startDay);
+  const end = v(endMonth, endDay);
+  return start <= end ? now >= start && now <= end : now >= start || now <= end;
+}
+
 export function isKartActive(cfg: KartBannerConfig): boolean {
   if (!cfg.enabled) return false;
   if (!cfg.scheduleEnabled) return true;
-  return monthInRange(new Date().getMonth() + 1, cfg.startMonth, cfg.endMonth);
+  return dayMonthInRange(new Date(), cfg.startDay, cfg.startMonth, cfg.endDay, cfg.endMonth);
 }
 
 export function saveKartBanner(cfg: KartBannerConfig) {
