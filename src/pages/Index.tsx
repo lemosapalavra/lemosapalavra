@@ -191,6 +191,10 @@ function IndexV1() {
           </p>
         </div>
 
+        <EventBannerKart isAuthenticated={!!user} />
+
+
+
         <div className="flex flex-col items-center w-full py-2">
           <OrbitMenu
             isAuthenticated={!!user}
