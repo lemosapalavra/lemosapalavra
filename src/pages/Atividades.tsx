@@ -51,6 +51,22 @@ import spot5 from "@/assets/spot7erros/spot-5.jpg.asset.json";
 import spot6 from "@/assets/spot7erros/spot-6.jpg.asset.json";
 import spot7 from "@/assets/spot7erros/spot-7.jpg.asset.json";
 
+// LABIRINTO — folhas dos Frutos do Espírito (uploads do usuário)
+import labAlegria from "@/assets/labirinto-novo/alegria.jpg.asset.json";
+import labAmor from "@/assets/labirinto-novo/amor.jpg.asset.json";
+import labBondade from "@/assets/labirinto-novo/bondade.jpg.asset.json";
+import labDominio from "@/assets/labirinto-novo/dominio-proprio.jpg.asset.json";
+import labPaciencia from "@/assets/labirinto-novo/paciencia.jpg.asset.json";
+import labPaz from "@/assets/labirinto-novo/paz.jpg.asset.json";
+import iconLabirinto from "@/assets/atividades/icone-labirinto.png";
+
+// CAÇA-PALAVRAS ILUSTRADO (substitui a cruzadinha antiga)
+import cacaNovo1 from "@/assets/cacapalavras-novo/caca-1.webp.asset.json";
+import cacaNovo2 from "@/assets/cacapalavras-novo/caca-2.webp.asset.json";
+import cacaNovo3 from "@/assets/cacapalavras-novo/caca-3.webp.asset.json";
+import cacaNovo4 from "@/assets/cacapalavras-novo/caca-4.webp.asset.json";
+import { saveToMural } from "@/lib/mural";
+
 // COLORIR — desenhos só de contorno (uploads do usuário)
 import colorAbraao from "@/assets/colorir/abraao.jpg";
 import colorAbraaoCordeiro from "@/assets/colorir/abraao-cordeiro.jpg";
@@ -382,7 +398,7 @@ export default function Atividades() {
     { title: "Caça-Palavras",       icon: iconCacaPalavras.url, id: "wordsearch",  coins: COINS.wordsearch, zoom: 1 },
     { title: "Pinte os Círculos",   icon: iconPinteCirculos.url, id: "edu:circles", coins: COINS.circles,   zoom: 1.28 },
     { title: "Ligue as Cores",      icon: iconLigueCores.url,   id: "edu:connect", coins: COINS.connect,    zoom: 1.28 },
-    { title: "Jogo dos 7 Erros",    icon: icon7Erros,           id: "spot",        coins: COINS.spot,       zoom: 1.15 },
+    { title: "Labirinto",           icon: iconLabirinto,        id: "maze",        coins: COINS.maze,       zoom: 1.05 },
     { title: "Cruzadinha Bíblica",  icon: iconAtividades,       id: "crossword",   coins: COINS.crossword,  zoom: 1.15 },
     { title: "Construtor de Palavras", icon: iconConstrutorPalavras.url, id: "wordbuilder", coins: COINS.wordbuilder, zoom: 1.05 },
   ];
@@ -416,8 +432,8 @@ export default function Atividades() {
     return <QuizGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "memory")
     return <MemoryGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
-  if (activeGame === "spot")
-    return <SpotDifferenceGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
+  if (activeGame === "maze")
+    return <MazeGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "coloring")
     return <ColoringGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "jigsaw")
@@ -427,7 +443,7 @@ export default function Atividades() {
   if (activeGame === "wordbuilder")
     return <WordBuilderGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "crossword")
-    return <CrosswordGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
+    return <WordFindImageGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
 
   if (activeGame?.startsWith("edu:")) {
     const eduId = activeGame.split(":")[1] as "circles" | "connect" | "differences" | "count";
@@ -1097,6 +1113,24 @@ function ColoringGame({ onBack, celebrate, celebration, closeCelebration, bgStyl
             className="btn-cartoon px-6 py-3 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
           >
             ✨ Finalizar e ganhar moedinhas
+          </button>
+          <button
+            onClick={() => {
+              const c = canvasRef.current;
+              if (!c) return;
+              const out = document.createElement("canvas");
+              out.width = c.width; out.height = c.height;
+              const octx = out.getContext("2d")!;
+              octx.fillStyle = "#ffffff";
+              octx.fillRect(0, 0, out.width, out.height);
+              octx.drawImage(c, 0, 0);
+              saveToMural({ title: scene.title, image: out.toDataURL("image/png"), activity: "Colorir" });
+              toast.success("Salvo no Meu Mural! 🖼️");
+            }}
+            disabled={fills < 1}
+            className="px-5 py-2.5 rounded-full bg-popover border border-border font-display font-bold text-foreground hover:border-primary disabled:opacity-40"
+          >
+            🖼️ Salvar no Meu Mural
           </button>
           {fills < 1 && (
             <p className="text-[11px] text-muted-foreground italic">Pinte pelo menos uma área para finalizar 🎨</p>
@@ -1909,7 +1943,9 @@ function WordBuilderGame({ onBack, celebrate, celebration, closeCelebration, bgS
             decoding="async"
             className="mx-auto w-40 h-40 sm:w-52 sm:h-52 object-contain rounded-2xl bg-white border-2 border-amber-200 shadow-sm"
           />
-          <p className="font-body text-xs sm:text-sm text-muted-foreground mt-2">💡 {round.hint}</p>
+          <p className="mt-3 mx-auto max-w-md rounded-2xl bg-gradient-to-r from-amber-100 to-yellow-100 border-2 border-amber-400 shadow px-4 py-3 font-display font-extrabold text-lg sm:text-2xl text-amber-900 leading-snug">
+            💡 {round.hint}
+          </p>
 
           {/* Espaços da palavra */}
           <div className="flex justify-center gap-2 mt-4 flex-wrap">
@@ -1971,6 +2007,157 @@ function WordBuilderGame({ onBack, celebrate, celebration, closeCelebration, bgS
             💡 Complete as {rounds.length} palavras e ganhe {COINS.wordbuilder} moedinhas 🪙
           </p>
         </div>
+      </div>
+      <CelebrationAnimation {...celebration} onClose={closeCelebration} />
+    </div>
+  );
+}
+
+/* ---------- LABIRINTO — folhas dos Frutos do Espírito ---------- */
+const mazeSheets = [
+  { id: "amor", title: "Amor", emoji: "❤️", img: labAmor.url },
+  { id: "alegria", title: "Alegria", emoji: "😀", img: labAlegria.url },
+  { id: "paz", title: "Paz", emoji: "🕊️", img: labPaz.url },
+  { id: "paciencia", title: "Paciência", emoji: "⏳", img: labPaciencia.url },
+  { id: "bondade", title: "Bondade", emoji: "🎁", img: labBondade.url },
+  { id: "dominio", title: "Domínio Próprio", emoji: "🙏", img: labDominio.url },
+];
+
+function MazeGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
+  const daily = useMemo(() => {
+    const start = dayOfYear() % mazeSheets.length;
+    return Array.from({ length: 3 }, (_, k) => mazeSheets[(start + k) % mazeSheets.length]);
+  }, []);
+  const [idx, setIdx] = useState(0);
+  const [done, setDone] = useState<string[]>([]);
+  const sheet = daily[idx];
+
+  const finish = () => {
+    if (done.includes(sheet.id)) return;
+    setDone((d) => [...d, sheet.id]);
+    celebrate(`Você chegou até a atitude de ${sheet.title}!`, COINS.maze, "🧭");
+  };
+
+  return (
+    <div className="min-h-screen py-6 px-4" style={bgStyle}>
+      <div className="max-w-2xl mx-auto">
+        <ActivityNav onBack={onBack} title="Labirinto" subtitle={sheet.title} />
+        <DailyBanner emoji="🧭" text="Labirintos novos a cada dia — siga o caminho até a chegada!" />
+
+        <div className="bg-white rounded-2xl border-2 border-primary/40 shadow p-2 sm:p-3">
+          <img
+            src={sheet.img}
+            alt={`Labirinto da ${sheet.title}`}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-auto rounded-xl select-none"
+            draggable={false}
+          />
+        </div>
+
+        <div className="flex gap-2 flex-wrap mt-4 justify-center">
+          {daily.map((s, i) => (
+            <button key={s.id} onClick={() => setIdx(i)}
+              className={`px-3 py-1.5 rounded-full font-display text-xs font-bold transition ${idx === i ? "bg-primary text-primary-foreground" : "bg-popover border border-border text-foreground hover:border-primary"}`}>
+              {s.emoji} {s.title}{done.includes(s.id) ? " ✅" : ""}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex flex-col items-center gap-2 mt-5">
+          <CoinBadge amount={COINS.maze} size="md" label="ao concluir" />
+          <div className="flex gap-2 flex-wrap justify-center">
+            <button onClick={finish} disabled={done.includes(sheet.id)} className="btn-cartoon px-6 py-3 text-sm disabled:opacity-40">
+              ✅ Concluí este labirinto
+            </button>
+            <button
+              onClick={() => { saveToMural({ title: `Labirinto da ${sheet.title}`, image: sheet.img, activity: "Labirinto" }); toast.success("Salvo no Meu Mural! 🖼️"); }}
+              className="px-5 py-2.5 rounded-full bg-popover border border-border font-display font-bold text-foreground hover:border-primary"
+            >
+              🖼️ Salvar no Meu Mural
+            </button>
+          </div>
+          <p className="text-center text-xs text-muted-foreground font-body mt-1">
+            💡 Siga com o dedo do “COMECE AQUI” até a “CHEGADA” e depois toque em concluir.
+          </p>
+        </div>
+      </div>
+      <CelebrationAnimation {...celebration} onClose={closeCelebration} />
+    </div>
+  );
+}
+
+/* ---------- CAÇA-PALAVRAS ILUSTRADO (antiga Cruzadinha) ---------- */
+const findSheets = [
+  { id: "frutos", title: "Frutos do Espírito", img: cacaNovo1.url, words: ["AMOR", "ALEGRIA", "PAZ", "PACIÊNCIA", "BENIGNIDADE", "BONDADE", "FIDELIDADE", "MANSIDÃO", "DOMÍNIO PRÓPRIO"] },
+  { id: "profetas", title: "Profetas e Servos", img: cacaNovo2.url, words: ["DANIEL", "ISAÍAS", "SANSÃO", "ELISEU", "SARA", "RUTE", "GIDEÃO", "SAMUEL"] },
+  { id: "personagens", title: "Personagens da Bíblia", img: cacaNovo3.url, words: ["ABRAÃO", "MOISÉS", "ESTER", "DAVI", "PAULO", "NOÉ", "JOSUÉ", "MARIA"] },
+  { id: "simbolos", title: "Símbolos da Fé", img: cacaNovo4.url, words: ["CRUZ", "BÍBLIA", "CÁLICE", "PÃO", "VINHO", "ARCA", "COROA", "PEIXE"] },
+];
+
+function WordFindImageGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
+  const [idx, setIdx] = useState(() => dayOfYear() % findSheets.length);
+  const [found, setFound] = useState<Record<string, string[]>>({});
+  const sheet = findSheets[idx];
+  const marked = found[sheet.id] || [];
+  const complete = marked.length === sheet.words.length;
+
+  const toggle = (w: string) => {
+    setFound((f) => {
+      const cur = f[sheet.id] || [];
+      const next = cur.includes(w) ? cur.filter((x) => x !== w) : [...cur, w];
+      if (next.length === sheet.words.length) {
+        setTimeout(() => celebrate(`Você achou todas as palavras de ${sheet.title}!`, COINS.crossword, "🔤"), 300);
+      }
+      return { ...f, [sheet.id]: next };
+    });
+  };
+
+  return (
+    <div className="min-h-screen py-6 px-4" style={bgStyle}>
+      <div className="max-w-2xl mx-auto">
+        <ActivityNav onBack={onBack} title="Cruzadinha Bíblica" subtitle={sheet.title} />
+        <DailyBanner emoji="🔤" text="Encontre as palavras na grade e marque cada uma na lista!" />
+
+        <div className="bg-white rounded-2xl border-2 border-primary/40 shadow p-2 sm:p-3">
+          <img src={sheet.img} alt={`Caça-palavras: ${sheet.title}`} loading="lazy" decoding="async" className="w-full h-auto rounded-xl select-none" draggable={false} />
+        </div>
+
+        <div className="mt-4 flex flex-wrap gap-2 justify-center">
+          {sheet.words.map((w) => {
+            const ok = marked.includes(w);
+            return (
+              <button key={w} onClick={() => toggle(w)}
+                title={ok ? "Desmarcar palavra" : "Marcar como encontrada"}
+                className={`px-3 py-2 rounded-full font-display font-extrabold text-sm border-2 transition ${ok ? "bg-emerald-500 text-white border-emerald-600 line-through" : "bg-white text-amber-900 border-amber-300 hover:border-primary"}`}>
+                {ok ? "✅ " : ""}{w}
+              </button>
+            );
+          })}
+        </div>
+
+        <p className={`text-center font-display font-bold mt-3 ${complete ? "text-emerald-600" : "text-muted-foreground"}`}>
+          {complete ? "🎉 Perfeito! Você encontrou todas!" : `${marked.length} de ${sheet.words.length} palavras encontradas`}
+        </p>
+
+        <div className="flex gap-2 flex-wrap mt-4 justify-center">
+          {findSheets.map((s, i) => (
+            <button key={s.id} onClick={() => setIdx(i)}
+              className={`px-3 py-1.5 rounded-full font-display text-xs font-bold transition ${idx === i ? "bg-primary text-primary-foreground" : "bg-popover border border-border text-foreground hover:border-primary"}`}>
+              {s.title}
+            </button>
+          ))}
+          <button
+            onClick={() => { saveToMural({ title: `Caça-palavras: ${sheet.title}`, image: sheet.img, activity: "Caça-palavras" }); toast.success("Salvo no Meu Mural! 🖼️"); }}
+            className="px-3 py-1.5 rounded-full bg-popover border border-border font-display text-xs font-bold text-foreground hover:border-primary"
+          >
+            🖼️ Salvar no Meu Mural
+          </button>
+        </div>
+
+        <p className="text-center text-xs text-muted-foreground font-body mt-3">
+          💡 Complete a lista e ganhe {COINS.crossword} moedinhas 🪙
+        </p>
       </div>
       <CelebrationAnimation {...celebration} onClose={closeCelebration} />
     </div>
