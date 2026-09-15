@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 // import MysticBackground from "@/components/MysticBackground"; // disabled for performance
 import ShareButton from "@/components/ShareButton";
 import MascoteLia from "@/components/MascoteLia";
+import UserCorner from "@/components/UserCorner";
 import Index from "./pages/Index.tsx";
 import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
 import { supabase } from "@/integrations/supabase/client";
@@ -208,6 +209,7 @@ const App = () => (
         <RouteMetaSync />
         {/* MysticBackground removed to improve page load performance */}
         <MascoteLia />
+        <UserCorner />
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />
