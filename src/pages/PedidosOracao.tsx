@@ -152,7 +152,7 @@ export default function PedidosOracao() {
               🌈 Deus ouve cada palavra do seu coração.
             </p>
 
-            <button type="submit" className="btn-cartoon px-6 py-3 w-full">🙏 Enviar Oração</button>
+            <button type="submit" className="btn-cartoon px-6 py-3 w-full">🖼️ Colocar no Mural</button>
           </form>
 
           <aside className="space-y-4">
