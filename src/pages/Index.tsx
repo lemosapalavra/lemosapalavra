@@ -129,13 +129,7 @@ function IndexV1() {
                   aria-label="Menu do usuário"
                   title="Menu do usuário"
                 >
-                  <img loading="lazy" decoding="async"
-                    src={user.avatar || iconUsuario}
-                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = iconUsuario; }}
-                    alt={user.name || "Usuário"}
-                    className="w-10 h-10 rounded-full border-2 border-amber-300 shadow object-cover bg-white"
-                  />
-                  <span className="text-left leading-tight hidden sm:inline">
+                  <span className="text-left leading-tight">
                     <span className="block font-display font-bold text-xs sm:text-sm text-foreground max-w-[180px] truncate">
                       Seja Bem vindo, {user.name}
                     </span>
@@ -184,10 +178,10 @@ function IndexV1() {
 
         <div className="w-full flex flex-col items-center gap-1 sm:gap-2 px-4 pt-2 sm:pt-4 pb-2 text-center">
           <p className="font-display font-extrabold text-lg sm:text-2xl text-foreground">
-            Seja Bem vindo a Lemos a Palavra !
+            Bem vindo a Lemos a Palavra
           </p>
           <p className="font-body text-sm sm:text-base text-muted-foreground max-w-md">
-            Aqui você Estuda, Aprende e Brinca aprendendo sobre a Palavra de Deus.
+            Aqui você pode aprender a Palavra de um jeito divertido.
           </p>
         </div>
 

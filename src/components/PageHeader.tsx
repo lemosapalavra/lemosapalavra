@@ -75,13 +75,6 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
         <div className="flex items-center gap-2 shrink-0 ml-auto">
           {user?.name && (
             <div className="flex items-center gap-1.5">
-              <img loading="lazy" decoding="async"
-                src={user.avatar || iconUsuario}
-                onError={(e) => { (e.currentTarget as HTMLImageElement).src = iconUsuario; }}
-                alt={user.name || "Usuário"}
-                title={`Seja Bem vindo, ${user.name}`}
-                className="w-9 h-9 rounded-full border-2 border-amber-300 shadow-sm object-cover bg-white"
-              />
               <span className="leading-tight text-left hidden sm:inline">
                 <span className={`block font-display font-bold text-[11px] sm:text-xs max-w-[150px] truncate ${isLemosPlay ? "text-white" : "text-foreground"}`}>
                   Seja Bem vindo, {user.name}

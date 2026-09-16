@@ -35,6 +35,9 @@ export const COINS = {
   spot: 5,
   wordbuilder: 5,
   maze: 5,
+  connectdots: 6,
+  assemble: 6,
+
 
 } as const;
 
