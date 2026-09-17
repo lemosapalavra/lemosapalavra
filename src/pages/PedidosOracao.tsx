@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import PageHeader from "@/components/PageHeader";
 import { toast } from "@/hooks/use-toast";
 import { awardOnce } from "@/hooks/useCoins";
+import { saveToMural } from "@/lib/mural";
 import iconPedidos from "@/assets/icon-pedidos-oracao.png";
 import heroKids from "@/assets/paginas/kids-oracao.png.asset.json";
 
@@ -45,6 +46,57 @@ export default function PedidosOracao() {
     }
   }, []);
 
+  /** Desenha a oração como um cartãozinho e prega no Meu Mural. */
+  const pregarNoMural = (p: Pedido) => {
+    const c = document.createElement("canvas");
+    c.width = 800; c.height = 800;
+    const ctx = c.getContext("2d");
+    if (!ctx) return;
+    const grad = ctx.createLinearGradient(0, 0, 0, 800);
+    grad.addColorStop(0, "#fff7e6");
+    grad.addColorStop(1, "#ffe9f1");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 800, 800);
+    ctx.strokeStyle = "#f3c489";
+    ctx.lineWidth = 10;
+    ctx.strokeRect(18, 18, 764, 764);
+
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#7c2d12";
+    ctx.font = "bold 46px Georgia, serif";
+    ctx.fillText("🙏 Minha Oração", 400, 110);
+    ctx.font = "bold 28px Georgia, serif";
+    ctx.fillText(getTipoLabel(p.tipo), 400, 160);
+
+    ctx.fillStyle = "#1f2937";
+    ctx.font = "30px Georgia, serif";
+    ctx.textAlign = "left";
+    const words = p.texto.split(/\s+/);
+    let line = "";
+    let y = 240;
+    for (const w of words) {
+      const test = line ? `${line} ${w}` : w;
+      if (ctx.measureText(test).width > 640 && line) {
+        ctx.fillText(line, 80, y);
+        y += 44;
+        line = w;
+        if (y > 660) break;
+      } else line = test;
+    }
+    if (line && y <= 660) ctx.fillText(line, 80, y);
+
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#9a3412";
+    ctx.font = "italic 24px Georgia, serif";
+    ctx.fillText(`— ${p.nome || "Eu"} · ${p.data}`, 400, 730);
+
+    saveToMural({
+      title: `Oração · ${getTipoLabel(p.tipo)}`,
+      image: c.toDataURL("image/png"),
+      activity: "Oração",
+    });
+  };
+
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
     if (!tipoSelecionado || !texto.trim()) return;
@@ -59,10 +111,11 @@ export default function PedidosOracao() {
     localStorage.setItem("lemos_pedidos_v2", JSON.stringify(updated));
     setTexto("");
     setTipoSelecionado("");
-    awardOnce(`oracao:${Date.now()}`, 5, "Oração registrada com carinho 🙏");
+    awardOnce(`oracao:${Date.now()}`, 5, "Oração guardada com carinho 🙏");
+    pregarNoMural(novoPedido);
     toast({
-      title: "🙏 Oração registrada!",
-      description: "Seu pedido foi guardado com carinho no seu mural de oração.",
+      title: "🖼️ Oração no mural!",
+      description: "Sua oração foi pregada no Meu Mural e também fica aqui no seu cantinho.",
     });
     setTimeout(() => {
       document.getElementById("mural-oracoes")?.scrollIntoView({ behavior: "smooth", block: "start" });

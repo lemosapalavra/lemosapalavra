@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Settings, ArrowLeft } from "lucide-react";
 import { useCoins } from "@/hooks/useCoins";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
-import iconUsuario from "@/assets/icon-usuario.png";
 import HomeTopNav from "@/components/HomeTopNav";
 
 interface PageHeaderProps {
