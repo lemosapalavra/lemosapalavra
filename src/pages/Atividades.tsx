@@ -2163,3 +2163,279 @@ function WordFindImageGame({ onBack, celebrate, celebration, closeCelebration, b
     </div>
   );
 }
+
+/* ---------- LIGUE OS PONTOS (folhas dos Frutos do Espírito) ---------- */
+const dotsSheets = [
+  { id: "amor", title: "Amor", emoji: "❤️", img: lpAmor.url },
+  { id: "alegria", title: "Alegria", emoji: "😄", img: lpAlegria.url },
+  { id: "paz", title: "Paz", emoji: "🕊️", img: lpPaz.url },
+  { id: "paciencia", title: "Paciência", emoji: "⏳", img: lpPaciencia.url },
+  { id: "benignidade", title: "Benignidade", emoji: "🌸", img: lpBenignidade.url },
+  { id: "bondade", title: "Bondade", emoji: "🎁", img: lpBondade.url },
+  { id: "fidelidade", title: "Fidelidade", emoji: "🔵", img: lpFidelidade.url },
+  { id: "mansidao", title: "Mansidão", emoji: "💠", img: lpMansidao.url },
+  { id: "dominio", title: "Domínio Próprio", emoji: "🙏", img: lpDominio.url },
+];
+
+const dotsColors = ["#e11d48", "#2563eb", "#16a34a", "#f59e0b", "#7c3aed"];
+
+function ConnectDotsGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
+  const daily = useMemo(() => {
+    const start = dayOfYear() % dotsSheets.length;
+    return Array.from({ length: 3 }, (_, k) => dotsSheets[(start + k) % dotsSheets.length]);
+  }, []);
+  const [idx, setIdx] = useState(0);
+  const [color, setColor] = useState(dotsColors[0]);
+  const [lines, setLines] = useState(0);
+  const [done, setDone] = useState<string[]>([]);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const drawing = useRef(false);
+  const sheet = daily[idx];
+
+  useEffect(() => {
+    const c = canvasRef.current;
+    c?.getContext("2d")?.clearRect(0, 0, c.width, c.height);
+    setLines(0);
+  }, [idx]);
+
+  const pos = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    const c = canvasRef.current!;
+    const r = c.getBoundingClientRect();
+    return { x: ((e.clientX - r.left) / r.width) * c.width, y: ((e.clientY - r.top) / r.height) * c.height };
+  };
+
+  const start = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    const ctx = canvasRef.current?.getContext("2d");
+    if (!ctx) return;
+    drawing.current = true;
+    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    const { x, y } = pos(e);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 6;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+  };
+  const move = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!drawing.current) return;
+    const ctx = canvasRef.current?.getContext("2d");
+    if (!ctx) return;
+    const { x, y } = pos(e);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  };
+  const end = () => {
+    if (!drawing.current) return;
+    drawing.current = false;
+    setLines((n) => n + 1);
+  };
+
+  const clear = () => {
+    const c = canvasRef.current;
+    c?.getContext("2d")?.clearRect(0, 0, c.width, c.height);
+    setLines(0);
+  };
+
+  const finish = () => {
+    if (done.includes(sheet.id)) return;
+    setDone((d) => [...d, sheet.id]);
+    celebrate(`Você ligou os pontos de ${sheet.title}!`, COINS.connectdots, "✏️");
+  };
+
+  const toMural = () => {
+    const c = canvasRef.current;
+    if (!c) return;
+    const base = new Image();
+    base.crossOrigin = "anonymous";
+    base.onload = () => {
+      const out = document.createElement("canvas");
+      out.width = c.width; out.height = c.height;
+      const octx = out.getContext("2d")!;
+      octx.fillStyle = "#ffffff";
+      octx.fillRect(0, 0, out.width, out.height);
+      octx.drawImage(base, 0, 0, out.width, out.height);
+      octx.drawImage(c, 0, 0);
+      saveToMural({ title: `Ligue os Pontos · ${sheet.title}`, image: out.toDataURL("image/png"), activity: "Ligue os Pontos" });
+      toast.success("Pregado no Meu Mural! 🖼️");
+    };
+    base.onerror = () => {
+      saveToMural({ title: `Ligue os Pontos · ${sheet.title}`, image: sheet.img, activity: "Ligue os Pontos" });
+      toast.success("Pregado no Meu Mural! 🖼️");
+    };
+    base.src = sheet.img;
+  };
+
+  return (
+    <div className="min-h-screen py-6 px-4" style={bgStyle}>
+      <div className="max-w-2xl mx-auto">
+        <ActivityNav onBack={onBack} title="Ligue os Pontos" subtitle={sheet.title} />
+        <DailyBanner emoji="✏️" text="Ligue cada desenho à frase certa arrastando o dedo de um ponto ao outro!" />
+
+        <div className="flex flex-wrap gap-2 justify-center mb-3">
+          {dotsColors.map((c) => (
+            <button key={c} onClick={() => setColor(c)} title="Escolher a cor do traço"
+              className={`w-8 h-8 rounded-full border-2 shadow ${color === c ? "border-foreground scale-110" : "border-white"}`}
+              style={{ background: c }} />
+          ))}
+          <button onClick={clear} title="Apagar todos os traços"
+            className="px-3 h-8 rounded-full font-display text-xs font-extrabold bg-popover border border-border text-foreground hover:border-primary">
+            🧽 Apagar traços
+          </button>
+        </div>
+
+        <div className="relative bg-white rounded-2xl border-2 border-primary/40 shadow p-2 sm:p-3">
+          <div className="relative w-full" style={{ aspectRatio: "1 / 1.414" }}>
+            <img src={sheet.img} alt={`Ligue os pontos — ${sheet.title}`} loading="lazy" decoding="async"
+              className="absolute inset-0 w-full h-full object-contain rounded-xl select-none pointer-events-none" draggable={false} />
+            <canvas
+              ref={canvasRef}
+              width={848}
+              height={1200}
+              onPointerDown={start}
+              onPointerMove={move}
+              onPointerUp={end}
+              onPointerLeave={end}
+              className="absolute inset-0 w-full h-full touch-none cursor-crosshair"
+            />
+          </div>
+        </div>
+
+        <div className="flex gap-2 flex-wrap mt-4 justify-center">
+          {daily.map((s, i) => (
+            <button key={s.id} onClick={() => setIdx(i)}
+              className={`px-3 py-1.5 rounded-full font-display text-xs font-bold transition ${idx === i ? "bg-primary text-primary-foreground" : "bg-popover border border-border text-foreground hover:border-primary"}`}>
+              {s.emoji} {s.title}{done.includes(s.id) ? " ✅" : ""}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex flex-col items-center gap-2 mt-5">
+          <CoinBadge amount={COINS.connectdots} size="md" label="ao concluir" />
+          <div className="flex gap-2 flex-wrap justify-center">
+            <button onClick={finish} disabled={lines < 1 || done.includes(sheet.id)} className="btn-cartoon px-6 py-3 text-sm disabled:opacity-40">
+              ✅ Terminei de ligar
+            </button>
+            <button onClick={toMural} disabled={lines < 1}
+              className="px-5 py-2.5 rounded-full bg-popover border border-border font-display font-bold text-foreground hover:border-primary disabled:opacity-40">
+              🖼️ Salvar no Meu Mural
+            </button>
+          </div>
+          <p className="text-center text-xs text-muted-foreground font-body mt-1">
+            💡 Arraste do pontinho do desenho até o pontinho da frase correspondente.
+          </p>
+        </div>
+      </div>
+      <CelebrationAnimation {...celebration} onClose={closeCelebration} />
+    </div>
+  );
+}
+
+/* ---------- MONTE E DESCUBRA ---------- */
+function AssembleDiscoverGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: GameProps) {
+  const scene = useMemo(() => jigsawCatalog[dayOfYear() % jigsawCatalog.length], []);
+  const options = useMemo(() => {
+    const others = jigsawCatalog.filter((s) => s.title !== scene.title).map((s) => s.title);
+    const picks = [scene.title, others[dayOfYear() % others.length], others[(dayOfYear() + 3) % others.length]];
+    return Array.from(new Set(picks)).sort((a, b) => a.localeCompare(b));
+  }, [scene]);
+
+  const SIZE = 3;
+  const N = SIZE * SIZE;
+  const [tiles, setTiles] = useState<number[]>(() => {
+    const arr = Array.from({ length: N }, (_, i) => i);
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = (dayOfYear() * (i + 7)) % (i + 1);
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  });
+  const [sel, setSel] = useState<number | null>(null);
+  const [guess, setGuess] = useState<string | null>(null);
+
+  const solved = tiles.every((t, i) => t === i);
+
+  const tap = (i: number) => {
+    if (solved) return;
+    if (sel === null) { setSel(i); return; }
+    if (sel === i) { setSel(null); return; }
+    setTiles((t) => {
+      const next = [...t];
+      [next[sel], next[i]] = [next[i], next[sel]];
+      return next;
+    });
+    setSel(null);
+  };
+
+  const choose = (title: string) => {
+    setGuess(title);
+    if (title === scene.title) {
+      celebrate(`Você montou e descobriu: ${scene.title}!`, COINS.assemble, "🧩");
+    }
+  };
+
+  return (
+    <div className="min-h-screen py-6 px-4" style={bgStyle}>
+      <div className="max-w-lg mx-auto">
+        <ActivityNav onBack={onBack} title="Monte e Descubra" subtitle="Monte a imagem e descubra a história" />
+        <DailyBanner emoji="🧩" text="Uma imagem misteriosa por dia — monte e descubra qual história é!" />
+
+        <div className="bg-white rounded-2xl border-2 border-primary/40 shadow p-3">
+          <div className="grid gap-1" style={{ gridTemplateColumns: `repeat(${SIZE}, 1fr)` }}>
+            {tiles.map((t, i) => (
+              <button
+                key={i}
+                onClick={() => tap(i)}
+                title="Toque em duas peças para trocá-las de lugar"
+                className={`relative aspect-square overflow-hidden rounded-md border-2 transition ${sel === i ? "border-primary scale-95" : "border-white"}`}
+                style={{
+                  backgroundImage: `url(${scene.image})`,
+                  backgroundSize: `${SIZE * 100}% ${SIZE * 100}%`,
+                  backgroundPosition: `${(t % SIZE) * (100 / (SIZE - 1))}% ${Math.floor(t / SIZE) * (100 / (SIZE - 1))}%`,
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        <p className={`text-center font-display font-bold mt-3 ${solved ? "text-emerald-600" : "text-muted-foreground"}`}>
+          {solved ? "🎉 Imagem montada! Agora descubra qual história é." : "Toque em duas peças para trocá-las de lugar."}
+        </p>
+
+        {solved && (
+          <div className="mt-3 grid gap-2">
+            {options.map((o) => {
+              const chosen = guess === o;
+              const right = guess !== null && o === scene.title;
+              return (
+                <button
+                  key={o}
+                  onClick={() => !guess && choose(o)}
+                  className={`w-full px-4 py-3 rounded-2xl font-display font-extrabold border-2 transition ${
+                    right ? "bg-emerald-500 text-white border-emerald-600"
+                      : chosen ? "bg-rose-100 text-rose-700 border-rose-300"
+                      : "bg-white text-amber-900 border-amber-300 hover:border-primary"
+                  }`}
+                >
+                  {right ? "✅ " : ""}{o}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        <div className="flex flex-col items-center gap-2 mt-5">
+          <CoinBadge amount={COINS.assemble} size="md" label="ao descobrir" />
+          <button
+            onClick={() => { saveToMural({ title: `Monte e Descubra · ${scene.title}`, image: scene.image, activity: "Monte e Descubra" }); toast.success("Pregado no Meu Mural! 🖼️"); }}
+            disabled={!solved}
+            className="px-5 py-2.5 rounded-full bg-popover border border-border font-display font-bold text-foreground hover:border-primary disabled:opacity-40"
+          >
+            🖼️ Salvar no Meu Mural
+          </button>
+        </div>
+      </div>
+      <CelebrationAnimation {...celebration} onClose={closeCelebration} />
+    </div>
+  );
+}
