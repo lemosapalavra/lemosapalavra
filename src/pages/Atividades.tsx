@@ -60,6 +60,19 @@ import labPaciencia from "@/assets/labirinto-novo/paciencia.jpg.asset.json";
 import labPaz from "@/assets/labirinto-novo/paz.jpg.asset.json";
 import iconLabirinto from "@/assets/atividades/icone-labirinto.png";
 
+// LIGUE OS PONTOS — folhas dos Frutos do Espírito
+import lpAlegria from "@/assets/ligue-pontos/alegria.jpg.asset.json";
+import lpAmor from "@/assets/ligue-pontos/amor.jpg.asset.json";
+import lpBenignidade from "@/assets/ligue-pontos/benignidade.jpg.asset.json";
+import lpBondade from "@/assets/ligue-pontos/bondade.jpg.asset.json";
+import lpDominio from "@/assets/ligue-pontos/dominio-proprio.jpg.asset.json";
+import lpFidelidade from "@/assets/ligue-pontos/fidelidade.jpg.asset.json";
+import lpMansidao from "@/assets/ligue-pontos/mansidao.jpg.asset.json";
+import lpPaciencia from "@/assets/ligue-pontos/paciencia.jpg.asset.json";
+import lpPaz from "@/assets/ligue-pontos/paz.jpg.asset.json";
+import iconLiguePontos from "@/assets/atividades/icone-ligue-pontos.png";
+import iconMonteDescubra from "@/assets/atividades/icone-monte-descubra.png";
+
 // CAÇA-PALAVRAS ILUSTRADO (substitui a cruzadinha antiga)
 import cacaNovo1 from "@/assets/cacapalavras-novo/caca-1.webp.asset.json";
 import cacaNovo2 from "@/assets/cacapalavras-novo/caca-2.webp.asset.json";
@@ -401,6 +414,8 @@ export default function Atividades() {
     { title: "Labirinto",           icon: iconLabirinto,        id: "maze",        coins: COINS.maze,       zoom: 1.05 },
     { title: "Cruzadinha Bíblica",  icon: iconAtividades,       id: "crossword",   coins: COINS.crossword,  zoom: 1.15 },
     { title: "Construtor de Palavras", icon: iconConstrutorPalavras.url, id: "wordbuilder", coins: COINS.wordbuilder, zoom: 1.05 },
+    { title: "Ligue os Pontos",     icon: iconLiguePontos,      id: "connectdots", coins: COINS.connectdots, zoom: 1.1 },
+    { title: "Monte e Descubra",    icon: iconMonteDescubra,    id: "assemble",    coins: COINS.assemble,   zoom: 1.05 },
   ];
 
 
@@ -442,6 +457,10 @@ export default function Atividades() {
     return <WordSearchGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "wordbuilder")
     return <WordBuilderGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
+  if (activeGame === "connectdots")
+    return <ConnectDotsGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
+  if (activeGame === "assemble")
+    return <AssembleDiscoverGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "crossword")
     return <WordFindImageGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
 
