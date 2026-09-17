@@ -17,7 +17,6 @@ import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { loadOrbit } from "@/data/orbitConfig";
 
 import iconDedicatoria from "@/assets/icon-dedicatoria.png";
-import iconUsuario from "@/assets/icon-usuario.png";
 
 export default function Index() {
   const [version, setVersion] = useState(() => loadSiteVersion());

@@ -59,10 +59,11 @@ export default function PedidosOracao() {
     localStorage.setItem("lemos_pedidos_v2", JSON.stringify(updated));
     setTexto("");
     setTipoSelecionado("");
-    awardOnce(`oracao:${Date.now()}`, 5, "Oração registrada com carinho 🙏");
+    awardOnce(`oracao:${Date.now()}`, 5, "Oração guardada com carinho 🙏");
+    pregarNoMural(novoPedido);
     toast({
-      title: "🙏 Oração registrada!",
-      description: "Seu pedido foi guardado com carinho no seu mural de oração.",
+      title: "🖼️ Oração no mural!",
+      description: "Sua oração foi pregada no Meu Mural e também fica aqui no seu cantinho.",
     });
     setTimeout(() => {
       document.getElementById("mural-oracoes")?.scrollIntoView({ behavior: "smooth", block: "start" });
