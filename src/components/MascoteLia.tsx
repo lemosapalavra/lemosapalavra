@@ -40,6 +40,8 @@ const CONTEXT_TIPS: Record<string, string> = {
   wordsearch: "No Caça-Palavras, arraste o dedo sobre as letras para marcar as palavras da lista.",
   maze: "No Labirinto, siga com o dedo do “COMECE AQUI” até a “CHEGADA” e depois toque em “Concluí este labirinto” para ganhar moedinhas 🪙.",
   crossword: "Aqui você procura as palavras na grade e marca cada uma na lista embaixo. Achou todas? Ganha moedinhas 🪙.",
+  connectdots: "Em Ligue os Pontos, escolha uma cor e arraste do pontinho do desenho até o pontinho da frase certa. Depois toque em “Terminei de ligar” e guarde no Meu Mural 🖼️.",
+  assemble: "Em Monte e Descubra, toque em duas peças para trocá-las de lugar. Montou a imagem? Escolha o nome certo da história e ganhe moedinhas 🪙.",
   "edu:circles": "Em Pinte os Círculos, escolha a cor indicada e pinte cada círculo.",
   "edu:connect": "Em Ligue as Cores, arraste ligando cada ponto à cor correspondente.",
   // Álbum
