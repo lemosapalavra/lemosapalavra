@@ -2406,13 +2406,22 @@ function AssembleDiscoverGame({ onBack, celebrate, celebration, closeCelebration
                 key={i}
                 onClick={() => tap(i)}
                 title="Toque em duas peças para trocá-las de lugar"
-                className={`relative aspect-square overflow-hidden rounded-md border-2 transition ${sel === i ? "border-primary scale-95" : "border-white"}`}
-                style={{
-                  backgroundImage: `url(${scene.image})`,
-                  backgroundSize: `${SIZE * 100}% ${SIZE * 100}%`,
-                  backgroundPosition: `${(t % SIZE) * (100 / (SIZE - 1))}% ${Math.floor(t / SIZE) * (100 / (SIZE - 1))}%`,
-                }}
-              />
+                className={`relative aspect-square overflow-hidden rounded-md border-2 bg-white transition ${sel === i ? "border-primary scale-95" : "border-white"}`}
+              >
+                <img
+                  src={scene.image}
+                  alt=""
+                  draggable={false}
+                  className="absolute select-none pointer-events-none max-w-none"
+                  style={{
+                    width: `${SIZE * 100}%`,
+                    height: `${SIZE * 100}%`,
+                    objectFit: "cover",
+                    left: `-${(t % SIZE) * 100}%`,
+                    top: `-${Math.floor(t / SIZE) * 100}%`,
+                  }}
+                />
+              </button>
             ))}
           </div>
         </div>
