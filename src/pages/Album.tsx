@@ -116,26 +116,28 @@ export default function Album() {
   // One page per category, with cumulative global startIndex for numbering.
   // A final "backcover" page summarises the album.
   const pages = useMemo<(BookPage & { startIndex: number })[]>(() => {
-    let running = 0;
+    // Todas as figurinhas em sequência, sempre 6 por página (3 colunas x 2
+    // linhas). As categorias continuam identificando cada página pela
+    // categoria da primeira figurinha dela.
+    const flat: { sticker: Sticker; cat: typeof categories[number] }[] = [];
+    categories.forEach((cat) => cat.stickers.forEach((sticker) => flat.push({ sticker, cat })));
+
+    const chunkSize = 6;
     const catPages: (BookPage & { startIndex: number })[] = [];
-    categories.forEach((cat) => {
-      // Páginas de 6 figurinhas (3 colunas x 2 linhas) — assim cada figurinha
-      // fica grande o bastante para ser vista por inteiro.
-      const chunkSize = 6;
-      for (let off = 0; off < cat.stickers.length; off += chunkSize) {
-        const stickers = cat.stickers.slice(off, off + chunkSize);
-        const pageInCat = (off === 0 ? 1 : 2) as 1 | 2;
-        catPages.push({
-          kind: "category" as const,
-          cat,
-          stickers,
-          bg: undefined,
-          pageInCat,
-          startIndex: running,
-        });
-        running += stickers.length;
-      }
-    });
+    let running = 0;
+    for (let off = 0; off < flat.length; off += chunkSize) {
+      const slice = flat.slice(off, off + chunkSize);
+      const cat = slice[0].cat;
+      catPages.push({
+        kind: "category" as const,
+        cat,
+        stickers: slice.map((s) => s.sticker),
+        bg: undefined,
+        pageInCat: (catPages.filter((p) => p.kind === "category" && (p as any).cat === cat).length === 0 ? 1 : 2) as 1 | 2,
+        startIndex: running,
+      });
+      running += slice.length;
+    }
     return [...catPages, { kind: "backcover" as const, startIndex: running }];
   }, []);
 

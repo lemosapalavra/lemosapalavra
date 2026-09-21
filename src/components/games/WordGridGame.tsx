@@ -76,6 +76,32 @@ function buildGrid(words: string[], seed: number) {
   return { grid: grid as string[][], placed };
 }
 
+/** Gera uma imagem do quadro (para pregar no Meu Mural). */
+function gridToImage(grid: string[][], foundCells: Set<string>): string {
+  const cell = 40;
+  const c = document.createElement("canvas");
+  c.width = SIZE * cell;
+  c.height = SIZE * cell;
+  const ctx = c.getContext("2d")!;
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, c.width, c.height);
+  ctx.font = "bold 20px sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  for (let r = 0; r < SIZE; r++) {
+    for (let col = 0; col < SIZE; col++) {
+      const ok = foundCells.has(`${r}:${col}`);
+      ctx.fillStyle = ok ? "#10b981" : "#ffffff";
+      ctx.fillRect(col * cell + 2, r * cell + 2, cell - 4, cell - 4);
+      ctx.strokeStyle = "#fcd34d";
+      ctx.strokeRect(col * cell + 2, r * cell + 2, cell - 4, cell - 4);
+      ctx.fillStyle = ok ? "#ffffff" : "#78350f";
+      ctx.fillText(grid[r][col], col * cell + cell / 2, r * cell + cell / 2);
+    }
+  }
+  return c.toDataURL("image/png");
+}
+
 /** Caça-palavras clicável: o usuário clica letra a letra para formar a palavra. */
 export default function WordGridGame({ onBack, celebrate, celebration, closeCelebration, bgStyle }: Props) {
   const [idx, setIdx] = useState(() => new Date().getDate() % puzzles.length);
@@ -196,7 +222,7 @@ export default function WordGridGame({ onBack, celebrate, celebration, closeCele
           <button onClick={() => setSel([])} className="px-3 py-1.5 rounded-full border border-border font-display text-xs font-bold hover:border-primary">🔄 Limpar seleção</button>
           <button
             onClick={() => {
-              saveToMural({ title: `Caça-palavras: ${puzzle.title}`, text: `Palavras encontradas: ${found.join(", ") || "nenhuma ainda"}`, activity: "Cruzadinha Bíblica" });
+              saveToMural({ title: `Caça-palavras: ${puzzle.title}`, image: gridToImage(grid, foundCells), activity: "Cruzadinha Bíblica" });
               toast.success("Pregado no Meu Mural! 🖼️");
             }}
             className="px-3 py-1.5 rounded-full border border-border font-display text-xs font-bold hover:border-primary"
