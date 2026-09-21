@@ -9,6 +9,7 @@ import InstallShortcut from "@/components/InstallShortcut";
 import HomeTopNav from "@/components/HomeTopNav";
 import EventBannerKart from "@/components/EventBannerKart";
 import IndexV2 from "@/pages/IndexV2";
+import IndexV3 from "@/pages/IndexV3";
 import { loadSiteVersion, SITE_VERSION_EVENT } from "@/data/siteVersion";
 
 
@@ -29,6 +30,7 @@ export default function Index() {
       window.removeEventListener("storage", h);
     };
   }, []);
+  if (version === 3) return <IndexV3 />;
   if (version === 2) return <IndexV2 />;
   return <IndexV1 />;
 }

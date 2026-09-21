@@ -1,4 +1,4 @@
 # Roadmap
-- [ ] Aplicar o redesign completo preservando todas as funções existentes.
-- [ ] Usar o mockup anexo como padrão visual principal, sem incorporá-lo diretamente.
-- [ ] Validar desktop, tablet e celular, navegação, busca, login e áreas administrativas.
+- [x] Aplicar o redesign completo preservando todas as funções existentes.
+- [x] Usar o mockup anexo como padrão visual principal, sem incorporá-lo diretamente.
+- [x] Validar desktop, tablet e celular, navegação, busca e preservação das áreas existentes.

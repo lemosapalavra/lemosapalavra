@@ -28,6 +28,7 @@ const Estatisticas = lazy(() => import("./pages/Estatisticas.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const HistoriasBiblicas = lazy(() => import("./pages/HistoriasBiblicas.tsx"));
 const AdminWhatsapp = lazy(() => import("./pages/AdminWhatsapp.tsx"));
+const Familia = lazy(() => import("./pages/Familia.tsx"));
 
 
 const queryClient = new QueryClient();
@@ -49,6 +50,7 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
   "/album": { title: "Álbum de Figurinhas — Lemos a Palavra", description: "Colecione figurinhas bíblicas com raridades e molduras especiais." },
   "/lemosplay": { title: "Lemos Play — Vídeos Bíblicos", description: "Vídeos animados de histórias bíblicas: Gênesis, Jesus, Séries, Músicas e Louvores." },
   "/historias-biblicas": { title: "Histórias Bíblicas — Lemos a Palavra", description: "Histórias bíblicas ilustradas para crianças." },
+  "/familia": { title: "Para toda a família — Lemos a Palavra", description: "Momentos de fé, oração e aprendizado bíblico para pais, crianças, avós e responsáveis." },
   "/config": { title: "Configurações — Lemos a Palavra", description: "Configurações do site." },
   "/estatisticas": { title: "Estatísticas — Lemos a Palavra", description: "Painel de estatísticas de uso." },
 };
@@ -173,7 +175,7 @@ const AdminOnly = ({ children }: { children: React.ReactNode }) => {
 /** Rodapé global — escondido no Álbum para não conflitar com as figurinhas. */
 const GlobalFooter = () => {
   const location = useLocation();
-  const hidden = location.pathname.startsWith("/album");
+  const hidden = location.pathname.startsWith("/album") || location.pathname === "/" || location.pathname === "/familia";
   useEffect(() => {
     document.body.classList.toggle("no-global-footer", hidden);
     return () => document.body.classList.remove("no-global-footer");
@@ -225,6 +227,7 @@ const App = () => (
             <Route path="/estatisticas" element={<AdminOnly><Estatisticas /></AdminOnly>} />
             <Route path="/lemosplay" element={<LemosPlay />} />
             <Route path="/historias-biblicas" element={<HistoriasBiblicas />} />
+            <Route path="/familia" element={<Familia />} />
             <Route path="/admin/whatsapp" element={<AdminOnly><AdminWhatsapp /></AdminOnly>} />
 
             <Route path="*" element={<NotFound />} />
