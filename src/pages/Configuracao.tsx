@@ -295,7 +295,7 @@ function VersionToggle() {
   const [version, setVersion] = useState(() => loadSiteVersion());
   const [flash, setFlash] = useState("");
 
-  const switchTo = (v: 1 | 2) => {
+  const switchTo = (v: 1 | 2 | 3) => {
     saveSiteVersion(v);
     setVersion(v);
     setFlash(`✓ Site agora na Versão ${v}`);
@@ -306,11 +306,11 @@ function VersionToggle() {
     <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
       <h3 className="font-display text-lg font-bold text-foreground mb-2">🎨 Versão visual do site</h3>
       <p className="text-xs text-muted-foreground mb-3">
-        Versão 1 = layout original (ícones em órbita). Versão 2 = novo layout com menu no topo, banner e cards.
-        A logo original é mantida nas duas versões. Troque com um clique.
+        Versão 1 = layout original. Versão 2 = cards anterior. Versão 3 = plataforma moderna baseada no novo padrão visual.
+        A logo original e todas as funções são mantidas.
       </p>
       <div className="flex flex-wrap gap-2">
-        {([1, 2] as const).map((v) => (
+        {([1, 2, 3] as const).map((v) => (
           <button
             key={v}
             onClick={() => switchTo(v)}
