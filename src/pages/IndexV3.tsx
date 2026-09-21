@@ -22,14 +22,20 @@ import moisesImage from "@/assets/historia-moises-1.png";
 import noeImage from "@/assets/historia-noe-1.png";
 import criacaoImage from "@/assets/historia-criacao.png";
 import jesusImage from "@/assets/historia-nova.png";
+import assistirIcon from "@/assets/home/icon-assistir.png";
+import historiasHomeIcon from "@/assets/home/icon-historias.png";
+import atividadesHomeIcon from "@/assets/home/icon-atividades.png";
+import oracaoHomeIcon from "@/assets/home/icon-oracao.png";
+import devocionaisHomeIcon from "@/assets/home/icon-devocionais.png";
+import albumHomeIcon from "@/assets/home/icon-album.png";
 
 const quick=[
- ["ASSISTIR","Histórias, louvores e muito mais!",logo,"/lemosplay","bg-lemos-red"],
- ["HISTÓRIAS BÍBLICAS","Conheça grandes personagens da Bíblia.",storiesIcon,"/historias-do-dia","bg-lemos-blue"],
- ["ATIVIDADES","Brinque, aprenda e descubra!",activityIcon,"/atividades","bg-lemos-green"],
- ["ORAÇÃO","Converse com Deus!",prayerIcon,"/pedidos-oracao","bg-lemos-purple"],
- ["DEVOCIONAIS","Uma mensagem para o seu dia!",devotionalIcon,"/historias-do-dia","bg-lemos-orange"],
- ["ÁLBUM","Colecione as figurinhas!",albumIcon,"/album","bg-lemos-pink"],
+ ["ASSISTIR","Histórias, louvores e muito mais!",assistirIcon,"/lemosplay","bg-lemos-red"],
+ ["HISTÓRIAS BÍBLICAS","Conheça grandes personagens da Bíblia.",historiasHomeIcon,"/historias-do-dia","bg-lemos-blue"],
+ ["ATIVIDADES","Brinque, aprenda e descubra!",atividadesHomeIcon,"/atividades","bg-lemos-green"],
+ ["ORAÇÃO","Converse com Deus!",oracaoHomeIcon,"/pedidos-oracao","bg-lemos-purple"],
+ ["DEVOCIONAIS","Uma mensagem para o seu dia!",devocionaisHomeIcon,"/historias-do-dia","bg-lemos-orange"],
+ ["ÁLBUM","Colecione as figurinhas!",albumHomeIcon,"/album","bg-lemos-pink"],
 ] as const;
 
 export default function IndexV3(){
@@ -52,7 +58,7 @@ export default function IndexV3(){
    </div>
   </section>
 
-  <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6"><h2 className="mb-6 flex items-center gap-2 font-display text-2xl font-extrabold text-lemos-navy sm:text-3xl"><Star className="fill-lemos-yellow text-lemos-yellow"/> O que você quer fazer?</h2><div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">{quick.map(([t,d,img,to,color])=><Link key={t} to={to} className={`${color} group flex min-h-[190px] flex-col items-center rounded-2xl p-4 text-center text-primary-foreground shadow-md transition duration-300 hover:-translate-y-2 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring`}><span className="grid h-20 w-20 place-items-center rounded-2xl bg-background/90 shadow-lg"><img src={img} alt="" className="h-16 w-16 object-contain" loading="lazy"/></span><h3 className="mt-3 font-display text-base font-extrabold leading-tight">{t}</h3><p className="mt-1 text-xs font-semibold leading-snug text-primary-foreground/90">{d}</p></Link>)}</div></section>
+  <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6"><h2 className="mb-6 flex items-center gap-2 font-display text-2xl font-extrabold text-lemos-navy sm:text-3xl"><Star className="fill-lemos-yellow text-lemos-yellow"/> O que você quer fazer?</h2><div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">{quick.map(([t,d,img,to,color])=><Link key={t} to={to} className={`${color} group flex min-h-[190px] flex-col items-center rounded-2xl p-4 text-center text-primary-foreground shadow-md transition duration-300 hover:-translate-y-2 hover:shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring`}><span className="grid h-20 w-20 place-items-center rounded-2xl bg-background/90 shadow-lg"><img src={img} alt="" width={768} height={768} className="h-[72px] w-[72px] object-contain" loading="lazy"/></span><h3 className="mt-3 font-display text-base font-extrabold leading-tight">{t}</h3><p className="mt-1 text-xs font-semibold leading-snug text-primary-foreground/90">{d}</p></Link>)}</div></section>
 
    {featured && <section className="mx-auto max-w-7xl px-4 pb-10 sm:px-6"><div className="rounded-2xl bg-lemos-sky/25 p-4 sm:p-6"><h2 className="mb-5 flex items-center gap-2 font-display text-2xl font-extrabold text-lemos-navy"><Play className="fill-current"/> Destaques</h2><div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]"><Link to="/lemosplay" className="group grid overflow-hidden rounded-2xl bg-background shadow-md sm:grid-cols-[1.1fr_1fr]"><img src={daviImage} alt={featured.title} className="h-full min-h-56 w-full object-contain p-3 transition group-hover:scale-105" loading="lazy"/><div className="flex flex-col justify-center p-6"><h3 className="font-display text-3xl font-extrabold text-lemos-navy">{featured.title}</h3><p className="mt-2 text-muted-foreground">Uma história sobre coragem e confiança em Deus.</p><span className="mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-primary px-5 py-3 font-display text-sm font-extrabold text-primary-foreground"><Play className="h-4 w-4 fill-current"/> ASSISTIR AGORA</span></div></Link><div><p className="mb-3 font-display font-extrabold text-lemos-navy">Mais conteúdos para você</p><div className="grid grid-cols-2 gap-3">{highlights.map(([title,image])=><Link key={title} to="/lemosplay" className="overflow-hidden rounded-xl bg-background shadow-sm transition hover:-translate-y-1 hover:shadow-md"><img src={image} alt={title} className="aspect-video w-full object-contain p-2" loading="lazy"/><p className="p-2 font-display text-xs font-extrabold text-lemos-navy">{title}</p></Link>)}</div></div></div></div></section>}
 
