@@ -12,6 +12,12 @@ import czNoe from "@/assets/cruzadinha/noe.jpg.asset.json";
 import czJerico from "@/assets/cruzadinha/jerico.jpg.asset.json";
 import czJose from "@/assets/cruzadinha/jose.jpg.asset.json";
 import { useState, useEffect, useMemo, useRef } from "react";
+import MazeTraceGame from "@/components/games/MazeTraceGame";
+import WordGridGame from "@/components/games/WordGridGame";
+import ConnectMatchGame from "@/components/games/ConnectMatchGame";
+import ActivityAccessConfig from "@/components/ActivityAccessConfig";
+import { allowedActivityIds } from "@/lib/activityAccess";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { toast } from "sonner";
 import PageHeader from "@/components/PageHeader";
 import CelebrationAnimation from "@/components/CelebrationAnimation";
@@ -358,6 +364,15 @@ function dayOfYear(d = new Date()) {
 export default function Atividades() {
   const [activeGame, setActiveGame] = useState<string | null>(null);
   const [celebration, setCelebration] = useState({ show: false, message: "", coins: 0, emoji: "🏆" });
+  const isAdmin = useIsAdmin();
+  const [showAccessConfig, setShowAccessConfig] = useState(false);
+  const [accessVersion, setAccessVersion] = useState(0);
+
+  useEffect(() => {
+    const bump = () => setAccessVersion((v) => v + 1);
+    window.addEventListener("lemos:activity-access", bump);
+    return () => window.removeEventListener("lemos:activity-access", bump);
+  }, []);
 
   // Avisa a LIA qual atividade está aberta para ela explicar o que fazer.
   useEffect(() => {
@@ -423,14 +438,20 @@ export default function Atividades() {
   // dia, então as demais atividades entram nos dias seguintes, sem repetir
   // sempre o mesmo conjunto.
   const activities = useMemo(() => {
-    const pinned = allActivities.filter((a) => a.id === "wordbuilder");
-    const rest = allActivities.filter((a) => a.id !== "wordbuilder");
+    // Filtro do administrador: atividades liberadas para a faixa etária do usuário.
+    const allowed = allowedActivityIds();
+    const pool = allowed ? allActivities.filter((a) => allowed.includes(a.id)) : allActivities;
+    if (!pool.length) return [];
+    const pinned = pool.filter((a) => a.id === "wordbuilder");
+    const rest = pool.filter((a) => a.id !== "wordbuilder");
     const total = rest.length;
+    if (!total) return pinned;
     const offset = (dayOfYear(new Date()) * 4) % total;
-    const rotating = Array.from({ length: Math.min(4, total) }, (_, i) => rest[(offset + i) % total]);
+    const take = Math.min(pinned.length ? 4 : 5, total);
+    const rotating = Array.from({ length: take }, (_, i) => rest[(offset + i) % total]);
     return [...pinned, ...rotating];
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [accessVersion]);
 
 
   const bgStyle = { background: "transparent" };
@@ -448,7 +469,7 @@ export default function Atividades() {
   if (activeGame === "memory")
     return <MemoryGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "maze")
-    return <MazeGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
+    return <MazeTraceGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "coloring")
     return <ColoringGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "jigsaw")
@@ -458,11 +479,11 @@ export default function Atividades() {
   if (activeGame === "wordbuilder")
     return <WordBuilderGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "connectdots")
-    return <ConnectDotsGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
+    return <ConnectMatchGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "assemble")
     return <AssembleDiscoverGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
   if (activeGame === "crossword")
-    return <WordFindImageGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
+    return <WordGridGame onBack={() => setActiveGame(null)} celebrate={showCelebration} celebration={celebration} closeCelebration={closeCelebration} bgStyle={bgStyle} />;
 
   if (activeGame?.startsWith("edu:")) {
     const eduId = activeGame.split(":")[1] as "circles" | "connect" | "differences" | "count";
@@ -484,6 +505,31 @@ export default function Atividades() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-start px-4 pt-0 pb-8" style={bgStyle}>
       <PageHeader title="Atividades Educacionais" icon={iconAtividades} />
+
+      {isAdmin && (
+        <div className="w-full max-w-3xl flex justify-end mb-1">
+          <button
+            onClick={() => setShowAccessConfig(true)}
+            title="Configurar atividades por faixa etária (somente administrador)"
+            aria-label="Configurar atividades por faixa etária"
+            className="w-11 h-11 rounded-full bg-white/90 border-2 border-amber-300 shadow flex items-center justify-center text-xl hover:scale-105 transition"
+          >
+            ⚙️
+          </button>
+        </div>
+      )}
+      <ActivityAccessConfig
+        open={showAccessConfig}
+        onClose={() => setShowAccessConfig(false)}
+        activities={allActivities.map((a) => ({ id: a.id, title: a.title }))}
+      />
+
+      {activities.length === 0 && (
+        <p className="font-body text-sm text-muted-foreground text-center my-8">
+          Nenhuma atividade liberada para a sua faixa etária ainda.
+        </p>
+      )}
+
 
       <div
         className="relative orbit-area"
