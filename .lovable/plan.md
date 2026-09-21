@@ -2,6 +2,9 @@
 
 Evolução visual e de navegação do site atual. Nada de reconstrução: login, banco, vídeos, atividades, álbum, orações, histórias e área administrativa continuam exatamente como estão.
 
+## Referência visual aprovada
+O mockup anexo será seguido como padrão principal de composição, hierarquia, cores, cartões, cabeçalho, banner, seções e adaptação para celular. A imagem será apenas referência — os conteúdos, imagens, rotas e dados reais do projeto serão usados na implementação.
+
 ## O que muda
 
 ### 1. Nova página inicial
