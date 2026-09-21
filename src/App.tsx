@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, useLocation, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation, Navigate, Outlet } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -149,6 +149,32 @@ const PageFallback = () => (
   </div>
 );
 
+/** Libera o conteúdo somente depois que nome e celular forem autenticados. */
+const RequireEntry = () => {
+  const location = useLocation();
+  const [state, setState] = useState<"checking" | "ok" | "denied">("checking");
+
+  useEffect(() => {
+    let cancelled = false;
+    const check = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (!cancelled) setState(data.session?.user ? "ok" : "denied");
+    };
+    void check();
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!cancelled) setState(session?.user ? "ok" : "denied");
+    });
+    return () => {
+      cancelled = true;
+      listener.subscription.unsubscribe();
+    };
+  }, []);
+
+  if (state === "checking") return <PageFallback />;
+  if (state === "denied") return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+  return <Outlet />;
+};
+
 /** Rotas de administração: só o dono (aparelho autorizado ou papel admin) vê. */
 const AdminOnly = ({ children }: { children: React.ReactNode }) => {
   const [state, setState] = useState<"checking" | "ok" | "denied">("checking");
@@ -214,23 +240,24 @@ const App = () => (
         <UserCorner />
         <Suspense fallback={<PageFallback />}>
           <Routes>
-            <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/biblia" element={<Biblia />} />
-            <Route path="/louvores" element={<Louvores />} />
-            <Route path="/historias-do-dia" element={<HistoriasDoDia />} />
-            <Route path="/devocionais" element={<HistoriasDoDia />} />
-            <Route path="/pedidos-oracao" element={<PedidosOracao />} />
-            <Route path="/atividades" element={<Atividades />} />
-            <Route path="/album" element={<Album />} />
-            <Route path="/config" element={<AdminOnly><Configuracao /></AdminOnly>} />
-            <Route path="/estatisticas" element={<AdminOnly><Estatisticas /></AdminOnly>} />
-            <Route path="/lemosplay" element={<LemosPlay />} />
-            <Route path="/historias-biblicas" element={<HistoriasBiblicas />} />
-            <Route path="/familia" element={<Familia />} />
-            <Route path="/admin/whatsapp" element={<AdminOnly><AdminWhatsapp /></AdminOnly>} />
-
-            <Route path="*" element={<NotFound />} />
+            <Route element={<RequireEntry />}>
+              <Route path="/" element={<Index />} />
+              <Route path="/biblia" element={<Biblia />} />
+              <Route path="/louvores" element={<Louvores />} />
+              <Route path="/historias-do-dia" element={<HistoriasDoDia />} />
+              <Route path="/devocionais" element={<HistoriasDoDia />} />
+              <Route path="/pedidos-oracao" element={<PedidosOracao />} />
+              <Route path="/atividades" element={<Atividades />} />
+              <Route path="/album" element={<Album />} />
+              <Route path="/config" element={<AdminOnly><Configuracao /></AdminOnly>} />
+              <Route path="/estatisticas" element={<AdminOnly><Estatisticas /></AdminOnly>} />
+              <Route path="/lemosplay" element={<LemosPlay />} />
+              <Route path="/historias-biblicas" element={<HistoriasBiblicas />} />
+              <Route path="/familia" element={<Familia />} />
+              <Route path="/admin/whatsapp" element={<AdminOnly><AdminWhatsapp /></AdminOnly>} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
           </Routes>
         </Suspense>
         {/* Rodapé fixo (oculto no Álbum) */}
