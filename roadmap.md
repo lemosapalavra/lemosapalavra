@@ -4,3 +4,8 @@
 - [x] Validar desktop, tablet e celular, navegação, busca e preservação das áreas existentes.
 - [x] Padronizar os seis ícones da página inicial conforme o modelo enviado.
 - [x] Exigir entrada com nome e telefone antes de liberar qualquer conteúdo.
+- [ ] Corrigir reprodução dos vídeos para não travar nem parar antes do fim.
+- [ ] Manter nos vídeos apenas compartilhar abaixo à esquerda e gostei abaixo à direita.
+- [ ] Alinhar LIA e usuário à linha central da página/logo.
+- [ ] Usar os seis ícones anexos fixos, com efeito flutuante ao toque e sem títulos duplicados.
+- [ ] Reduzir o atalho no celular ao padrão dos demais controles.
