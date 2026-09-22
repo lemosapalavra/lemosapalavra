@@ -1,5 +1,5 @@
-import { useEffect, useState, useMemo } from "react";
-import { Heart, MessageCircle, Share2, Send, X, Eye } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Heart, Share2 } from "lucide-react";
 import { shareSite } from "@/components/ShareButton";
 import {
   loadVideoInteractionsCfg,
@@ -7,7 +7,6 @@ import {
 } from "@/data/videoInteractionsConfig";
 
 interface Props {
-  /** Identificador único do vídeo. */
   videoId: string;
   className?: string;
 }
@@ -19,15 +18,11 @@ const KEY = "lemos_video_social_v1";
 function loadAll(): Record<string, Store> {
   try { return JSON.parse(localStorage.getItem(KEY) || "{}"); } catch { return {}; }
 }
+
 function saveAll(all: Record<string, Store>) {
   try { localStorage.setItem(KEY, JSON.stringify(all)); } catch {}
 }
 
-/**
- * Gera números fictícios determinísticos (visualizações, curtidas,
- * comentários e compartilhamentos) para dar credibilidade aos vídeos.
- * O mesmo vídeo sempre exibe os mesmos valores.
- */
 function getFakeCounts(videoId: string) {
   let hash = 0;
   for (let i = 0; i < videoId.length; i++) {
@@ -35,13 +30,11 @@ function getFakeCounts(videoId: string) {
     hash |= 0;
   }
   const abs = Math.abs(hash);
-
-  const views = 1200 + (abs % 988000); // 1.2K a ~1M
-  const likes = Math.floor(views * (0.02 + (abs % 80) / 1000)); // 2% a 10%
-  const comments = Math.floor(views * (0.003 + (abs % 60) / 10000)); // 0.3% a 0.9%
-  const shares = Math.floor(views * (0.001 + (abs % 40) / 10000)); // 0.1% a 0.5%
-
-  return { views, likes, comments, shares };
+  const views = 1200 + (abs % 988000);
+  return {
+    likes: Math.floor(views * (0.02 + (abs % 80) / 1000)),
+    shares: Math.floor(views * (0.001 + (abs % 40) / 10000)),
+  };
 }
 
 function formatCount(n: number): string {
@@ -50,42 +43,31 @@ function formatCount(n: number): string {
   return n.toString();
 }
 
-/**
- * Coluna de interações à direita do vídeo: Visualizações, Gostei, Comentar e Compartilhar.
- * Pode ser desligada pelo admin em Configurações.
- */
+/** Compartilhar à esquerda e gostei à direita, sob o vídeo. */
 export default function VideoSideActions({ videoId, className = "" }: Props) {
   const [enabled, setEnabled] = useState(() => loadVideoInteractionsCfg().enabled);
   const [state, setState] = useState<Store>({ liked: false, following: false, comments: [] });
-  const [openComments, setOpenComments] = useState(false);
-  const [draft, setDraft] = useState("");
-
-  const fakeCounts = useMemo(() => getFakeCounts(videoId), [videoId]);
-  const displayLikes = fakeCounts.likes + (state.liked ? 1 : 0);
-  const displayComments = fakeCounts.comments + state.comments.length;
+  const counts = useMemo(() => getFakeCounts(videoId), [videoId]);
 
   useEffect(() => {
-    const h = () => setEnabled(loadVideoInteractionsCfg().enabled);
-    window.addEventListener(VIDEO_INTERACTIONS_EVENT, h);
-    window.addEventListener("storage", h);
+    const syncEnabled = () => setEnabled(loadVideoInteractionsCfg().enabled);
+    window.addEventListener(VIDEO_INTERACTIONS_EVENT, syncEnabled);
+    window.addEventListener("storage", syncEnabled);
     return () => {
-      window.removeEventListener(VIDEO_INTERACTIONS_EVENT, h);
-      window.removeEventListener("storage", h);
+      window.removeEventListener(VIDEO_INTERACTIONS_EVENT, syncEnabled);
+      window.removeEventListener("storage", syncEnabled);
     };
   }, []);
 
   useEffect(() => {
-    const all = loadAll();
-    setState(all[videoId] ?? { liked: false, following: false, comments: [] });
-    setOpenComments(false);
-    setDraft("");
+    setState(loadAll()[videoId] ?? { liked: false, following: false, comments: [] });
   }, [videoId]);
 
   if (!enabled) return null;
 
-  const patch = (p: Partial<Store>) => {
-    setState((prev) => {
-      const next = { ...prev, ...p };
+  const toggleLike = () => {
+    setState((previous) => {
+      const next = { ...previous, liked: !previous.liked };
       const all = loadAll();
       all[videoId] = next;
       saveAll(all);
@@ -93,85 +75,39 @@ export default function VideoSideActions({ videoId, className = "" }: Props) {
     });
   };
 
-  const addComment = () => {
-    const text = draft.trim();
-    if (!text) return;
-    patch({ comments: [...state.comments, text] });
-    setDraft("");
-  };
-
-  const circle =
-    "w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/15 transition active:scale-90";
+  const stop = (event: React.MouseEvent) => event.stopPropagation();
+  const control = "flex flex-col items-center gap-1 text-primary-foreground transition active:scale-90";
+  const circle = "grid h-11 w-11 place-items-center rounded-full border border-primary-foreground/20 bg-foreground/65 shadow-lg backdrop-blur-sm";
 
   return (
-    <>
-      <div className={`absolute right-3 top-1/2 -translate-y-1/2 z-30 flex flex-col items-center gap-5 ${className}`}>
-        {/* Visualizações */}
-        <div className="flex flex-col items-center gap-1">
-          <span className={`${circle} bg-white/10`}>
-            <Eye className="w-6 h-6 text-white/90" />
-          </span>
-          <span className="text-white text-[10px] font-bold drop-shadow leading-none">Visualizações</span>
-          <span className="text-white/90 text-[10px] font-bold drop-shadow leading-none">{formatCount(fakeCounts.views)}</span>
-        </div>
+    <div
+      className={`absolute inset-x-3 bottom-3 z-30 flex items-end justify-between ${className}`}
+      onClick={stop}
+    >
+      <button
+        type="button"
+        onClick={() => void shareSite(videoId)}
+        className={control}
+        aria-label="Compartilhar vídeo"
+        title="Compartilhar"
+      >
+        <span className={circle}><Share2 className="h-5 w-5" /></span>
+        <span className="text-[10px] font-bold drop-shadow">{formatCount(counts.shares)}</span>
+      </button>
 
-        <button onClick={() => patch({ liked: !state.liked })} className="flex flex-col items-center gap-1" aria-pressed={state.liked}>
-          <span className={`${circle} ${state.liked ? "bg-red-600" : "bg-white/20"}`}>
-            <Heart className="w-6 h-6 text-white" fill={state.liked ? "white" : "none"} />
-          </span>
-          <span className="text-white text-[10px] font-bold drop-shadow leading-none">Gostei</span>
-          <span className="text-white/90 text-[10px] font-bold drop-shadow leading-none">{formatCount(displayLikes)}</span>
-        </button>
-
-        <button onClick={() => setOpenComments(true)} className="flex flex-col items-center gap-1">
-          <span className={`${circle} bg-white/20`}>
-            <MessageCircle className="w-6 h-6 text-white" />
-          </span>
-          <span className="text-white text-[10px] font-bold drop-shadow leading-none">Comentar</span>
-          <span className="text-white/90 text-[10px] font-bold drop-shadow leading-none">{formatCount(displayComments)}</span>
-        </button>
-
-        <button onClick={() => shareSite(videoId)} aria-label="Compartilhar" title="Compartilhar" className="flex flex-col items-center gap-1">
-          <span className={`${circle} bg-emerald-500/90`}>
-            <Share2 className="w-6 h-6 text-white" />
-          </span>
-          <span className="text-white/90 text-[10px] font-bold drop-shadow leading-none">{formatCount(fakeCounts.shares)}</span>
-        </button>
-
-      </div>
-
-      {openComments && (
-        <div className="absolute inset-x-0 bottom-0 z-40 p-3" onClick={(e) => e.stopPropagation()}>
-          <div className="mx-auto w-full max-w-md rounded-2xl bg-black/70 backdrop-blur p-3">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-white text-xs font-bold">Comentários</p>
-              <button onClick={() => setOpenComments(false)} aria-label="Fechar comentários" className="text-white/70 hover:text-white">
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-            <div className="max-h-32 overflow-y-auto space-y-2 mb-2">
-              {state.comments.length === 0 && (
-                <p className="text-white/60 text-xs text-center">Seja o primeiro a comentar 🙌</p>
-              )}
-              {state.comments.map((c, i) => (
-                <p key={i} className="text-white text-xs bg-white/10 rounded-lg px-2.5 py-1.5">{c}</p>
-              ))}
-            </div>
-            <div className="flex gap-2">
-              <input
-                value={draft}
-                onChange={(e) => setDraft(e.target.value)}
-                onKeyDown={(e) => { if (e.key === "Enter") addComment(); }}
-                placeholder="Escreva um comentário..."
-                className="flex-1 rounded-full bg-white/90 text-black text-xs px-3 py-2 outline-none"
-              />
-              <button onClick={addComment} className="w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center" aria-label="Enviar comentário">
-                <Send className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
+      <button
+        type="button"
+        onClick={toggleLike}
+        className={control}
+        aria-label="Gostei"
+        title="Gostei"
+        aria-pressed={state.liked}
+      >
+        <span className={`${circle} ${state.liked ? "text-destructive" : ""}`}>
+          <Heart className="h-5 w-5" fill={state.liked ? "currentColor" : "none"} />
+        </span>
+        <span className="text-[10px] font-bold drop-shadow">{formatCount(counts.likes + (state.liked ? 1 : 0))}</span>
+      </button>
+    </div>
   );
 }
