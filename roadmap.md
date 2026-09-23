@@ -9,3 +9,4 @@
 - [ ] Alinhar LIA e usuário à linha central da página/logo.
 - [ ] Usar os seis ícones anexos fixos, com efeito flutuante ao toque e sem títulos duplicados.
 - [ ] Reduzir o atalho no celular ao padrão dos demais controles.
+- [ ] Desabilitar as versões visuais 2 e 3 e manter somente a versão 1 ativa.

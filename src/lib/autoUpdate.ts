@@ -55,8 +55,8 @@ function isBusy(): boolean {
   if (document.fullscreenElement) return true;
   const media = Array.from(document.querySelectorAll<HTMLMediaElement>("video, audio"));
   if (media.some((m) => !m.paused && !m.ended)) return true;
-  // iframes de vídeo (YouTube/Vimeo/Bunny) — não recarrega enquanto existirem
-  if (document.querySelector('iframe[src*="youtube"], iframe[src*="vimeo"], iframe[src*="mediadelivery"]')) return true;
+  // Qualquer player em iframe com tela cheia habilitada não pode ser interrompido.
+  if (document.querySelector('iframe[allow*="fullscreen"], iframe[allowfullscreen]')) return true;
   return false;
 }
 

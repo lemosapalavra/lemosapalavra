@@ -105,6 +105,7 @@ export default function EventBannerKart({ isAuthenticated = false }: { isAuthent
                 controls
                 autoPlay
                 playsInline
+                preload="auto"
                 controlsList="nodownload noremoteplayback noplaybackrate"
                 disablePictureInPicture
                 onContextMenu={(e) => e.preventDefault()}

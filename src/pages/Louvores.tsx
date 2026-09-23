@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
@@ -31,21 +31,9 @@ export default function Louvores() {
 
   useEffect(() => { markSeen("louvores", louvoresTitles); }, []);
 
-  const playerRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (playing && playerRef.current) {
-      const el = playerRef.current as any;
-      const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
-      req?.call(el).catch(() => {});
-    }
-    return () => {
-      if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
-    };
-  }, [playing]);
-
   if (playing) {
     return (
-      <div ref={playerRef} className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-in fade-in zoom-in duration-300">
+      <div className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-in fade-in zoom-in duration-300">
         <button
           onClick={() => setPlaying(null)}
           className="absolute top-4 left-4 z-20 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white transition"
@@ -56,7 +44,7 @@ export default function Louvores() {
         </button>
         <VideoSideActions videoId={`louvores:${playing.title}`} />
         {playing.src ? (
-          <ColonialVideoFrame variant={tab === "louvores" ? "silver" : "green"}><video src={playing.src} className="w-full h-full bg-black object-cover" controls controlsList="nodownload noremoteplayback noplaybackrate" disablePictureInPicture onContextMenu={(e) => e.preventDefault()} autoPlay /></ColonialVideoFrame>
+          <ColonialVideoFrame variant={tab === "louvores" ? "silver" : "green"}><video src={playing.src} className="w-full h-full bg-black object-contain" controls controlsList="nodownload noremoteplayback noplaybackrate" disablePictureInPicture onContextMenu={(e) => e.preventDefault()} autoPlay playsInline preload="auto" /></ColonialVideoFrame>
         ) : (
           <div className="max-w-md mx-auto text-center text-white p-6">
             <h2 className="font-display text-3xl font-bold mb-3">Vídeo em atualização</h2>

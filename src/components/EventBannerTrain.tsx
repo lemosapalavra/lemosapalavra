@@ -105,6 +105,7 @@ export default function EventBannerTrain({ isAuthenticated = false }: { isAuthen
                 controls
                 autoPlay
                 playsInline
+                preload="auto"
                 controlsList="nodownload noremoteplayback noplaybackrate"
                 disablePictureInPicture
                 onContextMenu={(e) => e.preventDefault()}
