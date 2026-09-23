@@ -442,19 +442,7 @@ export default function LemosPlay() {
   const initialStart = (playInfo as any)?.startSeconds ?? 0;
 
   const [playError, setPlayError] = useState(false);
-  useEffect(() => {
-    if (!playing) { setPlayError(false); return; }
-    setPlayError(false);
-    if (!playing.src || playInfo?.kind === "mp4") return;
-    const t = window.setTimeout(() => {
-      // If iframe hasn't fired load within 8s, assume blocked/broken
-      try {
-        const doc = iframeRef.current?.contentDocument;
-        if (!doc) setPlayError(true);
-      } catch { /* cross-origin = loaded fine */ }
-    }, 8000);
-    return () => window.clearTimeout(t);
-  }, [playing, playInfo?.kind]);
+  useEffect(() => { setPlayError(false); }, [playing?.id]);
 
   useEffect(() => {
     if (!playing) return;
@@ -573,7 +561,7 @@ export default function LemosPlay() {
       <section className="relative w-full overflow-hidden bg-black">
         <div className="relative w-full h-[70vh] min-h-[420px] sm:h-[85vh] sm:min-h-[560px]">
           {/* Prévia em vídeo ocupando todo o espaço do destaque */}
-          {hero?.src && /\.(mp4|webm|mov)(\?|$)/i.test(hero.src) ? (
+          {!playing && hero?.src && /\.(mp4|webm|mov)(\?|$)/i.test(hero.src) ? (
             <video
               key={`hero-vid-${hero.id}`}
               src={hero.src}
@@ -583,7 +571,7 @@ export default function LemosPlay() {
               muted
               loop
               playsInline
-              preload="metadata"
+              preload="none"
             />
           ) : hero?.poster ? (
             <img loading="lazy" decoding="async" key={`hero-img-${hero.id}`} src={hero.poster} alt={hero.title} className="absolute inset-0 w-full h-full object-cover animate-fade-in" />
@@ -755,6 +743,7 @@ export default function LemosPlay() {
                     onContextMenu={(e) => e.preventDefault()}
                     autoPlay
                     playsInline
+                    preload="auto"
                     onLoadedMetadata={(e) => {
                       if (initialStart > 0 && initialStart < e.currentTarget.duration - 1) {
                         e.currentTarget.currentTime = initialStart;
@@ -785,6 +774,7 @@ export default function LemosPlay() {
                     allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
                     allowFullScreen
                     title={playing.title}
+                    onLoad={() => setPlayError(false)}
                     onError={() => setPlayError(true)}
                   />
                 ) : null}

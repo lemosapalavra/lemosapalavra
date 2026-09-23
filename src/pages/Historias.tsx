@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 import VideoSideActions from "@/components/VideoSideActions";
@@ -71,24 +71,12 @@ const folders: Folder[] = rawFolders
 export default function Historias() {
   const [openFolder, setOpenFolder] = useState<Folder | null>(null);
   const [playing, setPlaying] = useState<Video | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   const radius = 210;
   const iconSize = 100;
 
-  useEffect(() => {
-    if (playing && containerRef.current) {
-      const el = containerRef.current as any;
-      const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
-      req?.call(el).catch(() => {});
-    }
-    return () => {
-      if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
-    };
-  }, [playing]);
-
   if (playing) {
     return (
-      <div ref={containerRef} className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-in fade-in zoom-in duration-300">
+      <div className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-in fade-in zoom-in duration-300">
         <button
           onClick={() => setPlaying(null)}
           className="absolute top-4 left-4 z-20 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white transition"
@@ -98,7 +86,7 @@ export default function Historias() {
         </button>
         <VideoSideActions videoId={`historias:${playing.title}`} />
         {playing.src ? (
-          <ColonialVideoFrame><video src={playing.src} className="w-full h-full bg-black object-cover" controls controlsList="nodownload noremoteplayback noplaybackrate" disablePictureInPicture onContextMenu={(e) => e.preventDefault()} autoPlay /></ColonialVideoFrame>
+          <ColonialVideoFrame><video src={playing.src} className="w-full h-full bg-black object-contain" controls controlsList="nodownload noremoteplayback noplaybackrate" disablePictureInPicture onContextMenu={(e) => e.preventDefault()} autoPlay playsInline preload="auto" /></ColonialVideoFrame>
         ) : (
           <div className="max-w-md mx-auto text-center text-white p-6">
             <h2 className="font-display text-3xl font-bold mb-3">Vídeo em atualização</h2>
