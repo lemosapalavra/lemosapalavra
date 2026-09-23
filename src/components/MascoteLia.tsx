@@ -100,7 +100,7 @@ export default function MascoteLia() {
         onClick={() => setExpanded(true)}
         aria-label="Falar com a LIA, sua ajudante"
         title="Falar com a LIA, sua ajudante"
-        className="fixed bottom-28 left-3 z-[45] flex flex-col items-center gap-1 hover:scale-110 active:scale-95 transition"
+        className="fixed left-2 top-1/2 z-[45] flex -translate-y-1/2 flex-col items-center gap-1 transition hover:scale-110 active:scale-95 sm:left-4"
       >
         <span className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white shadow-lg border-2 border-amber-300 overflow-hidden block">
           <img src={avatar} alt="LIA" className="w-full h-full object-cover object-top" loading="lazy" />
@@ -113,7 +113,7 @@ export default function MascoteLia() {
   }
 
   return (
-    <div className="fixed bottom-28 left-2 z-[45] flex flex-col items-start gap-1 pointer-events-none">
+    <div className="fixed left-2 top-1/2 z-[45] flex -translate-y-1/2 flex-col items-start gap-1 pointer-events-none sm:left-4">
       {/* Balão acima da cabeça da LIA */}
       <div className="pointer-events-auto relative w-[78vw] max-w-sm rounded-2xl bg-white/95 backdrop-blur border-2 border-amber-300 shadow-xl px-3 py-2">
         <p className="font-body text-[15px] sm:text-base text-amber-900 leading-relaxed">{message}</p>

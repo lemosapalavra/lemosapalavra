@@ -1,8 +1,9 @@
-import iconAtividades from "@/assets/icon-atividades.png";
-import iconAlbum from "@/assets/icon-album.png";
-import iconHistoriasDia from "@/assets/historias/icone-historias.png.asset.json";
-import iconPedidos from "@/assets/icon-pedidos-oracao.png";
-import lemosPlayLogo from "@/assets/lemos-play-logo.png";
+import iconAssistir from "@/assets/home/icon-assistir-upload.png.asset.json";
+import iconHistorias from "@/assets/home/icon-historias-upload.png.asset.json";
+import iconAtividades from "@/assets/home/icon-atividades-upload.png.asset.json";
+import iconOracao from "@/assets/home/icon-oracao-upload.png.asset.json";
+import iconDevocionais from "@/assets/home/icon-devocionais-upload.png.asset.json";
+import iconAlbum from "@/assets/home/icon-album-upload.png.asset.json";
 
 export interface OrbitItem {
   icon: string;
@@ -15,11 +16,12 @@ const KEY = "lemos_orbit_config_v6";
 
 export function defaultOrbit(): OrbitItem[] {
   return [
-    { icon: lemosPlayLogo, label: "ASSISTA", sublabel: "Filmes, Séries, Louvores", route: "/lemosplay" },
-    { icon: iconAlbum, label: "ÁLBUM", sublabel: "Colecione os Heróis da Fé", route: "/album" },
-    { icon: iconHistoriasDia.url, label: "HISTÓRIAS", sublabel: "Duas histórias novas por dia", route: "/historias-do-dia" },
-    { icon: iconPedidos, label: "PEDIDOS\nDE ORAÇÃO", sublabel: "Fale com Deus", route: "/pedidos-oracao" },
-    { icon: iconAtividades, label: "ATIVIDADES", sublabel: "Atividades Educativas", route: "/atividades" },
+    { icon: iconAssistir.url, label: "ASSISTIR", route: "/lemosplay" },
+    { icon: iconHistorias.url, label: "HISTÓRIAS BÍBLICAS", route: "/historias-do-dia" },
+    { icon: iconAtividades.url, label: "ATIVIDADES", route: "/atividades" },
+    { icon: iconOracao.url, label: "ORAÇÃO", route: "/pedidos-oracao" },
+    { icon: iconDevocionais.url, label: "DEVOCIONAIS", route: "/historias-do-dia" },
+    { icon: iconAlbum.url, label: "ÁLBUM", route: "/album" },
   ];
 }
 

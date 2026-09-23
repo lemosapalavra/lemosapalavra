@@ -37,7 +37,7 @@ export default function UserCorner() {
         onClick={() => setOpen(true)}
         title="Abrir o Meu Mural"
         aria-label="Abrir o Meu Mural"
-        className="fixed bottom-28 right-3 z-[45] flex flex-col items-center gap-1 hover:scale-110 active:scale-95 transition"
+        className="fixed right-2 top-1/2 z-[45] flex -translate-y-1/2 flex-col items-center gap-1 transition hover:scale-110 active:scale-95 sm:right-4"
       >
         <span className="font-display font-extrabold text-[11px] sm:text-xs text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow max-w-[130px] truncate">
           Olá, {user.name}

@@ -152,7 +152,7 @@ export default function InstallShortcut({ compact = false }: { compact?: boolean
           <img loading="lazy" decoding="async"
             src="/favicon.png"
             alt="Lemos a Palavra"
-            className={`rounded-2xl bg-white object-contain ${compact ? "w-20 h-20 sm:w-24 sm:h-24" : "w-40 h-40 sm:w-48 sm:h-48"}`}
+            className={`rounded-2xl bg-white object-contain ${compact ? "w-14 h-14 sm:w-16 sm:h-16" : "w-32 h-32 sm:w-40 sm:h-40"}`}
           />
           <span className={`absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-amber-500 text-white font-display font-extrabold rounded-full shadow-lg ${compact ? "text-[10px] px-2 py-0.5" : "text-xs sm:text-sm px-3 py-1"}`}>
             {busy ? "Preparando…" : compact ? "📥 Atalho" : "📥 Baixar atalho"}
