@@ -23,9 +23,11 @@ export default function UserCorner() {
     sync();
     window.addEventListener("storage", sync);
     window.addEventListener("lemos:coins", sync);
+    window.addEventListener("lemos_admin_change", sync);
     return () => {
       window.removeEventListener("storage", sync);
       window.removeEventListener("lemos:coins", sync);
+      window.removeEventListener("lemos_admin_change", sync);
     };
   }, []);
 

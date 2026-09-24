@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { Play, Info, ChevronLeft, ChevronRight, X, Settings, UserPlus, Heart, MessageCircle, Share2, Download, Send, ListVideo, SkipForward, RotateCcw, Eye } from "lucide-react";
+import { Play, Info, ChevronLeft, ChevronRight, X, Settings, ListVideo, SkipForward, RotateCcw } from "lucide-react";
 import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 import PageHeader from "@/components/PageHeader";
 import ShareButton from "@/components/ShareButton";
@@ -69,88 +69,6 @@ const loadProgress = (): ProgressMap => {
   try { return JSON.parse(localStorage.getItem(PROGRESS_KEY) || "{}"); } catch { return {}; }
 };
 const saveProgress = (p: ProgressMap) => localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
-
-/* ============ Estado social por vídeo (curtidas, seguidores, etc) ============ */
-const SOCIAL_KEY = "lemosplay:social";
-type SocialState = { liked: boolean; following: boolean; views: number; likes: number; comments: number; shares: number };
-type SocialMap = Record<string, SocialState>;
-const loadSocial = (): SocialMap => { try { return JSON.parse(localStorage.getItem(SOCIAL_KEY) || "{}"); } catch { return {}; } };
-const saveSocial = (s: SocialMap) => localStorage.setItem(SOCIAL_KEY, JSON.stringify(s));
-const initialSocial = (id: string): SocialState => {
-  // pseudo-random initial counts so cards look alive
-  let h = 0; for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
-  return {
-    liked: false,
-    following: false,
-    views: 1200 + (h % 988000),
-    likes: 50 + (h % 9000),
-    comments: 5 + (h % 400),
-    shares: 1 + (h % 200),
-  };
-};
-const fmt = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}k` : `${n}`);
-
-function VideoSideActions({ itemId, title, src, className = "absolute top-1 right-1" }: { itemId: string; title: string; src: string; className?: string }) {
-  const [map, setMap] = useState<SocialMap>(() => loadSocial());
-  const st = map[itemId] || initialSocial(itemId);
-  const update = (patch: Partial<SocialState>) => {
-    const next = { ...map, [itemId]: { ...st, ...patch } };
-    setMap(next); saveSocial(next);
-  };
-  const stop = (e: React.MouseEvent) => { e.stopPropagation(); e.preventDefault(); };
-  const toggleLike = (e: React.MouseEvent) => { stop(e); update({ liked: !st.liked, likes: st.likes + (st.liked ? -1 : 1) }); };
-  const toggleFollow = (e: React.MouseEvent) => { stop(e); update({ following: !st.following }); };
-  const onComment = (e: React.MouseEvent) => { stop(e); update({ comments: st.comments + 1 }); };
-  const onShare = async (e: React.MouseEvent) => {
-    stop(e);
-    const url = src || window.location.href;
-    try {
-      if (navigator.share) await navigator.share({ title, url });
-      else await navigator.clipboard.writeText(url);
-    } catch { /* noop */ }
-    update({ shares: st.shares + 1 });
-  };
-  const onDownload = (e: React.MouseEvent) => { stop(e); if (src) window.open(src, "_blank"); };
-  const onSendTo = (e: React.MouseEvent) => {
-    stop(e);
-    const url = src || window.location.href;
-    const text = encodeURIComponent(`${title} — ${url}`);
-    window.open(`https://wa.me/?text=${text}`, "_blank");
-  };
-
-  const Btn = ({ onClick, icon: Icon, label, count, active, color, hideLabel }: { onClick?: (e: React.MouseEvent) => void; icon: typeof Heart; label: string; count?: string; active?: boolean; color?: string; hideLabel?: boolean }) => {
-    const isInteractive = !!onClick;
-    return (
-      <span
-        role={isInteractive ? "button" : undefined}
-        tabIndex={isInteractive ? 0 : undefined}
-        onClick={onClick}
-        aria-label={label}
-        className={`flex flex-col items-center gap-0.5 group/act ${isInteractive ? "cursor-pointer" : ""}`}
-        title={label}
-      >
-        <span className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/55 backdrop-blur flex items-center justify-center transition ${isInteractive ? "group-hover/act:bg-black/80" : ""} ${active ? color : "text-white"}`}>
-          <Icon className={`w-4 h-4 ${active ? "fill-current" : ""}`} />
-        </span>
-        {!hideLabel && <span className="text-[9px] font-bold text-white drop-shadow text-center leading-none">{label}</span>}
-
-        {count && <span className="text-[9px] font-bold text-white/80 drop-shadow text-center leading-none">{count}</span>}
-      </span>
-    );
-  };
-
-  return (
-    <div className={`${className} z-20 flex flex-col gap-1.5 items-center`}>
-      <Btn icon={Eye} label="Visualizações" count={fmt(st.views)} />
-      <Btn onClick={toggleFollow} icon={UserPlus} label={st.following ? "Seguindo" : "Seguir"} active={st.following} color="text-emerald-300" />
-      <Btn onClick={toggleLike} icon={Heart} label="Gostei" count={fmt(st.likes)} active={st.liked} color="text-rose-400" />
-      <Btn onClick={onComment} icon={MessageCircle} label="Comentar" count={fmt(st.comments)} />
-      <Btn onClick={onShare} icon={Share2} label="Compartilhar" count={fmt(st.shares)} hideLabel />
-      <Btn onClick={onDownload} icon={Download} label="Baixar" />
-      <Btn onClick={onSendTo} icon={Send} label="Enviar" />
-    </div>
-  );
-}
 
 function Row({ title, items, onPlay, progress, onContinueSeries, getContinuationCount, emptyMessage }: { title: string; items: PlayItem[]; onPlay: (item: PlayItem) => void; progress: ProgressMap; onContinueSeries?: (item: PlayItem) => void; getContinuationCount?: (item: PlayItem) => number; emptyMessage?: string }) {
   const scrollerRef = useRef<HTMLDivElement>(null);

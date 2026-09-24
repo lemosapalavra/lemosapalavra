@@ -39,18 +39,27 @@ function IndexV1() {
   }, []);
 
   useEffect(() => {
-    const stored = localStorage.getItem("lemos_user");
-    if (stored) {
-      const u = JSON.parse(stored);
-      ensureInitialCoins();
-      const today = new Date().toDateString();
-      const lastVisit = localStorage.getItem("lemos_last_visit");
-      if (lastVisit !== today) {
-        addCoins(2);
-        localStorage.setItem("lemos_last_visit", today);
-      }
-      setUser(u);
-    }
+    const syncUser = () => {
+      try {
+        const stored = localStorage.getItem("lemos_user");
+        if (!stored) { setUser(null); return; }
+        setUser(JSON.parse(stored));
+        ensureInitialCoins();
+        const today = new Date().toDateString();
+        const lastVisit = localStorage.getItem("lemos_last_visit");
+        if (lastVisit !== today) {
+          addCoins(2);
+          localStorage.setItem("lemos_last_visit", today);
+        }
+      } catch { setUser(null); }
+    };
+    syncUser();
+    window.addEventListener("lemos_admin_change", syncUser);
+    window.addEventListener("storage", syncUser);
+    return () => {
+      window.removeEventListener("lemos_admin_change", syncUser);
+      window.removeEventListener("storage", syncUser);
+    };
   }, []);
 
   const handleLogout = async () => {
