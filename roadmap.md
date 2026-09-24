@@ -10,3 +10,4 @@
 - [ ] Usar os seis ícones anexos fixos, com efeito flutuante ao toque e sem títulos duplicados.
 - [ ] Reduzir o atalho no celular ao padrão dos demais controles.
 - [ ] Desabilitar as versões visuais 2 e 3 e manter somente a versão 1 ativa.
+- [ ] Revisar os anexos Devocional.zip, Jogos.zip e o novo ícone de Jogos para a próxima integração.
