@@ -10,4 +10,9 @@
 - [x] Usar os seis ícones anexos fixos, com efeito flutuante ao toque e sem títulos duplicados.
 - [x] Reduzir o atalho no celular ao padrão dos demais controles.
 - [x] Desabilitar as versões visuais 2 e 3 e manter somente a versão 1 ativa.
-- [ ] Revisar os anexos Devocional.zip, Jogos.zip e o novo ícone de Jogos para a próxima integração.
+- [x] Revisar os anexos Devocional.zip, Jogos.zip e o novo ícone de Jogos.
+- [ ] Padronizar os ícones da Home e simplificar o menu móvel; corrigir frase e destinos de navegação.
+- [ ] Separar Histórias de Devocionais e adicionar 30 dias de pintura salva, desfazer e mural.
+- [ ] Reorganizar capas e textos dos dois volumes do Álbum.
+- [ ] Criar página Jogos com jogos bíblicos do anexo e reutilizar atividades existentes.
+- [ ] Corrigir imagens do Ligue os Pontos e Construtor; verificar desktop e celular.

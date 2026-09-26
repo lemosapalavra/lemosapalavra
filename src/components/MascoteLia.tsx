@@ -15,11 +15,12 @@ import lia2 from "@/assets/lia-2.png.asset.json";
  */
 
 const PAGE_TIPS: Record<string, string> = {
-  "/": "Toque nos ícones que giram ao redor da logo para navegar: Bíblia, Vídeos, Álbum, Atividades e mais!",
+  "/": "Toque em um dos ícones ao redor da logo para escolher vídeos, histórias, atividades, jogos, devocionais, oração ou álbum!",
   "/biblia": "Escolha o livro e o capítulo. Toque no ícone de ouvir 🔊 e eu leio a Palavra para você.",
   "/louvores": "Escolha um louvor e aperte o play ▶️. Dá para curtir, comentar e compartilhar com a família.",
-  "/historias-do-dia": "Aqui tem duas histórias bíblicas novas todo dia! Leia até o fim para ganhar moedinhas 🪙 e depois pinte o desenho — sua pintura fica salva para você continuar depois 🎨.",
-  "/devocionais": "Aqui tem duas histórias bíblicas novas todo dia! Leia, ganhe moedinhas 🪙 e pinte o desenho 🎨.",
+  "/historias-do-dia": "Aqui tem duas histórias bíblicas novas todo dia para ler e conversar em família!",
+  "/devocionais": "Leia o devocional do dia, escolha uma cor e toque no desenho para pintar. Pode desfazer, continuar depois e guardar no Meu Mural!",
+  "/jogos": "Escolha um jogo bíblico: dominó, memória, mico, quiz ou Quem Sou Eu!",
   "/pedidos-oracao": "Escreva seu pedido e escolha a categoria. Vamos orar juntos por você! 🙏",
   "/atividades": "Escolha uma atividade tocando no ícone. Cada uma dá moedinhas 🪙 uma vez por dia.",
   "/album": "Use 3 moedinhas 🪙 para abrir um pacote e toque em “Próxima” para virar a página do álbum.",
@@ -40,7 +41,7 @@ const CONTEXT_TIPS: Record<string, string> = {
   wordsearch: "No Caça-Palavras, arraste o dedo sobre as letras para marcar as palavras da lista.",
   maze: "No Labirinto, siga com o dedo do “COMECE AQUI” até a “CHEGADA” e depois toque em “Concluí este labirinto” para ganhar moedinhas 🪙.",
   crossword: "Aqui você procura as palavras na grade e marca cada uma na lista embaixo. Achou todas? Ganha moedinhas 🪙.",
-  connectdots: "Em Ligue os Pontos, escolha uma cor e arraste do pontinho do desenho até o pontinho da frase certa. Depois toque em “Terminei de ligar” e guarde no Meu Mural 🖼️.",
+  connectdots: "Em Ligue os Pontos, toque numa frase e depois na imagem relacionada. Verde indica acerto e vermelho indica outra tentativa.",
   assemble: "Em Monte e Descubra, toque em duas peças para trocá-las de lugar. Montou a imagem? Escolha o nome certo da história e ganhe moedinhas 🪙.",
   "edu:circles": "Em Pinte os Círculos, escolha a cor indicada e pinte cada círculo.",
   "edu:connect": "Em Ligue as Cores, arraste ligando cada ponto à cor correspondente.",

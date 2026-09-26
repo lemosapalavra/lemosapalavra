@@ -4,8 +4,10 @@ const LINKS = [
   { label: "INÍCIO", to: "/" },
   { label: "ASSISTA", to: "/lemosplay" },
   { label: "ATIVIDADES", to: "/atividades" },
+  { label: "JOGOS", to: "/jogos" },
   { label: "ORAÇÃO", to: "/pedidos-oracao" },
   { label: "HISTÓRIAS", to: "/historias-do-dia" },
+  { label: "DEVOCIONAIS", to: "/devocionais" },
   { label: "ÁLBUM DE FIGURINHAS", to: "/album" },
 ];
 
@@ -16,7 +18,7 @@ const LINKS = [
 export default function HomeTopNav() {
   return (
     <nav aria-label="Navegação principal" className="w-full">
-      <ul className="flex md:flex-wrap items-center md:justify-center gap-2 lg:gap-3 overflow-x-auto md:overflow-visible no-scrollbar px-1">
+      <ul className="flex flex-wrap items-center justify-center gap-2 lg:gap-3 px-1">
         {LINKS.map((l) => (
           <li key={l.to} className="shrink-0">
             <NavLink

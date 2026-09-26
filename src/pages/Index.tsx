@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Settings, LogOut } from "lucide-react";
+import { Settings, LogOut, Menu, X } from "lucide-react";
 import OrbitMenu from "@/components/OrbitMenu";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import IndexAdminPanel from "@/components/IndexAdminPanel";
@@ -28,6 +28,7 @@ function IndexV1() {
   const [dedicatoriaOpen, setDedicatoriaOpen] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -80,7 +81,7 @@ function IndexV1() {
       style={{ background: "transparent" }}
     >
       {/* espaçador do cabeçalho fixo */}
-      <div aria-hidden className="h-[108px] w-full" />
+      <div aria-hidden className="h-[64px] md:h-[70px] w-full" />
       {/* Home Header */}
       <header
         className="w-full fixed top-0 left-0 right-0 z-30 bg-white/85 border-b border-amber-200/60 backdrop-blur-sm"
@@ -114,6 +115,7 @@ function IndexV1() {
             <HomeTopNav />
           </div>
 
+          <button type="button" className="md:hidden shrink-0 rounded-full p-2 text-foreground hover:bg-muted" aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"} aria-expanded={mobileMenuOpen} onClick={() => setMobileMenuOpen((v) => !v)}>{mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}</button>
           {/* Right: user fixed to the right of the page */}
           {user && (
             <div className="flex items-center gap-2 shrink-0 ml-auto">
@@ -161,10 +163,10 @@ function IndexV1() {
           )}
         </div>
 
-        {/* Mobile: main navigation centered below */}
-        <div className="md:hidden w-full px-3 pb-1.5">
+         {/* Mobile: menu flutuante aberto por um único ícone */}
+         {mobileMenuOpen && <div className="md:hidden absolute top-full inset-x-3 z-50 rounded-lg border border-border bg-background p-3 shadow-xl" onClick={() => setMobileMenuOpen(false)}>
           <HomeTopNav />
-        </div>
+         </div>}
       </header>
 
       <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
@@ -172,12 +174,7 @@ function IndexV1() {
       <main className="w-full flex-1 flex flex-col items-center pb-28 sm:pb-32 lg:pb-24">
 
         <div className="w-full flex flex-col items-center gap-1 sm:gap-2 px-4 pt-2 sm:pt-4 pb-2 text-center">
-          <p className="font-display font-extrabold text-lg sm:text-2xl text-foreground">
-            Bem vindo a Lemos a Palavra
-          </p>
-          <p className="font-body text-sm sm:text-base text-muted-foreground max-w-md">
-            Aqui você pode aprender a Palavra de um jeito divertido.
-          </p>
+          <p className="font-display font-extrabold text-lg sm:text-2xl text-foreground">Bem-vindo! Aprenda, Brinque e Descubra a Palavra de Deus.</p>
         </div>
 
         <EventBannerKart isAuthenticated={!!user} />
@@ -194,15 +191,15 @@ function IndexV1() {
             onItemClick={handleItemClick}
           />
 
-          <div className="mt-8 sm:mt-12 flex flex-col items-center gap-5">
-            {user && <InstallShortcut compact />}
+           <div className="mt-6 sm:mt-10 flex items-center justify-center gap-5 sm:gap-8">
+             {user && <InstallShortcut compact />}
             <button
               onClick={() => setDedicatoriaOpen(true)}
-              className="animate-pulse hover:animate-none hover:scale-110 transition-transform"
-              style={{ filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.35))" }}
+              className="h-14 w-14 sm:h-16 sm:w-16 overflow-hidden rounded-full border-2 border-border bg-background shadow-lg hover:scale-105 transition-transform"
               title="Dedicatória"
+              aria-label="Abrir dedicatória"
             >
-              <img loading="lazy" decoding="async" src={iconDedicatoria} alt="Ver dedicatória" className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl" />
+              <img loading="lazy" decoding="async" src={iconDedicatoria} alt="" className="h-full w-full object-contain" />
             </button>
           </div>
 

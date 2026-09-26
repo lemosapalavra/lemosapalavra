@@ -34,7 +34,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
         </div>
       )}
 
-      <div className="relative orbit-area w-[min(88vw,340px)] h-[min(88vw,340px)] sm:w-[min(90vw,400px)] sm:h-[min(90vw,400px)] lg:w-[min(92vw,720px)] lg:h-[min(92vw,720px)]">
+      <div className="relative orbit-area w-[min(94vw,330px)] h-[min(94vw,330px)] sm:w-[min(90vw,400px)] sm:h-[min(90vw,400px)] lg:w-[min(92vw,720px)] lg:h-[min(92vw,720px)]">
         <div className="absolute inset-0">
           {items.map((item, i) => {
             const angle = (360 / items.length) * i - 90;
@@ -56,7 +56,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                     }`}
                   >
                     <div
-                      className={`relative overflow-hidden rounded-full shadow-xl hover:shadow-2xl transition-shadow w-[84px] h-[84px] sm:w-[96px] sm:h-[96px] lg:w-[136px] lg:h-[136px] bg-transparent ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
+                      className={`relative overflow-hidden rounded-full shadow-xl hover:shadow-2xl transition-shadow w-[66px] h-[66px] min-[390px]:w-[72px] min-[390px]:h-[72px] sm:w-[96px] sm:h-[96px] lg:w-[136px] lg:h-[136px] bg-transparent ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
                     >
                       <img
                         src={item.icon}
@@ -79,12 +79,12 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
           alt="Lemos a Palavra"
           width={320}
           height={320}
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-2xl transition-all duration-700 w-[92px] sm:w-[120px] lg:w-[220px] ${!isAuthenticated ? "grayscale opacity-70" : ""}`}
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-2xl transition-all duration-700 w-[80px] sm:w-[120px] lg:w-[220px] ${!isAuthenticated ? "grayscale opacity-70" : ""}`}
         />
       </div>
 
       <style>{`
-        .orbit-area { --orbit-radius: clamp(106px, 27vw, 130px); }
+         .orbit-area { --orbit-radius: clamp(112px, 31vw, 132px); }
         @media (min-width: 640px) { .orbit-area { --orbit-radius: clamp(125px, 27vw, 155px); } }
         @media (min-width: 1024px) { .orbit-area { --orbit-radius: clamp(205px, 32vw, 290px); } }
       `}</style>
