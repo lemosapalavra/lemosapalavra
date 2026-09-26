@@ -147,27 +147,20 @@ export default function InstallShortcut({ compact = false }: { compact?: boolean
           disabled={busy}
           aria-label="Baixar atalho clicável da Lemos a Palavra"
           title="Clique para baixar o atalho da Lemos a Palavra"
-          className={`relative group rounded-3xl p-2 bg-gradient-to-br from-amber-200 to-amber-400 shadow-2xl hover:scale-105 active:scale-95 transition disabled:opacity-60 ring-4 ring-amber-300/60 ${compact ? "" : "animate-pulse"}`}
+          className={`relative group rounded-full overflow-visible border-2 border-border bg-background shadow-lg hover:scale-105 active:scale-95 transition disabled:opacity-60 ${compact ? "h-14 w-14 sm:h-16 sm:w-16" : "h-32 w-32 sm:h-40 sm:w-40"}`}
         >
           <img loading="lazy" decoding="async"
             src="/favicon.png"
             alt="Lemos a Palavra"
-            className={`rounded-2xl bg-white object-contain ${compact ? "w-14 h-14 sm:w-16 sm:h-16" : "w-32 h-32 sm:w-40 sm:h-40"}`}
+            className="h-full w-full rounded-full object-cover"
           />
-          <span className={`absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-amber-500 text-white font-display font-extrabold rounded-full shadow-lg ${compact ? "text-[10px] px-2 py-0.5" : "text-xs sm:text-sm px-3 py-1"}`}>
-            {busy ? "Preparando…" : compact ? "📥 Atalho" : "📥 Baixar atalho"}
-          </span>
+           {!compact && <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-primary text-primary-foreground font-display font-extrabold rounded-full shadow-lg text-xs sm:text-sm px-3 py-1">{busy ? "Preparando…" : "📥 Baixar atalho"}</span>}
         </button>
       </div>
       {!compact && (
         <p className="text-xs sm:text-sm font-body text-amber-900 text-center leading-snug max-w-[280px] mt-3">
           Clique na logo para <strong>baixar o atalho</strong> da Lemos a Palavra
           e entrar direto no site, sem digitar o endereço.
-        </p>
-      )}
-      {compact && (
-        <p className="text-[11px] font-body text-amber-900 text-center leading-snug max-w-[140px] mt-2">
-          Baixe o ícone da Lemos no seu celular
         </p>
       )}
 

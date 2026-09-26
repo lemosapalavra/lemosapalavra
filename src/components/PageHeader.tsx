@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Settings, ArrowLeft } from "lucide-react";
+import { ArrowLeft, Menu, X } from "lucide-react";
 import { useCoins } from "@/hooks/useCoins";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import HomeTopNav from "@/components/HomeTopNav";
@@ -23,6 +23,7 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
   const { coins } = useCoins();
   const isAdmin = useIsAdmin();
   const [user, setUser] = useState<{ name?: string; avatar?: string } | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const isHome = location.pathname === "/";
   const isLemosPlay = location.pathname.startsWith("/lemosplay");
@@ -48,7 +49,7 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
   return (
     <>
     {/* espaçador: reserva a altura do cabeçalho fixo */}
-    <div aria-hidden className="h-[132px] w-full" />
+    <div aria-hidden className="h-[66px] md:h-[70px] w-full" />
     <header className={`fixed top-0 left-0 right-0 z-40 w-full ${isLemosPlay ? "bg-black/60 backdrop-blur" : "bg-white/85 backdrop-blur-sm border-b border-amber-200/60"}`}>
       <div className="flex items-center justify-between gap-2 px-3 py-2">
         {/* Left: Home + Back */}
@@ -69,15 +70,16 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
         <div className="hidden md:flex flex-1 justify-center px-4">
           <HomeTopNav />
         </div>
+        <button type="button" className="md:hidden rounded-full p-2 text-foreground hover:bg-muted" aria-label={menuOpen ? "Fechar menu" : "Abrir menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen((v) => !v)}>{menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}</button>
 
         {/* Título acessível apenas para leitores de tela */}
         <h1 className="sr-only">{title || "Lemos a Palavra"}{subtitle ? ` — ${subtitle}` : ""}</h1>
       </div>
 
       {/* Mobile: menu de interação centralizado abaixo */}
-      <div className="md:hidden w-full px-3 pb-1.5">
+       {menuOpen && <div className="md:hidden absolute top-full inset-x-3 rounded-lg border border-border bg-background p-3 shadow-xl" onClick={() => setMenuOpen(false)}>
         <HomeTopNav />
-      </div>
+       </div>}
 
 
       <style>{`

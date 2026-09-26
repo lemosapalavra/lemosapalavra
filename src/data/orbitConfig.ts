@@ -4,6 +4,7 @@ import iconAtividades from "@/assets/home/icon-atividades-upload.png.asset.json"
 import iconOracao from "@/assets/home/icon-oracao-upload.png.asset.json";
 import iconDevocionais from "@/assets/home/icon-devocionais-upload.png.asset.json";
 import iconAlbum from "@/assets/home/icon-album-upload.png.asset.json";
+import iconJogos from "@/assets/home/icone-jogos.png.asset.json";
 
 export interface OrbitItem {
   icon: string;
@@ -12,15 +13,16 @@ export interface OrbitItem {
   route: string;
 }
 
-const KEY = "lemos_orbit_config_v6";
+const KEY = "lemos_orbit_config_v7";
 
 export function defaultOrbit(): OrbitItem[] {
   return [
     { icon: iconAssistir.url, label: "ASSISTIR", route: "/lemosplay" },
     { icon: iconHistorias.url, label: "HISTÓRIAS BÍBLICAS", route: "/historias-do-dia" },
     { icon: iconAtividades.url, label: "ATIVIDADES", route: "/atividades" },
+    { icon: iconJogos.url, label: "JOGOS", route: "/jogos" },
     { icon: iconOracao.url, label: "ORAÇÃO", route: "/pedidos-oracao" },
-    { icon: iconDevocionais.url, label: "DEVOCIONAIS", route: "/historias-do-dia" },
+    { icon: iconDevocionais.url, label: "DEVOCIONAIS", route: "/devocionais" },
     { icon: iconAlbum.url, label: "ÁLBUM", route: "/album" },
   ];
 }
