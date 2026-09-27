@@ -15,6 +15,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import MazeTraceGame from "@/components/games/MazeTraceGame";
 import WordGridGame from "@/components/games/WordGridGame";
 import ConnectMatchGame from "@/components/games/ConnectMatchGame";
+import { suppliedPuzzles } from "@/data/jogosPuzzles";
 import ActivityAccessConfig from "@/components/ActivityAccessConfig";
 import { allowedActivityIds } from "@/lib/activityAccess";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
@@ -343,6 +344,7 @@ const colorPalette = [
    Rotaciona diariamente entre 7 imagens (uma por dia da semana)
 ========================================================= */
 const jigsawCatalog = [
+  ...suppliedPuzzles.map((p) => ({ ...p, emoji: "🧩" })),
   { title: "A Criação", emoji: "🌍", image: imgCriacao },
   { title: "Adão e Eva", emoji: "🌳", image: imgAdaoEva },
   { title: "A Arca de Noé", emoji: "🚢", image: imgNoe },

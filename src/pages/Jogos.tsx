@@ -13,12 +13,12 @@ import micoPdf from "@/assets/jogos/mico.pdf.asset.json";
 import quizPdf from "@/assets/jogos/quiz.pdf.asset.json";
 import maesPdf from "@/assets/jogos/maes.pdf.asset.json";
 import labirinto from "@/assets/labirinto-novo/alegria.jpg.asset.json";
-import puzzle from "@/assets/historia-davi-golias.png";
+import { suppliedPuzzles } from "@/data/jogosPuzzles";
 
 const games = [
   { title: "Memória Bíblica", image: memoria.url, path: "/atividades?jogo=memory" },
   { title: "Labirinto", image: labirinto.url, path: "/atividades?jogo=maze" },
-  { title: "Quebra-Cabeça", image: puzzle, path: "/atividades?jogo=jigsaw" },
+  { title: "Quebra-Cabeça", image: suppliedPuzzles[0].image, path: "/atividades?jogo=jigsaw" },
   { title: "Construtor de Palavras", image: montePalavras.url, path: "/atividades?jogo=wordbuilder" },
   { title: "Quiz Bíblico", image: quiz.url, path: "/atividades?jogo=quiz" },
 ];
