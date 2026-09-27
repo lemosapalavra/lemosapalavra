@@ -78,7 +78,6 @@ function StoryCard({ historia, index }: { historia: HistoriaBiblica; index: numb
             <p className="text-center font-display text-sm font-extrabold text-amber-900">✝️ {historia.frase}</p>
           )}
 
-          <ColoringCanvas historia={historia} />
         </div>
       )}
     </article>
@@ -99,8 +98,8 @@ export default function HistoriasDoDia() {
         <section className="rounded-[26px] border-2 border-amber-200 bg-white/80 shadow-md p-5 mb-6 text-center">
           <h2 className="font-display text-2xl font-extrabold text-amber-950 mb-1">📖 Histórias do dia</h2>
           <p className="font-body text-sm text-amber-900">
-            Todo dia você encontra <strong>duas histórias diferentes</strong> da Bíblia para ler, conversar em família
-           . Volte amanhã: as histórias mudam dia após dia!
+             Todo dia você encontra <strong>duas histórias diferentes</strong> da Bíblia para ler e conversar em família.
+             Volte amanhã: as histórias mudam dia após dia!
           </p>
         </section>
 

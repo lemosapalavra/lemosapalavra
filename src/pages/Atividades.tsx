@@ -362,7 +362,10 @@ function dayOfYear(d = new Date()) {
 /* ========================================================= */
 
 export default function Atividades() {
-  const [activeGame, setActiveGame] = useState<string | null>(null);
+  const [activeGame, setActiveGame] = useState<string | null>(() => {
+    const game = new URLSearchParams(window.location.search).get("jogo");
+    return ["quiz", "memory", "maze", "jigsaw", "wordbuilder"].includes(game || "") ? game : null;
+  });
   const [celebration, setCelebration] = useState({ show: false, message: "", coins: 0, emoji: "🏆" });
   const isAdmin = useIsAdmin();
   const [showAccessConfig, setShowAccessConfig] = useState(false);
