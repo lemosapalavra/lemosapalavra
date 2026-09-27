@@ -19,6 +19,8 @@ const Login = lazy(() => import("./pages/Login.tsx"));
 const Biblia = lazy(() => import("./pages/Biblia.tsx"));
 const Louvores = lazy(() => import("./pages/Louvores.tsx"));
 const HistoriasDoDia = lazy(() => import("./pages/HistoriasDoDia.tsx"));
+const Devocionais = lazy(() => import("./pages/Devocionais.tsx"));
+const Jogos = lazy(() => import("./pages/Jogos.tsx"));
 const PedidosOracao = lazy(() => import("./pages/PedidosOracao.tsx"));
 const Atividades = lazy(() => import("./pages/Atividades.tsx"));
 const Album = lazy(() => import("./pages/Album.tsx"));
@@ -44,7 +46,9 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
   "/login": { title: "Entrar — Lemos a Palavra", description: "Acesse sua conta para acompanhar seu progresso e figurinhas." },
   "/biblia": { title: "Bíblia — Lemos a Palavra", description: "Leia a Bíblia (Almeida) com resumos temáticos e dicionário bíblico." },
   "/louvores": { title: "Louvores — Lemos a Palavra", description: "Vídeos de louvor infantil para toda a família." },
-  "/historias-do-dia": { title: "Histórias Bíblicas Infantis — Lemos a Palavra", description: "Duas histórias bíblicas novas por dia para crianças, com desenho para colorir." },
+  "/historias-do-dia": { title: "Histórias Bíblicas Infantis — Lemos a Palavra", description: "Duas histórias bíblicas novas por dia para crianças." },
+  "/devocionais": { title: "Devocionais — Lemos a Palavra", description: "Devocionais diários ilustrados com desenho para colorir." },
+  "/jogos": { title: "Jogos Bíblicos — Lemos a Palavra", description: "Jogos bíblicos interativos e atividades para a família." },
   "/pedidos-oracao": { title: "Pedidos de Oração — Lemos a Palavra", description: "Envie e acompanhe pedidos de oração com carinho." },
   "/atividades": { title: "Atividades — Lemos a Palavra", description: "Jogos interativos: colorir, caça-palavras, memória e quebra-cabeça." },
   "/album": { title: "Álbum de Figurinhas — Lemos a Palavra", description: "Colecione figurinhas bíblicas com raridades e molduras especiais." },
@@ -246,7 +250,8 @@ const App = () => (
               <Route path="/biblia" element={<Biblia />} />
               <Route path="/louvores" element={<Louvores />} />
               <Route path="/historias-do-dia" element={<HistoriasDoDia />} />
-              <Route path="/devocionais" element={<HistoriasDoDia />} />
+               <Route path="/devocionais" element={<Devocionais />} />
+               <Route path="/jogos" element={<Jogos />} />
               <Route path="/pedidos-oracao" element={<PedidosOracao />} />
               <Route path="/atividades" element={<Atividades />} />
               <Route path="/album" element={<Album />} />
