@@ -226,21 +226,21 @@ export default function Album() {
       >
         <PageHeader title="Álbum" />
         <div className="flex-1 flex flex-col items-center justify-start px-4 pt-32 sm:pt-36 pb-8 text-center gap-4 w-full overflow-y-auto">
-          <div className="flex flex-row items-start justify-center gap-4 sm:gap-8 flex-wrap">
-          <div className="relative">
+          <div className="flex flex-row items-start justify-center gap-5 sm:gap-8 flex-wrap">
+          <div className="flex flex-col items-center w-[min(42vw,260px)] min-w-[135px] gap-2">
             <img loading="lazy" decoding="async"
               src={albumCapa}
               alt="Capa do Álbum Heróis da Bíblia — Volume I"
               title="Volume I — toque para abrir o álbum"
-              className="max-h-[30vh] sm:max-h-[38vh] w-auto rounded-2xl shadow-2xl border-4 border-amber-300 animate-[coverFloat_3.6s_ease-in-out_infinite]"
+              className="max-h-[30vh] sm:max-h-[38vh] max-w-full w-auto object-contain rounded-2xl shadow-2xl border-4 border-amber-300 animate-[coverFloat_3.6s_ease-in-out_infinite]"
             />
-            <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] sm:text-xs font-display font-extrabold bg-amber-300 text-amber-950 px-2 py-0.5 rounded-full shadow border border-white">
+             <span className="text-xs font-display font-extrabold bg-amber-300 text-amber-950 px-3 py-1 rounded-full shadow border border-white">
               Volume I
             </span>
 
             {/* Completion banner */}
             {completed && (
-              <div className="absolute left-1/2 -translate-x-1/2 -bottom-5 w-[92%] bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-500 text-amber-950 font-display font-extrabold text-center px-3 py-2 rounded-2xl shadow-2xl border-2 border-white animate-[albumTitle_2.4s_ease-in-out_infinite]">
+               <div className="w-full bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-500 text-amber-950 font-display font-extrabold text-center px-3 py-2 rounded-md shadow-2xl border-2 border-white">
                 <div className="text-sm sm:text-base">🏆 Parabéns{userName ? `, ${userName}` : ""}!</div>
                 <div className="text-[10px] sm:text-xs font-bold leading-tight opacity-90">
                   Você completou o Volume I — em breve, Volume II com muitas novidades!
@@ -258,7 +258,7 @@ export default function Album() {
 
           {/* Volume II — em preto e branco, liberado só ao concluir o Volume I */}
           <div
-            className="relative"
+             className="flex flex-col items-center w-[min(42vw,260px)] min-w-[135px] gap-2"
             onClick={(e) => {
               e.stopPropagation();
               toast(completed
@@ -270,15 +270,15 @@ export default function Album() {
               src={capaVol2.url}
               alt="Capa do Álbum Volume II (bloqueado)"
               title={completed ? "Volume II — em breve" : "Volume II — complete o Volume I para liberar"}
-              className={`max-h-[30vh] sm:max-h-[38vh] w-auto rounded-2xl shadow-2xl border-4 border-stone-400 grayscale ${completed ? "opacity-90" : "opacity-60"}`}
+               className={`max-h-[30vh] sm:max-h-[38vh] max-w-full w-auto object-contain rounded-2xl shadow-2xl border-4 border-stone-400 grayscale ${completed ? "opacity-90" : "opacity-60"}`}
             />
-            <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] sm:text-xs font-display font-extrabold bg-stone-300 text-stone-800 px-2 py-0.5 rounded-full shadow border border-white">
+             <span className="text-xs font-display font-extrabold bg-stone-300 text-stone-800 px-3 py-1 rounded-full shadow border border-white">
               Volume II
             </span>
             {!completed && (
-              <span className="absolute inset-0 z-10 flex items-center justify-center"><span className="bg-white/90 rounded-full w-14 h-14 flex items-center justify-center text-3xl shadow-lg border-2 border-stone-400">🔒</span></span>
+               <span className="font-display text-sm text-stone-100" aria-label="Bloqueado">🔒 Bloqueado</span>
             )}
-            <p className="mt-2 mx-auto max-w-[16rem] font-display text-[11px] sm:text-xs font-extrabold text-stone-100 bg-stone-800/70 rounded-xl px-2 py-1 border border-stone-500">
+             <p className="max-w-[16rem] font-display text-[11px] sm:text-xs font-extrabold text-stone-100 bg-stone-800/70 rounded-md px-2 py-1 border border-stone-500">
               {completed
                 ? "✅ Volume I concluído — Volume II chegando em breve!"
                 : "🔒 O Volume II só será liberado depois que você concluir o Volume I."}
