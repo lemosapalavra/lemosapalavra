@@ -5,6 +5,12 @@ import CelebrationAnimation from "@/components/CelebrationAnimation";
 import CoinBadge from "@/components/CoinBadge";
 import { COINS } from "@/data/coinRewards";
 import { saveToMural } from "@/lib/mural";
+import imgDavi from "@/assets/historia-davi-golias.png";
+import imgNoe from "@/assets/historia-noe-1.png";
+import imgMoises from "@/assets/historia-moises-1.png";
+import imgCriacao from "@/assets/historia-criacao.png";
+import imgAdaoEva from "@/assets/historia-adao-eva-1.png";
+import imgMandamentos from "@/assets/historia-10-mandamentos.png";
 
 type Props = {
   onBack: () => void;
@@ -14,55 +20,55 @@ type Props = {
   bgStyle: React.CSSProperties;
 };
 
-type Pair = { id: string; phrase: string; emoji: string; label: string };
+type Pair = { id: string; phrase: string; image: string; label: string };
 
 const sheets: { id: string; title: string; emoji: string; pairs: Pair[] }[] = [
   {
     id: "amor", title: "Amor", emoji: "❤️",
     pairs: [
-      { id: "a1", phrase: "Amar é cuidar de quem precisa", emoji: "🤝", label: "Ajudar o amigo" },
-      { id: "a2", phrase: "Amar é dividir o que eu tenho", emoji: "🍞", label: "Dividir o lanche" },
-      { id: "a3", phrase: "Amar é abraçar a família", emoji: "👨‍👩‍👧", label: "Abraço em família" },
+      { id: "a1", phrase: "O jovem que confiou em Deus para enfrentar Golias", image: imgDavi, label: "Davi e Golias" },
+      { id: "a2", phrase: "Construiu uma grande arca obedecendo a Deus", image: imgNoe, label: "Noé e a Arca" },
+      { id: "a3", phrase: "Conduziu o povo pelo mar que Deus abriu", image: imgMoises, label: "Moisés" },
     ],
   },
   {
     id: "alegria", title: "Alegria", emoji: "😀",
     pairs: [
-      { id: "b1", phrase: "Alegria é louvar a Deus cantando", emoji: "🎵", label: "Cantar louvores" },
-      { id: "b2", phrase: "Alegria é brincar com os amigos", emoji: "⚽", label: "Brincar junto" },
-      { id: "b3", phrase: "Alegria é agradecer todos os dias", emoji: "🙌", label: "Dar graças" },
+      { id: "b1", phrase: "Deus criou o céu, a terra e todos os animais", image: imgCriacao, label: "A Criação" },
+      { id: "b2", phrase: "Foram o primeiro homem e a primeira mulher", image: imgAdaoEva, label: "Adão e Eva" },
+      { id: "b3", phrase: "Deus entregou suas leis em tábuas de pedra", image: imgMandamentos, label: "Dez Mandamentos" },
     ],
   },
   {
     id: "paz", title: "Paz", emoji: "🕊️",
     pairs: [
-      { id: "c1", phrase: "Paz é fazer as pazes depois da briga", emoji: "🤗", label: "Pedir desculpa" },
-      { id: "c2", phrase: "Paz é orar quando fico com medo", emoji: "🙏", label: "Orar a Deus" },
-      { id: "c3", phrase: "Paz é falar com carinho", emoji: "💬", label: "Palavras boas" },
+      { id: "c1", phrase: "Venceu um gigante usando uma funda", image: imgDavi, label: "Davi" },
+      { id: "c2", phrase: "Reuniu sua família e os animais na arca", image: imgNoe, label: "Noé" },
+      { id: "c3", phrase: "Recebeu os mandamentos no monte", image: imgMandamentos, label: "Moisés" },
     ],
   },
   {
     id: "paciencia", title: "Paciência", emoji: "⏳",
     pairs: [
-      { id: "d1", phrase: "Paciência é esperar a minha vez", emoji: "🧍", label: "Esperar na fila" },
-      { id: "d2", phrase: "Paciência é tentar outra vez", emoji: "🔁", label: "Não desistir" },
-      { id: "d3", phrase: "Paciência é ouvir sem interromper", emoji: "👂", label: "Saber ouvir" },
+      { id: "d1", phrase: "Esperou o dilúvio terminar confiando em Deus", image: imgNoe, label: "Noé na Arca" },
+      { id: "d2", phrase: "Confiou em Deus diante de um inimigo muito maior", image: imgDavi, label: "Davi corajoso" },
+      { id: "d3", phrase: "Guiou o povo de Deus pelo deserto", image: imgMoises, label: "Moisés no deserto" },
     ],
   },
   {
     id: "bondade", title: "Bondade", emoji: "🎁",
     pairs: [
-      { id: "e1", phrase: "Bondade é dar de presente", emoji: "🎁", label: "Presentear" },
-      { id: "e2", phrase: "Bondade é visitar quem está doente", emoji: "🏥", label: "Visitar" },
-      { id: "e3", phrase: "Bondade é cuidar dos animais", emoji: "🐶", label: "Cuidar" },
+      { id: "e1", phrase: "Deus fez um mundo bom e cheio de vida", image: imgCriacao, label: "Mundo criado por Deus" },
+      { id: "e2", phrase: "Deus cuidou de uma família durante o dilúvio", image: imgNoe, label: "Família de Noé" },
+      { id: "e3", phrase: "Deus libertou seu povo da escravidão", image: imgMoises, label: "Libertação com Moisés" },
     ],
   },
   {
     id: "dominio", title: "Domínio Próprio", emoji: "🙏",
     pairs: [
-      { id: "f1", phrase: "Domínio próprio é respirar e se acalmar", emoji: "😮‍💨", label: "Respirar fundo" },
-      { id: "f2", phrase: "Domínio próprio é não gritar quando fico bravo", emoji: "🤐", label: "Falar baixinho" },
-      { id: "f3", phrase: "Domínio próprio é guardar para depois", emoji: "🍬", label: "Esperar o doce" },
+      { id: "f1", phrase: "As orientações de Deus ensinam escolhas corretas", image: imgMandamentos, label: "Mandamentos" },
+      { id: "f2", phrase: "Deus criou as pessoas para cuidar do mundo", image: imgAdaoEva, label: "Adão e Eva" },
+      { id: "f3", phrase: "A coragem pode caminhar junto com a fé", image: imgDavi, label: "Davi e Golias" },
     ],
   },
 ];
@@ -195,7 +201,7 @@ export default function ConnectMatchGame({ onBack, celebrate, celebration, close
                     className={`flex items-center gap-2 rounded-2xl border-2 px-3 py-3 min-h-[68px] transition
                       ${ok ? "bg-emerald-50 border-emerald-500" : "bg-white border-amber-200 hover:border-primary"}`}
                   >
-                    <span className="text-2xl sm:text-3xl">{p.emoji}</span>
+                     <img src={p.image} alt="" loading="lazy" className="h-12 w-12 sm:h-16 sm:w-16 shrink-0 rounded-md object-contain bg-background" />
                     <span className="font-display font-bold text-[11px] sm:text-sm text-foreground text-left">{p.label}</span>
                   </button>
                 );
@@ -231,7 +237,7 @@ export default function ConnectMatchGame({ onBack, celebrate, celebration, close
               ctx.font = "20px sans-serif";
               sheet.pairs.forEach((p, i) => {
                 ctx.fillStyle = "#16a34a";
-                ctx.fillText(`${p.emoji}  ${p.phrase}`, 24, 110 + i * 46);
+                 ctx.fillText(`${p.label} — ${p.phrase}`, 24, 110 + i * 46);
               });
               saveToMural({ title: `Ligue os Pontos · ${sheet.title}`, image: c.toDataURL("image/png"), activity: "Ligue os Pontos" });
               toast.success("Pregado no Meu Mural! 🖼️");

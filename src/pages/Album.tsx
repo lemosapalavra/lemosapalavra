@@ -268,6 +268,7 @@ export default function Album() {
 >
             <img loading="lazy" decoding="async"
               src={capaVol2.url}
+              onError={(event) => { event.currentTarget.src = albumCapa; }}
               alt="Capa do Álbum Volume II (bloqueado)"
               title={completed ? "Volume II — em breve" : "Volume II — complete o Volume I para liberar"}
                className={`max-h-[30vh] sm:max-h-[38vh] max-w-full w-auto object-contain rounded-2xl shadow-2xl border-4 border-stone-400 grayscale ${completed ? "opacity-90" : "opacity-60"}`}

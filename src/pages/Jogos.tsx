@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
-import iconJogos from "@/assets/home/icone-jogos.png.asset.json";
+import iconJogos from "@/assets/home/icon-jogos.png";
 import domino from "@/assets/jogos/domino.webp.asset.json";
 import memoria from "@/assets/jogos/memoria.webp.asset.json";
 import mico from "@/assets/jogos/mico.webp.asset.json";
@@ -33,7 +33,7 @@ const printGames = [
 export default function Jogos() {
   return <main className="min-h-screen bg-background px-4 pb-24">
     <div className="mx-auto max-w-5xl">
-      <PageHeader title="Jogos" icon={iconJogos.url} />
+      <PageHeader title="Jogos" icon={iconJogos} />
       <h1 className="font-display text-3xl font-extrabold text-center text-foreground mt-5 mb-6">Jogos Bíblicos</h1>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5">
         {games.map((game) => <Link key={game.title} to={game.path} className="flex flex-col overflow-hidden border-2 border-border rounded-md bg-card shadow-sm transition-transform hover:-translate-y-1 focus-visible:ring-2 focus-visible:ring-ring">
