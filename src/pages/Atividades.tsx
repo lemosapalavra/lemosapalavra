@@ -16,6 +16,7 @@ import MazeTraceGame from "@/components/games/MazeTraceGame";
 import WordGridGame from "@/components/games/WordGridGame";
 import ConnectMatchGame from "@/components/games/ConnectMatchGame";
 import { suppliedPuzzles } from "@/data/jogosPuzzles";
+import { dailyActivities } from "@/lib/activityRotation";
 import ActivityAccessConfig from "@/components/ActivityAccessConfig";
 import { allowedActivityIds } from "@/lib/activityAccess";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
@@ -439,22 +440,21 @@ export default function Atividades() {
   ];
 
 
-  // Atividades do dia: sempre 5 atividades. A janela desliza 5 posições por
-  // dia, então as demais atividades entram nos dias seguintes, sem repetir
-  // sempre o mesmo conjunto.
+  // Atividades do dia: o Construtor permanece disponível; as outras quatro
+  // avançam uma posição por dia para que nenhuma atividade fique escondida.
   const activities = useMemo(() => {
     // Filtro do administrador: atividades liberadas para a faixa etária do usuário.
     const allowed = allowedActivityIds();
     const pool = allowed ? allActivities.filter((a) => allowed.includes(a.id)) : allActivities;
-    if (!pool.length) return [];
-    const pinned = pool.filter((a) => a.id === "wordbuilder");
-    const rest = pool.filter((a) => a.id !== "wordbuilder");
-    const total = rest.length;
-    if (!total) return pinned;
-    const offset = (dayOfYear(new Date()) * 4) % total;
-    const take = Math.min(pinned.length ? 4 : 5, total);
-    const rotating = Array.from({ length: take }, (_, i) => rest[(offset + i) % total]);
-    return [...pinned, ...rotating];
+    const selected = dailyActivities(pool, dayOfYear(new Date()));
+    if (import.meta.env.DEV) {
+      console.info("[Atividades do dia]", {
+        day: dayOfYear(new Date()),
+        indexes: selected.map((activity) => pool.findIndex((item) => item.id === activity.id)),
+        ids: selected.map((activity) => activity.id),
+      });
+    }
+    return selected;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessVersion]);
 
