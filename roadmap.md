@@ -15,4 +15,4 @@
 - [x] Separar Histórias de Devocionais e adicionar 30 dias de pintura salva, desfazer e mural.
 - [x] Reorganizar capas e textos dos dois volumes do Álbum.
 - [x] Criar página Jogos com jogos bíblicos do anexo e reutilizar atividades existentes.
-- [ ] Corrigir imagens do Ligue os Pontos e Construtor; verificar desktop e celular.
+- [x] Corrigir imagens do Ligue os Pontos e Construtor; verificar desktop e celular.
