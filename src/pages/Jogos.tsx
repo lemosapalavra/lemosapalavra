@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
-import iconJogos from "@/assets/home/icone-jogos.png.asset.json";
+import iconJogos from "@/assets/home/icone-jogos-2.png.asset.json";
 import domino from "@/assets/jogos/domino.webp.asset.json";
 import memoria from "@/assets/jogos/memoria.webp.asset.json";
 import mico from "@/assets/jogos/mico.webp.asset.json";

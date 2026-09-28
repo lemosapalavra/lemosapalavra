@@ -4,7 +4,7 @@ import iconAtividades from "@/assets/home/icon-atividades-upload.png.asset.json"
 import iconOracao from "@/assets/home/icon-oracao-upload.png.asset.json";
 import iconDevocionais from "@/assets/home/icon-devocionais-upload.png.asset.json";
 import iconAlbum from "@/assets/home/icon-album-upload.png.asset.json";
-import iconJogos from "@/assets/home/icone-jogos.png.asset.json";
+import iconJogos from "@/assets/home/icone-jogos-2.png.asset.json";
 
 export interface OrbitItem {
   icon: string;
