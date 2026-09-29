@@ -87,6 +87,12 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
          .orbit-area { --orbit-radius: clamp(112px, 31vw, 132px); }
         @media (min-width: 640px) { .orbit-area { --orbit-radius: clamp(125px, 27vw, 155px); } }
         @media (min-width: 1024px) { .orbit-area { --orbit-radius: clamp(205px, 32vw, 290px); } }
+        @keyframes orbitSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .orbit-spin { animation: orbitSpin 90s linear infinite; }
+        .orbit-spin-rev { animation: orbitSpin 90s linear infinite reverse; }
+        .orbit-area:hover .orbit-spin, .orbit-area:hover .orbit-spin-rev,
+        .orbit-area:focus-within .orbit-spin, .orbit-area:focus-within .orbit-spin-rev { animation-play-state: paused; }
+        @media (prefers-reduced-motion: reduce) { .orbit-spin, .orbit-spin-rev { animation: none; } }
       `}</style>
     </div>
   );
