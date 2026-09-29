@@ -1,10 +1,10 @@
 import iconAssistir from "@/assets/home/icon-assistir-upload.png.asset.json";
-import iconHistorias from "@/assets/home/icon-historias-upload.png.asset.json";
-import iconAtividades from "@/assets/home/icon-atividades-upload.png.asset.json";
+import iconEstudo from "@/assets/home/icon-estudo-biblico.png";
+import iconAtividades from "@/assets/home/icon-atividades-v2.png";
 import iconOracao from "@/assets/home/icon-oracao-upload.png.asset.json";
 import iconDevocionais from "@/assets/home/icon-devocionais-upload.png.asset.json";
 import iconAlbum from "@/assets/home/icon-album-upload.png.asset.json";
-import iconJogos from "@/assets/home/icon-jogos.png";
+import iconJogos from "@/assets/home/icon-jogos-v2.png";
 
 export interface OrbitItem {
   icon: string;
@@ -13,13 +13,13 @@ export interface OrbitItem {
   route: string;
 }
 
-const KEY = "lemos_orbit_config_v7";
+const KEY = "lemos_orbit_config_v8";
 
 export function defaultOrbit(): OrbitItem[] {
   return [
     { icon: iconAssistir.url, label: "ASSISTIR", route: "/lemosplay" },
-    { icon: iconHistorias.url, label: "HISTÓRIAS BÍBLICAS", route: "/historias-do-dia" },
-    { icon: iconAtividades.url, label: "ATIVIDADES", route: "/atividades" },
+    { icon: iconEstudo, label: "ESTUDO BÍBLICO", route: "/historias-do-dia" },
+    { icon: iconAtividades, label: "ATIVIDADES", route: "/atividades" },
     { icon: iconJogos, label: "JOGOS", route: "/jogos" },
     { icon: iconOracao.url, label: "ORAÇÃO", route: "/pedidos-oracao" },
     { icon: iconDevocionais.url, label: "DEVOCIONAIS", route: "/devocionais" },

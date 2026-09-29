@@ -35,7 +35,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
       )}
 
       <div className="relative orbit-area w-[min(94vw,330px)] h-[min(94vw,330px)] sm:w-[min(90vw,400px)] sm:h-[min(90vw,400px)] lg:w-[min(92vw,720px)] lg:h-[min(92vw,720px)]">
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 orbit-spin">
           {items.map((item, i) => {
             const angle = (360 / items.length) * i - 90;
             return (
@@ -44,7 +44,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                 className="absolute top-1/2 left-1/2"
                 style={{ transform: `translate(-50%, -50%) rotate(${angle}deg) translate(var(--orbit-radius)) rotate(${-angle}deg)` }}
               >
-                <div>
+                <div className="orbit-spin-rev">
                   <button
                     type="button"
                     onClick={() => isAuthenticated && onItemClick?.(item.label)}
@@ -87,6 +87,12 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
          .orbit-area { --orbit-radius: clamp(112px, 31vw, 132px); }
         @media (min-width: 640px) { .orbit-area { --orbit-radius: clamp(125px, 27vw, 155px); } }
         @media (min-width: 1024px) { .orbit-area { --orbit-radius: clamp(205px, 32vw, 290px); } }
+        @keyframes orbitSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .orbit-spin { animation: orbitSpin 90s linear infinite; }
+        .orbit-spin-rev { animation: orbitSpin 90s linear infinite reverse; }
+        .orbit-area:hover .orbit-spin, .orbit-area:hover .orbit-spin-rev,
+        .orbit-area:focus-within .orbit-spin, .orbit-area:focus-within .orbit-spin-rev { animation-play-state: paused; }
+        @media (prefers-reduced-motion: reduce) { .orbit-spin, .orbit-spin-rev { animation: none; } }
       `}</style>
     </div>
   );
