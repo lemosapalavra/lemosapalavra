@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import lia1 from "@/assets/lia-1.png.asset.json";
-import lia2 from "@/assets/lia-2.png.asset.json";
+import lia1 from "@/assets/lia-1-fallback.png";
+import lia2 from "@/assets/lia-2-fallback.png";
 
 /**
  * LIA — mascote guia do site.
@@ -92,7 +92,7 @@ export default function MascoteLia() {
     ? LOGIN_TIP
     : (context && CONTEXT_TIPS[context]) || PAGE_TIPS[location.pathname] || PAGE_TIPS["/"];
 
-  const avatar = isHome && !context ? lia1.url : lia2.url;
+  const avatar = isHome && !context ? lia1 : lia2;
 
 
   if (!expanded) {
