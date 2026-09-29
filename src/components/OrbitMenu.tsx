@@ -35,7 +35,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
       )}
 
       <div className="relative orbit-area w-[min(94vw,330px)] h-[min(94vw,330px)] sm:w-[min(90vw,400px)] sm:h-[min(90vw,400px)] lg:w-[min(92vw,720px)] lg:h-[min(92vw,720px)]">
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 orbit-spin">
           {items.map((item, i) => {
             const angle = (360 / items.length) * i - 90;
             return (
@@ -44,7 +44,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                 className="absolute top-1/2 left-1/2"
                 style={{ transform: `translate(-50%, -50%) rotate(${angle}deg) translate(var(--orbit-radius)) rotate(${-angle}deg)` }}
               >
-                <div>
+                <div className="orbit-spin-rev">
                   <button
                     type="button"
                     onClick={() => isAuthenticated && onItemClick?.(item.label)}
