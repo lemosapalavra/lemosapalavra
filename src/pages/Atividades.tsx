@@ -17,9 +17,7 @@ import WordGridGame from "@/components/games/WordGridGame";
 import ConnectMatchGame from "@/components/games/ConnectMatchGame";
 import { suppliedPuzzles } from "@/data/jogosPuzzles";
 import { dailyActivities } from "@/lib/activityRotation";
-import ActivityAccessConfig from "@/components/ActivityAccessConfig";
 import { allowedActivityIds } from "@/lib/activityAccess";
-import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { toast } from "sonner";
 import PageHeader from "@/components/PageHeader";
 import CelebrationAnimation from "@/components/CelebrationAnimation";
@@ -370,8 +368,6 @@ export default function Atividades() {
     return ["quiz", "memory", "maze", "jigsaw", "wordbuilder"].includes(game || "") ? game : null;
   });
   const [celebration, setCelebration] = useState({ show: false, message: "", coins: 0, emoji: "🏆" });
-  const isAdmin = useIsAdmin();
-  const [showAccessConfig, setShowAccessConfig] = useState(false);
   const [accessVersion, setAccessVersion] = useState(0);
 
   useEffect(() => {
@@ -510,24 +506,6 @@ export default function Atividades() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-start px-4 pt-0 pb-8" style={bgStyle}>
       <PageHeader title="Atividades Educacionais" icon={iconAtividades} />
-
-      {isAdmin && (
-        <div className="w-full max-w-3xl flex justify-end mb-1">
-          <button
-            onClick={() => setShowAccessConfig(true)}
-            title="Configurar atividades por faixa etária (somente administrador)"
-            aria-label="Configurar atividades por faixa etária"
-            className="w-11 h-11 rounded-full bg-white/90 border-2 border-amber-300 shadow flex items-center justify-center text-xl hover:scale-105 transition"
-          >
-            ⚙️
-          </button>
-        </div>
-      )}
-      <ActivityAccessConfig
-        open={showAccessConfig}
-        onClose={() => setShowAccessConfig(false)}
-        activities={allActivities.map((a) => ({ id: a.id, title: a.title }))}
-      />
 
       {activities.length === 0 && (
         <p className="font-body text-sm text-muted-foreground text-center my-8">
