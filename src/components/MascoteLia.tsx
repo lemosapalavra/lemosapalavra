@@ -130,7 +130,7 @@ export default function MascoteLia() {
         <img
           src={avatar}
           alt="LIA, a mascote que ajuda você a navegar"
-          className="w-24 sm:w-28 h-auto drop-shadow-xl animate-[liaFloat_3.4s_ease-in-out_infinite] select-none"
+          className="w-16 sm:w-20 h-auto drop-shadow-xl animate-[liaFloat_3.4s_ease-in-out_infinite] select-none"
           draggable={false}
         />
         <span className="mt-1 block font-display font-extrabold text-xs sm:text-sm text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap">
