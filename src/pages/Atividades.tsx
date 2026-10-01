@@ -85,6 +85,7 @@ import cacaNovo2 from "@/assets/cacapalavras-novo/caca-2.webp.asset.json";
 import cacaNovo3 from "@/assets/cacapalavras-novo/caca-3.webp.asset.json";
 import cacaNovo4 from "@/assets/cacapalavras-novo/caca-4.webp.asset.json";
 import { saveToMural } from "@/lib/mural";
+import { historias } from "@/data/historiasBiblicas";
 
 // COLORIR — desenhos só de contorno (uploads do usuário)
 import colorAbraao from "@/assets/colorir/abraao.jpg";
@@ -145,19 +146,28 @@ const quizBank: QuizQ[] = [
 /* Helper: choose a biblical illustration for a quiz question based on keywords */
 function quizImageFor(q: string, cat: string): string {
   const s = q.toLowerCase();
-  if (/no[ée]|arca|dilúvio/.test(s)) return imgNoe;
-  if (/davi|gol[ií]as|gigante/.test(s)) return imgDavi;
-  if (/mois[ée]s|fara[óo]|mar vermelho|sinai|mandamento/.test(s)) return /mandamento/.test(s) ? imgMandamentos : imgMoises;
-  if (/cria[çc][ãa]o|princ[ií]pio|verbo|gênesis|genesis/.test(s)) return imgCriacao;
-  if (/ad[ãa]o|eva|[ée]den|serpente|jardim/.test(s)) return imgAdaoEva;
-  if (/abra[ãa]o|sara|isaque|f[ée] do pai/.test(s)) return imgAdaoEva;
-  if (/jonas|peixe|baleia/.test(s)) return imgNoe2;
-  if (/sans[ãa]o|cabelo/.test(s)) return imgDavi;
-  if (/jos[ée]|sonh|fara[óo]/.test(s)) return imgMoises2;
-  if (/daniel|le[õo]es|cova/.test(s)) return imgMandamentos;
-  if (/salom[ãa]o|sabedoria|rei/.test(s)) return imgMandamentos;
-  if (/jesus|cristo|bel[ée]m|natal|jo[ãa]o batista|disc[ií]pulo|pedro|paulo|judas|ressurrei|p[ãa]es|milagre|caminho/.test(s)) return imgCriacao;
-  return cat === "NT" ? imgCriacao : imgMandamentos;
+  const byId = (id: number) => historias[id - 1]?.imagem ?? imgCriacao;
+  if (/no[ée]|arca|dilúvio/.test(s)) return byId(3);
+  if (/davi|gol[ií]as|gigante/.test(s)) return byId(25);
+  if (/daniel|le[õo]es|cova/.test(s)) return byId(32);
+  if (/jonas|peixe|baleia/.test(s)) return byId(31);
+  if (/sans[ãa]o|cabelo/.test(s)) return byId(22);
+  if (/jos[ée]|sonho|fara[óo]|fartura|fome/.test(s)) return byId(9);
+  if (/abra[ãa]o|pai da f[ée]/.test(s)) return byId(5);
+  if (/sara|esposa de abra|isaque/.test(s)) return byId(6);
+  if (/jac[óo]|tribos/.test(s)) return byId(7);
+  if (/mois[ée]s|mar vermelho/.test(s)) return byId(16);
+  if (/mandamento|sinai|ar[ãa]o/.test(s)) return byId(17);
+  if (/bel[ée]m|nasceu|natal/.test(s)) return byId(37);
+  if (/batizou|jo[ãa]o batista|jord[ãa]o/.test(s)) return byId(40);
+  if (/disc[ií]pulo|ap[óo]stolo|pedro|paulo/.test(s)) return byId(42);
+  if (/p[ãa]es|5 mil|multiplic/.test(s)) return byId(47);
+  if (/ressusc|terceiro dia/.test(s)) return byId(45);
+  if (/judas|traiu|moedas de prata/.test(s)) return byId(52);
+  if (/jesus|cristo|milagre|caminho|verdade|vida|céus/.test(s)) return byId(51);
+  if (/cria[çc][ãa]o|princ[ií]pio|verbo|g[eê]nesis/.test(s)) return byId(1);
+  if (/fruto do esp[ií]rito|amor|alegria|bondade/.test(s)) return byId(51);
+  return cat === "NT" ? byId(42) : byId(36);
 }
 
 const quizCategories = [
