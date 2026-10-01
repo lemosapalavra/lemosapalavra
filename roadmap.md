@@ -21,4 +21,4 @@
 - [x] Exibir todos os 30 devocionais em página inteira, mantendo pintura, desfazer e mural.
 - [x] Centralizar configurações de conteúdo por faixa etária em página exclusiva do administrador.
 - [x] Remover jogos para imprimir e criar menu orbital próprio para os Jogos Bíblicos.
-- [ ] Validar as mudanças em desktop, tablet e celular.
+- [x] Validar as mudanças em desktop, tablet e celular.
