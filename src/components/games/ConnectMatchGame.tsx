@@ -5,12 +5,7 @@ import CelebrationAnimation from "@/components/CelebrationAnimation";
 import CoinBadge from "@/components/CoinBadge";
 import { COINS } from "@/data/coinRewards";
 import { saveToMural } from "@/lib/mural";
-import imgDavi from "@/assets/historia-davi-golias.png";
-import imgNoe from "@/assets/historia-noe-1.png";
-import imgMoises from "@/assets/historia-moises-1.png";
-import imgCriacao from "@/assets/historia-criacao.png";
-import imgAdaoEva from "@/assets/historia-adao-eva-1.png";
-import imgMandamentos from "@/assets/historia-10-mandamentos.png";
+import { historias } from "@/data/historiasBiblicas";
 
 type Props = {
   onBack: () => void;
@@ -22,53 +17,55 @@ type Props = {
 
 type Pair = { id: string; phrase: string; image: string; label: string };
 
+const storyImage = (id: number) => historias[id - 1]?.imagem ?? "";
+
 const sheets: { id: string; title: string; emoji: string; pairs: Pair[] }[] = [
   {
     id: "amor", title: "Amor", emoji: "❤️",
     pairs: [
-      { id: "a1", phrase: "O jovem que confiou em Deus para enfrentar Golias", image: imgDavi, label: "Davi e Golias" },
-      { id: "a2", phrase: "Construiu uma grande arca obedecendo a Deus", image: imgNoe, label: "Noé e a Arca" },
-      { id: "a3", phrase: "Conduziu o povo pelo mar que Deus abriu", image: imgMoises, label: "Moisés" },
+      { id: "a1", phrase: "O jovem que confiou em Deus para enfrentar Golias", image: storyImage(25), label: "Davi e Golias" },
+      { id: "a2", phrase: "Construiu uma grande arca obedecendo a Deus", image: storyImage(3), label: "Noé e a Arca" },
+      { id: "a3", phrase: "Conduziu o povo pelo mar que Deus abriu", image: storyImage(16), label: "Moisés e o Mar Vermelho" },
     ],
   },
   {
     id: "alegria", title: "Alegria", emoji: "😀",
     pairs: [
-      { id: "b1", phrase: "Deus criou o céu, a terra e todos os animais", image: imgCriacao, label: "A Criação" },
-      { id: "b2", phrase: "Foram o primeiro homem e a primeira mulher", image: imgAdaoEva, label: "Adão e Eva" },
-      { id: "b3", phrase: "Deus entregou suas leis em tábuas de pedra", image: imgMandamentos, label: "Dez Mandamentos" },
+      { id: "b1", phrase: "Deus criou o céu, a terra e todos os animais", image: storyImage(1), label: "A Criação" },
+      { id: "b2", phrase: "Foram o primeiro homem e a primeira mulher", image: storyImage(2), label: "Adão e Eva" },
+      { id: "b3", phrase: "Deus entregou suas leis em tábuas de pedra", image: storyImage(17), label: "Dez Mandamentos" },
     ],
   },
   {
     id: "paz", title: "Paz", emoji: "🕊️",
     pairs: [
-      { id: "c1", phrase: "Venceu um gigante usando uma funda", image: imgDavi, label: "Davi" },
-      { id: "c2", phrase: "Reuniu sua família e os animais na arca", image: imgNoe, label: "Noé" },
-      { id: "c3", phrase: "Recebeu os mandamentos no monte", image: imgMandamentos, label: "Moisés" },
+      { id: "c1", phrase: "Venceu um gigante usando uma funda", image: storyImage(25), label: "Davi" },
+      { id: "c2", phrase: "Reuniu sua família e os animais na arca", image: storyImage(3), label: "Noé" },
+      { id: "c3", phrase: "Recebeu os mandamentos no monte", image: storyImage(17), label: "Moisés" },
     ],
   },
   {
     id: "paciencia", title: "Paciência", emoji: "⏳",
     pairs: [
-      { id: "d1", phrase: "Esperou o dilúvio terminar confiando em Deus", image: imgNoe, label: "Noé na Arca" },
-      { id: "d2", phrase: "Confiou em Deus diante de um inimigo muito maior", image: imgDavi, label: "Davi corajoso" },
-      { id: "d3", phrase: "Guiou o povo de Deus pelo deserto", image: imgMoises, label: "Moisés no deserto" },
+      { id: "d1", phrase: "Esperou o dilúvio terminar confiando em Deus", image: storyImage(3), label: "Noé na Arca" },
+      { id: "d2", phrase: "Confiou em Deus diante de um inimigo muito maior", image: storyImage(25), label: "Davi corajoso" },
+      { id: "d3", phrase: "Guiou o povo de Deus pelo deserto", image: storyImage(18), label: "Moisés no deserto" },
     ],
   },
   {
     id: "bondade", title: "Bondade", emoji: "🎁",
     pairs: [
-      { id: "e1", phrase: "Deus fez um mundo bom e cheio de vida", image: imgCriacao, label: "Mundo criado por Deus" },
-      { id: "e2", phrase: "Deus cuidou de uma família durante o dilúvio", image: imgNoe, label: "Família de Noé" },
-      { id: "e3", phrase: "Deus libertou seu povo da escravidão", image: imgMoises, label: "Libertação com Moisés" },
+      { id: "e1", phrase: "Deus fez um mundo bom e cheio de vida", image: storyImage(1), label: "Mundo criado por Deus" },
+      { id: "e2", phrase: "Deus cuidou de uma família durante o dilúvio", image: storyImage(3), label: "Família de Noé" },
+      { id: "e3", phrase: "Deus libertou seu povo da escravidão", image: storyImage(16), label: "Libertação com Moisés" },
     ],
   },
   {
     id: "dominio", title: "Domínio Próprio", emoji: "🙏",
     pairs: [
-      { id: "f1", phrase: "As orientações de Deus ensinam escolhas corretas", image: imgMandamentos, label: "Mandamentos" },
-      { id: "f2", phrase: "Deus criou as pessoas para cuidar do mundo", image: imgAdaoEva, label: "Adão e Eva" },
-      { id: "f3", phrase: "A coragem pode caminhar junto com a fé", image: imgDavi, label: "Davi e Golias" },
+      { id: "f1", phrase: "As orientações de Deus ensinam escolhas corretas", image: storyImage(17), label: "Mandamentos" },
+      { id: "f2", phrase: "Deus criou as pessoas para cuidar do mundo", image: storyImage(2), label: "Adão e Eva" },
+      { id: "f3", phrase: "A coragem pode caminhar junto com a fé", image: storyImage(25), label: "Davi e Golias" },
     ],
   },
 ];

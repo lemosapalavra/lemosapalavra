@@ -22,3 +22,5 @@
 - [x] Centralizar configurações de conteúdo por faixa etária em página exclusiva do administrador.
 - [x] Remover jogos para imprimir e criar menu orbital próprio para os Jogos Bíblicos.
 - [x] Validar as mudanças em desktop, tablet e celular.
+- [ ] Mostrar somente o devocional do dia com a pintura visível.
+- [ ] Tornar as imagens do Ligue os Pontos e Quiz Bíblico relacionadas a cada conteúdo.
