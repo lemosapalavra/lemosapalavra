@@ -18,9 +18,9 @@
 - [x] Corrigir imagens do Ligue os Pontos e Construtor; verificar desktop e celular.
 - [x] Atualizar os ícones de Estudo Bíblico, Atividades e Jogos com os anexos.
 - [x] Reativar a rotação orbital suave e padronizar LIA e avatar do usuário.
-- [x] Exibir todos os 30 devocionais em página inteira, mantendo pintura, desfazer e mural.
+- [x] Exibir somente o devocional do dia, mantendo pintura visível, desfazer e mural.
 - [x] Centralizar configurações de conteúdo por faixa etária em página exclusiva do administrador.
 - [x] Remover jogos para imprimir e criar menu orbital próprio para os Jogos Bíblicos.
 - [x] Validar as mudanças em desktop, tablet e celular.
-- [ ] Mostrar somente o devocional do dia com a pintura visível.
-- [ ] Tornar as imagens do Ligue os Pontos e Quiz Bíblico relacionadas a cada conteúdo.
+- [x] Mostrar somente o devocional do dia com a pintura visível.
+- [x] Tornar as imagens do Ligue os Pontos e Quiz Bíblico relacionadas a cada conteúdo.
