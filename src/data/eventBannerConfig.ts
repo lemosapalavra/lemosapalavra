@@ -3,6 +3,7 @@
 // e o link do vídeo pode ser atualizado pelo painel admin.
 
 import { monthInRange } from "@/data/trainBannerConfig";
+import bisVideo from "@/assets/14-bis/ele-e-o-meu-irmao/ele-e-o-meu-irmao.mp4.asset.json";
 
 export interface EventBannerConfig {
   enabled: boolean;
@@ -15,14 +16,14 @@ export interface EventBannerConfig {
 }
 
 // v5: agendamento passou a ser apenas por mês (válido em todos os anos).
-const KEY = "lemos_event_banner_v5";
+const KEY = "lemos_event_banner_v6";
 
 export function defaultEventBanner(): EventBannerConfig {
   return {
-    enabled: false,
+    enabled: true,
     callToAction: "Clique aqui",
-    message: "Feliz dia\nDos Pais",
-    videoUrl: "",
+    message: "Ele é o meu irmão",
+    videoUrl: bisVideo.url,
     scheduleEnabled: false,
     startMonth: 1,
     endMonth: 12,
@@ -34,6 +35,7 @@ export function loadEventBanner(): EventBannerConfig {
     // limpa configurações antigas (versões anteriores do aviãozinho)
     try { localStorage.removeItem("lemos_event_banner_v3"); } catch { /* noop */ }
     try { localStorage.removeItem("lemos_event_banner_v4"); } catch { /* noop */ }
+    try { localStorage.removeItem("lemos_event_banner_v5"); } catch { /* noop */ }
     const raw = localStorage.getItem(KEY);
     if (!raw) return defaultEventBanner();
     const parsed = JSON.parse(raw) as Partial<EventBannerConfig>;

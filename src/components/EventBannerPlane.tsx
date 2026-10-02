@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { loadEventBanner, isBannerActive, type EventBannerConfig } from "@/data/eventBannerConfig";
-import planeRtl from "@/assets/aviao-rtl-v12.png.asset.json";
-import planeLtr from "@/assets/aviao-ltr-v12.png.asset.json";
+import planeRtl from "@/assets/14-bis/14bis-rtl.png.asset.json";
+import planeLtr from "@/assets/14-bis/14bis-ltr.png.asset.json";
+import bisCover from "@/assets/14-bis/ele-e-o-meu-irmao/ele-e-o-meu-irmao-cover.jpg.asset.json";
 
 /**
  * Aviãozinhos animados alternando direções:
@@ -14,6 +15,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
   const [cfg, setCfg] = useState<EventBannerConfig>(() => loadEventBanner());
   const [dir, setDir] = useState<"rtl" | "ltr">("rtl");
   const [flying, setFlying] = useState(true);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const h = () => setCfg(loadEventBanner());
@@ -41,8 +43,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
 
   if (!isBannerActive(cfg)) return null;
 
-  // Vídeo do aviãozinho removido para todos os usuários — o avião é apenas decorativo.
-  const handleClick = () => {};
+  const handleClick = () => { if (cfg.videoUrl) setOpen(true); };
   const planeSrc = dir === "rtl" ? planeRtl.url : planeLtr.url;
   const animName = dir === "rtl" ? "plane-rtl" : "plane-ltr";
 
@@ -86,7 +87,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
                 src={planeSrc}
                 onClick={handleClick}
                 alt={dir === "rtl" ? "Aviãozinho voando da direita para a esquerda" : "Aviãozinho voando da esquerda para a direita"}
-                className={`relative h-28 sm:h-32 md:h-36 w-auto drop-shadow-2xl select-none transition-all duration-700 ${
+                className={`pointer-events-auto cursor-pointer relative h-28 sm:h-32 md:h-36 w-auto drop-shadow-2xl select-none transition-all duration-700 ${
                   isAuthenticated ? "" : "grayscale opacity-60"
                 }`}
                 style={{ animation: "banner-wind 3.2s ease-in-out infinite", transformOrigin: dir === "rtl" ? "100% 50%" : "0% 50%" }}
@@ -98,6 +99,15 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
           </div>
         )}
       </div>
+
+      {open && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-foreground/80 p-4" onClick={() => setOpen(false)}>
+          <div className="relative w-full max-w-3xl" onClick={(e) => e.stopPropagation()}>
+            <button onClick={() => setOpen(false)} aria-label="Fechar vídeo" className="absolute -top-10 right-0 rounded-full bg-background px-3 py-1 font-bold text-foreground">✕</button>
+            <video src={cfg.videoUrl} poster={bisCover.url} controls autoPlay playsInline className="w-full rounded-2xl bg-foreground" />
+          </div>
+        </div>
+      )}
 
       <style>{`
         @keyframes plane-rtl {
