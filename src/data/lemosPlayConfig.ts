@@ -44,6 +44,8 @@ import meuQueridoSenhorThumb from "@/assets/lemos-play/meu-querido-senhor.png.as
 import yeshua2Vid from "@/assets/lemos-play/yeshua-2.mp4.asset.json";
 import yeshua3Thumb from "@/assets/lemos-play/yeshua-3.png.asset.json";
 import riosBabiloniaVid from "@/assets/lemos-play/rios-babilonia-v2.mp4.asset.json";
+import bisVid from "@/assets/14-bis/ele-e-o-meu-irmao/ele-e-o-meu-irmao.mp4.asset.json";
+import bisThumb from "@/assets/14-bis/ele-e-o-meu-irmao/ele-e-o-meu-irmao-cover.jpg.asset.json";
 import riosBabiloniaThumb from "@/assets/lemos-play/rios-babilonia-v2.jpg.asset.json";
 
 export interface PlayEntry {
@@ -109,6 +111,7 @@ const attachedThumbByTitle: Record<string, string> = {
 };
 
 export const defaultMusicas: PlayEntry[] = [
+  { id: "m6", title: "Ele é o Meu Irmão", src: bisVid.url, poster: bisThumb.url, section: "Músicas" },
   { id: "m5", title: "Rios da Babilônia", src: riosBabiloniaVid.url, poster: riosBabiloniaThumb.url, section: "Músicas" },
   { id: "m4", title: "Meu Querido Senhor", src: meuQueridoSenhorVid.url, poster: meuQueridoSenhorThumb.url, section: "Músicas" },
   { id: "m1", title: "Do meu Jeito", src: doMeuJeitoVid.url, poster: attachedThumbByTitle["Do meu Jeito"], section: "Músicas" },
