@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import PageHeader from "@/components/PageHeader";
 import DevotionalColoring from "@/components/DevotionalColoring";
 import { devotionalImages } from "@/data/devotionalImages";
@@ -11,7 +12,9 @@ export default function Devocionais() {
   const selected = devotionalImages[currentDay - 1];
   if (!selected) return null;
 
-  awardOnce(todayKey(`devocional:${currentDay}`), COINS.devocional, "Devocional lido");
+  useEffect(() => {
+    awardOnce(todayKey(`devocional:${currentDay}`), COINS.devocional, "Devocional lido");
+  }, [currentDay]);
 
   return (
     <main className="min-h-screen bg-background px-3 sm:px-5 pb-24">
