@@ -24,3 +24,6 @@
 - [x] Validar as mudanças em desktop, tablet e celular.
 - [x] Mostrar somente o devocional do dia com a pintura visível.
 - [x] Tornar as imagens do Ligue os Pontos e Quiz Bíblico relacionadas a cada conteúdo.
+- [ ] Posicionar atalho abaixo da LIA, dedicatória central e Meu Mural abaixo do avatar; intensificar brilho dos ícones.
+- [ ] Mostrar somente navegação no cabeçalho e ativar 14 Bis voando com controles na configuração.
+- [ ] Evitar interrupções de vídeo durante reprodução e validar os fluxos.

@@ -1,16 +1,17 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Settings, LogOut, Menu, X } from "lucide-react";
+import { Settings, Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import OrbitMenu from "@/components/OrbitMenu";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import IndexAdminPanel from "@/components/IndexAdminPanel";
 
-import InstallShortcut from "@/components/InstallShortcut";
 import HomeTopNav from "@/components/HomeTopNav";
 import EventBannerKart from "@/components/EventBannerKart";
+import EventBannerPlane from "@/components/EventBannerPlane";
 
 
-import { useCoins, ensureInitialCoins, addCoins } from "@/hooks/useCoins";
+import { ensureInitialCoins, addCoins } from "@/hooks/useCoins";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { loadOrbit } from "@/data/orbitConfig";
 
@@ -22,22 +23,11 @@ export default function Index() {
 
 function IndexV1() {
   const navigate = useNavigate();
-  const { coins } = useCoins();
   const isAdmin = useIsAdmin();
   const [user, setUser] = useState<{ name: string; email: string; avatar?: string } | null>(null);
   const [dedicatoriaOpen, setDedicatoriaOpen] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const userMenuRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const onDoc = (e: MouseEvent) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) setUserMenuOpen(false);
-    };
-    document.addEventListener("mousedown", onDoc);
-    return () => document.removeEventListener("mousedown", onDoc);
-  }, []);
 
   useEffect(() => {
     const syncUser = () => {
@@ -86,81 +76,11 @@ function IndexV1() {
       <header
         className="w-full fixed top-0 left-0 right-0 z-30 bg-white/85 border-b border-amber-200/60 backdrop-blur-sm"
       >
-        <div className="flex items-center justify-between gap-2 px-3 sm:px-5 py-2">
-          {/* Left: admin-only controls */}
-          <div className="flex items-center gap-2 shrink-0">
-            {user && isAdmin && (
-              <>
-                <button
-                  onClick={() => setAdminOpen(true)}
-                  className="w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center transition"
-                  title="Configurar página inicial"
-                  aria-label="Configurar"
-                >
-                  <Settings className="w-4 h-4 text-foreground" />
-                </button>
-                <button
-                  onClick={() => navigate("/config")}
-                  className="w-9 h-9 rounded-full bg-white/60 hover:bg-white shadow flex items-center justify-center transition text-sm"
-                  title="Configurações"
-                >
-                  ⚙️
-                </button>
-              </>
-            )}
-          </div>
-
-          {/* Center: main navigation */}
-          <div className="hidden md:flex flex-1 justify-center px-4">
+        <div className="flex items-center justify-center px-3 sm:px-5 py-2">
+          <div className="hidden md:flex justify-center">
             <HomeTopNav />
           </div>
-
-          <button type="button" className="md:hidden shrink-0 rounded-full p-2 text-foreground hover:bg-muted" aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"} aria-expanded={mobileMenuOpen} onClick={() => setMobileMenuOpen((v) => !v)}>{mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}</button>
-          {/* Right: user fixed to the right of the page */}
-          {user && (
-            <div className="flex items-center gap-2 shrink-0 ml-auto">
-              <div className="relative" ref={userMenuRef}>
-                <button
-                  onClick={() => setUserMenuOpen((v) => !v)}
-                  className="flex items-center gap-2 px-1.5 py-1 rounded-full hover:bg-white/60 transition"
-                  aria-label="Menu do usuário"
-                  title="Menu do usuário"
-                >
-                  <span className="text-left leading-tight">
-                    <span className="block font-display font-bold text-xs sm:text-sm text-foreground max-w-[180px] truncate">
-                      Seja Bem vindo, {user.name}
-                    </span>
-                    <span className="block font-body text-[10px] sm:text-[11px] text-amber-800">
-                      Deus Seja Louvado!
-                    </span>
-                  </span>
-                </button>
-
-                {userMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg border border-amber-200 overflow-hidden z-50">
-                    <div className="px-3 py-2 border-b border-amber-100">
-                      <p className="font-display font-bold text-sm text-foreground truncate">{user.name}</p>
-                      {user.email && <p className="font-body text-[11px] text-muted-foreground truncate">{user.email}</p>}
-                    </div>
-                    <button
-                      onClick={() => { setUserMenuOpen(false); handleLogout(); }}
-                      className="w-full flex items-center gap-2 px-3 py-2 text-sm font-display font-bold text-red-600 hover:bg-red-50 transition"
-                    >
-                      <LogOut className="w-4 h-4" /> Sair
-                    </button>
-                  </div>
-                )}
-              </div>
-              <div
-                className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 border border-amber-300 shadow-sm"
-                title="Suas moedinhas"
-                aria-label="Suas moedinhas"
-              >
-                <span className="text-base leading-none">🪙</span>
-                <span className="font-display font-extrabold text-sm text-amber-900 tabular-nums">{coins}</span>
-              </div>
-            </div>
-          )}
+          <Button type="button" variant="ghost" size="icon" className="md:hidden rounded-full" aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"} aria-expanded={mobileMenuOpen} onClick={() => setMobileMenuOpen((v) => !v)}>{mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}</Button>
         </div>
 
          {/* Mobile: menu flutuante aberto por um único ícone */}
@@ -175,8 +95,13 @@ function IndexV1() {
 
         <div className="w-full flex flex-col items-center gap-1 sm:gap-2 px-4 pt-2 sm:pt-4 pb-2 text-center">
           <p className="font-display font-extrabold text-lg sm:text-2xl text-foreground">Bem-vindo! Aprenda, Brinque e Descubra a Palavra de Deus.</p>
+          {user && isAdmin && <div className="flex gap-2">
+            <Button variant="outline" size="icon" onClick={() => setAdminOpen(true)} title="Configurar página inicial" aria-label="Configurar página inicial"><Settings /></Button>
+            <Button variant="outline" size="icon" onClick={() => navigate("/config")} title="Configurações" aria-label="Configurações"><Settings /></Button>
+          </div>}
         </div>
 
+        <EventBannerPlane isAuthenticated={!!user} />
         <EventBannerKart isAuthenticated={!!user} />
 
 
@@ -191,16 +116,16 @@ function IndexV1() {
             onItemClick={handleItemClick}
           />
 
-           <div className="mt-6 sm:mt-10 flex items-center justify-center gap-5 sm:gap-8">
-             {user && <InstallShortcut compact />}
-            <button
+           <div className="mt-6 sm:mt-10 flex flex-col items-center gap-1">
+             <Button variant="ghost" size="icon"
               onClick={() => setDedicatoriaOpen(true)}
-              className="h-14 w-14 sm:h-16 sm:w-16 overflow-hidden rounded-full border-2 border-border bg-background shadow-lg hover:scale-105 transition-transform"
+               className="h-14 w-14 sm:h-16 sm:w-16 overflow-hidden rounded-full border-2 border-border bg-background shadow-lg hover:brightness-125 hover:drop-shadow-[0_0_16px_hsl(var(--primary))] active:brightness-150 transition-all"
               title="Dedicatória"
               aria-label="Abrir dedicatória"
             >
               <img loading="lazy" decoding="async" src={iconDedicatoria} alt="" className="h-full w-full object-contain" />
-            </button>
+             </Button>
+             <span className="font-display font-extrabold text-xs text-foreground">DEDICATÓRIA</span>
           </div>
 
         </div>
