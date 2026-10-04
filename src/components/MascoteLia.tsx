@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import lia1 from "@/assets/lia-1-fallback.png";
 import lia2 from "@/assets/lia-2-fallback.png";
+import InstallShortcut from "@/components/InstallShortcut";
+import { Button } from "@/components/ui/button";
 
 /**
  * LIA — mascote guia do site.
@@ -15,7 +17,7 @@ import lia2 from "@/assets/lia-2-fallback.png";
  */
 
 const PAGE_TIPS: Record<string, string> = {
-  "/": "Toque em um dos ícones ao redor da logo para escolher vídeos, histórias, atividades, jogos, devocionais, oração ou álbum!",
+  "/": "Toque em um dos ícones ao redor da logo para escolher o que ver. Se quiser instalar o ícone da Lemos a Palavra e acessar mais facilmente, toque no atalho logo abaixo de mim!",
   "/biblia": "Escolha o livro e o capítulo. Toque no ícone de ouvir 🔊 e eu leio a Palavra para você.",
   "/louvores": "Escolha um louvor e aperte o play ▶️. Dá para curtir, comentar e compartilhar com a família.",
   "/historias-do-dia": "Aqui tem duas histórias bíblicas novas todo dia para ler e conversar em família!",
@@ -97,11 +99,12 @@ export default function MascoteLia() {
 
   if (!expanded) {
     return (
-      <button
+      <div className="fixed left-2 top-1/2 z-[45] flex -translate-y-1/2 flex-col items-center gap-2 sm:left-4">
+      <Button variant="ghost"
         onClick={() => setExpanded(true)}
         aria-label="Falar com a LIA, sua ajudante"
         title="Falar com a LIA, sua ajudante"
-        className="fixed left-2 top-1/2 z-[45] flex -translate-y-1/2 flex-col items-center gap-1 transition hover:scale-110 active:scale-95 sm:left-4"
+        className="h-auto flex flex-col items-center gap-1 transition hover:scale-110 active:scale-95"
       >
         <span className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white shadow-lg border-2 border-amber-300 overflow-hidden block">
           <img src={avatar} alt="LIA" className="w-full h-full object-cover object-top" loading="lazy" />
@@ -109,7 +112,9 @@ export default function MascoteLia() {
         <span className="font-display font-extrabold text-[11px] sm:text-xs text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap">
           Oi, sou a LIA
         </span>
-      </button>
+      </Button>
+      {isHome && <InstallShortcut compact />}
+      </div>
     );
   }
 
@@ -121,11 +126,12 @@ export default function MascoteLia() {
         <span className="absolute left-6 -bottom-2 w-3 h-3 rotate-45 bg-white border-r-2 border-b-2 border-amber-300" />
       </div>
 
-      <button
+      <div className="flex flex-col items-center gap-2">
+      <Button variant="ghost"
         onClick={() => setExpanded(false)}
         aria-label="Recolher a LIA"
         title="Toque para recolher a LIA"
-        className="pointer-events-auto focus:outline-none"
+        className="pointer-events-auto h-auto flex-col focus:outline-none"
       >
         <img
           src={avatar}
@@ -136,7 +142,9 @@ export default function MascoteLia() {
         <span className="mt-1 block font-display font-extrabold text-xs sm:text-sm text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap">
           Oi, sou a LIA
         </span>
-      </button>
+      </Button>
+      {isHome && <div className="pointer-events-auto"><InstallShortcut compact /></div>}
+      </div>
 
       <style>{`
         @keyframes liaFloat {

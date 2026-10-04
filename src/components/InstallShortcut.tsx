@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
+import { Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 declare global {
   interface Window {
@@ -141,21 +143,21 @@ export default function InstallShortcut({ compact = false }: { compact?: boolean
             👉
           </span>
         )}
-        <button
+        <Button variant="outline"
           type="button"
           onClick={handleClick}
           disabled={busy}
           aria-label="Baixar atalho clicável da Lemos a Palavra"
           title="Clique para baixar o atalho da Lemos a Palavra"
-          className={`relative group rounded-full overflow-visible border-2 border-border bg-background shadow-lg hover:scale-105 active:scale-95 transition disabled:opacity-60 ${compact ? "h-14 w-14 sm:h-16 sm:w-16" : "h-32 w-32 sm:h-40 sm:w-40"}`}
+          className={`relative group rounded-full overflow-visible border-2 border-border bg-background shadow-lg hover:scale-105 hover:brightness-125 hover:drop-shadow-[0_0_16px_hsl(var(--primary))] active:brightness-150 transition-all disabled:opacity-60 ${compact ? "h-12 w-12 sm:h-14 sm:w-14" : "h-32 w-32 sm:h-40 sm:w-40"}`}
         >
           <img loading="lazy" decoding="async"
             src="/favicon.png"
             alt="Lemos a Palavra"
             className="h-full w-full rounded-full object-cover"
           />
-           {!compact && <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-primary text-primary-foreground font-display font-extrabold rounded-full shadow-lg text-xs sm:text-sm px-3 py-1">{busy ? "Preparando…" : "📥 Baixar atalho"}</span>}
-        </button>
+           {compact ? <Download className="absolute -bottom-1 -right-1 rounded-full bg-primary text-primary-foreground p-0.5" /> : <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-primary text-primary-foreground font-display font-extrabold rounded-full shadow-lg text-xs sm:text-sm px-3 py-1">{busy ? "Preparando…" : "📥 Baixar atalho"}</span>}
+        </Button>
       </div>
       {!compact && (
         <p className="text-xs sm:text-sm font-body text-amber-900 text-center leading-snug max-w-[280px] mt-3">
