@@ -26,4 +26,4 @@
 - [x] Tornar as imagens do Ligue os Pontos e Quiz Bíblico relacionadas a cada conteúdo.
 - [x] Posicionar atalho abaixo da LIA, dedicatória central e Meu Mural abaixo do avatar; intensificar brilho dos ícones.
 - [x] Mostrar somente navegação no cabeçalho e ativar 14 Bis voando com controles na configuração.
-- [ ] Evitar interrupções de vídeo durante reprodução e validar os fluxos.
+- [x] Evitar interrupções de vídeo durante reprodução e validar os fluxos.
