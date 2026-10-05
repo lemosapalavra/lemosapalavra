@@ -103,7 +103,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
   };
 
   const handleReset = () => {
-    if (!confirm("Restaurar tudo (menu + murais + aviãozinho + trenzinho + kartzinho) ao padrão?")) return;
+    if (!confirm("Restaurar tudo (menu + murais + 14 Bis + trenzinho + kartzinho) ao padrão?")) return;
     resetOrbit();
     resetMurais();
     resetEventBanner();
@@ -139,7 +139,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
                 tab === t ? "bg-zinc-100 text-foreground border-b-2 border-primary" : "text-zinc-500 hover:text-foreground"
               }`}
             >
-              {t === "menu" ? "🌐 Menu Órbita" : t === "murais" ? "🖼️ Murais" : t === "aviaozinho" ? "✈️ Aviãozinho" : t === "trenzinho" ? "🚂 Trenzinho" : "🏎️ Kartzinho"}
+              {t === "menu" ? "🌐 Menu Órbita" : t === "murais" ? "🖼️ Murais" : t === "aviaozinho" ? "✈️ 14 Bis" : t === "trenzinho" ? "🚂 Trenzinho" : "🏎️ Kartzinho"}
             </button>
           ))}
         </div>
@@ -228,7 +228,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
           {tab === "aviaozinho" && (
             <div className="space-y-3">
               <p className="text-xs text-zinc-500">
-                Um aviãozinho puxa uma faixa "Clique aqui" e a mensagem sazonal.
+                O 14 Bis atravessa a página inicial e abre seu vídeo ao ser clicado.
                 Clicando, abre o vídeo configurado (YouTube, Vimeo, MP4 direto, etc.).
               </p>
               <label className="flex items-center gap-2 text-sm font-semibold text-zinc-700">
@@ -237,7 +237,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
                   checked={banner.enabled}
                   onChange={(e) => patchBanner({ enabled: e.target.checked })}
                 />
-                Exibir aviãozinho na página inicial
+                Exibir o 14 Bis voando na página inicial
               </label>
               <div className="rounded-lg border border-zinc-200 p-3 space-y-2">
                 <label className="flex items-center gap-2 text-sm font-semibold text-zinc-700">
@@ -273,7 +273,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
                   </label>
                 </div>
                 <p className="text-[11px] text-zinc-500">
-                  Vale para todos os anos, sem data final. Fora dos meses configurados o aviãozinho não aparece.
+                  Vale para todos os anos, sem data final. Fora dos meses configurados o 14 Bis não aparece.
                 </p>
               </div>
               <label className="text-xs font-semibold text-zinc-700 block">

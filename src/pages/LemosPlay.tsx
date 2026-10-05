@@ -238,7 +238,6 @@ export default function LemosPlay() {
   const [resumePrompt, setResumePrompt] = useState<{ item: PlayItem; groupId: string | null; seconds: number } | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const playerContainerRef = useRef<HTMLDivElement>(null);
-  const lastProgressSave = useRef<number>(0);
   /** Vídeos já premiados nesta sessão — evita disparar recompensa/toast
    *  a cada `timeupdate` (4x por segundo) perto do fim, o que travava
    *  e fechava o player. */
@@ -251,18 +250,12 @@ export default function LemosPlay() {
     awardOnce(`video:${id}`, reward, `Você assistiu "${title}"`);
   };
 
-  // Throttled progress writer: updates localStorage immediately,
-  // but only triggers React state update every 5s to avoid re-renders
-  // that would re-fire the fullscreen effect and interrupt playback.
+  // Salva sem alterar o estado do player: nenhuma atualização periódica do
+  // React pode remontar ou recarregar o vídeo durante a reprodução.
   const writeProgress = (id: string, t: number, d: number) => {
     const all = loadProgress();
     all[id] = { t, d, updated: Date.now() };
     saveProgress(all);
-    const now = Date.now();
-    if (now - lastProgressSave.current > 5000) {
-      lastProgressSave.current = now;
-      setProgress(all);
-    }
   };
 
 
@@ -419,10 +412,10 @@ export default function LemosPlay() {
   }, [filmesPlay, seriesGroupItems, louvoresPlay, musicasPlay]);
   const [heroIdx, setHeroIdx] = useState(0);
   useEffect(() => {
-    if (heroPool.length < 2) return;
+    if (playing || heroPool.length < 2) return;
     const id = window.setInterval(() => setHeroIdx((i) => (i + 1) % heroPool.length), 7000);
     return () => window.clearInterval(id);
-  }, [heroPool.length]);
+  }, [heroPool.length, playing]);
   const hero = heroPool[heroIdx % Math.max(1, heroPool.length)] ?? filmesPlay[0] ?? louvoresPlay[0] ?? musicasPlay[0];
 
   // Descrição curta por categoria — fallback quando não há sinopse específica.
