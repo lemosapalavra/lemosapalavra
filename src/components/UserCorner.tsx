@@ -1,8 +1,10 @@
+import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useState } from "react";
 import MeuMural from "@/components/MeuMural";
 import { useCoins } from "@/hooks/useCoins";
 import iconUsuario from "@/assets/icon-usuario.png";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 /**
  * Avatar do usuário fixo no canto inferior direito, na mesma linha da LIA.
@@ -32,16 +34,27 @@ export default function UserCorner() {
     };
   }, []);
 
-  if (!user?.name) return null;
+  const visible = useIconVisible("usuario");
+  const [menu, setMenu] = useState(false);
+
+  const logout = async () => {
+    try { await supabase.auth.signOut(); } catch {}
+    localStorage.removeItem("lemos_user");
+    window.dispatchEvent(new Event("lemos_admin_change"));
+    window.location.href = "/login";
+  };
+
+  if (!user?.name || !visible) return null;
 
   return (
     <>
       <div className="fixed right-2 top-1/2 z-[45] flex -translate-y-1/2 flex-col items-center gap-1 sm:right-4">
       <Button variant="ghost"
-        onClick={() => setOpen(true)}
-        title="Abrir o Meu Mural"
-        aria-label="Abrir o Meu Mural"
-        className="h-auto flex flex-col items-center gap-1 transition hover:scale-110 hover:brightness-125 hover:drop-shadow-[0_0_16px_hsl(var(--primary))] active:scale-95 active:brightness-150"
+        onClick={() => setMenu((v) => !v)}
+        title="Opções do usuário"
+        aria-label="Opções do usuário"
+        aria-expanded={menu}
+        className="h-auto flex flex-col items-center gap-1 icon-glow"
       >
         <span className="font-display font-extrabold text-[11px] sm:text-xs text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow max-w-[130px] truncate">
           Olá, {user.name}
@@ -62,6 +75,11 @@ export default function UserCorner() {
       <Button variant="outline" size="sm" onClick={() => setOpen(true)} className="h-7 rounded-full px-3 font-display font-extrabold text-[11px] shadow">
         Meu Mural
       </Button>
+      {menu && (
+        <Button variant="destructive" size="sm" onClick={logout} className="h-7 rounded-full px-3 font-display font-extrabold text-[11px] shadow">
+          Sair
+        </Button>
+      )}
       </div>
 
       <MeuMural open={open} onClose={() => setOpen(false)} />

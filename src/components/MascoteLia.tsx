@@ -1,3 +1,4 @@
+import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import lia1 from "@/assets/lia-1-fallback.png";
@@ -95,7 +96,9 @@ export default function MascoteLia() {
     : (context && CONTEXT_TIPS[context]) || PAGE_TIPS[location.pathname] || PAGE_TIPS["/"];
 
   const avatar = isHome && !context ? lia1 : lia2;
+  const liaVisible = useIconVisible("lia");
 
+  if (!liaVisible) return null;
 
   if (!expanded) {
     return (

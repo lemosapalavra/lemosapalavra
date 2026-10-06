@@ -1,3 +1,4 @@
+import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useState } from "react";
 import { loadEventBanner, isBannerActive, type EventBannerConfig } from "@/data/eventBannerConfig";
 import planeRtl from "@/assets/14-bis/14bis-rtl.png.asset.json";
@@ -17,6 +18,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
   const [dir, setDir] = useState<"rtl" | "ltr">("rtl");
   const [flying, setFlying] = useState(true);
   const [open, setOpen] = useState(false);
+  const planeVisible = useIconVisible("14bis");
 
   useEffect(() => {
     const h = () => setCfg(loadEventBanner());
@@ -42,7 +44,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
     return () => { clearInterval(t1); clearTimeout(t2); };
   }, [cfg]);
 
-  if (!isBannerActive(cfg)) return null;
+  if (!planeVisible || !isBannerActive(cfg)) return null;
 
   const handleClick = () => { if (cfg.videoUrl) setOpen(true); };
   const planeSrc = dir === "rtl" ? planeRtl.url : planeLtr.url;
@@ -53,7 +55,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
 
   return (
     <>
-      <div className="pointer-events-none fixed inset-x-0 top-28 sm:top-32 z-10 h-44 overflow-hidden">
+      <div className="pointer-events-none fixed inset-x-0 top-24 sm:top-28 z-10 h-[22rem] overflow-hidden">
         {flying && (
           <div
             key={dir}
@@ -88,7 +90,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
                 src={planeSrc}
                 onClick={handleClick}
                 alt={dir === "rtl" ? "Aviãozinho voando da direita para a esquerda" : "Aviãozinho voando da esquerda para a direita"}
-                className={`pointer-events-auto cursor-pointer relative h-28 sm:h-32 md:h-36 w-auto drop-shadow-2xl select-none transition-all duration-700 ${
+                className={`pointer-events-auto cursor-pointer relative h-56 sm:h-64 md:h-72 w-auto drop-shadow-2xl select-none transition-all duration-700 ${
                   isAuthenticated ? "" : "grayscale opacity-60"
                 }`}
                 style={{ animation: "banner-wind 3.2s ease-in-out infinite", transformOrigin: dir === "rtl" ? "100% 50%" : "0% 50%" }}

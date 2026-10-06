@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { loadWhatsappCfg, saveWhatsappCfg } from "@/components/FloatingWhatsapp";
 import { loadSocialCfg, saveSocialCfg } from "@/components/FeedbackFooter";
 import ContentAccessConfig from "@/components/ContentAccessConfig";
+import IconVisibilityConfig from "@/components/IconVisibilityConfig";
 import { getOwnerIp, setOwnerIp, clearOwnerAccess, ownerDeviceUnlocked, ipMatchesOwner, OWNER_FLAG_KEY } from "@/data/ownerAccess";
 
 /** Painel do dono: vincula o acesso de administrador a este aparelho + IP. */
@@ -194,6 +195,7 @@ export default function Configuracao() {
 
         <OwnerAccessCard />
 
+        <IconVisibilityConfig />
         <ContentAccessConfig />
 
         {/* Page Visit Stats */}
