@@ -1,3 +1,4 @@
+import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import lia1 from "@/assets/lia-1-fallback.png";
