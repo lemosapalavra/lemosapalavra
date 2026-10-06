@@ -95,7 +95,9 @@ export default function MascoteLia() {
     : (context && CONTEXT_TIPS[context]) || PAGE_TIPS[location.pathname] || PAGE_TIPS["/"];
 
   const avatar = isHome && !context ? lia1 : lia2;
+  const liaVisible = useIconVisible("lia");
 
+  if (!liaVisible) return null;
 
   if (!expanded) {
     return (

@@ -1,3 +1,4 @@
+import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useState } from "react";
 import MeuMural from "@/components/MeuMural";
 import { useCoins } from "@/hooks/useCoins";

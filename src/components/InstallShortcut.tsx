@@ -1,3 +1,4 @@
+import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 import { Download } from "lucide-react";
@@ -149,7 +150,7 @@ export default function InstallShortcut({ compact = false }: { compact?: boolean
           disabled={busy}
           aria-label="Baixar atalho clicável da Lemos a Palavra"
           title="Clique para baixar o atalho da Lemos a Palavra"
-          className={`relative group rounded-full overflow-visible border-2 border-border bg-background shadow-lg hover:scale-105 hover:brightness-125 hover:drop-shadow-[0_0_16px_hsl(var(--primary))] active:brightness-150 transition-all disabled:opacity-60 ${compact ? "h-12 w-12 sm:h-14 sm:w-14" : "h-32 w-32 sm:h-40 sm:w-40"}`}
+          className={`relative group rounded-full overflow-visible border-2 border-border bg-background shadow-lg hover:scale-105 hover:brightness-125 hover:drop-shadow-[0_0_16px_hsl(var(--primary))] active:brightness-150 transition-all disabled:opacity-60 ${compact ? "h-16 w-16 sm:h-20 sm:w-20 icon-glow" : "h-32 w-32 sm:h-40 sm:w-40"}`}
         >
           <img loading="lazy" decoding="async"
             src="/favicon.png"

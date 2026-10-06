@@ -1,3 +1,4 @@
+import { useIconVisible } from "@/lib/iconVisibility";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Settings, Menu, X } from "lucide-react";
@@ -119,7 +120,7 @@ function IndexV1() {
            <div className="mt-6 sm:mt-10 flex flex-col items-center gap-1">
              <Button variant="ghost" size="icon"
               onClick={() => setDedicatoriaOpen(true)}
-               className="h-14 w-14 sm:h-16 sm:w-16 overflow-hidden rounded-full border-2 border-border bg-background shadow-lg hover:brightness-125 hover:drop-shadow-[0_0_16px_hsl(var(--primary))] active:brightness-150 transition-all"
+               className="h-16 w-16 sm:h-20 sm:w-20 overflow-hidden rounded-full border-2 border-border bg-background shadow-lg icon-glow"
               title="Dedicatória"
               aria-label="Abrir dedicatória"
             >

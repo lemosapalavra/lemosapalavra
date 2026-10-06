@@ -249,6 +249,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/biblia" element={<Biblia />} />
               <Route path="/louvores" element={<Louvores />} />
+              <Route path="/musicas" element={<Louvores />} />
               <Route path="/historias-do-dia" element={<HistoriasDoDia />} />
                <Route path="/devocionais" element={<Devocionais />} />
                <Route path="/jogos" element={<Jogos />} />

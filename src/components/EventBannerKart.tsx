@@ -1,3 +1,4 @@
+import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useState } from "react";
 import { loadKartBanner, isKartActive, KART_BANNER_EVENT, type KartBannerConfig } from "@/data/kartBannerConfig";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
@@ -41,7 +42,8 @@ export default function EventBannerKart({ isAuthenticated = false }: { isAuthent
     return () => { clearInterval(t1); clearTimeout(t2); };
   }, [cfg]);
 
-  if (!isKartActive(cfg)) return null;
+  const kartVisible = useIconVisible("kart");
+  if (!kartVisible || !isKartActive(cfg)) return null;
 
   const kartSrc = dir === "rtl" ? kartRtl.url : kartLtr.url;
   const animName = dir === "rtl" ? "kart-rtl" : "kart-ltr";
