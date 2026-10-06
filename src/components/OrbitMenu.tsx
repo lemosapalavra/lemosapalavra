@@ -14,10 +14,10 @@ interface OrbitMenuProps {
 
 export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }: OrbitMenuProps) {
   const iconSize = 120;
-  const [items, setItems] = useState<OrbitItem[]>(() => loadOrbit());
+  const [items, setItems] = useState<OrbitItem[]>(() => loadOrbit().filter((x) => !x.hidden));
 
   useEffect(() => {
-    const h = () => setItems(loadOrbit());
+    const h = () => setItems(loadOrbit().filter((x) => !x.hidden));
     window.addEventListener("lemos_orbit_change", h);
     return () => window.removeEventListener("lemos_orbit_change", h);
   }, []);
@@ -51,7 +51,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                     title={`${item.label.replace(/\n/g, " ")}${item.sublabel ? " — " + item.sublabel : ""}`}
                     className={`flex flex-col items-center gap-1 transition-all duration-300 active:-translate-y-2 active:scale-105 active:brightness-150 active:drop-shadow-[0_0_20px_hsl(var(--primary))] ${
                       isAuthenticated
-                        ? "cursor-pointer hover:scale-110 hover:-translate-y-1 hover:brightness-125 hover:drop-shadow-[0_0_14px_hsl(var(--primary))] focus-visible:scale-110 focus-visible:brightness-150 focus-visible:drop-shadow-[0_0_20px_hsl(var(--primary))]"
+                        ? "cursor-pointer icon-glow"
                         : "cursor-default"
                     }`}
                   >

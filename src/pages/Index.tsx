@@ -29,6 +29,7 @@ function IndexV1() {
   const [dedicatoriaOpen, setDedicatoriaOpen] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const dedicatoriaVisible = useIconVisible("dedicatoria");
 
   useEffect(() => {
     const syncUser = () => {
@@ -117,7 +118,7 @@ function IndexV1() {
             onItemClick={handleItemClick}
           />
 
-           <div className="mt-6 sm:mt-10 flex flex-col items-center gap-1">
+           {dedicatoriaVisible && <div className="mt-6 sm:mt-10 flex flex-col items-center gap-1">
              <Button variant="ghost" size="icon"
               onClick={() => setDedicatoriaOpen(true)}
                className="h-16 w-16 sm:h-20 sm:w-20 overflow-hidden rounded-full border-2 border-border bg-background shadow-lg icon-glow"
@@ -127,7 +128,7 @@ function IndexV1() {
               <img loading="lazy" decoding="async" src={iconDedicatoria} alt="" className="h-full w-full object-contain" />
              </Button>
              <span className="font-display font-extrabold text-xs text-foreground">DEDICATÓRIA</span>
-          </div>
+          </div>}
 
         </div>
       </main>

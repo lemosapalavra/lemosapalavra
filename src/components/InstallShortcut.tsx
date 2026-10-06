@@ -71,6 +71,7 @@ export default function InstallShortcut({ compact = false }: { compact?: boolean
     typeof window !== "undefined" && !!window.__lemosDeferredInstall
   );
   const [busy, setBusy] = useState(false);
+  const atalhoVisible = useIconVisible("atalho");
   const [done, setDone] = useState<string>("");
 
   useEffect(() => {
@@ -129,6 +130,7 @@ export default function InstallShortcut({ compact = false }: { compact?: boolean
     }
   };
 
+  if (!atalhoVisible) return null;
   const siteUrl = typeof window !== "undefined" ? `${window.location.origin}/` : "https://lemosapalavra.live/";
 
   return (
