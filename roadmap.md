@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Substituir Veja, Ouça, Aprenda e Álbum pelos quatro anexos e desativar os demais ícones e atalhos.
 - [x] Aplicar o redesign completo preservando todas as funções existentes.
 - [x] Usar o mockup anexo como padrão visual principal, sem incorporá-lo diretamente.
 - [x] Validar desktop, tablet e celular, navegação, busca e preservação das áreas existentes.
