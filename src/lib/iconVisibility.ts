@@ -10,11 +10,17 @@ export const SITE_ICONS = [
   { id: "kart", title: "Kartzinho" },
 ];
 
-const KEY = "lemos_icon_visibility_v1";
+const KEY = "lemos_icon_visibility_v2";
 const EVT = "lemos_icon_visibility_change";
 
 export function loadHiddenIcons(): string[] {
-  try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch { return []; }
+  const defaults = SITE_ICONS.map((icon) => icon.id);
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return defaults;
+    const parsed: unknown = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.filter((id): id is string => typeof id === "string") : defaults;
+  } catch { return defaults; }
 }
 
 export function setIconHidden(id: string, hidden: boolean) {
