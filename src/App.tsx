@@ -23,6 +23,7 @@ const Devocionais = lazy(() => import("./pages/Devocionais.tsx"));
 const Jogos = lazy(() => import("./pages/Jogos.tsx"));
 const PedidosOracao = lazy(() => import("./pages/PedidosOracao.tsx"));
 const Atividades = lazy(() => import("./pages/Atividades.tsx"));
+const ParabolasPequenoMoises = lazy(() => import("./pages/ParabolasPequenoMoises.tsx"));
 const Album = lazy(() => import("./pages/Album.tsx"));
 const LemosPlay = lazy(() => import("./pages/LemosPlay.tsx"));
 const Configuracao = lazy(() => import("./pages/Configuracao.tsx"));
@@ -50,6 +51,8 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
   "/devocionais": { title: "Devocionais — Lemos a Palavra", description: "Devocionais diários ilustrados com desenho para colorir." },
   "/jogos": { title: "Jogos Bíblicos — Lemos a Palavra", description: "Jogos bíblicos interativos e atividades para a família." },
   "/pedidos-oracao": { title: "Pedidos de Oração — Lemos a Palavra", description: "Envie e acompanhe pedidos de oração com carinho." },
+  "/aprenda": { title: "Aprenda — Lemos a Palavra", description: "Livros e histórias ilustradas para aprender com a Palavra." },
+  "/aprenda/50-parabolas-pequeno-moises": { title: "50 Parábolas do Pequeno Moisés — Lemos a Palavra", description: "Livro ilustrado para leitura página a página." },
   "/atividades": { title: "Atividades — Lemos a Palavra", description: "Jogos interativos: colorir, caça-palavras, memória e quebra-cabeça." },
   "/album": { title: "Álbum de Figurinhas — Lemos a Palavra", description: "Colecione figurinhas bíblicas com raridades e molduras especiais." },
   "/lemosplay": { title: "Lemos Play — Vídeos Bíblicos", description: "Vídeos animados de histórias bíblicas: Gênesis, Jesus, Séries, Músicas e Louvores." },
@@ -255,6 +258,8 @@ const App = () => (
                <Route path="/jogos" element={<Jogos />} />
               <Route path="/pedidos-oracao" element={<PedidosOracao />} />
               <Route path="/atividades" element={<Atividades />} />
+              <Route path="/aprenda" element={<Navigate to="/aprenda/50-parabolas-pequeno-moises" replace />} />
+              <Route path="/aprenda/50-parabolas-pequeno-moises" element={<ParabolasPequenoMoises />} />
               <Route path="/album" element={<Album />} />
               <Route path="/config" element={<AdminOnly><Configuracao /></AdminOnly>} />
               <Route path="/estatisticas" element={<AdminOnly><Estatisticas /></AdminOnly>} />
