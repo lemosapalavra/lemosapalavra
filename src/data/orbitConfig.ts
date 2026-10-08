@@ -19,6 +19,7 @@ export function defaultOrbit(): OrbitItem[] {
     { icon: iconOuca.url, label: "OUÇA", route: "/musicas" },
     { icon: iconAtividades.url, label: "APRENDA", route: "/atividades" },
     { icon: iconAlbum.url, label: "ÁLBUM", route: "/album" },
+    { icon: "/home/faca.png", label: "FAÇA", route: "/atividades" },
   ];
 }
 
