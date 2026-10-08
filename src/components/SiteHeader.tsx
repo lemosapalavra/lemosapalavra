@@ -6,8 +6,7 @@ import logo from "@/assets/logo-central.png";
 
 export const SITE_NAV = [
   ["INÍCIO", "/"], ["VEJA", "/lemosplay"], ["OUÇA", "/lemosplay?view=ouca"], ["APRENDA", "/atividades"],
-  ["ORAÇÃO", "/pedidos-oracao"], ["DEVOCIONAIS", "/historias-do-dia"],
-  ["FAÇA", "/atividades"], ["ÁLBUM", "/album"], ["FAMÍLIA", "/familia"],
+  ["FAÇA", "/atividades"], ["ÁLBUM", "/album"],
 ] as const;
 
 export default function SiteHeader({ onSearch }: { onSearch?: () => void }) {
