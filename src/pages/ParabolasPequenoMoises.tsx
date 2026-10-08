@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, BookOpen, Home } from "lucide-react";
 
@@ -11,6 +11,17 @@ export default function ParabolasPequenoMoises() {
   const [index, setIndex] = useState(0);
   const [missing, setMissing] = useState(false);
   const file = `${base}/${pageFile(index)}`;
+  useEffect(() => {
+    const controller = new AbortController();
+    setMissing(false);
+    fetch(file, { method: "HEAD", signal: controller.signal })
+      .then((response) => {
+        const type = response.headers.get("content-type") || "";
+        if (!response.ok || (!type.includes("pdf") && !type.includes("octet-stream"))) setMissing(true);
+      })
+      .catch((error) => { if (error?.name !== "AbortError") setMissing(true); });
+    return () => controller.abort();
+  }, [file]);
   const go = (next: number) => { setMissing(false); setIndex(Math.max(0, Math.min(TOTAL - 1, next))); };
   return (
     <main className="min-h-screen px-3 pb-16 pt-6 sm:px-6">
