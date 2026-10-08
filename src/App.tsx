@@ -163,26 +163,27 @@ const PageFallback = () => (
 /** Libera o conteúdo somente depois que nome e celular forem autenticados. */
 const RequireEntry = () => {
   const location = useLocation();
-  const [state, setState] = useState<"checking" | "ok" | "denied">("checking");
-
+  const [state, setState] = useState<"checking" | "ok" | "denied" | "onboarding">("checking");
   useEffect(() => {
     let cancelled = false;
     const check = async () => {
       const { data } = await supabase.auth.getSession();
-      if (!cancelled) setState(data.session?.user ? "ok" : "denied");
+      const user = data.session?.user;
+      if (!user) { if (!cancelled) setState("denied"); return; }
+      // Existing profiles with all three fields retain their normal access.
+      const { data: profile, error } = await supabase.from("profiles")
+        .select("name, age_range, avatar").eq("id", user.id).maybeSingle();
+      if (cancelled) return;
+      if (error) { setState("ok"); return; } // Do not block established users on transient DB errors.
+      setState(profile?.name && profile?.age_range && profile?.avatar ? "ok" : "onboarding");
     };
     void check();
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!cancelled) setState(session?.user ? "ok" : "denied");
-    });
-    return () => {
-      cancelled = true;
-      listener.subscription.unsubscribe();
-    };
-  }, []);
-
+    const { data: listener } = supabase.auth.onAuthStateChange(() => { void check(); });
+    return () => { cancelled = true; listener.subscription.unsubscribe(); };
+  }, [location.pathname]);
   if (state === "checking") return <PageFallback />;
   if (state === "denied") return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+  if (state === "onboarding") return <Navigate to="/bem-vindo" replace />;
   return <Outlet />;
 };
 
