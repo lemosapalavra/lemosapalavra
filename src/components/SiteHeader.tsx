@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo-central.png";
 
 export const SITE_NAV = [
-  ["INÍCIO", "/"], ["VEJA", "/lemosplay"], ["OUÇA", "/lemosplay?view=ouca"], ["APRENDA", "/atividades"],
+  ["INÍCIO", "/"], ["VEJA", "/lemosplay"], ["OUÇA", "/lemosplay?view=ouca"], ["APRENDA", "/aprenda"],
   ["FAÇA", "/atividades"], ["ÁLBUM", "/album"],
 ] as const;
 
