@@ -170,6 +170,9 @@ const RequireEntry = () => {
       const { data } = await supabase.auth.getSession();
       const user = data.session?.user;
       if (!user) { if (!cancelled) setState("denied"); return; }
+      // Keep legacy phone accounts untouched; onboarding applies to Google identities only.
+      const googleUser = user.app_metadata?.provider === "google" || user.identities?.some(i => i.provider === "google");
+      if (!googleUser) { if (!cancelled) setState("ok"); return; }
       // Existing profiles with all three fields retain their normal access.
       const { data: profile, error } = await supabase.from("profiles")
         .select("name, age_range, avatar").eq("id", user.id).maybeSingle();
