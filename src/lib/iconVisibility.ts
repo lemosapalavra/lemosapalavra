@@ -10,18 +10,25 @@ export const SITE_ICONS = [
   { id: "kart", title: "Kartzinho" },
 ];
 
-const KEY = "lemos_icon_visibility_v4";
-const PREVIOUS_KEY = "lemos_icon_visibility_v3";
+const KEY = "lemos_icon_visibility_v5";
+const PREVIOUS_KEY = "lemos_icon_visibility_v4";
 const EVT = "lemos_icon_visibility_change";
 
 export function loadHiddenIcons(): string[] {
-  const defaults = SITE_ICONS.filter((icon) => icon.id !== "14bis" && id !== "lia" && icon.id !== "lia").map((icon) => icon.id);
+  const restored = new Set(["lia", "usuario", "dedicatoria", "14bis"]);
+  const defaults = SITE_ICONS.filter((icon) => !restored.has(icon.id)).map((icon) => icon.id);
   try {
-    const raw = localStorage.getItem(KEY) ?? localStorage.getItem(PREVIOUS_KEY);
+    const current = localStorage.getItem(KEY);
+    const raw = current ?? localStorage.getItem(PREVIOUS_KEY);
     if (!raw) return defaults;
     const parsed: unknown = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed.filter((id): id is string => typeof id === "string" && (localStorage.getItem(KEY) !== null || id !== "14bis")) : defaults;
-  } catch { return defaults; }
+    if (!Array.isArray(parsed)) return defaults;
+    return parsed.filter((id): id is string =>
+      typeof id === "string" && (current !== null || !restored.has(id))
+    );
+  } catch {
+    return defaults;
+  }
 }
 
 export function setIconHidden(id: string, hidden: boolean) {
