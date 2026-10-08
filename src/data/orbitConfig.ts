@@ -16,7 +16,7 @@ const KEY = "lemos_orbit_config_v10";
 export function defaultOrbit(): OrbitItem[] {
   return [
     { icon: iconAssistir.url, label: "VEJA", route: "/lemosplay" },
-    { icon: iconOuca.url, label: "OUÇA", route: "/lemosplay" },
+    { icon: iconOuca.url, label: "OUÇA", route: "/lemosplay?view=ouca" },
     { icon: iconAtividades.url, label: "APRENDA", route: "/atividades" },
     { icon: iconAlbum.url, label: "ÁLBUM", route: "/album" },
     { icon: "/home/faca.png", label: "FAÇA", route: "/atividades" },
@@ -34,7 +34,7 @@ export function loadOrbit(): OrbitItem[] {
       ...d,
       label: parsed[i]?.label ?? d.label,
       sublabel: parsed[i]?.sublabel ?? d.sublabel,
-      route: i === 1 ? "/lemosplay" : (parsed[i]?.route ?? d.route),
+      route: i === 1 ? "/lemosplay?view=ouca" : (parsed[i]?.route ?? d.route),
       hidden: parsed[i]?.hidden ?? false,
     }));
   } catch {
