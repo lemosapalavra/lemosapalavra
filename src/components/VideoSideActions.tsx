@@ -91,7 +91,7 @@ export default function VideoSideActions({ videoId, className = "" }: Props) {
         aria-label="Compartilhar vídeo"
         title="Compartilhar"
       >
-        <span className={circle}><Share2 className="h-5 w-5" /></span>
+        <span className={`${circle} !border-emerald-300 bg-emerald-600 text-white`}><Share2 className="h-5 w-5" /></span>
         <span className="text-[10px] font-bold drop-shadow">{formatCount(counts.shares)}</span>
       </button>
 
@@ -103,7 +103,7 @@ export default function VideoSideActions({ videoId, className = "" }: Props) {
         title="Gostei"
         aria-pressed={state.liked}
       >
-        <span className={`${circle} ${state.liked ? "text-destructive" : ""}`}>
+        <span className={`${circle} !border-red-300 bg-red-600 text-white`}>
           <Heart className="h-5 w-5" fill={state.liked ? "currentColor" : "none"} />
         </span>
         <span className="text-[10px] font-bold drop-shadow">{formatCount(counts.likes + (state.liked ? 1 : 0))}</span>
