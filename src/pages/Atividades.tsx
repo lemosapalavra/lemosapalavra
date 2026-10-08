@@ -430,39 +430,14 @@ export default function Atividades() {
 
   const closeCelebration = () => setCelebration({ show: false, message: "", coins: 0, emoji: "🏆" });
 
-  const allActivities = [
-    { title: "Quiz Bíblico",        icon: iconQuiz,             id: "quiz",        coins: COINS.quiz,       zoom: 1 },
-    { title: "Memória",             icon: iconMemoria,          id: "memory",      coins: COINS.memory,     zoom: 1 },
-    { title: "Colorir",             icon: iconColorir,          id: "coloring",    coins: COINS.coloring,   zoom: 1 },
-    { title: "Quebra-Cabeça",       icon: iconQuebraCabeca,     id: "jigsaw",      coins: COINS.jigsaw,     zoom: 1 },
-    { title: "Caça-Palavras",       icon: iconCacaPalavras.url, id: "wordsearch",  coins: COINS.wordsearch, zoom: 1 },
-    { title: "Pinte os Círculos",   icon: iconPinteCirculos.url, id: "edu:circles", coins: COINS.circles,   zoom: 1.28 },
-    { title: "Ligue as Cores",      icon: iconLigueCores.url,   id: "edu:connect", coins: COINS.connect,    zoom: 1.28 },
-    { title: "Labirinto",           icon: iconLabirinto,        id: "maze",        coins: COINS.maze,       zoom: 1.05 },
-    { title: "Cruzadinha Bíblica",  icon: iconAtividades,       id: "crossword",   coins: COINS.crossword,  zoom: 1.15 },
+  // Cinco atividades fixas: sem rodízio diário e sem restrição por faixa etária.
+  const activities = [
+    { title: "Quiz Bíblico", icon: iconQuiz, id: "quiz", coins: COINS.quiz, zoom: 1 },
     { title: "Construtor de Palavras", icon: iconConstrutorPalavras.url, id: "wordbuilder", coins: COINS.wordbuilder, zoom: 1.05 },
-    { title: "Ligue os Pontos",     icon: iconLiguePontos,      id: "connectdots", coins: COINS.connectdots, zoom: 1.1 },
-    { title: "Monte e Descubra",    icon: iconMonteDescubra,    id: "assemble",    coins: COINS.assemble,   zoom: 1.05 },
+    { title: "Caça-Palavras", icon: iconCacaPalavras.url, id: "wordsearch", coins: COINS.wordsearch, zoom: 1 },
+    { title: "Quebra-Cabeça", icon: iconQuebraCabeca, id: "jigsaw", coins: COINS.jigsaw, zoom: 1 },
+    { title: "Cruzadinha Bíblica", icon: iconAtividades, id: "crossword", coins: COINS.crossword, zoom: 1.15 },
   ];
-
-
-  // Atividades do dia: o Construtor permanece disponível; as outras quatro
-  // avançam uma posição por dia para que nenhuma atividade fique escondida.
-  const activities = useMemo(() => {
-    // Filtro do administrador: atividades liberadas para a faixa etária do usuário.
-    const allowed = allowedActivityIds();
-    const pool = allowed ? allActivities.filter((a) => allowed.includes(a.id)) : allActivities;
-    const selected = dailyActivities(pool, dayOfYear(new Date()));
-    if (import.meta.env.DEV) {
-      console.info("[Atividades do dia]", {
-        day: dayOfYear(new Date()),
-        indexes: selected.map((activity) => pool.findIndex((item) => item.id === activity.id)),
-        ids: selected.map((activity) => activity.id),
-      });
-    }
-    return selected;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accessVersion]);
 
 
   const bgStyle = { background: "transparent" };
@@ -531,6 +506,28 @@ export default function Atividades() {
           height: "min(88vw, 720px)",
         }}
       >
+        {/* Estrela cinza-clara ligando os centros dos cinco ícones. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-1/2 orbit-anim"
+          style={{
+            width: "calc(2 * var(--orbit-radius))",
+            height: "calc(2 * var(--orbit-radius))",
+            transform: "translate(-50%, -50%)",
+            animation: `activity-star-spin ${SPIN_DURATION} linear infinite`,
+          }}
+        >
+          <svg viewBox="0 0 100 100" className="h-full w-full overflow-visible" fill="none">
+            <polygon
+              points="50,0 79.39,90.45 2.45,34.55 97.55,34.55 20.61,90.45"
+              stroke="#d1d5db"
+              strokeWidth="0.9"
+              strokeLinejoin="round"
+              vectorEffect="non-scaling-stroke"
+              opacity="0.85"
+            />
+          </svg>
+        </div>
         <div className="absolute inset-0 orbit-anim" style={{ animation: `orbit-spin ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}>
           {activities.map((a, i) => {
             const angle = (360 / activities.length) * i - 90;
@@ -560,10 +557,12 @@ export default function Atividades() {
         .orbit-area { --orbit-radius: clamp(100px, 26vw, 125px); }
         @media (min-width: 640px) { .orbit-area { --orbit-radius: clamp(115px, 26vw, 145px); } }
         @media (min-width: 1024px) { .orbit-area { --orbit-radius: clamp(190px, 32vw, 290px); } }
+        @keyframes activity-star-spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
         @keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes orbit-spin-reverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
         .orbit-area:hover .orbit-anim,
         .orbit-area:focus-within .orbit-anim { animation-play-state: paused !important; }
+        @media (prefers-reduced-motion: reduce) { .orbit-area .orbit-anim { animation: none !important; } }
       `}</style>
       <CelebrationAnimation show={celebration.show} message={celebration.message} coins={celebration.coins} emoji={celebration.emoji} onClose={closeCelebration} />
     </div>
