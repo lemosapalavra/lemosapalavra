@@ -1,3 +1,4 @@
+import { useDedicationLine } from "@/hooks/useDedicationLine";
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useState } from "react";
 import MeuMural from "@/components/MeuMural";
@@ -13,6 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
  */
 export default function UserCorner() {
   const { coins } = useCoins();
+  const dedicationTop = useDedicationLine();
   const [user, setUser] = useState<{ name?: string; avatar?: string } | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -48,7 +50,8 @@ export default function UserCorner() {
 
   return (
     <>
-      <div className="fixed right-2 top-1/2 z-[45] flex -translate-y-1/2 flex-col items-center gap-1 sm:right-4">
+      <div className="fixed right-2 top-1/2 z-[45] flex -translate-y-1/2 flex-col items-center gap-1 sm:right-4"
+      style={dedicationTop !== null ? { top: dedicationTop } : undefined}>
       <Button variant="ghost"
         onClick={() => setMenu((v) => !v)}
         title="Opções do usuário"
