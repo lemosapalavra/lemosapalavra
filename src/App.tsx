@@ -16,6 +16,7 @@ import { startAutoUpdate } from "@/lib/autoUpdate";
 import { startAutoTitles } from "@/lib/autoTitles";
 
 const Login = lazy(() => import("./pages/Login.tsx"));
+const SmsLogin = lazy(() => import("./pages/SmsLogin.tsx"));
 const Biblia = lazy(() => import("./pages/Biblia.tsx"));
 const Louvores = lazy(() => import("./pages/Louvores.tsx"));
 const HistoriasDoDia = lazy(() => import("./pages/HistoriasDoDia.tsx"));
@@ -44,6 +45,7 @@ const AnalyticsTracker = () => {
 const BASE_URL = "https://lemosapalavra.live";
 const ROUTE_META: Record<string, { title: string; description: string }> = {
   "/": { title: "Lemos a Palavra — Histórias Bíblicas para Crianças", description: "Histórias bíblicas em cartoon, louvores, devocionais e atividades para crianças." },
+  "/login-sms": { title: "Acesso por SMS — Lemos a Palavra", description: "Acesso seguro por código enviado ao celular." },
   "/login": { title: "Entrar — Lemos a Palavra", description: "Acesse sua conta para acompanhar seu progresso e figurinhas." },
   "/biblia": { title: "Bíblia — Lemos a Palavra", description: "Leia a Bíblia (Almeida) com resumos temáticos e dicionário bíblico." },
   "/louvores": { title: "Louvores — Lemos a Palavra", description: "Vídeos de louvor infantil para toda a família." },
@@ -248,6 +250,7 @@ const App = () => (
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/login" element={<Login />} />
+              <Route path="/login-sms" element={<SmsLogin />} />
             <Route element={<RequireEntry />}>
               <Route path="/" element={<Index />} />
               <Route path="/biblia" element={<Biblia />} />
