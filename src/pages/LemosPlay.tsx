@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import { Play, Info, ChevronLeft, ChevronRight, X, Settings, ListVideo, SkipForward, RotateCcw } from "lucide-react";
 import lemosPlayLogo from "@/assets/lemos-play-logo.png";
 import PageHeader from "@/components/PageHeader";
@@ -204,6 +205,8 @@ function TopTenRow({ items, onPlay, progress }: { items: PlayItem[]; onPlay: (it
 const isOn = (v: PlayEntry) => v.enabled !== false;
 
 export default function LemosPlay() {
+  const { search } = useLocation();
+  const isOucaView = new URLSearchParams(search).get("view") === "ouca";
   const isAdmin = useIsAdmin();
   const [adminOpen, setAdminOpen] = useState(false);
   const [cfg, setCfg] = useState(() => loadConfig());
@@ -406,17 +409,17 @@ export default function LemosPlay() {
     const seriesFirsts = seriesGroupItems
       .map((g) => g.videos[0])
       .filter((v): v is PlayItem => !!v && !!v.poster);
-    const pool = [...filmesPlay, ...seriesFirsts, ...louvoresPlay, ...musicasPlay]
+    const pool = (isOucaView ? [...louvoresPlay, ...musicasPlay] : [...filmesPlay, ...seriesFirsts, ...louvoresPlay, ...musicasPlay])
       .filter((p) => !!p.poster);
     return pool.length ? pool : [filmesPlay[0]].filter(Boolean) as PlayItem[];
-  }, [filmesPlay, seriesGroupItems, louvoresPlay, musicasPlay]);
+  }, [filmesPlay, seriesGroupItems, louvoresPlay, musicasPlay, isOucaView]);
   const [heroIdx, setHeroIdx] = useState(0);
   useEffect(() => {
     if (playing || heroPool.length < 2) return;
     const id = window.setInterval(() => setHeroIdx((i) => (i + 1) % heroPool.length), 7000);
     return () => window.clearInterval(id);
   }, [heroPool.length, playing]);
-  const hero = heroPool[heroIdx % Math.max(1, heroPool.length)] ?? filmesPlay[0] ?? louvoresPlay[0] ?? musicasPlay[0];
+  const hero = heroPool[heroIdx % Math.max(1, heroPool.length)] ?? (isOucaView ? (louvoresPlay[0] ?? musicasPlay[0]) : (filmesPlay[0] ?? louvoresPlay[0] ?? musicasPlay[0]));
 
   // Descrição curta por categoria — fallback quando não há sinopse específica.
   const heroDescription = useMemo(() => {
@@ -454,7 +457,7 @@ export default function LemosPlay() {
   return (
 
     <div className="min-h-screen bg-black text-white">
-      <PageHeader title="Histórias Bíblicas" subtitle="Filmes, Séries e Músicas" />
+      <PageHeader title={isOucaView ? "Ouça" : "Histórias Bíblicas"} subtitle={isOucaView ? "Músicas e Louvores" : "Filmes, Séries e Músicas"} />
       {isAdmin && (
         <div className="fixed top-2 right-2 z-40">
           <button
@@ -535,7 +538,7 @@ export default function LemosPlay() {
 
       <div className="-mt-20 sm:-mt-32 relative z-10 pb-16">
 
-        <div id="genesis">
+        {!isOucaView && <div id="genesis">
           <Row title="Gênesis" items={genesisItems} onPlay={(item) => requestPlay(item)} progress={progress} />
         </div>
         <div id="jesus">
@@ -550,7 +553,7 @@ export default function LemosPlay() {
           }}
           progress={progress}
         />
-        </div>
+        </div>}
         <div id="musicas">
           <Row title="Músicas" items={musicasPlay} onPlay={(item) => requestPlay(item)} progress={progress} />
         </div>
