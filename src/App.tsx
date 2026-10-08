@@ -16,6 +16,7 @@ import { startAutoUpdate } from "@/lib/autoUpdate";
 import { startAutoTitles } from "@/lib/autoTitles";
 
 const Login = lazy(() => import("./pages/Login.tsx"));
+const WelcomeProfile = lazy(() => import("./pages/WelcomeProfile.tsx"));
 const SmsLogin = lazy(() => import("./pages/SmsLogin.tsx"));
 const Biblia = lazy(() => import("./pages/Biblia.tsx"));
 const Louvores = lazy(() => import("./pages/Louvores.tsx"));
@@ -120,10 +121,11 @@ const AuthBootstrap = () => {
       let existing: Record<string, any> = {};
       try {
         const raw = localStorage.getItem("lemos_user");
-        if (raw) existing = JSON.parse(raw) || {};
+        if (raw) { const parsed = JSON.parse(raw) || {}; if (parsed.userId === userId) existing = parsed; }
       } catch { existing = {}; }
       const u = {
         ...existing,
+        userId,
         name: profile?.name || existing.name || "",
         ageRange: profile?.age_range || existing.ageRange || "",
         phone: profile?.phone || existing.phone || "",
@@ -250,6 +252,7 @@ const App = () => (
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/bem-vindo" element={<WelcomeProfile />} />
               <Route path="/login-sms" element={<SmsLogin />} />
             <Route element={<RequireEntry />}>
               <Route path="/" element={<Index />} />
