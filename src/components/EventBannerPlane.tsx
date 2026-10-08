@@ -5,6 +5,8 @@ import planeRtl from "@/assets/14-bis/14bis-rtl.png.asset.json";
 import planeLtr from "@/assets/14-bis/14bis-ltr.png.asset.json";
 import bisCover from "@/assets/14-bis/ele-e-o-meu-irmao/ele-e-o-meu-irmao-cover.jpg.asset.json";
 import { Button } from "@/components/ui/button";
+import ColonialVideoFrame from "@/components/ColonialVideoFrame";
+import VideoActionsColumn from "@/components/VideoSideActions";
 
 /**
  * Aviãozinhos animados alternando direções:
@@ -104,10 +106,25 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
       </div>
 
       {open && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-foreground/80 p-4" onClick={() => setOpen(false)}>
-          <div className="relative w-full max-w-3xl" onClick={(e) => e.stopPropagation()}>
-            <Button variant="secondary" size="icon" onClick={() => setOpen(false)} aria-label="Fechar vídeo" className="absolute -top-12 right-0 rounded-full">✕</Button>
-            <video src={cfg.videoUrl} poster={bisCover.url} controls autoPlay playsInline preload="auto" className="w-full rounded-2xl bg-foreground" />
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/95 p-4" onClick={() => setOpen(false)}>
+          <Button variant="secondary" size="icon" onClick={() => setOpen(false)} aria-label="Fechar vídeo" className="absolute top-4 right-4 z-30 rounded-full">✕</Button>
+          <div className="relative flex-1 min-h-0 w-full flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <ColonialVideoFrame>
+              <video
+                key={cfg.videoUrl}
+                src={cfg.videoUrl}
+                poster={bisCover.url}
+                controls
+                controlsList="nodownload noremoteplayback noplaybackrate"
+                disablePictureInPicture
+                onContextMenu={(e) => e.preventDefault()}
+                autoPlay
+                playsInline
+                preload="auto"
+                className="w-full h-full bg-black object-contain"
+              />
+            </ColonialVideoFrame>
+            <VideoActionsColumn videoId={`14bis:${cfg.videoUrl}`} />
           </div>
         </div>
       )}
