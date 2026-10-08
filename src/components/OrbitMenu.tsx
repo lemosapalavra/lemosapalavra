@@ -35,6 +35,25 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
       )}
 
       <div className="relative orbit-area w-[min(94vw,330px)] h-[min(94vw,330px)] sm:w-[min(90vw,400px)] sm:h-[min(90vw,400px)] lg:w-[min(92vw,720px)] lg:h-[min(92vw,720px)]">
+        {items.length === 5 && (
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 100 100"
+            className="absolute inset-0 w-full h-full pointer-events-none overflow-visible orbit-spin"
+          >
+            <polygon
+              points="50,10 73.5,82.4 12,37.6 88,37.6 26.5,82.4"
+              fill="none"
+              stroke="#d1d5db"
+              strokeWidth="0.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              opacity="0.85"
+              vectorEffect="non-scaling-stroke"
+              style={{ strokeWidth: 3 }}
+            />
+          </svg>
+        )}
         <div className="absolute inset-0 orbit-spin">
           {items.map((item, i) => {
             const angle = (360 / items.length) * i - 90;
