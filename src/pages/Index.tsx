@@ -118,7 +118,7 @@ function IndexV1() {
             onItemClick={handleItemClick}
           />
 
-           {dedicatoriaVisible && <div className="mt-6 sm:mt-10 flex flex-col items-center gap-1">
+           {dedicatoriaVisible && <div id="lemos-dedicatoria-anchor" className="mt-6 sm:mt-10 flex flex-col items-center gap-1">
              <Button variant="ghost" size="icon"
               onClick={() => setDedicatoriaOpen(true)}
                className="h-16 w-16 sm:h-20 sm:w-20 overflow-hidden rounded-full border-2 border-border bg-background shadow-lg icon-glow"
