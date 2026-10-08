@@ -1,3 +1,4 @@
+import { useDedicationLine } from "@/hooks/useDedicationLine";
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -60,6 +61,7 @@ const CONTEXT_TIPS: Record<string, string> = {
 export default function MascoteLia() {
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const dedicationTop = useDedicationLine();
   const [expanded, setExpanded] = useState(false);
   const [context, setContext] = useState<string | null>(null);
 
@@ -102,7 +104,8 @@ export default function MascoteLia() {
 
   if (!expanded) {
     return (
-      <div className="fixed left-2 top-1/2 z-[45] flex -translate-y-1/2 flex-col items-center gap-2 sm:left-4">
+      <div className="fixed left-2 top-1/2 z-[45] flex -translate-y-1/2 flex-col items-center gap-2 sm:left-4"
+        style={dedicationTop !== null ? { top: dedicationTop } : undefined}>
       <Button variant="ghost"
         onClick={() => setExpanded(true)}
         aria-label="Falar com a LIA, sua ajudante"
@@ -122,7 +125,8 @@ export default function MascoteLia() {
   }
 
   return (
-    <div className="fixed left-2 top-1/2 z-[45] flex -translate-y-1/2 flex-col items-start gap-1 pointer-events-none sm:left-4">
+    <div className="fixed left-2 top-1/2 z-[45] flex -translate-y-1/2 flex-col items-start gap-1 pointer-events-none sm:left-4"
+      style={dedicationTop !== null ? { top: dedicationTop } : undefined}>
       {/* Balão acima da cabeça da LIA */}
       <div className="pointer-events-auto relative w-[78vw] max-w-sm rounded-2xl bg-white/95 backdrop-blur border-2 border-amber-300 shadow-xl px-3 py-2">
         <p className="font-body text-[15px] sm:text-base text-amber-900 leading-relaxed">{message}</p>
