@@ -5,20 +5,18 @@ import { setAdminMode, useIsAdmin } from "@/hooks/useIsAdmin";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
-import avatarJesus from "@/assets/avatar-jesus.png";
-import avatarMaria from "@/assets/avatar-maria.png";
-import avatarDavi from "@/assets/avatar-davi.png";
-import avatarDaniel from "@/assets/avatar-daniel.png";
-import avatarMoises from "@/assets/avatar-moises.png";
-import avatarAnjo from "@/assets/avatar-anjo.png";
-
+// Novos avatares fornecidos para o cadastro. Arquivos em public/avatars-login/.
 const avatars = [
-  { src: avatarJesus, name: "Jesus" },
-  { src: avatarMaria, name: "Maria" },
-  { src: avatarDavi, name: "Davi" },
-  { src: avatarDaniel, name: "Daniel" },
-  { src: avatarMoises, name: "Moisés" },
-  { src: avatarAnjo, name: "Anjo" },
+  { src: "/avatars-login/jesus.webp", name: "Jesus" },
+  { src: "/avatars-login/maria.webp", name: "Maria" },
+  { src: "/avatars-login/davi.webp", name: "Davi" },
+  { src: "/avatars-login/moises.webp", name: "Moisés" },
+  { src: "/avatars-login/abraao.webp", name: "Abraão" },
+  { src: "/avatars-login/jose.webp", name: "José" },
+  { src: "/avatars-login/lia.webp", name: "Lia" },
+  { src: "/avatars-login/marta.webp", name: "Marta" },
+  { src: "/avatars-login/noe.webp", name: "Noé" },
+  { src: "/avatars-login/paulo.webp", name: "Paulo" },
 ];
 
 type Mode = "login" | "register";
@@ -461,7 +459,7 @@ export default function Login() {
             {mode === "register" && (
               <>
                 <Field label="Escolha seu avatar:">
-                  <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                  <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
                     {avatars.map((av) => (
                       <button
                         key={av.name}
@@ -474,7 +472,7 @@ export default function Login() {
                             : "border-amber-200 hover:border-amber-300"
                         }`}
                       >
-                        <img src={av.src} alt={av.name} className="w-full aspect-square object-cover" loading="lazy" width="1024" height="1024" />
+                        <img src={av.src} alt={av.name} className="w-full aspect-square object-contain" loading="lazy" width="1024" height="1024" />
                         <div className="px-1.5 py-1 bg-white/90 border-t border-amber-100">
                           <span className="block text-[11px] font-display font-bold text-amber-900 truncate">{av.name}</span>
                         </div>
