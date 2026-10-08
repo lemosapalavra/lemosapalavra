@@ -57,7 +57,7 @@ export default function VideoInteractions({ videoId, className = "" }: Props) {
       <div className="flex items-center justify-center gap-2 flex-wrap">
         <button
           onClick={() => patch({ liked: !state.liked })}
-          className={`${btn} ${state.liked ? "bg-red-500 text-white" : "bg-white/15 text-white hover:bg-white/25"}`}
+          className={`${btn} ${state.liked ? "bg-red-700 text-white" : "bg-red-500 text-white hover:bg-red-600"}`}
           aria-pressed={state.liked}
         >
           <Heart className="w-4 h-4" fill={state.liked ? "currentColor" : "none"} />
