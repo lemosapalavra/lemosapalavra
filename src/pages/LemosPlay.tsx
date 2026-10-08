@@ -409,7 +409,7 @@ export default function LemosPlay() {
     const seriesFirsts = seriesGroupItems
       .map((g) => g.videos[0])
       .filter((v): v is PlayItem => !!v && !!v.poster);
-    const pool = (isOucaView ? [...louvoresPlay, ...musicasPlay] : [...filmesPlay, ...seriesFirsts, ...louvoresPlay, ...musicasPlay])
+    const pool = (isOucaView ? [...louvoresPlay, ...musicasPlay] : [...filmesPlay, ...seriesFirsts])
       .filter((p) => !!p.poster);
     return pool.length ? pool : [filmesPlay[0]].filter(Boolean) as PlayItem[];
   }, [filmesPlay, seriesGroupItems, louvoresPlay, musicasPlay, isOucaView]);
@@ -419,7 +419,7 @@ export default function LemosPlay() {
     const id = window.setInterval(() => setHeroIdx((i) => (i + 1) % heroPool.length), 7000);
     return () => window.clearInterval(id);
   }, [heroPool.length, playing]);
-  const hero = heroPool[heroIdx % Math.max(1, heroPool.length)] ?? (isOucaView ? (louvoresPlay[0] ?? musicasPlay[0]) : (filmesPlay[0] ?? louvoresPlay[0] ?? musicasPlay[0]));
+  const hero = heroPool[heroIdx % Math.max(1, heroPool.length)] ?? (isOucaView ? (louvoresPlay[0] ?? musicasPlay[0]) : (filmesPlay[0] ?? seriesGroupItems.flatMap((g) => g.videos)[0]));
 
   // Descrição curta por categoria — fallback quando não há sinopse específica.
   const heroDescription = useMemo(() => {
@@ -554,12 +554,14 @@ export default function LemosPlay() {
           progress={progress}
         />
         </div>}
+        {isOucaView && <>
         <div id="musicas">
           <Row title="Músicas" items={musicasPlay} onPlay={(item) => requestPlay(item)} progress={progress} />
         </div>
         <div id="louvores">
           <Row title="Louvores" items={louvoresPlay} onPlay={(item) => requestPlay(item)} progress={progress} />
         </div>
+        </>}
 
       </div>
 
