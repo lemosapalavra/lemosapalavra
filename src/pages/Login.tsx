@@ -377,15 +377,14 @@ export default function Login() {
             <p className="text-center text-xs text-muted-foreground">
               O acesso pelo Google não exige SMS. Para crianças, use uma conta autorizada pelo responsável.
             </p>
-            <div className="border-t border-amber-200 pt-3">
-              <button type="button" onClick={() => setShowLegacy(v => !v)} aria-expanded={showLegacy} className="w-full text-center text-sm font-semibold text-amber-900 underline underline-offset-4">
-                {showLegacy ? "Ocultar acesso anterior" : "Já tenho cadastro por celular / Acesso anterior"}
-              </button>
-            </div>
+            <p className="text-center text-xs text-muted-foreground border-t border-amber-200 pt-3">
+              Por segurança, o acesso antigo apenas com número de celular está temporariamente indisponível.
+              Seus dados cadastrados foram preservados.
+            </p>
           </div>
 
           {/* Formulário anterior preservado temporariamente para migração dos cadastros. */}
-          {showLegacy && <div className="space-y-4">
+          {false && showLegacy && <div className="space-y-4">
             {mode === "register" && (
               <>
                 <Field label="Nome *">
