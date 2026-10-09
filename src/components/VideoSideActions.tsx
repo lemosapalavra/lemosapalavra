@@ -77,7 +77,7 @@ export default function VideoSideActions({ videoId, className = "" }: Props) {
 
   const stop = (event: React.MouseEvent) => event.stopPropagation();
   const control = "flex flex-col items-center gap-1 text-primary-foreground transition active:scale-90";
-  const circle = "grid h-11 w-11 place-items-center rounded-full border border-primary-foreground/20 bg-foreground/65 shadow-lg backdrop-blur-sm";
+  const circle = "grid h-11 w-11 place-items-center rounded-full border border-white/40 shadow-lg backdrop-blur-sm";
 
   return (
     <div
@@ -91,7 +91,7 @@ export default function VideoSideActions({ videoId, className = "" }: Props) {
         aria-label="Compartilhar vídeo"
         title="Compartilhar"
       >
-        <span className={circle}><Share2 className="h-5 w-5" /></span>
+        <span className={`${circle} bg-green-600 text-white`}><Share2 className="h-5 w-5" /></span>
         <span className="text-[10px] font-bold drop-shadow">{formatCount(counts.shares)}</span>
       </button>
 
@@ -103,7 +103,7 @@ export default function VideoSideActions({ videoId, className = "" }: Props) {
         title="Gostei"
         aria-pressed={state.liked}
       >
-        <span className={`${circle} ${state.liked ? "text-destructive" : ""}`}>
+        <span className={`${circle} bg-red-600 text-white`}>
           <Heart className="h-5 w-5" fill={state.liked ? "currentColor" : "none"} />
         </span>
         <span className="text-[10px] font-bold drop-shadow">{formatCount(counts.likes + (state.liked ? 1 : 0))}</span>
