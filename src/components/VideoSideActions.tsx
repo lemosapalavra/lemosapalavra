@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Heart, Share2 } from "lucide-react";
 import { shareSite } from "@/components/ShareButton";
 import {
@@ -47,7 +47,7 @@ function formatCount(n: number): string {
 export default function VideoSideActions({ videoId, className = "" }: Props) {
   const [enabled, setEnabled] = useState(() => loadVideoInteractionsCfg().enabled);
   const [state, setState] = useState<Store>({ liked: false, following: false, comments: [] });
-
+  const counts = useMemo(() => getFakeCounts(videoId), [videoId]);
 
   useEffect(() => {
     const syncEnabled = () => setEnabled(loadVideoInteractionsCfg().enabled);
@@ -76,7 +76,7 @@ export default function VideoSideActions({ videoId, className = "" }: Props) {
   };
 
   const stop = (event: React.MouseEvent) => event.stopPropagation();
-  const control = "flex items-center justify-center text-primary-foreground transition active:scale-90";
+  const control = "flex flex-col items-center gap-1 text-primary-foreground transition active:scale-90";
   const circle = "grid h-11 w-11 place-items-center rounded-full border border-primary-foreground/20 bg-foreground/65 shadow-lg backdrop-blur-sm";
 
   return (
@@ -91,7 +91,8 @@ export default function VideoSideActions({ videoId, className = "" }: Props) {
         aria-label="Compartilhar vídeo"
         title="Compartilhar"
       >
-        <span className={`${circle} !border-emerald-300 bg-emerald-600 text-white`}><Share2 className="h-5 w-5" /></span>
+        <span className={circle}><Share2 className="h-5 w-5" /></span>
+        <span className="text-[10px] font-bold drop-shadow">{formatCount(counts.shares)}</span>
       </button>
 
       <button
@@ -102,9 +103,10 @@ export default function VideoSideActions({ videoId, className = "" }: Props) {
         title="Gostei"
         aria-pressed={state.liked}
       >
-        <span className={`${circle} !border-red-300 bg-red-600 text-white`}>
+        <span className={`${circle} ${state.liked ? "text-destructive" : ""}`}>
           <Heart className="h-5 w-5" fill={state.liked ? "currentColor" : "none"} />
         </span>
+        <span className="text-[10px] font-bold drop-shadow">{formatCount(counts.likes + (state.liked ? 1 : 0))}</span>
       </button>
     </div>
   );

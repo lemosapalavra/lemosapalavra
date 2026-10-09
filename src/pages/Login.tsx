@@ -1,62 +1,588 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { Shield } from "lucide-react";
+import { setAdminMode, useIsAdmin } from "@/hooks/useIsAdmin";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+
+import avatarJesus from "@/assets/avatar-jesus.png";
+import avatarMaria from "@/assets/avatar-maria.png";
+import avatarDavi from "@/assets/avatar-davi.png";
+import avatarDaniel from "@/assets/avatar-daniel.png";
+import avatarMoises from "@/assets/avatar-moises.png";
+import avatarAnjo from "@/assets/avatar-anjo.png";
 
 const avatars = [
-  ["jesus","Jesus","✝️"],["maria","Maria","🕊️"],["davi","Davi","👑"],
-  ["moises","Moisés","📜"],["abraao","Abraão","⭐"],["jose","José","🪚"],
-  ["lia","Lia","🌸"],["marta","Marta","🌷"],["noe","Noé","🛶"],["paulo","Paulo","📖"]
+  { src: avatarJesus, name: "Jesus" },
+  { src: avatarMaria, name: "Maria" },
+  { src: avatarDavi, name: "Davi" },
+  { src: avatarDaniel, name: "Daniel" },
+  { src: avatarMoises, name: "Moisés" },
+  { src: avatarAnjo, name: "Anjo" },
 ];
-const mask = (s:string) => { const d=s.replace(/\D/g,"").slice(0,11); return d.length>6 ? `(${d.slice(0,2)}) ${d.slice(2,d.length===11?7:6)}-${d.slice(d.length===11?7:6)}` : d.length>2 ? `(${d.slice(0,2)}) ${d.slice(2)}` : d; };
-export default function Login(){
- const navigate=useNavigate();
- const [name,setName]=useState("");
- const [phone,setPhone]=useState("");
- const [avatar,setAvatar]=useState("jesus");
- const [busy,setBusy]=useState(false);
- const enter=async()=>{
-  const digits=phone.replace(/\D/g,"");
-  if(name.trim().length<2 || !/^\d{2}9\d{8}$/.test(digits)){toast({title:"Confira seus dados",description:"Informe seu nome e celular com DDD.",variant:"destructive"});return;}
-  sessionStorage.setItem("lemos_registration_draft",JSON.stringify({name:name.trim(),phone:digits,avatar:"/avatars-login/"+avatar+".webp"}));
-  setBusy(true);
-  try{
-   const {data:{user}}=await supabase.auth.getUser();
-   if(user){navigate("/bem-vindo");return;}
-   const {lovable}=await import("@/integrations/lovable/index");
-   const result=await lovable.auth.signInWithOAuth("google",{redirect_uri:window.location.origin+"/bem-vindo"});
-   if(result.error) throw result.error;
-  }catch(e:any){toast({title:"Não foi possível continuar",description:e?.message||"Tente novamente.",variant:"destructive"});}
-  finally{setBusy(false);}
- };
- return <main className="min-h-screen overflow-hidden bg-gradient-to-b from-sky-200 via-amber-50 to-amber-200 px-4 py-8 text-amber-950">
-  <div className="pointer-events-none absolute inset-0 opacity-40" style={{backgroundImage:"radial-gradient(circle at 12% 20%, #fff 0 2%, transparent 2.5%), radial-gradient(circle at 85% 15%, #fff 0 3%, transparent 3.5%)"}}/>
-  <div className="relative mx-auto max-w-5xl">
-   <header className="text-center mb-5">
-    <div className="mx-auto mb-2 w-fit rounded-3xl border-4 border-amber-700 bg-gradient-to-b from-amber-400 to-amber-600 px-8 py-3 shadow-[0_8px_0_#92400e,0_18px_28px_#92400e66]">
-     <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white" style={{textShadow:"2px 3px #78350f"}}>📖 Lemos a Palavra</h1>
-    </div>
-    <p className="mt-5 inline-block rounded-full bg-white/80 px-5 py-2 font-bold text-amber-900 shadow">Onde a Palavra ganha Vida</p>
-   </header>
-   <div className="grid items-center gap-5 lg:grid-cols-[1fr_minmax(0,640px)_1fr]">
-    <aside className="hidden lg:block text-center"><div className="text-8xl drop-shadow-xl">🕊️</div><p className="mt-4 text-xl font-extrabold">Jesus te convida para uma linda jornada!</p></aside>
-    <section className="rounded-[2rem] border-4 border-amber-300 bg-gradient-to-b from-[#fff9eb] to-[#ffe9bf] p-5 sm:p-8 shadow-[0_14px_0_#d9a34f,0_24px_45px_#78350f55]">
-     <h2 className="text-center text-3xl sm:text-4xl font-black">Bem-vindo! 🌟</h2>
-     <p className="mx-auto mt-2 mb-6 max-w-md text-center text-sm sm:text-base">Entre para descobrir histórias, jogos e atividades da Bíblia.</p>
-     <div className="space-y-4">
-      <label className="block font-bold">👤 Seu nome<input value={name} onChange={e=>setName(e.target.value)} maxLength={60} autoComplete="name" placeholder="Digite seu nome" className="mt-2 w-full rounded-2xl border-2 border-amber-200 bg-white p-3 text-base outline-none focus:border-amber-600"/></label>
-      <label className="block font-bold">📱 Celular<input value={phone} onChange={e=>setPhone(mask(e.target.value))} inputMode="tel" autoComplete="tel-national" placeholder="(11) 99999-9999" className="mt-2 w-full rounded-2xl border-2 border-amber-200 bg-white p-3 text-base outline-none focus:border-amber-600"/></label>
-      <div><h3 className="text-center text-xl font-black">Escolha seu Avatar</h3><p className="mb-3 text-center text-sm">Seu personagem bíblico favorito</p>
-       <div className="grid grid-cols-5 gap-2">{avatars.map(([id,label,emoji])=><button key={id} type="button" onClick={()=>setAvatar(id)} aria-pressed={avatar===id} className={`rounded-xl border-2 p-1 text-center transition-transform hover:scale-105 ${avatar===id?"border-amber-600 bg-amber-200 ring-2 ring-yellow-400":"border-amber-200 bg-white/80"}`}>
-       <span className="block text-3xl sm:text-4xl">{emoji}</span><span className="block truncate text-[10px] sm:text-xs font-bold">{label}</span></button>)}</div>
+
+type Mode = "login" | "register";
+type AgeRange = "criancas" | "adolescentes" | "jovens" | "adultos";
+
+const AGE_RANGES: { id: AgeRange; label: string; emoji: string }[] = [
+  { id: "criancas",      label: "Crianças (0–12)",          emoji: "🧒" },
+  { id: "adolescentes",  label: "Adolescentes (13–17)",     emoji: "🧑" },
+  { id: "jovens",        label: "Jovens adultos (18–24)",   emoji: "🧑‍🎓" },
+  { id: "adultos",       label: "Adultos (25 e mais)",      emoji: "🧔" },
+];
+
+import { useIpLocation } from "@/hooks/useIpLocation";
+import {
+  OWNER_FLAG_KEY,
+  ownerDeviceUnlocked,
+  getOwnerIp,
+  setOwnerIp,
+  ipMatchesOwner,
+  clearOwnerAccess,
+} from "@/data/ownerAccess";
+
+// Hydrate the legacy localStorage profile object that the rest of the
+// app already reads from (`lemos_user`) using the Supabase profile row.
+async function hydrateLocalProfile(userId: string, fallbackEmail: string) {
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("name, age_range, phone, role, avatar, email, created_at")
+    .eq("id", userId)
+    .maybeSingle();
+  const u = {
+    name: profile?.name || "",
+    ageRange: profile?.age_range || "",
+    phone: profile?.phone || "",
+    role: profile?.role || "",
+    avatar: profile?.avatar || "",
+    email: profile?.email || fallbackEmail,
+    createdAt: profile?.created_at || new Date().toISOString(),
+  };
+  localStorage.setItem("lemos_user", JSON.stringify(u));
+  return u;
+}
+
+// Auto-derive a valid e-mail from the phone number so the register form
+// no longer needs to expose an e-mail field to the end user.
+function phoneToEmail(phone: string) {
+  const digits = phone.replace(/\D/g, "");
+  return `celular${digits}@lemosapalavra.app`;
+}
+
+/** Mantém apenas dígitos e formata como (11) 99999-9999 (máx. 11 dígitos). */
+export function maskPhone(value: string) {
+  const d = value.replace(/\D/g, "").slice(0, 11);
+  if (d.length <= 2) return d.length ? `(${d}` : "";
+  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+}
+
+/** Retorna mensagem de erro ou null quando o celular é válido. */
+export function validatePhone(value: string): string | null {
+  const d = value.replace(/\D/g, "");
+  if (!d) return "Informe seu celular.";
+  if (/[^\d\s()\-+]/.test(value)) return "O celular deve conter apenas números.";
+  if (d.length < 10) return "Celular incompleto — use DDD + número (ex.: (11) 99999-9999).";
+  if (d.length > 11) return "Celular inválido — máximo de 11 dígitos.";
+  if (Number(d[0]) === 0 || Number(d[1]) === 0) return "DDD inválido.";
+  if (d.length === 11 && d[2] !== "9") return "Celular inválido — o número deve começar com 9 após o DDD.";
+  return null;
+}
+
+/** Nome de usuário derivado automaticamente do nome informado. */
+export function deriveUsername(name: string): string {
+  return (
+    name
+      .trim()
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "") || "usuario"
+  );
+}
+
+/** Senha interna determinística — o usuário nunca digita senha. */
+export function derivePassword(phone: string): string {
+  return `lemos-${phone.replace(/\D/g, "")}-app`;
+}
+
+export type RegistrationInput = {
+  name: string;
+  ageRange: string;
+  avatar: string;
+  phone: string;
+};
+
+/** Valida o cadastro. Retorna null quando tudo está correto. */
+export function validateRegistration(
+  input: RegistrationInput,
+): { field: keyof RegistrationInput; message: string } | null {
+  if (!input.name.trim()) return { field: "name", message: "Informe seu nome." };
+  if (!input.ageRange) return { field: "ageRange", message: "Escolha sua faixa etária." };
+  const phoneErr = validatePhone(input.phone);
+  if (phoneErr) return { field: "phone", message: phoneErr };
+  if (!input.avatar) return { field: "avatar", message: "Escolha um avatar para o seu perfil." };
+  return null;
+}
+
+
+
+export default function Login() {
+  const navigate = useNavigate();
+  const isAdmin = useIsAdmin();
+  const [mode, setMode] = useState<Mode>("login");
+  const [email, setEmail] = useState("");
+  const [remember, setRemember] = useState(true);
+  const [busy, setBusy] = useState(false);
+
+  // register-only fields
+  const [name, setName] = useState("");
+  
+  const [ageRange, setAgeRange] = useState<AgeRange | "">("");
+  const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [selectedAvatar, setSelectedAvatar] = useState<string>("");
+  const [customAvatar, setCustomAvatar] = useState<string>("");
+
+
+
+
+  // Owner-only UI (Admin shortcut) — visível apenas neste aparelho (?owner=1)
+  // E somente quando o IP atual for o mesmo IP do dono registrado.
+  const { ip } = useIpLocation();
+  const [ownerDevice, setOwnerDevice] = useState<boolean>(false);
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("owner") === "1") {
+        localStorage.setItem(OWNER_FLAG_KEY, "1");
+      }
+      if (params.get("owner") === "0") {
+        clearOwnerAccess();
+      }
+      setOwnerDevice(ownerDeviceUnlocked());
+    } catch { /* ignore */ }
+  }, []);
+  useEffect(() => {
+    // Registra o IP do dono no primeiro desbloqueio deste aparelho.
+    if (ownerDevice && !getOwnerIp()) setOwnerIp(ip);
+  }, [ownerDevice, ip]);
+  // Aparelho desbloqueado com ?owner=1 basta para mostrar o atalho: o IP do
+  // dono muda (4G/Wi-Fi) e escondia o botão. O poder real continua no backend.
+  const ownerUnlocked = ownerDevice || ipMatchesOwner(ip);
+
+
+  const shortcutUrl = typeof window !== "undefined" ? `${window.location.origin}/` : "";
+
+  const handleCustomAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCustomAvatar(reader.result as string);
+        setSelectedAvatar("");
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const finalAvatar = customAvatar || selectedAvatar;
+
+  /**
+   * Garante que a conta do celular exista no backend com a senha interna
+   * correta (inclusive para contas antigas criadas com outro padrão).
+   */
+  const ensureAccount = async (
+    action: "login" | "register",
+    payload: { phone: string; name?: string; ageRange?: string; avatar?: string },
+  ): Promise<{ found: boolean; error?: string }> => {
+    const { data, error } = await supabase.functions.invoke("phone-auth", {
+      body: { action, ...payload },
+    });
+    if (error) {
+      console.error("[auth] phone-auth falhou", error.message);
+      return { found: false, error: error.message };
+    }
+    if ((data as any)?.error) return { found: false, error: (data as any).error };
+    return { found: !!(data as any)?.found };
+  };
+
+  const doLogin = async (overridePhone?: string) => {
+    const raw = (overridePhone ?? email).trim();
+
+    if (!name.trim()) { alert("Informe seu nome."); return; }
+    if (!raw) { alert("Informe seu celular."); return; }
+    // Aceita celular (padrão) ou e-mail (compatibilidade com contas antigas).
+    const isEmail = raw.includes("@");
+    const em = isEmail ? raw : phoneToEmail(raw);
+    if (!isEmail) {
+      const err = validatePhone(raw);
+      if (err) {
+        setPhoneError(err);
+        toast({ title: "Celular inválido", description: err, variant: "destructive" });
+        return;
+      }
+      setPhoneError(null);
+    }
+    setBusy(true);
+    if (!isEmail) {
+      const ensured = await ensureAccount("login", { phone: raw });
+      if (!ensured.found) {
+        setBusy(false);
+        toast({
+          title: "Conta não encontrada",
+          description: ensured.error || "Não localizamos uma conta com esse celular.",
+          variant: "destructive",
+        });
+        alert("Não encontramos sua conta com esse celular. Clique em CRIAR UMA CONTA.");
+        return;
+      }
+    }
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: em,
+      password: derivePassword(raw),
+    });
+    setBusy(false);
+    if (error || !data.user) {
+      console.error("[login] signIn falhou", { email: em, message: error?.message });
+      alert("Não conseguimos entrar agora. Confira seu celular e tente novamente.");
+      return;
+    }
+    await hydrateLocalProfile(data.user.id, data.user.email || em);
+    // Admin state is derived from the database (user_roles) — no client toggle.
+    const { logEvent } = await import("@/lib/logEvent");
+    logEvent("Login", { userId: data.user.id, email: data.user.email || em });
+    navigate("/");
+  };
+
+  const doRegister = async () => {
+    const validation = validateRegistration({ name, ageRange, avatar: finalAvatar, phone });
+    if (validation) {
+      setPhoneError(validation.field === "phone" ? validation.message : null);
+      toast({ title: "Confira o cadastro", description: validation.message, variant: "destructive" });
+      alert(validation.message);
+      return;
+    }
+    setPhoneError(null);
+    const derivedEmail = phoneToEmail(phone);
+    const derivedPassword = derivePassword(phone);
+    setBusy(true);
+    const ensured = await ensureAccount("register", {
+      phone,
+      name: name.trim(),
+      ageRange,
+      avatar: finalAvatar,
+    });
+    if (!ensured.found) {
+      setBusy(false);
+      console.error("[cadastro] falhou", { email: derivedEmail, error: ensured.error });
+      toast({
+        title: "Não foi possível criar sua conta",
+        description: ensured.error || "Tente novamente em instantes.",
+        variant: "destructive",
+      });
+      alert("Não foi possível criar sua conta. Tente novamente.");
+      return;
+    }
+    const { data: signIn, error: signInError } = await supabase.auth.signInWithPassword({
+      email: derivedEmail,
+      password: derivedPassword,
+    });
+    setBusy(false);
+    if (signInError || !signIn.user) {
+      console.error("[cadastro] login automático falhou", signInError?.message);
+      alert("Cadastro criado! Entre com seu nome e celular.");
+      setMode("login");
+      setEmail(phone);
+      return;
+    }
+    await hydrateLocalProfile(signIn.user.id, derivedEmail);
+    const { logEvent } = await import("@/lib/logEvent");
+    logEvent("Cadastro", { userId: signIn.user.id, email: derivedEmail });
+    navigate("/");
+  };
+
+
+
+
+  const handleGoogle = async () => {
+    try {
+      const { lovable } = await import("@/integrations/lovable/index");
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+      if (result.error) {
+        alert("Não foi possível entrar com o Google: " + (result.error as any)?.message);
+        return;
+      }
+      if (result.redirected) return;
+      const { data } = await supabase.auth.getUser();
+      if (data.user) {
+        await hydrateLocalProfile(data.user.id, data.user.email || "");
+        // Admin state is derived from the database (user_roles) — no client toggle.
+      }
+      navigate("/");
+    } catch (e: any) {
+      alert("Erro no login com Google: " + (e?.message || String(e)));
+    }
+  };
+
+  const copyShortcutUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(shortcutUrl);
+      alert("🔗 Link copiado! Cole no navegador para abrir o site.");
+    } catch {
+      alert(`Link do atalho: ${shortcutUrl}`);
+    }
+  };
+
+  return (
+    <div
+      className="min-h-screen flex items-center justify-center py-8 px-4"
+      style={{ background: "transparent" }}
+    >
+      <div className="w-full max-w-md">
+        <div className="bg-[hsl(36,60%,97%)] border border-amber-200/80 rounded-3xl shadow-2xl p-6 sm:p-8">
+          {/* Header */}
+          <div className="text-center mb-5">
+            <h1 className="font-display text-3xl font-extrabold text-foreground">
+              {mode === "login" ? "Login" : "Criar Conta"}
+            </h1>
+            <p className="text-muted-foreground text-sm mt-1">
+              {mode === "login"
+                ? "Já tem cadastro? Faça aqui o seu login."
+                : "Preencha os dados abaixo para criar sua conta."}
+            </p>
+          </div>
+
+          {/* Form */}
+          <div className="space-y-4">
+            {mode === "register" && (
+              <>
+                <Field label="Nome *">
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full bg-white border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    placeholder="Seu nome"
+                  />
+                </Field>
+                <Field label="Faixa etária *">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {AGE_RANGES.map((a) => (
+                      <button
+                        key={a.id}
+                        type="button"
+                        onClick={() => setAgeRange(a.id)}
+                        className={`px-3 py-2 rounded-xl text-xs font-body border-2 transition text-left ${
+                          ageRange === a.id
+                            ? "bg-amber-500 text-white border-amber-600 shadow"
+                            : "bg-white text-foreground border-amber-300 hover:border-amber-400"
+                        }`}
+                      >
+                        <span className="mr-1.5">{a.emoji}</span>{a.label}
+                      </button>
+                    ))}
+                  </div>
+                </Field>
+
+
+                <Field label="Celular *">
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => {
+                      const v = maskPhone(e.target.value);
+                      setPhone(v);
+                      setPhoneError(v ? validatePhone(v) : null);
+                    }}
+                    onBlur={() => setPhoneError(validatePhone(phone))}
+                    className={`w-full bg-white border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 ${phoneError ? "border-destructive focus:ring-destructive" : "border-amber-300/60 focus:ring-amber-400"}`}
+                    placeholder="(11) 99999-9999"
+                    inputMode="numeric"
+                    maxLength={15}
+                    required
+                  />
+                  {phoneError && <p className="mt-1 text-xs font-body text-destructive">{phoneError}</p>}
+                </Field>
+
+                <p className="text-xs font-body text-muted-foreground -mt-1">
+                  Usamos seu celular apenas para identificar sua conta. Não pedimos senha.
+                </p>
+
+
+
+
+              </>
+            )}
+
+            {mode === "login" && (
+              <>
+                <Field label="Nome *">
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full bg-white border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    placeholder="Seu nome"
+                    autoComplete="name"
+                  />
+                </Field>
+                <Field label="Celular *">
+                  <input
+                    type="tel"
+                    value={email}
+                    onChange={(e) => {
+                      const v = e.target.value.includes("@") ? e.target.value : maskPhone(e.target.value);
+                      setEmail(v);
+                      setPhoneError(v && !v.includes("@") ? validatePhone(v) : null);
+                    }}
+                    onBlur={() => setPhoneError(email && !email.includes("@") ? validatePhone(email) : null)}
+                    className={`w-full bg-white border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 ${phoneError ? "border-destructive focus:ring-destructive" : "border-amber-300/60 focus:ring-amber-400"}`}
+                    placeholder="(11) 99999-9999"
+                    autoComplete="tel"
+                    inputMode="tel"
+                    maxLength={15}
+                  />
+                  {phoneError && <p className="mt-1 text-xs font-body text-destructive">{phoneError}</p>}
+                </Field>
+
+              </>
+            )}
+
+
+            <p className="text-xs font-body text-muted-foreground">
+              Sem senha: usamos seu nome e celular para identificar sua conta.
+            </p>
+
+
+            {mode === "register" && (
+              <>
+                <Field label="Escolha seu avatar:">
+                  <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                    {avatars.map((av) => (
+                      <button
+                        key={av.name}
+                        type="button"
+                        title={av.name}
+                        onClick={() => { setSelectedAvatar(av.src); setCustomAvatar(""); }}
+                        className={`rounded-3xl border-2 transition overflow-hidden bg-amber-50 shadow-sm ${
+                          selectedAvatar === av.src && !customAvatar
+                            ? "border-amber-500 scale-105 ring-2 ring-amber-300"
+                            : "border-amber-200 hover:border-amber-300"
+                        }`}
+                      >
+                        <img src={av.src} alt={av.name} className="w-full aspect-square object-cover" loading="lazy" width="1024" height="1024" />
+                        <div className="px-1.5 py-1 bg-white/90 border-t border-amber-100">
+                          <span className="block text-[11px] font-display font-bold text-amber-900 truncate">{av.name}</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </Field>
+                <Field label="Ou envie sua própria foto:">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleCustomAvatar}
+                    className="block w-full text-xs text-muted-foreground file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-amber-100 file:text-amber-900 hover:file:bg-amber-200 cursor-pointer"
+                  />
+                  {finalAvatar && (
+                    <div className="flex items-center gap-2 mt-2">
+                      <img loading="lazy" decoding="async" src={finalAvatar} alt="Avatar" className="w-10 h-10 rounded-full border-2 border-amber-400" />
+                      <span className="text-xs text-muted-foreground">Avatar selecionado ✓</span>
+                    </div>
+                  )}
+                </Field>
+              </>
+            )}
+
+            {/* Action buttons */}
+            <div className="flex gap-3 pt-2">
+              {mode === "login" ? (
+                <>
+                  <button
+                    onClick={() => doLogin()}
+                    disabled={busy}
+                    className="flex-1 bg-foreground text-background font-display font-bold py-3 rounded-lg hover:opacity-90 transition tracking-wide text-sm disabled:opacity-60"
+                  >
+                    {busy ? "ENTRANDO..." : "ENTRAR"}
+                  </button>
+                  <button
+                    onClick={() => setMode("register")}
+                    disabled={busy}
+                    className="flex-1 bg-transparent border-2 border-foreground text-foreground font-display font-bold py-3 rounded-lg hover:bg-foreground/5 transition tracking-wide text-sm disabled:opacity-60"
+                  >
+                    CRIAR UMA CONTA
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={doRegister}
+                    disabled={busy}
+                    className="flex-1 bg-foreground text-background font-display font-bold py-3 rounded-lg hover:opacity-90 transition tracking-wide text-sm disabled:opacity-60"
+                  >
+                    {busy ? "CRIANDO..." : "CRIAR CONTA"}
+                  </button>
+                  <button
+                    onClick={() => setMode("login")}
+                    disabled={busy}
+                    className="flex-1 bg-transparent border-2 border-foreground text-foreground font-display font-bold py-3 rounded-lg hover:bg-foreground/5 transition tracking-wide text-sm disabled:opacity-60"
+                  >
+                    VOLTAR
+                  </button>
+                </>
+              )}
+            </div>
+
+
+
+
+          </div>
+
+          {/* Admin shortcut — always visible for the site owner. Single tap unlocks owner mode + goes to Config. */}
+          {ownerUnlocked && (
+            <div className="mt-6 pt-4 border-t border-amber-200/60 flex flex-col items-center gap-2">
+              <button
+                onClick={() => {
+                  try { localStorage.setItem(OWNER_FLAG_KEY, "1"); } catch {}
+                  // Garante que Configuracao (que exige lemos_user) permita entrada do dono.
+                  try {
+                    if (!localStorage.getItem("lemos_user")) {
+                      localStorage.setItem("lemos_user", JSON.stringify({
+                        name: "Administrador", role: "admin", avatar: "", email: "", createdAt: new Date().toISOString(),
+                      }));
+                    }
+                  } catch {}
+                  setAdminMode(true);
+                  toast({
+                    title: "Modo administrador ativado ✅",
+                    description: "Sessão de dono aplicada. Abrindo as Configurações...",
+                  });
+                  setTimeout(() => navigate("/config"), 300);
+                }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-display font-extrabold text-xs shadow"
+                title="Acesso de administrador"
+              >
+                <Shield className="w-4 h-4" /> Entrar como Administrador
+              </button>
+            </div>
+          )}
+
+        </div>
       </div>
-      <button type="button" onClick={enter} disabled={busy} className="w-full rounded-2xl border-b-8 border-amber-700 bg-gradient-to-b from-yellow-400 to-amber-500 px-4 py-4 text-lg sm:text-xl font-black shadow-xl hover:brightness-105 disabled:opacity-50">{busy?"Preparando...":"➜ Entrar e Começar"}</button>
-      <p className="text-center text-xs text-amber-800">Para proteger sua conta, a primeira entrada é confirmada com Google. Nome, celular e avatar serão salvos no seu perfil após a confirmação.</p>
-      <button type="button" onClick={()=>navigate("/")} className="block mx-auto text-sm font-semibold underline">Conhecer o site como visitante</button>
-     </div>
-    </section>
-    <aside className="hidden lg:block text-center"><div className="text-8xl drop-shadow-xl">🐑</div><p className="mt-4 text-xl font-extrabold">Aprenda, brinque e descubra a Palavra de Deus!</p></aside>
-   </div>
- </div>
- </main>;
+    </div>
+  );
+}
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label className="block font-display text-sm font-semibold text-foreground mb-1.5">{label}</label>
+      {children}
+    </div>
+  );
 }

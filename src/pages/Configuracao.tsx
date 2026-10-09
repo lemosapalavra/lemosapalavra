@@ -197,6 +197,7 @@ export default function Configuracao() {
 
         <IconVisibilityConfig />
         <ContentAccessConfig />
+        <ListenContentConfig />
 
         {/* Page Visit Stats */}
         {Object.keys(stats.pagesVisited).length > 0 && (
@@ -526,6 +527,20 @@ function AdminModeToggle() {
       <LemosPlayAdminPanel open={playOpen} onClose={() => setPlayOpen(false)} />
       <IndexAdminPanel open={indexOpen} onClose={() => setIndexOpen(false)} />
     </div>
+  );
+}
+
+function ListenContentConfig() {
+  const [open, setOpen] = useState(false);
+  return (
+    <section className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
+      <h2 className="font-display text-lg font-bold text-foreground">Conteúdos da página Ouça</h2>
+      <p className="font-body text-xs text-muted-foreground mt-1 mb-4">Ative ou desative individualmente as músicas e os louvores copiados da página Veja.</p>
+      <button type="button" onClick={() => setOpen(true)} className="px-4 py-2 rounded-xl bg-primary text-primary-foreground font-display font-bold text-sm hover:opacity-90 transition">
+        Configurar músicas e louvores
+      </button>
+      <LemosPlayAdminPanel open={open} onClose={() => setOpen(false)} initialTab="musicas" listenOnly />
+    </section>
   );
 }
 

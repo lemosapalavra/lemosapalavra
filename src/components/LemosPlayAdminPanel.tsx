@@ -8,23 +8,26 @@ type Tab = "filmes" | "series" | "musicas" | "louvores";
 interface Props {
   open: boolean;
   onClose: () => void;
+  initialTab?: Tab;
+  listenOnly?: boolean;
 }
 
 const newId = () => `n_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
 
 const inputCls = "w-full bg-zinc-800 border border-zinc-700 rounded px-2 py-1.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-red-500";
 
-export default function LemosPlayAdminPanel({ open, onClose }: Props) {
-  const [tab, setTab] = useState<Tab>("filmes");
+export default function LemosPlayAdminPanel({ open, onClose, initialTab = "filmes", listenOnly = false }: Props) {
+  const [tab, setTab] = useState<Tab>(initialTab);
   const [cfg, setCfg] = useState<LemosPlayConfig>(() => loadConfig());
   const [dirty, setDirty] = useState(false);
 
   useEffect(() => {
     if (open) {
+      setTab(initialTab);
       setCfg(loadConfig());
       setDirty(false);
     }
-  }, [open]);
+  }, [open, initialTab]);
 
   if (!open) return null;
 
@@ -88,12 +91,13 @@ export default function LemosPlayAdminPanel({ open, onClose }: Props) {
     ...cfg.series.map((g) => ({ key: `series:${g.id}` as CatKey, label: `📺 Série: ${g.title}` })),
   ];
 
-  const tabs: { key: Tab; label: string; count: number }[] = [
+  const allTabs: { key: Tab; label: string; count: number }[] = [
     { key: "filmes", label: "Filmes", count: cfg.filmes.length },
     { key: "series", label: "Séries", count: cfg.series.reduce((a, g) => a + g.videos.length, 0) },
     { key: "musicas", label: "Músicas", count: cfg.musicas.length },
     { key: "louvores", label: "Louvores", count: cfg.louvores.length },
   ];
+  const tabs = listenOnly ? allTabs.filter((item) => item.key === "musicas" || item.key === "louvores") : allTabs;
 
   return (
     <div className="fixed inset-0 z-[80] bg-black/85 backdrop-blur-sm flex items-center justify-center p-3" onClick={onClose}>
@@ -101,8 +105,8 @@ export default function LemosPlayAdminPanel({ open, onClose }: Props) {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-zinc-800">
           <div>
-            <h2 className="text-lg font-bold">⚙️ Configuração — Lemos Play</h2>
-            <p className="text-xs text-zinc-400">Edite títulos, links e adicione novos vídeos por categoria.</p>
+            <h2 className="text-lg font-bold">⚙️ Configuração — {listenOnly ? "Ouça" : "Veja"}</h2>
+            <p className="text-xs text-zinc-400">Ative, desative e organize cada conteúdo.</p>
           </div>
           <button onClick={onClose} className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center" aria-label="Fechar">
             <X className="w-5 h-5" />

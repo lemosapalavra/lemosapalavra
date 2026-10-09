@@ -16,8 +16,6 @@ import { startAutoUpdate } from "@/lib/autoUpdate";
 import { startAutoTitles } from "@/lib/autoTitles";
 
 const Login = lazy(() => import("./pages/Login.tsx"));
-const WelcomeProfile = lazy(() => import("./pages/WelcomeProfile.tsx"));
-const SmsLogin = lazy(() => import("./pages/SmsLogin.tsx"));
 const Biblia = lazy(() => import("./pages/Biblia.tsx"));
 const Louvores = lazy(() => import("./pages/Louvores.tsx"));
 const HistoriasDoDia = lazy(() => import("./pages/HistoriasDoDia.tsx"));
@@ -25,7 +23,6 @@ const Devocionais = lazy(() => import("./pages/Devocionais.tsx"));
 const Jogos = lazy(() => import("./pages/Jogos.tsx"));
 const PedidosOracao = lazy(() => import("./pages/PedidosOracao.tsx"));
 const Atividades = lazy(() => import("./pages/Atividades.tsx"));
-const ParabolasPequenoMoises = lazy(() => import("./pages/ParabolasPequenoMoises.tsx"));
 const Album = lazy(() => import("./pages/Album.tsx"));
 const LemosPlay = lazy(() => import("./pages/LemosPlay.tsx"));
 const Configuracao = lazy(() => import("./pages/Configuracao.tsx"));
@@ -46,7 +43,6 @@ const AnalyticsTracker = () => {
 const BASE_URL = "https://lemosapalavra.live";
 const ROUTE_META: Record<string, { title: string; description: string }> = {
   "/": { title: "Lemos a Palavra — Histórias Bíblicas para Crianças", description: "Histórias bíblicas em cartoon, louvores, devocionais e atividades para crianças." },
-  "/login-sms": { title: "Acesso por SMS — Lemos a Palavra", description: "Acesso seguro por código enviado ao celular." },
   "/login": { title: "Entrar — Lemos a Palavra", description: "Acesse sua conta para acompanhar seu progresso e figurinhas." },
   "/biblia": { title: "Bíblia — Lemos a Palavra", description: "Leia a Bíblia (Almeida) com resumos temáticos e dicionário bíblico." },
   "/louvores": { title: "Louvores — Lemos a Palavra", description: "Vídeos de louvor infantil para toda a família." },
@@ -54,8 +50,6 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
   "/devocionais": { title: "Devocionais — Lemos a Palavra", description: "Devocionais diários ilustrados com desenho para colorir." },
   "/jogos": { title: "Jogos Bíblicos — Lemos a Palavra", description: "Jogos bíblicos interativos e atividades para a família." },
   "/pedidos-oracao": { title: "Pedidos de Oração — Lemos a Palavra", description: "Envie e acompanhe pedidos de oração com carinho." },
-  "/aprenda": { title: "Aprenda — Lemos a Palavra", description: "Livros e histórias ilustradas para aprender com a Palavra." },
-  "/aprenda/50-parabolas-pequeno-moises": { title: "50 Parábolas do Pequeno Moisés — Lemos a Palavra", description: "Livro ilustrado para leitura página a página." },
   "/atividades": { title: "Atividades — Lemos a Palavra", description: "Jogos interativos: colorir, caça-palavras, memória e quebra-cabeça." },
   "/album": { title: "Álbum de Figurinhas — Lemos a Palavra", description: "Colecione figurinhas bíblicas com raridades e molduras especiais." },
   "/lemosplay": { title: "Lemos Play — Vídeos Bíblicos", description: "Vídeos animados de histórias bíblicas: Gênesis, Jesus, Séries, Músicas e Louvores." },
@@ -121,11 +115,10 @@ const AuthBootstrap = () => {
       let existing: Record<string, any> = {};
       try {
         const raw = localStorage.getItem("lemos_user");
-        if (raw) { const parsed = JSON.parse(raw) || {}; if (parsed.userId === userId) existing = parsed; }
+        if (raw) existing = JSON.parse(raw) || {};
       } catch { existing = {}; }
       const u = {
         ...existing,
-        userId,
         name: profile?.name || existing.name || "",
         ageRange: profile?.age_range || existing.ageRange || "",
         phone: profile?.phone || existing.phone || "",
@@ -163,30 +156,26 @@ const PageFallback = () => (
 /** Libera o conteúdo somente depois que nome e celular forem autenticados. */
 const RequireEntry = () => {
   const location = useLocation();
-  const [state, setState] = useState<"checking" | "ok" | "denied" | "onboarding">("checking");
+  const [state, setState] = useState<"checking" | "ok" | "denied">("checking");
+
   useEffect(() => {
     let cancelled = false;
     const check = async () => {
       const { data } = await supabase.auth.getSession();
-      const user = data.session?.user;
-      if (!user) { if (!cancelled) setState("denied"); return; }
-      // Keep legacy phone accounts untouched; onboarding applies to Google identities only.
-      const googleUser = user.app_metadata?.provider === "google" || user.identities?.some(i => i.provider === "google");
-      if (!googleUser) { if (!cancelled) setState("ok"); return; }
-      // Existing profiles with all three fields retain their normal access.
-      const { data: profile, error } = await supabase.from("profiles")
-        .select("name, age_range, avatar").eq("id", user.id).maybeSingle();
-      if (cancelled) return;
-      if (error) { setState("ok"); return; } // Do not block established users on transient DB errors.
-      setState(profile?.name && profile?.age_range && profile?.avatar ? "ok" : "onboarding");
+      if (!cancelled) setState(data.session?.user ? "ok" : "denied");
     };
     void check();
-    const { data: listener } = supabase.auth.onAuthStateChange(() => { void check(); });
-    return () => { cancelled = true; listener.subscription.unsubscribe(); };
-  }, [location.pathname]);
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!cancelled) setState(session?.user ? "ok" : "denied");
+    });
+    return () => {
+      cancelled = true;
+      listener.subscription.unsubscribe();
+    };
+  }, []);
+
   if (state === "checking") return <PageFallback />;
   if (state === "denied") return <Navigate to="/login" replace state={{ from: location.pathname }} />;
-  if (state === "onboarding") return <Navigate to="/bem-vindo" replace />;
   return <Outlet />;
 };
 
@@ -256,8 +245,6 @@ const App = () => (
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/bem-vindo" element={<WelcomeProfile />} />
-              <Route path="/login-sms" element={<SmsLogin />} />
             <Route element={<RequireEntry />}>
               <Route path="/" element={<Index />} />
               <Route path="/biblia" element={<Biblia />} />
@@ -268,8 +255,6 @@ const App = () => (
                <Route path="/jogos" element={<Jogos />} />
               <Route path="/pedidos-oracao" element={<PedidosOracao />} />
               <Route path="/atividades" element={<Atividades />} />
-              <Route path="/aprenda" element={<Navigate to="/aprenda/50-parabolas-pequeno-moises" replace />} />
-              <Route path="/aprenda/50-parabolas-pequeno-moises" element={<ParabolasPequenoMoises />} />
               <Route path="/album" element={<Album />} />
               <Route path="/config" element={<AdminOnly><Configuracao /></AdminOnly>} />
               <Route path="/estatisticas" element={<AdminOnly><Estatisticas /></AdminOnly>} />
