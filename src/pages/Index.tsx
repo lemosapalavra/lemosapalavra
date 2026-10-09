@@ -121,7 +121,7 @@ function IndexV1() {
            {dedicatoriaVisible && <div className="mt-6 sm:mt-10 flex flex-col items-center gap-1">
              <Button variant="ghost" size="icon"
               onClick={() => setDedicatoriaOpen(true)}
-               className="h-16 w-16 sm:h-20 sm:w-20 overflow-hidden rounded-full border-2 border-border bg-background shadow-lg icon-glow"
+                className="w-[66px] h-[66px] min-[390px]:w-[72px] min-[390px]:h-[72px] sm:w-[96px] sm:h-[96px] lg:w-[136px] lg:h-[136px] overflow-hidden rounded-full border-2 border-border bg-background shadow-lg icon-glow"
               title="Dedicatória"
               aria-label="Abrir dedicatória"
             >

@@ -10,11 +10,11 @@ export const SITE_ICONS = [
   { id: "kart", title: "Kartzinho" },
 ];
 
-const KEY = "lemos_icon_visibility_v2";
+const KEY = "lemos_icon_visibility_v3";
 const EVT = "lemos_icon_visibility_change";
 
 export function loadHiddenIcons(): string[] {
-  const defaults = SITE_ICONS.map((icon) => icon.id);
+  const defaults = ["atalho", "14bis", "kart"];
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) return defaults;

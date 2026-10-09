@@ -2,13 +2,10 @@ import { NavLink } from "@/components/NavLink";
 
 const LINKS = [
   { label: "INÍCIO", to: "/" },
-  { label: "ASSISTA", to: "/lemosplay" },
-  { label: "ATIVIDADES", to: "/atividades" },
-  { label: "JOGOS", to: "/jogos" },
-  { label: "ORAÇÃO", to: "/pedidos-oracao" },
-  { label: "HISTÓRIAS", to: "/historias-do-dia" },
-  { label: "DEVOCIONAIS", to: "/devocionais" },
-  { label: "ÁLBUM DE FIGURINHAS", to: "/album" },
+  { label: "VEJA", to: "/lemosplay" },
+  { label: "OUÇA", to: "/musicas" },
+  { label: "APRENDA", to: "/atividades" },
+  { label: "ÁLBUM", to: "/album" },
 ];
 
 /**

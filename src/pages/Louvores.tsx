@@ -1,35 +1,38 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { ArrowLeft, Play } from "lucide-react";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 import VideoSideActions from "@/components/VideoSideActions";
-
 import PageHeader from "@/components/PageHeader";
 import CoinBadge from "@/components/CoinBadge";
 import { awardOnce } from "@/hooks/useCoins";
 import { COINS } from "@/data/coinRewards";
-import iconLouvores from "@/assets/icon-louvores.png";
 import iconLouvoresCat from "@/assets/icon-louvores-cat.png";
-import iconPlaylists from "@/assets/icon-playlists.png";
 import iconMusicais from "@/assets/icon-musicais.png";
 import logoCentral from "@/assets/logo-central.png";
-import { louvores, type Louvor } from "@/data/louvores";
+import { loadConfig, type PlayEntry } from "@/data/lemosPlayConfig";
+import { getListenEntries, type ListenCategory } from "@/data/listenCatalog";
 import { markSeen } from "@/lib/newContent";
 import { louvoresTitles } from "@/data/contentIndex";
+import oucaIcon from "@/assets/ouca-upload.png.asset.json";
 
-type Tab = "louvores" | "playlists" | "musicais";
-
-const tabs: { id: Tab; label: string; icon: string }[] = [
+const tabs: { id: ListenCategory; label: string; icon: string }[] = [
+  { id: "musicas", label: "Músicas", icon: iconMusicais },
   { id: "louvores", label: "Louvores", icon: iconLouvoresCat },
-  { id: "playlists", label: "Playlists", icon: iconPlaylists },
-  { id: "musicais", label: "Musicais", icon: iconMusicais },
 ];
 
 export default function Louvores() {
-  const [playing, setPlaying] = useState<Louvor | null>(null);
-  const [tab, setTab] = useState<Tab>("louvores");
+  const [playing, setPlaying] = useState<PlayEntry | null>(null);
+  const [tab, setTab] = useState<ListenCategory>("musicas");
+  const [config, setConfig] = useState(() => loadConfig());
 
   useEffect(() => { markSeen("louvores", louvoresTitles); }, []);
+  useEffect(() => {
+    const sync = () => setConfig(loadConfig());
+    window.addEventListener("lemos_play_config_change", sync);
+    return () => window.removeEventListener("lemos_play_config_change", sync);
+  }, []);
+
+  const entries = useMemo(() => getListenEntries(config, tab), [config, tab]);
 
   if (playing) {
     return (
@@ -42,9 +45,9 @@ export default function Louvores() {
         >
           <ArrowLeft className="w-6 h-6" />
         </button>
-        <VideoSideActions videoId={`louvores:${playing.title}`} />
+        <VideoSideActions videoId={`ouca:${playing.id}`} />
         {playing.src ? (
-          <ColonialVideoFrame variant={tab === "louvores" ? "silver" : "green"}><video src={playing.src} className="w-full h-full bg-black object-contain" controls controlsList="nodownload noremoteplayback noplaybackrate" disablePictureInPicture onContextMenu={(e) => e.preventDefault()} autoPlay playsInline preload="auto" /></ColonialVideoFrame>
+          <ColonialVideoFrame variant={tab === "louvores" ? "silver" : "green"}><video src={playing.src} poster={playing.poster} className="w-full h-full bg-black object-contain" controls controlsList="nodownload noremoteplayback noplaybackrate" disablePictureInPicture onContextMenu={(e) => e.preventDefault()} autoPlay playsInline preload="auto" /></ColonialVideoFrame>
         ) : (
           <div className="max-w-md mx-auto text-center text-white p-6">
             <h2 className="font-display text-3xl font-bold mb-3">Vídeo em atualização</h2>
@@ -58,29 +61,29 @@ export default function Louvores() {
 
 
 
-  const renderItem = (l: Louvor, i: number) => (
+  const renderItem = (item: PlayEntry) => (
     <button
-      key={i}
-      onClick={() => { setPlaying(l); awardOnce(`louvor:${l.title}`, COINS.louvor, `Você assistiu "${l.title}"`); }}
+      key={item.id}
+      onClick={() => { setPlaying(item); awardOnce(`ouca:${item.id}`, tab === "louvores" ? COINS.louvor : COINS.musica, `Você assistiu "${item.title}"`); }}
       className="flex flex-col items-center gap-2 hover:scale-105 transition-transform group"
     >
       <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-primary/30 shadow-lg bg-black">
-        <img src={l.thumb} alt={l.title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+        {item.poster ? <img src={item.poster} alt={item.title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" /> : <Play className="absolute inset-0 m-auto h-10 w-10 text-primary-foreground" />}
         <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
       </div>
       <p className="text-xs sm:text-sm font-bold text-primary text-center leading-tight drop-shadow max-w-[120px]">
-        {l.title}
+        {item.title}
       </p>
-      <CoinBadge amount={COINS.louvor} size="xs" />
+      <CoinBadge amount={tab === "louvores" ? COINS.louvor : COINS.musica} size="xs" />
     </button>
   );
 
-  const mid = Math.ceil(louvores.length / 2);
+  const mid = Math.ceil(entries.length / 2);
 
   return (
     <div className="min-h-screen py-4 px-4" style={{ background: "transparent" }}>
       <div className="max-w-4xl mx-auto">
-        <PageHeader title="Músicas" subtitle="Escolha uma categoria" icon={iconLouvores} />
+        <PageHeader title="Ouça" subtitle="Músicas e louvores" icon={oucaIcon.url} />
 
         {/* Top category icons */}
         <div className="flex items-center justify-center gap-6 sm:gap-10 my-6">
@@ -104,55 +107,16 @@ export default function Louvores() {
           ))}
         </div>
 
-        {tab === "louvores" && (
-          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 py-4">
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 py-4">
+          {entries.length ? <>
             <div className="flex flex-col items-center gap-5 sm:gap-6">
-              {louvores.slice(0, mid).map(renderItem)}
+              {entries.slice(0, mid).map(renderItem)}
             </div>
             <img loading="lazy" decoding="async" src={logoCentral} alt="Lemos a Palavra" className="w-32 sm:w-48 md:w-56 drop-shadow-xl" />
             <div className="flex flex-col items-center gap-5 sm:gap-6">
-              {louvores.slice(mid).map(renderItem)}
+              {entries.slice(mid).map(renderItem)}
             </div>
-          </div>
-        )}
-
-        {tab === "playlists" && (
-          <div className="text-center py-12">
-            <img loading="lazy" decoding="async" src={iconPlaylists} alt="Playlists" className="w-32 h-32 mx-auto mb-4 rounded-full shadow-xl" />
-            <p className="font-display text-2xl font-bold text-primary">Playlists Temáticas</p>
-            <p className="font-body text-foreground/80 mt-2">Em breve: playlists para cada momento da sua jornada de fé.</p>
-          </div>
-        )}
-
-        {tab === "musicais" && (
-          <div className="text-center py-12">
-            <img loading="lazy" decoding="async" src={iconMusicais} alt="Musicais" className="w-32 h-32 mx-auto mb-4 rounded-full shadow-xl" />
-            <p className="font-display text-2xl font-bold text-primary">Musicais</p>
-            <p className="font-body text-foreground/80 mt-2">Em breve: musicais bíblicos para toda a família.</p>
-          </div>
-        )}
-
-        <div className="max-w-2xl mx-auto mt-6 mb-2 rounded-[24px] border-2 border-amber-200 bg-gradient-to-r from-amber-50 to-pink-50 p-5 shadow-md text-center">
-          <p className="font-display text-base font-bold text-amber-900 mb-1">
-            📖 Histórias bíblicas para crianças
-          </p>
-          <p className="font-body text-sm text-amber-800 mb-3">
-            Aprofunde a fé da criançada com narrativas bíblicas divertidas e edificantes.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <Link
-              to="/historias-biblicas"
-              className="inline-block rounded-full bg-white/80 border border-amber-200 px-4 py-2 font-display text-sm font-extrabold text-primary hover:underline shadow-sm"
-            >
-              história bíblica infantil
-            </Link>
-            <Link
-              to="/historias-biblicas"
-              className="inline-block rounded-full bg-white/80 border border-amber-200 px-4 py-2 font-display text-sm font-extrabold text-primary hover:underline shadow-sm"
-            >
-              contos bíblicos infantis
-            </Link>
-          </div>
+          </> : <p className="col-span-3 py-16 text-center font-display text-lg font-bold text-muted-foreground">Nenhum conteúdo ativo nesta categoria.</p>}
         </div>
 
         <div className="text-center mt-6 space-y-2 max-w-2xl mx-auto">
@@ -162,43 +126,6 @@ export default function Louvores() {
           <p className="font-display text-lg font-bold text-foreground">Acreditem! Tenham fé na Palavra.</p>
         </div>
 
-        <div className="max-w-2xl mx-auto mt-6 mb-2 rounded-[24px] border-2 border-sky-200 bg-gradient-to-r from-sky-50 to-amber-50 p-5 shadow-md text-center">
-          <p className="font-display text-base font-bold text-amber-900 mb-1">
-            📖 Quer conhecer mais da Bíblia?
-          </p>
-          <p className="font-body text-sm text-amber-800 mb-3">
-            Descubra histórias bíblicas narradas para toda a família.
-          </p>
-          <Link
-            to="/historias-biblicas"
-            className="inline-block font-display text-sm font-extrabold text-primary hover:underline"
-          >
-            história bíblica infantil →
-          </Link>
-        </div>
-
-        <div className="max-w-2xl mx-auto mt-4 mb-2 rounded-[24px] border-2 border-pink-200 bg-gradient-to-r from-pink-50 to-amber-50 p-5 shadow-md text-center">
-          <p className="font-display text-base font-bold text-amber-900 mb-1">
-            🌟 Explore a Bíblia com as crianças
-          </p>
-          <p className="font-body text-sm text-amber-800 mb-3">
-            Narrativas bíblicas ilustradas e contadas para toda a família.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <Link
-              to="/historias-biblicas"
-              className="inline-block rounded-full bg-white/80 border border-pink-200 px-4 py-2 font-display text-sm font-extrabold text-primary hover:underline shadow-sm"
-            >
-              histórias bíblicas para crianças
-            </Link>
-            <Link
-              to="/historias-biblicas"
-              className="inline-block rounded-full bg-white/80 border border-pink-200 px-4 py-2 font-display text-sm font-extrabold text-primary hover:underline shadow-sm"
-            >
-              narrativas bíblicas para crianças
-            </Link>
-          </div>
-        </div>
       </div>
     </div>
   );
