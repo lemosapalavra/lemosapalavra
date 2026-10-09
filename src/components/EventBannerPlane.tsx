@@ -5,6 +5,8 @@ import planeRtl from "@/assets/14-bis/14bis-rtl.png.asset.json";
 import planeLtr from "@/assets/14-bis/14bis-ltr.png.asset.json";
 import bisCover from "@/assets/14-bis/ele-e-o-meu-irmao/ele-e-o-meu-irmao-cover.jpg.asset.json";
 import { Button } from "@/components/ui/button";
+import ColonialVideoFrame from "@/components/ColonialVideoFrame";
+import VideoSideActions from "@/components/VideoSideActions";
 
 /**
  * Aviãozinhos animados alternando direções:
@@ -107,7 +109,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-foreground/80 p-4" onClick={() => setOpen(false)}>
           <div className="relative w-full max-w-3xl" onClick={(e) => e.stopPropagation()}>
             <Button variant="secondary" size="icon" onClick={() => setOpen(false)} aria-label="Fechar vídeo" className="absolute -top-12 right-0 rounded-full">✕</Button>
-            <video src={cfg.videoUrl} poster={bisCover.url} controls autoPlay playsInline preload="auto" className="w-full rounded-2xl bg-foreground" />
+            <div className="relative mx-auto w-fit"><ColonialVideoFrame aspect="16/9"><video src={cfg.videoUrl} poster={bisCover.url} controls autoPlay playsInline preload="auto" className="h-full w-full bg-black object-contain" /></ColonialVideoFrame><VideoSideActions videoId={`14bis:${cfg.videoUrl}`} /></div>
           </div>
         </div>
       )}
