@@ -96,7 +96,7 @@ function IndexV1() {
       <main className="w-full flex-1 flex flex-col items-center pb-28 sm:pb-32 lg:pb-24">
 
         <div className="w-full flex flex-col items-center gap-1 sm:gap-2 px-4 pt-2 sm:pt-4 pb-2 text-center">
-          <p className="font-display font-extrabold text-lg sm:text-2xl text-foreground">Bem-vindo! Aprenda, Brinque e Descubra a Palavra de Deus.</p>
+          <p className="font-display font-extrabold text-lg sm:text-2xl text-foreground">Sejam todos Bem vindos !</p>
           {user && isAdmin && <div className="flex gap-2">
             <Button variant="outline" size="icon" onClick={() => setAdminOpen(true)} title="Configurar página inicial" aria-label="Configurar página inicial"><Settings /></Button>
             <Button variant="outline" size="icon" onClick={() => navigate("/config")} title="Configurações" aria-label="Configurações"><Settings /></Button>
@@ -118,10 +118,10 @@ function IndexV1() {
             onItemClick={handleItemClick}
           />
 
-           {dedicatoriaVisible && <div className="mt-6 sm:mt-10 flex flex-col items-center gap-1">
+           {dedicatoriaVisible && <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-[45] flex flex-col items-center gap-1">
              <Button variant="ghost" size="icon"
               onClick={() => setDedicatoriaOpen(true)}
-                className="w-[66px] h-[66px] min-[390px]:w-[72px] min-[390px]:h-[72px] sm:w-[96px] sm:h-[96px] lg:w-[136px] lg:h-[136px] overflow-hidden rounded-full border-2 border-border bg-background shadow-lg icon-glow"
+                className="w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] overflow-hidden rounded-full border-2 border-border bg-background shadow-lg icon-glow"
               title="Dedicatória"
               aria-label="Abrir dedicatória"
             >
