@@ -454,7 +454,7 @@ export default function LemosPlay() {
   return (
 
     <div className="min-h-screen bg-black text-white">
-      <PageHeader title="Histórias Bíblicas" subtitle="Filmes, Séries e Músicas" />
+      <PageHeader title="Histórias Bíblicas" subtitle="Gênesis, Jesus e Séries" />
       {isAdmin && (
         <div className="fixed top-2 right-2 z-40">
           <button
@@ -551,12 +551,7 @@ export default function LemosPlay() {
           progress={progress}
         />
         </div>
-        <div id="musicas">
-          <Row title="Músicas" items={musicasPlay} onPlay={(item) => requestPlay(item)} progress={progress} />
-        </div>
-        <div id="louvores">
-          <Row title="Louvores" items={louvoresPlay} onPlay={(item) => requestPlay(item)} progress={progress} />
-        </div>
+
 
       </div>
 
