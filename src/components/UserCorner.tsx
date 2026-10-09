@@ -44,7 +44,14 @@ export default function UserCorner() {
     window.location.href = "/login";
   };
 
-  if (!user?.name || !visible) return null;
+  if (!visible) return null;
+
+  if (!user?.name) return (
+    <a href="/login" aria-label="Entrar ou criar conta" title="Entrar ou criar conta" className="fixed right-2 top-1/2 z-[45] flex -translate-y-1/2 flex-col items-center gap-1 sm:right-4">
+      <span className="rounded-full border-2 border-amber-300 bg-white p-1 shadow-lg"><img src={iconUsuario} alt="Usuário" className="h-[66px] w-[66px] rounded-full object-cover sm:h-[96px] sm:w-[96px] lg:h-[136px] lg:w-[136px]" /></span>
+      <span className="rounded-full border border-amber-300 bg-white px-2 py-1 text-xs font-bold text-amber-900 shadow">Entrar / Cadastrar</span>
+    </a>
+  );
 
   return (
     <>
