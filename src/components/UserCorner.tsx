@@ -47,15 +47,15 @@ export default function UserCorner() {
   if (!visible) return null;
 
   if (!user?.name) return (
-    <a href="/login" aria-label="Entrar ou criar conta" title="Entrar ou criar conta" className="fixed right-2 top-1/2 z-[45] flex -translate-y-1/2 flex-col items-center gap-1 sm:right-4">
-      <span className="rounded-full border-2 border-amber-300 bg-white p-1 shadow-lg"><img src={iconUsuario} alt="Usuário" className="h-[66px] w-[66px] rounded-full object-cover sm:h-[96px] sm:w-[96px] lg:h-[136px] lg:w-[136px]" /></span>
+    <a href="/login" aria-label="Entrar ou criar conta" title="Entrar ou criar conta" className="fixed right-2 bottom-3 z-[45] flex flex-col items-center gap-1 sm:right-4">
+      <span className="rounded-full border-2 border-amber-300 bg-white p-1 shadow-lg"><img src={iconUsuario} alt="Usuário" className="h-[64px] w-[64px] rounded-full object-cover sm:h-[80px] sm:w-[80px]" /></span>
       <span className="rounded-full border border-amber-300 bg-white px-2 py-1 text-xs font-bold text-amber-900 shadow">Entrar / Cadastrar</span>
     </a>
   );
 
   return (
     <>
-      <div className="fixed right-2 top-1/2 z-[45] flex -translate-y-1/2 flex-col items-center gap-1 sm:right-4">
+      <div className="fixed right-2 bottom-3 z-[45] flex flex-col items-center gap-1 sm:right-4">
       <Button variant="ghost"
         onClick={() => setMenu((v) => !v)}
         title="Opções do usuário"
@@ -66,7 +66,7 @@ export default function UserCorner() {
         <span className="font-display font-extrabold text-[11px] sm:text-xs text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow max-w-[130px] truncate">
           Olá, {user.name}
         </span>
-        <span className="w-[66px] h-[66px] min-[390px]:w-[72px] min-[390px]:h-[72px] sm:w-[96px] sm:h-[96px] lg:w-[136px] lg:h-[136px] rounded-full bg-white shadow-lg border-2 border-amber-300 overflow-hidden block">
+        <span className="w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] rounded-full bg-white shadow-lg border-2 border-amber-300 overflow-hidden block">
           <img
             src={user.avatar || iconUsuario}
             onError={(e) => { (e.currentTarget as HTMLImageElement).src = iconUsuario; }}
