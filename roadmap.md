@@ -1,4 +1,7 @@
 # Roadmap
+- [ ] Copiar os conteúdos de Veja para Ouça, com ativação individual nas Configurações.
+- [ ] Atualizar a barra de interação do cabeçalho para as quatro áreas ativas.
+- [ ] Manter LIA, Dedicatória e Usuário ativos e no mesmo tamanho dos ícones principais.
 - [x] Substituir Veja, Ouça, Aprenda e Álbum pelos quatro anexos e desativar os demais ícones e atalhos.
 - [x] Aplicar o redesign completo preservando todas as funções existentes.
 - [x] Usar o mockup anexo como padrão visual principal, sem incorporá-lo diretamente.
