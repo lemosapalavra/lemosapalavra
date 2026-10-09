@@ -14,6 +14,7 @@ export default function WelcomeProfile() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
+  const [phone, setPhone] = useState("");
   const [avatar, setAvatar] = useState("");
   const [busy, setBusy] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -26,9 +27,11 @@ export default function WelcomeProfile() {
       const { data: profile } = await supabase.from("profiles").select("name, age_range, avatar").eq("id", user.id).maybeSingle();
       if (!active) return;
       if (profile?.name && profile?.age_range && profile?.avatar) { navigate("/", { replace: true }); return; }
-      setName(profile?.name || user.user_metadata?.full_name || user.user_metadata?.name || "");
+      const draft = (() => { try { return JSON.parse(sessionStorage.getItem("lemos_registration_draft") || "{}"); } catch { return {}; } })();
+      setName(profile?.name || draft.name || user.user_metadata?.full_name || user.user_metadata?.name || "");
+      setPhone(draft.phone || "");
       setAge(profile?.age_range || "");
-      setAvatar(profile?.avatar || "");
+      setAvatar(profile?.avatar || draft.avatar || "");
       setLoading(false);
     })();
     return () => { active = false; };
@@ -45,12 +48,15 @@ export default function WelcomeProfile() {
       // Only write to the authenticated user's own profile. Never match by name or email.
       const { data: old, error: readError } = await supabase.from("profiles").select("id").eq("id", user.id).maybeSingle();
       if (readError) throw readError;
-      const values = { name: name.trim(), age_range: age, avatar };
+      const digits = phone.replace(/\D/g, "");
+      if (digits && !/^\d{2}9\d{8}$/.test(digits)) throw new Error("Informe um celular válido com DDD.");
+      const values = { name: name.trim(), age_range: age, avatar, ...(digits ? {phone: digits} : {}) };
       const result = old
         ? await supabase.from("profiles").update(values).eq("id", user.id)
         : await supabase.from("profiles").insert({ ...values, id: user.id, email: user.email || "" });
       if (result.error) throw result.error;
       localStorage.setItem("lemos_user", JSON.stringify({ name: values.name, ageRange: age, avatar, email: user.email || "", userId: user.id }));
+      sessionStorage.removeItem("lemos_registration_draft");
       window.dispatchEvent(new Event("lemos_admin_change"));
       navigate("/", { replace: true });
     } catch (error: any) {
@@ -66,6 +72,9 @@ export default function WelcomeProfile() {
       </div>
       <label className="block text-sm font-semibold">Seu nome de exibição
         <input className="mt-2 w-full rounded-xl border border-amber-300 bg-white p-3" value={name} onChange={e => setName(e.target.value)} maxLength={60} autoComplete="nickname" />
+      </label>
+      <label className="block text-sm font-semibold">Celular (DDD + número)
+        <input className="mt-2 w-full rounded-xl border border-amber-300 bg-white p-3" value={phone} onChange={e => setPhone(e.target.value.replace(/\\D/g,"").slice(0,11))} inputMode="numeric" placeholder="11999999999" />
       </label>
       <label className="block text-sm font-semibold">Faixa etária
         <select className="mt-2 w-full rounded-xl border border-amber-300 bg-white p-3" value={age} onChange={e => setAge(e.target.value)}>
