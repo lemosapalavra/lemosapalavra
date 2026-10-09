@@ -102,14 +102,14 @@ export default function MascoteLia() {
 
   if (!expanded) {
     return (
-      <div className="fixed left-2 top-1/2 z-[45] flex -translate-y-1/2 flex-col items-center gap-2 sm:left-4">
+      <div className="fixed left-2 bottom-3 z-[45] flex flex-col items-center gap-2 sm:left-4">
       <Button variant="ghost"
         onClick={() => setExpanded(true)}
         aria-label="Falar com a LIA, sua ajudante"
         title="Falar com a LIA, sua ajudante"
         className="h-auto flex flex-col items-center gap-1 transition hover:scale-110 active:scale-95"
       >
-        <span className="w-[66px] h-[66px] min-[390px]:w-[72px] min-[390px]:h-[72px] sm:w-[96px] sm:h-[96px] lg:w-[136px] lg:h-[136px] rounded-full bg-white shadow-lg border-2 border-amber-300 overflow-hidden block">
+        <span className="w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] rounded-full bg-white shadow-lg border-2 border-amber-300 overflow-hidden block">
           <img src={avatar} alt="LIA" className="w-full h-full object-cover object-top" loading="lazy" />
         </span>
         <span className="font-display font-extrabold text-[11px] sm:text-xs text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap">
@@ -122,7 +122,7 @@ export default function MascoteLia() {
   }
 
   return (
-    <div className="fixed left-2 top-1/2 z-[45] flex -translate-y-1/2 flex-col items-start gap-1 pointer-events-none sm:left-4">
+    <div className="fixed left-2 bottom-3 z-[45] flex flex-col items-start gap-1 pointer-events-none sm:left-4">
       {/* Balão acima da cabeça da LIA */}
       <div className="pointer-events-auto relative w-[78vw] max-w-sm rounded-2xl bg-white/95 backdrop-blur border-2 border-amber-300 shadow-xl px-3 py-2">
         <p className="font-body text-[15px] sm:text-base text-amber-900 leading-relaxed">{message}</p>
@@ -139,7 +139,7 @@ export default function MascoteLia() {
         <img
           src={avatar}
           alt="LIA, a mascote que ajuda você a navegar"
-          className="w-[66px] h-[66px] min-[390px]:w-[72px] min-[390px]:h-[72px] sm:w-[96px] sm:h-[96px] lg:w-[136px] lg:h-[136px] object-cover object-top rounded-full drop-shadow-xl animate-[liaFloat_3.4s_ease-in-out_infinite] select-none"
+          className="w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] object-cover object-top rounded-full drop-shadow-xl animate-[liaFloat_3.4s_ease-in-out_infinite] select-none"
           draggable={false}
         />
         <span className="mt-1 block font-display font-extrabold text-xs sm:text-sm text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap">
