@@ -339,11 +339,21 @@ export default function Login() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center py-8 px-4"
-      style={{ background: "transparent" }}
+      className="relative isolate min-h-screen flex items-center justify-center overflow-hidden py-10 px-4"
+      style={{ background: "radial-gradient(ellipse at 50% 8%, #fff7d9 0%, #f8e8bd 32%, #dfc99d 68%, #a88c68 100%)" }}
     >
-      <div className="w-full max-w-md">
-        <div className="bg-[hsl(36,60%,97%)] border border-amber-200/80 rounded-3xl shadow-2xl p-6 sm:p-8">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute left-1/2 top-[-150px] h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-amber-100/70 blur-3xl" />
+        <div className="absolute left-1/2 top-4 -translate-x-1/2 text-7xl sm:text-8xl font-serif text-amber-700/20 drop-shadow-lg">✝</div>
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-amber-950/15 to-transparent" />
+      </div>
+      <div className="relative z-10 w-full max-w-md">
+        <div className="mb-5 text-center">
+          <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full border-2 border-amber-200 bg-white/80 text-3xl text-amber-800 shadow-lg" aria-hidden="true">✝</div>
+          <p className="font-display text-2xl font-extrabold tracking-wide text-amber-950 drop-shadow-sm">Lemos a Palavra</p>
+          <p className="mt-1 font-body text-sm font-medium text-amber-900">Onde a Palavra ganha Vida</p>
+        </div>
+        <div className="bg-[hsl(36,60%,97%)]/95 backdrop-blur-md border-2 border-amber-300/80 rounded-3xl shadow-[0_24px_65px_rgba(89,54,16,0.28)] p-6 sm:p-8">
           {/* Header */}
           <div className="text-center mb-5">
             <h1 className="font-display text-3xl font-extrabold text-foreground">
