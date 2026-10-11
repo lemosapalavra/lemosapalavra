@@ -5,7 +5,6 @@ import { Settings, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import OrbitMenu from "@/components/OrbitMenu";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
-import IndexAdminPanel from "@/components/IndexAdminPanel";
 
 import HomeTopNav from "@/components/HomeTopNav";
 import EventBannerKart from "@/components/EventBannerKart";
@@ -27,7 +26,6 @@ function IndexV1() {
   const isAdmin = useIsAdmin();
   const [user, setUser] = useState<{ name: string; email: string; avatar?: string } | null>(null);
   const [dedicatoriaOpen, setDedicatoriaOpen] = useState(false);
-  const [adminOpen, setAdminOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dedicatoriaVisible = useIconVisible("dedicatoria");
 
@@ -97,10 +95,7 @@ function IndexV1() {
 
         <div className="w-full flex flex-col items-center gap-1 sm:gap-2 px-4 pt-2 sm:pt-4 pb-2 text-center">
           <p className="font-display font-extrabold text-lg sm:text-2xl text-foreground">Bem vindo !</p>
-          {user && isAdmin && <div className="flex gap-2">
-            <Button variant="outline" size="icon" onClick={() => setAdminOpen(true)} title="Configurar página inicial" aria-label="Configurar página inicial"><Settings /></Button>
-            <Button variant="outline" size="icon" onClick={() => navigate("/config")} title="Configurações" aria-label="Configurações"><Settings /></Button>
-          </div>}
+          {user && isAdmin && <Button variant="outline" size="icon" onClick={() => navigate("/config")} title="Painel completo de administração" aria-label="Abrir configurações do site"><Settings /></Button>}
         </div>
 
         <EventBannerPlane isAuthenticated={!!user} />
@@ -135,7 +130,6 @@ function IndexV1() {
 
 
       <DedicatoriaModal open={dedicatoriaOpen} onOpenChange={setDedicatoriaOpen} />
-      <IndexAdminPanel open={adminOpen} onClose={() => setAdminOpen(false)} />
 
     </div>
   );
