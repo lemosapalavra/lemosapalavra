@@ -13,16 +13,16 @@ import avatarMoises from "@/assets/avatar-moises.png";
 import avatarAnjo from "@/assets/avatar-anjo.png";
 
 const avatars = [
-  { src: "/avatares/jesus.png", fallback: avatarJesus, name: "Jesus" },
-  { src: "/avatares/maria.png", fallback: avatarMaria, name: "Maria" },
-  { src: "/avatares/davi.png", fallback: avatarDavi, name: "Davi" },
-  { src: "/avatares/moises.png", fallback: avatarMoises, name: "Moisés" },
-  { src: "/avatares/abraao.png", fallback: avatarJesus, name: "Abraão" },
-  { src: "/avatares/jose.png", fallback: avatarJesus, name: "José" },
-  { src: "/avatares/lia.png", fallback: avatarMaria, name: "Lia" },
-  { src: "/avatares/marta.png", fallback: avatarMaria, name: "Marta" },
-  { src: "/avatares/noe.png", fallback: avatarDavi, name: "Noé" },
-  { src: "/avatares/paulo.png", fallback: avatarDavi, name: "Paulo" },
+  { src: "/avatares/Jesus.png", fallback: avatarJesus, name: "Jesus" },
+  { src: "/avatares/Maria.png", fallback: avatarMaria, name: "Maria" },
+  { src: "/avatares/Davi.png", fallback: avatarDavi, name: "Davi" },
+  { src: "/avatares/Mois%C3%A9s.png", fallback: avatarMoises, name: "Moisés" },
+  { src: "/avatares/Abra%C3%A3o.png", fallback: avatarJesus, name: "Abraão" },
+  { src: "/avatares/Jos%C3%A9.png", fallback: avatarJesus, name: "José" },
+  { src: "/avatares/Lia.png", fallback: avatarMaria, name: "Lia" },
+  { src: "/avatares/Marta.png", fallback: avatarMaria, name: "Marta" },
+  { src: "/avatares/No%C3%A9.png", fallback: avatarDavi, name: "Noé" },
+  { src: "/avatares/Paulo.png", fallback: avatarDavi, name: "Paulo" },
   { src: avatarDaniel, fallback: avatarDaniel, name: "Daniel" },
   { src: avatarAnjo, fallback: avatarAnjo, name: "Anjo" },
 ];
