@@ -1,5 +1,6 @@
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import MeuMural from "@/components/MeuMural";
 import { useCoins } from "@/hooks/useCoins";
 import iconUsuario from "@/assets/icon-usuario.png";
@@ -13,6 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
  */
 export default function UserCorner() {
   const { coins } = useCoins();
+  const isHome = useLocation().pathname === "/";
   const [user, setUser] = useState<{ name?: string; avatar?: string } | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -47,7 +49,7 @@ export default function UserCorner() {
   if (!visible) return null;
 
   if (!user?.name) return (
-    <a href="/login" aria-label="Entrar ou criar conta" title="Entrar ou criar conta" className="fixed right-2 bottom-3 z-[45] flex flex-col items-center gap-1 sm:right-4">
+    <a href="/login" aria-label="Entrar ou criar conta" title="Entrar ou criar conta" className={`fixed right-2 z-[45] flex flex-col items-center gap-1 sm:right-4 ${isHome ? "top-[76px] md:top-[82px]" : "bottom-3"}`}>
       <span className="rounded-full border-2 border-amber-300 bg-white p-1 shadow-lg"><img src={iconUsuario} alt="Usuário" className="h-[64px] w-[64px] rounded-full object-cover sm:h-[80px] sm:w-[80px]" /></span>
       <span className="rounded-full border border-amber-300 bg-white px-2 py-1 text-xs font-bold text-amber-900 shadow">Entrar / Cadastrar</span>
     </a>
@@ -55,7 +57,7 @@ export default function UserCorner() {
 
   return (
     <>
-      <div className="fixed right-2 bottom-3 z-[45] flex flex-col items-center gap-1 sm:right-4">
+      <div className={`fixed right-2 z-[45] flex flex-col items-center gap-1 sm:right-4 ${isHome ? "top-[76px] md:top-[82px]" : "bottom-3"}`}>
       <Button variant="ghost"
         onClick={() => setMenu((v) => !v)}
         title="Opções do usuário"
