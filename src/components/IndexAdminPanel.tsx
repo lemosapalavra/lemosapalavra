@@ -50,6 +50,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
   const [banner, setBanner] = useState<EventBannerConfig>(() => loadEventBanner());
   const [train, setTrain] = useState<TrainBannerConfig>(() => loadTrainBanner());
   const [dirty, setDirty] = useState(false);
+  const [iconPickerIndex, setIconPickerIndex] = useState<number | null>(null);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [trainPickerOpen, setTrainPickerOpen] = useState(false);
   const [kart, setKart] = useState<KartBannerConfig>(() => loadKartBanner());
@@ -173,6 +174,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
               </div>
             ))}
 
+          <MediaPickerModal open={iconPickerIndex !== null} kind="image" currentUrl={iconPickerIndex === null ? "" : items[iconPickerIndex]?.icon || ""} onClose={() => setIconPickerIndex(null)} onSelect={(url) => { if (iconPickerIndex !== null) patchMenu(iconPickerIndex, { icon: url }); setIconPickerIndex(null); }} />
           {tab === "murais" && (
             <div className="space-y-4">
               <p className="text-xs text-zinc-500">
