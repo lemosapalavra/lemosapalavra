@@ -344,62 +344,20 @@ export default function Login() {
   };
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-gradient-to-b from-sky-300 via-amber-100 to-amber-300 px-3 py-7 sm:px-6 sm:py-10">
-      {/* A arte enviada pelo usuário é exibida assim que o arquivo estiver em public/login-jornada.png. */}
-      <div className="pointer-events-none absolute inset-0 bg-[url('/login-jornada.png')] bg-cover bg-center opacity-100" aria-hidden="true" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-white/5 to-amber-900/15" aria-hidden="true" />
-      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-5rem)] w-full max-w-4xl flex-col items-center justify-center">
-        <header className="mb-5 text-center drop-shadow-[0_2px_3px_rgba(255,255,255,.9)]">
-          <h1 className="font-display text-4xl font-black text-amber-900 sm:text-6xl" style={{ WebkitTextStroke: "1px #fbbf24" }}>Lemos a Palavra</h1>
-          <p className="mt-1 rounded-full bg-amber-50/90 px-5 py-2 font-display text-sm font-bold text-amber-950 shadow sm:text-lg">Onde a Palavra ganha Vida</p>
-        </header>
-        <section className="w-full rounded-[2rem] border-[3px] border-amber-400 bg-[#fff3d9]/95 p-4 shadow-[0_16px_50px_rgba(84,47,10,.4)] backdrop-blur-sm sm:p-8">
-          <div className="mb-5 text-center text-amber-950">
-            <h2 className="font-display text-3xl font-extrabold sm:text-4xl">Bem-vindo!</h2>
-            <p className="mt-1 text-sm sm:text-base">Faça seu cadastro para começar essa jornada com histórias, jogos e atividades da Bíblia.</p>
-          </div>
-          <div className="mx-auto max-w-2xl space-y-4">
-            <Field label="Seu nome">
-              <input type="text" autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Digite seu nome" className="w-full rounded-2xl border-2 border-amber-200 bg-white/95 px-4 py-3 text-amber-950 outline-none focus:border-amber-500" />
-            </Field>
-            <Field label="Celular">
-              <input type="tel" autoComplete="tel" inputMode="tel" maxLength={15} value={mode === "register" ? phone : email} onChange={(e) => {
-                const v = maskPhone(e.target.value);
-                if (mode === "register") setPhone(v); else setEmail(v);
-                setPhoneError(v ? validatePhone(v) : null);
-              }} onBlur={() => setPhoneError(validatePhone(mode === "register" ? phone : email))} placeholder="(11) 99999-9999" className="w-full rounded-2xl border-2 border-amber-200 bg-white/95 px-4 py-3 text-amber-950 outline-none focus:border-amber-500" />
-              {phoneError && <p className="mt-1 text-sm text-red-700">{phoneError}</p>}
-            </Field>
-            {mode === "register" && (
-              <Field label="Faixa etária">
-                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  {AGE_RANGES.map((a) => <button key={a.id} type="button" onClick={() => setAgeRange(a.id)} className={`rounded-xl border-2 px-2 py-2 text-xs font-bold transition sm:text-sm ${ageRange === a.id ? "border-amber-600 bg-amber-400 text-amber-950" : "border-amber-200 bg-white/90 text-amber-900"}`}>{a.emoji} {a.label}</button>)}
-                </div>
-              </Field>
-            )}
-            <div className="pt-2 text-center">
-              <h3 className="font-display text-2xl font-extrabold text-amber-950">Escolha seu Avatar</h3>
-              <p className="mb-3 text-sm text-amber-900">Selecione o personagem que mais gosta</p>
-              <div className="grid grid-cols-3 gap-2 sm:grid-cols-6 sm:gap-3">
-                {avatars.map((av) => (
-                  <button key={av.name} type="button" aria-pressed={selectedAvatar === av.src} onClick={() => { setSelectedAvatar(av.src); setCustomAvatar(""); }} className={`overflow-hidden rounded-2xl border-[3px] bg-white/90 transition hover:scale-105 ${selectedAvatar === av.src ? "border-yellow-500 ring-2 ring-yellow-300 shadow-lg" : "border-amber-200"}`}>
-                    <img src={av.src} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = av.fallback; }} alt={av.name} className="mx-auto aspect-square w-full object-contain" loading="lazy" />
-                    <span className="block truncate bg-amber-100 px-1 py-1 text-xs font-bold text-amber-950">{av.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="flex flex-col items-center gap-3 pt-3">
-              <button type="button" disabled={busy} onClick={() => mode === "register" ? void doRegister() : void doLogin()} className="w-full max-w-md rounded-full border-[3px] border-yellow-300 bg-gradient-to-b from-yellow-400 via-amber-500 to-orange-600 px-5 py-3 font-display text-xl font-extrabold text-white shadow-[0_5px_0_#a85b04,0_8px_18px_#a85b0480] transition hover:brightness-110 disabled:opacity-60">
-                ➜ {busy ? "Aguarde..." : mode === "register" ? "Entrar e Começar" : "Entrar"}
-              </button>
-              <button type="button" onClick={() => { setMode(mode === "login" ? "register" : "login"); setPhoneError(null); }} className="text-sm font-bold text-amber-950 underline underline-offset-4">
-                {mode === "login" ? "Primeiro acesso? Criar meu cadastro" : "Já tenho cadastro — Fazer login"}
-              </button>
-              <p className="text-center text-xs text-amber-900">Sem senha: identificação pelo celular. Selecione seu avatar para personalizar o perfil.</p>
-            </div>
-          </div>
-        </section>
+    <main className="min-h-screen w-full bg-[#f6dfb4]">
+      <img
+        src="/login-jornada.png"
+        alt="Lemos a Palavra — Jesus e crianças convidando para uma jornada bíblica"
+        className="block h-auto w-full object-contain"
+      />
+      <div className="mx-auto flex max-w-xl justify-center px-4 py-5">
+        <button
+          type="button"
+          onClick={() => setMode(mode === "login" ? "register" : "login")}
+          className="rounded-full border border-amber-400 bg-white/90 px-4 py-2 text-sm font-medium text-amber-950 shadow-sm"
+        >
+          {mode === "login" ? "Ir para cadastro" : "Ir para login"}
+        </button>
       </div>
     </main>
   );
