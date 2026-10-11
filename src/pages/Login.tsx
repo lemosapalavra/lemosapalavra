@@ -13,12 +13,18 @@ import avatarMoises from "@/assets/avatar-moises.png";
 import avatarAnjo from "@/assets/avatar-anjo.png";
 
 const avatars = [
-  { src: avatarJesus, name: "Jesus" },
-  { src: avatarMaria, name: "Maria" },
-  { src: avatarDavi, name: "Davi" },
-  { src: avatarDaniel, name: "Daniel" },
-  { src: avatarMoises, name: "Moisés" },
-  { src: avatarAnjo, name: "Anjo" },
+  { src: "/avatares/jesus.png", fallback: avatarJesus, name: "Jesus" },
+  { src: "/avatares/maria.png", fallback: avatarMaria, name: "Maria" },
+  { src: "/avatares/davi.png", fallback: avatarDavi, name: "Davi" },
+  { src: "/avatares/moises.png", fallback: avatarMoises, name: "Moisés" },
+  { src: "/avatares/abraao.png", fallback: avatarJesus, name: "Abraão" },
+  { src: "/avatares/jose.png", fallback: avatarJesus, name: "José" },
+  { src: "/avatares/lia.png", fallback: avatarMaria, name: "Lia" },
+  { src: "/avatares/marta.png", fallback: avatarMaria, name: "Marta" },
+  { src: "/avatares/noe.png", fallback: avatarDavi, name: "Noé" },
+  { src: "/avatares/paulo.png", fallback: avatarDavi, name: "Paulo" },
+  { src: avatarDaniel, fallback: avatarDaniel, name: "Daniel" },
+  { src: avatarAnjo, fallback: avatarAnjo, name: "Anjo" },
 ];
 
 type Mode = "login" | "register";
