@@ -8,8 +8,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import ShareButton from "@/components/ShareButton";
 import MascoteLia from "@/components/MascoteLia";
 import UserCorner from "@/components/UserCorner";
-import InstallShortcut from "@/components/InstallShortcut";
-import maozinha from "@/assets/maozinha.png.asset.json";
 import Index from "./pages/Index.tsx";
 import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
 import { supabase } from "@/integrations/supabase/client";
@@ -231,20 +229,6 @@ const AutoUpdater = () => {
   return null;
 };
 
-const InnerPageShortcut = () => {
-  const { pathname } = useLocation();
-  if (!["/jogos", "/atividades", "/album"].includes(pathname)) return null;
-  return (
-    <div className="fixed left-3 top-[76px] md:top-[82px] z-[45] flex flex-col items-center gap-1 sm:left-5">
-      <img src={maozinha.url} alt="" aria-hidden="true" className="h-10 w-10 object-contain pointer-events-none drop-shadow-lg rotate-[135deg] translate-x-5 translate-y-2 animate-pulse" />
-      <InstallShortcut compact />
-      <span className="max-w-[120px] rounded-lg bg-white/90 px-2 py-1 text-center text-[10px] font-semibold leading-tight text-amber-900 shadow">
-        📲 Atalho para abrir o site
-      </span>
-    </div>
-  );
-};
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -258,7 +242,6 @@ const App = () => (
         {/* MysticBackground removed to improve page load performance */}
         <MascoteLia />
         <UserCorner />
-        <InnerPageShortcut />
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/login" element={<Login />} />
