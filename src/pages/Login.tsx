@@ -344,12 +344,15 @@ export default function Login() {
   };
 
   return (
-    <main className="relative flex min-h-[100svh] w-full items-center justify-center overflow-hidden bg-[#f6dfb4]">
-      <img
-        src="/login-jornada.png"
-        alt="Lemos a Palavra — Jesus e crianças convidando para uma jornada bíblica"
-        className="absolute inset-0 h-full w-full object-cover object-center sm:static sm:h-auto sm:max-h-[100svh] sm:w-auto sm:max-w-full sm:object-contain"
-      />
+    <main className="flex w-full justify-center bg-[#f6dfb4] sm:min-h-[100svh] sm:items-center">
+      <picture className="block w-full sm:flex sm:justify-center">
+        <source media="(max-width: 639px)" srcSet="/login-jornada-mobile.png" />
+        <img
+          src="/login-jornada.png"
+          alt="Lemos a Palavra — Jesus e crianças convidando para uma jornada bíblica"
+          className="block h-auto w-full object-contain sm:max-h-[100svh] sm:w-auto sm:max-w-full"
+        />
+      </picture>
     </main>
   );
 }
