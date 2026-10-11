@@ -68,7 +68,7 @@ function IndexV1() {
   return (
     <div
       className="min-h-screen flex flex-col items-center overflow-hidden relative"
-      style={{ background: "transparent" }}
+      style={{ background: "radial-gradient(ellipse at 50% 35%, rgba(255,249,207,.90), transparent 48%), linear-gradient(180deg, #8fd9fa 0%, #d9f6ed 40%, #91c77c 75%, #4b9a58 100%)" }}
     >
       {/* espaçador do cabeçalho fixo */}
       <div aria-hidden className="h-[64px] md:h-[70px] w-full" />
@@ -89,12 +89,12 @@ function IndexV1() {
          </div>}
       </header>
 
-      <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden"><div className="absolute -left-24 top-[14%] h-80 w-80 rounded-full bg-emerald-700/20 blur-3xl"/><div className="absolute -right-24 top-[28%] h-80 w-80 rounded-full bg-lime-600/20 blur-3xl"/><div className="absolute inset-x-0 bottom-0 h-[24%] bg-gradient-to-t from-emerald-800/35 to-transparent"/></div><h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
 
-      <main className="w-full flex-1 flex flex-col items-center pb-28 sm:pb-32 lg:pb-24">
+      <main className="relative z-10 w-full flex-1 flex flex-col items-center pb-28 sm:pb-32 lg:pb-24">
 
         <div className="w-full flex flex-col items-center gap-1 sm:gap-2 px-4 pt-2 sm:pt-4 pb-2 text-center">
-          <p className="font-display font-extrabold text-lg sm:text-2xl text-foreground">Bem vindo !</p>
+          <p className="font-display font-extrabold text-lg sm:text-2xl text-foreground">Bem-vindo ao Jardim da Palavra!</p>
           {user && isAdmin && <Button variant="outline" size="icon" onClick={() => navigate("/config")} title="Painel completo de administração" aria-label="Abrir configurações do site"><Settings /></Button>}
         </div>
 
