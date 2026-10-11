@@ -13,7 +13,7 @@ interface OrbitMenuProps {
 }
 
 export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }: OrbitMenuProps) {
-  const iconSize = 120;
+  const iconSize = 92;
   const [items, setItems] = useState<OrbitItem[]>(() => loadOrbit().filter((x) => !x.hidden));
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                     }`}
                   >
                     <div
-                      className={`relative flex items-center justify-center overflow-hidden rounded-full shadow-xl hover:shadow-2xl transition-shadow w-[76px] h-[76px] sm:w-[92px] sm:h-[92px] bg-transparent ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
+                      className={`relative flex items-center justify-center overflow-hidden rounded-full shadow-xl hover:shadow-2xl transition-shadow lemos-standard-icon bg-transparent ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
                     >
                       <img
                         src={item.icon}
