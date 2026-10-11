@@ -57,7 +57,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                     }`}
                   >
                     <div
-                      className={`relative overflow-hidden rounded-full shadow-xl hover:shadow-2xl transition-shadow w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] bg-transparent ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
+                      className={`relative flex items-center justify-center overflow-hidden rounded-full shadow-xl hover:shadow-2xl transition-shadow w-[76px] h-[76px] sm:w-[92px] sm:h-[92px] bg-transparent ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
                     >
                       <img
                         src={item.icon}
@@ -65,13 +65,8 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                         width={iconSize}
                         height={iconSize}
                         loading="lazy"
-                        className="w-full h-full object-contain"
+                        className="block w-full h-full object-contain object-center"
                       />
-                      {item.label === "FAÇA" && (
-                        <span className="absolute bottom-0 left-1/2 -translate-x-1/2 min-w-[78%] rounded-full border border-amber-300 bg-amber-500 px-1 py-0.5 text-center font-extrabold text-[10px] sm:text-xs leading-none text-white shadow-md" aria-hidden="true">
-                          FAÇA
-                        </span>
-                      )}
                     </div>
                   </button>
                 </div>
