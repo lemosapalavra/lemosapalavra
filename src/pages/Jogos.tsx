@@ -22,15 +22,15 @@ export default function Jogos() {
   const games = ALL_GAMES.filter((g) => isAllowed("jogos", g.id));
 
   return (
-    <main className="min-h-screen bg-background px-4 pb-24">
-      <div className="mx-auto max-w-5xl">
-        <PageHeader title="Jogos" icon={iconJogos} />
+    <main className="relative min-h-[100dvh] overflow-hidden px-4 pb-24" style={{ background: "radial-gradient(circle at 50% 36%, #fff7c8 0%, transparent 45%), linear-gradient(180deg, #82d4fa 0%, #c8f5e1 42%, #a4d67d 70%, #54a663 100%)" }}>
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[32%] bg-gradient-to-t from-emerald-800/30 to-transparent" /><div className="relative z-10 mx-auto max-w-5xl">
+        <PageHeader title="FAÇA — Jardim das Aventuras" icon={iconJogos} /><p className="mx-auto mb-5 max-w-md rounded-full border border-amber-300 bg-amber-50/85 px-5 py-2 text-center text-sm font-semibold text-amber-950 shadow-md">Escolha um jogo e descubra as aventuras da Palavra!</p>
 
         <div className="flex justify-center">
           <div className="relative orbit-area-jogos w-[min(94vw,340px)] h-[min(94vw,340px)] sm:w-[min(90vw,440px)] sm:h-[min(90vw,440px)] lg:w-[min(92vw,640px)] lg:h-[min(92vw,640px)]">
             <div className="absolute inset-0 orbit-spin">
-              {games.length > 1 && <svg aria-hidden="true" className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" viewBox="0 0 100 100">
-                <polygon points={(games.length === 5 ? [0, 2, 4, 1, 3] : Array.from({ length: games.length }, (_, i) => i)).map((i) => { const angle = (i * 360 / games.length - 90) * Math.PI / 180; return [50 + 40 * Math.cos(angle), 50 + 40 * Math.sin(angle)].join(","); }).join(" ")} fill="none" stroke="#d5a547" strokeWidth="0.55" opacity="0.75" vectorEffect="non-scaling-stroke" />
+              {games.length > 1 && <svg aria-hidden="true" className="absolute left-1/2 top-1/2 pointer-events-none overflow-visible -translate-x-1/2 -translate-y-1/2" style={{ width: "calc(2 * var(--orbit-radius))", height: "calc(2 * var(--orbit-radius))" }} viewBox="0 0 100 100">
+                <polygon points={(games.length === 5 ? [0, 2, 4, 1, 3] : Array.from({ length: games.length }, (_, i) => i)).map((i) => { const angle = (i * 360 / games.length - 90) * Math.PI / 180; return [50 + 50 * Math.cos(angle), 50 + 50 * Math.sin(angle)].join(","); }).join(" ")} fill="none" stroke="#d5a547" strokeWidth="0.55" opacity="0.75" vectorEffect="non-scaling-stroke" />
               </svg>}
               {games.map((game, i) => {
                 const angle = (360 / games.length) * i - 90;
