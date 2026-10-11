@@ -12,7 +12,7 @@ export interface OrbitItem {
   hidden?: boolean;
 }
 
-const KEY = "lemos_orbit_config_v11";
+const KEY = "lemos_orbit_config_v12";
 
 export function defaultOrbit(): OrbitItem[] {
   return [
