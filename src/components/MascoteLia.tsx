@@ -1,8 +1,7 @@
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import lia1 from "@/assets/lia-1-fallback.png";
-import lia2 from "@/assets/lia-2-fallback.png";
+import liaFallback from "@/assets/lia-1-fallback.png";
 import { Button } from "@/components/ui/button";
 
 /**
@@ -95,7 +94,7 @@ export default function MascoteLia() {
     ? LOGIN_TIP
     : (context && CONTEXT_TIPS[context]) || PAGE_TIPS[location.pathname] || PAGE_TIPS["/"];
 
-  const avatar = isHome && !context ? lia1 : lia2;
+  const avatar = "/LIA_duvida.png";
   const liaVisible = useIconVisible("lia");
 
   if (!liaVisible) return null;
@@ -110,7 +109,7 @@ export default function MascoteLia() {
         className="h-auto flex flex-col items-center gap-1 transition hover:scale-110 active:scale-95"
       >
         <span className="w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] rounded-full bg-white shadow-lg border-2 border-amber-300 overflow-hidden block">
-          <img src={avatar} alt="LIA" className="w-full h-full object-cover object-top" loading="lazy" />
+          <img src={avatar} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = liaFallback; }} alt="LIA" className="w-full h-full object-cover object-top" loading="lazy" />
         </span>
         <span className="font-display font-extrabold text-[11px] sm:text-xs text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap">
           Oi, sou a LIA
@@ -137,6 +136,7 @@ export default function MascoteLia() {
       >
         <img
           src={avatar}
+          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = liaFallback; }}
           alt="LIA, a mascote que ajuda você a navegar"
           className="w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] object-cover object-top rounded-full drop-shadow-xl animate-[liaFloat_3.4s_ease-in-out_infinite] select-none"
           draggable={false}
