@@ -152,6 +152,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
                 <div className="flex items-center gap-3 mb-2">
                   <img loading="lazy" decoding="async" src={it.icon} alt={it.label} className="w-12 h-12 rounded-full object-cover border" />
                   <span className="text-xs font-bold text-zinc-500">Item #{idx + 1}</span>
+                  <label className="ml-auto flex items-center gap-2 text-xs font-bold text-zinc-700"><input type="checkbox" checked={!it.hidden} onChange={(e) => patchMenu(idx, { hidden: !e.target.checked })} /> {it.hidden ? "Desativado" : "Ativado"}</label>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <label className="text-xs font-semibold text-zinc-700">
@@ -168,7 +169,7 @@ export default function IndexAdminPanel({ open, onClose }: Props) {
                   </label>
                   <label className="text-xs font-semibold text-zinc-700 sm:col-span-2">
                     URL do ícone (opcional, sobrescreve o padrão)
-                    <input value={it.icon} onChange={(e) => patchMenu(idx, { icon: e.target.value })} className={inputCls + " mt-1"} />
+                    <div className="flex gap-2 mt-1"><input value={it.icon} onChange={(e) => patchMenu(idx, { icon: e.target.value })} className={inputCls + " mt-1"} /><button type="button" onClick={() => setIconPickerIndex(idx)} className="rounded bg-amber-500 px-3 py-2 text-white font-bold hover:bg-amber-600 shrink-0">🔎 Procurar no site</button></div>
                   </label>
                 </div>
               </div>
