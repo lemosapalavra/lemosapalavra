@@ -31,6 +31,9 @@ export default function Jogos() {
         <div className="flex justify-center">
           <div className="relative orbit-area-jogos w-[min(94vw,340px)] h-[min(94vw,340px)] sm:w-[min(90vw,440px)] sm:h-[min(90vw,440px)] lg:w-[min(92vw,640px)] lg:h-[min(92vw,640px)]">
             <div className="absolute inset-0 orbit-spin">
+              {games.length > 1 && <svg aria-hidden="true" className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" viewBox="0 0 100 100">
+                <polygon points={(games.length === 5 ? [0, 2, 4, 1, 3] : Array.from({ length: games.length }, (_, i) => i)).map((i) => { const angle = (i * 360 / games.length - 90) * Math.PI / 180; return [50 + 40 * Math.cos(angle), 50 + 40 * Math.sin(angle)].join(","); }).join(" ")} fill="none" stroke="#d5a547" strokeWidth="0.55" opacity="0.75" vectorEffect="non-scaling-stroke" />
+              </svg>}
               {games.map((game, i) => {
                 const angle = (360 / games.length) * i - 90;
                 return (
