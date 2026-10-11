@@ -67,6 +67,11 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                         loading="lazy"
                         className="w-full h-full object-contain"
                       />
+                      {item.label === "FAÇA" && (
+                        <span className="absolute bottom-0 left-1/2 -translate-x-1/2 min-w-[78%] rounded-full border border-amber-300 bg-amber-500 px-1 py-0.5 text-center font-extrabold text-[10px] sm:text-xs leading-none text-white shadow-md" aria-hidden="true">
+                          FAÇA
+                        </span>
+                      )}
                     </div>
                   </button>
                 </div>
