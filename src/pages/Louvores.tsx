@@ -14,7 +14,7 @@ import { loadConfig, type PlayEntry } from "@/data/lemosPlayConfig";
 import { getListenEntries, type ListenCategory } from "@/data/listenCatalog";
 import { markSeen } from "@/lib/newContent";
 import { louvoresTitles } from "@/data/contentIndex";
-import oucaIcon from "@/assets/ouca-upload.png.asset.json";
+import oucaIcon from "@/assets/home/ouca.png.asset.json";
 
 const tabs: { id: ListenCategory; label: string; icon: string }[] = [
   { id: "musicas", label: "Músicas", icon: iconMusicais },
