@@ -5,6 +5,7 @@ const LINKS = [
   { label: "VEJA", to: "/lemosplay" },
   { label: "OUÇA", to: "/musicas" },
   { label: "APRENDA", to: "/atividades" },
+  { label: "FAÇA", to: "/jogos" },
   { label: "ÁLBUM", to: "/album" },
 ];
 
