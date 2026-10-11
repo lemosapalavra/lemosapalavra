@@ -50,7 +50,7 @@ export default function Jogos() {
                         aria-label={game.title}
                         className="flex flex-col items-center gap-1 cursor-pointer transition-transform duration-300 hover:scale-110 hover:-translate-y-1 active:scale-105 focus-visible:scale-110"
                       >
-                        <span className="relative block overflow-hidden rounded-full shadow-xl w-[72px] h-[72px] sm:w-[96px] sm:h-[96px] lg:w-[128px] lg:h-[128px] bg-transparent">
+                        <span className="relative block overflow-hidden rounded-full shadow-xl w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] bg-transparent">
                           <img src={game.icon} alt={game.title} width={1024} height={1024} loading="lazy" className="w-full h-full object-contain" />
                         </span>
                       </button>
