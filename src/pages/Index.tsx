@@ -96,7 +96,7 @@ function IndexV1() {
       <main className="w-full flex-1 flex flex-col items-center pb-28 sm:pb-32 lg:pb-24">
 
         <div className="w-full flex flex-col items-center gap-1 sm:gap-2 px-4 pt-2 sm:pt-4 pb-2 text-center">
-          <p className="font-display font-extrabold text-lg sm:text-2xl text-foreground">Sejam todos Bem vindos !</p>
+          <p className="font-display font-extrabold text-lg sm:text-2xl text-foreground">Bem vindo !</p>
           {user && isAdmin && <div className="flex gap-2">
             <Button variant="outline" size="icon" onClick={() => setAdminOpen(true)} title="Configurar página inicial" aria-label="Configurar página inicial"><Settings /></Button>
             <Button variant="outline" size="icon" onClick={() => navigate("/config")} title="Configurações" aria-label="Configurações"><Settings /></Button>
