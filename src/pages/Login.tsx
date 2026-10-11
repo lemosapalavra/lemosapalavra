@@ -343,19 +343,107 @@ export default function Login() {
     }
   };
 
-  return (
-    <main className="flex w-full justify-center bg-[#f6dfb4] sm:min-h-[100svh] sm:items-center">
-      <picture className="block w-full sm:flex sm:justify-center">
-        <source media="(max-width: 639px)" srcSet="/login-jornada-mobile.png" />
-        <img
-          src="/login-jornada.png"
-          alt="Lemos a Palavra — Jesus e crianças convidando para uma jornada bíblica"
-          className="block h-auto w-full object-contain sm:max-h-[100svh] sm:w-auto sm:max-w-full"
-        />
-      </picture>
-    </main>
+  const [showAgePrompt, setShowAgePrompt] = useState(false);
+
+  const enterJourney = async () => {
+    if (!name.trim()) { toast({ title: "Informe seu nome" }); return; }
+    const error = validatePhone(phone);
+    if (error) { setPhoneError(error); toast({ title: "Confira o celular", description: error, variant: "destructive" }); return; }
+    setEmail(phone);
+    setPhoneError(null);
+    setBusy(true);
+    try {
+      const existing = await ensureAccount("login", { phone });
+      if (existing.error) {
+        toast({ title: "Não foi possível verificar o celular", description: existing.error, variant: "destructive" });
+        return;
+      }
+      if (existing.found) {
+        const em = phoneToEmail(phone);
+        const { data, error: signInError } = await supabase.auth.signInWithPassword({ email: em, password: derivePassword(phone) });
+        if (signInError || !data.user) {
+          toast({ title: "Não foi possível entrar", description: "Confira o celular ou tente novamente.", variant: "destructive" });
+          return;
+        }
+        await hydrateLocalProfile(data.user.id, data.user.email || em);
+        navigate("/");
+      } else {
+        if (!finalAvatar) { toast({ title: "Escolha seu avatar" }); return; }
+        setShowAgePrompt(true);
+      }
+    } finally { setBusy(false); }
+  };
+
+  const avatarSpotsMobile = [
+    { name: "Jesus", x: 23, y: 68.1 }, { name: "Maria", x: 36.5, y: 68.1 },
+    { name: "Davi", x: 49.5, y: 68.1 }, { name: "Moisés", x: 62.5, y: 68.1 },
+    { name: "Abraão", x: 76, y: 68.1 }, { name: "José", x: 21, y: 76.2 },
+    { name: "Lia", x: 33.5, y: 76.2 }, { name: "Marta", x: 46, y: 76.2 },
+    { name: "Noé", x: 58.5, y: 76.2 }, { name: "Paulo", x: 71, y: 76.2 },
+    { name: "Mateus", x: 83, y: 76.2 },
+  ];
+  const avatarSpotsDesktop = [
+    { name: "Jesus", x: 25, y: 73.7 }, { name: "Maria", x: 35.5, y: 73.7 },
+    { name: "Moisés", x: 45, y: 73.7 }, { name: "Davi", x: 54.5, y: 73.7 },
+    { name: "Mateus", x: 64.3, y: 73.7 }, { name: "Anjo", x: 74, y: 73.7 },
+  ];
+
+  const interactiveArt = (mobile: boolean) => (
+    <div className={mobile ? "relative block w-full sm:hidden" : "relative hidden w-full max-w-[1536px] sm:block"}>
+      <img
+        src={mobile ? "/login-jornada-mobile.png" : "/login-jornada.png"}
+        alt="Lemos a Palavra — jornada bíblica: informe seu nome, celular e escolha um avatar"
+        className="block h-auto w-full"
+      />
+      <label className="absolute z-10" style={mobile ? { left: "33%", top: "50.3%", width: "40%", height: "2.5%" } : { left: "36%", top: "44.3%", width: "31%", height: "3.3%" }}>
+        <span className="sr-only">Seu nome</span>
+        <input aria-label="Seu nome" autoComplete="name" value={name} onChange={e => setName(e.target.value)}
+          placeholder="Digite seu nome" className="h-full w-full rounded-md border-0 bg-[#fff8ee] px-1 text-[clamp(10px,1.8vw,20px)] text-[#51301b] outline-none focus:ring-2 focus:ring-amber-500" />
+      </label>
+      <label className="absolute z-10" style={mobile ? { left: "33%", top: "55.9%", width: "40%", height: "2.5%" } : { left: "36%", top: "52.4%", width: "31%", height: "3.3%" }}>
+        <span className="sr-only">Celular</span>
+        <input aria-label="Celular" type="tel" inputMode="tel" autoComplete="tel" value={phone} onChange={e => setPhone(maskPhone(e.target.value))}
+          placeholder="(11) 99999-9999" className="h-full w-full rounded-md border-0 bg-[#fff8ee] px-1 text-[clamp(10px,1.8vw,20px)] text-[#51301b] outline-none focus:ring-2 focus:ring-amber-500" />
+      </label>
+      {(mobile ? avatarSpotsMobile : avatarSpotsDesktop).map(a => (
+        <button key={a.name} type="button" title={a.name} aria-label={`Escolher avatar ${a.name}`}
+          aria-pressed={selectedAvatar === a.name}
+          onClick={() => { setSelectedAvatar(a.name); setCustomAvatar(""); }}
+          className={`absolute z-10 -translate-x-1/2 -translate-y-1/2 rounded-lg border-2 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-600 ${selectedAvatar === a.name ? "border-amber-400 bg-amber-300/20 shadow-[0_0_12px_3px_#fbbf24]" : "border-transparent"}`}
+          style={{ left: `${a.x}%`, top: `${a.y}%`, width: mobile ? "11.5%" : "9%", height: mobile ? "7.5%" : "15%" }} />
+      ))}
+      <button type="button" disabled={busy} onClick={enterJourney}
+        aria-label="Entrar e Começar"
+        className="absolute z-10 rounded-full bg-transparent focus-visible:outline focus-visible:outline-4 focus-visible:outline-white disabled:opacity-60"
+        style={mobile ? { left: "23%", top: "80.4%", width: "54%", height: "5.6%" } : { left: "34%", top: "85.1%", width: "32%", height: "9.5%" }} />
+    </div>
   );
-}
+
+  return (
+    <main className="flex w-full flex-col items-center justify-start bg-[#f6dfb4]">
+      {interactiveArt(true)}
+      {interactiveArt(false)}
+      {phoneError && <p role="alert" className="p-3 text-center text-red-700">{phoneError}</p>}
+      {showAgePrompt && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/65 p-4">
+          <form onSubmit={e => { e.preventDefault(); void doRegister(); }} className="w-full max-w-sm rounded-2xl border-2 border-amber-400 bg-[#fff4d9] p-6 text-[#51301b] shadow-2xl">
+            <h2 className="mb-2 text-center text-2xl font-bold">Quase lá!</h2>
+            <p className="mb-4 text-center">Para criar seu cadastro, escolha sua faixa etária.</p>
+            <label htmlFor="login-age" className="mb-2 block font-semibold">Faixa etária</label>
+            <select id="login-age" required value={ageRange} onChange={e => setAgeRange(e.target.value as AgeRange)}
+              className="w-full rounded-lg border border-amber-400 bg-white p-3 text-[#51301b]">
+              <option value="">Selecione...</option>
+              {AGE_RANGES.map(a => <option key={a.id} value={a.id}>{a.label}</option>)}
+            </select>
+            <div className="mt-5 flex gap-3">
+              <button type="button" onClick={() => setShowAgePrompt(false)} className="flex-1 rounded-lg border border-amber-500 p-3">Voltar</button>
+              <button type="submit" disabled={busy || !ageRange} className="flex-1 rounded-lg bg-amber-500 p-3 font-bold disabled:opacity-50">{busy ? "Aguarde..." : "Criar cadastro"}</button>
+            </div>
+          </form>
+        </div>
+      )}
+    </main>
+  );}
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
