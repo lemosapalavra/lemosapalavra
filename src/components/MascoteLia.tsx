@@ -18,19 +18,20 @@ import { Button } from "@/components/ui/button";
  */
 
 const PAGE_TIPS: Record<string, string> = {
-  "/": "Toque em um dos ícones ao redor da logo para escolher o que ver. Se quiser instalar o ícone da Lemos a Palavra e acessar mais facilmente, toque no atalho logo abaixo de mim!",
+  "/": "Bem-vindo! Os cinco ícones ao redor da logo levam a VEJA, OUÇA, APRENDA, FAÇA e ÁLBUM. Toque em um deles para começar! Se quiser instalar o site, use o atalho abaixo de mim.",
   "/biblia": "Escolha o livro e o capítulo. Toque no ícone de ouvir 🔊 e eu leio a Palavra para você.",
-  "/louvores": "Escolha um louvor e aperte o play ▶️. Dá para curtir, comentar e compartilhar com a família.",
+  "/louvores": "Em OUÇA, músicas e louvores ficam juntos na mesma página, em duas fileiras. Deslize para o lado e toque na capa para reproduzir! Você também pode curtir, comentar e compartilhar.",
+  "/musicas": "Em OUÇA, encontre músicas e louvores na mesma página! Percorra as fileiras para os lados e toque em uma capa para ouvir ou assistir.",
   "/historias-do-dia": "Aqui tem duas histórias bíblicas novas todo dia para ler e conversar em família!",
   "/devocionais": "Leia o devocional do dia, escolha uma cor e toque no desenho para pintar. Pode desfazer, continuar depois e guardar no Meu Mural!",
-  "/jogos": "Escolha um jogo bíblico: dominó, memória, mico, quiz ou Quem Sou Eu!",
+  "/jogos": "Em FAÇA, escolha uma atividade ou jogo bíblico, como dominó, memória, mico, quiz ou Quem Sou Eu! Toque no que quiser experimentar.",
   "/pedidos-oracao": "Escreva seu pedido e escolha a categoria. Vamos orar juntos por você! 🙏",
-  "/atividades": "Escolha uma atividade tocando no ícone. Cada uma dá moedinhas 🪙 uma vez por dia.",
+  "/atividades": "Em APRENDA, escolha uma atividade pelo ícone e siga as instruções. Algumas atividades dão moedinhas 🪙 quando concluídas.",
   "/album": "Use 3 moedinhas 🪙 para abrir um pacote e toque em “Próxima” para virar a página do álbum.",
-  "/lemosplay": "Deslize para ver as categorias: Gênesis, Jesus, Séries e Músicas. Assista até o fim e ganhe moedinhas 🪙.",
+  "/lemosplay": "Em VEJA, explore o destaque principal e as fileiras de vídeos, como Gênesis, Jesus e Séries. Deslize as fileiras para o lado, escolha uma capa e assista!",
   "/historias-biblicas": "Escolha uma história e assista até o final para ganhar suas moedinhas 🪙.",
   "/login": "Preencha nome e celular para criar sua conta. Já tem conta? Use a aba Entrar.",
-  "/config": "Aqui você configura o site: vídeos, faixas, contatos e novidades.",
+  "/config": "Este é o painel de configurações do administrador. Para ajustar a página inicial, abra suas configurações e escolha Menu Órbita: ative ou desative ícones e use Procurar no site para trocar imagens. Também há opções para conteúdos, vídeos e outros recursos.",
   "/estatisticas": "Este painel mostra o que os usuários mais acessam no site.",
 };
 
