@@ -10,17 +10,19 @@ export const SITE_ICONS = [
   { id: "kart", title: "Kartzinho" },
 ];
 
-const KEY = "lemos_icon_visibility_v6";
+const KEY = "lemos_icon_visibility_v7";
+const PREVIOUS_KEY = "lemos_icon_visibility_v6";
 const EVT = "lemos_icon_visibility_change";
 
 export function loadHiddenIcons(): string[] {
-  const defaults = ["atalho", "14bis", "kart"];
+  const defaults = ["atalho", "kart"];
   // Recupera LIA, usuário e dedicatória após configurações antigas de visibilidade.
   try {
-    const raw = localStorage.getItem(KEY);
+    const current = localStorage.getItem(KEY);
+    const raw = current ?? localStorage.getItem(PREVIOUS_KEY);
     if (!raw) return defaults;
     const parsed: unknown = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed.filter((id): id is string => typeof id === "string" && !["lia", "usuario", "dedicatoria"].includes(id)) : defaults;
+    return Array.isArray(parsed) ? parsed.filter((id): id is string => typeof id === "string" && !["lia", "usuario", "dedicatoria"].includes(id) && (current !== null || id !== "14bis")) : defaults;
   } catch { return defaults; }
 }
 
