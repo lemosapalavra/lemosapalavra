@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
-import { ArrowLeft, Play } from "lucide-react";
+import { ArrowLeft, Play, Settings } from "lucide-react";
+import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 import { normalizeVideo } from "@/lib/videoEmbed";
 import VideoSideActions from "@/components/VideoSideActions";
@@ -22,6 +24,8 @@ const tabs: { id: ListenCategory; label: string; icon: string }[] = [
 ];
 
 export default function Louvores() {
+  const isAdmin = useIsAdmin();
+  const [adminOpen, setAdminOpen] = useState(false);
   const [playing, setPlaying] = useState<PlayEntry | null>(null);
   const [tab, setTab] = useState<ListenCategory>("musicas");
   const [config, setConfig] = useState(() => loadConfig());
@@ -34,6 +38,7 @@ export default function Louvores() {
   }, []);
 
   const entries = useMemo(() => getListenEntries(config, tab), [config, tab]);
+  const featured = entries.find((entry) => entry.poster) ?? entries[0];
 
   if (playing) {
     const media = normalizeVideo(playing.src || "", true);
@@ -87,6 +92,16 @@ export default function Louvores() {
       <div className="max-w-4xl mx-auto">
         <PageHeader title="Ouça" subtitle="Músicas e louvores" icon={oucaIcon.url} />
 
+        {isAdmin && <button type="button" onClick={() => setAdminOpen(true)} title="Configurar Ouça" className="fixed top-3 right-3 z-40 w-11 h-11 rounded-full bg-zinc-900 text-white shadow-xl flex items-center justify-center"><Settings className="w-5 h-5" /></button>}
+        {featured && <section className="relative mt-4 min-h-[320px] sm:min-h-[430px] rounded-xl overflow-hidden bg-black text-white">
+          {featured.poster && <img src={featured.poster} alt="" className="absolute inset-0 w-full h-full object-cover opacity-50" />}
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
+          <div className="relative min-h-[320px] sm:min-h-[430px] flex flex-col justify-center items-start p-6 sm:p-12 max-w-xl">
+            <span className="uppercase tracking-widest text-amber-300 font-bold text-xs">✨ Em destaque · {tab === "musicas" ? "Músicas" : "Louvores"}</span>
+            <h2 className="font-display text-3xl sm:text-5xl font-extrabold my-4">{featured.title}</h2>
+            <button type="button" onClick={() => setPlaying(featured)} className="flex items-center gap-2 rounded bg-white text-black font-bold px-5 py-3"><Play className="w-5 h-5" /> Reproduzir agora</button>
+          </div>
+        </section>}
         {/* Top category icons */}
         <div className="flex items-center justify-center gap-6 sm:gap-10 my-6">
           {tabs.map((t) => (
@@ -118,6 +133,7 @@ export default function Louvores() {
           </div>
         ) : <p className="py-16 text-center font-display text-lg font-bold text-muted-foreground">Nenhum conteúdo ativo nesta categoria.</p>}
 
+        <LemosPlayAdminPanel open={adminOpen} onClose={() => setAdminOpen(false)} initialTab={tab} listenOnly />
         <div className="text-center mt-6 space-y-2 max-w-2xl mx-auto">
           <p className="font-display text-2xl font-bold text-primary">Convido você!</p>
           <p className="font-body text-sm text-foreground">A acompanhar e compartilhar este projeto, assim você se torna parte desta missão.</p>
