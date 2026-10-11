@@ -205,7 +205,7 @@ const AdminOnly = ({ children }: { children: React.ReactNode }) => {
 /** Rodapé global — escondido no Álbum para não conflitar com as figurinhas. */
 const GlobalFooter = () => {
   const location = useLocation();
-  const hidden = location.pathname.startsWith("/album") || location.pathname === "/" || location.pathname === "/familia";
+  const hidden = location.pathname.startsWith("/album") || location.pathname === "/" || location.pathname === "/familia" || location.pathname === "/login";
   useEffect(() => {
     document.body.classList.toggle("no-global-footer", hidden);
     return () => document.body.classList.remove("no-global-footer");
