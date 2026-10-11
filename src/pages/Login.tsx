@@ -389,11 +389,11 @@ export default function Login() {
   ];
 
   const interactiveArt = (mobile: boolean) => (
-    <div className={mobile ? "relative block w-full sm:hidden" : "relative hidden w-full max-w-[1536px] sm:block"}>
+    <div className={mobile ? "relative block h-[100dvh] min-h-[100svh] w-full overflow-hidden sm:hidden" : "relative hidden h-[100dvh] min-h-[100svh] w-full overflow-hidden sm:block"}>
       <img
         src={mobile ? "/login-jornada-mobile.png" : "/login-jornada.png"}
         alt="Lemos a Palavra — jornada bíblica: informe seu nome, celular e escolha um avatar"
-        className="block h-auto w-full"
+        className="absolute inset-0 block h-full w-full object-fill"
       />
       <label className="absolute z-10" style={mobile ? { left: "33%", top: "50.3%", width: "40%", height: "2.5%" } : { left: "36%", top: "44.3%", width: "31%", height: "3.3%" }}>
         <span className="sr-only">Seu nome</span>
@@ -420,7 +420,7 @@ export default function Login() {
   );
 
   return (
-    <main className="flex w-full flex-col items-center justify-start bg-[#f6dfb4]">
+    <main className="flex h-[100dvh] min-h-[100svh] w-full flex-col items-center justify-start overflow-hidden bg-[#f6dfb4]">
       {interactiveArt(true)}
       {interactiveArt(false)}
       {phoneError && <p role="alert" className="p-3 text-center text-red-700">{phoneError}</p>}
