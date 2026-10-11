@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo } from "react";
-import { ArrowLeft, Play, Settings } from "lucide-react";
+import { useState, useEffect, useMemo, useRef } from "react";
+import { ArrowLeft, Play, Settings, ChevronLeft, ChevronRight } from "lucide-react";
 import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
@@ -17,6 +17,24 @@ import { getListenEntries, type ListenCategory } from "@/data/listenCatalog";
 import { markSeen } from "@/lib/newContent";
 import { louvoresTitles } from "@/data/contentIndex";
 import oucaIcon from "@/assets/home/ouca.png.asset.json";
+
+function ListenRow({ title, items, onPlay }: { title: string; items: PlayEntry[]; onPlay: (item: PlayEntry) => void }) {
+  const scroller = useRef<HTMLDivElement>(null);
+  return <section className="mb-8 group/row">
+    <h2 className="px-4 sm:px-12 text-white text-xl sm:text-2xl font-bold mb-3">{title}</h2>
+    <div className="relative">
+      <button type="button" aria-label="Anterior" onClick={() => scroller.current?.scrollBy({ left: -500, behavior: "smooth" })} className="absolute left-0 top-0 bottom-0 z-10 w-9 bg-black/50 text-white opacity-0 group-hover/row:opacity-100 focus:opacity-100"><ChevronLeft className="mx-auto" /></button>
+      <div ref={scroller} className="flex gap-3 overflow-x-auto scroll-smooth px-4 sm:px-12 pb-4" style={{ scrollbarWidth: "none" }}>
+        {items.map(item => <button type="button" key={item.id} onClick={() => onPlay(item)} className="group/card relative shrink-0 w-[140px] sm:w-[180px] aspect-[2/3] rounded-lg overflow-hidden bg-zinc-900 hover:scale-105 hover:ring-2 hover:ring-white transition-all">
+          {item.poster ? <img src={item.poster} alt={item.title} className="w-full h-full object-cover" loading="lazy" /> : <Play className="m-auto h-full text-white" />}
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/80 to-transparent p-3 pt-12 text-left"><span className="text-white text-xs font-bold line-clamp-2">{item.title}</span></div>
+        </button>)}
+      </div>
+      <button type="button" aria-label="Próximo" onClick={() => scroller.current?.scrollBy({ left: 500, behavior: "smooth" })} className="absolute right-0 top-0 bottom-0 z-10 w-9 bg-black/50 text-white opacity-0 group-hover/row:opacity-100 focus:opacity-100"><ChevronRight className="mx-auto" /></button>
+    </div>
+    {!items.length && <p className="text-zinc-400 px-4 sm:px-12">Nenhum conteúdo ativo.</p>}
+  </section>;
+}
 
 const tabs: { id: ListenCategory; label: string; icon: string }[] = [
   { id: "musicas", label: "Músicas", icon: iconMusicais },
@@ -88,8 +106,8 @@ export default function Louvores() {
 
 
   return (
-    <div className="min-h-screen py-4 px-4" style={{ background: "transparent" }}>
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-black text-white py-4">
+      <div className="w-full mx-auto">
         <PageHeader title="Ouça" subtitle="Músicas e louvores" icon={oucaIcon.url} />
 
         {isAdmin && <button type="button" onClick={() => setAdminOpen(true)} title="Configurar Ouça" className="fixed top-3 right-3 z-40 w-11 h-11 rounded-full bg-zinc-900 text-white shadow-xl flex items-center justify-center"><Settings className="w-5 h-5" /></button>}
@@ -127,13 +145,9 @@ export default function Louvores() {
         <div className="flex justify-center py-4">
           <img loading="lazy" decoding="async" src={logoCentral} alt="Lemos a Palavra" className="w-28 sm:w-40 drop-shadow-xl" />
         </div>
-        {entries.length ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 justify-items-center py-6">
-            {entries.map(renderItem)}
-          </div>
-        ) : <p className="py-16 text-center font-display text-lg font-bold text-muted-foreground">Nenhum conteúdo ativo nesta categoria.</p>}
+        <ListenRow title={tab === "musicas" ? "Músicas" : "Louvores"} items={entries} onPlay={(item) => { setPlaying(item); awardOnce(`ouca:${item.id}`, tab === "louvores" ? COINS.louvor : COINS.musica, `Você assistiu "${item.title}"`); }} />
 
-        <LemosPlayAdminPanel open={adminOpen} onClose={() => setAdminOpen(false)} initialTab={tab} listenOnly />
+
         <div className="text-center mt-6 space-y-2 max-w-2xl mx-auto">
           <p className="font-display text-2xl font-bold text-primary">Convido você!</p>
           <p className="font-body text-sm text-foreground">A acompanhar e compartilhar este projeto, assim você se torna parte desta missão.</p>
@@ -142,6 +156,7 @@ export default function Louvores() {
         </div>
 
       </div>
+      <LemosPlayAdminPanel open={adminOpen} onClose={() => setAdminOpen(false)} initialTab={tab} listenOnly />
     </div>
   );
 }
