@@ -25,8 +25,6 @@ export default function Jogos() {
     <main className="min-h-screen bg-background px-4 pb-24">
       <div className="mx-auto max-w-5xl">
         <PageHeader title="Jogos" icon={iconJogos} />
-        <h1 className="font-display text-3xl font-extrabold text-center text-foreground mt-5">Jogos Bíblicos</h1>
-        <p className="font-body text-sm text-muted-foreground text-center mb-4">Toque em um jogo ao redor da logo para começar.</p>
 
         <div className="flex justify-center">
           <div className="relative orbit-area-jogos w-[min(94vw,340px)] h-[min(94vw,340px)] sm:w-[min(90vw,440px)] sm:h-[min(90vw,440px)] lg:w-[min(92vw,640px)] lg:h-[min(92vw,640px)]">
