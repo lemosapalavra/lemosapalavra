@@ -34,7 +34,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
 
   // Ciclo: 14s voando + 2s pausa, depois inverte a direção
   useEffect(() => {
-    if (!isBannerActive(cfg)) return;
+    if (!planeVisible || !isBannerActive(cfg)) return;
     let t2: any;
     const t1 = setInterval(() => {
       setFlying(false);
@@ -44,7 +44,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
       }, 2000);
     }, 16000);
     return () => { clearInterval(t1); clearTimeout(t2); };
-  }, [cfg]);
+  }, [cfg, planeVisible]);
 
   if (!planeVisible || !isBannerActive(cfg)) return null;
 
@@ -62,7 +62,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
           <div
             key={dir}
             className="absolute top-0"
-            style={{ animation: `${animName} 14s linear forwards`, willChange: "transform" }}
+            style={{ animation: `${animName} 14s linear forwards`, willChange: "transform", left: 0 }}
           >
             <div className="relative">
               {/* Rastro de fumaça */}
@@ -116,12 +116,12 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
 
       <style>{`
         @keyframes plane-rtl {
-          0%   { transform: translateX(105vw); }
-          100% { transform: translateX(-90vw); }
+          0%   { transform: translateX(calc(100vw + 12rem)); }
+          100% { transform: translateX(-30rem); }
         }
         @keyframes plane-ltr {
-          0%   { transform: translateX(-90vw); }
-          100% { transform: translateX(105vw); }
+          0%   { transform: translateX(-30rem); }
+          100% { transform: translateX(calc(100vw + 12rem)); }
         }
         @keyframes smoke-puff {
           0%   { opacity: 0.75; transform: scale(0.6) translateY(0); }
