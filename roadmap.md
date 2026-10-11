@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Corrigir a vulnerabilidade de tomada de contas no login por celular, preservando usuários e preparando /login-sms com OTP desativado até configurar o provedor.
 - [ ] Copiar os conteúdos de Veja para Ouça, com ativação individual nas Configurações.
 - [ ] Atualizar a barra de interação do cabeçalho para as quatro áreas ativas.
 - [ ] Manter LIA, Dedicatória e Usuário ativos e no mesmo tamanho dos ícones principais.
