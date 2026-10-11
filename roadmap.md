@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Substituir o ícone de Atividades pelo anexo “FAÇA”.
 - [ ] Corrigir a vulnerabilidade de tomada de contas no login por celular, preservando usuários e preparando /login-sms com OTP desativado até configurar o provedor.
 - [x] Copiar os conteúdos de Veja para Ouça, com ativação individual nas Configurações.
 - [x] Atualizar a barra de interação do cabeçalho para as quatro áreas ativas.
