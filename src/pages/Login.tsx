@@ -350,15 +350,6 @@ export default function Login() {
         alt="Lemos a Palavra — Jesus e crianças convidando para uma jornada bíblica"
         className="block h-auto w-full object-contain"
       />
-      <div className="mx-auto flex max-w-xl justify-center px-4 py-5">
-        <button
-          type="button"
-          onClick={() => setMode(mode === "login" ? "register" : "login")}
-          className="rounded-full border border-amber-400 bg-white/90 px-4 py-2 text-sm font-medium text-amber-950 shadow-sm"
-        >
-          {mode === "login" ? "Ir para cadastro" : "Ir para login"}
-        </button>
-      </div>
     </main>
   );
 }
