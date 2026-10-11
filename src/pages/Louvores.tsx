@@ -67,13 +67,13 @@ export default function Louvores() {
     <button
       key={item.id}
       onClick={() => { setPlaying(item); awardOnce(`ouca:${item.id}`, tab === "louvores" ? COINS.louvor : COINS.musica, `Você assistiu "${item.title}"`); }}
-      className="flex flex-col items-center gap-2 hover:scale-105 transition-transform group"
+      className="flex flex-col items-center gap-2 hover:scale-105 transition-transform group w-full max-w-[190px]"
     >
-      <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-2 border-primary/30 shadow-lg bg-black">
+      <div className="relative w-full aspect-[2/3] rounded-xl overflow-hidden border-2 border-primary/30 shadow-lg bg-zinc-900">
         {item.poster ? <img src={item.poster} alt={item.title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" /> : <Play className="absolute inset-0 m-auto h-10 w-10 text-primary-foreground" />}
         <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
       </div>
-      <p className="text-xs sm:text-sm font-bold text-primary text-center leading-tight drop-shadow max-w-[120px]">
+      <p className="text-xs sm:text-sm font-bold text-primary text-center leading-tight drop-shadow line-clamp-2">
         {item.title}
       </p>
       <CoinBadge amount={tab === "louvores" ? COINS.louvor : COINS.musica} size="xs" />
@@ -113,7 +113,7 @@ export default function Louvores() {
           <img loading="lazy" decoding="async" src={logoCentral} alt="Lemos a Palavra" className="w-28 sm:w-40 drop-shadow-xl" />
         </div>
         {entries.length ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center py-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 justify-items-center py-6">
             {entries.map(renderItem)}
           </div>
         ) : <p className="py-16 text-center font-display text-lg font-bold text-muted-foreground">Nenhum conteúdo ativo nesta categoria.</p>}
