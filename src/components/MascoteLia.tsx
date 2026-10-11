@@ -101,7 +101,7 @@ export default function MascoteLia() {
 
   if (!expanded) {
     return (
-      <div className="fixed left-2 bottom-3 z-[45] flex flex-col items-center gap-2 sm:left-4">
+      <div className="fixed left-2 bottom-3 z-[70] flex flex-col items-center gap-2 sm:left-4">
       <Button variant="ghost"
         onClick={() => setExpanded(true)}
         aria-label="Falar com a LIA, sua ajudante"
