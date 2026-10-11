@@ -187,8 +187,6 @@ const AdminOnly = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     let cancelled = false;
     const check = async () => {
-      const owner = (() => { try { return localStorage.getItem("lemos_owner_unlocked") === "1"; } catch { return false; } })();
-      if (owner) { if (!cancelled) setState("ok"); return; }
       const { data: sess } = await supabase.auth.getSession();
       const uid = sess.session?.user?.id;
       if (!uid) { if (!cancelled) setState("denied"); return; }
