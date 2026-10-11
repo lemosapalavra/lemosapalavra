@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { ArrowLeft, Play } from "lucide-react";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
+import { normalizeVideo } from "@/lib/videoEmbed";
 import VideoSideActions from "@/components/VideoSideActions";
 import PageHeader from "@/components/PageHeader";
 import CoinBadge from "@/components/CoinBadge";
@@ -35,6 +36,7 @@ export default function Louvores() {
   const entries = useMemo(() => getListenEntries(config, tab), [config, tab]);
 
   if (playing) {
+    const media = normalizeVideo(playing.src || "", true);
     return (
       <div className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-in fade-in zoom-in duration-300">
         <button
@@ -47,7 +49,7 @@ export default function Louvores() {
         </button>
         <VideoSideActions videoId={`ouca:${playing.id}`} />
         {playing.src ? (
-          <ColonialVideoFrame variant={tab === "louvores" ? "silver" : "green"}><video src={playing.src} poster={playing.poster} className="w-full h-full bg-black object-contain" controls controlsList="nodownload noremoteplayback noplaybackrate" disablePictureInPicture onContextMenu={(e) => e.preventDefault()} autoPlay playsInline preload="auto" /></ColonialVideoFrame>
+          <ColonialVideoFrame variant={tab === "louvores" ? "silver" : "green"} aspect="9/16">{media.kind === "mp4" ? <video src={playing.src} poster={playing.poster} className="w-full h-full bg-black object-contain" controls controlsList="nodownload noremoteplayback noplaybackrate" disablePictureInPicture onContextMenu={(e) => e.preventDefault()} autoPlay playsInline preload="auto" /> : <iframe src={media.embedUrl} title={playing.title} className="w-full h-full bg-black" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />}</ColonialVideoFrame>
         ) : (
           <div className="max-w-md mx-auto text-center text-white p-6">
             <h2 className="font-display text-3xl font-bold mb-3">Vídeo em atualização</h2>
@@ -67,7 +69,7 @@ export default function Louvores() {
       onClick={() => { setPlaying(item); awardOnce(`ouca:${item.id}`, tab === "louvores" ? COINS.louvor : COINS.musica, `Você assistiu "${item.title}"`); }}
       className="flex flex-col items-center gap-2 hover:scale-105 transition-transform group"
     >
-      <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-primary/30 shadow-lg bg-black">
+      <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-2 border-primary/30 shadow-lg bg-black">
         {item.poster ? <img src={item.poster} alt={item.title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" /> : <Play className="absolute inset-0 m-auto h-10 w-10 text-primary-foreground" />}
         <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
       </div>
@@ -78,7 +80,7 @@ export default function Louvores() {
     </button>
   );
 
-  const mid = Math.ceil(entries.length / 2);
+
 
   return (
     <div className="min-h-screen py-4 px-4" style={{ background: "transparent" }}>
@@ -107,17 +109,14 @@ export default function Louvores() {
           ))}
         </div>
 
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-8 py-4">
-          {entries.length ? <>
-            <div className="flex flex-col items-center gap-5 sm:gap-6">
-              {entries.slice(0, mid).map(renderItem)}
-            </div>
-            <img loading="lazy" decoding="async" src={logoCentral} alt="Lemos a Palavra" className="w-32 sm:w-48 md:w-56 drop-shadow-xl" />
-            <div className="flex flex-col items-center gap-5 sm:gap-6">
-              {entries.slice(mid).map(renderItem)}
-            </div>
-          </> : <p className="col-span-3 py-16 text-center font-display text-lg font-bold text-muted-foreground">Nenhum conteúdo ativo nesta categoria.</p>}
+        <div className="flex justify-center py-4">
+          <img loading="lazy" decoding="async" src={logoCentral} alt="Lemos a Palavra" className="w-28 sm:w-40 drop-shadow-xl" />
         </div>
+        {entries.length ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center py-6">
+            {entries.map(renderItem)}
+          </div>
+        ) : <p className="py-16 text-center font-display text-lg font-bold text-muted-foreground">Nenhum conteúdo ativo nesta categoria.</p>}
 
         <div className="text-center mt-6 space-y-2 max-w-2xl mx-auto">
           <p className="font-display text-2xl font-bold text-primary">Convido você!</p>
