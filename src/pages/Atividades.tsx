@@ -532,6 +532,9 @@ export default function Atividades() {
         }}
       >
         <div className="absolute inset-0 orbit-anim" style={{ animation: `orbit-spin ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}>
+          {activities.length > 1 && <svg aria-hidden="true" className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" viewBox="0 0 100 100">
+            <polygon points={(activities.length === 5 ? [0, 2, 4, 1, 3] : Array.from({ length: activities.length }, (_, i) => i)).map((i) => { const angle = (i * 360 / activities.length - 90) * Math.PI / 180; return [50 + 40 * Math.cos(angle), 50 + 40 * Math.sin(angle)].join(","); }).join(" ")} fill="none" stroke="#d5a547" strokeWidth="0.55" opacity="0.75" vectorEffect="non-scaling-stroke" />
+          </svg>}
           {activities.map((a, i) => {
             const angle = (360 / activities.length) * i - 90;
             return (
@@ -540,7 +543,7 @@ export default function Atividades() {
                 <div className="orbit-anim" style={{ animation: `orbit-spin-reverse ${SPIN_DURATION} linear infinite`, transformOrigin: "50% 50%" }}>
                   <button type="button" onClick={() => setActiveGame(a.id)}
                     className="flex flex-col items-center gap-1 cursor-pointer hover:scale-110 transition-transform">
-                    <span className="block rounded-full border-2 border-primary/30 shadow-xl bg-white overflow-hidden w-[68px] h-[68px] sm:w-[72px] sm:h-[72px] lg:w-[120px] lg:h-[120px]">
+                    <span className="block rounded-full border-2 border-primary/30 shadow-xl bg-white overflow-hidden w-[64px] h-[64px] sm:w-[80px] sm:h-[80px]">
                       <img src={a.icon} alt={a.title} loading="lazy"
                         className="w-full h-full object-cover"
                         style={{ transform: `scale(${(a as any).zoom ?? 1})`, transformOrigin: "center" }} />
