@@ -17,6 +17,7 @@ import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { loadOrbit } from "@/data/orbitConfig";
 
 import iconDedicatoria from "@/assets/icon-dedicatoria.png";
+import maozinha from "@/assets/maozinha.png.asset.json";
 
 export default function Index() {
   return <IndexV1 />;
@@ -90,7 +91,7 @@ function IndexV1() {
          </div>}
       </header>
 
-      <div className="w-full flex items-start justify-start px-3 sm:px-5 pt-3 relative z-20 pointer-events-none"><div className="pointer-events-auto flex flex-col items-center gap-1 max-w-[145px]"><span className="text-2xl animate-bounce" aria-hidden="true">👇</span><InstallShortcut compact /><p className="text-[11px] sm:text-xs leading-tight text-center font-semibold text-amber-900 bg-white/90 rounded-lg px-2 py-1 shadow">Instale o atalho para abrir o site direto pelo celular.</p></div></div>
+      <div className="w-full flex items-start justify-start px-3 sm:px-5 pt-3 relative z-20 pointer-events-none"><div className="pointer-events-auto flex flex-col items-center gap-1 max-w-[145px]"><img src={maozinha.url} alt="" aria-hidden="true" className="h-12 w-12 object-contain animate-bounce drop-shadow-lg pointer-events-none" /><InstallShortcut compact /><p className="text-[11px] sm:text-xs leading-tight text-center font-semibold text-amber-900 bg-white/90 rounded-lg px-2 py-1 shadow">Instale o atalho para abrir o site direto pelo celular.</p></div></div>
       <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
 
       <main className="w-full flex-1 flex flex-col items-center pb-28 sm:pb-32 lg:pb-24">
