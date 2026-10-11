@@ -344,11 +344,11 @@ export default function Login() {
   };
 
   return (
-    <main className="flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#f6dfb4]">
+    <main className="relative flex min-h-[100svh] w-full items-center justify-center overflow-hidden bg-[#f6dfb4]">
       <img
         src="/login-jornada.png"
         alt="Lemos a Palavra — Jesus e crianças convidando para uma jornada bíblica"
-        className="block h-auto max-h-screen w-auto max-w-full object-contain"
+        className="absolute inset-0 h-full w-full object-cover object-center sm:static sm:h-auto sm:max-h-[100svh] sm:w-auto sm:max-w-full sm:object-contain"
       />
     </main>
   );
