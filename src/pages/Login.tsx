@@ -490,7 +490,7 @@ export default function Login() {
                             : "border-amber-200 hover:border-amber-300"
                         }`}
                       >
-                        <img src={av.src} alt={av.name} className="w-full aspect-square object-cover" loading="lazy" width="1024" height="1024" />
+                        <img src={av.src} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = av.fallback; }} alt={av.name} className="w-full aspect-square object-cover" loading="lazy" width="1024" height="1024" />
                         <div className="px-1.5 py-1 bg-white/90 border-t border-amber-100">
                           <span className="block text-[11px] font-display font-bold text-amber-900 truncate">{av.name}</span>
                         </div>
