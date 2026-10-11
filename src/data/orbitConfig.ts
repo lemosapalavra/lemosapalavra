@@ -30,9 +30,10 @@ export function loadOrbit(): OrbitItem[] {
     if (!raw) return defaultOrbit();
     const parsed = JSON.parse(raw) as Partial<OrbitItem>[];
     const def = defaultOrbit();
-    // NEVER trust stored icon URLs — only labels/sublabels/routes/hidden are editable.
+    // Preserve administrator-selected image URLs for the orbit icons.
     return def.map((d, i) => ({
       ...d,
+      icon: typeof parsed[i]?.icon === "string" && parsed[i]!.icon!.trim() ? parsed[i]!.icon! : d.icon,
       label: parsed[i]?.label ?? d.label,
       sublabel: parsed[i]?.sublabel ?? d.sublabel,
       route: parsed[i]?.route ?? d.route,
@@ -44,7 +45,7 @@ export function loadOrbit(): OrbitItem[] {
 }
 
 export function saveOrbit(items: OrbitItem[]) {
-  const editable = items.map((it) => ({ label: it.label, sublabel: it.sublabel, route: it.route, hidden: !!it.hidden }));
+  const editable = items.map((it) => ({ icon: it.icon, label: it.label, sublabel: it.sublabel, route: it.route, hidden: !!it.hidden }));
   localStorage.setItem(KEY, JSON.stringify(editable));
   window.dispatchEvent(new Event("lemos_orbit_change"));
 }
