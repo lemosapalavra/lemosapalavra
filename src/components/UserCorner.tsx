@@ -14,6 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
  */
 export default function UserCorner() {
   const { coins } = useCoins();
+  const isLoginPage = useLocation().pathname === "/login";
   const isTopCorner = ["/", "/jogos", "/atividades", "/album"].includes(useLocation().pathname);
   const [user, setUser] = useState<{ name?: string; avatar?: string } | null>(null);
   const [open, setOpen] = useState(false);
@@ -47,6 +48,8 @@ export default function UserCorner() {
   };
 
   if (!visible) return null;
+
+  if (isLoginPage) return null;
 
   if (!user?.name) return (
     <a href="/login" aria-label="Entrar ou criar conta" title="Entrar ou criar conta" className={`fixed right-2 z-[45] flex flex-col items-center gap-1 sm:right-4 ${isTopCorner ? "top-[76px] md:top-[82px]" : "bottom-3"}`}>
