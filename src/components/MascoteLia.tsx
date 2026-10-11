@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import lia1 from "@/assets/lia-1-fallback.png";
 import lia2 from "@/assets/lia-2-fallback.png";
-import InstallShortcut from "@/components/InstallShortcut";
 import { Button } from "@/components/ui/button";
 
 /**
@@ -117,7 +116,6 @@ export default function MascoteLia() {
           Oi, sou a LIA
         </span>
       </Button>
-      {isHome && <InstallShortcut compact />}
       </div>
     );
   }
@@ -147,7 +145,6 @@ export default function MascoteLia() {
           Oi, sou a LIA
         </span>
       </Button>
-      {isHome && <div className="pointer-events-auto"><InstallShortcut compact /></div>}
       </div>
 
       <style>{`
