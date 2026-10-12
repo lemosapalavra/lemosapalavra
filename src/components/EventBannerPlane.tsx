@@ -57,7 +57,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
 
   return (
     <>
-      <div className="pointer-events-none fixed inset-x-0 top-24 sm:top-28 z-10 h-[22rem] overflow-hidden">
+      <div className="pointer-events-none fixed inset-x-0 top-20 sm:top-24 z-[35] h-[22rem] overflow-hidden">
         {flying && (
           <div
             key={dir}
@@ -91,6 +91,9 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
               <img loading="lazy" decoding="async"
                 src={planeSrc}
                 onClick={handleClick}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleClick(); } }}
                 alt={dir === "rtl" ? "Aviãozinho voando da direita para a esquerda" : "Aviãozinho voando da esquerda para a direita"}
                 className={`pointer-events-auto cursor-pointer relative h-56 sm:h-64 md:h-72 w-auto drop-shadow-2xl select-none transition-all duration-700 ${
                   isAuthenticated ? "" : "grayscale opacity-60"
