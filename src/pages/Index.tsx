@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Settings, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import OrbitMenu from "@/components/OrbitMenu";
+
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 
 import HomeTopNav from "@/components/HomeTopNav";
@@ -104,26 +104,37 @@ function IndexV1() {
 
       <main className="relative z-10 w-full flex-1 flex flex-col items-center pb-24 sm:pb-28 lg:pb-24">
 
-        <div className="w-full flex flex-col items-center gap-1 sm:gap-2 px-4 pt-36 sm:pt-40 lg:pt-28 pb-3 text-center">
-          <p className="font-display font-extrabold text-base sm:text-2xl text-amber-950 rounded-full border border-amber-300/70 bg-amber-50/85 px-4 py-2 shadow-md">Bem-vindo ao Jardim da Palavra!</p>
-          {user && isAdmin && <Button variant="outline" size="icon" onClick={() => navigate("/config")} title="Painel completo de administração" aria-label="Abrir configurações do site"><Settings /></Button>}
+        {/* Áreas de toque transparentes sobre os ícones que já fazem parte da ilustração.
+            Não desenhar uma segunda logo nem os antigos ícones orbitais. */}
+        <div className="absolute inset-0 z-10 pointer-events-none">
+          {([
+            { label: "ÁLBUM", mobile: [31, 57], desktop: [34, 47] },
+            { label: "VEJA", mobile: [68, 57], desktop: [65, 37] },
+            { label: "FAÇA", mobile: [23, 70], desktop: [35, 72] },
+            { label: "OUÇA", mobile: [77, 70], desktop: [69, 61] },
+            { label: "APRENDA", mobile: [50, 79], desktop: [56, 79] },
+          ] as const).map(({ label, mobile, desktop }) => (
+            <button
+              key={label}
+              type="button"
+              title={label}
+              aria-label={`Abrir ${label}`}
+              onClick={() => user ? handleItemClick(label) : navigate("/login")}
+              className="absolute pointer-events-auto z-20 w-[13vw] h-[13vw] max-w-[100px] max-h-[100px] min-w-[44px] min-h-[44px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent cursor-pointer focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-400"
+              style={{
+                left: `var(--hotspot-x)`,
+                top: `var(--hotspot-y)`,
+                ["--hotspot-x" as string]: `${mobile[0]}%`,
+                ["--hotspot-y" as string]: `${mobile[1]}%`,
+                ["--hotspot-desktop-x" as string]: `${desktop[0]}%`,
+                ["--hotspot-desktop-y" as string]: `${desktop[1]}%`,
+              }}
+            />
+          ))}
         </div>
+        <style>{`@media (min-width: 768px) { button[style*="--hotspot-desktop-x"] { left: var(--hotspot-desktop-x) !important; top: var(--hotspot-desktop-y) !important; } }`}</style>
 
-        <EventBannerPlane isAuthenticated={!!user} />
-        <EventBannerKart isAuthenticated={!!user} />
-
-
-
-        <div className="flex flex-col items-center w-full py-3 sm:py-6">
-          <OrbitMenu
-            isAuthenticated={!!user}
-            userName={user?.name}
-            userAvatar={user?.avatar}
-            onLoginClick={() => navigate("/login")}
-            onLogout={handleLogout}
-            onItemClick={handleItemClick}
-          />
-
+        <div className="w-full flex flex-col items-center">
            {dedicatoriaVisible && <div className="fixed bottom-3 right-3 sm:right-5 z-[45] flex flex-col items-center gap-2">
              <Button variant="ghost" size="icon"
               onClick={() => setDedicatoriaOpen(true)}
