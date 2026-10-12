@@ -24,6 +24,7 @@ const Devocionais = lazy(() => import("./pages/Devocionais.tsx"));
 const Jogos = lazy(() => import("./pages/Jogos.tsx"));
 const PedidosOracao = lazy(() => import("./pages/PedidosOracao.tsx"));
 const Atividades = lazy(() => import("./pages/Atividades.tsx"));
+const BrincandoBiblia = lazy(() => import("./components/BrincandoBiblia.tsx"));
 const Album = lazy(() => import("./pages/Album.tsx"));
 const LemosPlay = lazy(() => import("./pages/LemosPlay.tsx"));
 const Configuracao = lazy(() => import("./pages/Configuracao.tsx"));
@@ -256,6 +257,7 @@ const App = () => (
                <Route path="/jogos" element={<Jogos />} />
               <Route path="/pedidos-oracao" element={<PedidosOracao />} />
               <Route path="/atividades" element={<Atividades />} />
+              <Route path="/atividades/brincando-biblia" element={<BrincandoBiblia onBack={() => { window.location.href = "/atividades"; }} />} />
               <Route path="/album" element={<Album />} />
               <Route path="/config" element={<AdminOnly><Configuracao /></AdminOnly>} />
               <Route path="/estatisticas" element={<AdminOnly><Estatisticas /></AdminOnly>} />
