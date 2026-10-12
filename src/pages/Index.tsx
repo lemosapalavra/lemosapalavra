@@ -102,38 +102,35 @@ function IndexV1() {
       </picture>
       <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
 
+      {/* Os cinco botões são áreas clicáveis sobre os ícones impressos na imagem.
+          A camada cobre a mesma área da imagem de fundo, incluindo o cabeçalho. */}
+      <div className="absolute inset-0 z-20 pointer-events-none">
+        {([
+          { label: "VEJA", mobile: [49, 51], desktop: [50, 51] },
+          { label: "OUÇA", mobile: [20, 65], desktop: [24, 65] },
+          { label: "APRENDA", mobile: [79, 65], desktop: [76, 65] },
+          { label: "FAÇA", mobile: [28, 79], desktop: [32, 79] },
+          { label: "ÁLBUM", mobile: [70, 79], desktop: [68, 79] },
+        ] as const).map(({ label, mobile, desktop }) => (
+          <button
+            key={label}
+            type="button"
+            title={`Abrir ${label}`}
+            aria-label={`Abrir ${label}`}
+            onClick={() => handleItemClick(label)}
+            className="home-image-hotspot absolute pointer-events-auto z-20 w-[18%] max-w-[110px] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent cursor-pointer touch-manipulation focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-400"
+            style={{
+              left: `${mobile[0]}%`,
+              top: `${mobile[1]}%`,
+              ["--desktop-x" as string]: `${desktop[0]}%`,
+              ["--desktop-y" as string]: `${desktop[1]}%`,
+            }}
+          />
+        ))}
+      </div>
+      <style>{`@media (min-width: 768px) { .home-image-hotspot { left: var(--desktop-x) !important; top: var(--desktop-y) !important; width: min(8vw, 110px); } }`}</style>
+
       <main className="relative z-10 w-full flex-1 flex flex-col items-center pb-24 sm:pb-28 lg:pb-24">
-
-        {/* Áreas de toque transparentes sobre os ícones que já fazem parte da ilustração.
-            Não desenhar uma segunda logo nem os antigos ícones orbitais. */}
-        <div className="absolute inset-0 z-10 pointer-events-none">
-          {([
-            { label: "ÁLBUM", mobile: [31, 57], desktop: [34, 47] },
-            { label: "VEJA", mobile: [68, 57], desktop: [65, 37] },
-            { label: "FAÇA", mobile: [23, 70], desktop: [35, 72] },
-            { label: "OUÇA", mobile: [77, 70], desktop: [69, 61] },
-            { label: "APRENDA", mobile: [50, 79], desktop: [56, 79] },
-          ] as const).map(({ label, mobile, desktop }) => (
-            <button
-              key={label}
-              type="button"
-              title={label}
-              aria-label={`Abrir ${label}`}
-              onClick={() => user ? handleItemClick(label) : navigate("/login")}
-              className="absolute pointer-events-auto z-20 w-[13vw] h-[13vw] max-w-[100px] max-h-[100px] min-w-[44px] min-h-[44px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent cursor-pointer focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-400"
-              style={{
-                left: `var(--hotspot-x)`,
-                top: `var(--hotspot-y)`,
-                ["--hotspot-x" as string]: `${mobile[0]}%`,
-                ["--hotspot-y" as string]: `${mobile[1]}%`,
-                ["--hotspot-desktop-x" as string]: `${desktop[0]}%`,
-                ["--hotspot-desktop-y" as string]: `${desktop[1]}%`,
-              }}
-            />
-          ))}
-        </div>
-        <style>{`@media (min-width: 768px) { button[style*="--hotspot-desktop-x"] { left: var(--hotspot-desktop-x) !important; top: var(--hotspot-desktop-y) !important; } }`}</style>
-
         <div className="w-full flex flex-col items-center">
            {dedicatoriaVisible && <div className="fixed bottom-3 right-3 sm:right-5 z-[45] flex flex-col items-center gap-2">
              <Button variant="ghost" size="icon"
