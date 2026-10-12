@@ -16,11 +16,11 @@ import { ensureInitialCoins, addCoins } from "@/hooks/useCoins";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { loadOrbit } from "@/data/orbitConfig";
 
-import vejaFlutuante from "@/assets/home/veja.png.asset.json";
-import oucaFlutuante from "@/assets/home/ouca.png.asset.json";
-import aprendaFlutuante from "@/assets/home/aprenda.png.asset.json";
-import facaFlutuante from "@/assets/home/faca.png.asset.json";
-import albumFlutuante from "@/assets/home/album.png.asset.json";
+const vejaFlutuante = "/veja-flutuante.png";
+const oucaFlutuante = "/ouca-flutuante.png";
+const aprendaFlutuante = "/aprenda-flutuante.png";
+const facaFlutuante = "/faca-flutuante.png";
+const albumFlutuante = "/album-flutuante.png";
 
 export default function Index() {
   return <IndexV1 />;
@@ -150,7 +150,7 @@ function IndexV1() {
               ["--float-delay" as string]: `${index * -0.65}s`,
             }}
           >
-            <img src={image.url} alt="" draggable={false} className="home-floating-icon block w-full h-full object-contain drop-shadow-lg" />
+            <img src={image} alt="" draggable={false} className="home-floating-icon block w-full h-full object-contain drop-shadow-lg" />
           </button>
         ))}
       </div>
