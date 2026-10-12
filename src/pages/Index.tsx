@@ -111,11 +111,11 @@ function IndexV1() {
           A camada cobre a mesma área da imagem de fundo, incluindo o cabeçalho. */}
       <div className="absolute inset-0 z-20 pointer-events-none">
         {([
-          { label: "VEJA", image: vejaFlutuante, mobile: [49, 51], desktop: [50, 51] },
-          { label: "OUÇA", image: oucaFlutuante, mobile: [20, 65], desktop: [24, 65] },
-          { label: "APRENDA", image: aprendaFlutuante, mobile: [79, 65], desktop: [76, 65] },
-          { label: "FAÇA", image: facaFlutuante, mobile: [28, 79], desktop: [32, 79] },
-          { label: "ÁLBUM", image: albumFlutuante, mobile: [70, 79], desktop: [68, 79] },
+          { label: "VEJA", image: vejaFlutuante, mobile: [52, 46], desktop: [50, 51] },
+          { label: "OUÇA", image: oucaFlutuante, mobile: [22, 61], desktop: [24, 65] },
+          { label: "APRENDA", image: aprendaFlutuante, mobile: [79, 61], desktop: [76, 65] },
+          { label: "FAÇA", image: facaFlutuante, mobile: [30, 77], desktop: [32, 79] },
+          { label: "ÁLBUM", image: albumFlutuante, mobile: [72, 77], desktop: [68, 79] },
         ] as const).map(({ label, image, mobile, desktop }, index) => (
           <button
             key={label}
