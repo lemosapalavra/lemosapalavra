@@ -16,6 +16,11 @@ import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { loadOrbit } from "@/data/orbitConfig";
 
 import iconDedicatoria from "@/assets/icon-dedicatoria.png";
+import vejaFlutuante from "@/assets/home/veja-flutuante.png";
+import oucaFlutuante from "@/assets/home/ouca-flutuante.png";
+import aprendaFlutuante from "@/assets/home/aprenda-flutuante.png";
+import facaFlutuante from "@/assets/home/faca-flutuante.png";
+import albumFlutuante from "@/assets/home/album-flutuante.png";
 
 export default function Index() {
   return <IndexV1 />;
@@ -106,12 +111,12 @@ function IndexV1() {
           A camada cobre a mesma área da imagem de fundo, incluindo o cabeçalho. */}
       <div className="absolute inset-0 z-20 pointer-events-none">
         {([
-          { label: "VEJA", mobile: [49, 51], desktop: [50, 51] },
-          { label: "OUÇA", mobile: [20, 65], desktop: [24, 65] },
-          { label: "APRENDA", mobile: [79, 65], desktop: [76, 65] },
-          { label: "FAÇA", mobile: [28, 79], desktop: [32, 79] },
-          { label: "ÁLBUM", mobile: [70, 79], desktop: [68, 79] },
-        ] as const).map(({ label, mobile, desktop }) => (
+          { label: "VEJA", image: vejaFlutuante, mobile: [49, 51], desktop: [50, 51] },
+          { label: "OUÇA", image: oucaFlutuante, mobile: [20, 65], desktop: [24, 65] },
+          { label: "APRENDA", image: aprendaFlutuante, mobile: [79, 65], desktop: [76, 65] },
+          { label: "FAÇA", image: facaFlutuante, mobile: [28, 79], desktop: [32, 79] },
+          { label: "ÁLBUM", image: albumFlutuante, mobile: [70, 79], desktop: [68, 79] },
+        ] as const).map(({ label, image, mobile, desktop }, index) => (
           <button
             key={label}
             type="button"
@@ -124,11 +129,19 @@ function IndexV1() {
               top: `${mobile[1]}%`,
               ["--desktop-x" as string]: `${desktop[0]}%`,
               ["--desktop-y" as string]: `${desktop[1]}%`,
+              ["--float-delay" as string]: `${index * -0.65}s`,
             }}
-          />
+          >
+            <img src={image} alt="" draggable={false} className="home-floating-icon block w-full h-full object-contain drop-shadow-lg" />
+          </button>
         ))}
       </div>
-      <style>{`@media (min-width: 768px) { .home-image-hotspot { left: var(--desktop-x) !important; top: var(--desktop-y) !important; width: min(8vw, 110px); } }`}</style>
+      <style>{`
+        @keyframes homeIconFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+        .home-floating-icon { animation: homeIconFloat 3.8s ease-in-out infinite; animation-delay: var(--float-delay, 0s); }
+        @media (prefers-reduced-motion: reduce) { .home-floating-icon { animation: none; } }
+        @media (min-width: 768px) { .home-image-hotspot { left: var(--desktop-x) !important; top: var(--desktop-y) !important; width: min(8vw, 110px); } }
+      `}</style>
 
       <main className="relative z-10 w-full flex-1 flex flex-col items-center pb-24 sm:pb-28 lg:pb-24">
         <div className="w-full flex flex-col items-center">
