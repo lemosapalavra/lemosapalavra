@@ -73,11 +73,9 @@ function IndexV1() {
 
   return (
     <div
-      className="min-h-[100dvh] flex flex-col items-center overflow-hidden relative"
+      className="lemos-home-viewport h-[100dvh] min-h-0 flex flex-col items-center overflow-hidden relative"
       style={{ backgroundColor: "#c9effd" }}
     >
-      {/* espaçador do cabeçalho fixo */}
-      <div aria-hidden className="h-[64px] md:h-[70px] w-full" />
       {/* Home Header */}
       <header
         className="w-full fixed top-0 left-0 right-0 z-30 bg-white/85 border-b border-amber-200/60 backdrop-blur-sm"
@@ -157,13 +155,15 @@ function IndexV1() {
         ))}
       </div>
       <style>{`
+        body:has(.lemos-home-viewport) { padding-bottom: 0 !important; overflow-y: hidden; }
+        html:has(.lemos-home-viewport) { overflow-y: hidden; }
         @keyframes homeIconFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
         .home-floating-icon { animation: homeIconFloat 3.8s ease-in-out infinite; animation-delay: var(--float-delay, 0s); }
         @media (prefers-reduced-motion: reduce) { .home-floating-icon { animation: none; } }
         @media (min-width: 768px) { .home-image-hotspot { left: var(--desktop-x) !important; top: var(--desktop-y) !important; width: min(11vw, 160px); } }
       `}</style>
 
-      <main className="relative z-10 w-full flex-1 flex flex-col items-center pb-24 sm:pb-28 lg:pb-24">
+      <main className="relative z-10 w-full min-h-0 flex-1 flex flex-col items-center">
         <div className="w-full flex flex-col items-center">
            {dedicatoriaVisible && <div className="fixed bottom-3 right-3 sm:right-5 z-[45] flex flex-col items-center gap-2">
              <Button variant="ghost" size="icon"
