@@ -15,7 +15,6 @@ import { ensureInitialCoins, addCoins } from "@/hooks/useCoins";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { loadOrbit } from "@/data/orbitConfig";
 
-import iconDedicatoria from "@/assets/icon-dedicatoria.png";
 import vejaFlutuante from "@/assets/home/veja-flutuante.png";
 import oucaFlutuante from "@/assets/home/ouca-flutuante.png";
 import aprendaFlutuante from "@/assets/home/aprenda-flutuante.png";
@@ -148,13 +147,13 @@ function IndexV1() {
            {dedicatoriaVisible && <div className="fixed bottom-3 right-3 sm:right-5 z-[45] flex flex-col items-center gap-2">
              <Button variant="ghost" size="icon"
               onClick={() => setDedicatoriaOpen(true)}
-                className="w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] p-0 overflow-hidden rounded-full border-2 border-border bg-background shadow-lg icon-glow"
+                className="w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] p-0 overflow-hidden rounded-full border-[3px] border-amber-400 ring-2 ring-white bg-white shadow-[0_4px_18px_rgba(0,0,0,0.55)] icon-glow hover:scale-105 transition-transform"
               title="Dedicatória"
               aria-label="Abrir dedicatória"
             >
-              <img loading="lazy" decoding="async" src={iconDedicatoria} alt="" className="h-full w-full object-contain" />
+              <img loading="lazy" decoding="async" src="/icone-dedicatoria.png" alt="" className="h-full w-full object-contain" />
              </Button>
-             <span className="font-display font-extrabold text-xs text-foreground">DEDICATÓRIA</span>
+             <span className="font-display font-extrabold text-[11px] sm:text-xs text-amber-950 bg-white border-2 border-amber-400 rounded-full px-2 py-0.5 shadow-[0_2px_8px_rgba(0,0,0,0.4)] whitespace-nowrap">DEDICATÓRIA</span>
           </div>}
 
         </div>
