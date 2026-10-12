@@ -111,11 +111,11 @@ function IndexV1() {
           A camada cobre a mesma área da imagem de fundo, incluindo o cabeçalho. */}
       <div className="absolute inset-0 z-20 pointer-events-none">
         {([
-          { label: "VEJA", image: vejaFlutuante, mobile: [52, 46], desktop: [50, 51] },
-          { label: "OUÇA", image: oucaFlutuante, mobile: [22, 61], desktop: [24, 65] },
-          { label: "APRENDA", image: aprendaFlutuante, mobile: [79, 61], desktop: [76, 65] },
-          { label: "FAÇA", image: facaFlutuante, mobile: [30, 77], desktop: [32, 79] },
-          { label: "ÁLBUM", image: albumFlutuante, mobile: [72, 77], desktop: [68, 79] },
+          { label: "VEJA", image: vejaFlutuante, mobile: [52, 43], desktop: [50, 48] },
+          { label: "OUÇA", image: oucaFlutuante, mobile: [22, 57], desktop: [24, 61] },
+          { label: "APRENDA", image: aprendaFlutuante, mobile: [79, 57], desktop: [76, 61] },
+          { label: "FAÇA", image: facaFlutuante, mobile: [30, 71], desktop: [32, 74] },
+          { label: "ÁLBUM", image: albumFlutuante, mobile: [72, 71], desktop: [68, 74] },
         ] as const).map(({ label, image, mobile, desktop }, index) => (
           <button
             key={label}
@@ -123,7 +123,7 @@ function IndexV1() {
             title={`Abrir ${label}`}
             aria-label={`Abrir ${label}`}
             onClick={() => handleItemClick(label)}
-            className="home-image-hotspot absolute pointer-events-auto z-20 w-[27%] max-w-[190px] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent cursor-pointer touch-manipulation focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-400"
+            className="home-image-hotspot absolute pointer-events-auto z-20 w-[23%] max-w-[160px] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent cursor-pointer touch-manipulation focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-400"
             style={{
               left: `${mobile[0]}%`,
               top: `${mobile[1]}%`,
@@ -140,7 +140,7 @@ function IndexV1() {
         @keyframes homeIconFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
         .home-floating-icon { animation: homeIconFloat 3.8s ease-in-out infinite; animation-delay: var(--float-delay, 0s); }
         @media (prefers-reduced-motion: reduce) { .home-floating-icon { animation: none; } }
-        @media (min-width: 768px) { .home-image-hotspot { left: var(--desktop-x) !important; top: var(--desktop-y) !important; width: min(13vw, 190px); } }
+        @media (min-width: 768px) { .home-image-hotspot { left: var(--desktop-x) !important; top: var(--desktop-y) !important; width: min(11vw, 160px); } }
       `}</style>
 
       <main className="relative z-10 w-full flex-1 flex flex-col items-center pb-24 sm:pb-28 lg:pb-24">
