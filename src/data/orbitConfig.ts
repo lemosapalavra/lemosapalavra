@@ -1,6 +1,6 @@
 import iconFaca from "@/assets/icon-atividades.png";
 import iconAssistir from "@/assets/home/veja.png.asset.json";
-import iconAtividades from "@/assets/home/aprenda.png.asset.json";
+import iconAtividades from "@/assets/home/faca.png.asset.json";
 import iconAlbum from "@/assets/home/album.png.asset.json";
 import iconOuca from "@/assets/home/ouca.png.asset.json";
 
