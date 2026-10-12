@@ -68,7 +68,7 @@ function IndexV1() {
   return (
     <div
       className="min-h-[100dvh] flex flex-col items-center overflow-hidden relative"
-      style={{ background: "radial-gradient(ellipse at 55% 26%, #fff3b7 0%, transparent 37%), linear-gradient(180deg, #72cafa 0%, #c9effd 32%, #e5f8ce 59%, #76bf6b 100%)" }}
+      style={{ backgroundColor: "#c9effd" }}
     >
       {/* espaçador do cabeçalho fixo */}
       <div aria-hidden className="h-[64px] md:h-[70px] w-full" />
@@ -89,19 +89,17 @@ function IndexV1() {
          </div>}
       </header>
 
-      {/* Paisagem decorativa responsiva: permanece atrás dos botões e da LIA. */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute left-[9%] top-[18%] h-24 w-24 rounded-full bg-white/60 blur-2xl sm:h-48 sm:w-48" />
-        <div className="absolute right-[5%] top-[25%] h-28 w-32 rounded-full bg-white/65 blur-2xl sm:h-52 sm:w-60" />
-        <div className="absolute -left-[35%] bottom-[3%] h-[40%] w-[110%] rounded-[50%] bg-gradient-to-b from-lime-300/70 to-green-700/80 sm:-left-[20%] sm:w-[85%]" />
-        <div className="absolute -right-[45%] bottom-[-4%] h-[42%] w-[125%] rounded-[50%] bg-gradient-to-b from-emerald-300/70 to-emerald-800/80 sm:-right-[20%] sm:w-[90%]" />
-        <div className="absolute left-1/2 bottom-[-20%] h-[53%] w-[55%] -translate-x-1/2 rounded-[50%] bg-gradient-to-b from-amber-100/90 via-amber-200/70 to-transparent blur-md" />
-        <span className="absolute bottom-[13%] left-[9%] text-3xl drop-shadow-lg sm:text-5xl">🌼</span>
-        <span className="absolute bottom-[23%] right-[12%] text-3xl drop-shadow-lg sm:text-5xl">🌻</span>
-        <span className="absolute bottom-[5%] left-[34%] text-2xl drop-shadow-lg sm:text-4xl">🌷</span>
-        <span className="absolute bottom-[35%] left-[4%] text-2xl opacity-80 sm:text-4xl">🦋</span>
-        <span className="absolute bottom-[37%] right-[7%] text-2xl opacity-80 sm:text-4xl">🌿</span>
-      </div>
+      {/* Fundos enviados ao GitHub: vertical para celular e horizontal para desktop. */}
+      <picture aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 block overflow-hidden">
+        <source media="(min-width: 768px)" srcSet="/Pagina%20inicial%20Computador.png" />
+        <img
+          src="/Pagina%20Inicial%20celular.png"
+          alt=""
+          className="h-full w-full object-cover object-center"
+          loading="eager"
+          decoding="async"
+        />
+      </picture>
       <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
 
       <main className="relative z-10 w-full flex-1 flex flex-col items-center pb-24 sm:pb-28 lg:pb-24">
