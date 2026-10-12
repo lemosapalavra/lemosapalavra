@@ -1,8 +1,8 @@
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import lia1 from "@/assets/lia-1-fallback.png";
-import lia2 from "@/assets/lia-2-fallback.png";
+const lia1 = "/lia-mascote.png";
+const lia2 = "/lia-mascote.png";
 import InstallShortcut from "@/components/InstallShortcut";
 import { Button } from "@/components/ui/button";
 
@@ -110,7 +110,7 @@ export default function MascoteLia() {
         className="h-auto flex flex-col items-center gap-1 transition hover:scale-110 active:scale-95"
       >
         <span className="w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] rounded-full bg-white shadow-lg border-2 border-amber-300 overflow-hidden block">
-          <img src={avatar} alt="LIA" className="w-full h-full object-cover object-top" loading="lazy" />
+          <img src={avatar} alt="LIA" className="w-full h-full object-contain object-center" loading="lazy" />
         </span>
         <span className="font-display font-extrabold text-[11px] sm:text-xs text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap">
           Oi, sou a LIA
