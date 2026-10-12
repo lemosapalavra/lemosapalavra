@@ -155,8 +155,7 @@ export default function InstallShortcut({ compact = false }: { compact?: boolean
           className={`relative group rounded-full overflow-visible border-2 border-border bg-background shadow-lg hover:scale-105 hover:brightness-125 hover:drop-shadow-[0_0_16px_hsl(var(--primary))] active:brightness-150 transition-all disabled:opacity-60 ${compact ? "h-16 w-16 sm:h-20 sm:w-20 icon-glow" : "h-32 w-32 sm:h-40 sm:w-40"}`}
         >
           <img loading="lazy" decoding="async"
-            src="/icone%20baixar%20atalho.png"
-            onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = "/favicon.png"; }}
+            src="/favicon.png"
             alt="Lemos a Palavra"
             className="h-full w-full rounded-full object-cover"
           />

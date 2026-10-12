@@ -3,24 +3,20 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Settings, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
+import OrbitMenu from "@/components/OrbitMenu";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
+import IndexAdminPanel from "@/components/IndexAdminPanel";
 
 import HomeTopNav from "@/components/HomeTopNav";
 import EventBannerKart from "@/components/EventBannerKart";
 import EventBannerPlane from "@/components/EventBannerPlane";
-import IndexAdminPanel from "@/components/IndexAdminPanel";
 
 
 import { ensureInitialCoins, addCoins } from "@/hooks/useCoins";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { loadOrbit } from "@/data/orbitConfig";
 
-import vejaFlutuante from "@/assets/home/veja-flutuante.png";
-import oucaFlutuante from "@/assets/home/ouca-flutuante.png";
-import aprendaFlutuante from "@/assets/home/aprenda-flutuante.png";
-import facaFlutuante from "@/assets/home/faca-flutuante.png";
-import albumFlutuante from "@/assets/home/album-flutuante.png";
+import iconDedicatoria from "@/assets/icon-dedicatoria.png";
 
 export default function Index() {
   return <IndexV1 />;
@@ -31,8 +27,8 @@ function IndexV1() {
   const isAdmin = useIsAdmin();
   const [user, setUser] = useState<{ name: string; email: string; avatar?: string } | null>(null);
   const [dedicatoriaOpen, setDedicatoriaOpen] = useState(false);
+  const [adminOpen, setAdminOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [adminPanelOpen, setAdminPanelOpen] = useState(false);
   const dedicatoriaVisible = useIconVisible("dedicatoria");
 
   useEffect(() => {
@@ -73,8 +69,8 @@ function IndexV1() {
 
   return (
     <div
-      className="min-h-[100dvh] flex flex-col items-center overflow-hidden relative"
-      style={{ backgroundColor: "#c9effd" }}
+      className="min-h-screen flex flex-col items-center overflow-hidden relative"
+      style={{ background: "transparent" }}
     >
       {/* espaçador do cabeçalho fixo */}
       <div aria-hidden className="h-[64px] md:h-[70px] w-full" />
@@ -95,86 +91,43 @@ function IndexV1() {
          </div>}
       </header>
 
-      {/* 14-Bis animado, acima do cenário e abaixo dos controles do usuário. */}
-      <EventBannerPlane isAuthenticated={!!user?.name} />
-
-      {/* Engrenagem visível apenas para administradores verificados. */}
-      {isAdmin && (
-        <Button
-          type="button"
-          variant="outline"
-          size="icon"
-          onClick={() => setAdminPanelOpen(true)}
-          title="Configurações da página inicial"
-          aria-label="Abrir painel de administração da página inicial"
-          className="fixed top-[75px] left-3 z-[80] h-10 w-10 rounded-full border-2 border-amber-400 bg-white text-amber-900 shadow-[0_0_12px_rgba(245,158,11,0.65)] hover:bg-amber-50"
-        >
-          <Settings className="h-5 w-5" />
-        </Button>
-      )}
-      {isAdmin && <IndexAdminPanel open={adminPanelOpen} onClose={() => setAdminPanelOpen(false)} />}
-
-      {/* Fundos enviados ao GitHub: vertical para celular e horizontal para desktop. */}
-      <picture aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 block overflow-hidden">
-        <source media="(min-width: 768px)" srcSet="/Pagina%20inicial%20Computador.png" />
-        <img
-          src="/Pagina%20Inicial%20celular.png"
-          alt=""
-          className="h-full w-full object-cover object-center"
-          loading="eager"
-          decoding="async"
-        />
-      </picture>
       <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
 
-      {/* Os cinco botões são áreas clicáveis sobre os ícones impressos na imagem.
-          A camada cobre a mesma área da imagem de fundo, incluindo o cabeçalho. */}
-      <div className="absolute inset-0 z-20 pointer-events-none">
-        {([
-          { label: "VEJA", image: vejaFlutuante, mobile: [52, 43], desktop: [50, 48] },
-          { label: "OUÇA", image: oucaFlutuante, mobile: [22, 57], desktop: [24, 61] },
-          { label: "APRENDA", image: aprendaFlutuante, mobile: [79, 57], desktop: [76, 61] },
-          { label: "FAÇA", image: facaFlutuante, mobile: [30, 71], desktop: [32, 74] },
-          { label: "ÁLBUM", image: albumFlutuante, mobile: [72, 71], desktop: [68, 74] },
-        ] as const).map(({ label, image, mobile, desktop }, index) => (
-          <button
-            key={label}
-            type="button"
-            title={`Abrir ${label}`}
-            aria-label={`Abrir ${label}`}
-            onClick={() => handleItemClick(label)}
-            className="home-image-hotspot absolute pointer-events-auto z-20 w-[23%] max-w-[160px] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent cursor-pointer touch-manipulation focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-400"
-            style={{
-              left: `${mobile[0]}%`,
-              top: `${mobile[1]}%`,
-              ["--desktop-x" as string]: `${desktop[0]}%`,
-              ["--desktop-y" as string]: `${desktop[1]}%`,
-              ["--float-delay" as string]: `${index * -0.65}s`,
-            }}
-          >
-            <img src={image} alt="" draggable={false} className="home-floating-icon block w-full h-full object-contain drop-shadow-lg" />
-          </button>
-        ))}
-      </div>
-      <style>{`
-        @keyframes homeIconFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
-        .home-floating-icon { animation: homeIconFloat 3.8s ease-in-out infinite; animation-delay: var(--float-delay, 0s); }
-        @media (prefers-reduced-motion: reduce) { .home-floating-icon { animation: none; } }
-        @media (min-width: 768px) { .home-image-hotspot { left: var(--desktop-x) !important; top: var(--desktop-y) !important; width: min(11vw, 160px); } }
-      `}</style>
+      <main className="w-full flex-1 flex flex-col items-center pb-28 sm:pb-32 lg:pb-24">
 
-      <main className="relative z-10 w-full flex-1 flex flex-col items-center pb-24 sm:pb-28 lg:pb-24">
-        <div className="w-full flex flex-col items-center">
-           {dedicatoriaVisible && <div className="fixed bottom-3 right-3 sm:right-5 z-[45] flex flex-col items-center gap-2">
+        <div className="w-full flex flex-col items-center gap-1 sm:gap-2 px-4 pt-2 sm:pt-4 pb-2 text-center">
+          <p className="font-display font-extrabold text-lg sm:text-2xl text-foreground">Bem vindo !</p>
+          {user && isAdmin && <div className="flex gap-2">
+            <Button variant="outline" size="icon" onClick={() => setAdminOpen(true)} title="Configurar página inicial" aria-label="Configurar página inicial"><Settings /></Button>
+            <Button variant="outline" size="icon" onClick={() => navigate("/config")} title="Configurações" aria-label="Configurações"><Settings /></Button>
+          </div>}
+        </div>
+
+        <EventBannerPlane isAuthenticated={!!user} />
+        <EventBannerKart isAuthenticated={!!user} />
+
+
+
+        <div className="flex flex-col items-center w-full py-2">
+          <OrbitMenu
+            isAuthenticated={!!user}
+            userName={user?.name}
+            userAvatar={user?.avatar}
+            onLoginClick={() => navigate("/login")}
+            onLogout={handleLogout}
+            onItemClick={handleItemClick}
+          />
+
+           {dedicatoriaVisible && <div className="fixed bottom-3 left-1/2 -translate-x-1/2 z-[45] flex flex-col items-center gap-1">
              <Button variant="ghost" size="icon"
               onClick={() => setDedicatoriaOpen(true)}
-                className="w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] p-0 overflow-hidden rounded-full border-[3px] border-amber-400 ring-2 ring-white bg-white shadow-[0_4px_18px_rgba(0,0,0,0.55)] icon-glow hover:scale-105 transition-transform"
+                className="w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] overflow-hidden rounded-full border-2 border-border bg-background shadow-lg icon-glow"
               title="Dedicatória"
               aria-label="Abrir dedicatória"
             >
-              <img loading="lazy" decoding="async" src="/icone-dedicatoria.png" alt="" className="h-full w-full object-contain" />
+              <img loading="lazy" decoding="async" src={iconDedicatoria} alt="" className="h-full w-full object-contain" />
              </Button>
-             <span className="font-display font-extrabold text-[11px] sm:text-xs text-amber-950 bg-white border-2 border-amber-400 rounded-full px-2 py-0.5 shadow-[0_2px_8px_rgba(0,0,0,0.4)] whitespace-nowrap">DEDICATÓRIA</span>
+             <span className="font-display font-extrabold text-xs text-foreground">DEDICATÓRIA</span>
           </div>}
 
         </div>
@@ -182,6 +135,7 @@ function IndexV1() {
 
 
       <DedicatoriaModal open={dedicatoriaOpen} onOpenChange={setDedicatoriaOpen} />
+      <IndexAdminPanel open={adminOpen} onClose={() => setAdminOpen(false)} />
 
     </div>
   );

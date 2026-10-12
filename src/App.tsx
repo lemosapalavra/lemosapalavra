@@ -24,7 +24,6 @@ const Devocionais = lazy(() => import("./pages/Devocionais.tsx"));
 const Jogos = lazy(() => import("./pages/Jogos.tsx"));
 const PedidosOracao = lazy(() => import("./pages/PedidosOracao.tsx"));
 const Atividades = lazy(() => import("./pages/Atividades.tsx"));
-const BrincandoBiblia = lazy(() => import("./components/BrincandoBiblia.tsx"));
 const Album = lazy(() => import("./pages/Album.tsx"));
 const LemosPlay = lazy(() => import("./pages/LemosPlay.tsx"));
 const Configuracao = lazy(() => import("./pages/Configuracao.tsx"));
@@ -188,6 +187,8 @@ const AdminOnly = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     let cancelled = false;
     const check = async () => {
+      const owner = (() => { try { return localStorage.getItem("lemos_owner_unlocked") === "1"; } catch { return false; } })();
+      if (owner) { if (!cancelled) setState("ok"); return; }
       const { data: sess } = await supabase.auth.getSession();
       const uid = sess.session?.user?.id;
       if (!uid) { if (!cancelled) setState("denied"); return; }
@@ -206,7 +207,7 @@ const AdminOnly = ({ children }: { children: React.ReactNode }) => {
 /** Rodapé global — escondido no Álbum para não conflitar com as figurinhas. */
 const GlobalFooter = () => {
   const location = useLocation();
-  const hidden = location.pathname.startsWith("/album") || location.pathname === "/" || location.pathname === "/familia" || location.pathname === "/login";
+  const hidden = location.pathname.startsWith("/album") || location.pathname === "/" || location.pathname === "/familia";
   useEffect(() => {
     document.body.classList.toggle("no-global-footer", hidden);
     return () => document.body.classList.remove("no-global-footer");
@@ -257,7 +258,6 @@ const App = () => (
                <Route path="/jogos" element={<Jogos />} />
               <Route path="/pedidos-oracao" element={<PedidosOracao />} />
               <Route path="/atividades" element={<Atividades />} />
-              <Route path="/atividades/brincando-biblia" element={<BrincandoBiblia onBack={() => { window.location.href = "/atividades"; }} />} />
               <Route path="/album" element={<Album />} />
               <Route path="/config" element={<AdminOnly><Configuracao /></AdminOnly>} />
               <Route path="/estatisticas" element={<AdminOnly><Estatisticas /></AdminOnly>} />

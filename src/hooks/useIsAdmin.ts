@@ -19,13 +19,13 @@ function ownerUnlockedLocal(): boolean {
 async function fetchIsAdmin(): Promise<boolean> {
   const { data: sess } = await supabase.auth.getSession();
   const uid = sess.session?.user?.id;
-  if (!uid) return false;
+  if (!uid) return ownerUnlockedLocal();
   const { data, error } = await supabase.rpc("has_role", {
     _user_id: uid,
     _role: "admin",
   });
-  if (error) return false;
-  return data === true;
+  if (error) return ownerUnlockedLocal();
+  return data === true || ownerUnlockedLocal();
 }
 
 export function canBeAdmin(): boolean {
@@ -49,7 +49,7 @@ export function setAdminMode(_v: boolean) {
 }
 
 export function useIsAdmin() {
-  const [admin, setAdmin] = useState<boolean>(false);
+  const [admin, setAdmin] = useState<boolean>(() => isAdminNow());
   useEffect(() => {
     let cancelled = false;
     const refresh = async () => {

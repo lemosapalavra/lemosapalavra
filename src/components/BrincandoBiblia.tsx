@@ -63,3 +63,4 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
  </>}
  </div>}
  </div></section>;
+}

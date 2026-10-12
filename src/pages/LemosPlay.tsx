@@ -93,7 +93,7 @@ function Row({ title, items, onPlay, progress, onContinueSeries, getContinuation
         <button onClick={() => scrollBy(-600)} className="absolute left-0 top-0 bottom-0 z-10 w-12 bg-black/60 opacity-0 group-hover/row:opacity-100 transition-opacity flex items-center justify-center text-white hover:bg-black/80" aria-label="Anterior">
           <ChevronLeft className="w-8 h-8" />
         </button>
-        <div ref={scrollerRef} className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden scroll-smooth px-4 sm:px-12 pb-3" style={{ scrollbarWidth: "none" }}>
+        <div ref={scrollerRef} className="flex gap-2 overflow-x-auto scroll-smooth px-4 sm:px-12 pb-3" style={{ scrollbarWidth: "none" }}>
           {items.map((item) => {
             const p = progress[item.id];
             const pct = p && p.d > 0 ? Math.min(100, Math.round((p.t / p.d) * 100)) : 0;
@@ -156,7 +156,7 @@ function TopTenRow({ items, onPlay, progress }: { items: PlayItem[]; onPlay: (it
         <button onClick={() => scrollBy(-600)} className="absolute left-0 top-0 bottom-0 z-10 w-12 bg-black/60 opacity-0 group-hover/row:opacity-100 transition-opacity flex items-center justify-center text-white hover:bg-black/80" aria-label="Anterior">
           <ChevronLeft className="w-8 h-8" />
         </button>
-        <div ref={scrollerRef} className="flex gap-3 sm:gap-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden scroll-smooth px-4 sm:px-12 pb-3" style={{ scrollbarWidth: "none" }}>
+        <div ref={scrollerRef} className="flex gap-3 sm:gap-4 overflow-x-auto scroll-smooth px-4 sm:px-12 pb-3" style={{ scrollbarWidth: "none" }}>
           {top.map((item, idx) => {
             const rank = idx + 1;
             const p = progress[item.id];
@@ -453,9 +453,7 @@ export default function LemosPlay() {
 
   return (
 
-    <div className="lemos-no-vertical-scrollbar min-h-screen bg-black text-white [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-
-      <style>{`html:has(.lemos-no-vertical-scrollbar), body:has(.lemos-no-vertical-scrollbar) { scrollbar-width: none; } html:has(.lemos-no-vertical-scrollbar)::-webkit-scrollbar, body:has(.lemos-no-vertical-scrollbar)::-webkit-scrollbar { display: none; width: 0; }`}</style>
+    <div className="min-h-screen bg-black text-white">
       <PageHeader title="Histórias Bíblicas" subtitle="Gênesis, Jesus e Séries" />
       {isAdmin && (
         <div className="fixed top-2 right-2 z-40">

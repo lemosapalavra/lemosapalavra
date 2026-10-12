@@ -57,7 +57,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
 
   return (
     <>
-      <div className="pointer-events-none fixed inset-x-0 top-[30px] sm:top-[24px] z-[60] h-[22rem] overflow-hidden">
+      <div className="pointer-events-none fixed inset-x-0 top-24 sm:top-28 z-10 h-[22rem] overflow-hidden">
         {flying && (
           <div
             key={dir}

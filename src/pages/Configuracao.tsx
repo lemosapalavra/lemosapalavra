@@ -53,8 +53,6 @@ function OwnerAccessCard() {
 
 export default function Configuracao() {
   const navigate = useNavigate();
-  const isAdmin = useIsAdmin();
-  const [homePanelOpen, setHomePanelOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [sessionStart] = useState(Date.now());
   const [elapsed, setElapsed] = useState(0);
@@ -146,7 +144,7 @@ export default function Configuracao() {
     }
   };
 
-  if (!user || !isAdmin) return null;
+  if (!user) return null;
 
   const statCards = [
     { label: "Moedas", value: stats.coins, emoji: "🪙" },
@@ -160,13 +158,7 @@ export default function Configuracao() {
   return (
     <div className="min-h-screen py-6 px-4" style={{ background: "transparent" }}>
       <div className="max-w-4xl mx-auto">
-        <PageHeader title="Configurações do site" subtitle="Painel central do administrador" />
-        <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
-          <h3 className="font-display text-lg font-bold text-foreground mb-2">🏠 Página inicial e identidade visual</h3>
-          <p className="font-body text-sm text-muted-foreground mb-3">Configure os cinco ícones, seus destinos, murais e animações do avião, trem e kart. As demais configurações do site estão organizadas abaixo.</p>
-          <button type="button" onClick={() => setHomePanelOpen(true)} className="px-4 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-display font-bold text-sm">Abrir configurações da página inicial</button>
-        </div>
-        <IndexAdminPanel open={homePanelOpen} onClose={() => setHomePanelOpen(false)} />
+        <PageHeader title="Configurações" subtitle="Painel de administração" />
 
         {/* Live visits counter */}
         <LiveVisitsBanner totalVisits={stats.totalVisits} elapsed={elapsed} />

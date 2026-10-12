@@ -13,7 +13,7 @@ interface OrbitMenuProps {
 }
 
 export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }: OrbitMenuProps) {
-  const iconSize = 80;
+  const iconSize = 120;
   const [items, setItems] = useState<OrbitItem[]>(() => loadOrbit().filter((x) => !x.hidden));
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
 
       <div className="relative orbit-area w-[min(94vw,330px)] h-[min(94vw,330px)] sm:w-[min(90vw,400px)] sm:h-[min(90vw,400px)] lg:w-[min(92vw,720px)] lg:h-[min(92vw,720px)]">
         <div className="absolute inset-0 orbit-spin">
-          {items.length === 5 && <svg aria-hidden="true" className="absolute left-1/2 top-1/2 pointer-events-none overflow-visible -translate-x-1/2 -translate-y-1/2" style={{ width: "calc(2 * var(--orbit-radius))", height: "calc(2 * var(--orbit-radius))" }} viewBox="0 0 100 100"><polygon points={[0,2,4,1,3].map((i) => { const a = (i * 72 - 90) * Math.PI / 180; return `${50 + 50 * Math.cos(a)},${50 + 50 * Math.sin(a)}`; }).join(" ")} fill="none" stroke="#d5a547" strokeWidth="0.55" opacity="0.65" vectorEffect="non-scaling-stroke" /></svg>}
+          {items.length === 5 && <svg aria-hidden="true" className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" viewBox="0 0 100 100"><polygon points={[0,2,4,1,3].map((i) => { const a = (i * 72 - 90) * Math.PI / 180; return `${50 + 40 * Math.cos(a)},${50 + 40 * Math.sin(a)}`; }).join(" ")} fill="none" stroke="#d5a547" strokeWidth="0.55" opacity="0.65" vectorEffect="non-scaling-stroke" /></svg>}
           {items.map((item, i) => {
             const angle = (360 / items.length) * i - 90;
             return (
@@ -57,8 +57,7 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                     }`}
                   >
                     <div
-                      
-                      className={`relative flex items-center justify-center overflow-hidden rounded-full shadow-xl hover:shadow-2xl transition-shadow w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] bg-transparent ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
+                      className={`relative flex items-center justify-center overflow-hidden rounded-full shadow-xl hover:shadow-2xl transition-shadow w-[76px] h-[76px] sm:w-[92px] sm:h-[92px] bg-transparent ${!isAuthenticated ? "grayscale opacity-60" : ""}`}
                     >
                       <img
                         src={item.icon}
@@ -66,7 +65,6 @@ export default function OrbitMenu({ isAuthenticated, onLoginClick, onItemClick }
                         width={iconSize}
                         height={iconSize}
                         loading="lazy"
-                        
                         className="block w-full h-full object-contain object-center"
                       />
                     </div>

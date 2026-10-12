@@ -189,31 +189,3 @@
 .icon-glow { transition: transform .25s ease, filter .25s ease; filter: brightness(1.05) saturate(1.15); }
 .icon-glow:hover, .icon-glow:focus-visible { transform: scale(1.1); filter: brightness(1.35) saturate(1.3) drop-shadow(0 0 18px hsl(var(--primary))); }
 .icon-glow:active { transform: scale(.97); filter: brightness(1.6) saturate(1.4) drop-shadow(0 0 26px hsl(var(--primary))); }
-
-/* Tamanho único dos ícones de navegação do Lemos-a-Palavra.
-   Aplicar esta classe a ícones de categorias/atalhos em todas as páginas;
-   não aplicar a capas de vídeo, avatares, logotipos ou controles pequenos. */
-@layer components {
-  .lemos-standard-icon {
-    width: 76px;
-    height: 76px;
-    min-width: 76px;
-    min-height: 76px;
-    aspect-ratio: 1 / 1;
-  }
-  .lemos-standard-icon > img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center;
-  }
-  @media (min-width: 640px) {
-    .lemos-standard-icon {
-      width: 92px;
-      height: 92px;
-      min-width: 92px;
-      min-height: 92px;
-    }
-  }
-}

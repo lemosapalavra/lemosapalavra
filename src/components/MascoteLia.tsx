@@ -1,7 +1,9 @@
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import liaFallback from "@/assets/lia-1-fallback.png";
+import lia1 from "@/assets/lia-1-fallback.png";
+import lia2 from "@/assets/lia-2-fallback.png";
+import InstallShortcut from "@/components/InstallShortcut";
 import { Button } from "@/components/ui/button";
 
 /**
@@ -16,20 +18,19 @@ import { Button } from "@/components/ui/button";
  */
 
 const PAGE_TIPS: Record<string, string> = {
-  "/": "Bem-vindo! Os cinco ícones ao redor da logo levam a VEJA, OUÇA, APRENDA, FAÇA e ÁLBUM. Toque em um deles para começar! Se quiser instalar o site, use o atalho abaixo de mim.",
+  "/": "Toque em um dos ícones ao redor da logo para escolher o que ver. Se quiser instalar o ícone da Lemos a Palavra e acessar mais facilmente, toque no atalho logo abaixo de mim!",
   "/biblia": "Escolha o livro e o capítulo. Toque no ícone de ouvir 🔊 e eu leio a Palavra para você.",
-  "/louvores": "Em OUÇA, músicas e louvores ficam juntos na mesma página, em duas fileiras. Deslize para o lado e toque na capa para reproduzir! Você também pode curtir, comentar e compartilhar.",
-  "/musicas": "Em OUÇA, encontre músicas e louvores na mesma página! Percorra as fileiras para os lados e toque em uma capa para ouvir ou assistir.",
+  "/louvores": "Escolha um louvor e aperte o play ▶️. Dá para curtir, comentar e compartilhar com a família.",
   "/historias-do-dia": "Aqui tem duas histórias bíblicas novas todo dia para ler e conversar em família!",
   "/devocionais": "Leia o devocional do dia, escolha uma cor e toque no desenho para pintar. Pode desfazer, continuar depois e guardar no Meu Mural!",
-  "/jogos": "Em FAÇA, escolha uma atividade ou jogo bíblico, como dominó, memória, mico, quiz ou Quem Sou Eu! Toque no que quiser experimentar.",
+  "/jogos": "Escolha um jogo bíblico: dominó, memória, mico, quiz ou Quem Sou Eu!",
   "/pedidos-oracao": "Escreva seu pedido e escolha a categoria. Vamos orar juntos por você! 🙏",
-  "/atividades": "Em APRENDA, escolha uma atividade pelo ícone e siga as instruções. Algumas atividades dão moedinhas 🪙 quando concluídas.",
+  "/atividades": "Escolha uma atividade tocando no ícone. Cada uma dá moedinhas 🪙 uma vez por dia.",
   "/album": "Use 3 moedinhas 🪙 para abrir um pacote e toque em “Próxima” para virar a página do álbum.",
-  "/lemosplay": "Em VEJA, explore o destaque principal e as fileiras de vídeos, como Gênesis, Jesus e Séries. Deslize as fileiras para o lado, escolha uma capa e assista!",
+  "/lemosplay": "Deslize para ver as categorias: Gênesis, Jesus, Séries e Músicas. Assista até o fim e ganhe moedinhas 🪙.",
   "/historias-biblicas": "Escolha uma história e assista até o final para ganhar suas moedinhas 🪙.",
   "/login": "Preencha nome e celular para criar sua conta. Já tem conta? Use a aba Entrar.",
-  "/config": "Este é o painel de configurações do administrador. Para ajustar a página inicial, abra suas configurações e escolha Menu Órbita: ative ou desative ícones e use Procurar no site para trocar imagens. Também há opções para conteúdos, vídeos e outros recursos.",
+  "/config": "Aqui você configura o site: vídeos, faixas, contatos e novidades.",
   "/estatisticas": "Este painel mostra o que os usuários mais acessam no site.",
 };
 
@@ -94,33 +95,34 @@ export default function MascoteLia() {
     ? LOGIN_TIP
     : (context && CONTEXT_TIPS[context]) || PAGE_TIPS[location.pathname] || PAGE_TIPS["/"];
 
-  const avatar = "/lia-mascote.png";
+  const avatar = isHome && !context ? lia1 : lia2;
   const liaVisible = useIconVisible("lia");
 
   if (!liaVisible) return null;
 
   if (!expanded) {
     return (
-      <div className="fixed left-2 bottom-3 z-[70] flex flex-col items-center gap-2 sm:left-4">
+      <div className="fixed left-2 bottom-3 z-[45] flex flex-col items-center gap-2 sm:left-4">
       <Button variant="ghost"
         onClick={() => setExpanded(true)}
         aria-label="Falar com a LIA, sua ajudante"
         title="Falar com a LIA, sua ajudante"
         className="h-auto flex flex-col items-center gap-1 transition hover:scale-110 active:scale-95"
       >
-        <span className="w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] rounded-full bg-white shadow-[0_4px_18px_rgba(0,0,0,0.55)] ring-2 ring-white border-[3px] border-amber-400 overflow-hidden block">
-          <img src={avatar} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = liaFallback; }} alt="LIA" className="w-full h-full object-cover object-top" loading="lazy" />
+        <span className="w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] rounded-full bg-white shadow-lg border-2 border-amber-300 overflow-hidden block">
+          <img src={avatar} alt="LIA" className="w-full h-full object-cover object-top" loading="lazy" />
         </span>
-        <span className="font-display font-extrabold text-[11px] sm:text-xs text-amber-950 bg-white border-2 border-amber-400 rounded-full px-2 py-0.5 shadow-[0_2px_8px_rgba(0,0,0,0.4)] whitespace-nowrap">
+        <span className="font-display font-extrabold text-[11px] sm:text-xs text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap">
           Oi, sou a LIA
         </span>
       </Button>
+      {isHome && <InstallShortcut compact />}
       </div>
     );
   }
 
   return (
-    <div className="fixed left-2 bottom-3 z-[70] flex flex-col items-start gap-1 pointer-events-none sm:left-4">
+    <div className="fixed left-2 bottom-3 z-[45] flex flex-col items-start gap-1 pointer-events-none sm:left-4">
       {/* Balão acima da cabeça da LIA */}
       <div className="pointer-events-auto relative w-[78vw] max-w-sm rounded-2xl bg-white/95 backdrop-blur border-2 border-amber-300 shadow-xl px-3 py-2">
         <p className="font-body text-[15px] sm:text-base text-amber-900 leading-relaxed">{message}</p>
@@ -136,15 +138,15 @@ export default function MascoteLia() {
       >
         <img
           src={avatar}
-          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = liaFallback; }}
           alt="LIA, a mascote que ajuda você a navegar"
-          className="w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] object-cover object-top rounded-full bg-white ring-2 ring-white border-[3px] border-amber-400 shadow-[0_4px_18px_rgba(0,0,0,0.55)] animate-[liaFloat_3.4s_ease-in-out_infinite] select-none"
+          className="w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] object-cover object-top rounded-full drop-shadow-xl animate-[liaFloat_3.4s_ease-in-out_infinite] select-none"
           draggable={false}
         />
         <span className="mt-1 block font-display font-extrabold text-xs sm:text-sm text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap">
           Oi, sou a LIA
         </span>
       </Button>
+      {isHome && <div className="pointer-events-auto"><InstallShortcut compact /></div>}
       </div>
 
       <style>{`
