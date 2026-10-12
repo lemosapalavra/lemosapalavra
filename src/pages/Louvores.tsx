@@ -85,9 +85,11 @@ export default function Louvores() {
 
 
   return (
-    <div className="min-h-screen bg-black text-white py-4">
+    <div className="lemos-no-vertical-scrollbar min-h-screen bg-black text-white py-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       <div className="w-full mx-auto">
-        <PageHeader title="Ouça" subtitle="Músicas e louvores" icon={oucaIcon.url} />
+  
+      <style>{`html:has(.lemos-no-vertical-scrollbar), body:has(.lemos-no-vertical-scrollbar) { scrollbar-width: none; } html:has(.lemos-no-vertical-scrollbar)::-webkit-scrollbar, body:has(.lemos-no-vertical-scrollbar)::-webkit-scrollbar { display: none; width: 0; }`}</style>
+      <PageHeader title="Ouça" subtitle="Músicas e louvores" icon={oucaIcon.url} />
 
         {isAdmin && <button type="button" onClick={() => setAdminOpen(true)} title="Configurar Ouça" className="fixed top-3 right-3 z-40 w-11 h-11 rounded-full bg-zinc-900 text-white shadow-xl flex items-center justify-center"><Settings className="w-5 h-5" /></button>}
         {featured && <section className="relative mt-4 min-h-[320px] sm:min-h-[430px] rounded-xl overflow-hidden bg-black text-white">
