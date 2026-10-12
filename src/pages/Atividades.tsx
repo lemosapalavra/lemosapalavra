@@ -520,7 +520,7 @@ export default function Atividades() {
     <div className="min-h-screen flex flex-col items-center justify-start px-4 pt-0 pb-8" style={bgStyle}>
       <PageHeader title="Atividades Educacionais" icon={iconAtividades} />
 
-      <button type="button" onClick={() => setActiveGame("brincando-biblia")} className="mt-4 rounded-2xl border-[3px] border-amber-400 bg-gradient-to-r from-yellow-100 via-white to-amber-100 px-5 py-4 text-center shadow-lg hover:scale-[1.02] transition-transform max-w-md w-full"><span className="block text-xl font-extrabold text-amber-950">🌟 Brincando e Aprendendo com a Bíblia</span><span className="block text-sm font-semibold text-amber-900">16 novas atividades • Verdadeiro ou falso, memória, personagens e quiz</span><span className="block mt-2 text-emerald-700 font-bold">Toque para começar →</span></button>
+      <button type="button" onClick={() => { window.location.href = "/atividades/brincando-biblia"; }} className="mt-4 rounded-2xl border-[3px] border-amber-400 bg-gradient-to-r from-yellow-100 via-white to-amber-100 px-5 py-4 text-center shadow-lg hover:scale-[1.02] transition-transform max-w-md w-full"><span className="block text-xl font-extrabold text-amber-950">🌟 Brincando e Aprendendo com a Bíblia</span><span className="block text-sm font-semibold text-amber-900">16 novas atividades • Verdadeiro ou falso, memória, personagens e quiz</span><span className="block mt-2 text-emerald-700 font-bold">Toque para começar →</span></button>
 
       {activities.length === 0 && (
         <p className="font-body text-sm text-muted-foreground text-center my-8">
