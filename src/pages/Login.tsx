@@ -338,15 +338,20 @@ export default function Login() {
   };
 
   return (
-    <div
-      className="relative isolate min-h-screen flex items-center justify-center overflow-hidden py-10 px-4"
-      style={{ background: "radial-gradient(ellipse at 50% 8%, #fff7d9 0%, #f8e8bd 32%, #dfc99d 68%, #a88c68 100%)" }}
-    >
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-1/2 top-[-150px] h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-amber-100/70 blur-3xl" />
-        <div className="absolute left-1/2 top-4 -translate-x-1/2 text-7xl sm:text-8xl font-serif text-amber-700/20 drop-shadow-lg">✝</div>
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-amber-950/15 to-transparent" />
-      </div>
+    <div className="relative isolate min-h-[100dvh] flex items-center justify-center overflow-x-hidden py-10 px-4">
+      {/* Imagens originais enviadas ao GitHub: celular (9:16) e computador (16:9). */}
+      <picture aria-hidden="true" className="pointer-events-none fixed inset-0 -z-20 block">
+        <source media="(min-width: 768px)" srcSet="/Pagina%20inicial%20Computador.png" />
+        <img
+          src="/Pagina%20Inicial%20celular.png"
+          alt=""
+          className="h-full w-full object-cover object-center"
+          loading="eager"
+          decoding="async"
+        />
+      </picture>
+      {/* Camada suave para manter o formulário legível sem esconder a ilustração. */}
+      <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 bg-amber-950/10" />
       <div className="relative z-10 w-full max-w-md">
         <div className="mb-5 text-center">
           <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full border-2 border-amber-200 bg-white/80 text-3xl text-amber-800 shadow-lg" aria-hidden="true">✝</div>
