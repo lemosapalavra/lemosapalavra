@@ -20,7 +20,7 @@ function ListenRow({ title, items, onPlay }: { title: string; items: PlayEntry[]
     <h2 className="px-4 sm:px-12 text-white text-xl sm:text-2xl font-bold mb-3">{title}</h2>
     <div className="relative">
       <button type="button" aria-label="Anterior" onClick={() => scroller.current?.scrollBy({ left: -500, behavior: "smooth" })} className="absolute left-0 top-0 bottom-0 z-10 w-9 bg-black/50 text-white opacity-0 group-hover/row:opacity-100 focus:opacity-100"><ChevronLeft className="mx-auto" /></button>
-      <div ref={scroller} className="flex gap-3 overflow-x-auto scroll-smooth px-4 sm:px-12 pb-4" style={{ scrollbarWidth: "none" }}>
+      <div ref={scroller} className="flex gap-3 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden scroll-smooth px-4 sm:px-12 pb-4" style={{ scrollbarWidth: "none" }}>
         {items.map(item => <button type="button" key={item.id} onClick={() => onPlay(item)} className="group/card relative shrink-0 w-[140px] sm:w-[180px] aspect-[2/3] rounded-lg overflow-hidden bg-zinc-900 hover:scale-105 hover:ring-2 hover:ring-white transition-all">
           {item.poster ? <img src={item.poster} alt={item.title} className="w-full h-full object-cover" loading="lazy" /> : <Play className="m-auto h-full text-white" />}
           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/80 to-transparent p-3 pt-12 text-left"><span className="text-white text-xs font-bold line-clamp-2">{item.title}</span></div>
