@@ -1,7 +1,7 @@
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Settings, Menu, X } from "lucide-react";
+import { Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import DedicatoriaModal from "@/components/DedicatoriaModal";
@@ -31,7 +31,6 @@ function IndexV1() {
   const isAdmin = useIsAdmin();
   const [user, setUser] = useState<{ name: string; email: string; avatar?: string } | null>(null);
   const [dedicatoriaOpen, setDedicatoriaOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [adminPanelOpen, setAdminPanelOpen] = useState(false);
   const dedicatoriaVisible = useIconVisible("dedicatoria");
 
@@ -76,21 +75,17 @@ function IndexV1() {
       className="lemos-home-viewport h-[100dvh] min-h-0 flex flex-col items-center overflow-hidden relative"
       style={{ backgroundColor: "#c9effd" }}
     >
-      {/* Home Header */}
-      <header
-        className="w-full fixed top-0 left-0 right-0 z-30 bg-white/85 border-b border-amber-200/60 backdrop-blur-sm"
-      >
-        <div className="flex items-center justify-center px-3 sm:px-5 py-2">
-          <div className="hidden md:flex justify-center">
-            <HomeTopNav />
-          </div>
-          <Button type="button" variant="ghost" size="icon" className="md:hidden rounded-full" aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"} aria-expanded={mobileMenuOpen} onClick={() => setMobileMenuOpen((v) => !v)}>{mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}</Button>
-        </div>
-
-         {/* Mobile: menu flutuante aberto por um único ícone */}
-         {mobileMenuOpen && <div className="md:hidden absolute top-full inset-x-3 z-50 rounded-lg border border-border bg-background p-3 shadow-xl" onClick={() => setMobileMenuOpen(false)}>
+      {/* Menu superior ilustrado: substitui a barra antiga e o menu hambúrguer. */}
+      <header className="fixed top-0 inset-x-0 z-[60] bg-gradient-to-b from-[#e9c786]/90 via-[#e9c786]/55 to-transparent">
+        <div className="mx-auto w-full max-w-screen-2xl flex items-start justify-between gap-1 px-1 sm:px-3">
           <HomeTopNav />
-         </div>}
+          {user?.name && (
+            <div className="hidden sm:flex shrink-0 items-center gap-2 rounded-2xl border-[3px] border-[#eac06d] bg-gradient-to-br from-[#875021] to-[#48270f] px-2 py-1 text-[#fff3d0] shadow-lg">
+              <img src={user.avatar || "/lia-mascote.png"} alt="" className="h-10 w-10 rounded-full border-2 border-amber-300 bg-white object-cover" />
+              <span className="max-w-32 text-xs leading-tight"><strong className="block">Bem-vindo!</strong>{user.name}</span>
+            </div>
+          )}
+        </div>
       </header>
 
       {/* 14-Bis animado, acima do cenário e abaixo dos controles do usuário. */}
