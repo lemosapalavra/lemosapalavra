@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, useLocation, Navigate, Outlet } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation, useNavigate, Navigate, Outlet } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -241,6 +242,27 @@ const GlobalTopMenu = () => {
   </header>;
 };
 
+/** Seta de retorno única, sempre logo abaixo do botão Início do menu superior. */
+const GlobalBackArrow = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  if (location.pathname === "/" || location.pathname === "/login" || location.pathname === "/login-sms") return null;
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        if (window.history.state?.idx > 0) navigate(-1);
+        else navigate("/");
+      }}
+      aria-label="Voltar à página anterior"
+      title="Voltar à página anterior"
+      className="fixed left-3 top-[72px] sm:top-[88px] z-[65] flex h-10 w-10 items-center justify-center rounded-full border-2 border-amber-400 bg-white/95 text-amber-900 shadow-lg transition-transform hover:scale-105"
+    >
+      <ArrowLeft size={24} />
+    </button>
+  );
+};
+
 const AuthAwareDecorations = () => {
   const location = useLocation();
   if (location.pathname === "/login" || location.pathname === "/login-sms") return null;
@@ -260,6 +282,7 @@ const App = () => (
         {/* MysticBackground removed to improve page load performance */}
         <AuthAwareDecorations />
         <GlobalTopMenu />
+        <GlobalBackArrow />
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/login" element={<Login />} />
