@@ -22,15 +22,6 @@ const avatars = [
 ];
 
 type Mode = "login" | "register";
-type AgeRange = "criancas" | "adolescentes" | "jovens" | "adultos";
-
-const AGE_RANGES: { id: AgeRange; label: string; emoji: string }[] = [
-  { id: "criancas",      label: "Crianças (0–12)",          emoji: "🧒" },
-  { id: "adolescentes",  label: "Adolescentes (13–17)",     emoji: "🧑" },
-  { id: "jovens",        label: "Jovens adultos (18–24)",   emoji: "🧑‍🎓" },
-  { id: "adultos",       label: "Adultos (25 e mais)",      emoji: "🧔" },
-];
-
 import { useIpLocation } from "@/hooks/useIpLocation";
 import {
   OWNER_FLAG_KEY,
@@ -119,7 +110,6 @@ export function validateRegistration(
   input: RegistrationInput,
 ): { field: keyof RegistrationInput; message: string } | null {
   if (!input.name.trim()) return { field: "name", message: "Informe seu nome." };
-  if (!input.ageRange) return { field: "ageRange", message: "Escolha sua faixa etária." };
   const phoneErr = validatePhone(input.phone);
   if (phoneErr) return { field: "phone", message: phoneErr };
   if (!input.avatar) return { field: "avatar", message: "Escolha um avatar para o seu perfil." };
@@ -139,7 +129,6 @@ export default function Login() {
   // register-only fields
   const [name, setName] = useState("");
   
-  const [ageRange, setAgeRange] = useState<AgeRange | "">("");
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState<string | null>(null);
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
@@ -257,7 +246,7 @@ export default function Login() {
   };
 
   const doRegister = async () => {
-    const validation = validateRegistration({ name, ageRange, avatar: finalAvatar, phone });
+    const validation = validateRegistration({ name, ageRange: "", avatar: finalAvatar, phone });
     if (validation) {
       setPhoneError(validation.field === "phone" ? validation.message : null);
       toast({ title: "Confira o cadastro", description: validation.message, variant: "destructive" });
@@ -271,7 +260,6 @@ export default function Login() {
     const ensured = await ensureAccount("register", {
       phone,
       name: name.trim(),
-      ageRange,
       avatar: finalAvatar,
     });
     if (!ensured.found) {
@@ -350,15 +338,6 @@ export default function Login() {
   const chooseAvatar = (src: string) => { setSelectedAvatar(src); setCustomAvatar(""); };
   const submitArtwork = () => {
     if (mode === "login") { void doLogin(); return; }
-    if (!ageRange) {
-      const choice = window.prompt("Antes de começar, escolha sua faixa etária:\\n1 - Crianças (0–12)\\n2 - Adolescentes (13–17)\\n3 - Jovens (18–24)\\n4 - Adultos (25+)\\nDigite 1, 2, 3 ou 4:");
-      const selected = ({ "1": "criancas", "2": "adolescentes", "3": "jovens", "4": "adultos" } as Record<string, AgeRange>)[(choice || "").trim()];
-      if (!selected) return;
-      setAgeRange(selected);
-      // O estado é atualizado antes do próximo clique, sem perder os dados.
-      toast({ title: "Faixa etária registrada", description: "Toque em Entrar e Começar para concluir." });
-      return;
-    }
     void doRegister();
   };
 
