@@ -1,4 +1,5 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import JogosInterativos from "@/components/JogosInterativos";
 import iconMemoria from "@/assets/jogos/icon-memoria.png";
 import iconLabirinto from "@/assets/jogos/icon-labirinto.png";
 import iconQuebraCabeca from "@/assets/jogos/icon-quebra-cabeca.png";
@@ -7,7 +8,7 @@ import iconQuiz from "@/assets/jogos/icon-quiz.png";
 import { isAllowed } from "@/lib/contentAccess";
 
 const ALL_GAMES = [
-  { id: "memory", title: "Memória Bíblica", icon: iconMemoria, path: "/atividades?jogo=memory" },
+  { id: "memory", title: "Memória Bíblica", icon: iconMemoria, path: "/jogos?jogo=memory" },
   { id: "maze", title: "Labirinto", icon: iconLabirinto, path: "/atividades?jogo=maze" },
   { id: "jigsaw", title: "Quebra-Cabeça", icon: iconQuebraCabeca, path: "/atividades?jogo=jigsaw" },
   { id: "wordbuilder", title: "Construtor de Palavras", icon: iconPalavras, path: "/atividades?jogo=wordbuilder" },
@@ -24,6 +25,10 @@ const positions = [
 
 export default function Jogos() {
   const navigate = useNavigate();
+  const [params,setParams] = useSearchParams();
+  const active = params.get("jogo");
+  const validGames = ["memory","maze","jigsaw","wordbuilder","quiz"];
+  const selectedGame = active && validGames.includes(active) ? active as "memory"|"maze"|"jigsaw"|"wordbuilder"|"quiz" : null;
   const games = ALL_GAMES.filter((game) => isAllowed("jogos", game.id));
   return (
     <main id="faca-cenario" className="relative isolate h-[100dvh] w-full overflow-hidden bg-[#bdebf7]">
@@ -51,6 +56,7 @@ export default function Jogos() {
           );
         })}
       </div>
+      {selectedGame && <JogosInterativos game={selectedGame} onClose={() => setParams({}, {replace:true})} />}
     </main>
   );
 }
