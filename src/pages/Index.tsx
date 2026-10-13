@@ -77,7 +77,7 @@ function IndexV1() {
     >
       {/* Menu superior ilustrado: substitui a barra antiga e o menu hambúrguer. */}
       <header className="fixed top-0 inset-x-0 z-[60] bg-gradient-to-b from-[#e9c786]/90 via-[#e9c786]/55 to-transparent">
-        <div className="mx-auto w-full max-w-screen-2xl flex items-start justify-center gap-1 pl-1 pr-[155px] sm:pl-[155px] sm:pr-[200px]">
+        <div className="mx-auto w-full max-w-screen-2xl flex items-start justify-center gap-1 pl-1 pr-[135px] sm:pl-[155px] sm:pr-[200px]">
           <HomeTopNav />
 
         </div>
