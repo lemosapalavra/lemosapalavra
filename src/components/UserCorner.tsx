@@ -2,7 +2,7 @@ import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useState } from "react";
 import MeuMural from "@/components/MeuMural";
 import { useCoins } from "@/hooks/useCoins";
-import iconUsuario from "@/assets/icon-usuario.png";
+const iconUsuario = "/usuario.png";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
