@@ -79,12 +79,7 @@ function IndexV1() {
       <header className="fixed top-0 inset-x-0 z-[60] bg-gradient-to-b from-[#e9c786]/90 via-[#e9c786]/55 to-transparent">
         <div className="mx-auto w-full max-w-screen-2xl flex items-start justify-between gap-1 px-1 sm:px-3">
           <HomeTopNav />
-          {user?.name && (
-            <div className="hidden sm:flex shrink-0 items-center gap-2 rounded-2xl border-[3px] border-[#eac06d] bg-gradient-to-br from-[#875021] to-[#48270f] px-2 py-1 text-[#fff3d0] shadow-lg">
-              <img src={user.avatar || "/lia-mascote.png"} alt="" className="h-10 w-10 rounded-full border-2 border-amber-300 bg-white object-cover" />
-              <span className="max-w-32 text-xs leading-tight"><strong className="block">Bem-vindo!</strong>{user.name}</span>
-            </div>
-          )}
+
         </div>
       </header>
 
