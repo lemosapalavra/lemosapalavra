@@ -83,7 +83,8 @@ export default function Louvores() {
 
 
   return (
-    <div className="min-h-screen py-4 px-4" style={{ background: "transparent" }}>
+    <div className="lemos-media-page min-h-screen py-4 px-4" style={{ background: "transparent" }}>
+      <style>{`html:has(.lemos-media-page), body:has(.lemos-media-page) { scrollbar-width: none; } html:has(.lemos-media-page)::-webkit-scrollbar, body:has(.lemos-media-page)::-webkit-scrollbar { display: none; width: 0; }`}</style>
       <div className="max-w-4xl mx-auto">
         <PageHeader title="Ouça" subtitle="Músicas e louvores" icon={oucaIcon.url} />
 
