@@ -217,3 +217,23 @@ body:has(#faca-cenario) #root {
 body:has(#faca-cenario) { padding-bottom: 0 !important; }
 #faca-cenario::-webkit-scrollbar,
 body:has(#faca-cenario)::-webkit-scrollbar { display: none; }
+
+
+/* Esconde barras verticais em todas as páginas sem bloquear a rolagem
+   necessária para ler conteúdos longos e responder atividades. */
+html, body, #root, main, section, div {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar, #root::-webkit-scrollbar,
+main::-webkit-scrollbar, section::-webkit-scrollbar, div::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+@keyframes lemosGentleFloat {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-7px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-\\[lemosGentleFloat_5s_ease-in-out_infinite\\] { animation: none !important; }
+}
