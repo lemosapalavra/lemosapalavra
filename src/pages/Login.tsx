@@ -338,7 +338,7 @@ export default function Login() {
   };
 
   return (
-    <div className="relative isolate min-h-[100dvh] flex items-center justify-center overflow-x-hidden py-10 px-4">
+    <div className={`relative isolate h-[100dvh] w-full flex items-center justify-center overflow-x-hidden px-3 sm:px-4 ${mode === "login" ? "overflow-y-hidden py-2" : "overflow-y-auto py-5"}`}>
       {/* Imagens originais enviadas ao GitHub: celular (9:16) e computador (16:9). */}
       <picture aria-hidden="true" className="pointer-events-none fixed inset-0 -z-20 block">
         <source media="(min-width: 768px)" srcSet="/Pagina%20inicial%20Computador.png" />
@@ -352,15 +352,15 @@ export default function Login() {
       </picture>
       {/* Camada suave para manter o formulário legível sem esconder a ilustração. */}
       <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 bg-amber-950/10" />
-      <div className="relative z-10 w-full max-w-md">
-        <div className="mb-5 text-center">
-          <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full border-2 border-amber-200 bg-white/80 text-3xl text-amber-800 shadow-lg" aria-hidden="true">✝</div>
+      <div className={`relative z-10 w-full max-w-md ${mode === "login" ? "max-h-[calc(100dvh-12px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" : ""}`}>
+        <div className="mb-2 sm:mb-3 text-center">
+          <div className="mx-auto mb-1 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-amber-200 bg-white/80 text-3xl text-amber-800 shadow-lg" aria-hidden="true">✝</div>
           <p className="font-display text-2xl font-extrabold tracking-wide text-amber-950 drop-shadow-sm">Lemos a Palavra</p>
           <p className="mt-1 font-body text-sm font-medium text-amber-900">Onde a Palavra ganha Vida</p>
         </div>
-        <div className="bg-[hsl(36,60%,97%)]/95 backdrop-blur-md border-2 border-amber-300/80 rounded-3xl shadow-[0_24px_65px_rgba(89,54,16,0.28)] p-6 sm:p-8">
+        <div className="bg-[hsl(36,60%,97%)]/95 backdrop-blur-md border-2 border-amber-300/80 rounded-3xl shadow-[0_24px_65px_rgba(89,54,16,0.28)] p-4 sm:p-6">
           {/* Header */}
-          <div className="text-center mb-5">
+          <div className="text-center mb-3">
             <h1 className="font-display text-3xl font-extrabold text-foreground">
               {mode === "login" ? "Login" : "Criar Conta"}
             </h1>
@@ -372,7 +372,7 @@ export default function Login() {
           </div>
 
           {/* Form */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             {mode === "register" && (
               <>
                 <Field label="Nome *">
