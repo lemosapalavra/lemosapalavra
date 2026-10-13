@@ -337,259 +337,76 @@ export default function Login() {
     }
   };
 
+  // A arte é a própria tela de entrada. Campos e áreas clicáveis são
+  // posicionados em porcentagens da imagem para não encavalar no celular.
+  const avatarChoices = [
+    { name: "Jesus", src: avatarJesus }, { name: "Maria", src: avatarMaria },
+    { name: "Davi", src: avatarDavi }, { name: "Moisés", src: avatarMoises },
+    { name: "Abraão", src: avatarMoises }, { name: "José", src: avatarJesus },
+    { name: "Lia", src: "/lia-mascote.png" }, { name: "Marta", src: avatarMaria },
+    { name: "Noé", src: avatarMoises }, { name: "Paulo", src: avatarDavi },
+    { name: "Daniel", src: avatarDaniel },
+  ];
+  const chooseAvatar = (src: string) => { setSelectedAvatar(src); setCustomAvatar(""); };
+  const submitArtwork = () => {
+    if (mode === "login") { void doLogin(); return; }
+    if (!ageRange) {
+      const choice = window.prompt("Antes de começar, escolha sua faixa etária:\\n1 - Crianças (0–12)\\n2 - Adolescentes (13–17)\\n3 - Jovens (18–24)\\n4 - Adultos (25+)\\nDigite 1, 2, 3 ou 4:");
+      const selected = ({ "1": "criancas", "2": "adolescentes", "3": "jovens", "4": "adultos" } as Record<string, AgeRange>)[(choice || "").trim()];
+      if (!selected) return;
+      setAgeRange(selected);
+      // O estado é atualizado antes do próximo clique, sem perder os dados.
+      toast({ title: "Faixa etária registrada", description: "Toque em Entrar e Começar para concluir." });
+      return;
+    }
+    void doRegister();
+  };
+
   return (
-    <div className={`relative isolate h-[100dvh] w-full flex items-center justify-center overflow-x-hidden px-3 sm:px-4 ${mode === "login" ? "overflow-y-hidden py-2" : "overflow-y-auto py-5"}`}>
-      {/* Imagens originais enviadas ao GitHub: celular (9:16) e computador (16:9). */}
-      <picture aria-hidden="true" className="pointer-events-none fixed inset-0 -z-20 block">
-        <source media="(min-width: 768px)" srcSet="/Pagina%20inicial%20Computador.png" />
-        <img
-          src="/Pagina%20Inicial%20celular.png"
-          alt=""
-          className="h-full w-full object-cover object-center"
-          loading="eager"
-          decoding="async"
-        />
-      </picture>
-      {/* Camada suave para manter o formulário legível sem esconder a ilustração. */}
-      <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 bg-amber-950/10" />
-      <div className={`relative z-10 w-full max-w-md ${mode === "login" ? "max-h-[calc(100dvh-12px)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" : ""}`}>
-        <div className="mb-2 sm:mb-3 text-center">
-          <div className="mx-auto mb-1 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 border-amber-200 bg-white/80 text-3xl text-amber-800 shadow-lg" aria-hidden="true">✝</div>
-          <p className="font-display text-2xl font-extrabold tracking-wide text-amber-950 drop-shadow-sm">Lemos a Palavra</p>
-          <p className="mt-1 font-body text-sm font-medium text-amber-900">Onde a Palavra ganha Vida</p>
+    <main className="fixed inset-0 z-0 flex items-center justify-center overflow-hidden bg-[#1d381c]" aria-label="Entrada do Lemos a Palavra">
+      <div className="relative h-[100dvh] max-h-[177.586vw] w-[56.31dvh] max-w-[100vw] shrink-0 overflow-hidden bg-[#f4d79c] shadow-2xl" style={{ aspectRatio: "928 / 1648" }}>
+        <img src="/login-jornada-mobile.png" alt="Lemos a Palavra: bem-vindo à jornada bíblica" className="absolute inset-0 h-full w-full object-fill select-none pointer-events-none" draggable={false} />
+        <label className="absolute left-[31.3%] top-[47.1%] w-[43.4%] h-[3.1%]">
+          <span className="sr-only">Seu nome</span>
+          <input aria-label="Seu nome" type="text" autoComplete="name" value={name} onChange={e => setName(e.target.value)}
+            className="w-full h-full border-0 bg-transparent outline-none focus:ring-2 focus:ring-amber-500 rounded-full px-[4%] text-amber-950 placeholder:text-transparent"
+            style={{ fontSize: "clamp(10px, 1.65dvh, 17px)" }} />
+        </label>
+        <label className="absolute left-[31.3%] top-[52.8%] w-[43.4%] h-[3.1%]">
+          <span className="sr-only">Celular</span>
+          <input aria-label="Celular" type="tel" autoComplete="tel" inputMode="numeric"
+            value={mode === "login" ? email : phone}
+            onChange={e => { const v = maskPhone(e.target.value); if (mode === "login") setEmail(v); else setPhone(v); }}
+            className="w-full h-full border-0 bg-transparent outline-none focus:ring-2 focus:ring-amber-500 rounded-full px-[4%] text-amber-950 placeholder:text-transparent"
+            style={{ fontSize: "clamp(10px, 1.65dvh, 17px)" }} />
+        </label>
+        {avatarChoices.map((av, i) => {
+          const firstRow = i < 5;
+          const col = firstRow ? i : i - 5;
+          const left = firstRow ? 18.3 + col * 12.35 : 18.3 + col * 12.0;
+          const top = firstRow ? 61.2 : 69.9;
+          const selected = selectedAvatar === av.src;
+          return <button type="button" key={av.name} aria-label={`Escolher avatar ${av.name}`}
+            title={av.name} onClick={() => chooseAvatar(av.src)}
+            className={`absolute rounded-xl transition focus-visible:outline-2 focus-visible:outline-amber-500 ${selected ? "ring-[3px] ring-amber-500 bg-amber-200/20" : ""}`}
+            style={{ left: `${left}%`, top: `${top}%`, width: "11%", height: "8%" }} />;
+        })}
+        <button type="button" disabled={busy} onClick={submitArtwork}
+          aria-label={mode === "login" ? "Entrar na minha conta" : "Entrar e Começar"}
+          className="absolute left-[19.2%] top-[78.8%] w-[61.5%] h-[6.2%] rounded-full focus-visible:ring-4 focus-visible:ring-white disabled:opacity-50" />
+        <div className="absolute left-[19%] top-[85.5%] w-[62%] flex justify-center">
+          <button type="button" onClick={() => setMode(mode === "login" ? "register" : "login")}
+            className="rounded-full bg-amber-50/95 border border-amber-700 px-3 py-1 text-amber-950 font-semibold shadow"
+            style={{ fontSize: "clamp(9px, 1.45dvh, 13px)" }}>
+            {mode === "login" ? "Não tenho conta — cadastrar" : "Já tenho conta — entrar"}
+          </button>
         </div>
-        <div className="bg-[hsl(36,60%,97%)]/95 backdrop-blur-md border-2 border-amber-300/80 rounded-3xl shadow-[0_24px_65px_rgba(89,54,16,0.28)] p-4 sm:p-6">
-          {/* Header */}
-          <div className="text-center mb-3">
-            <h1 className="font-display text-3xl font-extrabold text-foreground">
-              {mode === "login" ? "Login" : "Criar Conta"}
-            </h1>
-            <p className="text-muted-foreground text-sm mt-1">
-              {mode === "login"
-                ? "Já tem cadastro? Faça aqui o seu login."
-                : "Preencha os dados abaixo para criar sua conta."}
-            </p>
-          </div>
-
-          {/* Form */}
-          <div className="space-y-3">
-            {mode === "register" && (
-              <>
-                <Field label="Nome *">
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full bg-white border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
-                    placeholder="Seu nome"
-                  />
-                </Field>
-                <Field label="Faixa etária *">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {AGE_RANGES.map((a) => (
-                      <button
-                        key={a.id}
-                        type="button"
-                        onClick={() => setAgeRange(a.id)}
-                        className={`px-3 py-2 rounded-xl text-xs font-body border-2 transition text-left ${
-                          ageRange === a.id
-                            ? "bg-amber-500 text-white border-amber-600 shadow"
-                            : "bg-white text-foreground border-amber-300 hover:border-amber-400"
-                        }`}
-                      >
-                        <span className="mr-1.5">{a.emoji}</span>{a.label}
-                      </button>
-                    ))}
-                  </div>
-                </Field>
-
-
-                <Field label="Celular *">
-                  <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => {
-                      const v = maskPhone(e.target.value);
-                      setPhone(v);
-                      setPhoneError(v ? validatePhone(v) : null);
-                    }}
-                    onBlur={() => setPhoneError(validatePhone(phone))}
-                    className={`w-full bg-white border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 ${phoneError ? "border-destructive focus:ring-destructive" : "border-amber-300/60 focus:ring-amber-400"}`}
-                    placeholder="(11) 99999-9999"
-                    inputMode="numeric"
-                    maxLength={15}
-                    required
-                  />
-                  {phoneError && <p className="mt-1 text-xs font-body text-destructive">{phoneError}</p>}
-                </Field>
-
-                <p className="text-xs font-body text-muted-foreground -mt-1">
-                  Usamos seu celular apenas para identificar sua conta. Não pedimos senha.
-                </p>
-
-
-
-
-              </>
-            )}
-
-            {mode === "login" && (
-              <>
-                <Field label="Nome *">
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full bg-white border border-amber-300/60 rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 focus:ring-amber-400"
-                    placeholder="Seu nome"
-                    autoComplete="name"
-                  />
-                </Field>
-                <Field label="Celular *">
-                  <input
-                    type="tel"
-                    value={email}
-                    onChange={(e) => {
-                      const v = e.target.value.includes("@") ? e.target.value : maskPhone(e.target.value);
-                      setEmail(v);
-                      setPhoneError(v && !v.includes("@") ? validatePhone(v) : null);
-                    }}
-                    onBlur={() => setPhoneError(email && !email.includes("@") ? validatePhone(email) : null)}
-                    className={`w-full bg-white border rounded-lg px-3 py-2.5 text-sm font-body focus:outline-none focus:ring-2 ${phoneError ? "border-destructive focus:ring-destructive" : "border-amber-300/60 focus:ring-amber-400"}`}
-                    placeholder="(11) 99999-9999"
-                    autoComplete="tel"
-                    inputMode="tel"
-                    maxLength={15}
-                  />
-                  {phoneError && <p className="mt-1 text-xs font-body text-destructive">{phoneError}</p>}
-                </Field>
-
-              </>
-            )}
-
-
-            <p className="text-xs font-body text-muted-foreground">
-              Sem senha: usamos seu nome e celular para identificar sua conta.
-            </p>
-
-
-            {mode === "register" && (
-              <>
-                <Field label="Escolha seu avatar:">
-                  <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
-                    {avatars.map((av) => (
-                      <button
-                        key={av.name}
-                        type="button"
-                        title={av.name}
-                        onClick={() => { setSelectedAvatar(av.src); setCustomAvatar(""); }}
-                        className={`rounded-3xl border-2 transition overflow-hidden bg-amber-50 shadow-sm ${
-                          selectedAvatar === av.src && !customAvatar
-                            ? "border-amber-500 scale-105 ring-2 ring-amber-300"
-                            : "border-amber-200 hover:border-amber-300"
-                        }`}
-                      >
-                        <img src={av.src} alt={av.name} className="w-full aspect-square object-cover" loading="lazy" width="1024" height="1024" />
-                        <div className="px-1.5 py-1 bg-white/90 border-t border-amber-100">
-                          <span className="block text-[11px] font-display font-bold text-amber-900 truncate">{av.name}</span>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </Field>
-                <Field label="Ou envie sua própria foto:">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleCustomAvatar}
-                    className="block w-full text-xs text-muted-foreground file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-amber-100 file:text-amber-900 hover:file:bg-amber-200 cursor-pointer"
-                  />
-                  {finalAvatar && (
-                    <div className="flex items-center gap-2 mt-2">
-                      <img loading="lazy" decoding="async" src={finalAvatar} alt="Avatar" className="w-10 h-10 rounded-full border-2 border-amber-400" />
-                      <span className="text-xs text-muted-foreground">Avatar selecionado ✓</span>
-                    </div>
-                  )}
-                </Field>
-              </>
-            )}
-
-            {/* Action buttons */}
-            <div className="flex gap-3 pt-2">
-              {mode === "login" ? (
-                <>
-                  <button
-                    onClick={() => doLogin()}
-                    disabled={busy}
-                    className="flex-1 bg-foreground text-background font-display font-bold py-3 rounded-lg hover:opacity-90 transition tracking-wide text-sm disabled:opacity-60"
-                  >
-                    {busy ? "ENTRANDO..." : "ENTRAR"}
-                  </button>
-                  <button
-                    onClick={() => setMode("register")}
-                    disabled={busy}
-                    className="flex-1 bg-transparent border-2 border-foreground text-foreground font-display font-bold py-3 rounded-lg hover:bg-foreground/5 transition tracking-wide text-sm disabled:opacity-60"
-                  >
-                    CRIAR UMA CONTA
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    onClick={doRegister}
-                    disabled={busy}
-                    className="flex-1 bg-foreground text-background font-display font-bold py-3 rounded-lg hover:opacity-90 transition tracking-wide text-sm disabled:opacity-60"
-                  >
-                    {busy ? "CRIANDO..." : "CRIAR CONTA"}
-                  </button>
-                  <button
-                    onClick={() => setMode("login")}
-                    disabled={busy}
-                    className="flex-1 bg-transparent border-2 border-foreground text-foreground font-display font-bold py-3 rounded-lg hover:bg-foreground/5 transition tracking-wide text-sm disabled:opacity-60"
-                  >
-                    VOLTAR
-                  </button>
-                </>
-              )}
-            </div>
-
-
-
-
-          </div>
-
-          {/* Admin shortcut — always visible for the site owner. Single tap unlocks owner mode + goes to Config. */}
-          {ownerUnlocked && (
-            <div className="mt-6 pt-4 border-t border-amber-200/60 flex flex-col items-center gap-2">
-              <button
-                onClick={() => {
-                  try { localStorage.setItem(OWNER_FLAG_KEY, "1"); } catch {}
-                  // Garante que Configuracao (que exige lemos_user) permita entrada do dono.
-                  try {
-                    if (!localStorage.getItem("lemos_user")) {
-                      localStorage.setItem("lemos_user", JSON.stringify({
-                        name: "Administrador", role: "admin", avatar: "", email: "", createdAt: new Date().toISOString(),
-                      }));
-                    }
-                  } catch {}
-                  setAdminMode(true);
-                  toast({
-                    title: "Modo administrador ativado ✅",
-                    description: "Sessão de dono aplicada. Abrindo as Configurações...",
-                  });
-                  setTimeout(() => navigate("/config"), 300);
-                }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-display font-extrabold text-xs shadow"
-                title="Acesso de administrador"
-              >
-                <Shield className="w-4 h-4" /> Entrar como Administrador
-              </button>
-            </div>
-          )}
-
-        </div>
+        {ownerUnlocked && <button type="button" onClick={() => { setAdminMode(true); navigate("/config"); }}
+          className="absolute right-[3%] top-[3%] rounded-full bg-amber-50/95 p-2 text-amber-900" title="Administração" aria-label="Administração">
+          <Shield size={18} />
+        </button>}
       </div>
-    </div>
+    </main>
   );
 }
 
