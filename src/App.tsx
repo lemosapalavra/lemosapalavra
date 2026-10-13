@@ -251,12 +251,15 @@ const GlobalBackArrow = () => {
     <button
       type="button"
       onClick={() => {
+        const backEvent = new CustomEvent("lemos:back", { cancelable: true });
+        window.dispatchEvent(backEvent);
+        if (backEvent.defaultPrevented) return;
         if (window.history.state?.idx > 0) navigate(-1);
         else navigate("/");
       }}
       aria-label="Voltar à página anterior"
       title="Voltar à página anterior"
-      className="fixed left-3 top-[72px] sm:top-[88px] z-[65] flex h-10 w-10 items-center justify-center rounded-full border-2 border-amber-400 bg-white/95 text-amber-900 shadow-lg transition-transform hover:scale-105"
+      className="fixed left-[20px] sm:left-[34px] top-[72px] sm:top-[88px] z-[100] flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full border-2 border-amber-400 bg-white/95 text-amber-900 shadow-lg transition-transform hover:scale-105"
     >
       <ArrowLeft size={24} />
     </button>
