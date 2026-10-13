@@ -508,14 +508,6 @@ export default function LemosPlay() {
                 <p className="text-zinc-200 text-sm sm:text-base mb-5 leading-relaxed drop-shadow-lg">
                   {heroDescription}
                 </p>
-                <div className="flex gap-3 flex-wrap">
-                  <button onClick={() => hero && requestPlay(hero)} className="inline-flex items-center gap-2 bg-white text-black font-bold px-6 py-2.5 rounded hover:bg-white/85 transition">
-                    <Play className="w-5 h-5 fill-black" /> Assistir agora
-                  </button>
-                  <button className="inline-flex items-center gap-2 bg-white/20 text-white font-bold px-6 py-2.5 rounded hover:bg-white/30 transition backdrop-blur">
-                    <Info className="w-5 h-5" /> Mais informações
-                  </button>
-                </div>
                 {heroPool.length > 1 && (
                   <div className="flex gap-1.5 mt-6">
                     {heroPool.map((_, i) => (
