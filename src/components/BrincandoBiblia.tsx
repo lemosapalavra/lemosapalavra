@@ -78,6 +78,12 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
   }
  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [params]);
+ useEffect(() => {
+  if (index === null) return;
+  const onBack = (event: Event) => { event.preventDefault(); setIndex(null); };
+  window.addEventListener("lemos:back", onBack);
+  return () => window.removeEventListener("lemos:back", onBack);
+ }, [index]);
  const selectCard=(i:number)=>{if(flipped.includes(i)||matched.includes(i)||flipped.length===2)return;const next=[...flipped,i];setFlipped(next);if(next.length===2){setMoves(m=>m+1);if(deck[next[0]].id===deck[next[1]].id){setMatched(m=>[...m,...next]);setFlipped([]);}}};
  const current=index===null?null:activities[index];
  const score=current?.questions?.filter((q,i)=>answers[i]===q.answer).length??0;
@@ -146,7 +152,6 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
  return (
   <section className="fixed inset-0 z-[90] overflow-y-auto bg-amber-50 p-4">
    <div className="mx-auto max-w-4xl rounded-3xl border-4 border-amber-400 bg-gradient-to-b from-amber-100 via-white to-sky-100 p-4 shadow-xl">
-    <button onClick={()=>setIndex(null)} className="mb-4 rounded-full bg-white px-5 py-2 font-bold text-amber-950">✕ Fechar atividade</button>
     <h2 className="text-center text-xl font-extrabold text-amber-950">{current.title}</h2>
     <p className="mb-5 text-center text-sm text-amber-800">📖 {current.verse}</p>
     {current.kind==="memory" ? memory : questions}
