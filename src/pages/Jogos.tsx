@@ -15,11 +15,11 @@ const ALL_GAMES = [
 ];
 
 const positions = [
-  { left: "23%", top: "43%" },
-  { left: "77%", top: "43%" },
-  { left: "19%", top: "63%" },
-  { left: "81%", top: "63%" },
-  { left: "50%", top: "78%" },
+  { left: "15%", top: "40%" },
+  { left: "85%", top: "40%" },
+  { left: "13%", top: "66%" },
+  { left: "87%", top: "66%" },
+  { left: "50%", top: "85%" },
 ];
 
 export default function Jogos() {
@@ -33,11 +33,6 @@ export default function Jogos() {
         className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-center"
       />
       <h1 className="sr-only">FAÇA — Jogos e atividades bíblicas</h1>
-      <button
-        type="button"
-        onClick={() => navigate("/")}
-        className="absolute left-3 top-[82px] z-30 rounded-full border-2 border-amber-400 bg-white/95 px-3 py-2 text-sm font-bold text-amber-950 shadow-lg sm:top-[92px]"
-      >← Início</button>
       <div className="pointer-events-none absolute inset-0 z-20">
         {games.map((game) => {
           const position = positions[ALL_GAMES.findIndex((g) => g.id === game.id)];
