@@ -49,14 +49,14 @@ export default function UserCorner() {
   if (!visible) return null;
 
   if (!user?.name) return (
-    <a href="/login" aria-label="Entrar ou criar conta" title="Entrar ou criar conta" className={onHome ? "fixed right-1 top-1 sm:top-1 z-[75] flex flex-col items-center gap-1" : "fixed right-2 bottom-3 z-[45] flex flex-col items-center gap-1 sm:right-4"}>
+    <a href="/login" aria-label="Entrar ou criar conta" title="Entrar ou criar conta" className="fixed right-1 top-1 z-[75] flex flex-col items-center gap-1">
       <span className="rounded-full border-2 border-amber-300 bg-white p-1 shadow-lg"><img src={iconUsuario} alt="Usuário" className="h-9 w-9 rounded-full object-cover sm:h-11 sm:w-11" /></span>
       <span className="rounded-full border border-amber-300 bg-white px-2 py-1 text-xs font-bold text-amber-900 shadow">Entrar / Cadastrar</span>
     </a>
   );
 
   const greeting = new Date().getHours() < 12 ? "Bom dia" : new Date().getHours() < 18 ? "Boa tarde" : "Boa noite";
-  if (onHome) return (
+  if (true) return (
     <>
       <div className="fixed right-1 top-1 sm:top-1 z-[75] flex flex-col items-center gap-1">
         <button type="button" onClick={() => setMenu(v => !v)} aria-label="Opções do usuário" aria-expanded={menu}
@@ -66,7 +66,7 @@ export default function UserCorner() {
           <span className="max-w-[105px] sm:max-w-[140px] text-[10px] sm:text-sm leading-tight">
             <span className="block">{greeting},</span>
             <strong className="block truncate text-sm sm:text-base">{user.name}</strong>
-            <span className="block text-[10px] sm:text-xs">Seja bem-vindo!</span><span className="block font-extrabold text-yellow-200">🪙 {coins} moedas</span>
+            <span className="block text-[10px] sm:text-xs">Seja bem-vindo!</span><span className="block font-extrabold text-yellow-200">🪙 {coins}</span>
           </span>
         </button>
         {menu && <div className="flex gap-1 rounded-xl bg-white/95 p-1 shadow-lg">
