@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
 import JogosInterativos from "@/components/JogosInterativos";
 import iconMemoria from "@/assets/jogos/icon-memoria.png";
 import iconQuebraCabeca from "@/assets/jogos/icon-quebra-cabeca.png";
@@ -16,14 +14,13 @@ const ALL_GAMES = [
 ];
 
 const positions = [
-  { left: "15%", top: "40%" },
-  { left: "13%", top: "66%" },
-  { left: "87%", top: "66%" },
-  { left: "50%", top: "85%" },
+  { left: "23%", top: "43%" },
+  { left: "77%", top: "43%" },
+  { left: "23%", top: "73%" },
+  { left: "77%", top: "73%" },
 ];
 
 export default function Jogos() {
-  const navigate = useNavigate();
   const [selectedGame, setSelectedGame] = useState<"memory"|"maze"|"jigsaw"|"wordbuilder"|"quiz"|null>(null);
   const games = ALL_GAMES.filter((game) => isAllowed("jogos", game.id));
   return (
@@ -34,7 +31,6 @@ export default function Jogos() {
         className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-center"
       />
       <h1 className="sr-only">FAÇA — Jogos e atividades bíblicas</h1>
-      <button type="button" onClick={() => navigate(-1)} aria-label="Voltar à página anterior" title="Voltar à página anterior" className="absolute left-3 top-[72px] sm:top-[88px] z-[65] flex h-10 w-10 items-center justify-center rounded-full border-2 border-amber-400 bg-white/95 text-amber-900 shadow-lg"><ArrowLeft size={24}/></button>
       <div className="pointer-events-none absolute inset-0 z-20">
         {games.map((game) => {
           const position = positions[ALL_GAMES.findIndex((g) => g.id === game.id)];
