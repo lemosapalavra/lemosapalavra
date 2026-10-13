@@ -83,50 +83,45 @@ export default function Louvores() {
 
 
   return (
-    <div className="lemos-media-page min-h-screen py-4 px-4" style={{ background: "transparent" }}>
+    <div className="lemos-media-page min-h-screen bg-black text-white">
       <style>{`html:has(.lemos-media-page), body:has(.lemos-media-page) { scrollbar-width: none; } html:has(.lemos-media-page)::-webkit-scrollbar, body:has(.lemos-media-page)::-webkit-scrollbar { display: none; width: 0; }`}</style>
-      <div className="max-w-4xl mx-auto">
-        <PageHeader title="Ouça" subtitle="Músicas e louvores" icon={oucaIcon.url} />
-
-        {/* Top category icons */}
-        <div className="flex items-center justify-center gap-6 sm:gap-10 my-6">
-          {tabs.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={`flex flex-col items-center gap-2 transition-transform hover:scale-110 ${
-                tab === t.id ? "scale-110" : "opacity-70"
-              }`}
-            >
-              <img loading="lazy" decoding="async"
-                src={t.icon}
-                alt={t.label}
-                className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 shadow-xl bg-white object-cover ${
-                  tab === t.id ? "border-primary" : "border-primary/30"
-                }`}
-              />
-              <span className="font-display font-bold text-sm sm:text-base text-primary">{t.label}</span>
-            </button>
-          ))}
-        </div>
-
-        <div className="flex justify-center py-4">
-          <img loading="lazy" decoding="async" src={logoCentral} alt="Lemos a Palavra" className="w-28 sm:w-40 drop-shadow-xl" />
-        </div>
-        {entries.length ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center py-6">
-            {entries.map(renderItem)}
+      <PageHeader title="Ouça" subtitle="Músicas e Louvores" />
+      <section className="relative min-h-[260px] sm:min-h-[370px] flex items-center overflow-hidden bg-gradient-to-br from-amber-950 via-zinc-900 to-black">
+        <img src="/ouca-flutuante.png" alt="" className="absolute right-[4%] top-1/2 -translate-y-1/2 w-40 sm:w-64 opacity-45 drop-shadow-2xl pointer-events-none" />
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-12 py-10">
+          <p className="text-amber-300 font-bold tracking-widest uppercase text-xs mb-2">Lemos a Palavra</p>
+          <h1 className="font-display font-extrabold text-4xl sm:text-6xl mb-3">OUÇA</h1>
+          <p className="text-zinc-200 max-w-md text-sm sm:text-lg mb-5">Músicas e louvores para inspirar a fé e alegrar o coração.</p>
+          <div className="flex flex-wrap gap-3">
+            {tabs.map(t => (
+              <button key={t.id} onClick={() => setTab(t.id)} aria-pressed={tab === t.id}
+                className={`flex items-center gap-2 rounded-lg px-4 py-2.5 font-bold transition ${tab === t.id ? "bg-white text-black" : "bg-white/15 text-white hover:bg-white/25"}`}>
+                <img src={t.icon} alt="" className="h-8 w-8 rounded-full object-cover" /> {t.label}
+              </button>
+            ))}
           </div>
-        ) : <p className="py-16 text-center font-display text-lg font-bold text-muted-foreground">Nenhum conteúdo ativo nesta categoria.</p>}
-
-        <div className="text-center mt-6 space-y-2 max-w-2xl mx-auto">
-          <p className="font-display text-2xl font-bold text-primary">Convido você!</p>
-          <p className="font-body text-sm text-foreground">A acompanhar e compartilhar este projeto, assim você se torna parte desta missão.</p>
-          <p className="font-display text-base italic text-primary">"Porque a Palavra de Deus é viva e eficaz." (Hebreus 4:12)</p>
-          <p className="font-display text-lg font-bold text-foreground">Acreditem! Tenham fé na Palavra.</p>
         </div>
-
-      </div>
+      </section>
+      <main className="max-w-7xl mx-auto py-7 sm:py-10">
+        <h2 className="text-xl sm:text-3xl font-extrabold px-5 sm:px-12 mb-4">{tab === "musicas" ? "Músicas" : "Louvores"}</h2>
+        {entries.length ? (
+          <div className="flex gap-3 sm:gap-5 overflow-x-auto px-5 sm:px-12 pb-8 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {entries.map(item => (
+              <div key={item.id} className="shrink-0 w-[148px] sm:w-[195px] rounded-xl bg-zinc-900/80 p-2 hover:bg-zinc-800 transition">
+                <button onClick={() => { setPlaying(item); awardOnce(`ouca:${item.id}`, tab === "louvores" ? COINS.louvor : COINS.musica, `Você assistiu "${item.title}"`); }}
+                  className="w-full text-left group">
+                  <div className="aspect-[3/4] rounded-lg overflow-hidden bg-zinc-800 relative">
+                    {item.poster ? <img src={item.poster} alt="" loading="lazy" className="h-full w-full object-cover group-hover:scale-105 transition-transform" /> : <Play className="absolute inset-0 m-auto h-12 w-12 text-amber-300" />}
+                    <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/30 transition"><Play className="w-10 h-10 text-white fill-white" /></span>
+                  </div>
+                  <span className="block mt-2 text-sm font-semibold text-white line-clamp-2 min-h-[2.5rem]">{item.title}</span>
+                </button>
+                <CoinBadge amount={tab === "louvores" ? COINS.louvor : COINS.musica} size="xs" />
+              </div>
+            ))}
+          </div>
+        ) : <p className="text-zinc-300 px-5 sm:px-12 py-8">Nenhum conteúdo ativo nesta categoria.</p>}
+      </main>
     </div>
   );
 }
