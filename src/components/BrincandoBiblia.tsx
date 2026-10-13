@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
 type Activity = { title: string; kind: "vf" | "character" | "quiz" | "memory"; questions?: { text: string; answer: string; options?: string[] }[]; cards?: string[]; verse: string };
@@ -53,6 +54,7 @@ const activityIcons = ["📖","⛵","🌳","❤️","🦁","🌈","👑","🐟",
 function shuffle<T,>(arr:T[]):T[]{return [...arr].sort(()=>Math.random()-.5);}
 export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
  const [index,setIndex]=useState<number|null>(null);
+ const [params,setParams]=useSearchParams();
  const today = new Date();
  const weekday = today.getDay();
  const dayIndex = (weekday + 6) % 7;
@@ -65,6 +67,17 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
  const [matched,setMatched]=useState<number[]>([]);
  const [moves,setMoves]=useState(0);
  const open=(i:number)=>{setIndex(i);setAnswers({});setChecked(false);setFlipped([]);setMatched([]);setMoves(0);const a=activities[i];if(a.cards)setDeck(shuffle(a.cards.flatMap((name,id)=>[{id,name},{id,name}])));};
+ useEffect(() => {
+  const game = params.get("jogo");
+  if (!game) return;
+  const gameToActivity: Record<string, number> = { memory: 4, maze: 1, jigsaw: 6, wordbuilder: 7, quiz: 12 };
+  const target = gameToActivity[game];
+  if (target !== undefined) {
+    open(target);
+    setParams({}, { replace: true });
+  }
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+ }, [params]);
  const selectCard=(i:number)=>{if(flipped.includes(i)||matched.includes(i)||flipped.length===2)return;const next=[...flipped,i];setFlipped(next);if(next.length===2){setMoves(m=>m+1);if(deck[next[0]].id===deck[next[1]].id){setMatched(m=>[...m,...next]);setFlipped([]);}}};
  const current=index===null?null:activities[index];
  const score=current?.questions?.filter((q,i)=>answers[i]===q.answer).length??0;
@@ -73,8 +86,8 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
   return (
    <section className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
     {dailyIndices.map((i,n)=>(
-     <button key={i} type="button" onClick={()=>open(i)} aria-label={activities[i].title} title={activities[i].title} style={positions[n]}
-      className="absolute pointer-events-auto flex aspect-square w-[23%] max-w-[150px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border-4 border-yellow-400 bg-gradient-to-br from-emerald-500 to-green-950 text-white shadow-[0_0_18px_5px_rgba(255,222,60,.8)] transition-transform hover:scale-105">
+     <button key={i} type="button" onClick={()=>open(i)} aria-label={activities[i].title} title={activities[i].title}
+      className="absolute pointer-events-auto flex aspect-square w-[23%] max-w-[150px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border-4 border-yellow-400 bg-gradient-to-br from-emerald-500 to-green-950 text-white shadow-[0_0_18px_5px_rgba(255,222,60,.8)] animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:brightness-110" style={{...positions[n],animationDelay:`${n*0.8}s`}}>
       <span className="text-3xl sm:text-5xl">{activityIcons[i]}</span>
       <span className="px-1 text-center text-[9px] font-extrabold leading-tight sm:text-sm">{activities[i].title}</span>
      </button>
