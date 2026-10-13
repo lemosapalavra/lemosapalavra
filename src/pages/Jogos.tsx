@@ -9,10 +9,10 @@ import { isAllowed } from "@/lib/contentAccess";
 
 const ALL_GAMES = [
   { id: "memory", title: "Memória Bíblica", icon: iconMemoria, path: "/jogos?jogo=memory" },
-  { id: "maze", title: "Labirinto", icon: iconLabirinto, path: "/atividades?jogo=maze" },
-  { id: "jigsaw", title: "Quebra-Cabeça", icon: iconQuebraCabeca, path: "/atividades?jogo=jigsaw" },
-  { id: "wordbuilder", title: "Construtor de Palavras", icon: iconPalavras, path: "/atividades?jogo=wordbuilder" },
-  { id: "quiz", title: "Quiz Bíblico", icon: iconQuiz, path: "/atividades?jogo=quiz" },
+  { id: "maze", title: "Labirinto", icon: iconLabirinto, path: "/jogos?jogo=maze" },
+  { id: "jigsaw", title: "Quebra-Cabeça", icon: iconQuebraCabeca, path: "/jogos?jogo=jigsaw" },
+  { id: "wordbuilder", title: "Construtor de Palavras", icon: iconPalavras, path: "/jogos?jogo=wordbuilder" },
+  { id: "quiz", title: "Quiz Bíblico", icon: iconQuiz, path: "/jogos?jogo=quiz" },
 ];
 
 const positions = [
