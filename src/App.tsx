@@ -235,7 +235,8 @@ const AutoUpdater = () => {
 const GlobalTopMenu = () => {
   const location = useLocation();
   if (location.pathname === "/" || location.pathname === "/login" || location.pathname === "/login-sms") return null;
-  return <header className="fixed top-0 inset-x-0 z-[60] h-[60px] sm:h-[76px] bg-gradient-to-b from-amber-100/95 via-amber-100/85 to-amber-100/60 shadow-sm">
+  const transparentHeader = location.pathname === "/lemos-play" || location.pathname === "/louvores" || location.pathname === "/veja" || location.pathname === "/ouca";
+  return <header className={`fixed top-0 inset-x-0 z-[60] h-[60px] sm:h-[76px] ${transparentHeader ? "bg-transparent shadow-none" : "bg-gradient-to-b from-amber-100/95 via-amber-100/85 to-amber-100/60 shadow-sm"}`}>
     <div className="flex h-full items-start justify-center pl-1 pr-[135px] sm:pl-[155px] sm:pr-[200px]"><HomeTopNav /></div>
   </header>;
 };
