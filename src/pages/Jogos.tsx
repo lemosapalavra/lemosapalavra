@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useState } from "react";
 import JogosInterativos from "@/components/JogosInterativos";
 import iconMemoria from "@/assets/jogos/icon-memoria.png";
 import iconLabirinto from "@/assets/jogos/icon-labirinto.png";
@@ -8,11 +8,11 @@ import iconQuiz from "@/assets/jogos/icon-quiz.png";
 import { isAllowed } from "@/lib/contentAccess";
 
 const ALL_GAMES = [
-  { id: "memory", title: "Memória Bíblica", icon: iconMemoria, path: "/jogos?jogo=memory" },
-  { id: "maze", title: "Labirinto", icon: iconLabirinto, path: "/jogos?jogo=maze" },
-  { id: "jigsaw", title: "Quebra-Cabeça", icon: iconQuebraCabeca, path: "/jogos?jogo=jigsaw" },
-  { id: "wordbuilder", title: "Construtor de Palavras", icon: iconPalavras, path: "/jogos?jogo=wordbuilder" },
-  { id: "quiz", title: "Quiz Bíblico", icon: iconQuiz, path: "/jogos?jogo=quiz" },
+  { id: "memory", title: "Memória Bíblica", icon: iconMemoria },
+  { id: "maze", title: "Labirinto", icon: iconLabirinto },
+  { id: "jigsaw", title: "Quebra-Cabeça", icon: iconQuebraCabeca },
+  { id: "wordbuilder", title: "Construtor de Palavras", icon: iconPalavras },
+  { id: "quiz", title: "Quiz Bíblico", icon: iconQuiz },
 ];
 
 const positions = [
@@ -24,11 +24,7 @@ const positions = [
 ];
 
 export default function Jogos() {
-  const navigate = useNavigate();
-  const [params,setParams] = useSearchParams();
-  const active = params.get("jogo");
-  const validGames = ["memory","maze","jigsaw","wordbuilder","quiz"];
-  const selectedGame = active && validGames.includes(active) ? active as "memory"|"maze"|"jigsaw"|"wordbuilder"|"quiz" : null;
+  const [selectedGame, setSelectedGame] = useState<"memory"|"maze"|"jigsaw"|"wordbuilder"|"quiz"|null>(null);
   const games = ALL_GAMES.filter((game) => isAllowed("jogos", game.id));
   return (
     <main id="faca-cenario" className="relative isolate h-[100dvh] w-full overflow-hidden bg-[#bdebf7]">
@@ -45,7 +41,7 @@ export default function Jogos() {
             <button
               key={game.id}
               type="button"
-              onClick={() => navigate(game.path)}
+              onClick={() => setSelectedGame(game.id as "memory"|"maze"|"jigsaw"|"wordbuilder"|"quiz")}
               aria-label={game.title}
               title={game.title}
               className="absolute pointer-events-auto aspect-square w-[23%] max-w-[150px] -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-yellow-400 bg-emerald-800/80 p-1 shadow-[0_0_18px_4px_rgba(255,220,65,0.75)] animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:brightness-110 focus-visible:outline-4 focus-visible:outline-white"
@@ -56,7 +52,7 @@ export default function Jogos() {
           );
         })}
       </div>
-      {selectedGame && <JogosInterativos game={selectedGame} onClose={() => setParams({}, {replace:true})} />}
+      {selectedGame && <JogosInterativos game={selectedGame} onClose={() => setSelectedGame(null)} />}
     </main>
   );
 }
