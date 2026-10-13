@@ -68,18 +68,72 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
  const selectCard=(i:number)=>{if(flipped.includes(i)||matched.includes(i)||flipped.length===2)return;const next=[...flipped,i];setFlipped(next);if(next.length===2){setMoves(m=>m+1);if(deck[next[0]].id===deck[next[1]].id){setMatched(m=>[...m,...next]);setFlipped([]);}}};
  const current=index===null?null:activities[index];
  const score=current?.questions?.filter((q,i)=>answers[i]===q.answer).length??0;
- return <section className={index===null?"absolute inset-0 z-20 pointer-events-none overflow-hidden":"fixed inset-0 z-[90] overflow-y-auto bg-amber-50 p-4"}>
- {index===null?<div className="absolute inset-0 z-20 pointer-events-none">
- {dailyIndices.map((i,n)=><button key={i} type="button" onClick={()=>open(i)} aria-label={activities[i].title} title={activities[i].title} className="absolute pointer-events-auto flex aspect-square w-[23%] max-w-[150px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border-4 border-yellow-400 bg-gradient-to-br from-emerald-500 to-green-950 text-white shadow-[0_0_18px_5px_rgba(255,222,60,.8)] transition-transform hover:scale-105" style={{left:["21%","79%","50%"][n],top:["49%","49%","71%"][n]}}><span className="text-3xl sm:text-5xl">{activityIcons[i]}</span><span className="px-1 text-center text-[9px] font-extrabold leading-tight sm:text-sm">{activities[i].title}</span></button>)}
- <span className="absolute left-1/2 top-[90%] -translate-x-1/2 rounded-full bg-green-950/90 px-3 py-1 text-center text-xs font-bold text-white">{todayLabel} • 3 atividades</span>
- </div>:<div className="mx-auto max-w-4xl rounded-3xl border-4 border-amber-400 bg-gradient-to-b from-amber-100 via-white to-sky-100 p-4 shadow-xl">
- <button onClick={()=>setIndex(null)} className="mb-4 rounded-full bg-white px-5 py-2 font-bold text-amber-950">← Voltar à imagem APRENDA</button>
- <h2 className="text-center text-xl font-extrabold text-amber-950">{current?.title}</h2><p className="mb-5 text-center text-sm text-amber-800">📖 {current?.verse}</p>
- 
- {current?.kind==="memory"?<><p className="text-center mb-3">Encontre os pares! Movimentos: {moves} • Pares: {matched.length/2} de {current.cards?.length}</p><div className="grid grid-cols-3 sm:grid-cols-4 gap-2">{deck.map((card,i)=><button key={i} onClick={()=>selectCard(i)} aria-label={flipped.includes(i)||matched.includes(i)?card.name:"Virar carta"} className={`min-h-24 rounded-xl border-2 font-bold text-xs sm:text-base p-2 ${matched.includes(i)?"bg-emerald-200 border-emerald-500":flipped.includes(i)?"bg-amber-100 border-amber-500":"bg-blue-600 border-yellow-400 text-white"}`}>{flipped.includes(i)||matched.includes(i)?card.name:"📖 ?"}</button>)}</div>{flipped.length===2&&<button className="mt-4 rounded-full bg-amber-500 px-5 py-2 font-bold" onClick={()=>setFlipped([])}>Continuar</button>}{matched.length===deck.length&&<p className="text-center mt-4 text-emerald-800 font-extrabold">🎉 Parabéns! Você encontrou todos os pares!</p>}</>:<>
- <div className="space-y-3">{current?.questions?.map((q,i)=><div key={i} className="rounded-xl border border-amber-200 bg-white p-3"><p className="font-bold text-slate-800 mb-2">{i+1}. {q.text}</p><div className="flex flex-wrap gap-2">{q.options?.map(opt=><button key={opt} disabled={checked} onClick={()=>setAnswers(a=>({...a,[i]:opt}))} className={`rounded-full border-2 px-3 py-1.5 text-sm font-bold ${answers[i]===opt?"bg-amber-300 border-amber-600 text-slate-900":"bg-white border-slate-200 text-slate-800"}`}>{opt}</button>)}</div>{checked&&<p className={`mt-2 text-sm font-bold ${answers[i]===q.answer?"text-emerald-700":"text-rose-700"}`}>{answers[i]===q.answer?"✓ Correto!":`Resposta: ${q.answer}`}</p>}</div>)}</div>
- <div className="mt-5 flex gap-3 justify-center">{!checked?<button disabled={Object.keys(answers).length!==(current?.questions?.length??0)} onClick={()=>{setChecked(true);toast.success("Respostas conferidas!")}} className="rounded-full bg-emerald-600 text-white px-6 py-3 font-extrabold disabled:opacity-40">Conferir respostas</button>:<><p className="font-extrabold text-emerald-800">Você acertou {score} de {current?.questions?.length}!</p><button onClick={()=>{setAnswers({});setChecked(false)}} className="rounded-full bg-amber-500 px-5 py-2 font-bold">Tentar novamente</button></>}</div>
- </>}
- </div>
- </section>;
+ const positions = [{left:"21%",top:"49%"},{left:"79%",top:"49%"},{left:"50%",top:"71%"}];
+ if (index===null || !current) {
+  return (
+   <section className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
+    {dailyIndices.map((i,n)=>(
+     <button key={i} type="button" onClick={()=>open(i)} aria-label={activities[i].title} title={activities[i].title} style={positions[n]}
+      className="absolute pointer-events-auto flex aspect-square w-[23%] max-w-[150px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border-4 border-yellow-400 bg-gradient-to-br from-emerald-500 to-green-950 text-white shadow-[0_0_18px_5px_rgba(255,222,60,.8)] transition-transform hover:scale-105">
+      <span className="text-3xl sm:text-5xl">{activityIcons[i]}</span>
+      <span className="px-1 text-center text-[9px] font-extrabold leading-tight sm:text-sm">{activities[i].title}</span>
+     </button>
+    ))}
+    <span className="absolute left-1/2 top-[90%] -translate-x-1/2 rounded-full bg-green-950/90 px-3 py-1 text-center text-xs font-bold text-white">{todayLabel} • 3 atividades</span>
+   </section>
+  );
+ }
+ const total = current.questions?.length ?? 0;
+ const memory = (
+  <>
+   <p className="text-center mb-3">Encontre os pares! Movimentos: {moves} • Pares: {matched.length/2} de {current.cards?.length}</p>
+   <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+    {deck.map((card,i)=>{
+     const shown = flipped.includes(i)||matched.includes(i);
+     const cls = matched.includes(i)?"bg-emerald-200 border-emerald-500":flipped.includes(i)?"bg-amber-100 border-amber-500":"bg-blue-600 border-yellow-400 text-white";
+     return <button key={i} onClick={()=>selectCard(i)} aria-label={shown?card.name:"Virar carta"} className={"min-h-24 rounded-xl border-2 font-bold text-xs sm:text-base p-2 "+cls}>{shown?card.name:"📖 ?"}</button>;
+    })}
+   </div>
+   {flipped.length===2 && <button className="mt-4 rounded-full bg-amber-500 px-5 py-2 font-bold" onClick={()=>setFlipped([])}>Continuar</button>}
+   {matched.length===deck.length && <p className="text-center mt-4 text-emerald-800 font-extrabold">🎉 Parabéns! Você encontrou todos os pares!</p>}
+  </>
+ );
+ const questions = (
+  <>
+   <div className="space-y-3">
+    {current.questions?.map((q,i)=>(
+     <div key={i} className="rounded-xl border border-amber-200 bg-white p-3">
+      <p className="font-bold text-slate-800 mb-2">{i+1}. {q.text}</p>
+      <div className="flex flex-wrap gap-2">
+       {q.options?.map(opt=>(
+        <button key={opt} disabled={checked} onClick={()=>setAnswers(a=>({...a,[i]:opt}))}
+         className={"rounded-full border-2 px-3 py-1.5 text-sm font-bold "+(answers[i]===opt?"bg-amber-300 border-amber-600 text-slate-900":"bg-white border-slate-200 text-slate-800")}>{opt}</button>
+       ))}
+      </div>
+      {checked && <p className={"mt-2 text-sm font-bold "+(answers[i]===q.answer?"text-emerald-700":"text-rose-700")}>{answers[i]===q.answer?"✓ Correto!":"Resposta: "+q.answer}</p>}
+     </div>
+    ))}
+   </div>
+   <div className="mt-5 flex gap-3 justify-center">
+    {!checked ? (
+     <button disabled={Object.keys(answers).length!==total} onClick={()=>{setChecked(true);toast.success("Respostas conferidas!");}} className="rounded-full bg-emerald-600 text-white px-6 py-3 font-extrabold disabled:opacity-40">Conferir respostas</button>
+    ) : (
+     <>
+      <p className="font-extrabold text-emerald-800">Você acertou {score} de {total}!</p>
+      <button onClick={()=>{setAnswers({});setChecked(false);}} className="rounded-full bg-amber-500 px-5 py-2 font-bold">Tentar novamente</button>
+     </>
+    )}
+   </div>
+  </>
+ );
+ return (
+  <section className="fixed inset-0 z-[90] overflow-y-auto bg-amber-50 p-4">
+   <div className="mx-auto max-w-4xl rounded-3xl border-4 border-amber-400 bg-gradient-to-b from-amber-100 via-white to-sky-100 p-4 shadow-xl">
+    <button onClick={()=>setIndex(null)} className="mb-4 rounded-full bg-white px-5 py-2 font-bold text-amber-950">← Voltar à imagem APRENDA</button>
+    <h2 className="text-center text-xl font-extrabold text-amber-950">{current.title}</h2>
+    <p className="mb-5 text-center text-sm text-amber-800">📖 {current.verse}</p>
+    {current.kind==="memory" ? memory : questions}
+   </div>
+  </section>
+ );
 }
