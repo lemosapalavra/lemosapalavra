@@ -205,3 +205,15 @@ body:has(#aprenda-novo)::-webkit-scrollbar,
 #aprenda-novo::-webkit-scrollbar {
   display: none;
 }
+
+
+/* FAÇA: fundo e ícones em uma única tela, sem barra de rolagem. */
+html:has(#faca-cenario),
+body:has(#faca-cenario),
+body:has(#faca-cenario) #root {
+  height: 100%;
+  overflow: hidden !important;
+}
+body:has(#faca-cenario) { padding-bottom: 0 !important; }
+#faca-cenario::-webkit-scrollbar,
+body:has(#faca-cenario)::-webkit-scrollbar { display: none; }
