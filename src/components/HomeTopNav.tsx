@@ -1,15 +1,11 @@
 import { NavLink } from "@/components/NavLink";
-import { Home, BookOpen, UsersRound, Gamepad2, Heart, HandHeart, Music2, PlaySquare } from "lucide-react";
+import { Home, BookOpen, Heart, HandHeart } from "lucide-react";
 
 const LINKS = [
   { label: "Início", to: "/", Icon: Home, image: "/inicio.png" },
   { label: "Bíblia", to: "/biblia", Icon: BookOpen, image: "/biblia.png" },
-  { label: "Histórias", to: "/historias-biblicas", Icon: UsersRound },
-  { label: "Atividades", to: "/atividades", Icon: Gamepad2 },
   { label: "Devocionais", to: "/devocionais", Icon: Heart, image: "/devocionais.png" },
   { label: "Orar", to: "/pedidos-oracao", Icon: HandHeart, image: "/orar.png" },
-  { label: "Louvores", to: "/musicas", Icon: Music2 },
-  { label: "Vídeo", to: "/lemosplay", Icon: PlaySquare },
 ];
 
 /** Menu ilustrado superior inspirado no layout aprovado pelo usuário. */
