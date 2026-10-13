@@ -80,6 +80,6 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
  <div className="space-y-3">{current?.questions?.map((q,i)=><div key={i} className="rounded-xl border border-amber-200 bg-white p-3"><p className="font-bold text-slate-800 mb-2">{i+1}. {q.text}</p><div className="flex flex-wrap gap-2">{q.options?.map(opt=><button key={opt} disabled={checked} onClick={()=>setAnswers(a=>({...a,[i]:opt}))} className={`rounded-full border-2 px-3 py-1.5 text-sm font-bold ${answers[i]===opt?"bg-amber-300 border-amber-600 text-slate-900":"bg-white border-slate-200 text-slate-800"}`}>{opt}</button>)}</div>{checked&&<p className={`mt-2 text-sm font-bold ${answers[i]===q.answer?"text-emerald-700":"text-rose-700"}`}>{answers[i]===q.answer?"✓ Correto!":`Resposta: ${q.answer}`}</p>}</div>)}</div>
  <div className="mt-5 flex gap-3 justify-center">{!checked?<button disabled={Object.keys(answers).length!==(current?.questions?.length??0)} onClick={()=>{setChecked(true);toast.success("Respostas conferidas!")}} className="rounded-full bg-emerald-600 text-white px-6 py-3 font-extrabold disabled:opacity-40">Conferir respostas</button>:<><p className="font-extrabold text-emerald-800">Você acertou {score} de {current?.questions?.length}!</p><button onClick={()=>{setAnswers({});setChecked(false)}} className="rounded-full bg-amber-500 px-5 py-2 font-bold">Tentar novamente</button></>}</div>
  </>}
- </div>
+ </div>}
  </section>;
 }
