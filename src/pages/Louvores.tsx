@@ -93,20 +93,13 @@ export default function Louvores() {
         <div className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-12 py-10">
           <p className="text-amber-300 font-bold tracking-widest uppercase text-xs mb-2">Lemos a Palavra</p>
           <h1 className="font-display font-extrabold text-4xl sm:text-6xl mb-3">OUÇA</h1>
-          <p className="text-zinc-200 max-w-md text-sm sm:text-lg mb-3">Músicas e louvores para inspirar a fé e alegrar o coração.</p>
-          {featured && <div className="mb-5"><p className="text-amber-300 text-sm font-bold mb-2">Em destaque: {featured.title}</p><button onClick={() => { setTab("musicas"); setPlaying(featured); }} className="rounded-lg bg-white px-5 py-2 font-bold text-black hover:bg-amber-100">▶ Assistir com som</button></div>}
-          <div className="flex flex-wrap gap-3">
-            {tabs.map(t => (
-              <button key={t.id} onClick={() => setTab(t.id)} aria-pressed={tab === t.id}
-                className={`flex items-center gap-2 rounded-lg px-4 py-2.5 font-bold transition ${tab === t.id ? "bg-white text-black" : "bg-white/15 text-white hover:bg-white/25"}`}>
-                <img src={t.icon} alt="" className="h-8 w-8 rounded-full object-cover" /> {t.label}
-              </button>
-            ))}
-          </div>
+          
+          {featured && <p className="mb-4 text-amber-300 text-sm font-bold">Em destaque: {featured.title}</p>}
+
         </div>
       </section>
       <main className="max-w-7xl mx-auto py-7 sm:py-10">
-        <h2 className="text-xl sm:text-3xl font-extrabold px-5 sm:px-12 mb-4">{tab === "musicas" ? "Músicas" : "Louvores"}</h2>
+        <div className="flex flex-wrap gap-2 px-5 sm:px-12 mb-5" role="group" aria-label="Categorias de áudio">{tabs.map(t => <button key={t.id} onClick={() => setTab(t.id)} aria-pressed={tab === t.id} className={`rounded-full px-5 py-2 text-sm font-bold transition ${tab === t.id ? "bg-amber-400 text-black" : "bg-zinc-800 text-white hover:bg-zinc-700"}`}>{t.label}</button>)}</div>
         {entries.length ? (
           <div className="flex gap-3 sm:gap-5 overflow-x-auto px-5 sm:px-12 pb-8 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {entries.map(item => (
