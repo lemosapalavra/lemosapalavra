@@ -1,7 +1,6 @@
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import DedicatoriaModal from "@/components/DedicatoriaModal";
@@ -9,11 +8,9 @@ import DedicatoriaModal from "@/components/DedicatoriaModal";
 import HomeTopNav from "@/components/HomeTopNav";
 import EventBannerKart from "@/components/EventBannerKart";
 import EventBannerPlane from "@/components/EventBannerPlane";
-import IndexAdminPanel from "@/components/IndexAdminPanel";
 
 
 import { ensureInitialCoins, addCoins } from "@/hooks/useCoins";
-import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { loadOrbit } from "@/data/orbitConfig";
 
 const vejaFlutuante = "/veja-flutuante.png";
@@ -28,10 +25,8 @@ export default function Index() {
 
 function IndexV1() {
   const navigate = useNavigate();
-  const isAdmin = useIsAdmin();
   const [user, setUser] = useState<{ name: string; email: string; avatar?: string } | null>(null);
   const [dedicatoriaOpen, setDedicatoriaOpen] = useState(false);
-  const [adminPanelOpen, setAdminPanelOpen] = useState(false);
   const dedicatoriaVisible = useIconVisible("dedicatoria");
 
   useEffect(() => {
@@ -85,22 +80,6 @@ function IndexV1() {
 
       {/* 14-Bis animado, acima do cenário e abaixo dos controles do usuário. */}
       <EventBannerPlane isAuthenticated={!!user?.name} />
-
-      {/* Engrenagem visível apenas para administradores verificados. */}
-      {isAdmin && (
-        <Button
-          type="button"
-          variant="outline"
-          size="icon"
-          onClick={() => setAdminPanelOpen(true)}
-          title="Configurações da página inicial"
-          aria-label="Abrir painel de administração da página inicial"
-          className="fixed top-[75px] left-3 z-[80] h-10 w-10 rounded-full border-2 border-amber-400 bg-white text-amber-900 shadow-[0_0_12px_rgba(245,158,11,0.65)] hover:bg-amber-50"
-        >
-          <Settings className="h-5 w-5" />
-        </Button>
-      )}
-      {isAdmin && <IndexAdminPanel open={adminPanelOpen} onClose={() => setAdminPanelOpen(false)} />}
 
       {/* Fundos enviados ao GitHub: vertical para celular e horizontal para desktop. */}
       <picture aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 block overflow-hidden">
