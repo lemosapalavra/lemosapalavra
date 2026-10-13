@@ -68,8 +68,8 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
  const selectCard=(i:number)=>{if(flipped.includes(i)||matched.includes(i)||flipped.length===2)return;const next=[...flipped,i];setFlipped(next);if(next.length===2){setMoves(m=>m+1);if(deck[next[0]].id===deck[next[1]].id){setMatched(m=>[...m,...next]);setFlipped([]);}}};
  const current=index===null?null:activities[index];
  const score=current?.questions?.filter((q,i)=>answers[i]===q.answer).length??0;
- return <section className={index===null?"absolute inset-0 z-20 pointer-events-none":"fixed inset-0 z-[90] overflow-y-auto bg-amber-50 p-4"}>
- {index===null?<div className="absolute inset-0 pointer-events-none">
+ return <section className={index===null?"absolute inset-0 z-20 pointer-events-none overflow-hidden":"fixed inset-0 z-[90] overflow-y-auto bg-amber-50 p-4"}>
+ {index===null?<div className="absolute inset-0 z-20 pointer-events-none">
  {dailyIndices.map((i,n)=><button key={i} type="button" onClick={()=>open(i)} aria-label={activities[i].title} title={activities[i].title} className="absolute pointer-events-auto flex aspect-square w-[23%] max-w-[150px] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border-4 border-yellow-400 bg-gradient-to-br from-emerald-500 to-green-950 text-white shadow-[0_0_18px_5px_rgba(255,222,60,.8)] transition-transform hover:scale-105" style={{left:["21%","79%","50%"][n],top:["49%","49%","71%"][n]}}><span className="text-3xl sm:text-5xl">{activityIcons[i]}</span><span className="px-1 text-center text-[9px] font-extrabold leading-tight sm:text-sm">{activities[i].title}</span></button>)}
  <span className="absolute left-1/2 top-[90%] -translate-x-1/2 rounded-full bg-green-950/90 px-3 py-1 text-center text-xs font-bold text-white">{todayLabel} • 3 atividades</span>
  </div>:<div className="mx-auto max-w-4xl rounded-3xl border-4 border-amber-400 bg-gradient-to-b from-amber-100 via-white to-sky-100 p-4 shadow-xl">
