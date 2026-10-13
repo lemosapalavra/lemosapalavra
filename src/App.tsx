@@ -208,7 +208,7 @@ const AdminOnly = ({ children }: { children: React.ReactNode }) => {
 /** Rodapé global — escondido no Álbum para não conflitar com as figurinhas. */
 const GlobalFooter = () => {
   const location = useLocation();
-  const hidden = location.pathname.startsWith("/album") || location.pathname === "/" || location.pathname === "/familia";
+  const hidden = location.pathname.startsWith("/album") || location.pathname === "/" || location.pathname === "/familia" || location.pathname === "/login" || location.pathname === "/login-sms";
   useEffect(() => {
     document.body.classList.toggle("no-global-footer", hidden);
     return () => document.body.classList.remove("no-global-footer");
@@ -240,6 +240,12 @@ const GlobalTopMenu = () => {
   </header>;
 };
 
+const AuthAwareDecorations = () => {
+  const location = useLocation();
+  if (location.pathname === "/login" || location.pathname === "/login-sms") return null;
+  return <><MascoteLia /><UserCorner /></>;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -251,8 +257,7 @@ const App = () => (
         <AnalyticsTracker />
         <RouteMetaSync />
         {/* MysticBackground removed to improve page load performance */}
-        <MascoteLia />
-        <UserCorner />
+        <AuthAwareDecorations />
         <GlobalTopMenu />
         <Suspense fallback={<PageFallback />}>
           <Routes>
