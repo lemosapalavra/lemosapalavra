@@ -36,10 +36,28 @@ quiz("Quiz: Jonas e o Grande Peixe","Jonas 1–3",[
 ["Para qual cidade Deus mandou Jonas ir?","Nínive",["Belém","Nínive","Jericó"]],["Em que Jonas embarcou ao tentar fugir?","Em um barco de pesca",["Em um carro","Em uma carruagem","Em um barco de pesca"]],["O que aconteceu durante a viagem?","Veio uma tempestade",["Caiu neve","Veio uma tempestade","Surgiu um arco-íris"]],["O que engoliu Jonas?","Um grande peixe",["Um grande peixe","Um leão","Uma águia"]],["Quanto tempo Jonas ficou no ventre do peixe?","Três dias e três noites",["Um dia","Três dias e três noites","Sete dias"]]]),
 quiz("Quiz: Jesus Acalma a Tempestade","Marcos 4:35–41",[
 ["Onde Jesus e os discípulos estavam?","Em um barco",["Em um barco","Em uma casa","Em uma carruagem"]],["O que surgiu durante a travessia?","Um vendaval",["Um vendaval","Um arco-íris","Uma estrela"]],["O que Jesus estava fazendo?","Dormindo",["Pescando","Dormindo","Remando"]],["O que os discípulos fizeram?","Acordaram Jesus",["Acordaram Jesus","Voltaram a dormir","Saíram do barco"]],["O que aconteceu quando Jesus falou?","Tudo ficou calmo",["Tudo ficou calmo","A chuva aumentou","O barco afundou"]]])
+,
+quiz("Quiz: O Nascimento de Jesus","Lucas 2:1–20",[
+["Em qual cidade Jesus nasceu?","Belém",["Nazaré","Belém","Jericó"]],["Onde Maria colocou o bebê Jesus?","Numa manjedoura",["Num trono","Numa manjedoura","Num barco"]],["Quem recebeu a notícia dos anjos?","Os pastores",["Os soldados","Os pastores","Os comerciantes"]]]),
+vf("Moisés e o Mar Vermelho","Êxodo 14:13–31",[
+["Deus abriu um caminho pelo mar para o povo passar.",true],["Moisés construiu uma ponte de madeira.",false],["O povo atravessou o mar em terra seca.",true],["Deus abandonou o povo durante a travessia.",false]]),
+quiz("Quiz: A Ovelha Perdida","Lucas 15:3–7",[
+["Quantas ovelhas o pastor tinha?","Cem",["Dez","Cem","Doze"]],["Quantas ovelhas se perderam?","Uma",["Uma","Cinco","Dez"]],["O que o pastor fez ao encontrá-la?","Alegrou-se",["Alegrou-se","Escondeu-se","Foi embora"]]]),
+vf("A Fé de Abraão","Gênesis 12:1–9",[
+["Deus chamou Abraão para sair de sua terra.",true],["Abraão desobedeceu e nunca viajou.",false],["Abraão confiou na promessa de Deus.",true],["Deus prometeu abençoar Abraão.",true]]),
+quiz("Quiz: Jesus e as Crianças","Marcos 10:13–16",[
+["Quem foi levado até Jesus?","As crianças",["Os soldados","As crianças","Os comerciantes"]],["Como Jesus recebeu as crianças?","Com carinho",["Com carinho","Com desprezo","Com medo"]],["O que Jesus fez pelas crianças?","Abençoou-as",["Abençoou-as","Ignorou-as","Mandou-as embora"]]])
 ];
+const weekdayNames = ["Domingo","Segunda-feira","Terça-feira","Quarta-feira","Quinta-feira","Sexta-feira","Sábado"];
+const activityIcons = ["📖","⛵","🌳","❤️","🦁","🌈","👑","🐟","⭐","🕊️","💪","🙏","🚢","🍞","🐋","🌊","👶","🌊","🐑","✨","👧"];
 function shuffle<T,>(arr:T[]):T[]{return [...arr].sort(()=>Math.random()-.5);}
 export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
  const [index,setIndex]=useState<number|null>(null);
+ const today = new Date();
+ const weekday = today.getDay();
+ const dayIndex = (weekday + 6) % 7;
+ const dailyIndices = [0,1,2].map(n=>dayIndex*3+n);
+ const todayLabel = weekdayNames[weekday];
  const [answers,setAnswers]=useState<Record<number,string>>({});
  const [checked,setChecked]=useState(false);
  const [deck,setDeck]=useState<{id:number;name:string}[]>([]);
@@ -54,8 +72,8 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
  <button onClick={index===null?onBack:()=>setIndex(null)} className="mb-4 rounded-full bg-white border-2 border-amber-400 px-5 py-2 font-bold text-amber-950 shadow">← {index===null?"Voltar às atividades":"Escolher outra atividade"}</button>
  <div className="rounded-3xl bg-gradient-to-b from-amber-100 via-white to-sky-100 border-4 border-amber-400 p-4 sm:p-7 shadow-xl">
  <h1 className="text-2xl sm:text-4xl font-extrabold text-amber-950 text-center">🌟 Brincando e Aprendendo com a Bíblia</h1>
- <p className="text-center text-amber-900 mt-2">16 atividades inspiradas nas folhas do material enviado • responda, confira e tente novamente!</p>
- {index===null?<div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">{activities.map((a,i)=><button key={i} onClick={()=>open(i)} className="rounded-2xl border-2 border-amber-300 bg-white hover:bg-amber-50 p-4 text-left shadow-sm"><span className="font-extrabold text-amber-950">{i+1}. {a.title}</span><span className="block text-sm text-slate-600">{a.kind==="vf"?"Verdadeiro ou falso":a.kind==="character"?"Acerte o personagem":a.kind==="memory"?"Jogo da memória":"Quiz bíblico"}</span></button>)}</div>:<div className="mt-6">
+ <p className="text-center text-amber-900 mt-2">Três desafios bíblicos diferentes a cada dia. Ao longo da semana, são 21 atividades sem repetição!</p>
+ {index===null?<><h2 className="mt-5 text-center text-xl font-extrabold text-emerald-900">📅 ${todayLabel} — suas 3 tarefas de hoje</h2><p className="text-center text-sm text-slate-700 mt-1">Novas tarefas aparecem amanhã. Nenhuma se repete nesta semana!</p><div className="grid grid-cols-3 gap-3 mt-6">{dailyIndices.map((i,n)=>{const a=activities[i];return <button key={i} onClick={()=>open(i)} className="flex flex-col items-center gap-3 rounded-2xl border-2 border-amber-300 bg-white/90 p-2 sm:p-4 shadow-sm hover:bg-amber-50 focus-visible:outline-4 focus-visible:outline-emerald-500"><span className="flex aspect-square w-full max-w-32 items-center justify-center rounded-full border-4 border-yellow-400 bg-gradient-to-br from-emerald-400 via-teal-500 to-sky-600 text-4xl sm:text-6xl shadow-lg" aria-hidden="true">{activityIcons[i]}</span><span className="text-center text-xs sm:text-base font-extrabold text-amber-950">{n+1}. {a.title}</span><span className="text-center text-xs text-slate-600">{a.kind==="vf"?"Verdadeiro ou falso":a.kind==="character"?"Quem sou eu?":a.kind==="memory"?"Memória":"Quiz bíblico"}</span></button>})}</div></>::<div className="mt-6">
  <h2 className="text-xl sm:text-2xl text-center font-extrabold text-amber-950">{current?.title}</h2><p className="text-center text-sm text-amber-800 mb-5">📖 {current?.verse}</p>
  {current?.kind==="memory"?<><p className="text-center mb-3">Encontre os pares! Movimentos: {moves} • Pares: {matched.length/2} de {current.cards?.length}</p><div className="grid grid-cols-3 sm:grid-cols-4 gap-2">{deck.map((card,i)=><button key={i} onClick={()=>selectCard(i)} aria-label={flipped.includes(i)||matched.includes(i)?card.name:"Virar carta"} className={`min-h-24 rounded-xl border-2 font-bold text-xs sm:text-base p-2 ${matched.includes(i)?"bg-emerald-200 border-emerald-500":flipped.includes(i)?"bg-amber-100 border-amber-500":"bg-blue-600 border-yellow-400 text-white"}`}>{flipped.includes(i)||matched.includes(i)?card.name:"📖 ?"}</button>)}</div>{flipped.length===2&&<button className="mt-4 rounded-full bg-amber-500 px-5 py-2 font-bold" onClick={()=>setFlipped([])}>Continuar</button>}{matched.length===deck.length&&<p className="text-center mt-4 text-emerald-800 font-extrabold">🎉 Parabéns! Você encontrou todos os pares!</p>}</>:<>
  <div className="space-y-3">{current?.questions?.map((q,i)=><div key={i} className="rounded-xl border border-amber-200 bg-white p-3"><p className="font-bold text-slate-800 mb-2">{i+1}. {q.text}</p><div className="flex flex-wrap gap-2">{q.options?.map(opt=><button key={opt} disabled={checked} onClick={()=>setAnswers(a=>({...a,[i]:opt}))} className={`rounded-full border-2 px-3 py-1.5 text-sm font-bold ${answers[i]===opt?"bg-amber-300 border-amber-600 text-slate-900":"bg-white border-slate-200 text-slate-800"}`}>{opt}</button>)}</div>{checked&&<p className={`mt-2 text-sm font-bold ${answers[i]===q.answer?"text-emerald-700":"text-rose-700"}`}>{answers[i]===q.answer?"✓ Correto!":`Resposta: ${q.answer}`}</p>}</div>)}</div>
