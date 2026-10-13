@@ -345,7 +345,7 @@ export default function Login() {
     { name: "Abraão", src: avatarMoises }, { name: "José", src: avatarJesus },
     { name: "Lia", src: "/lia-mascote.png" }, { name: "Marta", src: avatarMaria },
     { name: "Noé", src: avatarMoises }, { name: "Paulo", src: avatarDavi },
-    { name: "Daniel", src: avatarDaniel },
+    { name: "Matheus", src: avatarDaniel },
   ];
   const chooseAvatar = (src: string) => { setSelectedAvatar(src); setCustomAvatar(""); };
   const submitArtwork = () => {
@@ -366,35 +366,35 @@ export default function Login() {
     <main className="fixed inset-0 z-0 flex items-center justify-center overflow-hidden bg-[#1d381c]" aria-label="Entrada do Lemos a Palavra">
       <div className="relative h-[100dvh] w-[100vw] shrink-0 overflow-hidden bg-[#f4d79c]">
         <img src="/login-jornada-mobile.png" alt="Lemos a Palavra: bem-vindo à jornada bíblica" className="absolute inset-0 h-full w-full object-fill select-none pointer-events-none" draggable={false} />
-        <label className="absolute left-[31.3%] top-[46.8%] w-[43.4%] h-[3.6%] z-10">
+        <label className="absolute left-[31.3%] top-[50.0%] w-[43.4%] h-[3.1%] z-10">
           <span className="sr-only">Seu nome</span>
           <input aria-label="Seu nome" type="text" autoComplete="name" value={name} onChange={e => setName(e.target.value)}
-            className="w-full h-full border-0 bg-transparent outline-none focus:ring-2 focus:ring-amber-500 rounded-full px-[4%] text-amber-950 placeholder:text-transparent"
+            className="w-full h-full border-0 bg-[#fffaf4] outline-none focus:ring-2 focus:ring-amber-500 rounded-full px-[4%] text-amber-950 placeholder:text-transparent"
             style={{ fontSize: "clamp(10px, 1.65dvh, 17px)" }} />
         </label>
-        <label className="absolute left-[31.3%] top-[52.6%] w-[43.4%] h-[3.6%] z-10">
+        <label className="absolute left-[31.3%] top-[55.7%] w-[43.4%] h-[3.1%] z-10">
           <span className="sr-only">Celular</span>
           <input aria-label="Celular" type="tel" autoComplete="tel" inputMode="numeric"
             value={mode === "login" ? email : phone}
             onChange={e => { const v = maskPhone(e.target.value); if (mode === "login") setEmail(v); else setPhone(v); }}
-            className="w-full h-full border-0 bg-transparent outline-none focus:ring-2 focus:ring-amber-500 rounded-full px-[4%] text-amber-950 placeholder:text-transparent"
+            className="w-full h-full border-0 bg-[#fffaf4] outline-none focus:ring-2 focus:ring-amber-500 rounded-full px-[4%] text-amber-950 placeholder:text-transparent"
             style={{ fontSize: "clamp(10px, 1.65dvh, 17px)" }} />
         </label>
         {avatarChoices.map((av, i) => {
           const firstRow = i < 5;
           const col = firstRow ? i : i - 5;
-          const left = firstRow ? 18.0 + col * 12.4 : 17.6 + col * 12.1;
-          const top = firstRow ? 60.3 : 69.0;
+          const left = firstRow ? 18.0 + col * 12.6 : 14.4 + col * 12.0;
+          const top = firstRow ? 64.5 : 72.4;
           const selected = selectedAvatar === av.src;
           return <button type="button" key={av.name} aria-label={`Escolher avatar ${av.name}`}
             title={av.name} onClick={() => chooseAvatar(av.src)}
             className={`absolute rounded-xl transition focus-visible:outline-2 focus-visible:outline-amber-500 ${selected ? "ring-[3px] ring-amber-500 bg-amber-200/20" : ""}`}
-            style={{ left: `${left}%`, top: `${top}%`, width: firstRow ? "11.5%" : "11.4%", height: "8.5%" }}>{selected && <span className="absolute -top-1 -right-1 rounded-full bg-amber-500 text-white text-[10px] leading-4 w-4 h-4 font-bold shadow">✓</span>}</button>;
+            style={{ left: `${left}%`, top: `${top}%`, width: firstRow ? "11.5%" : "11.5%", height: "7.5%" }}>{selected && <span className="absolute -top-1 -right-1 rounded-full bg-amber-500 text-white text-[10px] leading-4 w-4 h-4 font-bold shadow">✓</span>}</button>;
         })}
         <button type="button" disabled={busy} onClick={submitArtwork}
           aria-label={mode === "login" ? "Entrar na minha conta" : "Entrar e Começar"}
-          className="absolute left-[19.2%] top-[78.9%] w-[61.5%] h-[6.1%] rounded-full focus-visible:ring-4 focus-visible:ring-white disabled:opacity-50 touch-manipulation" />
-        <div className="absolute left-[19%] top-[85.3%] w-[62%] flex justify-center z-10">
+          className="absolute left-[19.2%] top-[80.9%] w-[61.5%] h-[5.5%] rounded-full focus-visible:ring-4 focus-visible:ring-white disabled:opacity-50 touch-manipulation" />
+        <div className="absolute left-[19%] top-[86.1%] w-[62%] flex justify-center z-10">
           <button type="button" onClick={() => setMode(mode === "login" ? "register" : "login")}
             className="rounded-full bg-amber-50/95 border border-amber-700 px-3 py-1 text-amber-950 font-semibold shadow"
             style={{ fontSize: "clamp(9px, 1.45dvh, 13px)" }}>
