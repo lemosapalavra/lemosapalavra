@@ -7,23 +7,14 @@ import PageHeader from "@/components/PageHeader";
 import CoinBadge from "@/components/CoinBadge";
 import { awardOnce } from "@/hooks/useCoins";
 import { COINS } from "@/data/coinRewards";
-import iconLouvoresCat from "@/assets/icon-louvores-cat.png";
-import iconMusicais from "@/assets/icon-musicais.png";
-import logoCentral from "@/assets/logo-central.png";
 import { loadConfig, type PlayEntry } from "@/data/lemosPlayConfig";
 import { getListenEntries, type ListenCategory } from "@/data/listenCatalog";
 import { markSeen } from "@/lib/newContent";
 import { louvoresTitles } from "@/data/contentIndex";
-import oucaIcon from "@/assets/home/ouca.png.asset.json";
-
-const tabs: { id: ListenCategory; label: string; icon: string }[] = [
-  { id: "musicas", label: "Músicas", icon: iconMusicais },
-  { id: "louvores", label: "Louvores", icon: iconLouvoresCat },
-];
 
 export default function Louvores() {
   const [playing, setPlaying] = useState<PlayEntry | null>(null);
-  const [tab, setTab] = useState<ListenCategory>("musicas");
+  const [playingCategory, setPlayingCategory] = useState<ListenCategory>("musicas");
   const [config, setConfig] = useState(() => loadConfig());
 
   useEffect(() => { markSeen("louvores", louvoresTitles); }, []);
@@ -33,7 +24,13 @@ export default function Louvores() {
     return () => window.removeEventListener("lemos_play_config_change", sync);
   }, []);
 
-  const entries = useMemo(() => getListenEntries(config, tab), [config, tab]);
+  const musicas = useMemo(() => getListenEntries(config, "musicas"), [config]);
+  const louvores = useMemo(() => getListenEntries(config, "louvores"), [config]);
+  const openVideo = (item: PlayEntry, category: ListenCategory) => {
+    setPlayingCategory(category);
+    setPlaying(item);
+    awardOnce(`ouca:${item.id}`, category === "louvores" ? COINS.louvor : COINS.musica, `Você assistiu "${item.title}"`);
+  };
   const featured = useMemo(() => config.musicas.find(item => item.title.toLocaleLowerCase("pt-BR").includes("ele é o meu irmão") && item.enabled !== false), [config]);
 
   if (playing) {
@@ -50,7 +47,7 @@ export default function Louvores() {
         </button>
         <VideoSideActions videoId={`ouca:${playing.id}`} />
         {playing.src ? (
-          <ColonialVideoFrame variant={tab === "louvores" ? "silver" : "green"} aspect="9/16">{media.kind === "mp4" ? <video src={playing.src} poster={playing.poster} className="w-full h-full bg-black object-contain" controls controlsList="nodownload noremoteplayback noplaybackrate" disablePictureInPicture onContextMenu={(e) => e.preventDefault()} autoPlay playsInline preload="auto" /> : <iframe src={media.embedUrl} title={playing.title} className="w-full h-full bg-black" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />}</ColonialVideoFrame>
+          <ColonialVideoFrame variant={playingCategory === "louvores" ? "silver" : "green"} aspect="9/16">{media.kind === "mp4" ? <video src={playing.src} poster={playing.poster} className="w-full h-full bg-black object-contain" controls controlsList="nodownload noremoteplayback noplaybackrate" disablePictureInPicture onContextMenu={(e) => e.preventDefault()} autoPlay playsInline preload="auto" /> : <iframe src={media.embedUrl} title={playing.title} className="w-full h-full bg-black" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />}</ColonialVideoFrame>
         ) : (
           <div className="max-w-md mx-auto text-center text-white p-6">
             <h2 className="font-display text-3xl font-bold mb-3">Vídeo em atualização</h2>
@@ -64,24 +61,27 @@ export default function Louvores() {
 
 
 
-  const renderItem = (item: PlayEntry) => (
-    <button
-      key={item.id}
-      onClick={() => { setPlaying(item); awardOnce(`ouca:${item.id}`, tab === "louvores" ? COINS.louvor : COINS.musica, `Você assistiu "${item.title}"`); }}
-      className="flex flex-col items-center gap-2 hover:scale-105 transition-transform group"
-    >
-      <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-2 border-primary/30 shadow-lg bg-black">
-        {item.poster ? <img src={item.poster} alt={item.title} className="absolute inset-0 w-full h-full object-cover" loading="lazy" /> : <Play className="absolute inset-0 m-auto h-10 w-10 text-primary-foreground" />}
-        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
-      </div>
-      <p className="text-xs sm:text-sm font-bold text-primary text-center leading-tight drop-shadow max-w-[120px]">
-        {item.title}
-      </p>
-      <CoinBadge amount={tab === "louvores" ? COINS.louvor : COINS.musica} size="xs" />
-    </button>
+  const renderSection = (title: string, items: PlayEntry[], category: ListenCategory) => (
+    <section className="mb-9" aria-label={title}>
+      <h2 className="text-xl sm:text-3xl font-extrabold px-5 sm:px-12 mb-4">{title}</h2>
+      {items.length ? (
+        <div className="flex gap-3 sm:gap-5 overflow-x-auto px-5 sm:px-12 pb-5 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {items.map(item => (
+            <div key={item.id} className="shrink-0 w-[148px] sm:w-[195px] rounded-xl bg-zinc-900/80 p-2 hover:bg-zinc-800 transition">
+              <button onClick={() => openVideo(item, category)} className="w-full text-left group">
+                <div className="aspect-[3/4] rounded-lg overflow-hidden bg-zinc-800 relative">
+                  {item.poster ? <img src={item.poster} alt="" loading="lazy" className="h-full w-full object-cover group-hover:scale-105 transition-transform" /> : <Play className="absolute inset-0 m-auto h-12 w-12 text-amber-300" />}
+                  <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/30 transition"><Play className="w-10 h-10 text-white fill-white" /></span>
+                </div>
+                <span className="block mt-2 text-sm font-semibold text-white line-clamp-2 min-h-[2.5rem]">{item.title}</span>
+              </button>
+              <CoinBadge amount={category === "louvores" ? COINS.louvor : COINS.musica} size="xs" />
+            </div>
+          ))}
+        </div>
+      ) : <p className="text-zinc-300 px-5 sm:px-12 py-4">Nenhum conteúdo ativo nesta categoria.</p>}
+    </section>
   );
-
-
 
   return (
     <div className="lemos-media-page min-h-screen bg-black text-white">
@@ -99,24 +99,8 @@ export default function Louvores() {
         </div>
       </section>
       <main className="max-w-7xl mx-auto py-7 sm:py-10">
-        <div className="flex flex-wrap gap-2 px-5 sm:px-12 mb-5" role="group" aria-label="Categorias de áudio">{tabs.map(t => <button key={t.id} onClick={() => setTab(t.id)} aria-pressed={tab === t.id} className={`rounded-full px-5 py-2 text-sm font-bold transition ${tab === t.id ? "bg-amber-400 text-black" : "bg-zinc-800 text-white hover:bg-zinc-700"}`}>{t.label}</button>)}</div>
-        {entries.length ? (
-          <div className="flex gap-3 sm:gap-5 overflow-x-auto px-5 sm:px-12 pb-8 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {entries.map(item => (
-              <div key={item.id} className="shrink-0 w-[148px] sm:w-[195px] rounded-xl bg-zinc-900/80 p-2 hover:bg-zinc-800 transition">
-                <button onClick={() => { setPlaying(item); awardOnce(`ouca:${item.id}`, tab === "louvores" ? COINS.louvor : COINS.musica, `Você assistiu "${item.title}"`); }}
-                  className="w-full text-left group">
-                  <div className="aspect-[3/4] rounded-lg overflow-hidden bg-zinc-800 relative">
-                    {item.poster ? <img src={item.poster} alt="" loading="lazy" className="h-full w-full object-cover group-hover:scale-105 transition-transform" /> : <Play className="absolute inset-0 m-auto h-12 w-12 text-amber-300" />}
-                    <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/30 transition"><Play className="w-10 h-10 text-white fill-white" /></span>
-                  </div>
-                  <span className="block mt-2 text-sm font-semibold text-white line-clamp-2 min-h-[2.5rem]">{item.title}</span>
-                </button>
-                <CoinBadge amount={tab === "louvores" ? COINS.louvor : COINS.musica} size="xs" />
-              </div>
-            ))}
-          </div>
-        ) : <p className="text-zinc-300 px-5 sm:px-12 py-8">Nenhum conteúdo ativo nesta categoria.</p>}
+        {renderSection("Músicas", musicas, "musicas")}
+        {renderSection("Louvores", louvores, "louvores")}
       </main>
     </div>
   );
