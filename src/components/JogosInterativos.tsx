@@ -64,7 +64,7 @@ export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void})
   setChosen(null);
  };
  const puzzleImage=avatarJesus;
- return <section className="fixed inset-0 z-[95] overflow-y-auto bg-[#fff7df] px-3 py-5 text-amber-950" role="dialog" aria-modal="true" aria-label={gameTitle[game]}>
+ return <section className="fixed inset-x-0 bottom-0 top-[118px] sm:top-[130px] z-[55] overflow-y-auto bg-[#fff7df] px-3 pt-3 pb-5 text-amber-950" role="dialog" aria-modal="true" aria-label={gameTitle[game]}>
   <div className="mx-auto max-w-3xl rounded-3xl border-4 border-amber-400 bg-white/95 p-4 shadow-xl">
    <div className="mb-4 flex items-center justify-between gap-3">
     <h2 className="text-xl font-black sm:text-2xl">{gameTitle[game]}</h2>
