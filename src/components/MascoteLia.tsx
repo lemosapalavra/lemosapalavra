@@ -17,20 +17,23 @@ import { Button } from "@/components/ui/button";
  */
 
 const PAGE_TIPS: Record<string, string> = {
-  "/": "Toque em um dos ícones ao redor da logo para escolher o que ver. Explore as histórias, os louvores e as atividades tocando nos ícones!",
-  "/biblia": "Escolha o livro e o capítulo. Toque no ícone de ouvir 🔊 e eu leio a Palavra para você.",
-  "/louvores": "Escolha um louvor e aperte o play ▶️. Dá para curtir, comentar e compartilhar com a família.",
-  "/historias-do-dia": "Aqui tem duas histórias bíblicas novas todo dia para ler e conversar em família!",
-  "/devocionais": "Leia o devocional do dia, escolha uma cor e toque no desenho para pintar. Pode desfazer, continuar depois e guardar no Meu Mural!",
-  "/jogos": "Escolha um jogo bíblico: dominó, memória, mico, quiz ou Quem Sou Eu!",
-  "/pedidos-oracao": "Escreva seu pedido e escolha a categoria. Vamos orar juntos por você! 🙏",
-  "/atividades": "Escolha uma atividade tocando no ícone. Cada uma dá moedinhas 🪙 uma vez por dia.",
-  "/album": "Use 3 moedinhas 🪙 para abrir um pacote e toque em “Próxima” para virar a página do álbum.",
-  "/lemosplay": "Deslize para ver as categorias: Gênesis, Jesus, Séries e Músicas. Assista até o fim e ganhe moedinhas 🪙.",
-  "/historias-biblicas": "Escolha uma história e assista até o final para ganhar suas moedinhas 🪙.",
-  "/login": "Preencha nome e celular para criar sua conta. Já tem conta? Use a aba Entrar.",
-  "/config": "Aqui você configura o site: vídeos, faixas, contatos e novidades.",
-  "/estatisticas": "Este painel mostra o que os usuários mais acessam no site.",
+  "/": "Bem-vindo! Escolha VEJA, OUÇA, APRENDA, FAÇA ou ÁLBUM nos ícones da página inicial.",
+  "/biblia": "Escolha um livro e um capítulo para ler a Bíblia. Vamos descobrir juntos a Palavra de Deus!",
+  "/louvores": "Aqui você pode ouvir louvores. Escolha uma música e toque em reproduzir!",
+  "/musicas": "Vamos cantar? Escolha um louvor e toque no vídeo para ouvir.",
+  "/lemosplay": "Na página VEJA, escolha um vídeo para assistir às histórias bíblicas!",
+  "/jogos": "Na página FAÇA, toque em um dos cinco ícones redondos para abrir uma atividade.",
+  "/atividades": "Na página APRENDA, três desafios aparecem por dia. Toque em um dos ícones redondos para começar!",
+  "/devocionais": "Leia o devocional do dia e reflita sobre a mensagem de Deus.",
+  "/pedidos-oracao": "Na página ORAR, escreva seu pedido de oração. Vamos conversar com Deus!",
+  "/album": "No ÁLBUM, junte moedinhas para conseguir figurinhas e completar sua coleção.",
+  "/historias-do-dia": "Escolha uma história bíblica do dia para ler e aprender!",
+  "/historias-biblicas": "Escolha uma história bíblica para conhecer seus personagens e ensinamentos.",
+  "/login": "Para entrar, informe seu nome e celular. Se for sua primeira visita, toque em Não tenho conta — cadastrar e escolha um avatar.",
+  "/login-sms": "Siga as instruções da tela para acessar sua conta com o celular.",
+  "/familia": "Esta página reúne momentos de fé e aprendizado para toda a família.",
+  "/config": "Aqui ficam as configurações reservadas à administração do site.",
+  "/estatisticas": "Este painel reúne as estatísticas de uso do site.",
 };
 
 /** Falas por contexto — enviadas por `lemos:lia-context`. */
@@ -63,7 +66,7 @@ export default function MascoteLia() {
   const [context, setContext] = useState<string | null>(null);
 
   // Recolhe ao trocar de página
-  useEffect(() => { setExpanded(false); }, [location.pathname]);
+  useEffect(() => { setExpanded(false); setContext(null); }, [location.pathname]);
 
   useEffect(() => {
     const onCtx = (e: Event) => setContext(((e as CustomEvent).detail as string) || null);
@@ -90,9 +93,9 @@ export default function MascoteLia() {
   const LOGIN_TIP =
     "Oi! Para começar, toque em Entrar: é só o seu nome e o seu celular. Ainda não tem conta? Toque em Criar uma conta.";
 
-  const message = !logged
-    ? LOGIN_TIP
-    : (context && CONTEXT_TIPS[context]) || PAGE_TIPS[location.pathname] || PAGE_TIPS["/"];
+  const message = location.pathname === "/login" || location.pathname === "/login-sms"
+    ? PAGE_TIPS[location.pathname]
+    : (context && CONTEXT_TIPS[context]) || PAGE_TIPS[location.pathname] || (!logged ? LOGIN_TIP : PAGE_TIPS["/"]);
 
   const avatar = isHome && !context ? lia1 : lia2;
   const liaVisible = useIconVisible("lia");
