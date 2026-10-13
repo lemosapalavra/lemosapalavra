@@ -32,7 +32,7 @@ const scramble = (length:number) => {
  if(a.every((v,i)=>v===i)&&a.length>1)[a[0],a[1]]=[a[1],a[0]];
  return a;
 };
-export default function JogosInterativos({game,onClose}:{game:GameId;onClose:()=>void}) {
+export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void}) {
  const [deck,setDeck]=useState<number[]>([]);
  const [turned,setTurned]=useState<number[]>([]);
  const [found,setFound]=useState<number[]>([]);
@@ -68,7 +68,6 @@ export default function JogosInterativos({game,onClose}:{game:GameId;onClose:()=
   <div className="mx-auto max-w-3xl rounded-3xl border-4 border-amber-400 bg-white/95 p-4 shadow-xl">
    <div className="mb-4 flex items-center justify-between gap-3">
     <h2 className="text-xl font-black sm:text-2xl">{gameTitle[game]}</h2>
-    <button type="button" onClick={onClose} className="rounded-full bg-amber-200 px-4 py-2 font-bold">✕ Fechar jogo</button>
    </div>
    {game==="memory" && <>
     <p className="mb-3">Encontre os pares de imagens dos personagens bíblicos.</p>
