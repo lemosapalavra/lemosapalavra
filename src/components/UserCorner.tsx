@@ -55,6 +55,15 @@ export default function UserCorner() {
     </a>
   );
 
+  const [welcomeGender, setWelcomeGender] = ((): ["feminino" | "masculino" | "", (v:"feminino"|"masculino")=>void] => {
+    const saved = typeof window !== "undefined" ? localStorage.getItem("lemos_welcome_gender") : null;
+    const explicit = saved === "feminino" || saved === "masculino" ? saved : "";
+    return [explicit, (v) => { localStorage.setItem("lemos_welcome_gender", v); window.dispatchEvent(new Event("lemos_admin_change")); }];
+  })();
+  const firstName = (user.name || "").trim().split(/\\s+/)[0].toLocaleLowerCase("pt-BR");
+  const feminineNames = ["amanda","ana","maria","marta","mariana","juliana","julia","beatriz","gabriela","fernanda","carolina","camila","isabela","isabella","larissa","leticia","patricia","renata","rebecca","rebeca","sofia","sophia","luiza","luisa","alice","helena","laura","valentina","manuela","clara","cecilia","marcela","marcia","paula","tania","claudia","marisa","rejane"];
+  const welcome = welcomeGender === "feminino" || (!welcomeGender && feminineNames.includes(firstName))
+    ? "Seja bem-vinda!" : "Seja bem-vindo!";
   const greeting = new Date().getHours() < 12 ? "Bom dia" : new Date().getHours() < 18 ? "Boa tarde" : "Boa noite";
   if (true) return (
     <>
@@ -66,11 +75,13 @@ export default function UserCorner() {
           <span className="max-w-[105px] sm:max-w-[140px] text-[10px] sm:text-sm leading-tight">
             <span className="block">{greeting},</span>
             <strong className="block truncate text-sm sm:text-base">{user.name}</strong>
-            <span className="block text-[10px] sm:text-xs">Seja bem-vindo!</span><span className="block font-extrabold text-yellow-200">🪙 {coins}</span>
+            <span className="block text-[10px] sm:text-xs">{welcome}</span><span className="block font-extrabold text-yellow-200">🪙 {coins}</span>
           </span>
         </button>
-        {menu && <div className="flex gap-1 rounded-xl bg-white/95 p-1 shadow-lg">
+        {menu && <div className="flex flex-wrap justify-center gap-1 rounded-xl bg-white/95 p-1 shadow-lg">
           <Button size="sm" variant="outline" onClick={() => { setOpen(true); setMenu(false); }}>Meu Mural · 🪙 {coins}</Button>
+          <Button size="sm" variant="outline" onClick={() => setWelcomeGender("feminino")}>Bem-vinda</Button>
+          <Button size="sm" variant="outline" onClick={() => setWelcomeGender("masculino")}>Bem-vindo</Button>
           <Button size="sm" variant="destructive" onClick={logout}>Sair</Button>
         </div>}
       </div>
