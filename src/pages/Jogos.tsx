@@ -43,8 +43,8 @@ export default function Jogos() {
               onClick={() => navigate(game.path)}
               aria-label={game.title}
               title={game.title}
-              className="absolute pointer-events-auto aspect-square w-[23%] max-w-[150px] -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-yellow-400 bg-emerald-800/80 p-1 shadow-[0_0_18px_4px_rgba(255,220,65,0.75)] transition-transform hover:scale-105 focus-visible:outline-4 focus-visible:outline-white"
-              style={position}
+              className="absolute pointer-events-auto aspect-square w-[23%] max-w-[150px] -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-yellow-400 bg-emerald-800/80 p-1 shadow-[0_0_18px_4px_rgba(255,220,65,0.75)] animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:brightness-110 focus-visible:outline-4 focus-visible:outline-white"
+              style={{...position,animationDelay:`${ALL_GAMES.findIndex((g) => g.id === game.id)*0.7}s`}}
             >
               <img src={game.icon} alt="" className="h-full w-full rounded-full object-contain" />
             </button>
