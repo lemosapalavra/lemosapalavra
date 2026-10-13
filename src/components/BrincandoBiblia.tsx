@@ -150,7 +150,7 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
   </>
  );
  return (
-  <section className="fixed inset-0 z-[90] overflow-y-auto bg-amber-50 p-4">
+  <section className="fixed inset-x-0 bottom-0 top-[118px] sm:top-[130px] z-[55] overflow-y-auto bg-amber-50 p-4">
    <div className="mx-auto max-w-4xl rounded-3xl border-4 border-amber-400 bg-gradient-to-b from-amber-100 via-white to-sky-100 p-4 shadow-xl">
     <h2 className="text-center text-xl font-extrabold text-amber-950">{current.title}</h2>
     <p className="mb-5 text-center text-sm text-amber-800">📖 {current.verse}</p>
