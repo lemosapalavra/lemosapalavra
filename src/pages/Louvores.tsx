@@ -34,6 +34,7 @@ export default function Louvores() {
   }, []);
 
   const entries = useMemo(() => getListenEntries(config, tab), [config, tab]);
+  const featured = useMemo(() => config.musicas.find(item => item.title.toLocaleLowerCase("pt-BR").includes("ele é o meu irmão") && item.enabled !== false), [config]);
 
   if (playing) {
     const media = normalizeVideo(playing.src || "", true);
@@ -86,12 +87,14 @@ export default function Louvores() {
     <div className="lemos-media-page min-h-screen bg-black text-white">
       <style>{`html:has(.lemos-media-page), body:has(.lemos-media-page) { scrollbar-width: none; } html:has(.lemos-media-page)::-webkit-scrollbar, body:has(.lemos-media-page)::-webkit-scrollbar { display: none; width: 0; }`}</style>
       <PageHeader title="Ouça" subtitle="Músicas e Louvores" />
-      <section className="relative min-h-[260px] sm:min-h-[370px] flex items-center overflow-hidden bg-gradient-to-br from-amber-950 via-zinc-900 to-black">
-        <img src="/ouca-flutuante.png" alt="" className="absolute right-[4%] top-1/2 -translate-y-1/2 w-40 sm:w-64 opacity-45 drop-shadow-2xl pointer-events-none" />
+      <section className="relative min-h-[300px] sm:min-h-[430px] flex items-center overflow-hidden bg-gradient-to-br from-amber-950 via-zinc-900 to-black">
+        {featured?.src && <div className="absolute inset-0"><video key={featured.id} src={featured.src} poster={featured.poster} autoPlay muted loop playsInline preload="metadata" className="w-full h-full object-cover opacity-65" /><div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/65 to-black/10" /></div>}
+
         <div className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-12 py-10">
           <p className="text-amber-300 font-bold tracking-widest uppercase text-xs mb-2">Lemos a Palavra</p>
           <h1 className="font-display font-extrabold text-4xl sm:text-6xl mb-3">OUÇA</h1>
-          <p className="text-zinc-200 max-w-md text-sm sm:text-lg mb-5">Músicas e louvores para inspirar a fé e alegrar o coração.</p>
+          <p className="text-zinc-200 max-w-md text-sm sm:text-lg mb-3">Músicas e louvores para inspirar a fé e alegrar o coração.</p>
+          {featured && <div className="mb-5"><p className="text-amber-300 text-sm font-bold mb-2">Em destaque: {featured.title}</p><button onClick={() => { setTab("musicas"); setPlaying(featured); }} className="rounded-lg bg-white px-5 py-2 font-bold text-black hover:bg-amber-100">▶ Assistir com som</button></div>}
           <div className="flex flex-wrap gap-3">
             {tabs.map(t => (
               <button key={t.id} onClick={() => setTab(t.id)} aria-pressed={tab === t.id}
