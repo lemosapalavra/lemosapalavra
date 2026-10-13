@@ -29,6 +29,7 @@ export default function Atividades() {
           </span>
         </div>
 
+        <div className="mx-auto mt-5 max-w-md overflow-hidden rounded-[2rem] border-4 border-yellow-400 shadow-xl"><img src="/Aprenda.png" alt="Aprenda: Jesus com crianças, Bíblia e atividades" className="block h-auto w-full" /></div>
         <header className="mx-auto mt-5 max-w-2xl rounded-[2rem] border-4 border-yellow-400 bg-white/95 px-5 py-5 text-center shadow-[0_10px_35px_rgba(120,76,0,0.25)]">
           <div className="flex justify-center gap-3 text-amber-500">
             <Sparkles className="h-7 w-7" aria-hidden="true" />
@@ -42,7 +43,7 @@ export default function Atividades() {
             Descubra a Palavra de Deus brincando!
           </p>
           <p className="mt-2 text-sm font-semibold text-slate-700">
-            16 novas atividades bíblicas para escolher, responder e se divertir.
+            3 atividades por dia, 21 diferentes a cada semana!
           </p>
         </header>
 
