@@ -364,7 +364,7 @@ export default function Login() {
 
   return (
     <main className="fixed inset-0 z-0 flex items-center justify-center overflow-hidden bg-[#1d381c]" aria-label="Entrada do Lemos a Palavra">
-      <div className="relative h-[100dvh] max-h-[177.586vw] w-[56.31dvh] max-w-[100vw] shrink-0 overflow-hidden bg-[#f4d79c] shadow-2xl" style={{ aspectRatio: "928 / 1648" }}>
+      <div className="relative h-[100dvh] w-[100vw] shrink-0 overflow-hidden bg-[#f4d79c]">
         <img src="/login-jornada-mobile.png" alt="Lemos a Palavra: bem-vindo à jornada bíblica" className="absolute inset-0 h-full w-full object-fill select-none pointer-events-none" draggable={false} />
         <label className="absolute left-[31.3%] top-[47.1%] w-[43.4%] h-[3.1%]">
           <span className="sr-only">Seu nome</span>
