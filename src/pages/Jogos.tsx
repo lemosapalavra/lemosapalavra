@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import JogosInterativos from "@/components/JogosInterativos";
 import iconMemoria from "@/assets/jogos/icon-memoria.png";
 import iconQuebraCabeca from "@/assets/jogos/icon-quebra-cabeca.png";
@@ -22,6 +22,12 @@ const positions = [
 
 export default function Jogos() {
   const [selectedGame, setSelectedGame] = useState<"memory"|"maze"|"jigsaw"|"wordbuilder"|"quiz"|null>(null);
+  useEffect(() => {
+    if (!selectedGame) return;
+    const onBack = (event: Event) => { event.preventDefault(); setSelectedGame(null); };
+    window.addEventListener("lemos:back", onBack);
+    return () => window.removeEventListener("lemos:back", onBack);
+  }, [selectedGame]);
   const games = ALL_GAMES.filter((game) => isAllowed("jogos", game.id));
   return (
     <main id="faca-cenario" className="relative isolate h-[100dvh] w-full overflow-hidden bg-[#bdebf7]">
