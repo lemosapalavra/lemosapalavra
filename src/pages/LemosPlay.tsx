@@ -453,7 +453,8 @@ export default function LemosPlay() {
 
   return (
 
-    <div className="min-h-screen bg-black text-white">
+    <div className="lemos-media-page min-h-screen bg-black text-white">
+      <style>{`html:has(.lemos-media-page), body:has(.lemos-media-page) { scrollbar-width: none; } html:has(.lemos-media-page)::-webkit-scrollbar, body:has(.lemos-media-page)::-webkit-scrollbar { display: none; width: 0; }`}</style>
       <PageHeader title="Histórias Bíblicas" subtitle="Gênesis, Jesus e Séries" />
       {isAdmin && (
         <div className="fixed top-2 right-2 z-40">
