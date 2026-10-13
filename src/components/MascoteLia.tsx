@@ -20,17 +20,20 @@ const PAGE_TIPS: Record<string, string> = {
   "/": "Bem-vindo! Escolha VEJA, OUÇA, APRENDA, FAÇA ou ÁLBUM nos ícones da página inicial.",
   "/biblia": "Escolha um livro e um capítulo para ler a Bíblia. Vamos descobrir juntos a Palavra de Deus!",
   "/louvores": "Aqui você pode ouvir louvores. Escolha uma música e toque em reproduzir!",
+  "/veja": "Aqui você encontra vídeos de histórias bíblicas para assistir.",
+  "/ouca": "Aqui você encontra louvores para ouvir e cantar.",
   "/musicas": "Vamos cantar? Escolha um louvor e toque no vídeo para ouvir.",
   "/lemosplay": "Na página VEJA, escolha um vídeo para assistir às histórias bíblicas!",
-  "/jogos": "Na página FAÇA, toque em um dos cinco ícones redondos para abrir uma atividade.",
-  "/atividades": "Na página APRENDA, três desafios aparecem por dia. Toque em um dos ícones redondos para começar!",
+  "/jogos": "Na página FAÇA, escolha um dos quatro jogos: Memória, Quebra-Cabeça, Palavras ou Quiz. Toque no ícone para jogar.",
+  "/atividades": "Na página APRENDA, escolha entre três atividades que mudam a cada dia ou toque em Devocional para ler uma reflexão bíblica.",
   "/devocionais": "Leia o devocional do dia e reflita sobre a mensagem de Deus.",
   "/pedidos-oracao": "Na página ORAR, escreva seu pedido de oração. Vamos conversar com Deus!",
-  "/album": "No ÁLBUM, junte moedinhas para conseguir figurinhas e completar sua coleção.",
+  "/album": "No ÁLBUM, use suas moedinhas para abrir pacotinhos e completar sua coleção de figurinhas bíblicas.",
   "/historias-do-dia": "Escolha uma história bíblica do dia para ler e aprender!",
   "/historias-biblicas": "Escolha uma história bíblica para conhecer seus personagens e ensinamentos.",
   "/login": "Para entrar, informe seu nome e celular. Se for sua primeira visita, toque em Não tenho conta — cadastrar e escolha um avatar.",
   "/login-sms": "Siga as instruções da tela para acessar sua conta com o celular.",
+  "/admin/whatsapp": "Esta é uma ferramenta de administração para gerenciar mensagens.",
   "/familia": "Esta página reúne momentos de fé e aprendizado para toda a família.",
   "/config": "Aqui ficam as configurações reservadas à administração do site.",
   "/estatisticas": "Este painel reúne as estatísticas de uso do site.",
@@ -39,12 +42,12 @@ const PAGE_TIPS: Record<string, string> = {
 /** Falas por contexto — enviadas por `lemos:lia-context`. */
 const CONTEXT_TIPS: Record<string, string> = {
   // Atividades
-  quiz: "No Quiz, escolha a categoria e toque na resposta certa. Acertando tudo você ganha moedinhas 🪙!",
+  quiz: "No Quiz Bíblico, leia cada pergunta, escolha uma alternativa e veja quantas respostas acertou.",
   memory: "Na Memória, vire duas cartinhas por vez e encontre os pares iguais.",
   coloring: "No Colorir, escolha uma cor e toque no desenho. Quer trocar? É só escolher outra cor e tocar de novo no mesmo lugar.",
   jigsaw: "No Quebra-Cabeça, toque em duas peças para trocá-las de lugar até montar a imagem.",
   wordsearch: "No Caça-Palavras, arraste o dedo sobre as letras para marcar as palavras da lista.",
-  maze: "No Labirinto, siga com o dedo do “COMECE AQUI” até a “CHEGADA” e depois toque em “Concluí este labirinto” para ganhar moedinhas 🪙.",
+  maze: "No Labirinto, encontre o caminho correto até a chegada.",
   crossword: "Aqui você procura as palavras na grade e marca cada uma na lista embaixo. Achou todas? Ganha moedinhas 🪙.",
   connectdots: "Em Ligue os Pontos, toque numa frase e depois na imagem relacionada. Verde indica acerto e vermelho indica outra tentativa.",
   assemble: "Em Monte e Descubra, toque em duas peças para trocá-las de lugar. Montou a imagem? Escolha o nome certo da história e ganhe moedinhas 🪙.",
@@ -93,9 +96,10 @@ export default function MascoteLia() {
   const LOGIN_TIP =
     "Oi! Para começar, toque em Entrar: é só o seu nome e o seu celular. Ainda não tem conta? Toque em Criar uma conta.";
 
+  const currentContext = location.pathname === "/jogos" && context && !["memory","jigsaw","quiz"].includes(context) ? null : context;
   const message = location.pathname === "/login" || location.pathname === "/login-sms"
     ? PAGE_TIPS[location.pathname]
-    : (context && CONTEXT_TIPS[context]) || PAGE_TIPS[location.pathname] || (!logged ? LOGIN_TIP : PAGE_TIPS["/"]);
+    : (currentContext && CONTEXT_TIPS[currentContext]) || PAGE_TIPS[location.pathname] || (!logged ? LOGIN_TIP : PAGE_TIPS["/"]);
 
   const avatar = isHome && !context ? lia1 : lia2;
   const liaVisible = useIconVisible("lia");
