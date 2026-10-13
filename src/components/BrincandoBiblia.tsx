@@ -97,6 +97,10 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
   );
  }
  const total = current.questions?.length ?? 0;
+ const memoryPictures: Record<string,string> = {
+ "LEÃO":"🦁","ELEFANTE":"🐘","GIRAFA":"🦒","POMBA":"🕊️","OVELHA":"🐑","ZEBRA":"🦓",
+ "ARCA":"🚢","ESTRELA":"⭐","FUNDA":"🪨","GRANDE PEIXE":"🐋","TÁBUAS":"📜"
+ };
  const memory = (
   <>
    <p className="text-center mb-3">Encontre os pares! Movimentos: {moves} • Pares: {matched.length/2} de {current.cards?.length}</p>
@@ -104,7 +108,7 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
     {deck.map((card,i)=>{
      const shown = flipped.includes(i)||matched.includes(i);
      const cls = matched.includes(i)?"bg-emerald-200 border-emerald-500":flipped.includes(i)?"bg-amber-100 border-amber-500":"bg-blue-600 border-yellow-400 text-white";
-     return <button key={i} onClick={()=>selectCard(i)} aria-label={shown?card.name:"Virar carta"} className={"min-h-24 rounded-xl border-2 font-bold text-xs sm:text-base p-2 "+cls}>{shown?card.name:"📖 ?"}</button>;
+     return <button key={i} onClick={()=>selectCard(i)} aria-label={shown?card.name:"Virar carta"} className={"min-h-24 rounded-xl border-2 font-bold text-xs sm:text-base p-2 "+cls}>{shown?<span role="img" aria-label={card.name} className="text-4xl sm:text-6xl">{memoryPictures[card.name] || "📖"}</span>:<span className="text-4xl">📖</span>}</button>;
     })}
    </div>
    {flipped.length===2 && <button className="mt-4 rounded-full bg-amber-500 px-5 py-2 font-bold" onClick={()=>setFlipped([])}>Continuar</button>}
