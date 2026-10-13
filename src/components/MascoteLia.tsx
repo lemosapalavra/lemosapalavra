@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 const lia1 = "/lia-mascote.png";
 const lia2 = "/lia-mascote.png";
-import InstallShortcut from "@/components/InstallShortcut";
 import { Button } from "@/components/ui/button";
 
 /**
@@ -18,7 +17,7 @@ import { Button } from "@/components/ui/button";
  */
 
 const PAGE_TIPS: Record<string, string> = {
-  "/": "Toque em um dos ícones ao redor da logo para escolher o que ver. Se quiser instalar o ícone da Lemos a Palavra e acessar mais facilmente, toque no atalho logo abaixo de mim!",
+  "/": "Toque em um dos ícones ao redor da logo para escolher o que ver. Explore as histórias, os louvores e as atividades tocando nos ícones!",
   "/biblia": "Escolha o livro e o capítulo. Toque no ícone de ouvir 🔊 e eu leio a Palavra para você.",
   "/louvores": "Escolha um louvor e aperte o play ▶️. Dá para curtir, comentar e compartilhar com a família.",
   "/historias-do-dia": "Aqui tem duas histórias bíblicas novas todo dia para ler e conversar em família!",
@@ -116,7 +115,7 @@ export default function MascoteLia() {
           Oi, sou a LIA
         </span>
       </Button>
-      {isHome && <InstallShortcut compact />}
+      
       </div>
     );
   }
@@ -146,7 +145,7 @@ export default function MascoteLia() {
           Oi, sou a LIA
         </span>
       </Button>
-      {isHome && <div className="pointer-events-auto"><InstallShortcut compact /></div>}
+      
       </div>
 
       <style>{`
