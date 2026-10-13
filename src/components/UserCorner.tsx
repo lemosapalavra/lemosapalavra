@@ -4,6 +4,7 @@ import MeuMural from "@/components/MeuMural";
 import { useCoins } from "@/hooks/useCoins";
 import iconUsuario from "@/assets/icon-usuario.png";
 import { Button } from "@/components/ui/button";
+import { useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
 /**
@@ -13,6 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
  */
 export default function UserCorner() {
   const { coins } = useCoins();
+  const onHome = useLocation().pathname === "/";
   const [user, setUser] = useState<{ name?: string; avatar?: string } | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -47,10 +49,33 @@ export default function UserCorner() {
   if (!visible) return null;
 
   if (!user?.name) return (
-    <a href="/login" aria-label="Entrar ou criar conta" title="Entrar ou criar conta" className="fixed right-2 bottom-3 z-[45] flex flex-col items-center gap-1 sm:right-4">
+    <a href="/login" aria-label="Entrar ou criar conta" title="Entrar ou criar conta" className={onHome ? "fixed right-2 top-[78px] sm:top-2 z-[75] flex flex-col items-center gap-1" : "fixed right-2 bottom-3 z-[45] flex flex-col items-center gap-1 sm:right-4"}>
       <span className="rounded-full border-2 border-amber-300 bg-white p-1 shadow-lg"><img src={iconUsuario} alt="Usuário" className="h-[64px] w-[64px] rounded-full object-cover sm:h-[80px] sm:w-[80px]" /></span>
       <span className="rounded-full border border-amber-300 bg-white px-2 py-1 text-xs font-bold text-amber-900 shadow">Entrar / Cadastrar</span>
     </a>
+  );
+
+  const greeting = new Date().getHours() < 12 ? "Bom dia" : new Date().getHours() < 18 ? "Boa tarde" : "Boa noite";
+  if (onHome) return (
+    <>
+      <div className="fixed right-2 top-[78px] sm:top-2 z-[75] flex flex-col items-center gap-1">
+        <button type="button" onClick={() => setMenu(v => !v)} aria-label="Opções do usuário" aria-expanded={menu}
+          className="flex items-center gap-2 rounded-2xl border-[3px] border-amber-400 bg-gradient-to-br from-[#a9652c] via-[#794015] to-[#49250c] px-2 py-1.5 text-left text-amber-50 shadow-[0_4px_12px_rgba(0,0,0,.5)]">
+          <img src={user.avatar || iconUsuario} onError={e => { e.currentTarget.src = iconUsuario; }} alt={user.name}
+            className="h-11 w-11 sm:h-14 sm:w-14 rounded-full border-[3px] border-amber-300 bg-white object-cover" />
+          <span className="max-w-[140px] text-[11px] sm:text-sm leading-tight">
+            <span className="block">{greeting},</span>
+            <strong className="block truncate text-sm sm:text-base">{user.name}</strong>
+            <span className="block text-[10px] sm:text-xs">Seja bem-vindo!</span>
+          </span>
+        </button>
+        {menu && <div className="flex gap-1 rounded-xl bg-white/95 p-1 shadow-lg">
+          <Button size="sm" variant="outline" onClick={() => { setOpen(true); setMenu(false); }}>Meu Mural · 🪙 {coins}</Button>
+          <Button size="sm" variant="destructive" onClick={logout}>Sair</Button>
+        </div>}
+      </div>
+      <MeuMural open={open} onClose={() => setOpen(false)} />
+    </>
   );
 
   return (
