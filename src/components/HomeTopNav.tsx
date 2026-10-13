@@ -1,38 +1,39 @@
 import { NavLink } from "@/components/NavLink";
+import { Home, BookOpen, UsersRound, Gamepad2, Heart, HandHeart, Music2, PlaySquare } from "lucide-react";
 
 const LINKS = [
-  { label: "INÍCIO", to: "/" },
-  { label: "VEJA", to: "/lemosplay" },
-  { label: "OUÇA", to: "/musicas" },
-  { label: "APRENDA", to: "/atividades" },
-  { label: "FAÇA", to: "/jogos" },
-  { label: "ÁLBUM", to: "/album" },
+  { label: "Início", to: "/", Icon: Home },
+  { label: "Bíblia", to: "/biblia", Icon: BookOpen },
+  { label: "Histórias", to: "/historias-biblicas", Icon: UsersRound },
+  { label: "Atividades", to: "/atividades", Icon: Gamepad2 },
+  { label: "Devocionais", to: "/devocionais", Icon: Heart },
+  { label: "Orar", to: "/pedidos-oracao", Icon: HandHeart },
+  { label: "Louvores", to: "/musicas", Icon: Music2 },
+  { label: "Vídeo", to: "/lemosplay", Icon: PlaySquare },
 ];
 
-/**
- * Navegação principal — mesmos rótulos em desktop, tablet e celular.
- * No celular/tablet vira uma faixa rolável horizontalmente.
- */
+/** Menu ilustrado superior inspirado no layout aprovado pelo usuário. */
 export default function HomeTopNav() {
   return (
-    <nav aria-label="Navegação principal" className="w-full">
-      <ul className="flex flex-wrap items-center justify-center gap-2 lg:gap-3 px-1">
-        {LINKS.map((l) => (
-          <li key={l.to} className="shrink-0">
+    <nav aria-label="Menu superior" className="w-full min-w-0">
+      <ul className="flex items-start gap-1.5 sm:gap-2 overflow-x-auto px-2 py-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {LINKS.map(({ label, to, Icon }) => (
+          <li key={to} className="shrink-0">
             <NavLink
-              to={l.to}
-              end={l.to === "/"}
-              title={l.label}
-              className="block whitespace-nowrap px-3.5 py-2 rounded-full font-display font-bold text-xs lg:text-sm tracking-wide text-foreground/85 hover:text-foreground hover:bg-amber-100/70 transition"
-              activeClassName="bg-amber-200/80 text-foreground shadow-sm"
+              to={to}
+              end={to === "/"}
+              title={label}
+              className="group flex w-[62px] sm:w-[74px] flex-col items-center text-center no-underline transition-transform hover:-translate-y-0.5"
+              activeClassName="brightness-110"
             >
-              {l.label}
+              <span className="flex h-[47px] w-[52px] sm:h-[54px] sm:w-[62px] items-center justify-center rounded-[18px] border-[3px] border-[#f7ce67] bg-gradient-to-b from-[#ab6427] via-[#754019] to-[#4c290f] shadow-[0_3px_0_#6a370e,0_5px_9px_rgba(0,0,0,.45),inset_0_2px_3px_rgba(255,255,255,.5)] ring-1 ring-[#6d3812]">
+                <Icon className="h-7 w-7 sm:h-8 sm:w-8 text-[#fff1c3] drop-shadow-[0_2px_1px_#382008]" strokeWidth={2.5} />
+              </span>
+              <span className="-mt-1.5 relative rounded-lg border border-[#a76224] bg-gradient-to-b from-[#ffe6a1] to-[#e5a746] px-1.5 py-0.5 text-[10px] sm:text-xs font-black leading-tight text-[#482609] shadow-[0_2px_3px_rgba(0,0,0,.35)] whitespace-nowrap">{label}</span>
             </NavLink>
           </li>
         ))}
       </ul>
-      <style>{`.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{scrollbar-width:none}`}</style>
     </nav>
   );
 }
-
