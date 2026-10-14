@@ -390,10 +390,6 @@ export default function Login() {
             Já tenho cadastro — voltar ao login
           </button>
         )}
-        {ownerUnlocked && <button type="button" onClick={() => { setAdminMode(true); navigate("/config"); }}
-          className="absolute right-[3%] top-[3%] rounded-full bg-amber-50/95 p-2 text-amber-900" title="Administração" aria-label="Administração">
-          <Shield size={18} />
-        </button>}
       </div>
     </main>
   );
