@@ -1,11 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import BrincandoBiblia from "@/components/BrincandoBiblia";
 
-/** Cenário APRENDA: tarefas circulares flutuam sobre a imagem, como na página inicial. */
+/** Cenario APRENDA com quatro desafios Quem Sou Eu. */
 export default function Atividades() {
   const navigate = useNavigate();
-  return () => window.removeEventListener("lemos:back", onBack);
-  }, [quizOpen]);
   return (
     <main id="aprenda-novo" className="relative isolate h-[100dvh] w-full overflow-hidden bg-[#bdebf7]">
       <img
