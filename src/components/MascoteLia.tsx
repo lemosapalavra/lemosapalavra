@@ -24,8 +24,8 @@ const PAGE_TIPS: Record<string, string> = {
   "/ouca": "Aqui você encontra louvores para ouvir e cantar.",
   "/musicas": "Vamos cantar? Escolha um louvor e toque no vídeo para ouvir.",
   "/lemosplay": "Na página VEJA, escolha um vídeo para assistir às histórias bíblicas!",
-  "/jogos": "Na página FAÇA, escolha um dos quatro jogos: Memória, Quebra-Cabeça, Palavras ou Ligue os Pares. Toque no ícone para jogar.",
-  "/atividades": "Na página APRENDA, escolha entre três atividades que mudam a cada dia ou toque em Quiz Bíblico para responder perguntas.",
+  "/jogos": "Na página FAÇA, escolha entre Memória Bíblica, Quebra-Cabeça, Construtor de Palavras e Quiz Bíblico. Toque no ícone para jogar.",
+  "/atividades": "Na página APRENDA, escolha uma das quatro partes de Quem Sou Eu e descubra personagens da Bíblia pelas pistas.",
   "/devocionais": "Leia o devocional do dia e reflita sobre a mensagem de Deus.",
   "/pedidos-oracao": "Na página ORAR, escreva seu pedido de oração. Vamos conversar com Deus!",
   "/album": "No ÁLBUM, use suas moedinhas para abrir pacotinhos e completar sua coleção de figurinhas bíblicas.",
@@ -55,7 +55,7 @@ const CONTEXT_TIPS: Record<string, string> = {
   "edu:circles": "Em Pinte os Círculos, escolha a cor indicada e pinte cada círculo.",
   "edu:connect": "Em Ligue as Cores, arraste ligando cada ponto à cor correspondente.",
   // Álbum
-  "album:cover": "Esta é a capa do seu álbum. Toque nela para abrir e começar a colecionar!",
+  "album:cover": "Escolha o Volume 1 para começar sua coleção. O Volume 2 ficará disponível depois que você completar o primeiro álbum.",
   "album:pages": "Ganhe moedinhas 🪙 nos vídeos, histórias e atividades. Com 3 moedinhas você abre um pacotinho com 5 figurinhas, toque na figurinha para ampliar e use a Sala de Trocas para trocar as repetidas. Toque em “Próxima” para virar a página.",
 
   "album:sticker": "Aqui você amplia a figurinha: use + e − para dar zoom, arraste para mover e toque em “Ler na Bíblia” para ver a passagem.",
