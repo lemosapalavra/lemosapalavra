@@ -218,7 +218,7 @@ export default function Album() {
     return (
       <div
         className="fixed inset-0 z-40 flex items-center justify-center bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.16), rgba(255,255,255,.16)), url('/Álbum.png')" }}
+        style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.35), rgba(255,255,255,.35)), url('/Álbum.png')" }}
       >
         <PageHeader title="Álbum" />
         {/* Volume 1 no eixo central, acima da logomarca impressa no cenário. */}
