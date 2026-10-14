@@ -3,6 +3,26 @@ import { useEffect, useState } from "react";
 import MeuMural from "@/components/MeuMural";
 import { useCoins } from "@/hooks/useCoins";
 const iconUsuario = "/usuario.png";
+
+/** Compatibilidade com avatares salvos por nome nos cadastros antigos. */
+const avatarNames: Record<string, string> = {
+  jesus: "/avatars-login/jesus.webp",
+  maria: "/avatars-login/maria.webp",
+  davi: "/avatars-login/davi.webp",
+  moises: "/avatars-login/moises.webp",
+  abraao: "/avatars-login/abraao.webp",
+  jose: "/avatars-login/jose.webp",
+  lia: "/avatars-login/lia.webp",
+  marta: "/avatars-login/marta.webp",
+  noe: "/avatars-login/noe.webp",
+  paulo: "/avatars-login/paulo.webp",
+};
+function resolveAvatar(value?: string): string {
+  const raw = (value || "").trim();
+  if (!raw) return iconUsuario;
+  const key = raw.toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return avatarNames[key] || raw;
+}
 import { Button } from "@/components/ui/button";
 import { useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -70,7 +90,7 @@ export default function UserCorner() {
       <div className="fixed right-1 top-1 sm:top-1 z-[75] flex flex-col items-center gap-1">
         <button type="button" onClick={() => setMenu(v => !v)} aria-label="Opções do usuário" aria-expanded={menu}
           className="flex items-center gap-2 rounded-2xl border-[3px] border-amber-400 bg-gradient-to-br from-[#a9652c] via-[#794015] to-[#49250c] px-2 py-1.5 text-left text-amber-50 shadow-[0_4px_12px_rgba(0,0,0,.5)]">
-          <img src={user.avatar || iconUsuario} onError={e => { e.currentTarget.src = iconUsuario; }} alt={user.name}
+          <img src={resolveAvatar(user.avatar)} onError={e => { if (!e.currentTarget.src.endsWith(iconUsuario)) e.currentTarget.src = iconUsuario; }} alt={user.name}
             className="h-9 w-9 sm:h-11 sm:w-11 rounded-full border-[3px] border-amber-300 bg-white object-cover" />
           <span className="max-w-[105px] sm:max-w-[140px] text-[10px] sm:text-sm leading-tight">
             <span className="block">{greeting},</span>
@@ -105,7 +125,7 @@ export default function UserCorner() {
         <span className="w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] rounded-full bg-white shadow-lg border-2 border-amber-300 overflow-hidden block">
           <img
             src={user.avatar || iconUsuario}
-            onError={(e) => { (e.currentTarget as HTMLImageElement).src = iconUsuario; }}
+            onError={(e) => { if (!e.currentTarget.src.endsWith(iconUsuario)) e.currentTarget.src = iconUsuario; }}
             alt={user.name}
             className="w-full h-full object-cover"
             loading="lazy"
