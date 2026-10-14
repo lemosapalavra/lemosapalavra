@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 import JogosInterativos from "@/components/JogosInterativos";
-import iconMemoria from "@/assets/jogos/icon-memoria.png";
-import iconQuebraCabeca from "@/assets/jogos/icon-quebra-cabeca.png";
-import iconPalavras from "@/assets/jogos/icon-palavras.png";
 import { Link2 } from "lucide-react";
 import { isAllowed } from "@/lib/contentAccess";
 
 const ALL_GAMES = [
-  { id: "memory", title: "Memória Bíblica", icon: iconMemoria },
-  { id: "jigsaw", title: "Quebra-Cabeça", icon: iconQuebraCabeca },
-  { id: "wordbuilder", title: "Construtor de Palavras", icon: iconPalavras },
+  { id: "memory", title: "Memória Bíblica", icon: "/Jogo da Memória.png" },
+  { id: "jigsaw", title: "Quebra-Cabeça", icon: "/Quebra-Cabeça.png" },
+  { id: "wordbuilder", title: "Construtor de Palavras", icon: "/Monte Palavras.png" },
   { id: "pairs", title: "Ligue os Pares", icon: null },
 ];
 
@@ -44,7 +41,7 @@ export default function Jogos() {
             <button
               key={game.id}
               type="button"
-              onClick={() => setSelectedGame(game.id as "memory"|"maze"|"jigsaw"|"wordbuilder"|"quiz")}
+              onClick={() => setSelectedGame(game.id as "memory"|"jigsaw"|"wordbuilder"|"pairs")}
               aria-label={game.title}
               title={game.title}
               className="absolute pointer-events-auto aspect-square w-[clamp(72px,18vw,130px)] -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-yellow-400 bg-emerald-800/80 p-1 shadow-[0_0_18px_4px_rgba(255,220,65,0.75)] animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:brightness-110 focus-visible:outline-4 focus-visible:outline-white"
