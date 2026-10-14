@@ -106,9 +106,7 @@ export default function UserCorner() {
           </span>
         </button>
         {menu && <div className="flex flex-wrap justify-center gap-1 rounded-xl bg-white/95 p-1 shadow-lg">
-          <Button size="sm" variant="outline" onClick={() => { setOpen(true); setMenu(false); }}>Meu Mural · 🪙 {coins}</Button>
-          <Button size="sm" variant="outline" onClick={() => setWelcomeGender("feminino")}>Bem-vinda</Button>
-          <Button size="sm" variant="outline" onClick={() => setWelcomeGender("masculino")}>Bem-vindo</Button>
+          <Button size="sm" variant="outline" onClick={() => { setOpen(true); setMenu(false); }}>Meu Mural</Button>
           <Button size="sm" variant="destructive" onClick={logout}>Sair</Button>
         </div>}
       </div>
