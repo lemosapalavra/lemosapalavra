@@ -32,7 +32,7 @@ export default function Atividades() {
           <circle cx="150" cy="85" r="20" fill={filled[3]||"white"} stroke="#5b3a16" strokeWidth="4" onClick={()=>setFilled(p=>({...p,3:paint}))}/>
         </svg>
         <button onClick={()=>setFilled({})} className="mt-4 rounded-full bg-amber-300 px-5 py-2 font-bold">Pintar novamente</button>
-      </section>
+      </section>}
     </main>
   );
 }
