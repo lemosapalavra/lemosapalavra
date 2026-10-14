@@ -48,26 +48,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
 
   if (!planeVisible || !isBannerActive(cfg)) return null;
 
-  const playPlaneClick = () => {
-    try {
-      const AudioContextCtor = window.AudioContext;
-      if (!AudioContextCtor) return;
-      const ctx = new AudioContextCtor();
-      const oscillator = ctx.createOscillator();
-      const gain = ctx.createGain();
-      oscillator.type = "sine";
-      oscillator.frequency.setValueAtTime(740, ctx.currentTime);
-      oscillator.frequency.exponentialRampToValueAtTime(520, ctx.currentTime + 0.075);
-      gain.gain.setValueAtTime(0.045, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.09);
-      oscillator.connect(gain);
-      gain.connect(ctx.destination);
-      oscillator.start();
-      oscillator.stop(ctx.currentTime + 0.09);
-      oscillator.onended = () => { void ctx.close(); };
-    } catch { /* Audio indisponível ou bloqueado pelo navegador. */ }
-  };
-  const handleClick = () => { playPlaneClick(); if (cfg.videoUrl) setOpen(true); };
+  const handleClick = () => { if (cfg.videoUrl) setOpen(true); };
   const planeSrc = dir === "rtl" ? planeRtl.url : planeLtr.url;
   const animName = dir === "rtl" ? "plane-rtl" : "plane-ltr";
 
