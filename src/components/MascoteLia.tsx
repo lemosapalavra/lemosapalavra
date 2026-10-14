@@ -46,7 +46,7 @@ const CONTEXT_TIPS: Record<string, string> = {
   memory: "Na Memória, vire duas cartinhas por vez e encontre os pares iguais.",
   coloring: "No Colorir, escolha uma cor e toque no desenho. Quer trocar? É só escolher outra cor e tocar de novo no mesmo lugar.",
   pairs: "Em Ligue os Pares, escolha um personagem bíblico e depois o acontecimento correspondente.",
-  jigsaw: "No Quebra-Cabeça", toque em duas peças para trocá-las de lugar até montar a imagem.",
+  jigsaw: "No Quebra-Cabeça, toque em duas peças para trocá-las de lugar até montar a imagem.",
   wordsearch: "No Caça-Palavras, arraste o dedo sobre as letras para marcar as palavras da lista.",
   maze: "No Labirinto, encontre o caminho correto até a chegada.",
   crossword: "Aqui você procura as palavras na grade e marca cada uma na lista embaixo. Achou todas? Ganha moedinhas 🪙.",
