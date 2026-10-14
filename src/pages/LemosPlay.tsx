@@ -232,6 +232,15 @@ export default function LemosPlay() {
   );
 
   const [playing, setPlaying] = useState<PlayItem | null>(null);
+  // Abre diretamente o vídeo indicado por um convite compartilhado.
+  useEffect(() => {
+    const videoId = new URLSearchParams(window.location.search).get("video");
+    if (!videoId) return;
+    const video = [...filmesPlay, ...musicasPlay, ...louvoresPlay, ...seriesGroupItems.flatMap((g) => g.videos)].find((item) => item.id === videoId);
+    if (video) setPlaying(video);
+  }, [filmesPlay, musicasPlay, louvoresPlay, seriesGroupItems]);
+
+
   const [playingGroupId, setPlayingGroupId] = useState<string | null>(null);
   const [openGroup, setOpenGroup] = useState<(typeof seriesGroupItems)[number] | null>(null);
   const [progress, setProgress] = useState<ProgressMap>(() => loadProgress());
