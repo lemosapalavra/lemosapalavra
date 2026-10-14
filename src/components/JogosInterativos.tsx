@@ -6,7 +6,7 @@ import avatarDaniel from "@/assets/avatar-daniel.png";
 import avatarMoises from "@/assets/avatar-moises.png";
 import avatarAnjo from "@/assets/avatar-anjo.png";
 
-type GameId = "memory" | "maze" | "jigsaw" | "wordbuilder" | "quiz" | "pairs";
+type GameId = "memory" | "maze" | "jigsaw" | "wordbuilder" | "quiz" | "pairs" | "fishing";
 const pictures = [
  {name:"Jesus",src:avatarJesus},{name:"Maria",src:avatarMaria},
  {name:"Davi",src:avatarDavi},{name:"Daniel",src:avatarDaniel},
@@ -33,6 +33,7 @@ const scramble = (length:number) => {
  return a;
 };
 export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void}) {
+ const [fishCaught,setFishCaught]=useState<number[]>([]);
  const [deck,setDeck]=useState<number[]>([]);
  const [turned,setTurned]=useState<number[]>([]);
  const [found,setFound]=useState<number[]>([]);
@@ -46,6 +47,7 @@ export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void})
  const [pairChoice,setPairChoice]=useState<number|null>(null);
  const [pairFound,setPairFound]=useState<number[]>([]);
  const reset=()=>{
+  setFishCaught([]);
   setDeck(scramble(12).map(i=>i%6));setTurned([]);setFound([]);
   setTiles(scramble(9));setChosen(null);setRound(0);setLetters([]);
   setSelected(null);setAnswers({});setMazeStep(0);setPairChoice(null);setPairFound([]);
@@ -54,7 +56,7 @@ export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void})
  const currentWord=wordRounds[round%wordRounds.length];
  const shuffledLetters=useMemo(()=>scramble(Array.from(currentWord.answer).length),[round]);
  const doneWord=letters.map(i=>currentWord.answer[shuffledLetters[i]]).join("");
- const gameTitle:Record<GameId,string>={memory:"Memória Bíblica",maze:"Labirinto",jigsaw:"Quebra-Cabeça",wordbuilder:"Construtor de Palavras",quiz:"Quiz Bíblico",pairs:"Ligue os Pares"};
+ const gameTitle:Record<GameId,string>={memory:"Memória Bíblica",maze:"Labirinto",jigsaw:"Quebra-Cabeça",wordbuilder:"Construtor de Palavras",quiz:"Quiz Bíblico",pairs:"Ligue os Pares",fishing:"Pescaria Bíblica"};
  const flip=(i:number)=>{
   if(found.includes(i)||turned.includes(i)||turned.length===2)return;
   const next=[...turned,i];setTurned(next);
@@ -71,6 +73,18 @@ export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void})
    <div className="mb-4 flex items-center justify-between gap-3">
     <h2 className="text-xl font-black sm:text-2xl">{gameTitle[game]}</h2>
    </div>
+   {game==="fishing" && <>
+    <p className="mb-4">Pesque os peixinhos e descubra mensagens da Bíblia!</p>
+    <div className="grid grid-cols-3 gap-3 rounded-2xl bg-sky-200 p-5">
+      {["Jesus nos ama","Deus é amor","Tenha fé","Seja bondoso","Perdoe","Ore sempre"].map((msg,i)=>
+        <button key={i} disabled={fishCaught.includes(i)} onClick={()=>setFishCaught(a=>[...a,i])}
+          className="min-h-24 rounded-2xl bg-sky-100 p-2 text-center text-sm font-bold text-blue-900 shadow-lg disabled:bg-green-100">
+          <span className="block text-4xl">{fishCaught.includes(i)?"🎣":"🐟"}</span>{fishCaught.includes(i)?msg:"Pescar"}
+        </button>)}
+    </div>
+    {fishCaught.length===6 && <p className="mt-4 text-center font-black text-green-700">Parabéns! Você pescou todos os peixinhos!</p>}
+    <button onClick={()=>setFishCaught([])} className="mt-4 rounded-full bg-amber-300 px-5 py-2 font-bold">Jogar novamente</button>
+   </>}
    {game==="memory" && <>
     <p className="mb-3">Encontre os pares de imagens dos personagens bíblicos.</p>
     <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">{deck.map((id,i)=>{
