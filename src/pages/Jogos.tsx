@@ -3,11 +3,11 @@ import JogosInterativos from "@/components/JogosInterativos";
 import { isAllowed } from "@/lib/contentAccess";
 
 const ALL_GAMES = [
-  { id: "memory", title: "Memória Bíblica", icon: "/Jogo%20da%20Mem%C3%B3ria.png" },
-  { id: "jigsaw", title: "Quebra-Cabeça", icon: "/Quebra-Cabe%C3%A7a.png" },
-  { id: "wordbuilder", title: "Construtor de Palavras", icon: "/Monte%20Palavras.png" },
+  { id: "memory", title: "Memória Bíblica", icon: "/memoria.png" },
+  { id: "jigsaw", title: "Quebra-Cabeça", icon: "/Quebra-Cabeça.png" },
+  { id: "wordbuilder", title: "Construtor de Palavras", icon: "/Construa%20Palavras.png" },
   { id: "quiz", title: "Quiz Bíblico", icon: "/Quiz%20B%C3%ADblico.png" },
-  { id: "fishing", title: "Pescaria", icon: "/Pescaria.png" },
+  { id: "fishing", title: "Pescaria", icon: "/pescaria.png" },
 ];
 
 const positions = [
