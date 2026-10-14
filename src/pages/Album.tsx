@@ -277,12 +277,10 @@ export default function Album() {
   return (
     <div className="fixed inset-0 z-40 flex flex-col bg-amber-50">
 
-      <div className="px-3 pt-3">
-        <StandardHeader onHome={() => navigate("/")} coins={coins} />
-      </div>
+      {/* O cabeçalho global já mostra navegação e usuário. Evita duplicação e sobreposição. */}
 
       {/* Floating icon-only toolbar (no brown bar) */}
-      <div className="flex items-center justify-between px-3 py-2 z-10">
+      <div className="flex items-center justify-between gap-2 px-3 pt-[112px] sm:pt-[128px] pb-2 z-10 shrink-0">
         <div className="text-center min-w-0 px-2 bg-transparent">
           <div className="text-[10px] uppercase tracking-wider font-bold text-amber-900/70 leading-tight">Figurinhas Coletadas</div>
           <div className="text-sm font-display font-extrabold text-amber-900 tabular-nums">{totalOwned} / {allStickers.length}</div>
@@ -399,7 +397,7 @@ export default function Album() {
 
 
 
-      <div className="flex items-center justify-between px-4 pb-4 gap-3">
+      <div className="flex items-center justify-between px-4 pb-4 gap-3 shrink-0">
         <button onClick={goPrev} disabled={pageIdx === 0}
           className="bg-amber-900/90 disabled:opacity-30 text-white font-display font-bold px-4 py-2 rounded-full shadow flex items-center gap-1">
           <ChevronLeft className="w-4 h-4" /> Anterior
@@ -637,8 +635,8 @@ function StickerDetailModal({ sticker, owned, onClose }: { sticker: Sticker; own
 
 function PageShell({ children, side }: { children: React.ReactNode; side: "left" | "right" }) {
   return (
-    <div className="relative w-full h-full overflow-hidden rounded-2xl bg-transparent">
-      <div className="relative w-full h-full p-1 sm:p-3">{children}</div>
+    <div className="relative w-full h-full min-h-0 overflow-hidden rounded-2xl bg-transparent">
+      <div className="relative w-full h-full min-h-0 p-1 sm:p-3">{children}</div>
     </div>
   );
 }
@@ -799,8 +797,8 @@ function CategoryPage({
           style={{ opacity: 0.32 }} />
       )}
       <div className="absolute inset-0 bg-amber-50/20 pointer-events-none rounded-xl" />
-      <div className="relative h-full p-2 sm:p-3 flex items-center justify-center">
-        <div className="grid grid-cols-3 gap-2 sm:gap-3 w-full h-full place-items-center" style={{ gridTemplateRows: "repeat(2, minmax(0, 1fr))" }}>
+      <div className="relative h-full min-h-0 p-1 sm:p-3 flex items-center justify-center">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 w-full h-full min-h-0 place-items-stretch" style={{ gridTemplateRows: "repeat(2, minmax(0, 1fr))" }}>
           {stickers.map((s, i) => {
             const has = (owned[s.id] || 0) > 0;
             const globalNum = String(s.id + 1).padStart(3, "0");
@@ -819,14 +817,13 @@ function CategoryPage({
                 data-sticker
                 onClick={(e) => { e.stopPropagation(); onStickerClick(s); }}
                 disabled={!has}
-                style={{ aspectRatio: "49 / 65" }}
-                className={`relative h-full max-w-full min-h-0 overflow-hidden rounded-xl bg-gradient-to-br ${cat.color} p-[3px] shadow-lg flex ${
+                className={`relative w-full h-full min-w-0 min-h-0 overflow-hidden rounded-xl bg-gradient-to-br ${cat.color} p-[3px] shadow-lg flex ${
                   has ? "cursor-pointer hover:scale-[1.06] hover:z-30 transition-transform" : "opacity-95"
                 }`}
               >
 
                 {/* Inner white card */}
-                <div className="relative w-full h-full bg-white rounded-[10px] flex flex-col overflow-hidden">
+                <div className="relative w-full h-full min-h-0 bg-white rounded-[10px] flex flex-col overflow-hidden">
                   {/* Number ribbon top-left */}
                   <span className={`absolute top-1 left-1 z-20 text-[9px] font-display font-extrabold px-1.5 py-0.5 rounded-md shadow bg-gradient-to-br ${cat.color} text-white border border-white/60`}>
                     Nº{globalNum}
@@ -841,7 +838,7 @@ function CategoryPage({
                   )}
 
                   {/* Image area — mostra a figurinha inteira, sem cortes */}
-                  <div className="relative flex-1 w-full overflow-hidden bg-gradient-to-b from-white to-amber-50/50">
+                  <div className="relative flex-1 min-h-0 w-full overflow-hidden bg-gradient-to-b from-white to-amber-50/50">
                     {has && s.image ? (
                       <img
                         src={s.image}
@@ -863,7 +860,7 @@ function CategoryPage({
                   </div>
 
                   {/* Title + rarity band */}
-                  <div className={`w-full bg-gradient-to-r ${cat.color} px-1 py-1 flex flex-col items-center gap-0.5 min-h-[2.6em] text-white`}>
+                  <div className={`w-full bg-gradient-to-r ${cat.color} px-1 py-1 shrink-0 flex flex-col items-center justify-center gap-0.5 min-h-[37px] text-white`}>
                     <span className="font-display font-extrabold text-[9px] sm:text-[10px] leading-tight line-clamp-2 text-center drop-shadow">
                       {has ? s.name : "???"}
                     </span>
