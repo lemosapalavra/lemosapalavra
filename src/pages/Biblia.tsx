@@ -299,7 +299,8 @@ export default function Biblia() {
                       onClick={() => { setTab(t.key); setShowBibleMenu(false); }}
                       className="absolute w-[clamp(82px,20vw,126px)] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-amber-300 bg-white/90 shadow-[0_6px_22px_rgba(0,0,0,.55)] ring-2 ring-white/80 hover:scale-110 transition-transform"
                       style={{ left: `${50 + 39 * Math.cos(angle)}%`, top: `${50 + 39 * Math.sin(angle)}%` }}>
-                      <img src={t.icon} alt={t.label} className="w-full h-full object-contain rounded-full drop-shadow-[0_3px_7px_rgba(0,0,0,.6)]" />
+                      <img src={t.icon} alt="" className="w-full h-full object-contain rounded-full drop-shadow-[0_3px_7px_rgba(0,0,0,.6)]" />
+                      <span className="absolute inset-x-[-12%] -bottom-5 rounded-full border border-amber-300 bg-green-900/95 px-1 py-1 text-center text-[clamp(9px,1.8vw,13px)] font-extrabold leading-tight text-white shadow-[0_3px_8px_rgba(0,0,0,.7)]">{t.label}</span>
                     </button>
                   );
                 })}
