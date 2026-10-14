@@ -221,12 +221,12 @@ export default function Album() {
         style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.16), rgba(255,255,255,.16)), url('/Álbum.png')" }}
       >
         <PageHeader title="Álbum" />
-        <div className="flex items-center justify-center gap-5 sm:gap-10 px-5 w-full max-w-3xl">
+        <div className="flex items-center justify-center gap-8 sm:gap-14 px-5 w-full max-w-3xl">
           <button
             type="button"
             onClick={() => { setPageIdx(0); setView("pages"); }}
             aria-label="Abrir álbum Volume 1"
-            className="w-[min(40vw,220px)] aspect-square shrink-0 rounded-full transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300"
+            className="w-[min(38vw,220px)] aspect-square shrink-0 rounded-full transition-all duration-200 hover:scale-110 hover:brightness-125 active:scale-95 active:brightness-125 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300"
           >
             <img src="/Álbum%20Bíblico%20Volume%201.png" alt="Álbum Heróis da Fé — Volume 1" className="w-full h-full object-contain drop-shadow-[0_8px_18px_rgba(0,0,0,.65)]" />
           </button>
@@ -234,7 +234,7 @@ export default function Album() {
             type="button"
             onClick={() => toast(completed ? "Volume 2 em preparação." : "O Volume 2 estará disponível somente depois de completar o Volume 1.", { duration: 5500 })}
             aria-label={completed ? "Volume 2 em preparação" : "Volume 2 bloqueado até concluir o Volume 1"}
-            className="w-[min(40vw,220px)] aspect-square shrink-0 rounded-full cursor-pointer transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300"
+            className="w-[min(38vw,220px)] aspect-square shrink-0 rounded-full cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300"
           >
             <img src="/Álbum%20Bíblico%20Volume%202.png" alt="Álbum Heróis da Fé — Volume 2" className="w-full h-full object-contain grayscale drop-shadow-[0_8px_18px_rgba(0,0,0,.65)]" />
           </button>
