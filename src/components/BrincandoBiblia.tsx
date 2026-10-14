@@ -87,7 +87,7 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
  const selectCard=(i:number)=>{if(flipped.includes(i)||matched.includes(i)||flipped.length===2)return;const next=[...flipped,i];setFlipped(next);if(next.length===2){setMoves(m=>m+1);if(deck[next[0]].id===deck[next[1]].id){setMatched(m=>[...m,...next]);setFlipped([]);}}};
  const current=index===null?null:activities[index];
  const score=current?.questions?.filter((q,i)=>answers[i]===q.answer).length??0;
- const positions = [{left:"23%",top:"43%"},{left:"77%",top:"43%"},{left:"23%",top:"73%"}];
+ const positions = [{left:"23%",top:"44%"},{left:"77%",top:"44%"},{left:"50%",top:"75%"}];
  if (index===null || !current) {
   return (
    <section className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
