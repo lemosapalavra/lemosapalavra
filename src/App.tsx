@@ -278,40 +278,47 @@ const AuthAwareDecorations = () => {
 const IconClickSounds = () => {
   useEffect(() => {
     let ctx: AudioContext | null = null;
-    let enabled = false;
     let lastHover = 0;
+    let lastIcon: Element | null = null;
     const getIcon = (target: EventTarget | null): Element | null => {
       if (!(target instanceof Element)) return null;
       const item = target.closest('button, a, [role="button"]');
       if (!item || item.matches(':disabled, [aria-disabled="true"]')) return null;
-      return item.querySelector('img') ? item : null;
+      return item.querySelector('img') || item.classList.contains("home-image-hotspot") ? item : null;
     };
     const sound = (hover: boolean) => {
       try {
         ctx ||= new AudioContext();
-        if (ctx.state !== "running") { void ctx.resume().catch(() => {}); return; }
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        const now = ctx.currentTime;
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(hover ? 740 : 590, now);
-        osc.frequency.exponentialRampToValueAtTime(hover ? 940 : 880, now + .07);
-        gain.gain.setValueAtTime(.0001, now);
-        gain.gain.exponentialRampToValueAtTime(hover ? .016 : .045, now + .008);
-        gain.gain.exponentialRampToValueAtTime(.0001, now + .105);
-        osc.connect(gain).connect(ctx.destination);
-        osc.start(now);
-        osc.stop(now + .11);
+        const play = () => {
+          if (!ctx || ctx.state !== "running") return;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          const now = ctx.currentTime;
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(hover ? 740 : 590, now);
+          osc.frequency.exponentialRampToValueAtTime(hover ? 940 : 880, now + .07);
+          gain.gain.setValueAtTime(.0001, now);
+          gain.gain.exponentialRampToValueAtTime(hover ? .022 : .05, now + .008);
+          gain.gain.exponentialRampToValueAtTime(.0001, now + .105);
+          osc.connect(gain).connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + .11);
+        };
+        if (ctx.state !== "running") void ctx.resume().then(play).catch(() => {});
+        else play();
       } catch { /* Som opcional: navegação nunca deve falhar */ }
     };
     const click = (e: MouseEvent) => {
-      if (!enabled) enabled = true;
       if (getIcon(e.target)) sound(false);
     };
     const pointer = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse" || !enabled || !getIcon(e.target)) return;
+      if (e.pointerType !== "mouse") return;
+      const icon = getIcon(e.target);
+      if (!icon) { lastIcon = null; return; }
+      if (icon === lastIcon) return;
+      lastIcon = icon;
       const now = Date.now();
-      if (now - lastHover < 180) return;
+      if (now - lastHover < 100) return;
       lastHover = now;
       sound(true);
     };
