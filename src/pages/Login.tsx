@@ -347,7 +347,7 @@ export default function Login() {
   return (
     <main className="fixed inset-0 z-0 flex items-center justify-center overflow-hidden bg-[#1d381c]" aria-label="Entrada do Lemos a Palavra">
       <div className="relative h-[100dvh] w-[100vw] shrink-0 overflow-hidden bg-[#f4d79c]">
-        <img src="/login-jornada-mobile.png" alt="Lemos a Palavra: bem-vindo à jornada bíblica" className="absolute inset-0 h-full w-full object-fill select-none pointer-events-none" draggable={false} />
+        <img src={mode === "login" ? "/Bem-vindo%20login.png" : "/login-jornada-mobile.png"} alt="Lemos a Palavra: bem-vindo à jornada bíblica" className="absolute inset-0 h-full w-full object-fill select-none pointer-events-none" draggable={false} />
         <label className="absolute left-[31.3%] top-[50.0%] w-[43.4%] h-[3.1%] z-10">
           <span className="sr-only">Seu nome</span>
           <input aria-label="Seu nome" type="text" autoComplete="name" value={name} onChange={e => setName(e.target.value)}
@@ -362,7 +362,7 @@ export default function Login() {
             className="w-full h-full border-0 bg-[#fffaf4] outline-none focus:ring-2 focus:ring-amber-500 rounded-full px-[4%] text-amber-950 placeholder:text-transparent"
             style={{ fontSize: "clamp(10px, 1.65dvh, 17px)" }} />
         </label>
-        {avatarChoices.map((av, i) => {
+        {mode === "register" && avatarChoices.map((av, i) => {
           const firstRow = i < 5;
           const col = firstRow ? i : i - 5;
           const left = firstRow ? 18.0 + col * 12.6 : 14.4 + col * 12.0;
@@ -375,47 +375,17 @@ export default function Login() {
         })}
         <button type="button" disabled={busy} onClick={submitArtwork}
           aria-label={mode === "login" ? "Entrar na minha conta" : "Entrar e Começar"}
-          className="absolute left-[19.2%] top-[80.9%] w-[61.5%] h-[5.5%] rounded-full focus-visible:ring-4 focus-visible:ring-white disabled:opacity-50 touch-manipulation" />
-        <div className="absolute left-[19%] top-[86.1%] w-[62%] flex justify-center z-10">
-          <button type="button" onClick={() => setMode(mode === "login" ? "register" : "login")}
-            className="rounded-full bg-amber-50/95 border border-amber-700 px-3 py-1 text-amber-950 font-semibold shadow"
-            style={{ fontSize: "clamp(9px, 1.45dvh, 13px)" }}>
-            {mode === "login" ? "Não tenho conta — cadastrar" : "Já tenho conta — entrar"}
-          </button>
-        </div>
+          className={`absolute left-[19.2%] ${mode === "login" ? "top-[64.5%]" : "top-[80.9%]"} w-[61.5%] h-[5.5%] rounded-full focus-visible:ring-4 focus-visible:ring-white disabled:opacity-50 touch-manipulation`} />
+        {mode === "login" && (
+          <button type="button" onClick={() => { setMode("register"); setPhone(email); }}
+            aria-label="Se cadastrar"
+            className="absolute left-[22%] top-[76.2%] w-[56%] h-[5.5%] rounded-full focus-visible:ring-4 focus-visible:ring-green-600 touch-manipulation" />
+        )}
         {mode === "register" && (
-          <div className="absolute inset-0 z-40 flex items-center justify-center overflow-y-auto bg-[#18331d]/85 p-3" role="dialog" aria-modal="true" aria-label="Criar uma conta">
-            <form onSubmit={(e) => { e.preventDefault(); if (!busy) void doRegister(); }}
-              className="my-auto w-full max-w-md space-y-3 rounded-3xl border-4 border-amber-400 bg-[#fff8e5] p-4 text-amber-950 shadow-2xl sm:p-6">
-              <h1 className="text-center text-2xl font-extrabold">🌟 Criar minha conta</h1>
-              <p className="text-center text-sm">Preencha seus dados e escolha seu avatar para começar.</p>
-              <label className="block text-sm font-bold">Seu nome
-                <input type="text" autoComplete="name" required value={name} onChange={e => setName(e.target.value)}
-                  className="mt-1 block w-full rounded-xl border-2 border-amber-300 bg-white px-3 py-2 text-base outline-none focus:border-amber-600" />
-              </label>
-              <label className="block text-sm font-bold">Celular com DDD
-                <input type="tel" inputMode="numeric" autoComplete="tel" required value={phone} onChange={e => setPhone(maskPhone(e.target.value))}
-                  placeholder="(11) 99999-9999"
-                  className="mt-1 block w-full rounded-xl border-2 border-amber-300 bg-white px-3 py-2 text-base outline-none focus:border-amber-600" />
-              </label>
-              <p className="text-sm font-bold">Escolha seu avatar</p>
-              <div className="grid grid-cols-6 gap-2">
-                {avatars.map(av => <button key={av.name} type="button" title={av.name} aria-label={`Avatar ${av.name}`}
-                  aria-pressed={selectedAvatar === av.src} onClick={() => chooseAvatar(av.src)}
-                  className={`aspect-square overflow-hidden rounded-full border-4 bg-white ${selectedAvatar === av.src ? "border-green-600 ring-2 ring-green-300" : "border-amber-300"}`}>
-                  <img src={av.src} alt={av.name} className="h-full w-full object-cover" />
-                </button>)}
-              </div>
-              <button type="submit" disabled={busy}
-                className="w-full rounded-full bg-emerald-700 px-4 py-3 text-base font-extrabold text-white shadow-lg disabled:opacity-60">
-                {busy ? "Criando conta..." : "Cadastrar e começar"}
-              </button>
-              <button type="button" onClick={() => setMode("login")}
-                className="w-full rounded-full border-2 border-amber-500 bg-white px-4 py-2 text-sm font-bold">
-                Já tenho conta — voltar para entrar
-              </button>
-            </form>
-          </div>
+          <button type="button" onClick={() => setMode("login")}
+            className="absolute left-[19%] top-[87%] w-[62%] rounded-full border-2 border-amber-600 bg-amber-50 px-3 py-2 font-bold text-amber-950 shadow-lg">
+            Já tenho cadastro — voltar ao login
+          </button>
         )}
         {ownerUnlocked && <button type="button" onClick={() => { setAdminMode(true); navigate("/config"); }}
           className="absolute right-[3%] top-[3%] rounded-full bg-amber-50/95 p-2 text-amber-900" title="Administração" aria-label="Administração">
