@@ -109,7 +109,7 @@ const AuthBootstrap = () => {
       window.dispatchEvent(new Event("lemos_admin_change"));
     }
 
-    const hydrate = async (userId: string, email: string | null) => {
+    const hydrate = async (userId: string, email: string | null, metadata: Record<string, any> = {}) => {
       const { data: profile } = await supabase
         .from("profiles")
         .select("name, age_range, phone, role, avatar, email, created_at")
@@ -127,7 +127,7 @@ const AuthBootstrap = () => {
         ageRange: profile?.age_range || existing.ageRange || "",
         phone: profile?.phone || existing.phone || "",
         role: profile?.role || existing.role || "",
-        avatar: profile?.avatar || existing.avatar || "",
+        avatar: profile?.avatar || metadata.avatar || existing.avatar || "",
         email: profile?.email || email || existing.email || "",
         createdAt: profile?.created_at || existing.createdAt || new Date().toISOString(),
       };
@@ -141,10 +141,10 @@ const AuthBootstrap = () => {
         window.dispatchEvent(new Event("lemos_admin_change"));
         return;
       }
-      if (session?.user) hydrate(session.user.id, session.user.email);
+      if (session?.user) hydrate(session.user.id, session.user.email, session.user.user_metadata || {});
     });
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session?.user) hydrate(data.session.user.id, data.session.user.email);
+      if (data.session?.user) hydrate(data.session.user.id, data.session.user.email, data.session.user.user_metadata || {});
     });
     return () => { cancelled = true; sub.subscription.unsubscribe(); };
   }, []);
