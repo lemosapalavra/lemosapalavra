@@ -7,7 +7,6 @@ const ALL_GAMES = [
   { id: "jigsaw", title: "Quebra-Cabeça", icon: "/Quebra-Cabeça.png" },
   { id: "wordbuilder", title: "Construtor de Palavras", icon: "/Construa%20Palavras.png" },
   { id: "quiz", title: "Quiz Bíblico", icon: "/Quiz%20B%C3%ADblico.png" },
-  { id: "fishing", title: "Pescaria", icon: "/pescaria.png" },
 ];
 
 const positions = [
@@ -15,11 +14,10 @@ const positions = [
   { left: "83%", top: "40%" },
   { left: "17%", top: "76%" },
   { left: "83%", top: "76%" },
-  { left: "50%", top: "57%" },
 ];
 
 export default function Jogos() {
-  const [selectedGame, setSelectedGame] = useState<"memory"|"jigsaw"|"wordbuilder"|"quiz"|"fishing"|null>(null);
+  const [selectedGame, setSelectedGame] = useState<"memory"|"jigsaw"|"wordbuilder"|"quiz"|null>(null);
   useEffect(() => {
     if (!selectedGame) return;
     const onBack = (event: Event) => { event.preventDefault(); setSelectedGame(null); };
@@ -42,13 +40,13 @@ export default function Jogos() {
             <button
               key={game.id}
               type="button"
-              onClick={() => setSelectedGame(game.id as "memory" | "jigsaw" | "wordbuilder" | "quiz" | "fishing")}
+              onClick={() => setSelectedGame(game.id as "memory" | "jigsaw" | "wordbuilder" | "quiz")}
               aria-label={game.title}
               title={game.title}
               className="absolute pointer-events-auto aspect-square w-[clamp(88px,20vw,152px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent p-0 drop-shadow-[0_0_10px_rgba(255,220,65,0.6)] animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:brightness-110 focus-visible:outline-4 focus-visible:outline-white"
               style={{...position,animationDelay:`${ALL_GAMES.findIndex((g) => g.id === game.id)*0.7}s`}}
             >
-              <img src={game.icon} alt="" className="h-full w-full object-contain" onError={e => { if (game.id==="fishing") { e.currentTarget.style.display="none"; e.currentTarget.parentElement!.textContent="🐟 Pescaria"; } }} />
+              <img src={game.icon} alt="" className="h-full w-full object-contain" />
             </button>
           );
         })}
