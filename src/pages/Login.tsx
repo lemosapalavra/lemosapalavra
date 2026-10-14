@@ -11,6 +11,8 @@ import avatarDavi from "@/assets/avatar-davi.png";
 import avatarDaniel from "@/assets/avatar-daniel.png";
 import avatarMoises from "@/assets/avatar-moises.png";
 import avatarAnjo from "@/assets/avatar-anjo.png";
+import avatarAbraao from "@/assets/avatar-abraao.png";
+import avatarJose from "@/assets/avatar-jose.png";
 
 const avatars = [
   { src: avatarJesus, name: "Jesus" },
@@ -51,6 +53,9 @@ async function hydrateLocalProfile(userId: string, fallbackEmail: string) {
     email: profile?.email || fallbackEmail,
     createdAt: profile?.created_at || new Date().toISOString(),
   };
+  // Preferência de avatar escolhida neste aparelho, vinculada à conta (não a outro usuário).
+  const avatarOverride = localStorage.getItem(`lemos_avatar_${userId}`);
+  if (avatarOverride) u.avatar = avatarOverride;
   localStorage.setItem("lemos_user", JSON.stringify(u));
   window.dispatchEvent(new Event("lemos_admin_change"));
   return u;
@@ -290,6 +295,8 @@ export default function Login() {
       setEmail(phone);
       return;
     }
+    // O avatar selecionado no cadastro deve aparecer imediatamente no cabeçalho.
+    localStorage.setItem(`lemos_avatar_${signIn.user.id}`, finalAvatar);
     await hydrateLocalProfile(signIn.user.id, derivedEmail);
     const { logEvent } = await import("@/lib/logEvent");
     logEvent("Cadastro", { userId: signIn.user.id, email: derivedEmail });
@@ -335,7 +342,7 @@ export default function Login() {
   const avatarChoices = [
     { name: "Jesus", src: avatarJesus }, { name: "Maria", src: avatarMaria },
     { name: "Davi", src: avatarDavi }, { name: "Moisés", src: avatarMoises },
-    { name: "Abraão", src: avatarMoises }, { name: "José", src: avatarJesus },
+    { name: "Abraão", src: avatarAbraao }, { name: "José", src: avatarJose },
     { name: "Lia", src: "/lia-mascote.png" }, { name: "Marta", src: avatarMaria },
     { name: "Noé", src: avatarMoises }, { name: "Paulo", src: avatarDavi },
     { name: "Matheus", src: avatarDaniel },
