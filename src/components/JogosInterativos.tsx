@@ -6,7 +6,7 @@ import avatarDaniel from "@/assets/avatar-daniel.png";
 import avatarMoises from "@/assets/avatar-moises.png";
 import avatarAnjo from "@/assets/avatar-anjo.png";
 
-type GameId = "memory" | "maze" | "jigsaw" | "wordbuilder" | "quiz";
+type GameId = "memory" | "maze" | "jigsaw" | "wordbuilder" | "quiz" | "pairs";
 const pictures = [
  {name:"Jesus",src:avatarJesus},{name:"Maria",src:avatarMaria},
  {name:"Davi",src:avatarDavi},{name:"Daniel",src:avatarDaniel},
@@ -43,16 +43,18 @@ export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void})
  const [selected,setSelected]=useState<number|null>(null);
  const [answers,setAnswers]=useState<Record<number,number>>({});
  const [mazeStep,setMazeStep]=useState(0);
+ const [pairChoice,setPairChoice]=useState<number|null>(null);
+ const [pairFound,setPairFound]=useState<number[]>([]);
  const reset=()=>{
   setDeck(scramble(12).map(i=>i%6));setTurned([]);setFound([]);
   setTiles(scramble(9));setChosen(null);setRound(0);setLetters([]);
-  setSelected(null);setAnswers({});setMazeStep(0);
+  setSelected(null);setAnswers({});setMazeStep(0);setPairChoice(null);setPairFound([]);
  };
  useEffect(()=>{reset();},[game]);
  const currentWord=wordRounds[round%wordRounds.length];
  const shuffledLetters=useMemo(()=>scramble(Array.from(currentWord.answer).length),[round]);
  const doneWord=letters.map(i=>currentWord.answer[shuffledLetters[i]]).join("");
- const gameTitle:Record<GameId,string>={memory:"Memória Bíblica",maze:"Labirinto",jigsaw:"Quebra-Cabeça",wordbuilder:"Construtor de Palavras",quiz:"Quiz Bíblico"};
+ const gameTitle:Record<GameId,string>={memory:"Memória Bíblica",maze:"Labirinto",jigsaw:"Quebra-Cabeça",wordbuilder:"Construtor de Palavras",quiz:"Quiz Bíblico",pairs:"Ligue os Pares"};
  const flip=(i:number)=>{
   if(found.includes(i)||turned.includes(i)||turned.length===2)return;
   const next=[...turned,i];setTurned(next);
@@ -110,6 +112,15 @@ export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void})
     </div>)}
     {Object.keys(answers).length===quizRounds.length && <p className="font-extrabold text-green-700">Você acertou {quizRounds.filter((q,i)=>answers[i]===q.answer).length} de {quizRounds.length} perguntas!</p>}
     <button onClick={()=>setAnswers({})} className="mt-3 rounded-full bg-amber-200 px-4 py-2 font-bold">Refazer quiz</button>
+   </>}
+   {game==="pairs" && <>
+    <p className="mb-3">Escolha um personagem e depois o acontecimento correspondente.</p>
+    <div className="grid grid-cols-2 gap-3">
+      <div className="flex flex-col gap-2">{["Noé","Davi","Daniel","Moisés","Jonas"].map((name,i)=><button key={name} disabled={pairFound.includes(i)} onClick={()=>setPairChoice(i)} className={`min-h-14 rounded-xl border-2 p-2 font-bold ${pairFound.includes(i)?"border-green-500 bg-green-100":pairChoice===i?"border-amber-600 bg-amber-200":"border-amber-300 bg-white"}`}>{name}{pairFound.includes(i)?" ✓":""}</button>)}</div>
+      <div className="flex flex-col gap-2">{[{label:"Venceu Golias",id:1},{label:"Construiu a arca",id:0},{label:"Atravessou o mar",id:3},{label:"Esteve no grande peixe",id:4},{label:"Na cova dos leões",id:2}].map((item)=><button key={item.id} disabled={pairFound.includes(item.id)} onClick={()=>{if(pairChoice===null)return;if(pairChoice===item.id)setPairFound(prev=>[...prev,item.id]);setPairChoice(null);}} className={`min-h-14 rounded-xl border-2 p-2 text-sm font-bold ${pairFound.includes(item.id)?"border-green-500 bg-green-100":"border-amber-300 bg-white"}`}>{item.label}{pairFound.includes(item.id)?" ✓":""}</button>)}</div>
+    </div>
+    {pairFound.length===5?<p className="mt-4 font-bold text-green-700">Parabéns! Você ligou todos os pares!</p>:<p className="mt-3 text-sm">Pares encontrados: {pairFound.length} de 5.</p>}
+    <button onClick={()=>{setPairChoice(null);setPairFound([]);}} className="mt-3 rounded-full bg-amber-200 px-4 py-2 font-bold">Recomeçar</button>
    </>}
    {game==="maze" && <>
     <p className="mb-3">Ajude Davi a encontrar o caminho até a saída! Siga as setas corretas.</p>
