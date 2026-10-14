@@ -24,8 +24,8 @@ const PAGE_TIPS: Record<string, string> = {
   "/ouca": "Aqui você encontra louvores para ouvir e cantar.",
   "/musicas": "Vamos cantar? Escolha um louvor e toque no vídeo para ouvir.",
   "/lemosplay": "Na página VEJA, escolha um vídeo para assistir às histórias bíblicas!",
-  "/jogos": "Na página FAÇA, escolha um dos quatro jogos: Memória, Quebra-Cabeça, Palavras ou Quiz. Toque no ícone para jogar.",
-  "/atividades": "Na página APRENDA, escolha entre três atividades que mudam a cada dia ou toque em Devocional para ler uma reflexão bíblica.",
+  "/jogos": "Na página FAÇA, escolha um dos quatro jogos: Memória, Quebra-Cabeça, Palavras ou Ligue os Pares. Toque no ícone para jogar.",
+  "/atividades": "Na página APRENDA, escolha entre três atividades que mudam a cada dia ou toque em Quiz Bíblico para responder perguntas.",
   "/devocionais": "Leia o devocional do dia e reflita sobre a mensagem de Deus.",
   "/pedidos-oracao": "Na página ORAR, escreva seu pedido de oração. Vamos conversar com Deus!",
   "/album": "No ÁLBUM, use suas moedinhas para abrir pacotinhos e completar sua coleção de figurinhas bíblicas.",
@@ -45,7 +45,8 @@ const CONTEXT_TIPS: Record<string, string> = {
   quiz: "No Quiz Bíblico, leia cada pergunta, escolha uma alternativa e veja quantas respostas acertou.",
   memory: "Na Memória, vire duas cartinhas por vez e encontre os pares iguais.",
   coloring: "No Colorir, escolha uma cor e toque no desenho. Quer trocar? É só escolher outra cor e tocar de novo no mesmo lugar.",
-  jigsaw: "No Quebra-Cabeça, toque em duas peças para trocá-las de lugar até montar a imagem.",
+  pairs: "Em Ligue os Pares, escolha um personagem bíblico e depois o acontecimento correspondente.",
+  jigsaw: "No Quebra-Cabeça", toque em duas peças para trocá-las de lugar até montar a imagem.",
   wordsearch: "No Caça-Palavras, arraste o dedo sobre as letras para marcar as palavras da lista.",
   maze: "No Labirinto, encontre o caminho correto até a chegada.",
   crossword: "Aqui você procura as palavras na grade e marca cada uma na lista embaixo. Achou todas? Ganha moedinhas 🪙.",
@@ -96,7 +97,7 @@ export default function MascoteLia() {
   const LOGIN_TIP =
     "Oi! Para começar, toque em Entrar: é só o seu nome e o seu celular. Ainda não tem conta? Toque em Criar uma conta.";
 
-  const currentContext = location.pathname === "/jogos" && context && !["memory","jigsaw","quiz"].includes(context) ? null : context;
+  const currentContext = location.pathname === "/jogos" && context && !["memory","jigsaw","pairs"].includes(context) ? null : context;
   const message = location.pathname === "/login" || location.pathname === "/login-sms"
     ? PAGE_TIPS[location.pathname]
     : (currentContext && CONTEXT_TIPS[currentContext]) || PAGE_TIPS[location.pathname] || (!logged ? LOGIN_TIP : PAGE_TIPS["/"]);
