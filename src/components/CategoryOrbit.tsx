@@ -68,7 +68,7 @@ export default function CategoryOrbit({
             <button
               key={cat.key}
               onClick={() => onSelect(cat.key)}
-              className={`absolute flex flex-col items-center gap-1 hover:scale-110 transition-transform ${
+              className={`absolute flex flex-col items-center gap-1 hover:scale-110 hover:brightness-125 active:scale-95 active:brightness-125 transition-all duration-200 ${
                 isActive ? "scale-110" : ""
               }`}
               style={{ left: x, top: y, width: iconSize }}
@@ -77,8 +77,8 @@ export default function CategoryOrbit({
                 <img
                   src={cat.icon}
                   alt={cat.label}
-                  className={`rounded-full shadow-lg border-2 object-cover ${
-                    isActive ? "border-primary" : "border-primary/30"
+                  className={`rounded-full shadow-[0_6px_18px_rgba(0,0,0,.6)] border-[3px] object-cover drop-shadow-[0_0_10px_rgba(255,215,60,.45)] ${
+                    isActive ? "border-yellow-300" : "border-amber-400"
                   }`}
                   style={{ width: iconSize, height: iconSize }}
                   loading="lazy"
