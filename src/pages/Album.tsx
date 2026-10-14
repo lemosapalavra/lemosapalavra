@@ -282,11 +282,6 @@ export default function Album() {
 
       {/* Floating icon-only toolbar (no brown bar) */}
       <div className="flex items-center justify-between px-3 py-2 z-10">
-        <button onClick={() => setView("cover")}
-          aria-label="Voltar para a capa" title="Capa"
-          className="w-11 h-11 rounded-full bg-white/80 hover:bg-white shadow-lg flex items-center justify-center text-amber-900 transition">
-          <ArrowLeft className="w-5 h-5" />
-        </button>
         <div className="text-center min-w-0 px-2 bg-transparent">
           <div className="text-[10px] uppercase tracking-wider font-bold text-amber-900/70 leading-tight">Figurinhas Coletadas</div>
           <div className="text-sm font-display font-extrabold text-amber-900 tabular-nums">{totalOwned} / {allStickers.length}</div>
@@ -326,6 +321,18 @@ export default function Album() {
           </button>
         </div>
       </div>
+
+      {/* Volume 1 centralizado acima da faixa/logo da categoria.
+          O ícone também permite retornar à seleção dos volumes. */}
+      <button
+        type="button"
+        onClick={() => setView("cover")}
+        aria-label="Álbum Volume 1 — voltar à seleção de volumes"
+        title="Álbum Volume 1"
+        className="self-center shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded-full transition-transform hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-amber-500"
+      >
+        <img src="/Álbum%20Bíblico%20Volume%201.png" alt="Volume 1" className="w-full h-full object-contain drop-shadow-md" />
+      </button>
 
       {/* Animated central chapter title / faixa ilustrada */}
       <div className="text-center px-3 py-2 sm:py-4 flex items-center justify-center">
