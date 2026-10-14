@@ -66,6 +66,12 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
  const [flipped,setFlipped]=useState<number[]>([]);
  const [matched,setMatched]=useState<number[]>([]);
  const [moves,setMoves]=useState(0);
+ useEffect(() => {
+  window.dispatchEvent(new CustomEvent("lemos:lia-context", {
+   detail: index === null ? null : `activity:${activities[index].title}`
+  }));
+  return () => window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: null }));
+ }, [index]);
  const open=(i:number)=>{setIndex(i);setAnswers({});setChecked(false);setFlipped([]);setMatched([]);setMoves(0);const a=activities[i];if(a.cards)setDeck(shuffle(a.cards.flatMap((name,id)=>[{id,name},{id,name}])));};
  useEffect(() => {
   const game = params.get("jogo");
