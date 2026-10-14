@@ -367,14 +367,14 @@ export default function Login() {
         {mode === "register" && avatarChoices.map((av, i) => {
           const firstRow = i < 5;
           const col = firstRow ? i : i - 5;
-          const left = firstRow ? 18.0 + col * 12.6 : 14.0 + col * 12.1;
-          const top = firstRow ? 65.1 : 72.5;
+          const left = firstRow ? 18.5 + col * 12.1 : 17.5 + col * 10.45;
+          const top = firstRow ? 61.1 : 69.1;
           const selected = selectedAvatarIndex === i;
           return <button type="button" key={av.name} aria-label={`Escolher avatar ${av.name}`}
             title={av.name} onClick={() => chooseAvatar(av.src, i)}
             aria-pressed={selected}
-            className={`absolute rounded-xl transition focus-visible:outline-2 focus-visible:outline-amber-500 ${selected ? "ring-[3px] ring-amber-500 bg-amber-200/20" : ""}`}
-            style={{ left: `${left}%`, top: `${top}%`, width: "10.5%", height: "6.0%" }}>{selected && <span className="absolute -top-1 -right-1 rounded-full bg-amber-500 text-white text-[10px] leading-4 w-4 h-4 font-bold shadow">✓</span>}</button>;
+            className={`absolute z-20 rounded-lg touch-manipulation transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500 ${selected ? "ring-2 ring-amber-500 shadow-[0_0_0_2px_white,0_0_10px_rgba(245,158,11,.8)]" : ""}`}
+            style={{ left: `${left}%`, top: `${top}%`, width: firstRow ? "11.4%" : "9.9%", height: firstRow ? "7.8%" : "8.2%" }}>{selected && <span className="absolute -top-1 -right-1 rounded-full bg-green-600 text-white text-[10px] leading-4 w-4 h-4 font-bold shadow">✓</span>}</button>;
         })}
         <button type="button" disabled={busy} onClick={submitArtwork}
           aria-label={mode === "login" ? "Entrar na minha conta" : "Entrar e Começar"}
