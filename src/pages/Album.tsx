@@ -218,7 +218,7 @@ export default function Album() {
     return (
       <div
         className="fixed inset-0 z-40 flex items-center justify-center bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "linear-gradient(rgba(35,20,15,.32), rgba(35,20,15,.42)), url('/Álbum.png')" }}
+        style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.16), rgba(255,255,255,.16)), url('/Álbum.png')" }}
       >
         <PageHeader title="Álbum" />
         <div className="flex items-center justify-center gap-5 sm:gap-10 px-5 w-full max-w-3xl">
