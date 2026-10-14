@@ -121,15 +121,19 @@ const AuthBootstrap = () => {
         const raw = localStorage.getItem("lemos_user");
         if (raw) existing = JSON.parse(raw) || {};
       } catch { existing = {}; }
+      const sameAccount = existing.id === userId;
+      const prior = sameAccount ? existing : {};
+      const avatarOverride = localStorage.getItem(`lemos_avatar_${userId}`);
       const u = {
-        ...existing,
-        name: profile?.name || existing.name || "",
-        ageRange: profile?.age_range || existing.ageRange || "",
-        phone: profile?.phone || existing.phone || "",
-        role: profile?.role || existing.role || "",
-        avatar: profile?.avatar || metadata.avatar || existing.avatar || "",
-        email: profile?.email || email || existing.email || "",
-        createdAt: profile?.created_at || existing.createdAt || new Date().toISOString(),
+        ...prior,
+        id: userId,
+        name: profile?.name || prior.name || "",
+        ageRange: profile?.age_range || prior.ageRange || "",
+        phone: profile?.phone || prior.phone || "",
+        role: profile?.role || prior.role || "",
+        avatar: avatarOverride || profile?.avatar || metadata.avatar || prior.avatar || "",
+        email: profile?.email || email || prior.email || "",
+        createdAt: profile?.created_at || prior.createdAt || new Date().toISOString(),
       };
       localStorage.setItem("lemos_user", JSON.stringify(u));
       window.dispatchEvent(new Event("lemos_admin_change"));
