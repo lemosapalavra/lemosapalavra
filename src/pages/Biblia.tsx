@@ -289,17 +289,17 @@ export default function Biblia() {
     <div className="min-h-screen py-6 px-4" style={{ background: "transparent" }}>
       <div className="max-w-4xl mx-auto">
         {showBibleMenu && !selectedBook ? (
-          <div className="fixed inset-0 z-40 bg-cover bg-center" style={{ backgroundImage: "url('/Bíblia.png')" }}>
+          <div className="fixed inset-0 z-40 bg-cover bg-center" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.16),rgba(255,255,255,.16)), url('/Bíblia.png')" }}>
             <div className="absolute inset-0 flex items-center justify-center pt-16">
               <div className="relative w-[min(88vw,480px)] aspect-square">
                 {tabs.map((t, i) => {
-                  const angle = (-150 + i * 150) * Math.PI / 180;
+                  const angle = (-90 + i * 120) * Math.PI / 180;
                   return (
                     <button key={t.key} title={t.label} aria-label={t.label}
                       onClick={() => { setTab(t.key); setShowBibleMenu(false); }}
-                      className="absolute w-[clamp(88px,22vw,138px)] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full hover:scale-110 transition-transform"
-                      style={{ left: `${50 + 34 * Math.cos(angle)}%`, top: `${50 + 34 * Math.sin(angle)}%` }}>
-                      <img src={t.icon} alt={t.label} className="w-full h-full object-contain drop-shadow-2xl" />
+                      className="absolute w-[clamp(82px,20vw,126px)] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-amber-300 bg-white/90 shadow-[0_6px_22px_rgba(0,0,0,.55)] ring-2 ring-white/80 hover:scale-110 transition-transform"
+                      style={{ left: `${50 + 39 * Math.cos(angle)}%`, top: `${50 + 39 * Math.sin(angle)}%` }}>
+                      <img src={t.icon} alt={t.label} className="w-full h-full object-contain rounded-full drop-shadow-[0_3px_7px_rgba(0,0,0,.6)]" />
                     </button>
                   );
                 })}
