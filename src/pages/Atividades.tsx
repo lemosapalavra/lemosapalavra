@@ -18,7 +18,7 @@ export default function Atividades() {
       {!colorir && <BrincandoBiblia onBack={() => navigate("/")} />}
       {!colorir && <button type="button" onClick={() => setColorir(true)} title="Colorir" aria-label="Colorir"
         className="absolute z-30 left-1/2 top-[18%] -translate-x-1/2 w-[clamp(88px,20vw,152px)] aspect-square rounded-full drop-shadow-[0_5px_12px_rgba(0,0,0,.5)] hover:scale-110 transition-transform">
-        <img src="/Colorir.png" alt="Colorir" className="w-full h-full object-contain" onError={e => { e.currentTarget.style.display="none"; e.currentTarget.parentElement!.textContent="🎨 Colorir"; }} />
+        <img src="/colorir.png" alt="Colorir" className="w-full h-full object-contain" onError={e => { e.currentTarget.style.display="none"; e.currentTarget.parentElement!.textContent="🎨 Colorir"; }} />
       </button>}
       {colorir && <section className="fixed inset-x-0 bottom-0 top-[100px] z-[55] overflow-y-auto bg-amber-50 p-4 text-center">
         <button onClick={() => setColorir(false)} className="rounded-full bg-amber-300 px-5 py-2 font-bold">← Voltar</button>
