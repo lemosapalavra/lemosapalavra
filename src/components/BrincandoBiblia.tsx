@@ -87,18 +87,23 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
  const selectCard=(i:number)=>{if(flipped.includes(i)||matched.includes(i)||flipped.length===2)return;const next=[...flipped,i];setFlipped(next);if(next.length===2){setMoves(m=>m+1);if(deck[next[0]].id===deck[next[1]].id){setMatched(m=>[...m,...next]);setFlipped([]);}}};
  const current=index===null?null:activities[index];
  const score=current?.questions?.filter((q,i)=>answers[i]===q.answer).length??0;
- const positions = [{left:"23%",top:"44%"},{left:"77%",top:"44%"},{left:"50%",top:"75%"}];
+ const whoActivities = [
+  { activityIndex: 6, icon: "/Quem%20Sou%20Eu%20%20Parte%201.png", title: "Quem Sou Eu? — Parte 1" },
+  { activityIndex: 7, icon: "/Quem%20Sou%20Eu%20%20Parte%202.png", title: "Quem Sou Eu? — Parte 2" },
+  { activityIndex: 8, icon: "/Quem%20Sou%20Eu%20%20Parte%203.png", title: "Quem Sou Eu? — Parte 3" },
+  { activityIndex: 9, icon: "/Quem%20Sou%20Eu%20%20Parte%204.png", title: "Quem Sou Eu? — Parte 4" },
+ ];
+ const positions = [{left:"23%",top:"43%"},{left:"77%",top:"43%"},{left:"23%",top:"73%"},{left:"77%",top:"73%"}];
  if (index===null || !current) {
   return (
    <section className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
-    {dailyIndices.map((i,n)=>(
-     <button key={i} type="button" onClick={()=>open(i)} aria-label={activities[i].title} title={activities[i].title}
-      className="absolute pointer-events-auto flex aspect-square w-[clamp(72px,18vw,130px)] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border-4 border-yellow-400 bg-gradient-to-br from-emerald-500 to-green-950 text-white shadow-[0_0_18px_5px_rgba(255,222,60,.8)] animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:brightness-110" style={{...positions[n],animationDelay:`${n*0.8}s`}}>
-      <span className="text-3xl sm:text-5xl">{activityIcons[i]}</span>
-      <span className="px-1 text-center text-[9px] font-extrabold leading-tight sm:text-sm">{activities[i].title}</span>
+    {whoActivities.map((item,n)=>(
+     <button key={item.activityIndex} type="button" onClick={()=>open(item.activityIndex)} aria-label={item.title} title={item.title}
+      className="absolute pointer-events-auto aspect-square w-[clamp(88px,20vw,152px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent p-0 animate-[lemosGentleFloat_5s_ease-in-out_infinite] focus-visible:outline-4 focus-visible:outline-white"
+      style={{...positions[n],animationDelay:String(n*0.8)+"s"}}>
+       <img src={item.icon} alt="" className="h-full w-full object-contain" />
      </button>
     ))}
-    <span className="absolute left-1/2 top-[90%] -translate-x-1/2 rounded-full bg-green-950/90 px-3 py-1 text-center text-xs font-bold text-white">{todayLabel} • 3 atividades</span>
    </section>
   );
  }
