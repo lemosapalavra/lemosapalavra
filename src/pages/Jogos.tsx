@@ -40,7 +40,7 @@ export default function Jogos() {
             <button
               key={game.id}
               type="button"
-              onClick={() => setSelectedGame(game.id as "memory"|"jigsaw"|"wordbuilder"|"pairs")}
+              onClick={() => setSelectedGame(game.id as "memory" | "jigsaw" | "wordbuilder" | "quiz")}
               aria-label={game.title}
               title={game.title}
               className="absolute pointer-events-auto aspect-square w-[clamp(88px,20vw,152px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent p-0 drop-shadow-[0_0_10px_rgba(255,220,65,0.6)] animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:brightness-110 focus-visible:outline-4 focus-visible:outline-white"
