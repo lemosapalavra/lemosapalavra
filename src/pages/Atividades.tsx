@@ -21,7 +21,7 @@ export default function Atividades() {
         className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-center"
       />
       <BrincandoBiblia onBack={() => navigate("/")} />
-      <button type="button" onClick={() => setQuizOpen(true)} aria-label="Quiz Bíblico" title="Quiz Bíblico" className="absolute left-[77%] top-[75%] z-30 aspect-square w-[clamp(72px,18vw,130px)] -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-yellow-400 bg-emerald-800/80 p-1 shadow-[0_0_18px_4px_rgba(255,220,65,0.75)] animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:brightness-110"><img src="/Quiz Bíblico.png" alt="" className="h-full w-full rounded-full object-contain" /></button>
+      <button type="button" onClick={() => setQuizOpen(true)} aria-label="Quiz Bíblico" title="Quiz Bíblico" className="absolute left-[77%] top-[75%] z-30 aspect-square w-[clamp(72px,18vw,130px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent p-0 drop-shadow-[0_0_10px_rgba(255,220,65,0.6)] animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:brightness-110"><img src="/Quiz%20B%C3%ADblico.png" alt="" className="h-full w-full rounded-full object-contain" /></button>
       {quizOpen && <JogosInterativos game="quiz" />}
     </main>
   );
