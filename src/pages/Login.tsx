@@ -40,16 +40,19 @@ async function hydrateLocalProfile(userId: string, fallbackEmail: string) {
     .select("name, age_range, phone, role, avatar, email, created_at")
     .eq("id", userId)
     .maybeSingle();
+  const { data: authData } = await supabase.auth.getUser();
+  const metadata = authData.user?.user_metadata || {};
   const u = {
-    name: profile?.name || "",
+    name: profile?.name || metadata.name || "",
     ageRange: profile?.age_range || "",
     phone: profile?.phone || "",
     role: profile?.role || "",
-    avatar: profile?.avatar || "",
+    avatar: profile?.avatar || metadata.avatar || "",
     email: profile?.email || fallbackEmail,
     createdAt: profile?.created_at || new Date().toISOString(),
   };
   localStorage.setItem("lemos_user", JSON.stringify(u));
+  window.dispatchEvent(new Event("lemos_admin_change"));
   return u;
 }
 
