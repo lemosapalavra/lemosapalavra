@@ -272,12 +272,67 @@ const AuthAwareDecorations = () => {
   return <><MascoteLia /><UserCorner /></>;
 };
 
+
+/** Som leve para ícones ilustrados; sem download de áudio.
+ *  Navegadores só permitem som após a primeira interação do usuário. */
+const IconClickSounds = () => {
+  useEffect(() => {
+    let ctx: AudioContext | null = null;
+    let enabled = false;
+    let lastHover = 0;
+    const getIcon = (target: EventTarget | null): Element | null => {
+      if (!(target instanceof Element)) return null;
+      const item = target.closest('button, a, [role="button"]');
+      if (!item || item.matches(':disabled, [aria-disabled="true"]')) return null;
+      return item.querySelector('img') ? item : null;
+    };
+    const sound = (hover: boolean) => {
+      try {
+        ctx ||= new AudioContext();
+        if (ctx.state !== "running") { void ctx.resume().catch(() => {}); return; }
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const now = ctx.currentTime;
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(hover ? 740 : 590, now);
+        osc.frequency.exponentialRampToValueAtTime(hover ? 940 : 880, now + .07);
+        gain.gain.setValueAtTime(.0001, now);
+        gain.gain.exponentialRampToValueAtTime(hover ? .016 : .045, now + .008);
+        gain.gain.exponentialRampToValueAtTime(.0001, now + .105);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + .11);
+      } catch { /* Som opcional: navegação nunca deve falhar */ }
+    };
+    const click = (e: MouseEvent) => {
+      if (!enabled) enabled = true;
+      if (getIcon(e.target)) sound(false);
+    };
+    const pointer = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse" || !enabled || !getIcon(e.target)) return;
+      const now = Date.now();
+      if (now - lastHover < 180) return;
+      lastHover = now;
+      sound(true);
+    };
+    document.addEventListener("click", click, true);
+    document.addEventListener("pointerover", pointer, true);
+    return () => {
+      document.removeEventListener("click", click, true);
+      document.removeEventListener("pointerover", pointer, true);
+      if (ctx) void ctx.close();
+    };
+  }, []);
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <IconClickSounds />
         <AutoUpdater />
         <AuthBootstrap />
         <AnalyticsTracker />
