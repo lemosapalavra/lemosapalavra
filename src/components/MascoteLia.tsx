@@ -17,47 +17,47 @@ import { Button } from "@/components/ui/button";
  */
 
 const PAGE_TIPS: Record<string, string> = {
-  "/": "Oieee, meu amiguinho! 🌈 Bem-vindo ao nosso cantinho de aventuras com Jesus! Escolha onde quer brincar primeiro! E olha só: assistindo aos vídeos, fazendo tarefas, lendo o devocional e orando, você pode juntar moedinhas para o álbum! 🪙✨",
-  "/biblia": "Psiu, vem cá! 📖 A Bíblia está cheinha de histórias incríveis! Escolha um livrinho e vamos descobrir juntinhos! 🌟",
-  "/louvores": "Lá, lá, lááá! 🎶 Preparou a voz? Escolha um louvor e cante bem bonito comigo! Quando terminar de assistir, você pode ganhar moedinhas! 🪙",
-  "/veja": "Obaaa, sessão de cinema! 🍿🎬 Escolha um vídeo, fique bem confortável e vamos assistir! Terminou de ver? Ebaaa, pode ganhar moedinhas para as figurinhas! 🪙",
-  "/ouca": "Shhh... ouviu a musiquinha? 🎵💛 Escolha um louvor, aperte o play e cante comigo! Depois de assistir, você pode juntar moedinhas para o álbum! 🪙",
-  "/musicas": "Iupiii, hora da música! 🎤🎶 Escolha a sua favorita e solte essa voz linda! Assistiu tudinho? Você pode ganhar moedinhas! 🪙",
-  "/lemosplay": "Uauuu, quantas aventuras na telinha! 🎬🤩 Escolha um vídeo e venha assistir comigo! Quando terminar, você pode ganhar moedinhas para comprar figurinhas! 🪙🎁",
-  "/jogos": "Ebaaa, hora de brincar! 🧩😄 Qual joguinho você vai escolher? Eu vou torcer por você! Complete o desafio e ganhe moedinhas para o álbum! 🪙",
-  "/atividades": "Olha só, pequeno detetive! 🔎✨ Aqui tem pistas e descobertas esperando por você! Escolha uma atividade, complete a tarefa e ganhe moedinhas! 🪙",
-  "/devocionais": "Bom diaaa, coraçãozinho! 💖☀️ Vamos ler a palavrinha especial de Deus para hoje? Leia seu devocional diariamente e ganhe moedinhas para o álbum! 🪙",
-  "/pedidos-oracao": "Psiu... que tal conversar com Deus? 🙏💛 Conte a Ele o que está no seu coração. É um momento muito especial! E aqui no site, ao orar, você também pode ganhar moedinhas! 🪙",
-  "/album": "Tcharããã! 🎁🌈 Bem-vindo ao seu álbum de figurinhas! Vamos descobrir quais faltam? Para comprar pacotinhos, junte moedinhas assistindo aos vídeos, fazendo tarefas, lendo o devocional e orando! 🪙",
-  "/historias-do-dia": "Obaaa, historinha do dia! 📚✨ Qual surpresa será que vamos descobrir hoje? Escolha uma história e venha comigo!",
-  "/historias-biblicas": "Era uma vez... uma história da Bíblia! 📖🤩 Escolha uma aventura e vamos conhecer seus personagens juntinhos!",
-  "/login": "Oieee! 💛 Que bom que você chegou! Já tem conta? Entre com seus dados! É sua primeira visita? Vamos criar sua conta e escolher um avatar bem lindão! 🎈",
-  "/login-sms": "Trim-trim! 📱✨ Vamos conferir seu código para entrar? Siga os passinhos da tela e já, já começa a diversão!",
-  "/admin/whatsapp": "Oie! 💌 Chegamos ao cantinho das mensagens! Vamos cuidar de cada recadinho com carinho? 🌷",
-  "/familia": "Obaaa, a família chegou! 🥰🌻 Aqui todo mundo pode aprender e se divertir juntinho! Vamos explorar?",
-  "/config": "Psiu, cuidador do nosso cantinho! ⚙️✨ Aqui estão os ajustes especiais do site. Vamos organizar tudinho?",
-  "/estatisticas": "Uauuu, quantas descobertas! 📊⭐ Vamos espiar os números das nossas aventuras? Que curiosidade!",
+  "/": "Oieee! 🌈 Escolha uma aventura! Vídeos, tarefas, devocionais e orações dão moedinhas para o álbum! 🪙",
+  "/biblia": "Obaaa! 📖 Escolha uma história da Bíblia! Vamos descobrir juntos? ✨",
+  "/louvores": "Lá, lá, lá! 🎶 Escolha um louvor e cante comigo! 🎤",
+  "/veja": "Pipoca pronta? 🍿 Escolha um vídeo! Assista e ganhe moedinhas! 🪙",
+  "/ouca": "Ouviu a música? 🎵 Escolha um louvor e cante comigo! 💛",
+  "/musicas": "Iupiii! 🎤 Escolha uma música e solte a voz! 🎶",
+  "/lemosplay": "Ebaaa, cinema! 🎬 Escolha um vídeo, assista e ganhe moedinhas! 🪙",
+  "/jogos": "Obaaa, brincadeira! 🧩 Escolha um jogo, complete e ganhe moedinhas! 🪙",
+  "/atividades": "Ei, detetive! 🔎 Escolha uma tarefa, termine e ganhe moedinhas! 🪙",
+  "/devocionais": "Oieee! 💖 Vamos ler o devocional de hoje? Leia e ganhe moedinhas! 🪙",
+  "/pedidos-oracao": "Psiu! 🙏 Vamos conversar com Deus? Ore com carinho e ganhe moedinhas! 💛",
+  "/album": "Uau, figurinhas! 🎁 Junte moedinhas, abra pacotinhos e complete seu álbum! 🌈",
+  "/historias-do-dia": "Obaaa! 📚 Qual será a historinha de hoje? Vamos descobrir! ✨",
+  "/historias-biblicas": "Era uma vez... 📖 Escolha uma história da Bíblia! 🌟",
+  "/login": "Oieee! 💛 Já tem conta? Entre! É novo? Vamos nos cadastrar! 🎈",
+  "/login-sms": "Trim-trim! 📱 Digite seu código e venha brincar! ✨",
+  "/admin/whatsapp": "Oie! 💌 Vamos cuidar dos recadinhos? 🌷",
+  "/familia": "Ebaaa, família! 🥰 Vamos aprender e brincar juntos? 🌻",
+  "/config": "Psiu! ⚙️ Aqui ficam os ajustes especiais! ✨",
+  "/estatisticas": "Uauuu! 📊 Vamos ver os números das aventuras? ⭐",
 };
 
 /** Falas por contexto — enviadas por `lemos:lia-context`. */
 const CONTEXT_TIPS: Record<string, string> = {
-  "quiz": "Preparado para o Quiz Bíblico? 🏆🤩 Leia a perguntinha, escolha a resposta e... tcharããã! Complete o desafio para ganhar moedinhas! 🪙",
-  "memory": "Cadê o parzinho? 🧠🃏 Vire duas cartinhas e procure as iguais! Quando terminar o joguinho, você pode ganhar moedinhas! 🪙",
-  "coloring": "Obaaa, artista! 🎨🌈 Escolha suas cores favoritas e deixe o desenho bem lindão! Termine sua arte e conquiste moedinhas! 🪙",
-  "pairs": "Quem combina com quem? 🧩💕 Escolha um personagem e encontre sua história! Complete os pares e ganhe moedinhas! 🪙",
-  "jigsaw": "Uma pecinha aqui, outra ali... 🧩🤩 Vamos montar esse quebra-cabeça? Terminou? Ebaaa, moedinhas para você! 🪙",
-  "wordsearch": "Olhinhos de detetive ligados! 🔎✨ Ache as palavras escondidinhas e marque todas! Complete a missão para ganhar moedinhas! 🪙",
-  "maze": "Ai, ai, qual será o caminho? 🗺️😄 Vamos achar a saída do labirinto! Chegou ao final? Você pode ganhar moedinhas! 🪙",
-  "crossword": "Olha quantas letrinhas! 🔤🌟 Descubra as palavras da cruzadinha e complete o desafio para ganhar moedinhas! 🪙",
-  "connectdots": "Um, dois, três... combinou! 🌟💕 Ligue cada frase à imagem certinha! Complete tudo e ganhe moedinhas! 🪙",
-  "assemble": "Peça daqui, peça dali... 🧩✨ Monte a imagem e adivinhe a história! Acertou? Ebaaa, você pode ganhar moedinhas! 🪙",
-  "edu:circles": "Bolinhas coloridas, oba! 🖍️🔴 Escolha a cor indicada e pinte cada círculo! Complete a tarefa e ganhe moedinhas! 🪙",
-  "edu:connect": "Vamos fazer um arco-íris? 🌈✨ Ligue cada pontinho à sua cor amiguinha! Terminou? Você pode ganhar moedinhas! 🪙",
-  "album:cover": "Uauuu, olha essa capa! 🌈📒 O Volume 1 está esperando suas figurinhas! Junte moedinhas com vídeos, tarefas, devocionais e orações, compre pacotinhos e complete seu álbum! 🪙🎁",
-  "album:pages": "Que coleção lindaaa! 🤩📒 Vamos descobrir quais figurinhas faltam? Cada pacotinho custa 3 moedinhas e traz 5 figurinhas! Ganhe moedas nas atividades, vídeos, devocionais e orações! 🪙",
-  "album:sticker": "Ooooh, que figurinha especial! 🤩🔍 Aumente a imagem, explore os detalhes e toque em Ler na Bíblia para conhecer a história!",
-  "album:pack": "Tcharããã! 🎁✨ Chegou a hora de abrir seu pacotinho! Toque nas figurinhas e descubra as surpresinhas!",
-  "album:trade": "Opa, uma figurinha repetida! 🔄😄 Vamos visitar a Sala de Trocas e procurar aquela que está faltando? Que aventura!",
+  "quiz": "Quiz Bíblico! 🏆 Escolha a resposta e ganhe moedinhas! 🪙",
+  "memory": "Cadê o par? 🃏 Ache as cartinhas iguais! ✨",
+  "coloring": "Obaaa, artista! 🎨 Pinte bem bonito e ganhe moedinhas! 🪙",
+  "pairs": "Quem combina? 🧩 Encontre os pares certinhos! 💕",
+  "jigsaw": "Peça por peça! 🧩 Monte o quebra-cabeça! 🌟",
+  "wordsearch": "Detetive de palavras! 🔎 Ache todas as escondidinhas! 🎉",
+  "maze": "Cadê a saída? 🗺️ Encontre o caminho! Eu torço por você! 💛",
+  "crossword": "Vamos descobrir palavras? 🔤 Complete a cruzadinha! ✨",
+  "connectdots": "Um, dois, três! 🌟 Ligue a frase à imagem certa! 💕",
+  "assemble": "Peça daqui, peça dali! 🧩 Monte e descubra a história! ✨",
+  "edu:circles": "Obaaa, cores! 🖍️ Pinte os círculos certinhos! 🌈",
+  "edu:connect": "Vamos ligar as cores? 🌈 Una os pontinhos! 💫",
+  "album:cover": "Uau, Volume 1! 📒 Junte moedinhas e complete seu álbum! 🪙🎁",
+  "album:pages": "Obaaa, figurinhas! 🎁 Com 3 moedinhas, abra 5 figurinhas! 🪙",
+  "album:sticker": "Que figurinha lindaaa! 🤩 Dê zoom e leia sua história! 📖",
+  "album:pack": "Tcharããã! 🎁 Abra o pacotinho e descubra as surpresas! ✨",
+  "album:trade": "Repetiu? 🔄 Vamos trocar pela figurinha que falta! 😄",
 };
 
 export default function MascoteLia() {
@@ -93,7 +93,7 @@ export default function MascoteLia() {
   }, [location.pathname]);
 
   const LOGIN_TIP =
-    "Oieee! 💛 Vamos começar nossa aventura? Coloque seu nome e celular para entrar! É sua primeira vez? Cadastre-se e venha brincar! 🎈";
+    "Oieee! 💛 Entre ou crie sua conta para brincar! 🎈";
 
   const currentContext = location.pathname === "/jogos" && context && !["memory","jigsaw","pairs"].includes(context) ? null : context;
   const message = location.pathname === "/login" || location.pathname === "/login-sms"
