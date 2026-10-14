@@ -221,7 +221,9 @@ export default function Album() {
         style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.16), rgba(255,255,255,.16)), url('/Álbum.png')" }}
       >
         <PageHeader title="Álbum" />
-        <div className="flex items-center justify-center gap-8 sm:gap-14 px-5 w-full max-w-3xl">
+        <div className="flex flex-col items-center gap-5 px-5 w-full max-w-3xl">
+          {completed && <div role="status" className="max-w-lg rounded-2xl border-2 border-amber-400 bg-white/95 px-5 py-3 text-center shadow-xl"><p className="text-lg sm:text-xl font-extrabold text-emerald-800">🏆 Parabéns! Você completou o Volume 1!</p><p className="mt-1 text-sm font-bold text-amber-900">Volume 2 em preparação. Em breve, uma nova jornada!</p></div>}
+          <div className="flex items-center justify-center gap-5 sm:gap-14 w-full">
           <button
             type="button"
             onClick={() => { setPageIdx(0); setView("pages"); }}
@@ -236,8 +238,10 @@ export default function Album() {
             aria-label={completed ? "Volume 2 em preparação" : "Volume 2 bloqueado até concluir o Volume 1"}
             className="w-[min(38vw,220px)] aspect-square shrink-0 rounded-full cursor-pointer transition-all duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300"
           >
-            <img src="/Álbum%20Bíblico%20Volume%202.png" alt="Álbum Heróis da Fé — Volume 2" className="w-full h-full object-contain grayscale drop-shadow-[0_8px_18px_rgba(0,0,0,.65)]" />
+            <img src="/Álbum%20Bíblico%20Volume%202.png" alt="Álbum Heróis da Fé — Volume 2" className={`w-full h-full object-contain drop-shadow-[0_8px_18px_rgba(0,0,0,.65)] ${completed ? "" : "grayscale"}`} />
           </button>
+          </div>
+          <p className="rounded-full bg-amber-50/95 px-4 py-2 text-center text-xs sm:text-sm font-bold text-amber-950 shadow">{completed ? "Volume 2 — em preparação" : "Complete o Volume 1 para descobrir o Volume 2"}</p>
         </div>
       </div>
     );
