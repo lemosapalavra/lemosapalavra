@@ -275,7 +275,7 @@ export default function Biblia() {
         <div
           key={i}
           onClick={() => { setSelectedBook(book); setSelectedChapter(null); }}
-          className="bg-popover rounded-2xl p-4 shadow-md hover:shadow-lg hover:scale-105 transition-all cursor-pointer border border-border text-center"
+          className="rounded-2xl border-2 border-amber-300 bg-white/95 p-4 text-center shadow-lg transition-all hover:scale-105 hover:border-amber-500 hover:shadow-xl cursor-pointer"
         >
           <span className="text-2xl block mb-1">{emoji}</span>
           <span className="font-body text-sm text-foreground font-semibold">{book}</span>
@@ -297,10 +297,10 @@ export default function Biblia() {
                   return (
                     <button key={t.key} title={t.label} aria-label={t.label}
                       onClick={() => { setTab(t.key); setShowBibleMenu(false); }}
-                      className="absolute w-[clamp(82px,20vw,126px)] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-amber-300 bg-white/90 shadow-[0_6px_22px_rgba(0,0,0,.55)] ring-2 ring-white/80 hover:scale-110 transition-transform"
-                      style={{ left: `${50 + 39 * Math.cos(angle)}%`, top: `${50 + 39 * Math.sin(angle)}%` }}>
-                      <img src={t.icon} alt="" className="w-full h-full object-contain rounded-full drop-shadow-[0_3px_7px_rgba(0,0,0,.6)]" />
-                      <span className="absolute inset-x-[-12%] -bottom-5 rounded-full border border-amber-300 bg-green-900/95 px-1 py-1 text-center text-[clamp(9px,1.8vw,13px)] font-extrabold leading-tight text-white shadow-[0_3px_8px_rgba(0,0,0,.7)]">{t.label}</span>
+                      className="absolute flex w-[clamp(108px,25vw,158px)] flex-col items-center gap-2 -translate-x-1/2 -translate-y-1/2 rounded-2xl p-1 transition-all duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-400"
+                      style={{ left: `${50 + 43 * Math.cos(angle)}%`, top: `${50 + 43 * Math.sin(angle)}%` }}>
+                      <img src={t.icon} alt="" className="aspect-square w-[clamp(82px,20vw,126px)] rounded-full border-[3px] border-amber-300 bg-white/95 object-contain shadow-[0_6px_22px_rgba(0,0,0,.55)] ring-2 ring-white/90 drop-shadow-[0_3px_7px_rgba(0,0,0,.6)]" />
+                      <span className="block w-full rounded-full border-2 border-amber-400 bg-green-950 px-2 py-1.5 text-center text-[clamp(11px,2vw,14px)] font-black leading-tight text-white shadow-[0_3px_9px_rgba(0,0,0,.85)]">{t.label}</span>
                     </button>
                   );
                 })}
@@ -309,10 +309,10 @@ export default function Biblia() {
           </div>
         ) : (
           <>
-            {!selectedBook && <button onClick={() => setShowBibleMenu(true)} className="mb-5 rounded-full bg-amber-100 px-5 py-2 font-bold text-amber-900 shadow">← Voltar aos ícones</button>}
+            {!selectedBook && <button onClick={() => setShowBibleMenu(true)} className="mb-5 rounded-full border-2 border-amber-400 bg-green-900 px-5 py-3 font-extrabold text-white shadow-lg hover:bg-green-800">← Voltar aos ícones</button>}
             {!selectedBook && tab !== "dicionario" && (
               <input type="text" placeholder="Pesquisar livro..." value={search} onChange={(e) => setSearch(e.target.value)}
-                className="mb-6 w-full rounded-xl border border-border bg-background px-4 py-3" />
+                className="mb-6 w-full rounded-xl border-2 border-amber-400 bg-white px-4 py-3 text-slate-900 shadow-lg focus:outline-none focus:ring-4 focus:ring-amber-200" />
             )}
         {/* Chapter view with full verses */}
         {selectedBook && selectedChapter && (
@@ -454,7 +454,7 @@ export default function Biblia() {
 
         {/* Book detail with chapters */}
         {selectedBook && !selectedChapter && (
-          <div className="bg-popover rounded-2xl p-6 shadow-lg border border-border mb-4">
+          <div className="mb-4 rounded-2xl border-2 border-amber-300 bg-white/95 p-6 shadow-2xl">
             <button
               onClick={() => setSelectedBook(null)}
               className="text-primary font-display text-sm font-bold mb-4 hover:underline"
