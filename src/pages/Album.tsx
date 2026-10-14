@@ -236,12 +236,12 @@ export default function Album() {
             type="button"
             onClick={() => toast(completed ? "Volume 2 em preparação." : "O Volume 2 estará disponível somente depois de completar o Volume 1.", { duration: 5500 })}
             aria-label={completed ? "Volume 2 em preparação" : "Volume 2 bloqueado até concluir o Volume 1"}
-            className="pointer-events-auto absolute left-1/2 bottom-[19%] -translate-x-1/2 w-[clamp(86px,25vw,145px)] aspect-square rounded-full transition-all duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300 z-10"
+            className="pointer-events-auto absolute left-1/2 bottom-[13%] -translate-x-1/2 w-[clamp(86px,25vw,145px)] aspect-square rounded-full transition-all duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300 z-10"
           >
             <img src="/Álbum%20Bíblico%20Volume%202.png" alt="Álbum Heróis da Fé — Volume 2" className="w-full h-full object-contain grayscale drop-shadow-[0_8px_18px_rgba(0,0,0,.65)]" />
             <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border-2 border-gray-200 bg-gradient-to-b from-gray-500 to-gray-800 px-3 py-0.5 text-[11px] sm:text-sm font-black text-white shadow-[0_3px_8px_rgba(0,0,0,.65)]">VOL. 2</span>
           </button>
-          {completed && <div role="status" className="pointer-events-none absolute bottom-[7%] left-1/2 -translate-x-1/2 w-[min(88vw,420px)] rounded-xl border border-amber-400 bg-white/95 px-3 py-2 text-center shadow-xl">
+          {completed && <div role="status" className="pointer-events-none absolute bottom-[1%] left-1/2 -translate-x-1/2 w-[min(88vw,420px)] rounded-xl border border-amber-400 bg-white/95 px-3 py-2 text-center shadow-xl">
             <p className="text-xs sm:text-sm font-extrabold text-emerald-800">🏆 Volume 1 concluído!</p>
             <p className="text-[11px] sm:text-xs font-bold text-amber-900">Volume 2 em preparação.</p>
           </div>}
