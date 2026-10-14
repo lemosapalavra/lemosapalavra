@@ -45,7 +45,9 @@ export default function UserCorner() {
     const sync = () => {
       try {
         const s = localStorage.getItem("lemos_user");
-        setUser(s ? JSON.parse(s) : null);
+        const parsed = s ? JSON.parse(s) : null;
+        const selected = parsed?.id ? localStorage.getItem(`lemos_avatar_${parsed.id}`) : null;
+        setUser(parsed ? { ...parsed, avatar: selected || parsed.avatar } : null);
       } catch { setUser(null); }
     };
     sync();
