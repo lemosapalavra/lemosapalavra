@@ -89,6 +89,7 @@ function IndexV1() {
           alt=""
           className="h-full w-full object-cover object-center"
           loading="eager"
+          fetchPriority="high"
           decoding="async"
         />
       </picture>
