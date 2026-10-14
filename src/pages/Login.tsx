@@ -348,15 +348,15 @@ export default function Login() {
 
   return (
     <main className="fixed inset-0 z-0 flex items-center justify-center overflow-hidden bg-[#1d381c]" aria-label="Entrada do Lemos a Palavra">
-      <div className="relative h-[100dvh] w-[100vw] shrink-0 overflow-hidden bg-[#f4d79c]">
+      <div className="relative h-[100dvh] w-auto max-w-[100vw] aspect-[9/16] shrink-0 overflow-hidden bg-[#f4d79c]">
         <img src={mode === "login" ? "/Bem-vindo%20login.png" : "/login-jornada-mobile.png"} alt="Lemos a Palavra: bem-vindo à jornada bíblica" className="absolute inset-0 h-full w-full object-fill select-none pointer-events-none" draggable={false} />
-        <label className="absolute left-1/2 -translate-x-1/2 top-[50.0%] w-[43.4%] h-[3.1%] z-10">
+        <label className={`absolute left-[34%] ${mode === "register" ? "top-[47.3%]" : "top-[51.8%]"} w-[40%] h-[2.5%] z-10`}>
           <span className="sr-only">Seu nome</span>
           <input aria-label="Seu nome" type="text" autoComplete="name" value={name} onChange={e => setName(e.target.value)}
-            className="w-full h-full border-0 bg-[#fffaf4] outline-none focus:ring-2 focus:ring-amber-500 rounded-full px-[4%] text-amber-950 placeholder:text-transparent"
+            className="w-full h-full border-0 bg-transparent outline-none focus:ring-2 focus:ring-amber-500 rounded-full px-[4%] text-amber-950 placeholder:text-transparent"
             style={{ fontSize: "clamp(10px, 1.65dvh, 17px)" }} />
         </label>
-        <label className="absolute left-1/2 -translate-x-1/2 top-[55.7%] w-[43.4%] h-[3.1%] z-10">
+        <label className={`absolute left-[34%] ${mode === "register" ? "top-[53.1%]" : "top-[59.1%]"} w-[40%] h-[2.5%] z-10`}>
           <span className="sr-only">Celular</span>
           <input aria-label="Celular" type="tel" autoComplete="tel" inputMode="numeric"
             value={mode === "login" ? email : phone}
@@ -367,26 +367,26 @@ export default function Login() {
         {mode === "register" && avatarChoices.map((av, i) => {
           const firstRow = i < 5;
           const col = firstRow ? i : i - 5;
-          const left = firstRow ? 19.0 + col * 12.5 : 14.5 + col * 12.0;
-          const top = firstRow ? 64.5 : 73.0;
+          const left = firstRow ? 18.0 + col * 12.6 : 14.0 + col * 12.1;
+          const top = firstRow ? 65.1 : 72.5;
           const selected = selectedAvatarIndex === i;
           return <button type="button" key={av.name} aria-label={`Escolher avatar ${av.name}`}
             title={av.name} onClick={() => chooseAvatar(av.src, i)}
             aria-pressed={selected}
             className={`absolute rounded-xl transition focus-visible:outline-2 focus-visible:outline-amber-500 ${selected ? "ring-[3px] ring-amber-500 bg-amber-200/20" : ""}`}
-            style={{ left: `${left}%`, top: `${top}%`, width: "10.5%", height: "6.8%" }}>{selected && <span className="absolute -top-1 -right-1 rounded-full bg-amber-500 text-white text-[10px] leading-4 w-4 h-4 font-bold shadow">✓</span>}</button>;
+            style={{ left: `${left}%`, top: `${top}%`, width: "10.5%", height: "6.0%" }}>{selected && <span className="absolute -top-1 -right-1 rounded-full bg-amber-500 text-white text-[10px] leading-4 w-4 h-4 font-bold shadow">✓</span>}</button>;
         })}
         <button type="button" disabled={busy} onClick={submitArtwork}
           aria-label={mode === "login" ? "Entrar na minha conta" : "Entrar e Começar"}
-          className={`absolute left-[19.2%] ${mode === "login" ? "top-[64.5%]" : "top-[80.9%]"} w-[61.5%] h-[5.5%] rounded-full focus-visible:ring-4 focus-visible:ring-white disabled:opacity-50 touch-manipulation`} />
+          className={`absolute left-[19.2%] ${mode === "login" ? "top-[65%]" : "top-[80.8%]"} w-[61.5%] h-[5.5%] rounded-full focus-visible:ring-4 focus-visible:ring-white disabled:opacity-50 touch-manipulation`} />
         {mode === "login" && (
           <button type="button" onClick={() => { setMode("register"); setPhone(email); }}
             aria-label="Se cadastrar"
-            className="absolute left-[22%] top-[76.2%] w-[56%] h-[5.5%] rounded-full focus-visible:ring-4 focus-visible:ring-green-600 touch-manipulation" />
+            className="absolute left-[22%] top-[76.0%] w-[56%] h-[5.5%] rounded-full focus-visible:ring-4 focus-visible:ring-green-600 touch-manipulation" />
         )}
         {mode === "register" && (
           <button type="button" onClick={() => setMode("login")}
-            className="absolute left-[19%] top-[87%] w-[62%] rounded-full border-2 border-amber-600 bg-amber-50 px-3 py-2 font-bold text-amber-950 shadow-lg">
+            className="absolute left-[25%] top-[87%] w-[50%] rounded-full border border-amber-600 bg-amber-50/95 px-2 py-1 text-[clamp(9px,1.4dvh,13px)] font-bold text-amber-950 shadow-lg">
             Já tenho cadastro — voltar ao login
           </button>
         )}
