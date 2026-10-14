@@ -8,10 +8,7 @@ import AlbumCompletion, { getEarnedMedals, isAlbumComplete } from "@/components/
 import AramaicBackdrop from "@/components/AramaicBackdrop";
 import { categories, allStickers, rarityBorder, rarityLabel, type Rarity, type Sticker } from "@/data/stickers";
 import { useCoins, ensureInitialCoins } from "@/hooks/useCoins";
-import albumCapa from "@/assets/album-capa.webp";
 import maozinha from "@/assets/maozinha.png.asset.json";
-import capaVol2 from "@/assets/capa-album-volume-2.png.asset.json";
-import capaVol2Fallback from "@/assets/capa-album-volume-2-fallback.png";
 import { albumFaixas } from "@/data/albumFaixas";
 import { toast } from "sonner";
 
@@ -230,7 +227,7 @@ export default function Album() {
           <div className="flex flex-row items-start justify-center gap-5 sm:gap-8 flex-wrap">
           <div className="flex flex-col items-center w-[min(42vw,260px)] min-w-[135px] gap-2">
             <img loading="lazy" decoding="async"
-              src={albumCapa}
+              src="/Álbum%20Bíblico%20Volume%201.png"
               alt="Capa do Álbum Heróis da Bíblia — Volume I"
               title="Volume I — toque para abrir o álbum"
               className="max-h-[30vh] sm:max-h-[38vh] max-w-full w-auto object-contain rounded-2xl shadow-2xl border-4 border-amber-300 animate-[coverFloat_3.6s_ease-in-out_infinite]"
@@ -268,8 +265,7 @@ export default function Album() {
             }}
 >
             <img loading="lazy" decoding="async"
-              src={capaVol2.url}
-              onError={(event) => { event.currentTarget.src = capaVol2Fallback; }}
+              src="/Álbum%20Bíblico%20Volume%202.png"
               alt={completed ? "Capa do Álbum Volume II — desbloqueado" : "Capa do Álbum Volume II — bloqueado"}
               title={completed ? "Volume II desbloqueado — conteúdo em preparação" : "Volume II — complete o Volume I para liberar"}
                className={`max-h-[30vh] sm:max-h-[38vh] max-w-full w-auto object-contain rounded-2xl shadow-2xl border-4 transition-all duration-500 ${completed ? "border-amber-300 opacity-100" : "border-stone-400 grayscale opacity-60"}`}
