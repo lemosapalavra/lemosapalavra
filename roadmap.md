@@ -1,6 +1,6 @@
 # Roadmap
-- [ ] Corrigir a prévia de `/atividades` para exibir somente as 16 atividades de `BrincandoBiblia.tsx`, sem restaurar a versão antiga.
-- [ ] Substituir o ícone de Atividades pelo anexo “FAÇA”.
+- [x] Corrigir a prévia de `/atividades` para exibir somente as 16 atividades de `BrincandoBiblia.tsx`, sem restaurar a versão antiga.
+- [x] Substituir o ícone de Atividades pelo anexo “FAÇA”.
 - [ ] Corrigir a vulnerabilidade de tomada de contas no login por celular, preservando usuários e preparando /login-sms com OTP desativado até configurar o provedor.
 - [x] Copiar os conteúdos de Veja para Ouça, com ativação individual nas Configurações.
 - [x] Atualizar a barra de interação do cabeçalho para as quatro áreas ativas.

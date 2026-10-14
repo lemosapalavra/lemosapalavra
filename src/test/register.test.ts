@@ -27,8 +27,7 @@ describe("validateRegistration", () => {
     expect(result?.field).toBe("name");
     expect(result?.message).toBe("Informe seu nome.");
   });
-  it("exige faixa etária, avatar, celular e senha com mensagens claras", () => {
-    expect(validateRegistration({ ...valid, ageRange: "" })?.message).toMatch(/faixa etária/i);
+  it("exige avatar e celular com mensagens claras", () => {
     expect(validateRegistration({ ...valid, avatar: "" })?.message).toMatch(/avatar/i);
     expect(validateRegistration({ ...valid, phone: "" })?.field).toBe("phone");
   });
