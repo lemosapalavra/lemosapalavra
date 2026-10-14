@@ -99,7 +99,7 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
    <section className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
     {whoActivities.map((item,n)=>(
      <button key={item.activityIndex} type="button" onClick={()=>open(item.activityIndex)} aria-label={item.title} title={item.title}
-      className="absolute pointer-events-auto aspect-square w-[clamp(88px,20vw,152px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent p-0 animate-[lemosGentleFloat_5s_ease-in-out_infinite] focus-visible:outline-4 focus-visible:outline-white"
+      className="absolute pointer-events-auto aspect-square w-[clamp(88px,20vw,152px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent p-0 animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:scale-110 hover:brightness-125 active:scale-95 transition-all drop-shadow-[0_6px_16px_rgba(0,0,0,.6)] focus-visible:outline-4 focus-visible:outline-white"
       style={{...positions[n],animationDelay:String(n*0.8)+"s"}}>
        <img src={item.icon} alt="" className="h-full w-full object-contain" />
      </button>
