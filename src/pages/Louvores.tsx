@@ -14,6 +14,7 @@ import { louvoresTitles } from "@/data/contentIndex";
 
 export default function Louvores() {
   const [playing, setPlaying] = useState<PlayEntry | null>(null);
+  const [viewed, setViewed] = useState<Record<string, boolean>>(() => { try { return JSON.parse(localStorage.getItem("lemos_media_viewed") || "{}"); } catch { return {}; } });
   const [playingCategory, setPlayingCategory] = useState<ListenCategory>("musicas");
   const [config, setConfig] = useState(() => loadConfig());
 
@@ -29,6 +30,7 @@ export default function Louvores() {
   const openVideo = (item: PlayEntry, category: ListenCategory) => {
     setPlayingCategory(category);
     setPlaying(item);
+    setViewed(prev => { const next = { ...prev, [`ouca:${item.id}`]: true }; localStorage.setItem("lemos_media_viewed", JSON.stringify(next)); return next; });
     awardOnce(`ouca:${item.id}`, category === "louvores" ? COINS.louvor : COINS.musica, `Você assistiu "${item.title}"`);
   };
   const featured = useMemo(() => config.musicas.find(item => item.title.toLocaleLowerCase("pt-BR").includes("ele é o meu irmão") && item.enabled !== false), [config]);
@@ -47,7 +49,7 @@ export default function Louvores() {
         </button>
         <VideoSideActions videoId={`ouca:${playing.id}`} />
         {playing.src ? (
-          <ColonialVideoFrame variant={playingCategory === "louvores" ? "silver" : "green"} aspect="9/16">{media.kind === "mp4" ? <video src={playing.src} poster={playing.poster} className="w-full h-full bg-black object-contain" controls controlsList="nodownload noremoteplayback noplaybackrate" disablePictureInPicture onContextMenu={(e) => e.preventDefault()} autoPlay playsInline preload="auto" /> : <iframe src={media.embedUrl} title={playing.title} className="w-full h-full bg-black" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />}</ColonialVideoFrame>
+          <ColonialVideoFrame variant={playingCategory === "louvores" ? "silver" : "green"} aspect="9/16">{media.kind === "mp4" ? <video src={playing.src} poster={playing.poster} className="w-full h-full bg-black object-contain" controls controlsList="nodownload noremoteplayback noplaybackrate" disablePictureInPicture onContextMenu={(e) => e.preventDefault()} autoPlay playsInline preload="metadata" /> : <iframe src={media.embedUrl} title={playing.title} className="w-full h-full bg-black" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />}</ColonialVideoFrame>
         ) : (
           <div className="max-w-md mx-auto text-center text-white p-6">
             <h2 className="font-display text-3xl font-bold mb-3">Vídeo em atualização</h2>
@@ -70,7 +72,7 @@ export default function Louvores() {
             <div key={item.id} className="shrink-0 w-[148px] sm:w-[195px] rounded-xl bg-zinc-900/80 p-2 hover:bg-zinc-800 transition">
               <button onClick={() => openVideo(item, category)} className="w-full text-left group">
                 <div className="aspect-[3/4] rounded-lg overflow-hidden bg-zinc-800 relative">
-                  {item.poster ? <img src={item.poster} alt="" loading="lazy" className="h-full w-full object-cover group-hover:scale-105 transition-transform" /> : <Play className="absolute inset-0 m-auto h-12 w-12 text-amber-300" />}
+                  {item.poster ? <img src={item.poster} alt="" loading="lazy" className={`h-full w-full object-cover group-hover:scale-105 transition-transform ${viewed[`ouca:${item.id}`] ? "grayscale" : ""}`} /> : <Play className="absolute inset-0 m-auto h-12 w-12 text-amber-300" />}
                   <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/30 transition"><Play className="w-10 h-10 text-white fill-white" /></span>
                 </div>
                 <span className="block mt-2 text-sm font-semibold text-white line-clamp-2 min-h-[2.5rem]">{item.title}</span>
