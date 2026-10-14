@@ -44,7 +44,7 @@ export default function Jogos() {
               onClick={() => setSelectedGame(game.id as "memory"|"jigsaw"|"wordbuilder"|"pairs")}
               aria-label={game.title}
               title={game.title}
-              className="absolute pointer-events-auto aspect-square w-[clamp(72px,18vw,130px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent p-0 drop-shadow-[0_0_10px_rgba(255,220,65,0.6)] animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:brightness-110 focus-visible:outline-4 focus-visible:outline-white"
+              className="absolute pointer-events-auto aspect-square w-[clamp(88px,20vw,152px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent p-0 drop-shadow-[0_0_10px_rgba(255,220,65,0.6)] animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:brightness-110 focus-visible:outline-4 focus-visible:outline-white"
               style={{...position,animationDelay:`${ALL_GAMES.findIndex((g) => g.id === game.id)*0.7}s`}}
             >
               {game.icon ? <img src={game.icon} alt="" className="h-full w-full object-contain" /> : <span className="flex h-full w-full flex-col items-center justify-center text-white"><Link2 className="h-9 w-9 sm:h-12 sm:w-12" /><span className="text-[10px] sm:text-sm font-bold text-center">Ligue os Pares</span></span>}
