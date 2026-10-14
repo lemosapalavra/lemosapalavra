@@ -135,6 +135,7 @@ export default function Login() {
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState<string | null>(null);
   const [selectedAvatar, setSelectedAvatar] = useState<string>("");
+  const [selectedAvatarIndex, setSelectedAvatarIndex] = useState<number | null>(null);
   const [customAvatar, setCustomAvatar] = useState<string>("");
 
 
@@ -174,6 +175,7 @@ export default function Login() {
       reader.onloadend = () => {
         setCustomAvatar(reader.result as string);
         setSelectedAvatar("");
+        setSelectedAvatarIndex(null);
       };
       reader.readAsDataURL(file);
     }
@@ -338,7 +340,7 @@ export default function Login() {
     { name: "Noé", src: avatarMoises }, { name: "Paulo", src: avatarDavi },
     { name: "Matheus", src: avatarDaniel },
   ];
-  const chooseAvatar = (src: string) => { setSelectedAvatar(src); setCustomAvatar(""); };
+  const chooseAvatar = (src: string, index?: number) => { setSelectedAvatar(src); setSelectedAvatarIndex(index ?? null); setCustomAvatar(""); };
   const submitArtwork = () => {
     if (mode === "login") { void doLogin(); return; }
     void doRegister();
@@ -348,13 +350,13 @@ export default function Login() {
     <main className="fixed inset-0 z-0 flex items-center justify-center overflow-hidden bg-[#1d381c]" aria-label="Entrada do Lemos a Palavra">
       <div className="relative h-[100dvh] w-[100vw] shrink-0 overflow-hidden bg-[#f4d79c]">
         <img src={mode === "login" ? "/Bem-vindo%20login.png" : "/login-jornada-mobile.png"} alt="Lemos a Palavra: bem-vindo à jornada bíblica" className="absolute inset-0 h-full w-full object-fill select-none pointer-events-none" draggable={false} />
-        <label className="absolute left-[31.3%] top-[50.0%] w-[43.4%] h-[3.1%] z-10">
+        <label className="absolute left-1/2 -translate-x-1/2 top-[50.0%] w-[43.4%] h-[3.1%] z-10">
           <span className="sr-only">Seu nome</span>
           <input aria-label="Seu nome" type="text" autoComplete="name" value={name} onChange={e => setName(e.target.value)}
             className="w-full h-full border-0 bg-[#fffaf4] outline-none focus:ring-2 focus:ring-amber-500 rounded-full px-[4%] text-amber-950 placeholder:text-transparent"
             style={{ fontSize: "clamp(10px, 1.65dvh, 17px)" }} />
         </label>
-        <label className="absolute left-[31.3%] top-[55.7%] w-[43.4%] h-[3.1%] z-10">
+        <label className="absolute left-1/2 -translate-x-1/2 top-[55.7%] w-[43.4%] h-[3.1%] z-10">
           <span className="sr-only">Celular</span>
           <input aria-label="Celular" type="tel" autoComplete="tel" inputMode="numeric"
             value={mode === "login" ? email : phone}
@@ -365,13 +367,14 @@ export default function Login() {
         {mode === "register" && avatarChoices.map((av, i) => {
           const firstRow = i < 5;
           const col = firstRow ? i : i - 5;
-          const left = firstRow ? 18.0 + col * 12.6 : 14.4 + col * 12.0;
-          const top = firstRow ? 64.5 : 72.4;
-          const selected = selectedAvatar === av.src;
+          const left = firstRow ? 19.0 + col * 12.5 : 14.5 + col * 12.0;
+          const top = firstRow ? 64.5 : 73.0;
+          const selected = selectedAvatarIndex === i;
           return <button type="button" key={av.name} aria-label={`Escolher avatar ${av.name}`}
-            title={av.name} onClick={() => chooseAvatar(av.src)}
+            title={av.name} onClick={() => chooseAvatar(av.src, i)}
+            aria-pressed={selected}
             className={`absolute rounded-xl transition focus-visible:outline-2 focus-visible:outline-amber-500 ${selected ? "ring-[3px] ring-amber-500 bg-amber-200/20" : ""}`}
-            style={{ left: `${left}%`, top: `${top}%`, width: firstRow ? "11.5%" : "11.5%", height: "7.5%" }}>{selected && <span className="absolute -top-1 -right-1 rounded-full bg-amber-500 text-white text-[10px] leading-4 w-4 h-4 font-bold shadow">✓</span>}</button>;
+            style={{ left: `${left}%`, top: `${top}%`, width: "10.5%", height: "6.8%" }}>{selected && <span className="absolute -top-1 -right-1 rounded-full bg-amber-500 text-white text-[10px] leading-4 w-4 h-4 font-bold shadow">✓</span>}</button>;
         })}
         <button type="button" disabled={busy} onClick={submitArtwork}
           aria-label={mode === "login" ? "Entrar na minha conta" : "Entrar e Começar"}
