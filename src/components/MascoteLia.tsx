@@ -45,7 +45,8 @@ const CONTEXT_TIPS: Record<string, string> = {
   "memory": "Cadê o par? 🃏 Ache as cartinhas iguais! ✨",
   "coloring": "Obaaa, artista! 🎨 Pinte bem bonito e ganhe moedinhas! 🪙",
   "pairs": "Quem combina? 🧩 Encontre os pares certinhos! 💕",
-  "jigsaw": "Peça por peça! 🧩 Monte o quebra-cabeça! 🌟",
+  "jigsaw": "Ebaaa, quebra-cabeça! 🧩 Troque as pecinhas até formar a imagem! 🤩",
+  "wordbuilder": "Uau, letrinhas! 🔤 Descubra a palavra e monte com as letras! 🌟",
   "wordsearch": "Detetive de palavras! 🔎 Ache todas as escondidinhas! 🎉",
   "maze": "Cadê a saída? 🗺️ Encontre o caminho! Eu torço por você! 💛",
   "crossword": "Vamos descobrir palavras? 🔤 Complete a cruzadinha! ✨",
@@ -95,10 +96,13 @@ export default function MascoteLia() {
   const LOGIN_TIP =
     "Oieee! 💛 Entre ou crie sua conta para brincar! 🎈";
 
-  const currentContext = location.pathname === "/jogos" && context && !["memory","jigsaw","pairs"].includes(context) ? null : context;
+  const currentContext = context;
+  const activityMessage = currentContext?.startsWith("activity:")
+    ? `Obaaa! 📖 ${currentContext.slice(9)}! Vamos descobrir as respostas juntinhos? 🌟`
+    : null;
   const message = location.pathname === "/login" || location.pathname === "/login-sms"
     ? PAGE_TIPS[location.pathname]
-    : (currentContext && CONTEXT_TIPS[currentContext]) || PAGE_TIPS[location.pathname] || (!logged ? LOGIN_TIP : PAGE_TIPS["/"]);
+    : activityMessage || (currentContext && CONTEXT_TIPS[currentContext]) || PAGE_TIPS[location.pathname] || (!logged ? LOGIN_TIP : PAGE_TIPS["/"]);
 
   const avatar = isHome && !context ? lia1 : lia2;
   const liaVisible = useIconVisible("lia");
