@@ -34,7 +34,8 @@ import { supabase } from "@/integrations/supabase/client";
  */
 export default function UserCorner() {
   const { coins } = useCoins();
-  const onHome = useLocation().pathname === "/";
+  const pathname = useLocation().pathname;
+  const onHome = pathname === "/";
   const [user, setUser] = useState<{ name?: string; avatar?: string } | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -47,16 +48,20 @@ export default function UserCorner() {
     };
     sync();
     window.addEventListener("storage", sync);
+    window.addEventListener("focus", sync);
+    window.addEventListener("pageshow", sync);
     window.addEventListener("lemos:coins", sync);
     window.addEventListener("lemos_admin_change", sync);
     return () => {
       window.removeEventListener("storage", sync);
+      window.removeEventListener("focus", sync);
+      window.removeEventListener("pageshow", sync);
       window.removeEventListener("lemos:coins", sync);
       window.removeEventListener("lemos_admin_change", sync);
     };
-  }, []);
+  }, [pathname]);
 
-  const visible = useIconVisible("usuario");
+
   const [menu, setMenu] = useState(false);
 
   const logout = async () => {
@@ -66,7 +71,9 @@ export default function UserCorner() {
     window.location.href = "/login";
   };
 
-  if (!visible) return null;
+  // O avatar do usuário permanece visível em todas as rotas, inclusive após navegação.
+  // Não depender da configuração de visibilidade dos ícones de menu.
+
 
   if (!user?.name) return (
     <a href="/login" aria-label="Entrar ou criar conta" title="Entrar ou criar conta" className="fixed right-1 top-1 z-[75] flex flex-col items-center gap-1">
