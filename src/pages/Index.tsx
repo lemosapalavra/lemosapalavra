@@ -110,7 +110,7 @@ function IndexV1() {
             title={`Abrir ${label}`}
             aria-label={`Abrir ${label}`}
             onClick={() => handleItemClick(label)}
-            className="home-image-hotspot absolute pointer-events-auto z-20 w-[23%] max-w-[160px] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent cursor-pointer touch-manipulation focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-400"
+            className="home-image-hotspot absolute pointer-events-auto z-20 w-[25%] max-w-[180px] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent cursor-pointer touch-manipulation focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-400"
             style={{
               left: `${mobile[0]}%`,
               top: `${mobile[1]}%`,
@@ -129,7 +129,7 @@ function IndexV1() {
         @keyframes homeIconFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
         .home-floating-icon { animation: homeIconFloat 3.8s ease-in-out infinite; animation-delay: var(--float-delay, 0s); }
         @media (prefers-reduced-motion: reduce) { .home-floating-icon { animation: none; } }
-        @media (min-width: 768px) { .home-image-hotspot { left: var(--desktop-x) !important; top: var(--desktop-y) !important; width: min(11vw, 160px); } }
+        @media (min-width: 768px) { .home-image-hotspot { left: var(--desktop-x) !important; top: var(--desktop-y) !important; width: min(12vw, 180px); } }
       `}</style>
 
       <main className="relative z-10 w-full min-h-0 flex-1 flex flex-col items-center">
