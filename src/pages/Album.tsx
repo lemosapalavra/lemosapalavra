@@ -226,18 +226,17 @@ export default function Album() {
             type="button"
             onClick={() => { setPageIdx(0); setView("pages"); }}
             aria-label="Abrir álbum Volume 1"
-            className="w-[min(40vw,220px)] aspect-square shrink-0 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300"
+            className="w-[min(40vw,220px)] aspect-square shrink-0 rounded-full transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300"
           >
-            <img src="/Álbum%20Bíblico%20Volume%201.png" alt="Álbum Heróis da Fé — Volume 1" className="w-full h-full object-contain drop-shadow-2xl" />
+            <img src="/Álbum%20Bíblico%20Volume%201.png" alt="Álbum Heróis da Fé — Volume 1" className="w-full h-full object-contain drop-shadow-[0_8px_18px_rgba(0,0,0,.65)]" />
           </button>
           <button
             type="button"
-            disabled={!completed}
-            onClick={() => toast("Volume 2 em preparação.")}
+            onClick={() => toast(completed ? "Volume 2 em preparação." : "O Volume 2 estará disponível somente depois de completar o Volume 1.", { duration: 5500 })}
             aria-label={completed ? "Volume 2 em preparação" : "Volume 2 bloqueado até concluir o Volume 1"}
-            className="w-[min(40vw,220px)] aspect-square shrink-0 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300"
+            className="w-[min(40vw,220px)] aspect-square shrink-0 rounded-full cursor-pointer transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300"
           >
-            <img src="/Álbum%20Bíblico%20Volume%202.png" alt="Álbum Heróis da Fé — Volume 2" className="w-full h-full object-contain grayscale drop-shadow-2xl" />
+            <img src="/Álbum%20Bíblico%20Volume%202.png" alt="Álbum Heróis da Fé — Volume 2" className="w-full h-full object-contain grayscale drop-shadow-[0_8px_18px_rgba(0,0,0,.65)]" />
           </button>
         </div>
       </div>
