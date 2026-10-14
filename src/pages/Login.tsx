@@ -45,6 +45,7 @@ async function hydrateLocalProfile(userId: string, fallbackEmail: string) {
   const { data: authData } = await supabase.auth.getUser();
   const metadata = authData.user?.user_metadata || {};
   const u = {
+    id: userId,
     name: profile?.name || metadata.name || "",
     ageRange: profile?.age_range || "",
     phone: profile?.phone || "",
