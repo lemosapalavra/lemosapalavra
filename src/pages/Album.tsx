@@ -227,17 +227,19 @@ export default function Album() {
             type="button"
             onClick={() => { setPageIdx(0); setView("pages"); }}
             aria-label="Abrir álbum Volume 1"
-            className="pointer-events-auto absolute left-1/2 top-[27%] -translate-x-1/2 -translate-y-1/2 w-[clamp(76px,23vw,145px)] aspect-square rounded-full transition-all duration-200 hover:scale-110 hover:brightness-125 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300 z-10"
+            className="pointer-events-auto absolute left-1/2 top-[27%] -translate-x-1/2 -translate-y-1/2 w-[clamp(96px,29vw,172px)] aspect-square rounded-full transition-all duration-200 hover:scale-110 hover:brightness-125 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300 z-10"
           >
             <img src="/Álbum%20Bíblico%20Volume%201.png" alt="Álbum Heróis da Fé — Volume 1" className="w-full h-full object-contain drop-shadow-[0_8px_18px_rgba(0,0,0,.65)]" />
+            <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border-2 border-yellow-200 bg-gradient-to-b from-amber-400 to-orange-600 px-3 py-0.5 text-[11px] sm:text-sm font-black text-white shadow-[0_3px_8px_rgba(0,0,0,.65)]">VOL. 1</span>
           </button>
           <button
             type="button"
             onClick={() => toast(completed ? "Volume 2 em preparação." : "O Volume 2 estará disponível somente depois de completar o Volume 1.", { duration: 5500 })}
             aria-label={completed ? "Volume 2 em preparação" : "Volume 2 bloqueado até concluir o Volume 1"}
-            className="pointer-events-auto absolute left-1/2 bottom-[17%] -translate-x-1/2 w-[clamp(65px,19vw,115px)] aspect-square rounded-full transition-all duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300 z-10"
+            className="pointer-events-auto absolute left-1/2 bottom-[19%] -translate-x-1/2 w-[clamp(86px,25vw,145px)] aspect-square rounded-full transition-all duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300 z-10"
           >
-            <img src="/Álbum%20Bíblico%20Volume%202.png" alt="Álbum Heróis da Fé — Volume 2" className={`w-full h-full object-contain drop-shadow-[0_8px_18px_rgba(0,0,0,.65)] ${completed ? "" : "grayscale"}`} />
+            <img src="/Álbum%20Bíblico%20Volume%202.png" alt="Álbum Heróis da Fé — Volume 2" className="w-full h-full object-contain grayscale drop-shadow-[0_8px_18px_rgba(0,0,0,.65)]" />
+            <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border-2 border-gray-200 bg-gradient-to-b from-gray-500 to-gray-800 px-3 py-0.5 text-[11px] sm:text-sm font-black text-white shadow-[0_3px_8px_rgba(0,0,0,.65)]">VOL. 2</span>
           </button>
           {completed && <div role="status" className="pointer-events-none absolute bottom-[7%] left-1/2 -translate-x-1/2 w-[min(88vw,420px)] rounded-xl border border-amber-400 bg-white/95 px-3 py-2 text-center shadow-xl">
             <p className="text-xs sm:text-sm font-extrabold text-emerald-800">🏆 Volume 1 concluído!</p>
