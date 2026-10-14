@@ -1,3 +1,10 @@
+import avatar_jesus from "@/assets/avatar-jesus.png";
+import avatar_maria from "@/assets/avatar-maria.png";
+import avatar_davi from "@/assets/avatar-davi.png";
+import avatar_moises from "@/assets/avatar-moises.png";
+import avatar_abraao from "@/assets/avatar-abraao.png";
+import avatar_jose from "@/assets/avatar-jose.png";
+import avatar_daniel from "@/assets/avatar-daniel.png";
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useState } from "react";
 import MeuMural from "@/components/MeuMural";
@@ -6,22 +13,17 @@ const iconUsuario = "/usuario.png";
 
 /** Compatibilidade com avatares salvos por nome nos cadastros antigos. */
 const avatarNames: Record<string, string> = {
-  jesus: "/avatars-login/jesus.webp",
-  maria: "/avatars-login/maria.webp",
-  davi: "/avatars-login/davi.webp",
-  moises: "/avatars-login/moises.webp",
-  abraao: "/avatars-login/abraao.webp",
-  jose: "/avatars-login/jose.webp",
-  lia: "/avatars-login/lia.webp",
-  marta: "/avatars-login/marta.webp",
-  noe: "/avatars-login/noe.webp",
-  paulo: "/avatars-login/paulo.webp",
+  jesus: avatar_jesus, maria: avatar_maria, davi: avatar_davi,
+  moises: avatar_moises, abraao: avatar_abraao, jose: avatar_jose,
+  lia: "/lia-mascote.png", marta: avatar_maria, noe: avatar_moises,
+  paulo: avatar_davi, daniel: avatar_daniel, matheus: avatar_daniel,
 };
 function resolveAvatar(value?: string): string {
   const raw = (value || "").trim();
   if (!raw) return iconUsuario;
   const key = raw.toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  return avatarNames[key] || raw;
+  const legacy = raw.match(/\/avatars-login\/([a-z-]+)\.webp(?:\?.*)?$/i);
+  return avatarNames[key] || (legacy ? avatarNames[legacy[1].toLowerCase()] : undefined) || raw;
 }
 import { Button } from "@/components/ui/button";
 import { useLocation } from "react-router-dom";
@@ -98,7 +100,7 @@ export default function UserCorner() {
         <button type="button" onClick={() => setMenu(v => !v)} aria-label="Opções do usuário" aria-expanded={menu}
           className="flex items-center gap-2 rounded-2xl border-[3px] border-amber-400 bg-gradient-to-br from-[#a9652c] via-[#794015] to-[#49250c] px-2 py-1.5 text-left text-amber-50 shadow-[0_4px_12px_rgba(0,0,0,.5)]">
           <img src={resolveAvatar(user.avatar)} onError={e => { if (!e.currentTarget.src.endsWith(iconUsuario)) e.currentTarget.src = iconUsuario; }} alt={user.name}
-            className="h-9 w-9 sm:h-11 sm:w-11 rounded-full border-[3px] border-amber-300 bg-white object-cover" />
+            className="h-12 w-12 sm:h-14 sm:w-14 shrink-0 rounded-full border-[3px] border-amber-300 bg-white object-contain" />
           <span className="max-w-[105px] sm:max-w-[140px] text-[10px] sm:text-sm leading-tight">
             <span className="block">{greeting},</span>
             <strong className="block truncate text-sm sm:text-base">{user.name}</strong>
