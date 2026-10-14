@@ -3,14 +3,14 @@ import JogosInterativos from "@/components/JogosInterativos";
 import iconMemoria from "@/assets/jogos/icon-memoria.png";
 import iconQuebraCabeca from "@/assets/jogos/icon-quebra-cabeca.png";
 import iconPalavras from "@/assets/jogos/icon-palavras.png";
-import iconQuiz from "@/assets/jogos/icon-quiz.png";
+import { Link2 } from "lucide-react";
 import { isAllowed } from "@/lib/contentAccess";
 
 const ALL_GAMES = [
   { id: "memory", title: "Memória Bíblica", icon: iconMemoria },
   { id: "jigsaw", title: "Quebra-Cabeça", icon: iconQuebraCabeca },
   { id: "wordbuilder", title: "Construtor de Palavras", icon: iconPalavras },
-  { id: "quiz", title: "Quiz Bíblico", icon: iconQuiz },
+  { id: "pairs", title: "Ligue os Pares", icon: null },
 ];
 
 const positions = [
@@ -21,7 +21,7 @@ const positions = [
 ];
 
 export default function Jogos() {
-  const [selectedGame, setSelectedGame] = useState<"memory"|"maze"|"jigsaw"|"wordbuilder"|"quiz"|null>(null);
+  const [selectedGame, setSelectedGame] = useState<"memory"|"jigsaw"|"wordbuilder"|"pairs"|null>(null);
   useEffect(() => {
     if (!selectedGame) return;
     const onBack = (event: Event) => { event.preventDefault(); setSelectedGame(null); };
@@ -50,7 +50,7 @@ export default function Jogos() {
               className="absolute pointer-events-auto aspect-square w-[clamp(72px,18vw,130px)] -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-yellow-400 bg-emerald-800/80 p-1 shadow-[0_0_18px_4px_rgba(255,220,65,0.75)] animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:brightness-110 focus-visible:outline-4 focus-visible:outline-white"
               style={{...position,animationDelay:`${ALL_GAMES.findIndex((g) => g.id === game.id)*0.7}s`}}
             >
-              <img src={game.icon} alt="" className="h-full w-full rounded-full object-contain" />
+              {game.icon ? <img src={game.icon} alt="" className="h-full w-full rounded-full object-contain" /> : <span className="flex h-full w-full flex-col items-center justify-center text-white"><Link2 className="h-9 w-9 sm:h-12 sm:w-12" /><span className="text-[10px] sm:text-sm font-bold text-center">Ligue os Pares</span></span>}
             </button>
           );
         })}
