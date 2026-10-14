@@ -17,18 +17,18 @@ import { Button } from "@/components/ui/button";
  */
 
 const PAGE_TIPS: Record<string, string> = {
-  "/": "Oiii! 🌟 Que alegria te ver! Vamos brincar? Escolha um botão colorido e venha comigo!",
+  "/": "Oiii! 🌟 Sabia que assistir aos vídeos, fazer atividades, ler o devocional do dia e orar pode render moedinhas? 🪙 Junte suas moedas, compre pacotinhos de figurinhas e complete seu álbum! 🎁",
   "/biblia": "Oba! 📖 Vamos abrir a Bíblia e descobrir uma história linda? Escolha um livrinho!",
   "/louvores": "Lá, lá, lá! 🎵 Vamos cantar juntinhos? Escolha sua música favorita!",
-  "/veja": "Pipoca imaginária pronta? 🍿 Escolha uma historinha e aperte o play!",
-  "/ouca": "Que tal cantar comigo? 🎶 Escolha um louvor bem bonito!",
+  "/veja": "Pipoca imaginária pronta? 🍿 Assista às historinhas, ganhe moedinhas 🪙 e junte para comprar pacotinhos do álbum! 🎁",
+  "/ouca": "Vamos cantar? 🎶 E sabia que assistir aos vídeos, fazer tarefas, ler o devocional e orar ajuda a juntar moedinhas para o álbum? 🪙",
   "/musicas": "Iupiii! 🎤 A música já vai começar! Escolha um louvor, solte a voz e cante comigo! 🎶",
   "/lemosplay": "Eba, hora da historinha! 🎬 Escolha um vídeo e vamos assistir!",
-  "/jogos": "Vamos brincar? 🧩 Tem memória, quebra-cabeça, palavrinhas e quiz! Qual você escolhe?",
-  "/atividades": "Detetive da Bíblia, preparado? 🔎 Escolha uma parte de Quem Sou Eu e descubra as pistas!",
-  "/devocionais": "Psiu! 💖 Que tal uma palavrinha de carinho de Deus para o seu dia?",
-  "/pedidos-oracao": "Vamos falar com Deus? 🙏 Ele adora ouvir o que está no nosso coração!",
-  "/album": "Uau, figurinhas! ✨ Junte moedinhas, abra pacotinhos e complete seu álbum!",
+  "/jogos": "Obaaa! 🧩 Brinque, complete as tarefas e ganhe moedinhas! 🪙 Depois, troque por pacotinhos de figurinhas para completar o álbum! 🎁",
+  "/atividades": "Detetive da Bíblia, preparado? 🔎 Faça as tarefas, descubra as pistas e junte moedinhas para seus pacotinhos de figurinhas! 🪙✨",
+  "/devocionais": "Bom diaaa! 💖 Leia o devocional todos os dias e ganhe moedinhas! 🪙 Depois, compre pacotinhos e complete seu álbum! 🌈",
+  "/pedidos-oracao": "Vamos conversar com Deus? 🙏 Ao orar, você também pode ganhar moedinhas para os pacotinhos do álbum! 🪙💛",
+  "/album": "Uau, figurinhas! 🎁 Assista aos vídeos, faça tarefas, leia o devocional diariamente e ore para ganhar moedinhas! 🪙 Com elas, compre pacotinhos e complete o álbum! 🌟",
   "/historias-do-dia": "Obaaa! 📚 Tem historinha novinha esperando por você! Vamos descobrir juntos? 🌟",
   "/historias-biblicas": "Uhuuul! 🌈 Cada história da Bíblia tem uma surpresa! Qual vamos conhecer primeiro? 📖",
   "/login": "Oiii! 💛 Já tem conta? Digite seu nome e celular! É novo por aqui? Vamos fazer seu cadastro!",
@@ -55,8 +55,8 @@ const CONTEXT_TIPS: Record<string, string> = {
   "edu:circles": "Hora das cores! 🖍️ Escolha a cor certinha e pinte os círculos! Viva! 🌈",
   "edu:connect": "Vamos ligar as cores? 🌈 Puxe cada pontinho até sua cor amiguinha! Que divertido! 💫",
   // Álbum
-  "album:cover": "Olha só! 🌈 O Volume 1 está esperando por você! O Volume 2 ainda está sendo preparado!",
-  "album:pages": "Vamos colecionar? 🪙 Com 3 moedinhas você abre um pacotinho de 5 figurinhas! As repetidas podem ir para a Sala de Trocas. Que legal!",
+  "album:cover": "Obaaa! 🌈 Para ganhar moedinhas, assista aos vídeos, faça tarefas, leia o devocional todo dia e ore! 🪙 Compre pacotinhos, complete o Volume 1 e aguarde o Volume 2! 🎁",
+  "album:pages": "Quer mais figurinhas? 🎁 Ganhe moedinhas vendo vídeos, fazendo tarefas, lendo o devocional diário e orando! 🪙 Com 3 moedas, abra um pacotinho de 5 figurinhas. Repetidas? Troque na Sala de Trocas! 🌟",
 
   "album:sticker": "Olha que figurinha lindaaa! 🤩 Use o zoom para ver tudinho e descubra sua história na Bíblia! 📖",
   "album:pack": "Tcharããã! 🎁 Tem surpresinhas aqui! Toque nas figurinhas e veja o que apareceu! ✨",
