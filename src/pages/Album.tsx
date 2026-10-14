@@ -270,9 +270,9 @@ export default function Album() {
             <img loading="lazy" decoding="async"
               src={capaVol2.url}
               onError={(event) => { event.currentTarget.src = capaVol2Fallback; }}
-              alt="Capa do Álbum Volume II (bloqueado)"
-              title={completed ? "Volume II — em breve" : "Volume II — complete o Volume I para liberar"}
-               className={`max-h-[30vh] sm:max-h-[38vh] max-w-full w-auto object-contain rounded-2xl shadow-2xl border-4 border-stone-400 grayscale ${completed ? "opacity-90" : "opacity-60"}`}
+              alt={completed ? "Capa do Álbum Volume II — desbloqueado" : "Capa do Álbum Volume II — bloqueado"}
+              title={completed ? "Volume II desbloqueado — conteúdo em preparação" : "Volume II — complete o Volume I para liberar"}
+               className={`max-h-[30vh] sm:max-h-[38vh] max-w-full w-auto object-contain rounded-2xl shadow-2xl border-4 transition-all duration-500 ${completed ? "border-amber-300 opacity-100" : "border-stone-400 grayscale opacity-60"}`}
             />
              <span className="text-xs font-display font-extrabold bg-stone-300 text-stone-800 px-3 py-1 rounded-full shadow border border-white">
               Volume II
