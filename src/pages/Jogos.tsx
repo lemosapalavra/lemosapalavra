@@ -24,6 +24,10 @@ export default function Jogos() {
     window.addEventListener("lemos:back", onBack);
     return () => window.removeEventListener("lemos:back", onBack);
   }, [selectedGame]);
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: selectedGame }));
+    return () => window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: null }));
+  }, [selectedGame]);
   const games = ALL_GAMES.filter((game) => isAllowed("jogos", game.id));
   return (
     <main id="faca-cenario" className="relative isolate h-[100dvh] w-full overflow-hidden bg-[#bdebf7]">
