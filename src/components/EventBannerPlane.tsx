@@ -95,9 +95,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
                 tabIndex={0}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleClick(); } }}
                 alt={dir === "rtl" ? "Aviãozinho voando da direita para a esquerda" : "Aviãozinho voando da esquerda para a direita"}
-                className={`pointer-events-auto cursor-pointer relative h-56 sm:h-64 md:h-72 w-auto drop-shadow-2xl select-none transition-all duration-700 ${
-                  isAuthenticated ? "" : "grayscale opacity-60"
-                }`}
+                className="pointer-events-auto cursor-pointer relative h-56 sm:h-64 md:h-72 w-auto drop-shadow-2xl select-none transition-all duration-700 opacity-100"
                 style={{ animation: "banner-wind 3.2s ease-in-out infinite", transformOrigin: dir === "rtl" ? "100% 50%" : "0% 50%" }}
                 draggable={false}
               />
