@@ -215,93 +215,31 @@ export default function Album() {
   // ============= COVER (fullscreen) =============
   if (view === "cover") {
     const completed = isAlbumComplete(totalOwned, allStickers.length);
-    let userName = "";
-    try { userName = JSON.parse(localStorage.getItem("lemos_user") || "{}")?.name || ""; } catch {}
     return (
       <div
-        onClick={() => { setPageIdx(0); setView("pages"); }}
-        className="fixed inset-0 z-40 cursor-pointer flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "linear-gradient(rgba(35,20,15,.32), rgba(35,20,15,.42)), url(\u0027/Álbum.png\u0027)" }}
+        className="fixed inset-0 z-40 flex items-center justify-center bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "linear-gradient(rgba(35,20,15,.32), rgba(35,20,15,.42)), url('/Álbum.png')" }}
       >
         <PageHeader title="Álbum" />
-        <div className="flex-1 flex flex-col items-center justify-start px-4 pt-32 sm:pt-36 pb-8 text-center gap-4 w-full overflow-y-auto">
-          <div className="flex flex-row items-start justify-center gap-5 sm:gap-8 flex-wrap">
-          <div className="flex flex-col items-center w-[min(42vw,260px)] min-w-[135px] gap-2">
-            <img loading="lazy" decoding="async"
-              src="/Álbum%20Bíblico%20Volume%201.png"
-              alt="Capa do Álbum Heróis da Bíblia — Volume I"
-              title="Volume I — toque para abrir o álbum"
-              className="max-h-[30vh] sm:max-h-[38vh] max-w-full w-auto object-contain rounded-2xl shadow-2xl border-4 border-amber-300 animate-[coverFloat_3.6s_ease-in-out_infinite]"
-            />
-             <span className="text-xs font-display font-extrabold bg-amber-300 text-amber-950 px-3 py-1 rounded-full shadow border border-white">
-              Volume I
-            </span>
-
-            {/* Completion banner */}
-            {completed && (
-               <div className="w-full bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-500 text-amber-950 font-display font-extrabold text-center px-3 py-2 rounded-md shadow-2xl border-2 border-white">
-                <div className="text-sm sm:text-base">🏆 Parabéns{userName ? `, ${userName}` : ""}!</div>
-                <div className="text-[10px] sm:text-xs font-bold leading-tight opacity-90">
-                  Você completou o Volume I — em breve, Volume II com muitas novidades!
-                </div>
-                {repeats.length > 0 && (
-                  <div className="mt-1 text-[10px] sm:text-xs font-extrabold bg-white/80 text-amber-900 rounded-xl px-2 py-1">
-                    🔁 Você tem {repeats.reduce((a, r) => a + r.count, 0)} figurinha(s) sobrando — elas ficarão guardadas
-                    e poderão ser usadas no <strong>Volume II</strong> do próximo álbum!
-                  </div>
-                )}
-
-              </div>
-            )}
-          </div>
-
-          {/* Volume II — em preto e branco, liberado só ao concluir o Volume I */}
-          <div
-             className="flex flex-col items-center w-[min(42vw,260px)] min-w-[135px] gap-2"
-            onClick={(e) => {
-              e.stopPropagation();
-              toast(completed
-                ? "🎉 Volume II chegando em breve — suas figurinhas repetidas já estão guardadas!"
-                : "🔒 Volume II bloqueado. Complete o Volume I para liberar!");
-            }}
->
-            <img loading="lazy" decoding="async"
-              src="/Álbum%20Bíblico%20Volume%202.png"
-              alt={completed ? "Capa do Álbum Volume II — desbloqueado" : "Capa do Álbum Volume II — bloqueado"}
-              title={completed ? "Volume II desbloqueado — conteúdo em preparação" : "Volume II — complete o Volume I para liberar"}
-               className={`max-h-[30vh] sm:max-h-[38vh] max-w-full w-auto object-contain rounded-2xl shadow-2xl border-4 transition-all duration-500 ${completed ? "border-amber-300 opacity-100" : "border-stone-400 grayscale opacity-60"}`}
-            />
-             <span className="text-xs font-display font-extrabold bg-stone-300 text-stone-800 px-3 py-1 rounded-full shadow border border-white">
-              Volume II
-            </span>
-            {!completed && (
-               <span className="font-display text-sm text-stone-100" aria-label="Bloqueado">🔒 Bloqueado</span>
-            )}
-             <p className="max-w-[16rem] font-display text-[11px] sm:text-xs font-extrabold text-stone-100 bg-stone-800/70 rounded-md px-2 py-1 border border-stone-500">
-              {completed
-                ? "✅ Volume I concluído — Volume II chegando em breve!"
-                : "🔒 O Volume II só será liberado depois que você concluir o Volume I."}
-            </p>
-          </div>
-          </div>
-          <h1 className="font-display font-extrabold text-3xl sm:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-yellow-100 to-amber-300 drop-shadow-lg animate-[albumTitle_2.4s_ease-in-out_infinite]">
-            ✨ Heróis da Bíblia ✨
-          </h1>
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-amber-950 font-display font-extrabold text-sm sm:text-base px-4 py-2 rounded-full shadow-2xl border-2 border-white animate-[coverFloat_3s_ease-in-out_infinite]">
-            🎴 Mais de <span className="text-lg sm:text-xl">{allStickers.length}</span> figurinhas para colecionar!
-          </div>
+        <div className="flex items-center justify-center gap-5 sm:gap-10 px-5 w-full max-w-3xl">
+          <button
+            type="button"
+            onClick={() => { setPageIdx(0); setView("pages"); }}
+            aria-label="Abrir álbum Volume 1"
+            className="w-[min(40vw,220px)] aspect-square shrink-0 transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300"
+          >
+            <img src="/Álbum%20Bíblico%20Volume%201.png" alt="Álbum Heróis da Fé — Volume 1" className="w-full h-full object-contain drop-shadow-2xl" />
+          </button>
+          <button
+            type="button"
+            disabled={!completed}
+            onClick={() => toast("Volume 2 em preparação.")}
+            aria-label={completed ? "Volume 2 em preparação" : "Volume 2 bloqueado até concluir o Volume 1"}
+            className="w-[min(40vw,220px)] aspect-square shrink-0 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300"
+          >
+            <img src="/Álbum%20Bíblico%20Volume%202.png" alt="Álbum Heróis da Fé — Volume 2" className="w-full h-full object-contain grayscale drop-shadow-2xl" />
+          </button>
         </div>
-
-
-        <style>{`
-          @keyframes albumTitle {
-            0%,100% { transform: scale(1) translateY(0); text-shadow: 0 4px 14px rgba(255,200,80,0.35); }
-            50% { transform: scale(1.05) translateY(-4px); text-shadow: 0 10px 24px rgba(255,200,80,0.55); }
-          }
-          @keyframes coverFloat {
-            0%,100% { transform: translateY(0) rotate(-1deg); }
-            50% { transform: translateY(-8px) rotate(1deg); }
-          }
-        `}</style>
       </div>
     );
   }
