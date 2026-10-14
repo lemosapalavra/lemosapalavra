@@ -128,6 +128,7 @@ type Tab = "antigo" | "novo" | "dicionario";
 
 export default function Biblia() {
   const [tab, setTab] = useState<Tab>("antigo");
+  const [showBibleMenu, setShowBibleMenu] = useState(true);
   const [search, setSearch] = useState("");
   const [dictSearch, setDictSearch] = useState("");
   const [selectedBook, setSelectedBook] = useState<string | null>(null);
@@ -147,6 +148,7 @@ export default function Biblia() {
     const c = params.get("chapter");
     if (b && bookIdMap[b]) {
       setSelectedBook(b);
+      setShowBibleMenu(false);
       setFromSticker(true);
       if (c && Number(c) > 0) setSelectedChapter(Number(c));
     }
@@ -286,51 +288,31 @@ export default function Biblia() {
   return (
     <div className="min-h-screen py-6 px-4" style={{ background: "transparent" }}>
       <div className="max-w-4xl mx-auto">
-        <PageHeader title="Bíblia" subtitle="66 livros para explorar" icon={iconBiblia} />
-        <p className="text-center -mt-6 mb-6 font-body text-sm italic text-primary font-semibold">
-          Tradução: João Ferreira de Almeida
-        </p>
-
-        {/* Category selector: icons above central logo */}
-        {!selectedBook && (
-          <div className="mb-6 flex flex-col items-center gap-4">
-            <div className="flex items-start justify-center gap-4 sm:gap-8">
-              {tabs.map((t) => (
-                <button
-                  key={t.key}
-                  onClick={() => { setTab(t.key); setSelectedBook(null); setSelectedChapter(null); }}
-                  className={`flex flex-col items-center gap-1 transition-transform hover:scale-110 ${tab === t.key ? "scale-110" : ""}`}
-                >
-                  <img loading="lazy" decoding="async"
-                    src={t.icon}
-                    alt={t.label}
-                    className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 shadow-lg bg-white object-cover ${tab === t.key ? "border-primary" : "border-primary/30"}`}
-                  />
-                  <span className="text-[10px] sm:text-xs font-bold text-primary text-center leading-tight max-w-[80px]">
-                    {t.label}
-                  </span>
-                  <span className="text-[10px] text-muted-foreground">({t.count})</span>
-                </button>
-              ))}
+        {showBibleMenu && !selectedBook ? (
+          <div className="fixed inset-0 z-40 bg-cover bg-center" style={{ backgroundImage: "url('/Bíblia.png')" }}>
+            <div className="absolute inset-0 flex items-center justify-center pt-16">
+              <div className="relative w-[min(88vw,480px)] aspect-square">
+                {tabs.map((t, i) => {
+                  const angle = (-150 + i * 150) * Math.PI / 180;
+                  return (
+                    <button key={t.key} title={t.label} aria-label={t.label}
+                      onClick={() => { setTab(t.key); setShowBibleMenu(false); }}
+                      className="absolute w-[clamp(88px,22vw,138px)] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full hover:scale-110 transition-transform"
+                      style={{ left: `${50 + 34 * Math.cos(angle)}%`, top: `${50 + 34 * Math.sin(angle)}%` }}>
+                      <img src={t.icon} alt={t.label} className="w-full h-full object-contain drop-shadow-2xl" />
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-            <img loading="lazy" decoding="async" src={iconBiblia} alt="Explorar a Bíblia" className="w-28 sm:w-36 drop-shadow-xl" />
           </div>
-        )}
-
-        {/* Search */}
-        {(tab === "antigo" || tab === "novo") && !selectedBook && (
-          <div className="relative mb-6">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg">🔍</span>
-            <input
-              type="text"
-              placeholder="Pesquisar livro..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-xl border border-border bg-background pl-12 pr-4 py-3 font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-          </div>
-        )}
-
+        ) : (
+          <>
+            {!selectedBook && <button onClick={() => setShowBibleMenu(true)} className="mb-5 rounded-full bg-amber-100 px-5 py-2 font-bold text-amber-900 shadow">← Voltar aos ícones</button>}
+            {!selectedBook && tab !== "dicionario" && (
+              <input type="text" placeholder="Pesquisar livro..." value={search} onChange={(e) => setSearch(e.target.value)}
+                className="mb-6 w-full rounded-xl border border-border bg-background px-4 py-3" />
+            )}
         {/* Chapter view with full verses */}
         {selectedBook && selectedChapter && (
           <div
@@ -505,7 +487,7 @@ export default function Biblia() {
         {tab === "novo" && !selectedBook && renderBookGrid(novoTestamento, "✝️")}
 
         {/* Dictionary */}
-        {tab === "dicionario" && (
+        {tab === "dicionario" && !selectedBook && (
           <div>
             <div className="relative mb-6">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-lg">🔍</span>
@@ -541,6 +523,8 @@ export default function Biblia() {
               </div>
             )}
           </div>
+        )}
+          </>
         )}
       </div>
     </div>
