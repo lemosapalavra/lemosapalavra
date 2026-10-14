@@ -15,6 +15,8 @@ interface Props {
 export default function VideoCentralLayout({ title, subtitle, videos }: Props) {
   const navigate = useNavigate();
   const [playing, setPlaying] = useState<BibleVideo | null>(null);
+  const [viewed, setViewed] = useState<Record<string, boolean>>(() => { try { return JSON.parse(localStorage.getItem("lemos_media_viewed") || "{}"); } catch { return {}; } });
+  const openVideo = (video: BibleVideo) => { setPlaying(video); setViewed(prev => { const next = { ...prev, [`central:${video.title}`]: true }; localStorage.setItem("lemos_media_viewed", JSON.stringify(next)); return next; }); };
 
   if (playing) {
     return (
@@ -47,14 +49,14 @@ export default function VideoCentralLayout({ title, subtitle, videos }: Props) {
   const renderItem = (v: BibleVideo, i: number) => (
     <button
       key={i}
-      onClick={() => setPlaying(v)}
+      onClick={() => openVideo(v)}
       className="flex flex-col items-center gap-1 hover:scale-110 transition-transform"
     >
       <img
         src={v.icon}
         alt={v.title}
         loading="lazy"
-        className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-primary/30 shadow-lg bg-white object-cover"
+        className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full border-[3px] border-amber-400 shadow-[0_6px_18px_rgba(0,0,0,.55)] bg-white object-cover ${viewed[`central:${v.title}`] ? "grayscale" : ""}`}
       />
       <p className="text-[11px] sm:text-xs font-bold text-primary text-center leading-tight max-w-[110px] drop-shadow">
         {v.title}
