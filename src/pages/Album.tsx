@@ -223,7 +223,7 @@ export default function Album() {
     return (
       <div
         onClick={() => { setPageIdx(0); setView("pages"); }}
-        className="fixed inset-0 z-40 cursor-pointer flex flex-col items-center justify-center bg-gradient-to-b from-amber-900 via-amber-800 to-stone-900"
+        className="fixed inset-0 z-40 cursor-pointer flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "linear-gradient(rgba(35,20,15,.32), rgba(35,20,15,.42)), url(\u0027/Álbum.png\u0027)" }}
       >
         <PageHeader title="Álbum" />
         <div className="flex-1 flex flex-col items-center justify-start px-4 pt-32 sm:pt-36 pb-8 text-center gap-4 w-full overflow-y-auto">
