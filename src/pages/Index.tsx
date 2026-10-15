@@ -16,11 +16,11 @@ import EventBannerPlane from "@/components/EventBannerPlane";
 import { ensureInitialCoins, addCoins } from "@/hooks/useCoins";
 import { loadOrbit } from "@/data/orbitConfig";
 
-const vejaFlutuante = "/veja-flutuante.png";
-const oucaFlutuante = "/ouca-flutuante.png";
-const aprendaFlutuante = "/aprenda-flutuante.png";
-const facaFlutuante = "/faca-flutuante.png";
-const albumFlutuante = "/album-flutuante.png";
+const vejaFlutuante = "/veja-flutuante.webp";
+const oucaFlutuante = "/ouca-flutuante.webp";
+const aprendaFlutuante = "/aprenda-flutuante.webp";
+const facaFlutuante = "/faca-flutuante.webp";
+const albumFlutuante = "/album-flutuante.webp";
 
 export default function Index() {
   return <IndexV1 />;
