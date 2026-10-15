@@ -385,7 +385,7 @@ export default function Album() {
             className="group flex flex-col items-center gap-1 disabled:opacity-50 hover:scale-105 transition-transform">
             <img src="/pacotinhos/Pacote%20Figurinha-1.webp" alt="Pacotinho de figurinhas Heróis da Fé"
               className="h-24 w-20 sm:h-28 sm:w-24 object-contain drop-shadow-xl" loading="lazy" />
-            <span className="text-amber-950 text-xs sm:text-sm font-bold text-center leading-snug">Abra o Pacotinho (3 moedas a cada pacotinho)</span>
+            <span className="text-amber-950 text-xs sm:text-sm font-bold text-center leading-snug">Pacotinho 3 moedas cada</span>
           </button>
           <div className="mt-1 text-[10px] opacity-70">página {pageIdx + 1} de {totalPages}</div>
         </div>
