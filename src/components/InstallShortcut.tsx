@@ -155,7 +155,7 @@ export default function InstallShortcut({ compact = false }: { compact?: boolean
           className={`relative group border-0 bg-transparent shadow-none p-0 hover:bg-transparent hover:scale-105 transition-all disabled:opacity-60 ${compact ? "h-[88px] w-[88px] sm:h-[110px] sm:w-[110px]" : "h-32 w-32 sm:h-40 sm:w-40"}`}
         >
           <img loading="lazy" decoding="async"
-            src={compact ? "/Atalho - Download.png" : "/favicon.png"}
+            src="/favicon.png"
             alt="Baixe o Atalho"
             className="h-full w-full object-contain drop-shadow-lg"
           />
