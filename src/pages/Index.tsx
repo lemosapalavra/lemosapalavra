@@ -152,7 +152,7 @@ function IndexV1() {
       </main>
 
 
-      <div className="fixed bottom-3 right-3 sm:right-5 z-[46] flex flex-col items-center"><InstallShortcut compact /></div>
+      <div className="fixed bottom-3 right-[112px] sm:right-[152px] z-[46] flex flex-col items-center animate-[homeIconFloat_3.8s_ease-in-out_infinite]"><InstallShortcut compact /></div>
       <DedicatoriaModal open={dedicatoriaOpen} onOpenChange={setDedicatoriaOpen} />
 
     </div>
