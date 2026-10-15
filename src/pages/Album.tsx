@@ -1,4 +1,4 @@
-import albumBackground from "@/assets/album-background.png";
+import albumBackground from "@/assets/album-background-optimized.webp";
 import albumVolume1 from "@/assets/album-volume-1.png";
 import albumVolume2 from "@/assets/album-volume-2.png";
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
