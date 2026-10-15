@@ -28,7 +28,8 @@ jobs:
           cd /tmp/webp-tools
           npm init -y
           npm install --no-audit --no-fund sharp@0.34.5
-          echo "NODE_PATH=/tmp/webp-tools/node_modules" >> "$GITHUB_ENV"
+          mkdir -p "$GITHUB_WORKSPACE/node_modules"
+          ln -s /tmp/webp-tools/node_modules/sharp "$GITHUB_WORKSPACE/node_modules/sharp"
       - name: Convert PNG and JPEG images (keep originals)
         run: node scripts/convert-images-webp.mjs --apply
         env:
