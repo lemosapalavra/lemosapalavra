@@ -152,17 +152,16 @@ export default function InstallShortcut({ compact = false }: { compact?: boolean
           disabled={busy}
           aria-label="Baixar atalho clicável da Lemos a Palavra"
           title="Clique para baixar o atalho da Lemos a Palavra"
-          className={`relative group rounded-full overflow-visible border-2 border-border bg-background shadow-lg hover:scale-105 hover:brightness-125 hover:drop-shadow-[0_0_16px_hsl(var(--primary))] active:brightness-150 transition-all disabled:opacity-60 ${compact ? "h-16 w-16 sm:h-20 sm:w-20 icon-glow" : "h-32 w-32 sm:h-40 sm:w-40"}`}
+          className={`relative group border-0 bg-transparent shadow-none p-0 hover:bg-transparent hover:scale-105 transition-all disabled:opacity-60 ${compact ? "h-[88px] w-[88px] sm:h-[110px] sm:w-[110px]" : "h-32 w-32 sm:h-40 sm:w-40"}`}
         >
           <img loading="lazy" decoding="async"
-            src="/favicon.png"
-            alt="Lemos a Palavra"
-            className="h-full w-full rounded-full object-cover"
+            src={compact ? "/Atalho - Download.png" : "/favicon.png"}
+            alt="Baixe o Atalho"
+            className="h-full w-full object-contain drop-shadow-lg"
           />
-           {compact ? <Download className="absolute -bottom-1 -right-1 rounded-full bg-primary text-primary-foreground p-0.5" /> : <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-primary text-primary-foreground font-display font-extrabold rounded-full shadow-lg text-xs sm:text-sm px-3 py-1">{busy ? "Preparando…" : "📥 Baixar atalho"}</span>}
+           {compact ? null : <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-primary text-primary-foreground font-display font-extrabold rounded-full shadow-lg text-xs sm:text-sm px-3 py-1">{busy ? "Preparando…" : "📥 Baixar atalho"}</span>}
         </Button>
       </div>
-      {compact && <span className="font-display font-extrabold text-[11px] sm:text-xs text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap">Baixe o Atalho</span>}
       {!compact && (
         <p className="text-xs sm:text-sm font-body text-amber-900 text-center leading-snug max-w-[280px] mt-3">
           Clique na logo para <strong>baixar o atalho</strong> da Lemos a Palavra
