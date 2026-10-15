@@ -67,7 +67,7 @@ export default function Login() {
         <img
           src="/Pagina%20Iogin%20celular.webp?v=20261015-3"
           alt="Imagem de boas-vindas da página de login do Lemos a Palavra"
-          className="absolute inset-0 h-full w-full object-cover object-center" onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = "/Pagina%20Iogin%20celular.png?v=20261015-2"; }}
+          className="absolute inset-0 h-full w-full object-cover object-center"
         />
         <div className="relative z-10 flex min-h-[100dvh] flex-col items-center px-4 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]">
           <div className="flex-1 min-h-[24vh]" />
