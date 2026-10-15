@@ -1,4 +1,5 @@
 import { useState } from "react";
+import loginBackground from "@/assets/login-mobile.webp";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -65,14 +66,9 @@ export default function Login() {
     <main className="fixed inset-0 w-full overflow-y-auto bg-[#1d381c]" aria-label="Entrar no Lemos a Palavra">
       <div className="relative mx-auto min-h-[100dvh] w-full max-w-[720px] overflow-hidden">
         <img
-          src="/Pagina%20Iogin%20celular.webp?v=20261015-4"
+          src={loginBackground}
           alt="Imagem de boas-vindas da página de login do Lemos a Palavra"
           className="absolute inset-0 h-full w-full object-cover object-center"
-          onError={(event) => {
-            const img = event.currentTarget;
-            img.onerror = null;
-            img.src = "https://raw.githubusercontent.com/lemosapalavra/lemosapalavra/HEAD/public/Pagina%20Iogin%20celular.webp";
-          }}
         />
         <div className="relative z-10 flex min-h-[100dvh] flex-col items-center px-4 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]">
           <div className="flex-1 min-h-[24vh]" />
