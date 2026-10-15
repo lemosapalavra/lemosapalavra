@@ -95,7 +95,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
                 tabIndex={0}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleClick(); } }}
                 alt={dir === "rtl" ? "Aviãozinho voando da direita para a esquerda" : "Aviãozinho voando da esquerda para a direita"}
-                className="pointer-events-auto cursor-pointer relative h-56 sm:h-64 md:h-72 w-auto drop-shadow-2xl select-none transition-all duration-700 opacity-100"
+                className="plane-clickable pointer-events-auto cursor-pointer relative h-56 sm:h-64 md:h-72 w-auto select-none opacity-100 transition-[filter] duration-200 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-400"
                 style={{ animation: "banner-wind 3.2s ease-in-out infinite", transformOrigin: dir === "rtl" ? "100% 50%" : "0% 50%" }}
                 draggable={false}
               />
@@ -116,6 +116,15 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
       )}
 
       <style>{`
+        .plane-clickable {
+          filter: drop-shadow(2px 0 0 white) drop-shadow(-2px 0 0 white) drop-shadow(0 2px 0 white) drop-shadow(0 -2px 0 white) drop-shadow(0 5px 12px rgba(0,0,0,.55));
+        }
+        .plane-clickable:hover, .plane-clickable:focus-visible {
+          filter: drop-shadow(3px 0 0 white) drop-shadow(-3px 0 0 white) drop-shadow(0 3px 0 white) drop-shadow(0 -3px 0 white) drop-shadow(0 0 18px rgba(255,255,255,.95)) brightness(1.12);
+        }
+        .plane-clickable:active {
+          filter: drop-shadow(2px 0 0 white) drop-shadow(-2px 0 0 white) drop-shadow(0 2px 0 white) drop-shadow(0 -2px 0 white) brightness(1.25);
+        }
         @keyframes plane-rtl {
           0%   { transform: translateX(calc(100vw + 12rem)); }
           100% { transform: translateX(-30rem); }
