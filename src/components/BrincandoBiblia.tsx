@@ -70,7 +70,7 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
   window.dispatchEvent(new CustomEvent("lemos:lia-context", {
    detail: index === null ? null : `activity:${activities[index].title}`
   }));
-  return () => window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: null }));
+  return () => { window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: null })); };
  }, [index]);
  const open=(i:number)=>{setIndex(i);setAnswers({});setChecked(false);setFlipped([]);setMatched([]);setMoves(0);const a=activities[i];if(a.cards)setDeck(shuffle(a.cards.flatMap((name,id)=>[{id,name},{id,name}])));};
  useEffect(() => {
