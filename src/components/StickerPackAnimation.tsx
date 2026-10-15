@@ -1,7 +1,4 @@
 import { useState, useEffect, useMemo } from "react";
-import pack1 from "@/assets/pack-herois-1.png";
-import pack2 from "@/assets/pack-herois-2.png";
-import pack3 from "@/assets/pack-herois-3.png";
 
 export type StickerRarity = "normal" | "rara" | "reliquia";
 
@@ -20,7 +17,15 @@ interface StickerPackAnimationProps {
   onClose: () => void;
 }
 
-const PACKS = [pack1, pack2, pack3];
+// Quatro artes fornecidas para os pacotinhos; alternância sequencial por abertura.
+const PACKS = [1, 2, 3, 4].map((n) => `/pacotinhos/pacote-${n}.webp`);
+const PACK_COUNTER_KEY = "lemos_album_pack_art_index";
+function nextPackImage() {
+  const previous = Number(localStorage.getItem(PACK_COUNTER_KEY) || "0");
+  const index = Number.isFinite(previous) ? Math.max(0, previous) % PACKS.length : 0;
+  localStorage.setItem(PACK_COUNTER_KEY, String((index + 1) % PACKS.length));
+  return PACKS[index];
+}
 
 const rarityConfig = {
   normal: { label: "Normal", border: "border-slate-300", bg: "bg-slate-200/30", glow: "shadow-slate-400/40", text: "text-slate-600", value: 1, ring: "" },
@@ -133,7 +138,7 @@ const Shockwaves = () => (
 
 
 export default function StickerPackAnimation({ stickers, onClose }: StickerPackAnimationProps) {
-  const packImg = useMemo(() => PACKS[Math.floor(Math.random() * PACKS.length)], []);
+  const packImg = useMemo(() => nextPackImage(), []);
   const [phase, setPhase] = useState<"pack" | "shaking" | "tearing" | "burst" | "reveal">("pack");
   const [revealedIdx, setRevealedIdx] = useState(-1);
   const [flippedIdx, setFlippedIdx] = useState<number[]>([]);
@@ -242,7 +247,7 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
               <img loading="lazy" decoding="async"
                 src={packImg}
                 alt="Pacotinho Heróis da Fé"
-                className="w-56 sm:w-72 h-auto rounded-xl select-none drop-shadow-2xl"
+                className="w-[min(62vw,240px)] sm:w-[280px] max-h-[55dvh] object-contain h-auto rounded-xl select-none drop-shadow-2xl"
                 draggable={false}
               />
             </div>
@@ -255,7 +260,7 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
         {phase === "shaking" && (
           <div className="relative">
             <div className="animate-[shakeStrong_0.7s_ease-in-out]">
-              <img loading="lazy" decoding="async" src={packImg} alt="" className="w-56 sm:w-72 h-auto rounded-xl drop-shadow-2xl" draggable={false} />
+              <img loading="lazy" decoding="async" src={packImg} alt="" className="w-[min(62vw,240px)] sm:w-[280px] max-h-[55dvh] object-contain h-auto rounded-xl drop-shadow-2xl" draggable={false} />
             </div>
             {/* Two hands closing in with scissors */}
             <div className="pointer-events-none absolute inset-0 flex items-center justify-between -mx-10">
@@ -267,7 +272,7 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
         )}
 
         {phase === "tearing" && (
-          <div className="relative w-56 sm:w-72">
+          <div className="relative w-[min(62vw,240px)] sm:w-[280px] max-h-[55dvh] object-contain">
             <div className="absolute inset-0 overflow-hidden animate-tear-left" style={{ clipPath: "polygon(0 0, 52% 0, 48% 100%, 0 100%)" }}>
               <img loading="lazy" decoding="async" src={packImg} alt="" className="w-full h-auto" draggable={false} />
             </div>
@@ -284,7 +289,7 @@ export default function StickerPackAnimation({ stickers, onClose }: StickerPackA
         )}
 
         {phase === "burst" && (
-          <div className="relative w-56 sm:w-72 h-72 flex items-center justify-center animate-[screenShake_0.65s_ease-out]">
+          <div className="relative w-[min(62vw,240px)] sm:w-[280px] max-h-[55dvh] object-contain h-72 flex items-center justify-center animate-[screenShake_0.65s_ease-out]">
             <div className="fixed inset-0 pointer-events-none bg-white animate-[whiteFlash_0.5s_ease-out_forwards]" />
             <GodRays opacity={0.5} />
             <Shockwaves />
