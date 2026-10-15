@@ -143,7 +143,7 @@ function IndexV1() {
               title="Dedicatória"
               aria-label="Abrir dedicatória"
             >
-              <img loading="lazy" decoding="async" src="/Dedicatória.png" alt="" className="h-full w-full object-contain drop-shadow-lg" />
+              <img loading="lazy" decoding="async" src="/icone-dedicatoria.png" alt="" className="h-full w-full object-contain drop-shadow-lg" />
              </Button>
 
           </div>}
