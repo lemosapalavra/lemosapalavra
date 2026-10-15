@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
  */
 
 const PAGE_TIPS: Record<string, string> = {
-  "/": "Oieee! 🌈 Escolha uma aventura! Vídeos, tarefas, devocionais e orações dão moedinhas para o álbum! 🪙",
+  "/": "Oieee! 🌈 Escolha uma aventura! 📥 Baixe o Atalho para abrir o Lemos a Palavra direto da sua tela! Se sua sessão continuar ativa, você não precisará fazer login a cada visita. 💛",
   "/biblia": "Obaaa! 📖 Escolha uma história da Bíblia! Vamos descobrir juntos? ✨",
   "/louvores": "Lá, lá, lá! 🎶 Escolha um louvor e cante comigo! 🎤",
   "/veja": "Pipoca pronta? 🍿 Escolha um vídeo! Assista e ganhe moedinhas! 🪙",
