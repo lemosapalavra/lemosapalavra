@@ -1,5 +1,4 @@
 import homeMobile from "@/assets/home-mobile.webp";
-import homeDesktop from "@/assets/home-desktop.png";
 import dedicatoryIcon from "@/assets/dedicatoria-home.png";
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useState, useEffect } from "react";
@@ -87,7 +86,6 @@ function IndexV1() {
 
       {/* Fundos enviados ao GitHub: vertical para celular e horizontal para desktop. */}
       <picture aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 block overflow-hidden">
-        <source media="(min-width: 768px)" srcSet={homeDesktop} />
         <img
           src={homeMobile}
           alt=""
