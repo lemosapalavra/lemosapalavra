@@ -68,9 +68,11 @@ export default function ColonialVideoFrame({
   const pad = "clamp(4px, 0.7vh, 9px)";
   return (
     <div
-      className={`relative ${className}`}
+      className={`relative mx-auto flex max-w-full shrink-0 items-center justify-center ${className}`}
       style={{
         padding: pad,
+        width: "fit-content",
+        maxWidth: "calc(100vw - 24px)",
         borderRadius: "18px",
         background: p.outer,
         boxShadow: `0 0 0 2px ${p.ring1}, 0 0 0 4px ${p.ring2}, 0 20px 60px rgba(0,0,0,0.7), inset 0 0 0 1px rgba(255,255,255,0.5)`,
@@ -81,9 +83,10 @@ export default function ColonialVideoFrame({
         className="relative overflow-hidden"
         style={{
           aspectRatio: aspect,
-          height: `min(82vh, calc(92vw * 16 / 9))`,
-          maxHeight: "82vh",
-          maxWidth: "92vw",
+          height: `min(76dvh, calc((100vw - 40px) * 16 / 9))`,
+          width: "auto",
+          maxHeight: "76dvh",
+          maxWidth: "calc(100vw - 40px)",
           borderRadius: "10px",
           boxShadow: p.innerBevel,
           background: "#000",
