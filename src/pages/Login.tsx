@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 /** Acesso da família por conta Google; Facebook será habilitado quando disponível. */
 export default function Login() {
   const [busy, setBusy] = useState<"google" | "facebook" | null>(null);
+  const [pressed, setPressed] = useState<"google" | "facebook" | null>(null);
   const navigate = useNavigate();
 
   const playTap = () => {
@@ -28,9 +29,15 @@ export default function Login() {
     } catch { /* audio may be unavailable */ }
   };
 
+  const animateTap = (provider: "google" | "facebook") => {
+    setPressed(provider);
+    window.setTimeout(() => setPressed(null), 550);
+  };
+
   const enterWithGoogle = async () => {
     if (busy) return;
     playTap();
+    animateTap("google");
     setBusy("google");
     try {
       const { lovable } = await import("@/integrations/lovable/index");
@@ -56,6 +63,7 @@ export default function Login() {
   const enterWithFacebook = async () => {
     if (busy) return;
     playTap();
+    animateTap("facebook");
     setBusy("facebook");
     try {
       const { error } = await supabase.auth.signInWithOAuth({
@@ -85,11 +93,16 @@ export default function Login() {
         <div className="pointer-events-none absolute inset-x-0 top-0 h-[27%] bg-gradient-to-b from-[#123a2f]/45 via-[#123a2f]/20 to-transparent" />
         <div className="relative z-10 flex min-h-[100dvh] flex-col items-center px-4 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]">
           <div className="flex-1 min-h-[24vh]" />
+          <style>{`
+            @keyframes loginIconFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+            @keyframes loginIconPop { 0% { transform: scale(1); } 35% { transform: scale(.86) rotate(-8deg); } 65% { transform: scale(1.2) rotate(6deg); } 100% { transform: scale(1); } }
+            @media (prefers-reduced-motion: reduce) { .login-motion { animation: none !important; } }
+          `}</style>
           <section className="mb-[clamp(1rem,4vh,2.5rem)] w-full max-w-sm rounded-3xl border border-white/30 bg-[#123a2f]/40 px-3 py-3 shadow-2xl backdrop-blur-sm" aria-label="Escolha a forma de entrar">
             <div className="flex items-start justify-center gap-5 sm:gap-8">
               <button type="button" disabled={busy !== null} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google"
-                className="group flex w-20 flex-col items-center gap-1.5 text-center text-white disabled:opacity-60">
-                <span className="flex h-[72px] w-[72px] items-center justify-center rounded-full border-[3px] border-amber-300 bg-white shadow-[0_5px_15px_rgba(0,0,0,.45)] transition-transform group-hover:scale-110 group-active:scale-95 sm:h-20 sm:w-20">
+                className="group flex w-20 flex-col items-center gap-1.5 text-center text-white disabled:opacity-80">
+                <span className={`login-motion flex h-[72px] w-[72px] items-center justify-center rounded-full border-[3px] border-amber-300 bg-white shadow-[0_5px_15px_rgba(0,0,0,.45)] transition-transform group-hover:scale-110 group-active:scale-95 sm:h-20 sm:w-20 ${pressed === "google" ? "animate-[loginIconPop_.55s_ease-out]" : "animate-[loginIconFloat_3.8s_ease-in-out_infinite]"}`}>
                   <svg viewBox="0 0 48 48" className="h-11 w-11" aria-hidden="true">
                     <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5Z"/>
                     <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.28 5.48-4.81 7.18l7.73 6C44.37 38.03 46.98 31.88 46.98 24.55Z"/>
@@ -101,7 +114,7 @@ export default function Login() {
               </button>
               <button type="button" disabled={busy !== null} onClick={() => void enterWithFacebook()} aria-label="Entrar com Facebook" title="Entrar com Facebook"
                 className="group flex w-20 flex-col items-center gap-1.5 text-center text-white disabled:opacity-60">
-                <span className="flex h-[72px] w-[72px] items-center justify-center rounded-full border-[3px] border-amber-300 bg-[#1877f2] shadow-[0_5px_15px_rgba(0,0,0,.45)] transition-transform group-hover:scale-110 group-active:scale-95 sm:h-20 sm:w-20">
+                <span className={`flex h-[72px] w-[72px] items-center justify-center rounded-full border-[3px] border-amber-300 bg-[#1877f2] shadow-[0_5px_15px_rgba(0,0,0,.45)] transition-transform group-hover:scale-110 group-active:scale-95 sm:h-20 sm:w-20 ${pressed === "facebook" ? "animate-[loginIconPop_.55s_ease-out]" : "animate-[loginIconFloat_3.8s_ease-in-out_infinite] [animation-delay:-1.8s]"}`}>
                   <span aria-hidden="true" className="translate-y-1 font-sans text-[58px] font-black leading-none text-white">f</span>
                 </span>
                 <span className="text-xs font-extrabold drop-shadow-md">{busy === "facebook" ? "Aguarde..." : "Facebook"}</span>
