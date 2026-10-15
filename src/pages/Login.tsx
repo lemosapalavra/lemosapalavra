@@ -3,6 +3,7 @@ import loginBackground from "@/assets/login-optimized.webp";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
 
 /** Acesso da família exclusivamente pela conta Google. */
 export default function Login() {
@@ -41,7 +42,6 @@ export default function Login() {
     animateTap("google");
     setBusy("google");
     try {
-      const { lovable } = await import("@/integrations/lovable/index");
       const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: window.location.origin,
       });
