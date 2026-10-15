@@ -1,3 +1,7 @@
+import pacote1 from "@/assets/pacotinhos/pacote-1.webp";
+import pacote2 from "@/assets/pacotinhos/pacote-2.webp";
+import pacote3 from "@/assets/pacotinhos/pacote-3.webp";
+import pacote4 from "@/assets/pacotinhos/pacote-4.webp";
 import { useState, useEffect, useMemo } from "react";
 
 export type StickerRarity = "normal" | "rara" | "reliquia";
@@ -18,7 +22,7 @@ interface StickerPackAnimationProps {
 }
 
 // Quatro artes fornecidas para os pacotinhos; alternância sequencial por abertura.
-const PACKS = [1, 2, 3, 4].map((n) => `/pacotinhos/Pacote%20Figurinha-${n}.webp`);
+const PACKS = [pacote1, pacote2, pacote3, pacote4];
 const PACK_COUNTER_KEY = "lemos_album_pack_art_index";
 function nextPackImage() {
   const previous = Number(localStorage.getItem(PACK_COUNTER_KEY) || "0");
