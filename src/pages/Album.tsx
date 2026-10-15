@@ -1,6 +1,6 @@
 import albumBackground from "@/assets/album-background-optimized.webp";
-const albumVolume1 = "/Álbum volume-1.png";
-const albumVolume2 = "/Álbum volume-2.png";
+import albumVolume1 from "@/assets/album-cover-new-1.png";
+import albumVolume2 from "@/assets/album-cover-new-2.png";
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
