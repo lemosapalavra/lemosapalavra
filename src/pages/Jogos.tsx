@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import JogosInterativos from "@/components/JogosInterativos";
+import facaBg from "@/assets/jogos/faca-bg.webp";
+import memoriaIcon from "@/assets/jogos/memoria-icon.webp";
+import quebraIcon from "@/assets/jogos/quebra-cabeca-icon.webp";
+import palavrasIcon from "@/assets/jogos/construa-palavras-icon.webp";
+import quizIcon from "@/assets/jogos/quiz-biblico-icon.webp";
 import { isAllowed } from "@/lib/contentAccess";
 
 const ALL_GAMES = [
-  { id: "memory", title: "Memória Bíblica", icon: "/memoria.webp" },
-  { id: "jigsaw", title: "Quebra-Cabeça", icon: "/Quebra-Cabeça.webp" },
-  { id: "wordbuilder", title: "Construtor de Palavras", icon: "/Construa%20Palavras.webp" },
-  { id: "quiz", title: "Quiz Bíblico", icon: "/Quiz%20B%C3%ADblico.webp" },
+  { id: "memory", title: "Memória Bíblica", icon: memoriaIcon },
+  { id: "jigsaw", title: "Quebra-Cabeça", icon: quebraIcon },
+  { id: "wordbuilder", title: "Construtor de Palavras", icon: palavrasIcon },
+  { id: "quiz", title: "Quiz Bíblico", icon: quizIcon },
 ];
 
 const positions = [
@@ -32,7 +37,7 @@ export default function Jogos() {
   return (
     <main id="faca-cenario" className="relative isolate h-[100dvh] w-full overflow-hidden bg-[#bdebf7]">
       <img
-        src="/Faça.webp"
+        src={facaBg}
         alt="FAÇA — cenário bíblico ilustrado"
         className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-center"
       />
