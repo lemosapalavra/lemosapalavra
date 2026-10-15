@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
  */
 
 const PAGE_TIPS: Record<string, string> = {
-  "/": "Oieee! 🌈 Escolha uma aventura! 📥 Baixe o Atalho para abrir o Lemos a Palavra direto da sua tela! Se sua sessão continuar ativa, você não precisará fazer login a cada visita. 💛",
+  "/": "Oieee! 💛 Se quiser, baixe o atalho! 📲",
   "/biblia": "Obaaa! 📖 Escolha uma história da Bíblia! Vamos descobrir juntos? ✨",
   "/louvores": "Lá, lá, lá! 🎶 Escolha um louvor e cante comigo! 🎤",
   "/veja": "Pipoca pronta? 🍿 Escolha um vídeo! Assista e ganhe moedinhas! 🪙",
