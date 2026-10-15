@@ -57,7 +57,7 @@ const CONTEXT_TIPS: Record<string, string> = {
   "album:cover": "Uau, Volume 1! 📒 Junte moedinhas e complete seu álbum! 🪙🎁",
   "album:pages": "Obaaa, figurinhas! 🎁 Com 3 moedinhas, abra 5 figurinhas! 🪙",
   "album:sticker": "Que figurinha lindaaa! 🤩 Dê zoom e leia sua história! 📖",
-  "album:pack": "Tcharããã! 🎁 Abra o pacotinho e descubra as surpresas! ✨",
+  "album:pack": "Tcharããã, clique no pacotinho para abrir e surpreenda-se! 🎁✨",
   "album:trade": "Repetiu? 🔄 Vamos trocar pela figurinha que falta! 😄",
 };
 
@@ -106,12 +106,14 @@ export default function MascoteLia() {
 
   const avatar = isHome && !context ? lia1 : lia2;
   const liaVisible = useIconVisible("lia");
+  const isOpeningPack = isAlbum && context === "album:pack";
+  const liaPosition = isOpeningPack ? "bottom-3 sm:bottom-4" : isAlbum ? "bottom-[152px] sm:bottom-[166px]" : "bottom-3";
 
   if (!liaVisible) return null;
 
   if (!expanded) {
     return (
-      <div className={`fixed left-2 z-[45] flex flex-col items-center gap-2 sm:left-4 ${isAlbum ? "bottom-[152px] sm:bottom-[166px]" : "bottom-3"}`}>
+      <div className={`fixed left-2 z-[45] flex flex-col items-center gap-2 sm:left-4 ${liaPosition}`}>
       <Button variant="ghost"
         onMouseEnter={(event) => { if (event.nativeEvent.pointerType === "mouse") setExpanded(true); }}
         onFocus={() => setExpanded(true)}
@@ -135,7 +137,7 @@ export default function MascoteLia() {
 
   return (
     <div onMouseLeave={(event) => { if (event.nativeEvent.pointerType === "mouse") setExpanded(false); }}
-      className={`fixed left-2 z-[45] flex flex-col items-start gap-1 sm:left-4 ${isAlbum ? "bottom-[152px] sm:bottom-[166px]" : "bottom-3"}`}>
+      className={`fixed left-2 z-[45] flex flex-col items-start gap-1 sm:left-4 ${liaPosition}`}>
       {/* Balão acima da cabeça da LIA */}
       <div className="pointer-events-auto relative w-[78vw] max-w-sm rounded-2xl bg-white/95 backdrop-blur border-2 border-amber-300 shadow-xl px-3 py-2">
         <p className="font-body text-[15px] sm:text-base text-amber-900 leading-relaxed">{message}</p>
