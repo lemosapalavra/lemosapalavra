@@ -94,10 +94,10 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
  const current=index===null?null:activities[index];
  const score=current?.questions?.filter((q,i)=>answers[i]===q.answer).length??0;
  const whoActivities = [
-  { activityIndex: 6, icon: "/Quem%20Sou%20Eu%20%20Parte%201.png", title: "Quem Sou Eu? — Parte 1" },
-  { activityIndex: 7, icon: "/Quem%20Sou%20Eu%20%20Parte%202.png", title: "Quem Sou Eu? — Parte 2" },
-  { activityIndex: 8, icon: "/Quem%20Sou%20Eu%20Parte%203.png", title: "Quem Sou Eu? — Parte 3" },
-  { activityIndex: 9, icon: "/Quem%20Sou%20Eu%20Parte%204.png", title: "Quem Sou Eu? — Parte 4" },
+  { activityIndex: 6, icon: "/Quem%20Sou%20Eu%20%20Parte%201.webp", title: "Quem Sou Eu? — Parte 1" },
+  { activityIndex: 7, icon: "/Quem%20Sou%20Eu%20%20Parte%202.webp", title: "Quem Sou Eu? — Parte 2" },
+  { activityIndex: 8, icon: "/Quem%20Sou%20Eu%20Parte%203.webp", title: "Quem Sou Eu? — Parte 3" },
+  { activityIndex: 9, icon: "/Quem%20Sou%20Eu%20Parte%204.webp", title: "Quem Sou Eu? — Parte 4" },
  ];
  const positions = [{left:"17%",top:"40%"},{left:"83%",top:"40%"},{left:"17%",top:"76%"},{left:"83%",top:"76%"}];
  if (index===null || !current) {
