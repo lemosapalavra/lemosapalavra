@@ -1,3 +1,4 @@
+import pacote1 from "@/assets/pacotinhos/pacote-1.webp";
 import albumBackground from "@/assets/album-background-optimized.webp";
 import albumVolume1 from "@/assets/album-cover-new-1.png";
 import albumVolume2 from "@/assets/album-cover-new-2.png";
@@ -386,7 +387,7 @@ export default function Album() {
           <button onClick={buyPack} disabled={coins < PACK_COST}
             aria-label="Abrir pacotinho por 3 moedas"
             className="group flex flex-col items-center gap-1 disabled:opacity-50 hover:scale-105 transition-transform">
-            <img src="/pacotinhos/Pacote%20Figurinha-1.webp" alt="Pacotinho de figurinhas Heróis da Fé"
+            <img src={pacote1} alt="Pacotinho de figurinhas Heróis da Fé"
               className="h-24 w-20 sm:h-28 sm:w-24 object-contain drop-shadow-xl" loading="lazy" />
             <span className="text-amber-950 text-xs sm:text-sm font-bold text-center leading-snug">$3 moedas cada</span>
           </button>
