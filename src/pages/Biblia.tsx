@@ -5,9 +5,9 @@ import PageHeader from "@/components/PageHeader";
 import CategoryOrbit from "@/components/CategoryOrbit";
 import iconBiblia from "@/assets/icon-biblia.png";
 import pergaminhoBg from "@/assets/pergaminho-bg.png";
-import iconVT from "@/assets/icon-velho-testamento.png";
-import iconNT from "@/assets/icon-novo-testamento.png";
-import iconDic from "@/assets/icon-dicionario.png";
+const iconVT = "/Velho-testamento.webp";
+const iconNT = "/Novo-Testamento.webp";
+const iconDic = "/Dicionario.webp";
 import { bookChapters, chapterThemes } from "@/data/bibleStructure";
 
 const antigoTestamento = [
@@ -297,10 +297,9 @@ export default function Biblia() {
                   return (
                     <button key={t.key} title={t.label} aria-label={t.label}
                       onClick={() => { setTab(t.key); setShowBibleMenu(false); }}
-                      className="absolute flex w-[clamp(108px,25vw,158px)] flex-col items-center gap-2 -translate-x-1/2 -translate-y-1/2 rounded-2xl p-1 transition-all duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-400"
+                      className="absolute flex w-[clamp(112px,27vw,168px)] flex-col items-center -translate-x-1/2 -translate-y-1/2 rounded-2xl p-1 transition-all duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-400"
                       style={{ left: `${50 + 43 * Math.cos(angle)}%`, top: `${50 + 43 * Math.sin(angle)}%` }}>
-                      <img src={t.icon} alt="" className="aspect-square w-[clamp(82px,20vw,126px)] rounded-full border-[3px] border-amber-300 bg-white/95 object-contain shadow-[0_6px_22px_rgba(0,0,0,.55)] ring-2 ring-white/90 drop-shadow-[0_3px_7px_rgba(0,0,0,.6)]" />
-                      <span className="block w-full rounded-full border-2 border-amber-400 bg-green-950 px-2 py-1.5 text-center text-[clamp(11px,2vw,14px)] font-black leading-tight text-white shadow-[0_3px_9px_rgba(0,0,0,.85)]">{t.label}</span>
+                      <img src={t.icon} alt="" className="w-full h-auto object-contain drop-shadow-[0_6px_12px_rgba(0,0,0,.35)]" />
                     </button>
                   );
                 })}
