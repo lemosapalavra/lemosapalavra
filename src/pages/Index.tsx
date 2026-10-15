@@ -136,23 +136,23 @@ function IndexV1() {
 
       <main className="relative z-10 w-full min-h-0 flex-1 flex flex-col items-center">
         <div className="w-full flex flex-col items-center">
-           {dedicatoriaVisible && <div className="fixed bottom-3 right-3 sm:right-5 z-[45] flex flex-col items-center gap-2">
+           {dedicatoriaVisible && <div className="fixed bottom-3 right-2 sm:right-5 z-[45] flex flex-col items-center animate-[homeIconFloat_3.8s_ease-in-out_infinite]">
              <Button variant="ghost" size="icon"
               onClick={() => setDedicatoriaOpen(true)}
-                className="w-[64px] h-[64px] sm:w-[80px] sm:h-[80px] p-0 overflow-hidden rounded-full border-[3px] border-amber-400 ring-2 ring-white bg-white shadow-[0_4px_18px_rgba(0,0,0,0.55)] icon-glow hover:scale-105 transition-transform"
+                className="w-[88px] h-[88px] sm:w-[110px] sm:h-[110px] p-0 border-0 bg-transparent shadow-none hover:bg-transparent hover:scale-105 transition-transform"
               title="Dedicatória"
               aria-label="Abrir dedicatória"
             >
-              <img loading="lazy" decoding="async" src="/icone-dedicatoria.png" alt="" className="h-full w-full object-contain" />
+              <img loading="lazy" decoding="async" src="/Dedicatória.png" alt="" className="h-full w-full object-contain drop-shadow-lg" />
              </Button>
-             <span className="font-display font-extrabold text-[11px] sm:text-xs text-amber-950 bg-white border-2 border-amber-400 rounded-full px-2 py-0.5 shadow-[0_2px_8px_rgba(0,0,0,0.4)] whitespace-nowrap">DEDICATÓRIA</span>
+
           </div>}
 
         </div>
       </main>
 
 
-      <div className="fixed bottom-3 right-[112px] sm:right-[152px] z-[46] flex flex-col items-center animate-[homeIconFloat_3.8s_ease-in-out_infinite]"><InstallShortcut compact /></div>
+      <div className="fixed bottom-3 right-[126px] sm:right-[185px] z-[46] flex flex-col items-center animate-[homeIconFloat_3.8s_ease-in-out_infinite]"><InstallShortcut compact /></div>
       <DedicatoriaModal open={dedicatoriaOpen} onOpenChange={setDedicatoriaOpen} />
 
     </div>
