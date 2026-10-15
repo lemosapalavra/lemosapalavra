@@ -127,11 +127,11 @@ const AuthBootstrap = () => {
       const u = {
         ...prior,
         id: userId,
-        name: profile?.name || prior.name || "",
+        name: metadata.full_name || metadata.name || profile?.name || prior.name || (email ? email.split("@")[0] : ""),
         ageRange: profile?.age_range || prior.ageRange || "",
         phone: profile?.phone || prior.phone || "",
         role: profile?.role || prior.role || "",
-        avatar: avatarOverride || profile?.avatar || metadata.avatar || prior.avatar || "",
+        avatar: metadata.picture || metadata.avatar_url || metadata.avatar || avatarOverride || profile?.avatar || prior.avatar || "",
         email: profile?.email || email || prior.email || "",
         createdAt: profile?.created_at || prior.createdAt || new Date().toISOString(),
       };
