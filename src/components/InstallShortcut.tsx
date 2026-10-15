@@ -162,6 +162,7 @@ export default function InstallShortcut({ compact = false }: { compact?: boolean
            {compact ? <Download className="absolute -bottom-1 -right-1 rounded-full bg-primary text-primary-foreground p-0.5" /> : <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-primary text-primary-foreground font-display font-extrabold rounded-full shadow-lg text-xs sm:text-sm px-3 py-1">{busy ? "Preparando…" : "📥 Baixar atalho"}</span>}
         </Button>
       </div>
+      {compact && <span className="font-display font-extrabold text-[11px] sm:text-xs text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap">Baixe o Atalho</span>}
       {!compact && (
         <p className="text-xs sm:text-sm font-body text-amber-900 text-center leading-snug max-w-[280px] mt-3">
           Clique na logo para <strong>baixar o atalho</strong> da Lemos a Palavra
