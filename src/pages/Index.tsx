@@ -1,4 +1,4 @@
-import homeMobile from "@/assets/home-mobile.webp";
+import homeMobile from "@/assets/home-mobile-correct.png";
 import dedicatoryIcon from "@/assets/dedicatoria-home.png";
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useState, useEffect } from "react";
