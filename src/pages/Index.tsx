@@ -86,7 +86,7 @@ function IndexV1() {
       <picture aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 block overflow-hidden">
         <source media="(min-width: 768px)" srcSet="/Pagina%20inicial%20Computador.png" />
         <img
-          src="/APagina%20Inicial%20celular.png"
+          src="/APagina%20Inicial%20celular.webp?v=20261015-3"
           alt=""
           className="h-full w-full object-cover object-center"
           loading="eager"
