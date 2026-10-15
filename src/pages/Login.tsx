@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
-/** Acesso da família por conta Google; Facebook será habilitado quando disponível. */
+/** Acesso da família exclusivamente pela conta Google. */
 export default function Login() {
-  const [busy, setBusy] = useState<"google" | "facebook" | null>(null);
-  const [pressed, setPressed] = useState<"google" | "facebook" | null>(null);
+  const [busy, setBusy] = useState<"google" | null>(null);
+  const [pressed, setPressed] = useState<"google" | null>(null);
   const navigate = useNavigate();
 
   const playTap = () => {
@@ -29,7 +29,7 @@ export default function Login() {
     } catch { /* audio may be unavailable */ }
   };
 
-  const animateTap = (provider: "google" | "facebook") => {
+  const animateTap = (provider: "google") => {
     setPressed(provider);
     window.setTimeout(() => setPressed(null), 550);
   };
@@ -60,27 +60,6 @@ export default function Login() {
     }
   };
 
-  const enterWithFacebook = async () => {
-    if (busy) return;
-    playTap();
-    animateTap("facebook");
-    setBusy("facebook");
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "facebook",
-        options: { redirectTo: window.location.origin },
-      });
-      if (error) throw error;
-    } catch (error) {
-      toast({
-        title: "Facebook ainda não está configurado",
-        description: error instanceof Error ? error.message : "É necessário habilitar o provedor no backend.",
-        variant: "destructive",
-      });
-    } finally {
-      setBusy(null);
-    }
-  };
 
   return (
     <main className="fixed inset-0 w-full overflow-y-auto bg-[#1d381c]" aria-label="Entrar no Lemos a Palavra">
@@ -112,13 +91,7 @@ export default function Login() {
                 </span>
                 <span className="text-xs font-extrabold drop-shadow-md">{busy === "google" ? "Aguarde..." : "Google"}</span>
               </button>
-              <button type="button" disabled={busy !== null} onClick={() => void enterWithFacebook()} aria-label="Entrar com Facebook" title="Entrar com Facebook"
-                className="group flex w-20 flex-col items-center gap-1.5 text-center text-white disabled:opacity-60">
-                <span className={`flex h-[72px] w-[72px] items-center justify-center rounded-full border-[3px] border-amber-300 bg-[#1877f2] shadow-[0_5px_15px_rgba(0,0,0,.45)] transition-transform group-hover:scale-110 group-active:scale-95 sm:h-20 sm:w-20 ${pressed === "facebook" ? "animate-[loginIconPop_.55s_ease-out]" : "animate-[loginIconFloat_3.8s_ease-in-out_infinite] [animation-delay:-1.8s]"}`}>
-                  <span aria-hidden="true" className="translate-y-1 font-sans text-[58px] font-black leading-none text-white">f</span>
-                </span>
-                <span className="text-xs font-extrabold drop-shadow-md">{busy === "facebook" ? "Aguarde..." : "Facebook"}</span>
-              </button>
+
 
             </div>
           </section>
