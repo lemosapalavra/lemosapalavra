@@ -1,5 +1,5 @@
 import { useState } from "react";
-import loginBackground from "@/assets/login-mobile.webp";
+import loginBackground from "@/assets/login-optimized.webp";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
