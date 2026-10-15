@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { ArrowLeft, Play } from "lucide-react";
+import { Play } from "lucide-react";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 import { normalizeVideo } from "@/lib/videoEmbed";
 import VideoSideActions from "@/components/VideoSideActions";
@@ -39,14 +39,6 @@ export default function Louvores() {
     const media = normalizeVideo(playing.src || "", true);
     return (
       <div className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-in fade-in zoom-in duration-300">
-        <button
-          onClick={() => setPlaying(null)}
-          className="absolute top-4 left-4 z-20 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white transition"
-          title="Voltar"
-          aria-label="Voltar"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
         <VideoSideActions videoId={`ouca:${playing.id}`} />
         {playing.src ? (
           <ColonialVideoFrame variant={playingCategory === "louvores" ? "silver" : "green"} aspect="9/16">{media.kind === "mp4" ? <video src={playing.src} poster={playing.poster} className="w-full h-full bg-black object-contain" controls controlsList="nodownload noremoteplayback noplaybackrate" disablePictureInPicture onContextMenu={(e) => e.preventDefault()} autoPlay playsInline preload="metadata" /> : <iframe src={media.embedUrl} title={playing.title} className="w-full h-full bg-black" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />}</ColonialVideoFrame>
