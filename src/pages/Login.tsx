@@ -85,7 +85,7 @@ export default function Login() {
         <div className="pointer-events-none absolute inset-x-0 top-0 h-[27%] bg-gradient-to-b from-[#123a2f]/85 via-[#123a2f]/50 to-transparent" />
         <div className="relative z-10 flex min-h-[100dvh] flex-col items-center px-4 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]">
           <header className="w-full max-w-lg rounded-3xl border border-white/40 bg-[#153d31]/75 px-5 py-4 text-center shadow-xl backdrop-blur-sm">
-            <h1 className="text-[clamp(1.35rem,4vw,2rem)] font-black leading-tight text-white drop-shadow-md">Seja bem-vindo a Lemos a Palavra!</h1>
+            <h1 className="text-[clamp(1.35rem,4vw,2rem)] font-black leading-tight text-white drop-shadow-md">Bem-vindo a Lemos a Palavra!</h1>
             <p className="mt-2 text-sm font-bold leading-snug text-white sm:text-base">Pai, mãe ou responsável, entre com sua conta para começar. Deus seja Louvado!</p>
           </header>
           <div className="flex-1 min-h-[24vh]" />
