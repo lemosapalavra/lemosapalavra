@@ -9,7 +9,6 @@ import AramaicBackdrop from "@/components/AramaicBackdrop";
 import { categories, allStickers, rarityBorder, rarityLabel, type Rarity, type Sticker } from "@/data/stickers";
 import { useCoins, ensureInitialCoins } from "@/hooks/useCoins";
 import maozinha from "@/assets/maozinha.png.asset.json";
-import { albumFaixas } from "@/data/albumFaixas";
 import { toast } from "sonner";
 
 import iconUsuario from "@/assets/icon-usuario.png";
@@ -323,36 +322,12 @@ export default function Album() {
         </div>
       </div>
 
-      {/* Volume 1 centralizado acima da faixa/logo da categoria.
-          O ícone também permite retornar à seleção dos volumes. */}
-      <button
-        type="button"
-        onClick={() => setView("cover")}
-        aria-label="Álbum Volume 1 — voltar à seleção de volumes"
-        title="Álbum Volume 1"
-        className="self-center shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded-full transition-transform hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-amber-500"
-      >
-        <img src="/Álbum%20Bíblico%20Volume%201.png" alt="Volume 1" className="w-full h-full object-contain drop-shadow-md" />
-      </button>
-
-      {/* Animated central chapter title / faixa ilustrada */}
-      <div className="text-center px-3 py-2 sm:py-4 flex items-center justify-center">
-        {currentPage?.kind === "category" && albumFaixas[currentPage.cat.key] ? (
-          <img
-            key={currentCatName}
-            src={albumFaixas[currentPage.cat.key]}
-            alt={currentCatName}
-            loading="lazy"
-            decoding="async"
-            className="mx-auto h-16 sm:h-20 md:h-24 w-[83vw] max-w-[684px] object-fill drop-shadow-xl animate-[chapterPulse_2.2s_ease-in-out_infinite]"
-          />
-
-        ) : (
-          <h2 key={currentCatName}
-            className="font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-amber-900 drop-shadow animate-[chapterPulse_2.2s_ease-in-out_infinite]">
-            {currentPage?.kind === "category" ? <>{currentPage.cat.icon} {currentCatName}</> : "📕 Resumo do Álbum"}
-          </h2>
-        )}
+      {/* Título da seção em texto nítido, sem faixas ilustradas ou logomarca. */}
+      <div className="text-center px-3 py-3 sm:py-4 flex items-center justify-center shrink-0">
+        <h2 key={currentCatName}
+          className="font-display font-black text-3xl sm:text-4xl md:text-5xl leading-tight tracking-wide text-amber-950 drop-shadow-sm animate-[chapterPulse_2.2s_ease-in-out_infinite]">
+          {currentPage?.kind === "category" ? currentCatName : "Resumo do Álbum"}
+        </h2>
       </div>
 
       <style>{`
