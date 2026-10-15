@@ -1,4 +1,4 @@
-import shortcutIcon from "@/assets/atalho-home.png";
+import shortcutIcon from "@/assets/atalho-optimized.webp";
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
