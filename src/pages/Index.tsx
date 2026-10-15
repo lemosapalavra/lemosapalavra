@@ -1,3 +1,6 @@
+import homeMobile from "@/assets/home-mobile.webp";
+import homeDesktop from "@/assets/home-desktop.png";
+import dedicatoryIcon from "@/assets/dedicatoria-home.png";
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -84,9 +87,9 @@ function IndexV1() {
 
       {/* Fundos enviados ao GitHub: vertical para celular e horizontal para desktop. */}
       <picture aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 block overflow-hidden">
-        <source media="(min-width: 768px)" srcSet="/Pagina%20inicial%20Computador.png" />
+        <source media="(min-width: 768px)" srcSet={homeDesktop} />
         <img
-          src="/APagina%20Inicial%20celular.webp?v=20261015-3"
+          src={homeMobile}
           alt=""
           className="h-full w-full object-cover object-center"
           loading="eager"
@@ -143,7 +146,7 @@ function IndexV1() {
               title="Dedicatória"
               aria-label="Abrir dedicatória"
             >
-              <img loading="lazy" decoding="async" src="/Dedicat%C3%B3ria.png" alt="" className="h-full w-full object-contain drop-shadow-lg" />
+              <img loading="lazy" decoding="async" src={dedicatoryIcon} alt="" className="h-full w-full object-contain drop-shadow-lg" />
              </Button>
 
           </div>}
