@@ -1,0 +1,43 @@
+name: Optimize images to WebP
+
+on:
+  workflow_dispatch:
+    inputs:
+      quality:
+        description: WebP quality (1-100)
+        required: true
+        default: '90'
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - name: Convert PNG and JPEG images (keep originals)
+        run: node scripts/convert-images-webp.mjs --apply
+        env:
+          WEBP_QUALITY: ${{ inputs.quality }}
+      - name: Open review pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: 'chore: add optimized WebP image copies'
+          branch: automation/webp-images
+          delete-branch: true
+          title: 'Add optimized WebP copies of site images'
+          body: |
+            Automatically generated WebP copies of PNG/JPEG images.
+            Original images are retained, and application references are NOT changed.
+            Review converted assets and update source references in a separate change before deleting originals.
+          add-paths: |
+            public/**/*.webp
+            src/assets/**/*.webp
