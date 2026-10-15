@@ -1,6 +1,4 @@
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 import VideoSideActions from "@/components/VideoSideActions";
@@ -14,7 +12,6 @@ interface Props {
 }
 
 export default function VideoCentralLayout({ title, subtitle, videos }: Props) {
-  const navigate = useNavigate();
   const [playing, setPlaying] = useState<BibleVideo | null>(null);
   const [viewed, setViewed] = useState<Record<string, boolean>>(() => { try { return JSON.parse(localStorage.getItem("lemos_media_viewed") || "{}"); } catch { return {}; } });
   const [promptVideo, setPromptVideo] = useState<BibleVideo | null>(null);
@@ -142,12 +139,6 @@ export default function VideoCentralLayout({ title, subtitle, videos }: Props) {
     >
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-4">
-          <button
-            onClick={() => navigate("/")}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 hover:bg-white shadow text-primary font-bold"
-          >
-            <ArrowLeft className="w-4 h-4" /> Voltar
-          </button>
           <div className="text-right">
             <h1 className="font-display text-2xl sm:text-3xl font-extrabold text-primary drop-shadow">{title}</h1>
             {subtitle && <p className="text-sm text-foreground/70">{subtitle}</p>}
