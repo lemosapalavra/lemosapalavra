@@ -381,8 +381,11 @@ export default function Album() {
         </button>
         <div className="text-center text-amber-950 font-display font-bold text-xs">
           <button onClick={buyPack} disabled={coins < PACK_COST}
-            className="bg-gradient-to-br from-amber-400 to-orange-600 disabled:opacity-50 text-white font-display font-bold px-5 py-2.5 rounded-full shadow-2xl hover:scale-105 transition text-sm">
-            🎁 Pacotinho (3 🪙)
+            aria-label="Abrir pacotinho por 3 moedas"
+            className="group flex flex-col items-center gap-1 disabled:opacity-50 hover:scale-105 transition-transform">
+            <img src="/pacotinhos/Pacote%20Figurinha-1.webp" alt="Pacotinho de figurinhas Heróis da Fé"
+              className="h-24 w-20 sm:h-28 sm:w-24 object-contain drop-shadow-xl" loading="lazy" />
+            <span className="rounded-full bg-gradient-to-br from-amber-400 to-orange-600 px-3 py-1 text-white text-xs font-bold shadow">Abrir pacotinho (3 🪙)</span>
           </button>
           <div className="mt-1 text-[10px] opacity-70">página {pageIdx + 1} de {totalPages}</div>
         </div>
