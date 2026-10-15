@@ -18,7 +18,7 @@ interface StickerPackAnimationProps {
 }
 
 // Quatro artes fornecidas para os pacotinhos; alternância sequencial por abertura.
-const PACKS = [1, 2, 3, 4].map((n) => `/pacotinhos/Pacote%20Figurinha-${n}.png`);
+const PACKS = [1, 2, 3, 4].map((n) => `/pacotinhos/Pacote%20Figurinha-${n}.webp`);
 const PACK_COUNTER_KEY = "lemos_album_pack_art_index";
 function nextPackImage() {
   const previous = Number(localStorage.getItem(PACK_COUNTER_KEY) || "0");
