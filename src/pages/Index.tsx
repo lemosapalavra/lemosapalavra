@@ -139,7 +139,7 @@ function IndexV1() {
            {dedicatoriaVisible && <div className="fixed bottom-3 right-2 sm:right-5 z-[45] flex flex-col items-center animate-[homeIconFloat_3.8s_ease-in-out_infinite]">
              <Button variant="ghost" size="icon"
               onClick={() => setDedicatoriaOpen(true)}
-                className="w-[88px] h-[88px] sm:w-[110px] sm:h-[110px] p-0 border-0 bg-transparent shadow-none hover:bg-transparent hover:scale-105 transition-transform"
+                className="w-[88px] h-[88px] sm:w-[110px] sm:h-[110px] p-0 rounded-full border-[3px] border-white bg-transparent shadow-[0_0_0_2px_rgba(251,191,36,.8),0_5px_18px_rgba(0,0,0,.5)] hover:bg-transparent hover:scale-110 hover:brightness-110 hover:shadow-[0_0_22px_rgba(255,255,255,.9)] active:scale-95 focus-visible:ring-4 focus-visible:ring-amber-400 transition-all duration-200 cursor-pointer"
               title="Dedicatória"
               aria-label="Abrir dedicatória"
             >
