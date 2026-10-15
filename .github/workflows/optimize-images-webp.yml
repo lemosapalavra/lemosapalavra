@@ -22,7 +22,13 @@ jobs:
         with:
           node-version: '20'
           cache: npm
-      - run: npm ci
+      - name: Install Sharp without project lockfile
+        run: |
+          mkdir -p /tmp/webp-tools
+          cd /tmp/webp-tools
+          npm init -y
+          npm install --no-audit --no-fund sharp@0.34.5
+          echo "NODE_PATH=/tmp/webp-tools/node_modules" >> "$GITHUB_ENV"
       - name: Convert PNG and JPEG images (keep originals)
         run: node scripts/convert-images-webp.mjs --apply
         env:
