@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 import DedicatoriaModal from "@/components/DedicatoriaModal";
+import InstallShortcut from "@/components/InstallShortcut";
 
 import HomeTopNav from "@/components/HomeTopNav";
 import EventBannerKart from "@/components/EventBannerKart";
@@ -151,6 +152,7 @@ function IndexV1() {
       </main>
 
 
+      <div className="fixed bottom-3 right-3 sm:right-5 z-[46] flex flex-col items-center"><InstallShortcut compact /></div>
       <DedicatoriaModal open={dedicatoriaOpen} onOpenChange={setDedicatoriaOpen} />
 
     </div>
