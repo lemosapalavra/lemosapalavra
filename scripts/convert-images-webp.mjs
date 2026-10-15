@@ -27,7 +27,7 @@ for (const file of originals) {
   const stat = await fs.stat(file);
   try {
     const existing = await fs.stat(dest).catch(() => null);
-    if (existing && existing.mtimeMs >= stat.mtimeMs) { skipped++; continue; }
+    if (existing) { console.log("[SKIP: WebP already exists]", dest); skipped++; continue; }
     if (!apply) { console.log("[PREVIEW]", file, "->", dest); continue; }
     const output = await sharp(file, { animated: false }).webp({ quality, effort: 5 }).toBuffer();
     if (output.length >= stat.size) { console.log("[SKIP: not smaller]", file); skipped++; continue; }
