@@ -1,5 +1,5 @@
-import homeMobile from "@/assets/home-mobile-correct.png";
-import dedicatoryIcon from "@/assets/dedicatoria-home.png";
+import homeMobile from "@/assets/home-optimized.webp";
+import dedicatoryIcon from "@/assets/dedicatoria-optimized.webp";
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
