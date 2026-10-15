@@ -65,8 +65,8 @@ export default function Login() {
     <main className="fixed inset-0 w-full overflow-y-auto bg-[#1d381c]" aria-label="Entrar no Lemos a Palavra">
       <div className="relative mx-auto min-h-[100dvh] w-full max-w-[720px] overflow-hidden">
         <img
-          src="/APagina%20Inicial%20celular.png"
-          alt="Jesus com crianças, uma ovelhinha e a Bíblia em uma paisagem iluminada"
+          src="/Pagina%20Iogin%20celular.png"
+          alt="Imagem de boas-vindas da página de login do Lemos a Palavra"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
         <div className="relative z-10 flex min-h-[100dvh] flex-col items-center px-4 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]">
