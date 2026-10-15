@@ -34,8 +34,18 @@ jobs:
         run: node scripts/convert-images-webp.mjs --apply
         env:
           WEBP_QUALITY: ${{ inputs.quality }}
+      - name: Save converted images as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: converted-webp-images
+          path: |
+            public/**/*.webp
+            src/assets/**/*.webp
+          if-no-files-found: warn
+          retention-days: 14
       - name: Open review pull request
         uses: peter-evans/create-pull-request@v7
+        continue-on-error: true
         with:
           commit-message: 'chore: add optimized WebP image copies'
           branch: automation/webp-images
