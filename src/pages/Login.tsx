@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Instagram } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -86,8 +85,8 @@ export default function Login() {
         <div className="pointer-events-none absolute inset-x-0 top-0 h-[27%] bg-gradient-to-b from-[#123a2f]/85 via-[#123a2f]/50 to-transparent" />
         <div className="relative z-10 flex min-h-[100dvh] flex-col items-center px-4 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]">
           <header className="w-full max-w-lg rounded-3xl border border-white/40 bg-[#153d31]/75 px-5 py-4 text-center shadow-xl backdrop-blur-sm">
-            <h1 className="text-[clamp(1.35rem,4vw,2rem)] font-black leading-tight text-white drop-shadow-md">Bem-vindo ao Lemos a Palavra!</h1>
-            <p className="mt-2 text-sm font-bold leading-snug text-white sm:text-base">Pai, mãe ou responsável, entre com sua conta para começar.</p>
+            <h1 className="text-[clamp(1.35rem,4vw,2rem)] font-black leading-tight text-white drop-shadow-md">Seja bem-vindo a Lemos a Palavra!</h1>
+            <p className="mt-2 text-sm font-bold leading-snug text-white sm:text-base">Pai, mãe ou responsável, entre com sua conta para começar. Deus seja Louvado!</p>
           </header>
           <div className="flex-1 min-h-[24vh]" />
           <section className="mb-[clamp(1rem,4vh,2.5rem)] w-full max-w-sm rounded-3xl border border-white/30 bg-[#123a2f]/70 px-3 py-3 shadow-2xl backdrop-blur-sm" aria-label="Escolha a forma de entrar">
@@ -111,13 +110,7 @@ export default function Login() {
                 </span>
                 <span className="text-xs font-extrabold drop-shadow-md">{busy === "facebook" ? "Aguarde..." : "Facebook"}</span>
               </button>
-              <div className="flex w-20 flex-col items-center gap-1.5 text-center text-white/80" title="Instagram não oferece login pessoal compatível">
-                <span className="flex h-[72px] w-[72px] items-center justify-center rounded-full border-[3px] border-amber-300/70 bg-gradient-to-tr from-[#feda75] via-[#d62976] to-[#4f5bd5] opacity-75 shadow-[0_5px_15px_rgba(0,0,0,.45)] sm:h-20 sm:w-20">
-                  <Instagram className="h-11 w-11 text-white" strokeWidth={2.5} aria-hidden="true" />
-                </span>
-                <span className="text-xs font-extrabold drop-shadow-md">Instagram</span>
-                <span className="text-[9px] leading-tight">Em breve</span>
-              </div>
+
             </div>
           </section>
         </div>
