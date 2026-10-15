@@ -1,413 +1,63 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Shield } from "lucide-react";
-import { setAdminMode, useIsAdmin } from "@/hooks/useIsAdmin";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
-import avatarJesus from "@/assets/avatar-jesus.png";
-import avatarMaria from "@/assets/avatar-maria.png";
-import avatarDavi from "@/assets/avatar-davi.png";
-import avatarDaniel from "@/assets/avatar-daniel.png";
-import avatarMoises from "@/assets/avatar-moises.png";
-import avatarAnjo from "@/assets/avatar-anjo.png";
-import avatarAbraao from "@/assets/avatar-abraao.png";
-import avatarJose from "@/assets/avatar-jose.png";
-
-const avatars = [
-  { src: avatarJesus, name: "Jesus" },
-  { src: avatarMaria, name: "Maria" },
-  { src: avatarDavi, name: "Davi" },
-  { src: avatarDaniel, name: "Daniel" },
-  { src: avatarMoises, name: "Moisés" },
-  { src: avatarAnjo, name: "Anjo" },
-];
-
-type Mode = "login" | "register";
-import { useIpLocation } from "@/hooks/useIpLocation";
-import {
-  OWNER_FLAG_KEY,
-  ownerDeviceUnlocked,
-  getOwnerIp,
-  setOwnerIp,
-  ipMatchesOwner,
-  clearOwnerAccess,
-} from "@/data/ownerAccess";
-
-// Hydrate the legacy localStorage profile object that the rest of the
-// app already reads from (`lemos_user`) using the Supabase profile row.
-async function hydrateLocalProfile(userId: string, fallbackEmail: string) {
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("name, age_range, phone, role, avatar, email, created_at")
-    .eq("id", userId)
-    .maybeSingle();
-  const { data: authData } = await supabase.auth.getUser();
-  const metadata = authData.user?.user_metadata || {};
-  const u = {
-    id: userId,
-    name: profile?.name || metadata.name || "",
-    ageRange: profile?.age_range || "",
-    phone: profile?.phone || "",
-    role: profile?.role || "",
-    avatar: profile?.avatar || metadata.avatar || "",
-    email: profile?.email || fallbackEmail,
-    createdAt: profile?.created_at || new Date().toISOString(),
-  };
-  // Preferência de avatar escolhida neste aparelho, vinculada à conta (não a outro usuário).
-  const avatarOverride = localStorage.getItem(`lemos_avatar_${userId}`);
-  if (avatarOverride) u.avatar = avatarOverride;
-  localStorage.setItem("lemos_user", JSON.stringify(u));
-  window.dispatchEvent(new Event("lemos_admin_change"));
-  return u;
-}
-
-// Auto-derive a valid e-mail from the phone number so the register form
-// no longer needs to expose an e-mail field to the end user.
-function phoneToEmail(phone: string) {
-  const digits = phone.replace(/\D/g, "");
-  return `celular${digits}@lemosapalavra.app`;
-}
-
-/** Mantém apenas dígitos e formata como (11) 99999-9999 (máx. 11 dígitos). */
-export function maskPhone(value: string) {
-  const d = value.replace(/\D/g, "").slice(0, 11);
-  if (d.length <= 2) return d.length ? `(${d}` : "";
-  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
-  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
-  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
-}
-
-/** Retorna mensagem de erro ou null quando o celular é válido. */
-export function validatePhone(value: string): string | null {
-  const d = value.replace(/\D/g, "");
-  if (!d) return "Informe seu celular.";
-  if (/[^\d\s()\-+]/.test(value)) return "O celular deve conter apenas números.";
-  if (d.length < 10) return "Celular incompleto — use DDD + número (ex.: (11) 99999-9999).";
-  if (d.length > 11) return "Celular inválido — máximo de 11 dígitos.";
-  if (Number(d[0]) === 0 || Number(d[1]) === 0) return "DDD inválido.";
-  if (d.length === 11 && d[2] !== "9") return "Celular inválido — o número deve começar com 9 após o DDD.";
-  return null;
-}
-
-/** Nome de usuário derivado automaticamente do nome informado. */
-export function deriveUsername(name: string): string {
-  return (
-    name
-      .trim()
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9]+/g, "") || "usuario"
-  );
-}
-
-/** Senha interna determinística — o usuário nunca digita senha. */
-export function derivePassword(phone: string): string {
-  return `lemos-${phone.replace(/\D/g, "")}-app`;
-}
-
-export type RegistrationInput = {
-  name: string;
-  ageRange: string;
-  avatar: string;
-  phone: string;
-};
-
-/** Valida o cadastro. Retorna null quando tudo está correto. */
-export function validateRegistration(
-  input: RegistrationInput,
-): { field: keyof RegistrationInput; message: string } | null {
-  if (!input.name.trim()) return { field: "name", message: "Informe seu nome." };
-  const phoneErr = validatePhone(input.phone);
-  if (phoneErr) return { field: "phone", message: phoneErr };
-  if (!input.avatar) return { field: "avatar", message: "Escolha um avatar para o seu perfil." };
-  return null;
-}
-
-
-
+/** Acesso da família por conta Google; Facebook será habilitado quando disponível. */
 export default function Login() {
-  const navigate = useNavigate();
-  const isAdmin = useIsAdmin();
-  const [mode, setMode] = useState<Mode>("login");
-  const [email, setEmail] = useState("");
-  const [remember, setRemember] = useState(true);
   const [busy, setBusy] = useState(false);
+  const navigate = useNavigate();
 
-  // register-only fields
-  const [name, setName] = useState("");
-  
-  const [phone, setPhone] = useState("");
-  const [phoneError, setPhoneError] = useState<string | null>(null);
-  const [selectedAvatar, setSelectedAvatar] = useState<string>("");
-  const [selectedAvatarIndex, setSelectedAvatarIndex] = useState<number | null>(null);
-  const [customAvatar, setCustomAvatar] = useState<string>("");
-
-
-
-
-  // Owner-only UI (Admin shortcut) — visível apenas neste aparelho (?owner=1)
-  // E somente quando o IP atual for o mesmo IP do dono registrado.
-  const { ip } = useIpLocation();
-  const [ownerDevice, setOwnerDevice] = useState<boolean>(false);
-  useEffect(() => {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("owner") === "1") {
-        localStorage.setItem(OWNER_FLAG_KEY, "1");
-      }
-      if (params.get("owner") === "0") {
-        clearOwnerAccess();
-      }
-      setOwnerDevice(ownerDeviceUnlocked());
-    } catch { /* ignore */ }
-  }, []);
-  useEffect(() => {
-    // Registra o IP do dono no primeiro desbloqueio deste aparelho.
-    if (ownerDevice && !getOwnerIp()) setOwnerIp(ip);
-  }, [ownerDevice, ip]);
-  // Aparelho desbloqueado com ?owner=1 basta para mostrar o atalho: o IP do
-  // dono muda (4G/Wi-Fi) e escondia o botão. O poder real continua no backend.
-  const ownerUnlocked = ownerDevice || ipMatchesOwner(ip);
-
-
-  const shortcutUrl = typeof window !== "undefined" ? `${window.location.origin}/` : "";
-
-  const handleCustomAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setCustomAvatar(reader.result as string);
-        setSelectedAvatar("");
-        setSelectedAvatarIndex(null);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const finalAvatar = customAvatar || selectedAvatar;
-
-  /**
-   * Garante que a conta do celular exista no backend com a senha interna
-   * correta (inclusive para contas antigas criadas com outro padrão).
-   */
-  const ensureAccount = async (
-    action: "login" | "register",
-    payload: { phone: string; name?: string; ageRange?: string; avatar?: string },
-  ): Promise<{ found: boolean; error?: string }> => {
-    const { data, error } = await supabase.functions.invoke("phone-auth", {
-      body: { action, ...payload },
-    });
-    if (error) {
-      console.error("[auth] phone-auth falhou", error.message);
-      return { found: false, error: error.message };
-    }
-    if ((data as any)?.error) return { found: false, error: (data as any).error };
-    return { found: !!(data as any)?.found };
-  };
-
-  const doLogin = async (overridePhone?: string) => {
-    const raw = (overridePhone ?? email).trim();
-
-    if (!name.trim()) { alert("Informe seu nome."); return; }
-    if (!raw) { alert("Informe seu celular."); return; }
-    // Aceita celular (padrão) ou e-mail (compatibilidade com contas antigas).
-    const isEmail = raw.includes("@");
-    const em = isEmail ? raw : phoneToEmail(raw);
-    if (!isEmail) {
-      const err = validatePhone(raw);
-      if (err) {
-        setPhoneError(err);
-        toast({ title: "Celular inválido", description: err, variant: "destructive" });
-        return;
-      }
-      setPhoneError(null);
-    }
+  const enterWithGoogle = async () => {
+    if (busy) return;
     setBusy(true);
-    if (!isEmail) {
-      const ensured = await ensureAccount("login", { phone: raw });
-      if (!ensured.found) {
-        setBusy(false);
-        toast({
-          title: "Conta não encontrada",
-          description: ensured.error || "Não localizamos uma conta com esse celular.",
-          variant: "destructive",
-        });
-        alert("Não encontramos sua conta com esse celular. Clique em CRIAR UMA CONTA.");
-        return;
-      }
-    }
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: em,
-      password: derivePassword(raw),
-    });
-    setBusy(false);
-    if (error || !data.user) {
-      console.error("[login] signIn falhou", { email: em, message: error?.message });
-      alert("Não conseguimos entrar agora. Confira seu celular e tente novamente.");
-      return;
-    }
-    await hydrateLocalProfile(data.user.id, data.user.email || em);
-    // Admin state is derived from the database (user_roles) — no client toggle.
-    const { logEvent } = await import("@/lib/logEvent");
-    logEvent("Login", { userId: data.user.id, email: data.user.email || em });
-    navigate("/");
-  };
-
-  const doRegister = async () => {
-    const validation = validateRegistration({ name, ageRange: "", avatar: finalAvatar, phone });
-    if (validation) {
-      setPhoneError(validation.field === "phone" ? validation.message : null);
-      toast({ title: "Confira o cadastro", description: validation.message, variant: "destructive" });
-      alert(validation.message);
-      return;
-    }
-    setPhoneError(null);
-    const derivedEmail = phoneToEmail(phone);
-    const derivedPassword = derivePassword(phone);
-    setBusy(true);
-    const ensured = await ensureAccount("register", {
-      phone,
-      name: name.trim(),
-      avatar: finalAvatar,
-    });
-    if (!ensured.found) {
-      setBusy(false);
-      console.error("[cadastro] falhou", { email: derivedEmail, error: ensured.error });
-      toast({
-        title: "Não foi possível criar sua conta",
-        description: ensured.error || "Tente novamente em instantes.",
-        variant: "destructive",
-      });
-      alert("Não foi possível criar sua conta. Tente novamente.");
-      return;
-    }
-    const { data: signIn, error: signInError } = await supabase.auth.signInWithPassword({
-      email: derivedEmail,
-      password: derivedPassword,
-    });
-    setBusy(false);
-    if (signInError || !signIn.user) {
-      console.error("[cadastro] login automático falhou", signInError?.message);
-      alert("Cadastro criado! Entre com seu nome e celular.");
-      setMode("login");
-      setEmail(phone);
-      return;
-    }
-    // O avatar selecionado no cadastro deve aparecer imediatamente no cabeçalho.
-    localStorage.setItem(`lemos_avatar_${signIn.user.id}`, finalAvatar);
-    await hydrateLocalProfile(signIn.user.id, derivedEmail);
-    const { logEvent } = await import("@/lib/logEvent");
-    logEvent("Cadastro", { userId: signIn.user.id, email: derivedEmail });
-    navigate("/");
-  };
-
-
-
-
-  const handleGoogle = async () => {
     try {
       const { lovable } = await import("@/integrations/lovable/index");
       const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: window.location.origin,
       });
-      if (result.error) {
-        alert("Não foi possível entrar com o Google: " + (result.error as any)?.message);
-        return;
-      }
+      if (result.error) throw result.error;
       if (result.redirected) return;
       const { data } = await supabase.auth.getUser();
-      if (data.user) {
-        await hydrateLocalProfile(data.user.id, data.user.email || "");
-        // Admin state is derived from the database (user_roles) — no client toggle.
-      }
+      if (!data.user) throw new Error("A conta Google não foi confirmada. Tente novamente.");
       navigate("/");
-    } catch (e: any) {
-      alert("Erro no login com Google: " + (e?.message || String(e)));
+    } catch (error) {
+      toast({
+        title: "Não foi possível entrar com Google",
+        description: error instanceof Error ? error.message : "Tente novamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setBusy(false);
     }
-  };
-
-  const copyShortcutUrl = async () => {
-    try {
-      await navigator.clipboard.writeText(shortcutUrl);
-      alert("🔗 Link copiado! Cole no navegador para abrir o site.");
-    } catch {
-      alert(`Link do atalho: ${shortcutUrl}`);
-    }
-  };
-
-  // A arte é a própria tela de entrada. Campos e áreas clicáveis são
-  // posicionados em porcentagens da imagem para não encavalar no celular.
-  const avatarChoices = [
-    { name: "Jesus", src: avatarJesus }, { name: "Maria", src: avatarMaria },
-    { name: "Davi", src: avatarDavi }, { name: "Moisés", src: avatarMoises },
-    { name: "Abraão", src: avatarAbraao }, { name: "José", src: avatarJose },
-    { name: "Lia", src: "/lia-mascote.png" }, { name: "Marta", src: avatarMaria },
-    { name: "Noé", src: avatarMoises }, { name: "Paulo", src: avatarDavi },
-    { name: "Matheus", src: avatarDaniel },
-  ];
-  const chooseAvatar = (src: string, index?: number) => { setSelectedAvatar(src); setSelectedAvatarIndex(index ?? null); setCustomAvatar(""); };
-  const submitArtwork = () => {
-    if (mode === "login") { void doLogin(); return; }
-    void doRegister();
   };
 
   return (
-    <main className="fixed inset-0 z-0 flex items-center justify-center overflow-hidden bg-[#1d381c]" aria-label="Entrada do Lemos a Palavra">
-      <div className="relative h-[100dvh] w-auto max-w-[100vw] aspect-[9/16] shrink-0 overflow-hidden bg-[#f4d79c]">
-        <img src={mode === "login" ? "/Bem-vindo%20login.png" : "/login-jornada-mobile.png"} alt="Lemos a Palavra: bem-vindo à jornada bíblica" className="absolute inset-0 h-full w-full object-fill select-none pointer-events-none" draggable={false} />
-        <label className={`absolute left-[34%] ${mode === "register" ? "top-[47.3%]" : "top-[51.8%]"} w-[40%] h-[2.5%] z-10`}>
-          <span className="sr-only">Seu nome</span>
-          <input aria-label="Seu nome" type="text" autoComplete="name" value={name} onChange={e => setName(e.target.value)}
-            className="w-full h-full border-0 bg-transparent outline-none focus:ring-2 focus:ring-amber-500 rounded-full px-[4%] text-amber-950 placeholder:text-transparent"
-            style={{ fontSize: "clamp(10px, 1.65dvh, 17px)" }} />
-        </label>
-        <label className={`absolute left-[34%] ${mode === "register" ? "top-[53.1%]" : "top-[59.1%]"} w-[40%] h-[2.5%] z-10`}>
-          <span className="sr-only">Celular</span>
-          <input aria-label="Celular" type="tel" autoComplete="tel" inputMode="numeric"
-            value={mode === "login" ? email : phone}
-            onChange={e => { const v = maskPhone(e.target.value); if (mode === "login") setEmail(v); else setPhone(v); }}
-            className="w-full h-full border-0 bg-[#fffaf4] outline-none focus:ring-2 focus:ring-amber-500 rounded-full px-[4%] text-amber-950 placeholder:text-transparent"
-            style={{ fontSize: "clamp(10px, 1.65dvh, 17px)" }} />
-        </label>
-        {mode === "register" && avatarChoices.map((av, i) => {
-          const firstRow = i < 5;
-          const col = firstRow ? i : i - 5;
-          const left = firstRow ? 18.5 + col * 12.1 : 17.5 + col * 10.45;
-          const top = firstRow ? 61.1 : 69.1;
-          const selected = selectedAvatarIndex === i;
-          return <button type="button" key={av.name} aria-label={`Escolher avatar ${av.name}`}
-            title={av.name} onClick={() => chooseAvatar(av.src, i)}
-            aria-pressed={selected}
-            className={`absolute z-20 rounded-lg touch-manipulation transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500 ${selected ? "ring-2 ring-amber-500 shadow-[0_0_0_2px_white,0_0_10px_rgba(245,158,11,.8)]" : ""}`}
-            style={{ left: `${left}%`, top: `${top}%`, width: firstRow ? "11.4%" : "9.9%", height: firstRow ? "7.8%" : "8.2%" }}>{selected && <span className="absolute -top-1 -right-1 rounded-full bg-green-600 text-white text-[10px] leading-4 w-4 h-4 font-bold shadow">✓</span>}</button>;
-        })}
-        <button type="button" disabled={busy} onClick={submitArtwork}
-          aria-label={mode === "login" ? "Entrar na minha conta" : "Entrar e Começar"}
-          className={`absolute left-[19.2%] ${mode === "login" ? "top-[65%]" : "top-[80.8%]"} w-[61.5%] h-[5.5%] rounded-full focus-visible:ring-4 focus-visible:ring-white disabled:opacity-50 touch-manipulation`} />
-        {mode === "login" && (
-          <button type="button" onClick={() => { setMode("register"); setPhone(email); }}
-            aria-label="Se cadastrar"
-            className="absolute left-[22%] top-[76.0%] w-[56%] h-[5.5%] rounded-full focus-visible:ring-4 focus-visible:ring-green-600 touch-manipulation" />
-        )}
-        {mode === "register" && (
-          <button type="button" onClick={() => setMode("login")}
-            className="absolute left-[25%] top-[87%] w-[50%] rounded-full border border-amber-600 bg-amber-50/95 px-2 py-1 text-[clamp(9px,1.4dvh,13px)] font-bold text-amber-950 shadow-lg">
-            Já tenho cadastro — voltar ao login
-          </button>
-        )}
+    <main className="fixed inset-0 min-h-[100dvh] w-full overflow-y-auto bg-[#1d381c]" aria-label="Entrar no Lemos a Palavra">
+      <div className="relative mx-auto min-h-[100dvh] w-full max-w-[720px] overflow-hidden">
+        <img
+          src="/Pagina%20Inicial%20celular.png"
+          alt="Jesus com crianças, uma ovelhinha e a Bíblia em uma paisagem iluminada"
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[48%] bg-gradient-to-t from-[#122c26]/90 via-[#122c26]/55 to-transparent" />
+        <div className="relative z-10 flex min-h-[100dvh] flex-col justify-end px-5 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-12">
+          <section className="mx-auto w-full max-w-sm rounded-3xl border border-white/50 bg-[#123a2f]/85 p-5 text-center shadow-2xl backdrop-blur-sm">
+            <h1 className="text-2xl font-extrabold text-white drop-shadow-md">Bem-vindo ao Lemos a Palavra!</h1>
+            <p className="mt-2 text-sm font-semibold text-white">Pai, mãe ou responsável, entre com sua conta para começar.</p>
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => void enterWithGoogle()}
+              className="mt-5 flex min-h-14 w-full items-center justify-center gap-3 rounded-2xl border-2 border-white bg-white px-4 text-base font-extrabold text-slate-800 shadow-lg transition hover:bg-slate-100 focus-visible:outline-4 focus-visible:outline-amber-300 disabled:opacity-60"
+            >
+              <span aria-hidden="true" className="text-2xl font-black text-[#4285f4]">G</span>
+              {busy ? "Conectando..." : "Continuar com Google"}
+            </button>
+            <p className="mt-3 text-xs font-medium text-white/90">O Facebook será disponibilizado quando a autenticação estiver configurada.</p>
+          </section>
+        </div>
       </div>
     </main>
-  );
-}
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <label className="block font-display text-sm font-semibold text-foreground mb-1.5">{label}</label>
-      {children}
-    </div>
   );
 }
