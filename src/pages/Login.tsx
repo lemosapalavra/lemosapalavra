@@ -65,7 +65,7 @@ export default function Login() {
     <main className="fixed inset-0 w-full overflow-y-auto bg-[#1d381c]" aria-label="Entrar no Lemos a Palavra">
       <div className="relative mx-auto min-h-[100dvh] w-full max-w-[720px] overflow-hidden">
         <img
-          src="/login-jornada-mobile.png?v=20261015-2"
+          src="/Pagina%20Iogin%20celular.webp?v=20261015-3"
           alt="Imagem de boas-vindas da página de login do Lemos a Palavra"
           className="absolute inset-0 h-full w-full object-cover object-center" onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = "/Pagina%20Iogin%20celular.png?v=20261015-2"; }}
         />
