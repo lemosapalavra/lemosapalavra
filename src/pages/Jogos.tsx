@@ -3,10 +3,10 @@ import JogosInterativos from "@/components/JogosInterativos";
 import { isAllowed } from "@/lib/contentAccess";
 
 const ALL_GAMES = [
-  { id: "memory", title: "Memória Bíblica", icon: "/memoria.png" },
-  { id: "jigsaw", title: "Quebra-Cabeça", icon: "/Quebra-Cabeça.png" },
-  { id: "wordbuilder", title: "Construtor de Palavras", icon: "/Construa%20Palavras.png" },
-  { id: "quiz", title: "Quiz Bíblico", icon: "/Quiz%20B%C3%ADblico.png" },
+  { id: "memory", title: "Memória Bíblica", icon: "/memoria.webp" },
+  { id: "jigsaw", title: "Quebra-Cabeça", icon: "/Quebra-Cabeça.webp" },
+  { id: "wordbuilder", title: "Construtor de Palavras", icon: "/Construa%20Palavras.webp" },
+  { id: "quiz", title: "Quiz Bíblico", icon: "/Quiz%20B%C3%ADblico.webp" },
 ];
 
 const positions = [
@@ -32,7 +32,7 @@ export default function Jogos() {
   return (
     <main id="faca-cenario" className="relative isolate h-[100dvh] w-full overflow-hidden bg-[#bdebf7]">
       <img
-        src="/Faça.png"
+        src="/Faça.webp"
         alt="FAÇA — cenário bíblico ilustrado"
         className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-center"
       />
