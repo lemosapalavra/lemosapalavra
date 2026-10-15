@@ -85,7 +85,6 @@ export default function Login() {
         <div className="pointer-events-none absolute inset-x-0 top-0 h-[27%] bg-gradient-to-b from-[#123a2f]/45 via-[#123a2f]/20 to-transparent" />
         <div className="relative z-10 flex min-h-[100dvh] flex-col items-center px-4 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]">
           <div className="flex-1 min-h-[24vh]" />
-          <a href="/" className="mb-3 rounded-full border-2 border-amber-300 bg-[#17412e]/70 px-6 py-2.5 text-center text-sm font-extrabold text-white shadow-lg transition hover:bg-[#17412e]/90 focus-visible:outline-4 focus-visible:outline-amber-300">Acessar o site</a>
           <section className="mb-[clamp(1rem,4vh,2.5rem)] w-full max-w-sm rounded-3xl border border-white/30 bg-[#123a2f]/40 px-3 py-3 shadow-2xl backdrop-blur-sm" aria-label="Escolha a forma de entrar">
             <div className="flex items-start justify-center gap-5 sm:gap-8">
               <button type="button" disabled={busy !== null} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google"
