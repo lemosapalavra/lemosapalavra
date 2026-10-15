@@ -1,3 +1,6 @@
+import albumBackground from "@/assets/album-background.png";
+import albumVolume1 from "@/assets/album-volume-1.png";
+import albumVolume2 from "@/assets/album-volume-2.png";
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
@@ -217,7 +220,7 @@ export default function Album() {
     return (
       <div
         className="fixed inset-0 z-40 flex items-center justify-center bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.35), rgba(255,255,255,.35)), url('/Álbum.png')" }}
+        style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.35), rgba(255,255,255,.35)), url('${albumBackground}')" }}
       >
         <PageHeader title="Álbum" />
         {/* Volume 1 no eixo central, acima da logomarca impressa no cenário. */}
@@ -228,7 +231,7 @@ export default function Album() {
             aria-label="Abrir álbum Volume 1"
             className="pointer-events-auto absolute left-1/2 top-[29%] -translate-x-1/2 -translate-y-1/2 w-[clamp(108px,32vw,185px)] aspect-square rounded-full transition-all duration-200 hover:scale-110 hover:brightness-125 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300 z-10"
           >
-            <img src="/Álbum%20Bíblico%20Volume%201.png" alt="Álbum Heróis da Fé — Volume 1" className="w-full h-full object-contain drop-shadow-[0_8px_18px_rgba(0,0,0,.65)]" />
+            <img src={albumVolume1} alt="Álbum Heróis da Fé — Volume 1" className="w-full h-full object-contain drop-shadow-[0_8px_18px_rgba(0,0,0,.65)]" />
             <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border-2 border-yellow-200 bg-gradient-to-b from-amber-400 to-orange-600 px-3 py-0.5 text-[11px] sm:text-sm font-black text-white shadow-[0_3px_8px_rgba(0,0,0,.65)]">VOL. 1</span>
           </button>
           <button
@@ -237,7 +240,7 @@ export default function Album() {
             aria-label={completed ? "Volume 2 em preparação" : "Volume 2 bloqueado até concluir o Volume 1"}
             className="pointer-events-auto absolute left-1/2 bottom-[7%] -translate-x-1/2 w-[clamp(98px,28vw,158px)] aspect-square rounded-full transition-all duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-300 z-10"
           >
-            <img src="/Álbum%20Bíblico%20Volume%202.png" alt="Álbum Heróis da Fé — Volume 2" className="w-full h-full object-contain grayscale drop-shadow-[0_8px_18px_rgba(0,0,0,.65)]" />
+            <img src={albumVolume2} alt="Álbum Heróis da Fé — Volume 2" className="w-full h-full object-contain grayscale drop-shadow-[0_8px_18px_rgba(0,0,0,.65)]" />
             <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border-2 border-gray-200 bg-gradient-to-b from-gray-500 to-gray-800 px-3 py-0.5 text-[11px] sm:text-sm font-black text-white shadow-[0_3px_8px_rgba(0,0,0,.65)]">VOL. 2</span>
           </button>
           {completed && <div role="status" className="pointer-events-none absolute bottom-[0.5%] left-1/2 -translate-x-1/2 w-[min(80vw,360px)] rounded-lg border border-amber-400 bg-white/95 px-2 py-1 text-center shadow-xl">
