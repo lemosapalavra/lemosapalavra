@@ -66,13 +66,6 @@ export default function VideoCentralLayout({ title, subtitle, videos }: Props) {
   if (playing) {
     return (
       <div className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-in fade-in zoom-in duration-300">
-        <button
-          onClick={() => { savePosition(); setPlaying(null); }}
-          className="absolute top-4 left-4 z-20 w-12 h-12 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur flex items-center justify-center text-white transition"
-          title="Voltar"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
         <ColonialVideoFrame>
           <video
             ref={playerRef}
