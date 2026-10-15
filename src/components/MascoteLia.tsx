@@ -106,8 +106,7 @@ export default function MascoteLia() {
 
   const avatar = isHome && !context ? lia1 : lia2;
   const liaVisible = useIconVisible("lia");
-  const isOpeningPack = isAlbum && context === "album:pack";
-  const liaPosition = isOpeningPack ? "bottom-3 sm:bottom-4" : isAlbum ? "bottom-[152px] sm:bottom-[166px]" : "bottom-3";
+  const liaPosition = isAlbum ? "bottom-3 sm:bottom-4" : "bottom-3";
 
   if (!liaVisible) return null;
 
