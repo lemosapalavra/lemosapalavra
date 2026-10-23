@@ -1,6 +1,8 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { createPortal } from "react-dom";
-import { House, BookOpen, Heart, HandHeart, Settings } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { House, BookOpen, Heart, HandHeart, Settings, LogOut } from "lucide-react";
 
 const items = [
   { label: "Início", path: "/", Icon: House },
@@ -12,12 +14,32 @@ const items = [
 
 export default function LemosBottomNav() {
   const { pathname } = useLocation();
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    let active = true;
+    const check = async () => {
+      const { data: session } = await supabase.auth.getSession();
+      const uid = session.session?.user?.id;
+      if (!uid) { if (active) setIsAdmin(false); return; }
+      const { data, error } = await supabase.rpc("has_role", { _user_id: uid, _role: "admin" });
+      if (active) setIsAdmin(!error && data === true);
+    };
+    void check();
+    const { data: sub } = supabase.auth.onAuthStateChange(() => { void check(); });
+    return () => { active = false; sub.subscription.unsubscribe(); };
+  }, []);
+  const logout = async () => {
+    await supabase.auth.signOut();
+    localStorage.removeItem("lemos_user");
+    localStorage.removeItem("lemos_admin_mode");
+    window.location.assign("/login");
+  };
   if (pathname === "/login" || pathname === "/login-sms") return null;
 
   return createPortal(
     <nav aria-label="Menu principal Lemos a Palavra" className="fixed inset-x-0 bottom-0 z-[9999] border-t-[3px] border-amber-400 bg-gradient-to-br from-[#a9652c] via-[#794015] to-[#49250c] shadow-[0_-4px_16px_rgba(0,0,0,.5)]" style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
       <div className="mx-auto flex h-[65px] max-w-[640px] items-stretch justify-around">
-        {items.map(({ label, path, Icon }) => (
+        {items.filter(item => isAdmin || item.label !== "Adm").map(({ label, path, Icon }) => (
           <NavLink key={path} to={path} end={path === "/"} aria-label={label}
             className={({ isActive }) => `group relative flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-0.5 transition-all duration-200 active:scale-95 ${isActive ? "text-[#ffdc71]" : "text-[#f7edce] hover:text-[#ffe5a1]"}`}>
             {({ isActive }) => (
@@ -31,6 +53,13 @@ export default function LemosBottomNav() {
             )}
           </NavLink>
         ))}
+        {!isAdmin && (
+          <button type="button" onClick={() => void logout()} aria-label="Sair" title="Sair"
+            className="group relative flex min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-0.5 text-[#f7edce] transition-all duration-200 hover:text-[#ffe5a1] active:scale-95">
+            <span className="flex h-9 w-10 items-center justify-center rounded-xl group-hover:bg-white/10"><LogOut size={25} strokeWidth={2.1} /></span>
+            <span className="text-[10px] font-bold leading-none sm:text-xs">Sair</span>
+          </button>
+        )}
       </div>
     </nav>,
     document.body
