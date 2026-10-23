@@ -20,7 +20,7 @@ export default function LemosBottomNav() {
     const check = async () => {
       const { data: session } = await supabase.auth.getSession();
       const uid = session.session?.user?.id;
-      if (!uid) { if (active) setIsAdmin(false); return; }
+      if (!uid || session.session?.user?.email?.trim().toLowerCase() !== "marcelloborbas@gmail.com") { if (active) setIsAdmin(false); return; }
       const { data, error } = await supabase.rpc("has_role", { _user_id: uid, _role: "admin" });
       if (active) setIsAdmin(!error && data === true);
     };
