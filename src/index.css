@@ -304,3 +304,7 @@ main::-webkit-scrollbar, section::-webkit-scrollbar, div::-webkit-scrollbar {
 @media (hover: none) {
   :where(button, a, [role="button"]):has(> img):hover > img { scale: 1; }
 }
+
+/* Modo cinema: oculta LIA e rodapé somente enquanto o player está aberto. */
+body.lemos-video-playing [data-lemos-lia],
+body.lemos-video-playing [data-lemos-bottom-nav] { display: none !important; }
