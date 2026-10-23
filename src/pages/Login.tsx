@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import loginBackground from "@/assets/login-optimized.webp";
+import googleIcon from "@/assets/login-google-icon.webp";
+import emailIcon from "@/assets/login-email-icon.webp";
+import liaIcon from "@/assets/login-lia-icon.webp";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -155,14 +158,14 @@ export default function Login() {
             {/* Ícones individuais visíveis, acima da LIA, sem sobreposição. */}
             <div className="relative z-30 mb-3 flex w-full items-center justify-center gap-7 sm:gap-10">
               <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google" className="group relative flex h-[clamp(78px,24vw,112px)] w-[clamp(78px,24vw,112px)] shrink-0 items-center justify-center rounded-full border-0 bg-transparent p-0 disabled:opacity-60">
-                <img src="/login-google.webp" alt="Google" className="login-motion google-login-floating h-full w-full object-contain drop-shadow-[0_0_18px_rgba(255,215,60,.95)] group-hover:brightness-125" />
+                <img src={googleIcon} alt="Google" className="login-motion google-login-floating h-full w-full object-contain drop-shadow-[0_0_18px_rgba(255,215,60,.95)] group-hover:brightness-125" />
               </button>
               <button type="button" disabled={busy !== null || checkingSession} onClick={() => { playTap(); setEmailLoginOpen(value => !value); }} aria-label="Entrar por e-mail" title="Entrar por e-mail" className="group relative flex h-[clamp(78px,24vw,112px)] w-[clamp(78px,24vw,112px)] shrink-0 items-center justify-center rounded-full border-0 bg-transparent p-0 disabled:opacity-60">
-                <img src="/login-email.webp" alt="E-mail" className="login-motion google-login-floating h-full w-full object-contain drop-shadow-[0_0_18px_rgba(255,215,60,.95)] group-hover:brightness-125" style={{ animationDelay: ".7s" }} />
+                <img src={emailIcon} alt="E-mail" className="login-motion google-login-floating h-full w-full object-contain drop-shadow-[0_0_18px_rgba(255,215,60,.95)] group-hover:brightness-125" style={{ animationDelay: ".7s" }} />
               </button>
             </div>
             <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA — Posso Ajudar?" title="Posso Ajudar?" className="group relative mt-3 w-[min(62vw,245px)] border-0 bg-transparent p-0">
-              <img src="/login-lia.webp" alt="LIA — Posso Ajudar?" className="login-artwork-float login-motion h-auto w-full object-contain drop-shadow-[0_0_10px_rgba(255,215,75,.5)] group-hover:brightness-110" />
+              <img src={liaIcon} alt="LIA — Posso Ajudar?" className="login-artwork-float login-motion h-auto w-full object-contain drop-shadow-[0_0_10px_rgba(255,215,75,.5)] group-hover:brightness-110" />
             </button>
             {emailLoginOpen && (
               <form onSubmit={enterWithEmail} className="fixed left-1/2 top-1/2 z-50 flex w-[min(320px,90vw)] -translate-x-1/2 -translate-y-1/2 flex-col gap-2 rounded-xl border-2 border-amber-300 bg-slate-950/95 p-3 shadow-xl">
