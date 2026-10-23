@@ -249,13 +249,26 @@ export function loadConfig(): LemosPlayConfig {
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) return defaultConfig();
-    const parsed = JSON.parse(raw) as Partial<LemosPlayConfig>;
+    const parsed: unknown = JSON.parse(raw);
     const def = defaultConfig();
+    // Dados antigos ou incompletos no navegador não podem derrubar Veja/Ouça.
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return def;
+    const saved = parsed as Partial<LemosPlayConfig>;
+    const validEntries = (value: unknown): value is PlayEntry[] =>
+      Array.isArray(value) && value.every((item) =>
+        item && typeof item === "object" && typeof item.id === "string" &&
+        typeof item.title === "string" && typeof item.src === "string"
+      );
+    const validGroups = (value: unknown): value is SeriesGroupCfg[] =>
+      Array.isArray(value) && value.every((group) =>
+        group && typeof group === "object" && typeof group.id === "string" &&
+        typeof group.title === "string" && validEntries(group.videos)
+      );
     return swapLegacyBis(repairConfig({
-      filmes: parsed.filmes ?? def.filmes,
-      series: parsed.series ?? def.series,
-      musicas: parsed.musicas ?? def.musicas,
-      louvores: parsed.louvores ?? def.louvores,
+      filmes: validEntries(saved.filmes) ? saved.filmes : def.filmes,
+      series: validGroups(saved.series) ? saved.series : def.series,
+      musicas: validEntries(saved.musicas) ? saved.musicas : def.musicas,
+      louvores: validEntries(saved.louvores) ? saved.louvores : def.louvores,
     }, def));
   } catch {
     return defaultConfig();
