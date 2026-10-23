@@ -168,12 +168,20 @@ export default function Login() {
                 </span>
               </button>
             </div>
-            <div className="relative mt-3 flex flex-col items-center">
-              <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA" title="Conversar com a LIA" className="login-motion relative translate-y-[clamp(3rem,10dvh,7rem)] rounded-3xl border-[3px] border-white/90 bg-white/10 p-1 shadow-[0_0_0_2px_rgba(255,215,85,.85),0_0_18px_6px_rgba(255,255,255,.85),0_0_34px_12px_rgba(255,210,65,.55),0_6px_16px_rgba(0,0,0,.4)] backdrop-blur-[2px] transition-transform hover:scale-105 active:scale-95">
-                <img src="/LIA%20Posso%20Ajudar.webp" alt="LIA — Posso Ajudar?" className="h-auto w-[155px] max-w-[48vw] object-contain drop-shadow-[0_3px_9px_rgba(0,0,0,.6)] sm:w-[190px]" />
+            {emailLoginOpen && (
+              <form onSubmit={enterWithEmail} className="mx-auto mt-3 flex w-full max-w-xs flex-col gap-2 rounded-xl bg-slate-950/85 p-3">
+                <label htmlFor="lemos-email-login" className="text-center text-xs font-semibold text-white">Receber link de acesso no e-mail</label>
+                <input id="lemos-email-login" type="email" autoComplete="email" required value={emailAddress} onChange={event => setEmailAddress(event.target.value)} placeholder="seuemail@exemplo.com" className="h-11 rounded-md border border-slate-300 bg-white px-3 text-slate-950 placeholder:text-slate-500" />
+                <button type="submit" disabled={busy !== null} className="rounded-md bg-amber-400 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60">{busy === "email" ? "Enviando..." : "Enviar link de acesso"}</button>
+              </form>
+            )}
+          </section>
+            <div className="absolute bottom-[max(0px,env(safe-area-inset-bottom))] left-1/2 z-20 flex -translate-x-1/2 flex-col items-center">
+              <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA" title="Conversar com a LIA" className="login-motion relative rounded-3xl border-[3px] border-white/90 bg-white/10 p-1 shadow-[0_0_0_2px_rgba(255,215,85,.85),0_0_18px_6px_rgba(255,255,255,.85),0_0_34px_12px_rgba(255,210,65,.55),0_6px_16px_rgba(0,0,0,.4)] backdrop-blur-[2px] transition-transform hover:scale-105 active:scale-95">
+                <img src="/LIA%20Posso%20Ajudar.webp" alt="LIA — Posso Ajudar?" className="h-auto w-[202px] max-w-[70vw] object-contain drop-shadow-[0_3px_9px_rgba(0,0,0,.6)] sm:w-[247px]" />
               </button>
               {liaOpen && (
-                <div role="dialog" aria-label="Ajuda da LIA no login" className="relative z-20 mt-2 w-[min(310px,88vw)] rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]">
+                <div role="dialog" aria-label="Ajuda da LIA no login" className="absolute bottom-full z-30 mb-3 w-[min(310px,88vw)] rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]">
                   <div className="flex items-center justify-between gap-2 border-b border-white/25 pb-2">
                     <strong className="text-sm text-yellow-300">COMO ACESSAR O SITE</strong>
                     <div className="flex items-center gap-1">
@@ -190,14 +198,6 @@ export default function Login() {
                 </div>
               )}
             </div>
-            {emailLoginOpen && (
-              <form onSubmit={enterWithEmail} className="mx-auto mt-3 flex w-full max-w-xs flex-col gap-2 rounded-xl bg-slate-950/85 p-3">
-                <label htmlFor="lemos-email-login" className="text-center text-xs font-semibold text-white">Receber link de acesso no e-mail</label>
-                <input id="lemos-email-login" type="email" autoComplete="email" required value={emailAddress} onChange={event => setEmailAddress(event.target.value)} placeholder="seuemail@exemplo.com" className="h-11 rounded-md border border-slate-300 bg-white px-3 text-slate-950 placeholder:text-slate-500" />
-                <button type="submit" disabled={busy !== null} className="rounded-md bg-amber-400 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60">{busy === "email" ? "Enviando..." : "Enviar link de acesso"}</button>
-              </form>
-            )}
-          </section>
         </div>
       </div>
     </main>
