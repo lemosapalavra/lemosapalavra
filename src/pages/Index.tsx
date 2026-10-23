@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 
-import HomeTopNav from "@/components/HomeTopNav";
 import EventBannerKart from "@/components/EventBannerKart";
 import EventBannerPlane from "@/components/EventBannerPlane";
 
@@ -71,14 +70,6 @@ function IndexV1() {
       className="lemos-home-viewport h-[100dvh] min-h-0 flex flex-col items-center overflow-hidden relative"
       style={{ backgroundColor: "#c9effd" }}
     >
-      {/* Menu superior ilustrado: substitui a barra antiga e o menu hambúrguer. */}
-      <header className="fixed top-0 inset-x-0 z-[60] bg-gradient-to-b from-[#e9c786]/90 via-[#e9c786]/55 to-transparent">
-        <div className="mx-auto w-full max-w-screen-2xl flex items-start justify-center gap-1 pl-1 pr-[135px] sm:pl-[155px] sm:pr-[200px]">
-          <HomeTopNav />
-
-        </div>
-      </header>
-
       {/* 14-Bis animado, acima do cenário e abaixo dos controles do usuário. */}
       <EventBannerPlane isAuthenticated={!!user?.name} />
 
