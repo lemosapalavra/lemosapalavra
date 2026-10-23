@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useIconVisible } from "@/lib/iconVisibility";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
+import InstallShortcut from "@/components/InstallShortcut";
 
 const homeIcons = [
   { label: "Veja", src: "/veja-flutuante.webp", route: "/lemosplay", x: 50, y: 41 },
@@ -21,6 +22,7 @@ export default function Index() {
       <img src="/pagina-inicial-nova.webp" alt="" aria-hidden="true" draggable={false}
         style={{ position: "absolute", inset: 0, zIndex: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
       <h1 className="sr-only">Lemos a Palavra — página inicial</h1>
+      <div className="absolute left-1 top-1 z-[80]"><InstallShortcut headerTile /></div>
 
       {/* Botões verdadeiros, separados da imagem e acima do fundo. */}
       <section aria-label="Escolha sua atividade" style={{ position: "absolute", inset: 0, zIndex: 30, pointerEvents: "none" }}>
