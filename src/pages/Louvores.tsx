@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { Play } from "lucide-react";
+import { Play, Lock, LockOpen } from "lucide-react";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 import { normalizeVideo } from "@/lib/videoEmbed";
 import VideoSideActions from "@/components/VideoSideActions";
@@ -11,6 +11,7 @@ import { loadConfig, type PlayEntry } from "@/data/lemosPlayConfig";
 import { getListenEntries, type ListenCategory } from "@/data/listenCatalog";
 import { markSeen } from "@/lib/newContent";
 import { louvoresTitles } from "@/data/contentIndex";
+import { HIDDEN_VIDEOS, isHiddenUnlocked, unlockHiddenVideos, lockHiddenVideos } from "@/data/hiddenVideos";
 
 export default function Louvores() {
   const [playing, setPlaying] = useState<PlayEntry | null>(null);
