@@ -39,7 +39,7 @@ export default function Jogos() {
       <img
         src={facaBg}
         alt="FAÇA — cenário bíblico ilustrado"
-        className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-center"
+        className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-center opacity-80"
       />
       <h1 className="sr-only">FAÇA — Jogos e atividades bíblicas</h1>
       <div className="pointer-events-none absolute inset-0 z-20">
