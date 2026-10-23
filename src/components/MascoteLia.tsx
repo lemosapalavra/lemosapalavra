@@ -180,7 +180,7 @@ export default function MascoteLia() {
         ? "pointer-events-auto fixed bottom-[calc(250px+env(safe-area-inset-bottom,0px))] left-2 z-[9999] w-[min(320px,calc(100vw-16px))] max-h-[45dvh] overflow-y-auto rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"
         : "pointer-events-auto relative w-[min(78vw,320px)] max-w-sm rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"}>
         <div className="flex items-center justify-between gap-2 border-b border-white/25 pb-2">
-          <span className="text-sm font-bold text-yellow-300">LIA</span>
+          <span aria-hidden="true" />
           <div className="flex items-center gap-1">
             <button type="button" onClick={toggleSpeech} aria-label={speaking ? "Parar leitura" : "Ouvir orientação da página"} className="rounded-lg bg-white/15 p-2">{speaking ? <VolumeX size={20} /> : <Volume2 size={20} />}</button>
             <button type="button" onClick={() => { setExpanded(false); window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }} aria-label="Fechar ajuda" className="rounded-lg bg-white/15 p-2"><X size={20} /></button>
