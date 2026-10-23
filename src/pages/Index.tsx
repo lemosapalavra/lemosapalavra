@@ -20,7 +20,7 @@ export default function Index() {
     <main className="lemos-home-viewport" style={{ position: "relative", isolation: "isolate", width: "100%", height: "100dvh", overflow: "hidden", backgroundColor: "#8bc8eb" }}>
       {/* Único fundo da página. Nenhuma outra imagem de cenário é montada. */}
       <img src="/pagina-inicial-nova.webp" alt="" aria-hidden="true" draggable={false}
-        style={{ position: "absolute", inset: 0, zIndex: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+        style={{ position: "absolute", inset: 0, zIndex: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", opacity: 0.8 }} />
       <h1 className="sr-only">Lemos a Palavra — página inicial</h1>
       <div className="absolute left-1 top-1 z-[80]"><InstallShortcut headerTile /></div>
 
