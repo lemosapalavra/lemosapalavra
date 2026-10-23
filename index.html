@@ -76,6 +76,32 @@
       <div class="launch-dots" aria-hidden="true"><i></i><i></i><i></i></div>
     </div>
     <div id="root"></div>
+    <script>
+      // Executa mesmo se o bundle React falhar ao carregar: evita splash infinito.
+      window.setTimeout(() => {
+        const launch = document.getElementById("lemos-launch");
+        if (!launch) return;
+        const root = document.getElementById("root");
+        if (root && root.childElementCount > 0) {
+          launch.style.opacity = "0";
+          launch.style.pointerEvents = "none";
+          window.setTimeout(() => launch.remove(), 450);
+          return;
+        }
+        const dots = launch.querySelector(".launch-dots");
+        if (dots) dots.remove();
+        const message = document.createElement("p");
+        message.textContent = "Não foi possível iniciar o aplicativo. Tente atualizar a página.";
+        message.setAttribute("role", "alert");
+        launch.appendChild(message);
+        const retry = document.createElement("button");
+        retry.type = "button";
+        retry.textContent = "Tentar novamente";
+        retry.style.cssText = "position:relative;border:2px solid #ffe29a;border-radius:999px;padding:12px 22px;background:#ffe29a;color:#102d42;font:700 16px system-ui;cursor:pointer";
+        retry.addEventListener("click", () => window.location.reload());
+        launch.appendChild(retry);
+      }, 10000);
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
