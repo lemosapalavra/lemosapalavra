@@ -6,7 +6,7 @@ const liaForPages = "/lia-paginas.webp";
 const liaFallback = "/lia-mascote.png";
 import { Button } from "@/components/ui/button";
 
-const cleanSpeechText = (text: string) => text.replace(/[^\\p{L}\\p{N}\\p{P}\\p{Zs}\\n]/gu, "").replace(/\\s+/g, " ").trim();
+const cleanSpeechText = (text: string) => text.replace(/[^\p{L}\p{N}\p{P}\p{Zs}\n]/gu, "").replace(/\s+/g, " ").trim();
 
 /**
  * LIA — mascote guia do site.
@@ -160,7 +160,7 @@ export default function MascoteLia() {
   }
 
   return (
-    <div onMouseLeave={(event) => { if ((event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(false); }}
+    <div onMouseLeave={(event) => { if (!onHome && (event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(false); }}
       className={`fixed z-[9998] flex flex-col items-end gap-1 ${onHome ? "left-1 sm:left-4" : "right-2 sm:right-4"} ${liaPosition}`}>
       {/* Ajuda com o mesmo painel azul, cabeçalho e controles da página de login. */}
       <div role="dialog" aria-label="Ajuda da LIA" className={onHome
