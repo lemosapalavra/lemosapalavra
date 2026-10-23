@@ -27,6 +27,7 @@ function IndexV1() {
   const navigate = useNavigate();
   const [user, setUser] = useState<{ name: string; email: string; avatar?: string } | null>(null);
   const [dedicatoriaOpen, setDedicatoriaOpen] = useState(false);
+  const [newHomeArtwork, setNewHomeArtwork] = useState(false);
   const dedicatoriaVisible = useIconVisible("dedicatoria");
 
   useEffect(() => {
@@ -83,6 +84,7 @@ function IndexV1() {
           fetchPriority="high"
           decoding="async"
         />
+        <img src="/pagina-inicial-nova.webp" alt="" aria-hidden="true" className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-500 ${newHomeArtwork ? "opacity-100" : "opacity-0"}`} onLoad={() => setNewHomeArtwork(true)} onError={() => setNewHomeArtwork(false)} />
       </picture>
       <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
 
@@ -90,10 +92,10 @@ function IndexV1() {
           A camada cobre a mesma área da imagem de fundo, incluindo o cabeçalho. */}
       <div className="absolute inset-0 z-20 pointer-events-none">
         {([
-          { label: "VEJA", image: vejaFlutuante, mobile: [50, 48], desktop: [50, 49] },
-          { label: "OUÇA", image: oucaFlutuante, mobile: [21, 60], desktop: [28, 60] },
-          { label: "APRENDA", image: aprendaFlutuante, mobile: [79, 60], desktop: [72, 60] },
-          { label: "ÁLBUM", image: albumFlutuante, mobile: [50, 73], desktop: [50, 73] },
+          { label: "VEJA", image: vejaFlutuante, mobile: newHomeArtwork ? [49, 39] : [50, 48], desktop: [50, 49] },
+          { label: "OUÇA", image: oucaFlutuante, mobile: newHomeArtwork ? [22, 49] : [21, 60], desktop: [28, 60] },
+          { label: "APRENDA", image: aprendaFlutuante, mobile: newHomeArtwork ? [78, 49] : [79, 60], desktop: [72, 60] },
+          { label: "ÁLBUM", image: albumFlutuante, mobile: newHomeArtwork ? [49, 62] : [50, 73], desktop: [50, 73] },
         ] as const).map(({ label, image, mobile, desktop }, index) => (
           <button
             key={label}
@@ -110,7 +112,7 @@ function IndexV1() {
               ["--float-delay" as string]: `${index * -0.65}s`,
             }}
           >
-            <img src={image} alt="" draggable={false} className="home-floating-icon block w-full h-full object-contain drop-shadow-[0_0_17px_rgba(255,218,70,.98)] group-hover:brightness-125 group-active:brightness-150" />
+            <img src={image} alt="" draggable={false} className={`${newHomeArtwork ? "opacity-0" : "opacity-100"} home-floating-icon block w-full h-full object-contain drop-shadow-[0_0_17px_rgba(255,218,70,.98)] group-hover:brightness-125 group-active:brightness-150`} />
           </button>
         ))}
       </div>
