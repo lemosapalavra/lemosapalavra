@@ -333,7 +333,7 @@ function CertificatePanel({ user }: { user: { name?: string; avatar?: string } }
     if (!win) return;
     const cert = document.getElementById("lemos-certificate-printable")?.outerHTML || "";
     win.document.write(`
-      <html><head><title>Certificado — ${name}</title>
+      <html><head><title>Certificado — ${name.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string))}</title>
       <style>
         body { margin: 0; padding: 20px; font-family: Georgia, serif; background: #f5e9c8; }
         .cert { max-width: 800px; margin: 0 auto; }
