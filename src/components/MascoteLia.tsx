@@ -1,6 +1,6 @@
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useRef, useState } from "react";
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, X } from "lucide-react";
 import { useLocation } from "react-router-dom";
 const liaForPages = "/lia-paginas.webp";
 const liaFallback = "/lia-mascote.png";
@@ -140,12 +140,12 @@ export default function MascoteLia() {
         onClick={() => setExpanded(true)}
         aria-label="Falar com a LIA, sua ajudante"
         title="Falar com a LIA, sua ajudante"
-        className="h-auto flex flex-col items-center gap-1 bg-transparent hover:bg-transparent transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:ring-4 focus-visible:ring-yellow-400"
+        className="h-auto flex flex-col items-center gap-1 !bg-transparent !border-0 !shadow-none hover:!bg-transparent transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:ring-4 focus-visible:ring-yellow-400"
       >
         <span className={onHome ? "w-[clamp(125px,43vw,205px)] h-[clamp(125px,43vw,205px)] block animate-[liaFloat_3.4s_ease-in-out_infinite] drop-shadow-[0_0_12px_rgba(255,215,70,.95)]" : "w-[78px] h-[78px] sm:w-[100px] sm:h-[100px] rounded-full bg-white shadow-[0_5px_18px_rgba(120,58,8,.65),0_0_0_3px_rgba(255,217,87,.65)] border-[3px] border-amber-400 overflow-hidden block animate-[liaFloat_3.4s_ease-in-out_infinite]"}>
           <img src={avatar} alt="LIA" className="w-full h-full object-contain object-bottom" loading="eager" onError={(e) => { if (e.currentTarget.src.endsWith("lia-paginas.webp")) e.currentTarget.src = liaFallback; }} />
         </span>
-        <span className="font-display font-extrabold text-[11px] sm:text-xs text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap">
+        <span className={onHome ? "sr-only" : "font-display font-extrabold text-[11px] sm:text-xs text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap"}>
           Oi, sou a LIA
         </span>
       </Button>
@@ -158,11 +158,18 @@ export default function MascoteLia() {
   return (
     <div onMouseLeave={(event) => { if ((event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(false); }}
       className={`fixed z-[9998] flex flex-col items-end gap-1 ${onHome ? "left-1 sm:left-4" : "right-2 sm:right-4"} ${liaPosition}`}>
-      {/* Balão acima da cabeça da LIA */}
-      <div className="pointer-events-auto relative w-[min(78vw,320px)] max-w-sm rounded-2xl bg-white/95 backdrop-blur border-2 border-amber-300 shadow-xl px-3 py-2">
-        <p className="font-body text-[15px] sm:text-base text-amber-900 leading-relaxed">{message}</p>
-        <button type="button" onClick={toggleSpeech} aria-label={speaking?"Parar fala da LIA":"Ouvir fala da LIA"} className="mt-2 flex items-center gap-2 rounded-lg bg-amber-200 px-3 py-1.5 text-sm font-bold text-amber-950">{speaking?<VolumeX size={18}/>:<Volume2 size={18}/>} {speaking?"Parar":"Ouvir a LIA"}</button>
-        <span className="absolute right-6 -bottom-2 w-3 h-3 rotate-45 bg-white border-r-2 border-b-2 border-amber-300" />
+      {/* Ajuda com o mesmo painel azul, cabeçalho e controles da página de login. */}
+      <div role="dialog" aria-label="Ajuda da LIA" className={onHome
+        ? "pointer-events-auto fixed bottom-[calc(90px+env(safe-area-inset-bottom,0px))] left-1/2 z-[9999] w-[min(320px,90vw)] -translate-x-1/2 rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"
+        : "pointer-events-auto relative w-[min(78vw,320px)] max-w-sm rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"}>
+        <div className="flex items-center justify-between gap-2 border-b border-white/25 pb-2">
+          <strong className="text-sm text-yellow-300">POSSO AJUDAR?</strong>
+          <div className="flex items-center gap-1">
+            <button type="button" onClick={toggleSpeech} aria-label={speaking ? "Parar leitura" : "Ouvir orientação da página"} className="rounded-lg bg-white/15 p-2">{speaking ? <VolumeX size={20} /> : <Volume2 size={20} />}</button>
+            <button type="button" onClick={() => { setExpanded(false); window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }} aria-label="Fechar ajuda" className="rounded-lg bg-white/15 p-2"><X size={20} /></button>
+          </div>
+        </div>
+        <p className="mt-3 text-sm leading-relaxed">{message}</p>
       </div>
 
       <div className="flex flex-col items-center gap-2">
@@ -170,7 +177,7 @@ export default function MascoteLia() {
         onClick={() => { setExpanded(false); window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }}
         aria-label="Recolher a LIA"
         title="Toque para recolher a LIA"
-        className="pointer-events-auto h-auto flex-col bg-transparent hover:bg-transparent transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:ring-4 focus-visible:ring-yellow-400"
+        className="pointer-events-auto h-auto flex-col !bg-transparent !border-0 !shadow-none hover:!bg-transparent transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:ring-4 focus-visible:ring-yellow-400"
       >
         <img
           src={avatar}
@@ -179,7 +186,7 @@ export default function MascoteLia() {
           onError={(e) => { if (e.currentTarget.src.endsWith("lia-paginas.webp")) e.currentTarget.src = liaFallback; }}
           draggable={false}
         />
-        <span className="mt-1 block font-display font-extrabold text-xs sm:text-sm text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap">
+        <span className={onHome ? "sr-only" : "mt-1 block font-display font-extrabold text-xs sm:text-sm text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap"}>
           Oi, sou a LIA
         </span>
       </Button>
