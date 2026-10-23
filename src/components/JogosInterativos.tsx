@@ -1,4 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { awardProgress } from "@/hooks/useCoins";
+import { COINS } from "@/data/coinRewards";
 import avatarJesus from "@/assets/avatar-jesus.png";
 import avatarMaria from "@/assets/avatar-maria.png";
 import avatarDavi from "@/assets/avatar-davi.png";
@@ -68,6 +70,30 @@ export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void})
   setChosen(null);
  };
  const puzzleImage=avatarJesus;
+ const rewardKey = `activity:game:${game}`;
+ const total = game === "memory" ? deck.length : game === "jigsaw" ? 9 : game === "wordbuilder" ? wordRounds.length : game === "quiz" ? quizRounds.length : game === "fishing" ? 6 : game === "pairs" ? 5 : 8;
+ const completed = game === "memory" ? deck.length > 0 && found.length === deck.length
+  : game === "jigsaw" ? tiles.length === 9 && tiles.every((x,i)=>x===i)
+  : game === "wordbuilder" ? round >= wordRounds.length
+  : game === "quiz" ? Object.keys(answers).length === quizRounds.length && quizRounds.every((q,i)=>answers[i]===q.answer)
+  : game === "fishing" ? fishCaught.length === 6
+  : game === "pairs" ? pairFound.length === 5 : mazeStep === 8;
+ const progress = game === "memory" ? found.length : game === "jigsaw" ? (tiles.length ? tiles.filter((x,i)=>x===i).length : 0)
+  : game === "wordbuilder" ? round : game === "quiz" ? Object.keys(answers).length
+  : game === "fishing" ? fishCaught.length : game === "pairs" ? pairFound.length : mazeStep;
+ const latest = useRef({progress:0,completed:false});
+ latest.current = {progress,completed};
+ useEffect(() => {
+  if (completed) awardProgress(rewardKey, COINS.atividade, true, "Atividade concluída! Você recebeu o prêmio integral.");
+ }, [completed, rewardKey]);
+ useEffect(() => {
+  return () => {
+   if (latest.current.progress > 0 && !latest.current.completed) {
+    awardProgress(rewardKey, COINS.atividade, false, "Atividade incompleta: revise e conclua para receber as moedas restantes.");
+   }
+  };
+ }, [rewardKey]);
+
  return <section className="fixed inset-x-0 bottom-0 top-[118px] sm:top-[130px] z-[55] overflow-y-auto bg-[#fff7df] px-3 pt-3 pb-5 text-amber-950" role="dialog" aria-modal="true" aria-label={gameTitle[game]}>
   <div className="mx-auto max-w-3xl rounded-3xl border-4 border-amber-400 bg-white/95 p-4 shadow-xl">
    <div className="mb-4 flex items-center justify-between gap-3">
