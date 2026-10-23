@@ -1,7 +1,4 @@
 import quemSouEu1 from "@/assets/aprenda/quem-sou-eu-1.webp";
-import quemSouEu2 from "@/assets/aprenda/quem-sou-eu-2.webp";
-import quemSouEu3 from "@/assets/aprenda/quem-sou-eu-3.webp";
-import quemSouEu4 from "@/assets/aprenda/quem-sou-eu-4.webp";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -56,7 +53,7 @@ quiz("Quiz: Jesus e as Crianças","Marcos 10:13–16",[
 const weekdayNames = ["Domingo","Segunda-feira","Terça-feira","Quarta-feira","Quinta-feira","Sexta-feira","Sábado"];
 const activityIcons = ["📖","⛵","🌳","❤️","🦁","🌈","👑","🐟","⭐","🕊️","💪","🙏","🚢","🍞","🐋","🌊","👶","🌊","🐑","✨","👧"];
 function shuffle<T,>(arr:T[]):T[]{return [...arr].sort(()=>Math.random()-.5);}
-export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
+export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;onGameSelect?:(game:"memory"|"jigsaw"|"wordbuilder"|"quiz")=>void}) {
  const [index,setIndex]=useState<number|null>(null);
  const [params,setParams]=useSearchParams();
  const today = new Date();
@@ -97,22 +94,30 @@ export default function BrincandoBiblia({onBack}:{onBack:()=>void}) {
  const selectCard=(i:number)=>{if(flipped.includes(i)||matched.includes(i)||flipped.length===2)return;const next=[...flipped,i];setFlipped(next);if(next.length===2){setMoves(m=>m+1);if(deck[next[0]].id===deck[next[1]].id){setMatched(m=>[...m,...next]);setFlipped([]);}}};
  const current=index===null?null:activities[index];
  const score=current?.questions?.filter((q,i)=>answers[i]===q.answer).length??0;
- const whoActivities = [
-  { activityIndex: 6, icon: quemSouEu1, title: "Quem Sou Eu? — Parte 1" },
-  { activityIndex: 7, icon: quemSouEu2, title: "Quem Sou Eu? — Parte 2" },
-  { activityIndex: 8, icon: quemSouEu3, title: "Quem Sou Eu? — Parte 3" },
-  { activityIndex: 9, icon: quemSouEu4, title: "Quem Sou Eu? — Parte 4" },
+ const dayNumber = Math.floor(Date.now() / 86400000);
+ const dailyWhoIndex = 6 + (dayNumber % 4);
+ const dailyWho = { activityIndex: dailyWhoIndex, icon: quemSouEu1, title: "Quem Sou Eu?" };
+ const games = [
+  { id: "memory" as const, label: "Memória Bíblica", emoji: "🃏" },
+  { id: "jigsaw" as const, label: "Quebra-Cabeça", emoji: "🧩" },
+  { id: "wordbuilder" as const, label: "Construtor de Palavras", emoji: "🔤" },
+  { id: "quiz" as const, label: "Quiz Bíblico", emoji: "📖" },
  ];
- const positions = [{left:"17%",top:"40%"},{left:"83%",top:"40%"},{left:"17%",top:"76%"},{left:"83%",top:"76%"}];
+ const positions = [{left:"50%",top:"33%"},{left:"19%",top:"59%"},{left:"50%",top:"59%"},{left:"81%",top:"59%"},{left:"50%",top:"82%"}];
  if (index===null || !current) {
   return (
    <section className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
-    {whoActivities.map((item,n)=>(
-     <button key={item.activityIndex} type="button" onClick={()=>open(item.activityIndex)} aria-label={item.title} title={item.title}
-      className="absolute pointer-events-auto aspect-square w-[clamp(88px,20vw,152px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent p-0 animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:scale-110 hover:brightness-125 active:scale-95 transition-all drop-shadow-[0_6px_16px_rgba(0,0,0,.6)] focus-visible:outline-4 focus-visible:outline-white"
-      style={{...positions[n],animationDelay:String(n*0.8)+"s"}}>
-       <img src={item.icon} alt="" className="h-full w-full object-contain" />
-     </button>
+    <button type="button" onClick={()=>open(dailyWho.activityIndex)} aria-label="Quem Sou Eu? — desafio do dia" title="Quem Sou Eu? — desafio do dia"
+      className="absolute pointer-events-auto aspect-square w-[clamp(85px,20vw,145px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent p-0 animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:scale-110 drop-shadow-[0_0_15px_rgba(255,215,60,.8)]"
+      style={positions[0]}>
+      <img src={dailyWho.icon} alt="Quem Sou Eu?" className="h-full w-full object-contain" />
+    </button>
+    {games.map((game,n)=>(
+      <button key={game.id} type="button" onClick={()=>onGameSelect?.(game.id)} aria-label={game.label} title={game.label}
+       className="absolute pointer-events-auto flex aspect-square w-[clamp(75px,18vw,125px)] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border-4 border-amber-300 bg-gradient-to-b from-amber-100 to-yellow-500 shadow-[0_0_18px_rgba(255,215,60,.8)] transition-transform hover:scale-110 active:scale-95"
+       style={positions[n+1]}>
+       <span className="text-3xl sm:text-5xl">{game.emoji}</span><span className="px-1 text-center text-[10px] font-black text-amber-950 sm:text-sm">{game.label}</span>
+      </button>
     ))}
    </section>
   );
