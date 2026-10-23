@@ -66,7 +66,7 @@ function isAndroid() {
   return /Android/.test(navigator.userAgent);
 }
 
-export default function InstallShortcut({ compact = false }: { compact?: boolean }) {
+export default function InstallShortcut({ compact = false, headerTile = false }: { compact?: boolean; headerTile?: boolean }) {
   // Always show the clickable logo shortcut on the login screen
   const [installable, setInstallable] = useState<boolean>(
     typeof window !== "undefined" && !!window.__lemosDeferredInstall
@@ -133,6 +133,19 @@ export default function InstallShortcut({ compact = false }: { compact?: boolean
 
   if (!atalhoVisible) return null;
   const siteUrl = typeof window !== "undefined" ? `${window.location.origin}/` : "https://lemosapalavra.live/";
+
+  if (headerTile) return (
+    <div className="flex flex-col items-center">
+      <button type="button" onClick={handleClick} disabled={busy}
+        aria-label="Download do atalho Lemos a Palavra"
+        title="Baixar o atalho do Lemos a Palavra"
+        className="flex w-[132px] min-[390px]:w-[145px] sm:w-[190px] min-w-0 items-center gap-2 rounded-2xl border-[3px] border-amber-400 bg-gradient-to-br from-[#a9652c] via-[#794015] to-[#49250c] px-2 py-2 text-left text-amber-50 shadow-[0_4px_12px_rgba(0,0,0,.5)] transition-transform hover:scale-105 active:scale-95 disabled:opacity-60">
+        <Download aria-hidden="true" className="h-9 w-9 shrink-0 rounded-full border-2 border-amber-300 bg-amber-100/20 p-1.5 text-yellow-200 sm:h-11 sm:w-11" />
+        <span className="min-w-0 text-xs font-extrabold sm:text-sm">{busy ? "Preparando..." : "Dowload"}</span>
+      </button>
+      {done && <div role="status" className="mt-1 max-w-[220px] rounded-lg border border-amber-300 bg-[#102f4a]/95 p-2 text-xs text-white shadow-lg">{done}</div>}
+    </div>
+  );
 
   return (
     <div className={compact ? "flex flex-col items-center gap-2" : "mt-4 flex flex-col items-center gap-3"}>
