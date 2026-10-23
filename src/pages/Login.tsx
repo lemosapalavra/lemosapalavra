@@ -141,7 +141,7 @@ export default function Login() {
         <img
           src={loginBackground}
           alt="Imagem de boas-vindas da página de login do Lemos a Palavra"
-          className="absolute inset-0 h-full w-full object-cover object-center opacity-100"
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-80"
         />
         <div className="relative z-10 flex min-h-[100dvh] flex-col items-center px-4 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]">
           <div className="flex-1 min-h-[8vh]" />
