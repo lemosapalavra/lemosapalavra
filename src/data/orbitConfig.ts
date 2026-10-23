@@ -1,4 +1,3 @@
-import iconFaca from "@/assets/icon-atividades.png";
 import iconAssistir from "@/assets/home/veja.png.asset.json";
 import iconAtividades from "@/assets/home/faca.png.asset.json";
 import iconAlbum from "@/assets/home/album.png.asset.json";
@@ -12,14 +11,13 @@ export interface OrbitItem {
   hidden?: boolean;
 }
 
-const KEY = "lemos_orbit_config_v12";
+const KEY = "lemos_orbit_config_v13";
 
 export function defaultOrbit(): OrbitItem[] {
   return [
     { icon: iconAssistir.url, label: "VEJA", route: "/lemosplay" },
     { icon: iconOuca.url, label: "OUÇA", route: "/musicas" },
     { icon: iconAtividades.url, label: "APRENDA", route: "/atividades" },
-    { icon: iconFaca, label: "FAÇA", route: "/jogos" },
     { icon: iconAlbum.url, label: "ÁLBUM", route: "/album" },
   ];
 }
