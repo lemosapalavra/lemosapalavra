@@ -88,6 +88,10 @@ export default function InstallShortcut({ compact = false, headerTile = false }:
 
   const handleClick = async () => {
     if (headerTile) {
+      setDone("O download estará disponível somente para usuários de nível VIP. Ainda não está liberado.");
+      return;
+    }
+    if (false) {
       let profile = "";
       try {
         const user = JSON.parse(localStorage.getItem("lemos_user") || "null");
