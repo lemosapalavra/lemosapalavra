@@ -143,7 +143,7 @@ export default function InstallShortcut({ compact = false, headerTile = false }:
     <div className="flex flex-col items-center">
       <button type="button" onClick={handleClick} disabled={busy}
         aria-label="Informações sobre download" aria-expanded={!!done}
-        title="Baixar o atalho do Lemos a Palavra"
+        title="Download"
         className="flex w-[132px] min-[390px]:w-[145px] sm:w-[190px] min-w-0 items-center gap-2 rounded-2xl border-[3px] border-amber-400 bg-gradient-to-br from-[#a9652c] via-[#794015] to-[#49250c] px-2 py-2 text-left text-amber-50 shadow-[0_4px_12px_rgba(0,0,0,.5)] transition-transform hover:scale-105 active:scale-95 disabled:opacity-60">
         <Download aria-hidden="true" className="h-9 w-9 shrink-0 rounded-full border-2 border-amber-300 bg-amber-100/20 p-1.5 text-yellow-200 sm:h-11 sm:w-11" />
         <span className="min-w-0 text-xs font-extrabold sm:text-sm">{busy ? "Preparando..." : "Dowload"}</span>
@@ -170,7 +170,7 @@ export default function InstallShortcut({ compact = false, headerTile = false }:
           onClick={handleClick}
           disabled={busy}
           aria-label="Baixar atalho clicável da Lemos a Palavra"
-          title="Clique para baixar o atalho da Lemos a Palavra"
+          title="Download"
           className={`relative group border-0 bg-transparent shadow-none p-0 hover:bg-transparent hover:scale-110 hover:brightness-110 hover:shadow-[0_0_22px_rgba(255,255,255,.9)] active:scale-95 focus-visible:ring-4 focus-visible:ring-amber-400 transition-all duration-200 cursor-pointer disabled:opacity-60 ${compact ? "h-[88px] w-[88px] sm:h-[110px] sm:w-[110px]" : "h-32 w-32 sm:h-40 sm:w-40"}`}
         >
           <img loading="lazy" decoding="async"
