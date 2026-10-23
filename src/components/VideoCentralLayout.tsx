@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 import VideoSideActions from "@/components/VideoSideActions";
@@ -13,6 +13,10 @@ interface Props {
 
 export default function VideoCentralLayout({ title, subtitle, videos }: Props) {
   const [playing, setPlaying] = useState<BibleVideo | null>(null);
+  useEffect(() => {
+    document.body.classList.toggle("lemos-video-playing", Boolean(playing));
+    return () => document.body.classList.remove("lemos-video-playing");
+  }, [playing]);
   const [viewed, setViewed] = useState<Record<string, boolean>>(() => { try { return JSON.parse(localStorage.getItem("lemos_media_viewed") || "{}"); } catch { return {}; } });
   const [promptVideo, setPromptVideo] = useState<BibleVideo | null>(null);
   const [resumeTimes, setResumeTimes] = useState<Record<string, number>>(() => {
