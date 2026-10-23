@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 import DedicatoriaModal from "@/components/DedicatoriaModal";
-import InstallShortcut from "@/components/InstallShortcut";
 
 import HomeTopNav from "@/components/HomeTopNav";
 import EventBannerKart from "@/components/EventBannerKart";
@@ -19,7 +18,6 @@ import { loadOrbit } from "@/data/orbitConfig";
 const vejaFlutuante = "/veja-flutuante.webp";
 const oucaFlutuante = "/ouca-flutuante.webp";
 const aprendaFlutuante = "/aprenda-flutuante.webp";
-const facaFlutuante = "/faca-flutuante.webp";
 const albumFlutuante = "/album-flutuante.webp";
 
 export default function Index() {
@@ -97,15 +95,14 @@ function IndexV1() {
       </picture>
       <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
 
-      {/* Os cinco botões são áreas clicáveis sobre os ícones impressos na imagem.
+      {/* Os quatro botões são áreas clicáveis sobre os ícones impressos na imagem.
           A camada cobre a mesma área da imagem de fundo, incluindo o cabeçalho. */}
       <div className="absolute inset-0 z-20 pointer-events-none">
         {([
-          { label: "VEJA", image: vejaFlutuante, mobile: [52, 43], desktop: [50, 48] },
-          { label: "OUÇA", image: oucaFlutuante, mobile: [22, 57], desktop: [24, 61] },
-          { label: "APRENDA", image: aprendaFlutuante, mobile: [79, 57], desktop: [76, 61] },
-          { label: "FAÇA", image: facaFlutuante, mobile: [30, 71], desktop: [32, 74] },
-          { label: "ÁLBUM", image: albumFlutuante, mobile: [72, 71], desktop: [68, 74] },
+          { label: "VEJA", image: vejaFlutuante, mobile: [50, 44], desktop: [50, 48] },
+          { label: "OUÇA", image: oucaFlutuante, mobile: [24, 61], desktop: [26, 63] },
+          { label: "APRENDA", image: aprendaFlutuante, mobile: [76, 61], desktop: [74, 63] },
+          { label: "ÁLBUM", image: albumFlutuante, mobile: [50, 77], desktop: [50, 79] },
         ] as const).map(({ label, image, mobile, desktop }, index) => (
           <button
             key={label}
@@ -153,7 +150,6 @@ function IndexV1() {
       </main>
 
 
-      <div className="fixed bottom-3 left-[40%] -translate-x-1/2 z-[46] flex flex-col items-center animate-[homeIconFloat_3.8s_ease-in-out_infinite]"><InstallShortcut compact /></div>
       <DedicatoriaModal open={dedicatoriaOpen} onOpenChange={setDedicatoriaOpen} />
 
     </div>
