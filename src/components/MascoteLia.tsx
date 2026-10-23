@@ -1,3 +1,4 @@
+import { getLiaFeminineVoice } from "@/lib/liaVoice";
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX, X } from "lucide-react";
@@ -122,10 +123,12 @@ export default function MascoteLia() {
     window.speechSynthesis.cancel();
     const speech = new SpeechSynthesisUtterance(cleanSpeechText(message));
     speech.lang="pt-BR"; speech.rate=0.94; speech.pitch=1.18;
-    const voices=window.speechSynthesis.getVoices();
-    const portugueseVoices = voices.filter(v => /^pt(-|$)/i.test(v.lang));
-    const femaleVoice = portugueseVoices.find(v => /maria|francisca|luciana|helena|fernanda|camila|vitoria|vitória|female|feminina|mulher|google português do brasil/i.test(v.name));
-    speech.voice = femaleVoice || portugueseVoices.find(v => /^pt-BR/i.test(v.lang)) || portugueseVoices[0] || null;
+    const femaleVoice = getLiaFeminineVoice(window.speechSynthesis.getVoices());
+    if (!femaleVoice) {
+      window.alert("A voz feminina da LIA não está disponível neste aparelho. Ative uma voz feminina em português nas configurações de voz do dispositivo.");
+      return;
+    }
+    speech.voice = femaleVoice;
     speech.onend=speech.onerror=()=>{ if(speechRef.current===speech){speechRef.current=null;setSpeaking(false);} };
     speechRef.current=speech;setSpeaking(true);window.speechSynthesis.speak(speech);
   };
