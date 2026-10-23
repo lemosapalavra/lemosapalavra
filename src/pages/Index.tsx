@@ -90,10 +90,10 @@ function IndexV1() {
           A camada cobre a mesma área da imagem de fundo, incluindo o cabeçalho. */}
       <div className="absolute inset-0 z-20 pointer-events-none">
         {([
-          { label: "VEJA", image: vejaFlutuante, mobile: [50, 44], desktop: [50, 45] },
-          { label: "OUÇA", image: oucaFlutuante, mobile: [21, 56], desktop: [28, 56] },
-          { label: "APRENDA", image: aprendaFlutuante, mobile: [79, 56], desktop: [72, 56] },
-          { label: "ÁLBUM", image: albumFlutuante, mobile: [50, 69], desktop: [50, 68] },
+          { label: "VEJA", image: vejaFlutuante, mobile: [50, 48], desktop: [50, 49] },
+          { label: "OUÇA", image: oucaFlutuante, mobile: [21, 60], desktop: [28, 60] },
+          { label: "APRENDA", image: aprendaFlutuante, mobile: [79, 60], desktop: [72, 60] },
+          { label: "ÁLBUM", image: albumFlutuante, mobile: [50, 73], desktop: [50, 73] },
         ] as const).map(({ label, image, mobile, desktop }, index) => (
           <button
             key={label}
@@ -101,7 +101,7 @@ function IndexV1() {
             title={`Abrir ${label}`}
             aria-label={`Abrir ${label}`}
             onClick={() => handleItemClick(label)}
-            className="home-image-hotspot absolute pointer-events-auto z-20 w-[25%] max-w-[180px] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent cursor-pointer touch-manipulation focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-400"
+            className="home-image-hotspot group absolute pointer-events-auto z-20 w-[24%] max-w-[180px] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent cursor-pointer touch-manipulation transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-400"
             style={{
               left: `${mobile[0]}%`,
               top: `${mobile[1]}%`,
@@ -110,7 +110,7 @@ function IndexV1() {
               ["--float-delay" as string]: `${index * -0.65}s`,
             }}
           >
-            <img src={image} alt="" draggable={false} className="home-floating-icon block w-full h-full object-contain drop-shadow-[0_0_16px_rgba(255,218,70,.95)]" />
+            <img src={image} alt="" draggable={false} className="home-floating-icon block w-full h-full object-contain drop-shadow-[0_0_17px_rgba(255,218,70,.98)] group-hover:brightness-125 group-active:brightness-150" />
           </button>
         ))}
       </div>
@@ -125,7 +125,7 @@ function IndexV1() {
 
       <main className="relative z-10 w-full min-h-0 flex-1 flex flex-col items-center">
         <div className="w-full flex flex-col items-center">
-           {dedicatoriaVisible && <div className="fixed bottom-3 right-2 sm:right-5 z-[45] flex flex-col items-center animate-[homeIconFloat_3.8s_ease-in-out_infinite]">
+           {dedicatoriaVisible && <div className="fixed bottom-[calc(78px+env(safe-area-inset-bottom,0px))] right-2 sm:right-5 z-[95] flex flex-col items-center animate-[homeIconFloat_3.8s_ease-in-out_infinite]">
              <Button variant="ghost" size="icon"
               onClick={() => setDedicatoriaOpen(true)}
                 className="w-[88px] h-[88px] sm:w-[110px] sm:h-[110px] p-0 rounded-full border-[3px] border-white bg-transparent shadow-[0_0_0_2px_rgba(251,191,36,.8),0_5px_18px_rgba(0,0,0,.5)] hover:bg-transparent hover:scale-110 hover:brightness-110 hover:shadow-[0_0_30px_8px_rgba(255,225,90,.95)] active:scale-110 active:brightness-150 focus-visible:ring-4 focus-visible:ring-amber-400 transition-all duration-200 cursor-pointer"
