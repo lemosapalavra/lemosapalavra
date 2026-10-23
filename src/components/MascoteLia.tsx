@@ -32,6 +32,7 @@ const PAGE_TIPS: Record<string, string> = {
   "/atividades": "Bem-vindo ao Aprenda! 🌟 Escolha um jogo ou o desafio Quem Sou Eu? de hoje. Complete as atividades e ganhe moedinhas! 🪙",
   "/devocionais": "Oieee! 💖 Vamos ler o devocional de hoje? Leia e ganhe moedinhas! 🪙",
   "/pedidos-oracao": "Psiu! 🙏 Vamos conversar com Deus? Ore com carinho e ganhe moedinhas! 💛",
+  "/tesouros": "Tesouros da Palavra! 🏆 Aqui você acompanha seus status e descobre os materiais bíblicos que poderá desbloquear! ✨",
   "/album": "Este é o Álbum! 🎁 Use suas moedinhas para abrir pacotinhos e completar o Volume 1. O Volume 2 será liberado depois! 🌈",
   "/historias-do-dia": "Obaaa! 📚 Qual será a historinha de hoje? Vamos descobrir! ✨",
   "/historias-biblicas": "Era uma vez... 📖 Escolha uma história da Bíblia! 🌟",
