@@ -10,6 +10,13 @@ import { useEffect, useState } from "react";
 import MeuMural from "@/components/MeuMural";
 import { useCoins } from "@/hooks/useCoins";
 const iconUsuario = "/usuario.png";
+function profileStatus(user: Record<string, unknown> | null): string {
+  const raw = String(user?.status ?? user?.perfil ?? user?.profile ?? user?.role ?? user?.tipo ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+  if (raw === "vip") return "VIP";
+  if (raw === "familia" || raw === "family") return "Família";
+  if (raw === "amigos" || raw === "amigo" || raw === "friend") return "Amigos";
+  return "Visitante";
+}
 
 /** Compatibilidade com avatares salvos por nome nos cadastros antigos. */
 const avatarNames: Record<string, string> = {
@@ -38,7 +45,7 @@ export default function UserCorner() {
   const { coins } = useCoins();
   const pathname = useLocation().pathname;
   const onHome = pathname === "/";
-  const [user, setUser] = useState<{ name?: string; avatar?: string } | null>(null);
+  const [user, setUser] = useState<{ name?: string; avatar?: string; status?: string; perfil?: string; profile?: string; role?: string; tipo?: string } | null>(null);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -109,10 +116,9 @@ export default function UserCorner() {
             <span className="block text-[10px] sm:text-xs">{welcome}</span><span className="block font-extrabold text-yellow-200">🪙 {coins}</span>
           </span>
         </button>
-        {menu && <div className="flex flex-wrap justify-end gap-1 rounded-xl bg-white/95 p-1 shadow-lg">
+        {menu && <div className="flex flex-col items-end gap-2 rounded-xl bg-white/95 p-2 shadow-lg">\n          <div className="w-full rounded-lg border border-amber-400 bg-amber-50 px-3 py-2 text-center text-sm font-bold text-amber-950">Seu status: {profileStatus(user)}</div>\n          <div className="flex flex-wrap justify-end gap-1">
           <Button size="sm" variant="outline" onClick={() => { setOpen(true); setMenu(false); }}>Meu Mural</Button>
-          <Button size="sm" variant="destructive" onClick={logout}>Sair</Button>
-        </div>}
+          <Button size="sm" variant="destructive" onClick={logout}>Sair</Button>\n          </div>\n        </div>}
       </div>
       <MeuMural open={open} onClose={() => setOpen(false)} />
     </>
