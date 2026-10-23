@@ -35,7 +35,7 @@ export default function LemosBottomNav() {
   if (pathname === "/login" || pathname === "/login-sms") return null;
 
   return createPortal(
-    <nav aria-label="Menu principal Lemos a Palavra" className="fixed inset-x-0 bottom-0 z-[9999] border-t-[3px] border-amber-400 bg-gradient-to-br from-[#a9652c] via-[#794015] to-[#49250c] shadow-[0_-4px_16px_rgba(0,0,0,.5)]" style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
+    <nav data-lemos-bottom-nav="" aria-label="Menu principal Lemos a Palavra" className="fixed inset-x-0 bottom-0 z-[9999] border-t-[3px] border-amber-400 bg-gradient-to-br from-[#a9652c] via-[#794015] to-[#49250c] shadow-[0_-4px_16px_rgba(0,0,0,.5)]" style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
       <div className="mx-auto flex h-[65px] max-w-[640px] items-stretch justify-around">
         {items.filter(item => isAdmin || item.label !== "Adm").map(({ label, path, Icon }) => (
           <NavLink key={path} to={path} end={path === "/"} aria-label={label}
