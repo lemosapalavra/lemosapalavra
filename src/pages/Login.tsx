@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import loginBackground from "@/assets/login-optimized.webp";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
@@ -10,6 +10,22 @@ export default function Login() {
   const [busy, setBusy] = useState<"google" | null>(null);
   const [pressed, setPressed] = useState<"google" | null>(null);
   const navigate = useNavigate();
+  const [checkingSession, setCheckingSession] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    const timeout = window.setTimeout(() => { if (active) setCheckingSession(false); }, 12000);
+    void supabase.auth.getSession().then(({ data }) => {
+      if (!active) return;
+      window.clearTimeout(timeout);
+      if (data.session?.user) navigate("/", { replace: true });
+      else setCheckingSession(false);
+    }).catch(() => { if (active) setCheckingSession(false); });
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (active && session?.user) navigate("/", { replace: true });
+    });
+    return () => { active = false; window.clearTimeout(timeout); listener.subscription.unsubscribe(); };
+  }, [navigate]);
 
   const playTap = () => {
     try {
@@ -73,18 +89,18 @@ export default function Login() {
         <div className="relative z-10 flex min-h-[100dvh] flex-col items-center px-4 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]">
           <div className="flex-1 min-h-[24vh]" />
           <style>{`
-            @keyframes loginIconFloat { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-12px) rotate(3deg); } }
-            @keyframes loginIconGlow { 0%,100% { box-shadow: 0 5px 15px rgba(0,0,0,.45), 0 0 10px rgba(255,214,65,.55); } 50% { box-shadow: 0 10px 22px rgba(0,0,0,.35), 0 0 24px rgba(255,214,65,.9); } }
+            @keyframes loginIconFloat { 0%,100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(255,255,255,.3)); } 50% { transform: scale(1.12); filter: drop-shadow(0 0 18px rgba(255,215,70,.9)); } }
+            @keyframes loginIconGlow { 0%,100% { opacity: 1; } 50% { opacity: .96; } }
             @keyframes loginIconPop { 0% { transform: scale(1); } 35% { transform: scale(.86) rotate(-8deg); } 65% { transform: scale(1.2) rotate(6deg); } 100% { transform: scale(1); } }
             .google-login-floating { animation: loginIconFloat 2.6s ease-in-out infinite, loginIconGlow 2.6s ease-in-out infinite; will-change: transform; }
             .google-login-pressed { animation: loginIconPop .55s ease-out, loginIconGlow 2.6s ease-in-out infinite; }
             @media (prefers-reduced-motion: reduce) { .login-motion { animation: none !important; } }
           `}</style>
-          <section className="relative -translate-y-[clamp(3rem,10dvh,7rem)] mx-auto w-fit rounded-3xl border border-white/30 bg-[#123a2f]/40 px-4 py-3 shadow-2xl backdrop-blur-sm" aria-label="Escolha a forma de entrar">
+          <section className="relative -translate-y-[clamp(3rem,10dvh,7rem)] mx-auto w-fit px-4 py-3" aria-label="Escolha a forma de entrar">
             <div className="flex items-start justify-center gap-5 sm:gap-8">
-              <button type="button" disabled={busy !== null} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google"
+              <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google"
                 className="group flex w-20 items-center justify-center text-white disabled:opacity-80">
-                <span className={`login-motion flex h-[72px] w-[72px] items-center justify-center rounded-full border-[3px] border-amber-300 bg-white shadow-[0_5px_15px_rgba(0,0,0,.45)] transition-transform group-hover:scale-110 group-active:scale-95 sm:h-20 sm:w-20 ${pressed === "google" ? "google-login-pressed" : "google-login-floating"}`}>
+                <span className={`login-motion flex h-[72px] w-[72px] items-center justify-center rounded-full bg-transparent transition-transform group-hover:scale-110 group-active:scale-95 sm:h-20 sm:w-20 ${pressed === "google" ? "google-login-pressed" : "google-login-floating"}`}>
                   <svg viewBox="0 0 48 48" className="h-11 w-11" aria-hidden="true">
                     <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5Z"/>
                     <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.28 5.48-4.81 7.18l7.73 6C44.37 38.03 46.98 31.88 46.98 24.55Z"/>
