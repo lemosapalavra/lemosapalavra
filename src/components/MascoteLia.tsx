@@ -64,7 +64,6 @@ const CONTEXT_TIPS: Record<string, string> = {
 
 export default function MascoteLia() {
   const location = useLocation();
-  const isHome = location.pathname === "/";
   
   const [expanded, setExpanded] = useState(false);
   const [speaking,setSpeaking] = useState(false);
@@ -127,15 +126,13 @@ export default function MascoteLia() {
   };
   const avatar = liaForPages;
   const liaVisible = useIconVisible("lia");
-  const liaPosition = "bottom-[calc(78px+env(safe-area-inset-bottom,0px))] sm:bottom-[calc(85px+env(safe-area-inset-bottom,0px))]";
+  const liaPosition = "bottom-[calc(80px+env(safe-area-inset-bottom,0px))] sm:bottom-[calc(85px+env(safe-area-inset-bottom,0px))]";
 
   if (!liaVisible) return null;
 
-  if (isHome && !expanded) return null;
-
   if (!expanded) {
     return (
-      <div className={`fixed left-2 z-[120] flex flex-col items-center gap-2 sm:left-4 ${liaPosition}`}>
+      <div className={`fixed right-2 z-[120] flex flex-col items-center gap-2 sm:right-4 ${liaPosition}`}>
       <Button variant="ghost"
         onMouseEnter={(event) => { if ((event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(true); }}
         onFocus={() => setExpanded(true)}
@@ -159,16 +156,15 @@ export default function MascoteLia() {
 
   return (
     <div onMouseLeave={(event) => { if ((event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(false); }}
-      className={`fixed left-2 z-[120] flex flex-col items-start gap-1 sm:left-4 ${liaPosition}`}>
+      className={`fixed right-2 z-[120] flex flex-col items-end gap-1 sm:right-4 ${liaPosition}`}>
       {/* Balão acima da cabeça da LIA */}
-      {isHome && <button type="button" aria-label="Fechar fala da LIA" onClick={() => {setExpanded(false); window.speechSynthesis?.cancel(); setSpeaking(false);}} className="self-end rounded-full bg-amber-300 px-3 py-1 text-sm font-bold text-amber-950">Fechar ×</button>}
-      <div className="pointer-events-auto relative w-[78vw] max-w-sm rounded-2xl bg-white/95 backdrop-blur border-2 border-amber-300 shadow-xl px-3 py-2">
+      <div className="pointer-events-auto relative w-[min(78vw,320px)] max-w-sm rounded-2xl bg-white/95 backdrop-blur border-2 border-amber-300 shadow-xl px-3 py-2">
         <p className="font-body text-[15px] sm:text-base text-amber-900 leading-relaxed">{message}</p>
         <button type="button" onClick={toggleSpeech} aria-label={speaking?"Parar fala da LIA":"Ouvir fala da LIA"} className="mt-2 flex items-center gap-2 rounded-lg bg-amber-200 px-3 py-1.5 text-sm font-bold text-amber-950">{speaking?<VolumeX size={18}/>:<Volume2 size={18}/>} {speaking?"Parar":"Ouvir a LIA"}</button>
-        <span className="absolute left-6 -bottom-2 w-3 h-3 rotate-45 bg-white border-r-2 border-b-2 border-amber-300" />
+        <span className="absolute right-6 -bottom-2 w-3 h-3 rotate-45 bg-white border-r-2 border-b-2 border-amber-300" />
       </div>
 
-      <div className={`flex flex-col items-center gap-2 ${isHome ? "hidden" : ""}`}>
+      <div className="flex flex-col items-center gap-2">
       <Button variant="ghost"
         onClick={() => { setExpanded(false); window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }}
         aria-label="Recolher a LIA"
