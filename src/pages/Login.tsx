@@ -142,11 +142,17 @@ export default function Login() {
             @keyframes loginIconPop { 0% { transform: scale(1); } 35% { transform: scale(.86) rotate(-8deg); } 65% { transform: scale(1.2) rotate(6deg); } 100% { transform: scale(1); } }
             .google-login-floating { animation: loginIconFloat 2.6s ease-in-out infinite, loginIconGlow 2.6s ease-in-out infinite; will-change: transform; }
             .google-login-pressed { animation: loginIconPop .55s ease-out, loginIconGlow 2.6s ease-in-out infinite; }
-            @media (prefers-reduced-motion: reduce) { .login-motion { animation: none !important; } }
+            @keyframes loginArtworkFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+            @keyframes loginSparkle { 0%,100% { opacity: .25; transform: scale(.92); } 50% { opacity: .9; transform: scale(1.13); } }
+            .login-artwork-float { animation: loginArtworkFloat 3s ease-in-out infinite; }
+            .login-sparkle { animation: loginSparkle 2.4s ease-in-out infinite; }
+            @media (prefers-reduced-motion: reduce) { .login-motion, .login-artwork-float, .login-sparkle { animation: none !important; } }
           `}</style>
           <section className="relative z-20 mt-auto w-[min(96vw,520px)] max-w-full" aria-label="Escolha como entrar e conheça a LIA">
             <div className="relative w-full">
-              <img src="/Login%20LIA%20Interativo.webp" alt="LIA com os ícones de acesso Google e e-mail e o balão Posso Ajudar?" className="pointer-events-none block h-auto w-full select-none object-contain" draggable={false} />
+              <img src="/Login%20LIA%20Interativo.webp" alt="LIA com os ícones de acesso Google e e-mail e o balão Posso Ajudar?" className="login-artwork-float pointer-events-none block h-auto w-full select-none object-contain" draggable={false} />
+              <span aria-hidden="true" className="login-sparkle pointer-events-none absolute left-[8%] top-[3%] h-[26%] w-[36%] rounded-full shadow-[0_0_24px_8px_rgba(255,220,60,.38)]" />
+              <span aria-hidden="true" className="login-sparkle pointer-events-none absolute left-[56%] top-[3%] h-[26%] w-[36%] rounded-full shadow-[0_0_24px_8px_rgba(255,220,60,.38)]" style={{ animationDelay: "1.2s" }} />
               <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google"
                 className={`login-motion absolute left-[5%] top-[2%] z-20 h-[29%] w-[42%] rounded-full bg-transparent transition-transform hover:scale-105 active:scale-95 disabled:opacity-60 ${pressed === "google" ? "google-login-pressed" : "google-login-floating"}`} />
               <button type="button" disabled={busy !== null || checkingSession} onClick={() => { playTap(); setEmailLoginOpen(value => !value); }} aria-label="Entrar por e-mail" title="Entrar por e-mail"
