@@ -128,7 +128,7 @@ export default function Login() {
             <div className="flex items-start justify-center gap-8 sm:gap-12">
               <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google"
                 className="group flex w-20 items-center justify-center text-white disabled:opacity-80">
-                <span className={`login-motion flex h-[72px] w-[72px] items-center justify-center rounded-full bg-transparent transition-transform group-hover:scale-110 group-active:scale-95 sm:h-20 sm:w-20 ${pressed === "google" ? "google-login-pressed" : "google-login-floating"}`}>
+                <span className={`login-motion flex h-[72px] w-[72px] items-center justify-center rounded-full border-[3px] border-white bg-white/20 shadow-[0_0_0_2px_rgba(255,215,85,.9),0_0_16px_5px_rgba(255,255,255,.9),0_0_28px_9px_rgba(255,210,65,.65),0_5px_12px_rgba(0,0,0,.45)] backdrop-blur-[2px] transition-transform group-hover:scale-110 group-active:scale-95 sm:h-20 sm:w-20 ${pressed === "google" ? "google-login-pressed" : "google-login-floating"}`}>
                   <svg viewBox="0 0 48 48" className="h-11 w-11" aria-hidden="true">
                     <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5Z"/>
                     <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.28 5.48-4.81 7.18l7.73 6C44.37 38.03 46.98 31.88 46.98 24.55Z"/>
@@ -139,7 +139,7 @@ export default function Login() {
 
               </button>
               <button type="button" disabled={busy !== null || checkingSession} onClick={() => { playTap(); setEmailLoginOpen(value => !value); }} aria-label="Entrar por e-mail" title="Entrar por e-mail" className="group flex w-20 items-center justify-center disabled:opacity-60">
-                <span className="login-motion google-login-floating flex h-[72px] w-[72px] items-center justify-center rounded-full bg-transparent transition-transform group-hover:scale-110 group-active:scale-95 sm:h-20 sm:w-20">
+                <span className="login-motion google-login-floating flex h-[72px] w-[72px] items-center justify-center rounded-full border-[3px] border-white bg-white/20 shadow-[0_0_0_2px_rgba(255,215,85,.9),0_0_16px_5px_rgba(255,255,255,.9),0_0_28px_9px_rgba(255,210,65,.65),0_5px_12px_rgba(0,0,0,.45)] backdrop-blur-[2px] transition-transform group-hover:scale-110 group-active:scale-95 sm:h-20 sm:w-20">
                   <svg viewBox="0 0 64 64" className="h-[62px] w-[62px]" aria-hidden="true">
                     <circle cx="32" cy="32" r="29" fill="#ffffff" stroke="#f9cc56" strokeWidth="3" />
                     <rect x="12" y="19" width="40" height="27" rx="5" fill="#4285F4" />
