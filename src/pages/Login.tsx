@@ -132,7 +132,7 @@ export default function Login() {
         <img
           src={loginBackground}
           alt="Imagem de boas-vindas da página de login do Lemos a Palavra"
-          className="absolute inset-0 h-full w-full object-cover object-center"
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-80"
         />
         <div className="relative z-10 flex min-h-[100dvh] flex-col items-center px-4 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]">
           <div className="flex-1 min-h-[8vh]" />
@@ -142,6 +142,9 @@ export default function Login() {
             @keyframes loginIconPop { 0% { transform: scale(1); } 35% { transform: scale(.86) rotate(-8deg); } 65% { transform: scale(1.2) rotate(6deg); } 100% { transform: scale(1); } }
             .google-login-floating { animation: loginIconFloat 2.6s ease-in-out infinite, loginIconGlow 2.6s ease-in-out infinite; will-change: transform; }
             .google-login-pressed { animation: loginIconPop .55s ease-out, loginIconGlow 2.6s ease-in-out infinite; }
+            @keyframes loginRingPulse { 0%,100% { transform: scale(.96); opacity: .75; box-shadow: 0 0 12px 3px rgba(255,213,50,.65), inset 0 0 9px rgba(255,247,150,.65); } 50% { transform: scale(1.13); opacity: 1; box-shadow: 0 0 28px 10px rgba(255,220,60,.95), inset 0 0 18px rgba(255,255,190,.9); } }
+            .login-glow-ring::before { content: ""; position: absolute; inset: 1px; border-radius: 9999px; border: 3px solid rgba(255,220,65,.95); pointer-events: none; animation: loginRingPulse 2.6s ease-in-out infinite; }
+            .login-glow-ring::after { content: "✦"; position: absolute; right: 0; top: -14px; color: #fff8a5; font-size: 25px; text-shadow: 0 0 9px #fff, 0 0 18px #ffd700; pointer-events: none; animation: loginSparkle 2.4s ease-in-out infinite; }
             @keyframes loginArtworkFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
             @keyframes loginSparkle { 0%,100% { opacity: .25; transform: scale(.92); } 50% { opacity: .9; transform: scale(1.13); } }
             .login-artwork-float { animation: loginArtworkFloat 3s ease-in-out infinite; }
@@ -152,8 +155,8 @@ export default function Login() {
             {/* Os ícones superiores já fazem parte da arte de fundo.
                 Áreas de toque independentes evitam duplicar Google e e-mail. */}
             <div className="pointer-events-none absolute inset-x-0 top-[-38vh] z-30 mx-auto flex w-[min(76vw,330px)] items-center justify-between">
-              <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google" className="login-motion pointer-events-auto google-login-floating h-[clamp(68px,21vw,108px)] w-[clamp(68px,21vw,108px)] rounded-full border-0 bg-transparent shadow-[0_0_18px_5px_rgba(255,220,75,.24)] disabled:opacity-60" />
-              <button type="button" disabled={busy !== null || checkingSession} onClick={() => { playTap(); setEmailLoginOpen(value => !value); }} aria-label="Entrar por e-mail" title="Entrar por e-mail" className="login-motion pointer-events-auto google-login-floating h-[clamp(68px,21vw,108px)] w-[clamp(68px,21vw,108px)] rounded-full border-0 bg-transparent shadow-[0_0_18px_5px_rgba(255,220,75,.24)] disabled:opacity-60" style={{ animationDelay: ".7s" }} />
+              <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google" className="login-motion pointer-events-auto login-glow-ring relative h-[clamp(68px,21vw,108px)] w-[clamp(68px,21vw,108px)] rounded-full border-0 bg-transparent transition-transform hover:scale-110 active:scale-95 disabled:opacity-60" />
+              <button type="button" disabled={busy !== null || checkingSession} onClick={() => { playTap(); setEmailLoginOpen(value => !value); }} aria-label="Entrar por e-mail" title="Entrar por e-mail" className="login-motion pointer-events-auto login-glow-ring relative h-[clamp(68px,21vw,108px)] w-[clamp(68px,21vw,108px)] rounded-full border-0 bg-transparent shadow-[0_0_18px_5px_rgba(255,220,75,.24)] disabled:opacity-60" style={{ animationDelay: ".7s" }} />
             </div>
             <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA — Posso Ajudar?" title="Posso Ajudar?" className="group relative mt-3 w-[min(62vw,245px)] border-0 bg-transparent p-0">
               <img src="/LIA%20Posso%20Ajudar.webp" alt="LIA — Posso Ajudar?" className="login-artwork-float login-motion h-auto w-full object-contain drop-shadow-[0_0_10px_rgba(255,215,75,.5)] group-hover:brightness-110" />
