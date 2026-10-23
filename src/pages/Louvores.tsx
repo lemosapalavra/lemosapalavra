@@ -165,7 +165,34 @@ export default function Louvores() {
       <main className="max-w-7xl mx-auto py-7 sm:py-10">
         {renderSection("Músicas", musicas, "musicas")}
         {renderSection("Louvores", louvores, "louvores")}
+        {renderHiddenSection()}
       </main>
+      {askingPassword && (
+        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4" onClick={() => setAskingPassword(false)}>
+          <div className="w-full max-w-sm rounded-2xl bg-zinc-900 p-6 shadow-xl border border-amber-300/30" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center gap-2 mb-3">
+              <Lock className="w-6 h-6 text-amber-300" />
+              <h3 className="font-display text-xl font-bold">Vídeos ocultos</h3>
+            </div>
+            <p className="text-sm text-zinc-300 mb-4">Digite a senha mestra para assistir a estes vídeos.</p>
+            <input
+              type="password"
+              inputMode="numeric"
+              autoFocus
+              value={password}
+              onChange={e => { setPassword(e.target.value); setPasswordError(false); }}
+              onKeyDown={e => { if (e.key === "Enter") tryUnlock(); }}
+              placeholder="Senha mestra"
+              className={`w-full rounded-lg bg-zinc-800 px-4 py-3 text-white placeholder-zinc-500 outline-none border ${passwordError ? "border-red-500" : "border-zinc-700 focus:border-amber-300"}`}
+            />
+            {passwordError && <p className="mt-2 text-sm text-red-400 font-semibold">Senha incorreta. Tente novamente.</p>}
+            <div className="mt-4 flex gap-2">
+              <button onClick={tryUnlock} className="flex-1 rounded-full bg-amber-300 px-5 py-2.5 font-bold text-zinc-900 hover:bg-amber-200 transition">Desbloquear</button>
+              <button onClick={() => setAskingPassword(false)} className="rounded-full bg-zinc-700 px-5 py-2.5 font-bold text-white hover:bg-zinc-600 transition">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
