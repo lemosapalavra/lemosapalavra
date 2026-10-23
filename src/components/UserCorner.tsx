@@ -116,9 +116,13 @@ export default function UserCorner() {
             <span className="block text-[10px] sm:text-xs">{welcome}</span><span className="block font-extrabold text-yellow-200">🪙 {coins}</span>
           </span>
         </button>
-        {menu && <div className="flex flex-col items-end gap-2 rounded-xl bg-white/95 p-2 shadow-lg">\n          <div className="w-full rounded-lg border border-amber-400 bg-amber-50 px-3 py-2 text-center text-sm font-bold text-amber-950">Seu status: {profileStatus(user)}</div>\n          <div className="flex flex-wrap justify-end gap-1">
+        {menu && <div className="flex flex-col items-end gap-2 rounded-xl bg-white/95 p-2 shadow-lg">
+          <div className="w-full px-1 py-1 text-center text-sm font-bold text-amber-950">Status: {profileStatus(user)}</div>
+          <div className="flex flex-wrap justify-end gap-1">
           <Button size="sm" variant="outline" onClick={() => { setOpen(true); setMenu(false); }}>Meu Mural</Button>
-          <Button size="sm" variant="destructive" onClick={logout}>Sair</Button>\n          </div>\n        </div>}
+          <Button size="sm" variant="destructive" onClick={logout}>Sair</Button>
+          </div>
+        </div>}
       </div>
       <MeuMural open={open} onClose={() => setOpen(false)} />
     </>
