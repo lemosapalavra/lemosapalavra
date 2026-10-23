@@ -1,5 +1,6 @@
 import { useIconVisible } from "@/lib/iconVisibility";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Volume2, VolumeX } from "lucide-react";
 import { useLocation } from "react-router-dom";
 const lia1 = "/lia-mascote.png";
 const lia2 = "/lia-mascote.png";
@@ -17,7 +18,7 @@ import { Button } from "@/components/ui/button";
  */
 
 const PAGE_TIPS: Record<string, string> = {
-  "/": "Oieee! 💛 Se quiser, baixe o atalho! 📲",
+  "/": "Oieee! 💛 Escolha Veja, Ouça, Aprenda ou Álbum para começar nossa aventura! ✨",
   "/biblia": "Obaaa! 📖 Escolha uma história da Bíblia! Vamos descobrir juntos? ✨",
   "/louvores": "Lá, lá, lá! 🎶 Escolha um louvor e cante comigo! 🎤",
   "/veja": "Pipoca pronta? 🍿 Escolha um vídeo! Assista e ganhe moedinhas! 🪙",
@@ -66,10 +67,13 @@ export default function MascoteLia() {
   const isHome = location.pathname === "/";
   const isAlbum = location.pathname.startsWith("/album");
   const [expanded, setExpanded] = useState(false);
+  const [speaking,setSpeaking] = useState(false);
+  const speechRef = useRef<SpeechSynthesisUtterance | null>(null);
   const [context, setContext] = useState<string | null>(null);
 
   // Recolhe ao trocar de página
-  useEffect(() => { setExpanded(false); setContext(null); }, [location.pathname]);
+  useEffect(() => { setExpanded(false); setContext(null); window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }, [location.pathname]);
+  useEffect(() => () => window.speechSynthesis?.cancel(), []);
 
   useEffect(() => {
     const onCtx = (e: Event) => setContext(((e as CustomEvent).detail as string) || null);
@@ -104,6 +108,17 @@ export default function MascoteLia() {
     ? PAGE_TIPS[location.pathname]
     : activityMessage || (currentContext && CONTEXT_TIPS[currentContext]) || PAGE_TIPS[location.pathname] || (!logged ? LOGIN_TIP : PAGE_TIPS["/"]);
 
+  const toggleSpeech = () => {
+    if (!("speechSynthesis" in window)) return;
+    if (speaking) { window.speechSynthesis.cancel(); speechRef.current=null; setSpeaking(false); return; }
+    window.speechSynthesis.cancel();
+    const speech = new SpeechSynthesisUtterance(message);
+    speech.lang="pt-BR"; speech.rate=0.94;
+    const voices=window.speechSynthesis.getVoices();
+    speech.voice=voices.find(v=>/^pt-BR/i.test(v.lang)) || voices.find(v=>/^pt/i.test(v.lang)) || null;
+    speech.onend=speech.onerror=()=>{ if(speechRef.current===speech){speechRef.current=null;setSpeaking(false);} };
+    speechRef.current=speech;setSpeaking(true);window.speechSynthesis.speak(speech);
+  };
   const avatar = isHome && !context ? lia1 : lia2;
   const liaVisible = useIconVisible("lia");
   const liaPosition = isAlbum ? "bottom-3 sm:bottom-4" : "bottom-3";
@@ -112,7 +127,7 @@ export default function MascoteLia() {
 
   if (!expanded) {
     return (
-      <div className={`fixed left-2 z-[45] flex flex-col items-center gap-2 sm:left-4 ${liaPosition}`}>
+      <div className={`fixed left-2 z-[90] flex flex-col items-center gap-2 sm:left-4 ${liaPosition}`}>
       <Button variant="ghost"
         onMouseEnter={(event) => { if ((event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(true); }}
         onFocus={() => setExpanded(true)}
@@ -140,12 +155,13 @@ export default function MascoteLia() {
       {/* Balão acima da cabeça da LIA */}
       <div className="pointer-events-auto relative w-[78vw] max-w-sm rounded-2xl bg-white/95 backdrop-blur border-2 border-amber-300 shadow-xl px-3 py-2">
         <p className="font-body text-[15px] sm:text-base text-amber-900 leading-relaxed">{message}</p>
+        <button type="button" onClick={toggleSpeech} aria-label={speaking?"Parar fala da LIA":"Ouvir fala da LIA"} className="mt-2 flex items-center gap-2 rounded-lg bg-amber-200 px-3 py-1.5 text-sm font-bold text-amber-950">{speaking?<VolumeX size={18}/>:<Volume2 size={18}/>} {speaking?"Parar":"Ouvir a LIA"}</button>
         <span className="absolute left-6 -bottom-2 w-3 h-3 rotate-45 bg-white border-r-2 border-b-2 border-amber-300" />
       </div>
 
       <div className="flex flex-col items-center gap-2">
       <Button variant="ghost"
-        onClick={() => setExpanded(false)}
+        onClick={() => { setExpanded(false); window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }}
         aria-label="Recolher a LIA"
         title="Toque para recolher a LIA"
         className="pointer-events-auto h-auto flex-col transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:ring-4 focus-visible:ring-yellow-400"
