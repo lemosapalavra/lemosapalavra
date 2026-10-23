@@ -144,7 +144,7 @@ export default function Login() {
             .google-login-pressed { animation: loginIconPop .55s ease-out, loginIconGlow 2.6s ease-in-out infinite; }
             @media (prefers-reduced-motion: reduce) { .login-motion { animation: none !important; } }
           `}</style>
-          <section className="relative -translate-y-[clamp(3rem,10dvh,7rem)] mx-auto w-fit px-4 py-3" aria-label="Escolha a forma de entrar">
+          <section className="relative mx-auto flex w-fit flex-col items-center px-4 pt-3 pb-0" aria-label="Escolha a forma de entrar">
             <div className="flex items-start justify-center gap-8 sm:gap-12">
               <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google"
                 className="group flex w-20 items-center justify-center text-white disabled:opacity-80">
@@ -198,6 +198,7 @@ export default function Login() {
               </form>
             )}
           </section>
+          <div className="flex-1 min-h-0" />
         </div>
       </div>
     </main>
