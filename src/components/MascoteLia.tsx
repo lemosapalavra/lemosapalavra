@@ -2,8 +2,8 @@ import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { useLocation } from "react-router-dom";
-const lia1 = "/lia-mascote.png";
-const lia2 = "/lia-mascote.png";
+const liaForPages = "/lia-paginas.webp";
+const liaFallback = "/lia-mascote.png";
 import { Button } from "@/components/ui/button";
 
 /**
@@ -19,17 +19,17 @@ import { Button } from "@/components/ui/button";
 
 const PAGE_TIPS: Record<string, string> = {
   "/": "Oieee! 💛 Escolha Veja, Ouça, Aprenda ou Álbum para começar nossa aventura! ✨",
-  "/biblia": "Obaaa! 📖 Escolha uma história da Bíblia! Vamos descobrir juntos? ✨",
+  "/biblia": "Aqui você encontra a Bíblia! 📖 Escolha o Antigo ou o Novo Testamento para descobrir a Palavra de Deus. 💛",
   "/louvores": "Lá, lá, lá! 🎶 Escolha um louvor e cante comigo! 🎤",
   "/veja": "Pipoca pronta? 🍿 Escolha um vídeo! Assista e ganhe moedinhas! 🪙",
   "/ouca": "Ouviu a música? 🎵 Escolha um louvor e cante comigo! 💛",
   "/musicas": "Iupiii! 🎤 Escolha uma música e solte a voz! 🎶",
   "/lemosplay": "Ebaaa, cinema! 🎬 Escolha um vídeo, assista e ganhe moedinhas! 🪙",
-  "/jogos": "Obaaa, brincadeira! 🧩 Escolha um jogo, complete e ganhe moedinhas! 🪙",
-  "/atividades": "Ei, detetive! 🔎 Escolha uma tarefa, termine e ganhe moedinhas! 🪙",
+  "/jogos": "Vamos brincar e aprender! 🧩 Escolha Memória, Quiz, Quebra-Cabeça ou Palavras. Depois volte ao Aprenda para mais descobertas! ✨",
+  "/atividades": "Bem-vindo ao Aprenda! 🌟 Escolha um jogo ou o desafio Quem Sou Eu? de hoje. Complete as atividades e ganhe moedinhas! 🪙",
   "/devocionais": "Oieee! 💖 Vamos ler o devocional de hoje? Leia e ganhe moedinhas! 🪙",
   "/pedidos-oracao": "Psiu! 🙏 Vamos conversar com Deus? Ore com carinho e ganhe moedinhas! 💛",
-  "/album": "Uau, figurinhas! 🎁 Junte moedinhas, abra pacotinhos e complete seu álbum! 🌈",
+  "/album": "Este é o Álbum! 🎁 Use suas moedinhas para abrir pacotinhos e completar o Volume 1. O Volume 2 será liberado depois! 🌈",
   "/historias-do-dia": "Obaaa! 📚 Qual será a historinha de hoje? Vamos descobrir! ✨",
   "/historias-biblicas": "Era uma vez... 📖 Escolha uma história da Bíblia! 🌟",
   "/login": "Oieee! 💛 Já tem conta? Entre! É novo? Vamos nos cadastrar! 🎈",
@@ -64,7 +64,6 @@ const CONTEXT_TIPS: Record<string, string> = {
 
 export default function MascoteLia() {
   const location = useLocation();
-  const isHome = location.pathname === "/";
   const isAlbum = location.pathname.startsWith("/album");
   const [expanded, setExpanded] = useState(false);
   const [speaking,setSpeaking] = useState(false);
@@ -119,7 +118,7 @@ export default function MascoteLia() {
     speech.onend=speech.onerror=()=>{ if(speechRef.current===speech){speechRef.current=null;setSpeaking(false);} };
     speechRef.current=speech;setSpeaking(true);window.speechSynthesis.speak(speech);
   };
-  const avatar = isHome && !context ? lia1 : lia2;
+  const avatar = liaForPages;
   const liaVisible = useIconVisible("lia");
   const liaPosition = isAlbum ? "bottom-3 sm:bottom-4" : "bottom-3";
 
@@ -137,7 +136,7 @@ export default function MascoteLia() {
         className="h-auto flex flex-col items-center gap-1 transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:ring-4 focus-visible:ring-yellow-400"
       >
         <span className="w-[88px] h-[88px] sm:w-[110px] sm:h-[110px] rounded-full bg-white shadow-[0_5px_18px_rgba(120,58,8,.65),0_0_0_3px_rgba(255,217,87,.65)] border-[3px] border-amber-400 overflow-hidden block animate-[liaFloat_3.4s_ease-in-out_infinite]">
-          <img src={avatar} alt="LIA" className="w-full h-full object-contain object-center" loading="lazy" />
+          <img src={avatar} alt="LIA" className="w-full h-full object-contain object-center" loading="eager" onError={(e) => { if (e.currentTarget.src.endsWith("lia-paginas.webp")) e.currentTarget.src = liaFallback; }} />
         </span>
         <span className="font-display font-extrabold text-[11px] sm:text-xs text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap">
           Oi, sou a LIA
@@ -151,7 +150,7 @@ export default function MascoteLia() {
 
   return (
     <div onMouseLeave={(event) => { if ((event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(false); }}
-      className={`fixed left-2 z-[45] flex flex-col items-start gap-1 sm:left-4 ${liaPosition}`}>
+      className={`fixed left-2 z-[90] flex flex-col items-start gap-1 sm:left-4 ${liaPosition}`}>
       {/* Balão acima da cabeça da LIA */}
       <div className="pointer-events-auto relative w-[78vw] max-w-sm rounded-2xl bg-white/95 backdrop-blur border-2 border-amber-300 shadow-xl px-3 py-2">
         <p className="font-body text-[15px] sm:text-base text-amber-900 leading-relaxed">{message}</p>
@@ -170,6 +169,7 @@ export default function MascoteLia() {
           src={avatar}
           alt="LIA, a mascote que ajuda você a navegar"
           className="w-[88px] h-[88px] sm:w-[110px] sm:h-[110px] object-cover object-top rounded-full border-[3px] border-amber-400 shadow-[0_5px_18px_rgba(120,58,8,.65),0_0_0_3px_rgba(255,217,87,.65)] animate-[liaFloat_3.4s_ease-in-out_infinite] select-none"
+          onError={(e) => { if (e.currentTarget.src.endsWith("lia-paginas.webp")) e.currentTarget.src = liaFallback; }}
           draggable={false}
         />
         <span className="mt-1 block font-display font-extrabold text-xs sm:text-sm text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap">
