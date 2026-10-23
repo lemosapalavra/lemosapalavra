@@ -124,17 +124,20 @@ export default function MascoteLia() {
     const speech = new SpeechSynthesisUtterance(cleanSpeechText(message));
     speech.lang="pt-BR"; speech.rate=0.94; speech.pitch=1.18;
     const femaleVoice = getLiaFeminineVoice(window.speechSynthesis.getVoices());
-    if (!femaleVoice) {
-      window.alert("A voz feminina da LIA não está disponível neste aparelho. Ative uma voz feminina em português nas configurações de voz do dispositivo.");
-      return;
-    }
-    speech.voice = femaleVoice;
+    // Nem todos os celulares disponibilizam uma voz feminina. Use a voz
+    // portuguesa disponível ou a voz padrão para não deixar a LIA muda.
+    const availableVoices = window.speechSynthesis.getVoices();
+    const portugueseVoice = availableVoices.find((voice) => voice.lang.toLowerCase() === "pt-br")
+      || availableVoices.find((voice) => voice.lang.toLowerCase().startsWith("pt"));
+    if (femaleVoice || portugueseVoice) speech.voice = femaleVoice || portugueseVoice!;
     speech.onend=speech.onerror=()=>{ if(speechRef.current===speech){speechRef.current=null;setSpeaking(false);} };
     speechRef.current=speech;setSpeaking(true);window.speechSynthesis.speak(speech);
   };
   const avatar = liaForPages;
   const liaVisible = useIconVisible("lia");
-  const liaPosition = "bottom-[calc(77px+env(safe-area-inset-bottom,0px))]";
+  const liaPosition = location.pathname === "/album"
+    ? "bottom-[calc(90px+env(safe-area-inset-bottom,0px))]"
+    : "bottom-[calc(77px+env(safe-area-inset-bottom,0px))]";
 
   if (!liaVisible) return null;
 
@@ -168,6 +171,8 @@ export default function MascoteLia() {
       {/* Ajuda com o mesmo painel azul, cabeçalho e controles da página de login. */}
       <div role="dialog" aria-label="Ajuda da LIA" className={onHome
         ? "pointer-events-auto fixed bottom-[calc(325px+env(safe-area-inset-bottom,0px))] left-2 z-[9999] w-[min(320px,calc(100vw-16px))] max-h-[45dvh] overflow-y-auto rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"
+        : location.pathname === "/album"
+        ? "pointer-events-auto fixed bottom-[calc(245px+env(safe-area-inset-bottom,0px))] left-2 z-[9999] w-[min(320px,calc(100vw-16px))] max-h-[45dvh] overflow-y-auto rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"
         : "pointer-events-auto relative w-[min(78vw,320px)] max-w-sm rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"}>
         <div className="flex items-center justify-between gap-2 border-b border-white/25 pb-2">
           <strong className="text-sm text-yellow-300">POSSO AJUDAR?</strong>
