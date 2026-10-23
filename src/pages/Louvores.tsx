@@ -15,6 +15,10 @@ import { HIDDEN_VIDEOS, unlockHiddenVideos, lockHiddenVideos } from "@/data/hidd
 
 export default function Louvores() {
   const [playing, setPlaying] = useState<PlayEntry | null>(null);
+  useEffect(() => {
+    document.body.classList.toggle("lemos-video-playing", Boolean(playing));
+    return () => document.body.classList.remove("lemos-video-playing");
+  }, [playing]);
   const [viewed, setViewed] = useState<Record<string, boolean>>(() => { try { return JSON.parse(localStorage.getItem("lemos_media_viewed") || "{}"); } catch { return {}; } });
   const [playingCategory, setPlayingCategory] = useState<ListenCategory>("musicas");
   const [config, setConfig] = useState(() => loadConfig());
