@@ -148,11 +148,11 @@ export default function Login() {
             <div className="relative w-full">
               <img src="/Login%20LIA%20Interativo.webp" alt="LIA com os ícones de acesso Google e e-mail e o balão Posso Ajudar?" className="pointer-events-none block h-auto w-full select-none object-contain" draggable={false} />
               <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google"
-                className={`login-motion absolute left-[12%] top-[1%] z-20 h-[32%] w-[35%] rounded-full bg-transparent transition-transform hover:scale-105 active:scale-95 disabled:opacity-60 ${pressed === "google" ? "google-login-pressed" : "google-login-floating"}`} />
+                className={`login-motion absolute left-[5%] top-[2%] z-20 h-[29%] w-[42%] rounded-full bg-transparent transition-transform hover:scale-105 active:scale-95 disabled:opacity-60 ${pressed === "google" ? "google-login-pressed" : "google-login-floating"}`} />
               <button type="button" disabled={busy !== null || checkingSession} onClick={() => { playTap(); setEmailLoginOpen(value => !value); }} aria-label="Entrar por e-mail" title="Entrar por e-mail"
-                className="login-motion google-login-floating absolute left-[53%] top-[1%] z-20 h-[32%] w-[35%] rounded-full bg-transparent transition-transform hover:scale-105 active:scale-95 disabled:opacity-60" />
+                className="login-motion google-login-floating absolute left-[53%] top-[2%] z-20 h-[29%] w-[42%] rounded-full bg-transparent transition-transform hover:scale-105 active:scale-95 disabled:opacity-60" />
               <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA — Posso Ajudar?" title="Posso Ajudar?"
-                className="login-motion absolute bottom-0 left-[9%] z-10 h-[68%] w-[85%] bg-transparent transition-transform hover:scale-[1.02] active:scale-[.98]" />
+                className="login-motion absolute bottom-0 left-[5%] z-10 h-[63%] w-[90%] bg-transparent transition-transform hover:scale-[1.02] active:scale-[.98]" />
             </div>
             {emailLoginOpen && (
               <form onSubmit={enterWithEmail} className="absolute left-1/2 top-[29%] z-40 flex w-[min(320px,90vw)] -translate-x-1/2 flex-col gap-2 rounded-xl border-2 border-amber-300 bg-slate-950/95 p-3 shadow-xl">
