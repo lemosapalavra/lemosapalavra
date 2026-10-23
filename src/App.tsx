@@ -18,6 +18,7 @@ import { startAutoUpdate } from "@/lib/autoUpdate";
 import { startAutoTitles } from "@/lib/autoTitles";
 
 const Login = lazy(() => import("./pages/Login.tsx"));
+const AuthCallback = lazy(() => import("./pages/AuthCallback.tsx"));
 const SmsLogin = lazy(() => import("./pages/SmsLogin.tsx"));
 const Biblia = lazy(() => import("./pages/Biblia.tsx"));
 const Louvores = lazy(() => import("./pages/Louvores.tsx"));
@@ -343,6 +344,7 @@ const App = () => (
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/login-sms" element={<SmsLogin />} />
             <Route element={<RequireEntry />}>
               <Route path="/" element={<Index />} />
