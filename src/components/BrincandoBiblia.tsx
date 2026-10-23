@@ -1,4 +1,7 @@
 import quemSouEu1 from "@/assets/aprenda/quem-sou-eu-1.webp";
+import memoriaIcon from "@/assets/jogos/memoria-icon.webp";
+import quebraIcon from "@/assets/jogos/quebra-cabeca-icon.webp";
+import quizIcon from "@/assets/jogos/quiz-biblico-icon.webp";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -98,25 +101,25 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
  const dailyWhoIndex = 6 + (dayNumber % 4);
  const dailyWho = { activityIndex: dailyWhoIndex, icon: quemSouEu1, title: "Quem Sou Eu?" };
  const games = [
-  { id: "memory" as const, label: "Memória Bíblica", emoji: "🃏" },
-  { id: "jigsaw" as const, label: "Quebra-Cabeça", emoji: "🧩" },
-  { id: "wordbuilder" as const, label: "Construtor de Palavras", emoji: "🔤" },
-  { id: "quiz" as const, label: "Quiz Bíblico", emoji: "📖" },
+  { id: "memory" as const, label: "Memória Bíblica", icon: memoriaIcon },
+  { id: "jigsaw" as const, label: "Quebra-Cabeça", icon: quebraIcon },
+  { id: "wordbuilder" as const, label: "Construtor de Palavras", icon: "/construtor-de-palavras.webp" },
+  { id: "quiz" as const, label: "Quiz Bíblico", icon: quizIcon },
  ];
- const positions = [{left:"50%",top:"33%"},{left:"19%",top:"59%"},{left:"50%",top:"59%"},{left:"81%",top:"59%"},{left:"50%",top:"82%"}];
+ const positions = [{left:"50%",top:"26%"},{left:"20%",top:"47%"},{left:"50%",top:"47%"},{left:"80%",top:"47%"},{left:"50%",top:"69%"}];
  if (index===null || !current) {
   return (
    <section className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
     <button type="button" onClick={()=>open(dailyWho.activityIndex)} aria-label="Quem Sou Eu? — desafio do dia" title="Quem Sou Eu? — desafio do dia"
-      className="absolute pointer-events-auto aspect-square w-[clamp(85px,20vw,145px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent p-0 animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:scale-110 drop-shadow-[0_0_15px_rgba(255,215,60,.8)]"
+      className="absolute pointer-events-auto aspect-square w-[clamp(72px,22vw,125px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent p-0 animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:scale-110 drop-shadow-[0_0_15px_rgba(255,215,60,.8)]"
       style={positions[0]}>
       <img src={dailyWho.icon} alt="Quem Sou Eu?" className="h-full w-full object-contain" />
     </button>
     {games.map((game,n)=>(
       <button key={game.id} type="button" onClick={()=>onGameSelect?.(game.id)} aria-label={game.label} title={game.label}
-       className="absolute pointer-events-auto flex aspect-square w-[clamp(75px,18vw,125px)] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border-4 border-amber-300 bg-gradient-to-b from-amber-100 to-yellow-500 shadow-[0_0_18px_rgba(255,215,60,.8)] transition-transform hover:scale-110 active:scale-95"
+       className="absolute pointer-events-auto flex aspect-square w-[clamp(68px,20vw,120px)] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-transparent p-0 drop-shadow-[0_0_15px_rgba(255,215,60,.85)] transition-transform hover:scale-110 active:scale-95"
        style={positions[n+1]}>
-       <span className="text-3xl sm:text-5xl">{game.emoji}</span><span className="px-1 text-center text-[10px] font-black text-amber-950 sm:text-sm">{game.label}</span>
+       <img src={game.icon} alt={game.label} className="h-full w-full object-contain" onError={(event) => { if (game.id === "wordbuilder") event.currentTarget.src = "/quiz.webp"; }} />
       </button>
     ))}
    </section>
