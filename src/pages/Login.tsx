@@ -19,7 +19,7 @@ export default function Login() {
   const [liaOpen, setLiaOpen] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const speechRef = useRef<SpeechSynthesisUtterance | null>(null);
-  const loginHelp = "Oieee! Para entrar, escolha sua conta no Google ou toque no envelope para receber um link por e-mail. Quer entrar mais rápido pelo celular? Baixe o atalho e abra o Lemos a Palavra pelo ícone!";
+  const loginHelp = "Olá! Para ter acesso, entre com sua conta do Google,\nou clique no envelope para receber um link por e-mail.\nQuer acesso rápido pelo celular? Baixe o atalho e aguarde a instalação, é rápido!";
   useEffect(() => () => { window.speechSynthesis?.cancel(); }, []);
   const toggleSpeech = () => {
     if (!("speechSynthesis" in window)) { toast({ title: "Leitura em voz alta indisponível neste navegador." }); return; }
@@ -28,7 +28,11 @@ export default function Login() {
     const utterance = new SpeechSynthesisUtterance(loginHelp);
     utterance.lang = "pt-BR";
     utterance.rate = 0.94;
-    const voice = window.speechSynthesis.getVoices().find(v => /^pt-BR/i.test(v.lang)) ?? window.speechSynthesis.getVoices().find(v => /^pt/i.test(v.lang));
+    utterance.pitch = 1.16;
+    const voices = window.speechSynthesis.getVoices();
+    const portuguese = voices.filter(v => /^pt(-|$)/i.test(v.lang));
+    const feminine = portuguese.find(v => /maria|francisca|luciana|helena|fernanda|camila|vitoria|vitória|female|feminina|mulher/i.test(v.name));
+    const voice = feminine || portuguese.find(v => /^pt-BR/i.test(v.lang)) || portuguese[0];
     if (voice) utterance.voice = voice;
     utterance.onend = utterance.onerror = () => { if (speechRef.current === utterance) { speechRef.current = null; setSpeaking(false); } };
     speechRef.current = utterance;
