@@ -148,20 +148,20 @@ export default function Login() {
             .login-sparkle { animation: loginSparkle 2.4s ease-in-out infinite; }
             @media (prefers-reduced-motion: reduce) { .login-motion, .login-artwork-float, .login-sparkle { animation: none !important; } }
           `}</style>
-          <section className="relative z-20 mt-auto w-[min(96vw,520px)] max-w-full" aria-label="Escolha como entrar e conheça a LIA">
-            <div className="relative w-full">
-              <img src="/Login%20LIA%20Interativo.webp" alt="LIA com os ícones de acesso Google e e-mail e o balão Posso Ajudar?" className="login-artwork-float pointer-events-none block h-auto w-full select-none object-contain" draggable={false} />
-              <span aria-hidden="true" className="login-sparkle pointer-events-none absolute left-[8%] top-[3%] h-[26%] w-[36%] rounded-full shadow-[0_0_24px_8px_rgba(255,220,60,.38)]" />
-              <span aria-hidden="true" className="login-sparkle pointer-events-none absolute left-[56%] top-[3%] h-[26%] w-[36%] rounded-full shadow-[0_0_24px_8px_rgba(255,220,60,.38)]" style={{ animationDelay: "1.2s" }} />
-              <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google"
-                className={`login-motion absolute left-[5%] top-[2%] z-20 h-[29%] w-[42%] rounded-full bg-transparent transition-transform hover:scale-105 active:scale-95 disabled:opacity-60 ${pressed === "google" ? "google-login-pressed" : "google-login-floating"}`} />
-              <button type="button" disabled={busy !== null || checkingSession} onClick={() => { playTap(); setEmailLoginOpen(value => !value); }} aria-label="Entrar por e-mail" title="Entrar por e-mail"
-                className="login-motion google-login-floating absolute left-[53%] top-[2%] z-20 h-[29%] w-[42%] rounded-full bg-transparent transition-transform hover:scale-105 active:scale-95 disabled:opacity-60" />
-              <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA — Posso Ajudar?" title="Posso Ajudar?"
-                className="login-motion absolute bottom-0 left-[5%] z-10 h-[63%] w-[90%] bg-transparent transition-transform hover:scale-[1.02] active:scale-[.98]" />
+          <section className="relative z-20 mt-auto flex w-full max-w-[520px] flex-col items-center" aria-label="Escolha como entrar e conheça a LIA">
+            <div className="flex w-full items-center justify-center gap-[clamp(12px,5vw,38px)]">
+              <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google" className="group relative w-[clamp(108px,34vw,170px)] shrink-0 bg-transparent p-0 disabled:opacity-60">
+                <img src="/%C3%8Dcone%20Google%20Dourado.webp" alt="Google" className={`login-motion h-auto w-full object-contain drop-shadow-[0_0_14px_rgba(255,215,75,.7)] group-hover:brightness-125 ${pressed === "google" ? "google-login-pressed" : "google-login-floating"}`} />
+              </button>
+              <button type="button" disabled={busy !== null || checkingSession} onClick={() => { playTap(); setEmailLoginOpen(value => !value); }} aria-label="Entrar por e-mail" title="Entrar por e-mail" className="group relative w-[clamp(108px,34vw,170px)] shrink-0 bg-transparent p-0 disabled:opacity-60">
+                <img src="/%C3%8Dcone%20e-mail.webp" alt="E-mail" className="login-motion google-login-floating h-auto w-full object-contain drop-shadow-[0_0_14px_rgba(255,215,75,.7)] group-hover:brightness-125" style={{ animationDelay: ".7s" }} />
+              </button>
             </div>
+            <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA — Posso Ajudar?" title="Posso Ajudar?" className="group relative mt-2 w-[min(88vw,380px)] border-0 bg-transparent p-0">
+              <img src="/Login%20LIA%20Interativo.webp" alt="LIA — Posso Ajudar?" className="login-artwork-float login-motion h-auto w-full object-contain drop-shadow-[0_0_10px_rgba(255,215,75,.5)] group-hover:brightness-110" />
+            </button>
             {emailLoginOpen && (
-              <form onSubmit={enterWithEmail} className="absolute left-1/2 top-[29%] z-40 flex w-[min(320px,90vw)] -translate-x-1/2 flex-col gap-2 rounded-xl border-2 border-amber-300 bg-slate-950/95 p-3 shadow-xl">
+              <form onSubmit={enterWithEmail} className="fixed left-1/2 top-1/2 z-50 flex w-[min(320px,90vw)] -translate-x-1/2 -translate-y-1/2 flex-col gap-2 rounded-xl border-2 border-amber-300 bg-slate-950/95 p-3 shadow-xl">
                 <label htmlFor="lemos-email-login" className="text-center text-xs font-semibold text-white">Receber link de acesso no e-mail</label>
                 <input id="lemos-email-login" type="email" autoComplete="email" required value={emailAddress} onChange={event => setEmailAddress(event.target.value)} placeholder="seuemail@exemplo.com" className="h-11 rounded-md border border-slate-300 bg-white px-3 text-slate-950 placeholder:text-slate-500" />
                 <button type="submit" disabled={busy !== null} className="rounded-md bg-amber-400 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60">{busy === "email" ? "Enviando..." : "Enviar link de acesso"}</button>
@@ -169,7 +169,7 @@ export default function Login() {
               </form>
             )}
             {liaOpen && (
-              <div role="dialog" aria-label="Ajuda da LIA no login" className="absolute bottom-[40%] left-1/2 z-40 w-[min(320px,90vw)] -translate-x-1/2 rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]">
+              <div role="dialog" aria-label="Ajuda da LIA no login" className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-50 w-[min(320px,90vw)] -translate-x-1/2 rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]">
                 <div className="flex items-center justify-between gap-2 border-b border-white/25 pb-2">
                   <strong className="text-sm text-yellow-300">COMO ACESSAR O SITE</strong>
                   <div className="flex items-center gap-1">
