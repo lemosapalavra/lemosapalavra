@@ -20,7 +20,7 @@ const cleanSpeechText = (text: string) => text.replace(/[^\p{L}\p{N}\p{P}\p{Zs}\
  */
 
 const PAGE_TIPS: Record<string, string> = {
-  "/": "Olá! Sou a LIA. Escolha Veja, Ouça, Aprenda ou Álbum para começar.",
+  "/": "Olá, sou a LIA!\nEscolha entre os ícones flutuantes: Veja, Ouça, Aprenda ou Álbum\ne comece sua escalada Bíblica!",
   "/biblia": "Aqui você encontra a Bíblia! 📖 Escolha o Antigo ou o Novo Testamento para descobrir a Palavra de Deus. 💛",
   "/louvores": "Lá, lá, lá! 🎶 Escolha um louvor e cante comigo! 🎤",
   "/veja": "Pipoca pronta? 🍿 Escolha um vídeo! Assista e ganhe moedinhas! 🪙",
@@ -173,7 +173,7 @@ export default function MascoteLia() {
             <button type="button" onClick={() => { setExpanded(false); window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }} aria-label="Fechar ajuda" className="rounded-lg bg-white/15 p-2"><X size={20} /></button>
           </div>
         </div>
-        <p className="mt-3 text-sm leading-relaxed">{cleanSpeechText(message)}</p>
+        <p className="mt-3 whitespace-pre-line text-sm leading-relaxed">{cleanSpeechText(message)}</p>
       </div>
 
       <div className="flex flex-col items-center gap-2">
