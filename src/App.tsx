@@ -193,11 +193,9 @@ const AdminOnly = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     let cancelled = false;
     const check = async () => {
-      const owner = (() => { try { return localStorage.getItem("lemos_owner_unlocked") === "1"; } catch { return false; } })();
-      if (owner) { if (!cancelled) setState("ok"); return; }
       const { data: sess } = await supabase.auth.getSession();
       const uid = sess.session?.user?.id;
-      if (!uid) { if (!cancelled) setState("denied"); return; }
+      if (!uid || sess.session?.user?.email?.trim().toLowerCase() !== "marcelloborbas@gmail.com") { if (!cancelled) setState("denied"); return; }
       const { data, error } = await supabase.rpc("has_role", { _user_id: uid, _role: "admin" });
       if (!cancelled) setState(!error && data === true ? "ok" : "denied");
     };
