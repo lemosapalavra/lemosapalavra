@@ -84,18 +84,19 @@ function IndexV1() {
           fetchPriority="high"
           decoding="async"
         />
-        <img src="/pagina-inicial-nova.webp" alt="" aria-hidden="true" className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-500 ${newHomeArtwork ? "opacity-100" : "opacity-0"}`} onLoad={() => setNewHomeArtwork(true)} onError={() => setNewHomeArtwork(false)} />
+        <img src="/pagina-inicial-nova.webp" alt="" aria-hidden="true" className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-500 md:hidden ${newHomeArtwork ? "opacity-100" : "opacity-0"}`} onLoad={() => setNewHomeArtwork(true)} onError={() => setNewHomeArtwork(false)} />
       </picture>
+      {newHomeArtwork && <div aria-hidden="true" className="pointer-events-none absolute right-[2%] top-[1.6%] z-[60] h-[7.4%] w-[36%] rounded-[22px] bg-gradient-to-br from-[#168cda] via-[#4eb2ec] to-[#c7e7fb] sm:hidden" />}
       <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
 
       {/* Os quatro botões são áreas clicáveis sobre os ícones impressos na imagem.
           A camada cobre a mesma área da imagem de fundo, incluindo o cabeçalho. */}
       <div className="absolute inset-0 z-20 pointer-events-none">
         {([
-          { label: "VEJA", image: vejaFlutuante, mobile: newHomeArtwork ? [49, 39] : [50, 48], desktop: [50, 49] },
-          { label: "OUÇA", image: oucaFlutuante, mobile: newHomeArtwork ? [22, 49] : [21, 60], desktop: [28, 60] },
-          { label: "APRENDA", image: aprendaFlutuante, mobile: newHomeArtwork ? [78, 49] : [79, 60], desktop: [72, 60] },
-          { label: "ÁLBUM", image: albumFlutuante, mobile: newHomeArtwork ? [49, 62] : [50, 73], desktop: [50, 73] },
+          { label: "VEJA", image: vejaFlutuante, mobile: newHomeArtwork ? [50, 39] : [50, 48], desktop: [50, 49] },
+          { label: "OUÇA", image: oucaFlutuante, mobile: newHomeArtwork ? [21, 49] : [21, 60], desktop: [28, 60] },
+          { label: "APRENDA", image: aprendaFlutuante, mobile: newHomeArtwork ? [79, 49] : [79, 60], desktop: [72, 60] },
+          { label: "ÁLBUM", image: albumFlutuante, mobile: newHomeArtwork ? [50, 61] : [50, 73], desktop: [50, 73] },
         ] as const).map(({ label, image, mobile, desktop }, index) => (
           <button
             key={label}
@@ -112,10 +113,11 @@ function IndexV1() {
               ["--float-delay" as string]: `${index * -0.65}s`,
             }}
           >
-            <img src={image} alt="" draggable={false} className={`${newHomeArtwork ? "opacity-0" : "opacity-100"} home-floating-icon block w-full h-full object-contain drop-shadow-[0_0_17px_rgba(255,218,70,.98)] group-hover:brightness-125 group-active:brightness-150`} />
+            <img src={image} alt="" draggable={false} className={`${newHomeArtwork ? "opacity-0 md:opacity-100" : "opacity-100"} home-floating-icon block w-full h-full object-contain drop-shadow-[0_0_17px_rgba(255,218,70,.98)] group-hover:brightness-125 group-active:brightness-150`} />
           </button>
         ))}
       </div>
+      {newHomeArtwork && <button type="button" aria-label="Falar com a LIA" title="Falar com a LIA" onClick={() => window.dispatchEvent(new Event("lemos:lia-open"))} className="absolute left-[3%] top-[67%] z-[35] h-[22%] w-[65%] cursor-pointer rounded-3xl bg-transparent focus-visible:outline focus-visible:outline-4 focus-visible:outline-yellow-400" />}
       <style>{`
         body:has(.lemos-home-viewport) { padding-bottom: 0 !important; overflow-y: hidden; }
         html:has(.lemos-home-viewport) { overflow-y: hidden; }
