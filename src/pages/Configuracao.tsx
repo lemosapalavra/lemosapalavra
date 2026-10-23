@@ -54,6 +54,7 @@ function OwnerAccessCard() {
 
 export default function Configuracao() {
   const navigate = useNavigate();
+  const [adminSection, setAdminSection] = useState<"pessoas" | "conteudo" | "aparencia" | "midia" | "relatorios" | "sistema">("pessoas");
   const [user, setUser] = useState<any>(null);
   const [sessionStart] = useState(Date.now());
   const [elapsed, setElapsed] = useState(0);
@@ -160,8 +161,26 @@ export default function Configuracao() {
     <div className="min-h-screen py-6 px-4" style={{ background: "transparent" }}>
       <div className="max-w-4xl mx-auto">
         <PageHeader title="Administração" subtitle="Configurações e gerenciamento de usuários" />
-        <AdminMembersPanel />
+        <nav aria-label="Seções da administração" className="mb-5 grid grid-cols-2 gap-2 sm:grid-cols-3">
+          {([
+            ["pessoas", "Pessoas", "Usuários e status"],
+            ["conteudo", "Conteúdo", "Acesso e páginas"],
+            ["aparencia", "Aparência", "Ícones e visibilidade"],
+            ["midia", "Mídia", "Vídeos e transportes"],
+            ["relatorios", "Relatórios", "Visitas e estatísticas"],
+            ["sistema", "Sistema", "Ajustes avançados"],
+          ] as const).map(([id, title, subtitle]) => (
+            <button key={id} type="button" onClick={() => setAdminSection(id)}
+              aria-pressed={adminSection === id}
+              className={`min-h-20 rounded-xl border-2 p-3 text-left shadow-sm transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-500 ${adminSection === id ? "border-amber-500 bg-amber-100 text-amber-950" : "border-border bg-popover text-foreground hover:border-amber-300"}`}>
+              <span className="block text-base font-bold">{title}</span>
+              <span className="block text-xs opacity-75">{subtitle}</span>
+            </button>
+          ))}
+        </nav>
+        {adminSection === "pessoas" && <AdminMembersPanel />}
 
+        {adminSection === "relatorios" && <>
         {/* Live visits counter */}
         <LiveVisitsBanner totalVisits={stats.totalVisits} elapsed={elapsed} />
 
@@ -177,6 +196,8 @@ export default function Configuracao() {
           ))}
         </div>
 
+        </>}
+        {adminSection === "sistema" && <>
         {/* User Info */}
         <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
           <h3 className="font-display text-lg font-bold text-foreground mb-3">👤 Perfil do Usuário</h3>
@@ -197,10 +218,14 @@ export default function Configuracao() {
 
         <OwnerAccessCard />
 
-        <IconVisibilityConfig />
+        </>}
+        {adminSection === "aparencia" && <IconVisibilityConfig />
+        {adminSection === "conteudo" && <>
         <ContentAccessConfig />
         <ListenContentConfig />
 
+        </>}
+        {adminSection === "relatorios" && <>
         {/* Page Visit Stats */}
         {Object.keys(stats.pagesVisited).length > 0 && (
           <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
@@ -221,6 +246,8 @@ export default function Configuracao() {
           </div>
         )}
 
+        </>}
+        {adminSection === "sistema" && <>
         {/* Admin mode */}
         <AdminModeToggle />
 
@@ -260,6 +287,8 @@ export default function Configuracao() {
 
         </div>
 
+        </>}
+        {adminSection === "midia" && <>
         {/* Áreas temáticas de administração dos veículos e suas mídias. */}
         <section className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
           <h3 className="font-display text-lg font-bold text-foreground mb-3">Transportes e animações</h3>
@@ -279,6 +308,8 @@ export default function Configuracao() {
           </div>
         </section>
 
+        </>}
+        {adminSection === "conteudo" && <>
         {/* Atalhos para páginas configuráveis */}
         <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
           <h3 className="font-display text-lg font-bold text-foreground mb-3">⚡ Atalhos para Configurar Páginas</h3>
@@ -306,6 +337,7 @@ export default function Configuracao() {
             ))}
           </div>
         </div>
+        </>}
       </div>
     </div>
   );
