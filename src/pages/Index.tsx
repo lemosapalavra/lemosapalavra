@@ -39,8 +39,8 @@ export default function Index() {
 
       {dedicatoryVisible && (
         <button type="button" onClick={() => setDedicatoriaOpen(true)} aria-label="Abrir Dedicatória" title="Dedicatória"
-          className="lemos-home-dedication"
-          style={{ position: "absolute", right: 8, bottom: "calc(153px + env(safe-area-inset-bottom, 0px))", zIndex: 40, width: 66, height: 66, padding: 0, background: "transparent", border: 0, cursor: "pointer", filter: "drop-shadow(0 0 10px #f6c84c)" }}>
+          className="lemos-home-dedication transition-transform duration-200 hover:scale-110 active:scale-95"
+          style={{ position: "absolute", right: 8, bottom: "calc(86px + env(safe-area-inset-bottom, 0px))", zIndex: 90, width: 84, height: 84, padding: 0, background: "transparent", border: 0, cursor: "pointer", filter: "drop-shadow(0 0 15px #ffdb58) drop-shadow(0 0 7px #fff2a3)" }}>
           <img src="/dedicatoria.webp" alt="Dedicatória" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
         </button>
       )}
