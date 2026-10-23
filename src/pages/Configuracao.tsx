@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
+import AdminMembersPanel from "@/components/AdminMembersPanel";
 import { loadVideoInteractionsCfg, saveVideoInteractionsCfg } from "@/data/videoInteractionsConfig";
 import { useIsAdmin, setAdminMode, canBeAdmin } from "@/hooks/useIsAdmin";
 import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
@@ -158,7 +159,8 @@ export default function Configuracao() {
   return (
     <div className="min-h-screen py-6 px-4" style={{ background: "transparent" }}>
       <div className="max-w-4xl mx-auto">
-        <PageHeader title="Configurações" subtitle="Painel de administração" />
+        <PageHeader title="Administração" subtitle="Configurações e gerenciamento de usuários" />
+        <AdminMembersPanel />
 
         {/* Live visits counter */}
         <LiveVisitsBanner totalVisits={stats.totalVisits} elapsed={elapsed} />
