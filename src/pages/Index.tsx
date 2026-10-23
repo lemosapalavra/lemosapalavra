@@ -1,146 +1,56 @@
-const dedicatoryIcon = "/dedicatoria.webp";
-import { useIconVisible } from "@/lib/iconVisibility";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-
+import { useIconVisible } from "@/lib/iconVisibility";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 
-import EventBannerKart from "@/components/EventBannerKart";
-import EventBannerPlane from "@/components/EventBannerPlane";
-
-
-import { ensureInitialCoins, addCoins } from "@/hooks/useCoins";
-import { loadOrbit } from "@/data/orbitConfig";
-
-const vejaFlutuante = "/veja-flutuante.webp";
-const oucaFlutuante = "/ouca-flutuante.webp";
-const aprendaFlutuante = "/aprenda-flutuante.webp";
-const albumFlutuante = "/album-flutuante.webp";
+const homeIcons = [
+  { label: "Veja", src: "/veja-flutuante.webp", route: "/lemosplay", x: 50, y: 41 },
+  { label: "Ouça", src: "/ouca-flutuante.webp", route: "/musicas", x: 22, y: 53 },
+  { label: "Aprenda", src: "/aprenda-flutuante.webp", route: "/atividades", x: 78, y: 53 },
+  { label: "Álbum", src: "/album-flutuante.webp", route: "/album", x: 50, y: 65 },
+] as const;
 
 export default function Index() {
-  return <IndexV1 />;
-}
-
-function IndexV1() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<{ name: string; email: string; avatar?: string } | null>(null);
   const [dedicatoriaOpen, setDedicatoriaOpen] = useState(false);
-  const dedicatoriaVisible = useIconVisible("dedicatoria");
-
-  useEffect(() => {
-    const syncUser = () => {
-      try {
-        const stored = localStorage.getItem("lemos_user");
-        if (!stored) { setUser(null); return; }
-        setUser(JSON.parse(stored));
-        ensureInitialCoins();
-        const today = new Date().toDateString();
-        const lastVisit = localStorage.getItem("lemos_last_visit");
-        if (lastVisit !== today) {
-          addCoins(2);
-          localStorage.setItem("lemos_last_visit", today);
-        }
-      } catch { setUser(null); }
-    };
-    syncUser();
-    window.addEventListener("lemos_admin_change", syncUser);
-    window.addEventListener("storage", syncUser);
-    return () => {
-      window.removeEventListener("lemos_admin_change", syncUser);
-      window.removeEventListener("storage", syncUser);
-    };
-  }, []);
-
-  const handleLogout = async () => {
-    try { await (await import("@/integrations/supabase/client")).supabase.auth.signOut(); } catch {}
-    localStorage.removeItem("lemos_user");
-    setUser(null);
-  };
-
-  const handleItemClick = (label: string) => {
-    const items = loadOrbit();
-    const found = items.find((x) => x.label === label);
-    if (found?.route) navigate(found.route);
-  };
+  const dedicatoryVisible = useIconVisible("dedicatoria");
 
   return (
-    <div
-      className="lemos-home-viewport h-[100dvh] min-h-0 flex flex-col items-center overflow-hidden relative"
-      style={{ backgroundColor: "#c9effd" }}
-    >
-      {/* 14-Bis animado, acima do cenário e abaixo dos controles do usuário. */}
-      <EventBannerPlane isAuthenticated={!!user?.name} />
+    <main className="lemos-home-viewport" style={{ position: "relative", isolation: "isolate", width: "100%", height: "100dvh", overflow: "hidden", backgroundColor: "#8bc8eb" }}>
+      {/* Único fundo da página. Nenhuma outra imagem de cenário é montada. */}
+      <img src="/pagina-inicial-nova.webp" alt="" aria-hidden="true" draggable={false}
+        style={{ position: "absolute", inset: 0, zIndex: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+      <h1 className="sr-only">Lemos a Palavra — página inicial</h1>
 
-      {/* Uma única imagem de fundo; todos os controles permanecem em camadas independentes. */}
-      <img
-        src="/pagina-inicial-nova.webp"
-        alt=""
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-center"
-        loading="eager"
-        fetchPriority="high"
-        decoding="async"
-      />
-      <h1 className="sr-only">Lemos a Palavra — Conteúdo Bíblico Infantil</h1>
-
-      {/* Ícones independentes e clicáveis, com animação e brilho, sobre o fundo único.
-          A camada cobre a mesma área da imagem de fundo, incluindo o cabeçalho. */}
-      <div className="absolute inset-0 z-[70] pointer-events-none">
-        {([
-          { label: "VEJA", image: vejaFlutuante, mobile: [50, 40], desktop: [50, 43] },
-          { label: "OUÇA", image: oucaFlutuante, mobile: [21, 50], desktop: [28, 55] },
-          { label: "APRENDA", image: aprendaFlutuante, mobile: [79, 50], desktop: [72, 55] },
-          { label: "ÁLBUM", image: albumFlutuante, mobile: [50, 62], desktop: [50, 68] },
-        ] as const).map(({ label, image, mobile, desktop }, index) => (
-          <button
-            key={label}
-            type="button"
-            title={`Abrir ${label}`}
-            aria-label={`Abrir ${label}`}
-            onClick={() => handleItemClick(label)}
-            className="home-image-hotspot group absolute pointer-events-auto z-[71] w-[24%] max-w-[180px] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent cursor-pointer touch-manipulation transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-400"
-            style={{
-              left: `${mobile[0]}%`,
-              top: `${mobile[1]}%`,
-              ["--desktop-x" as string]: `${desktop[0]}%`,
-              ["--desktop-y" as string]: `${desktop[1]}%`,
-              ["--float-delay" as string]: `${index * -0.65}s`,
-            }}
-          >
-            <img src={image} alt={label} draggable={false} loading="eager" className="home-floating-icon block w-full h-full object-contain opacity-100 drop-shadow-[0_0_17px_rgba(255,218,70,.98)] group-hover:brightness-125 group-active:brightness-150" />
+      {/* Botões verdadeiros, separados da imagem e acima do fundo. */}
+      <section aria-label="Escolha sua atividade" style={{ position: "absolute", inset: 0, zIndex: 30, pointerEvents: "none" }}>
+        {homeIcons.map(({ label, src, route, x, y }, index) => (
+          <button key={label} type="button" onClick={() => navigate(route)}
+            aria-label={`Abrir ${label}`} title={`Abrir ${label}`}
+            className="lemos-home-orbit-button"
+            style={{ position: "absolute", left: `${x}%`, top: `${y}%`, transform: "translate(-50%, -50%)", width: "clamp(76px, 25vw, 125px)", height: "clamp(76px, 25vw, 125px)", padding: 0, border: 0, borderRadius: "50%", background: "transparent", cursor: "pointer", pointerEvents: "auto", touchAction: "manipulation" }}>
+            <img src={src} alt={label} draggable={false} loading="eager" className="lemos-home-orbit-image"
+              style={{ width: "100%", height: "100%", objectFit: "contain", display: "block", filter: "drop-shadow(0 0 15px rgba(255,210,55,.95))", animationDelay: `${index * -.7}s` }} />
           </button>
         ))}
-      </div>
-      <style>{`
-        body:has(.lemos-home-viewport) { padding-bottom: 0 !important; overflow-y: hidden; }
-        html:has(.lemos-home-viewport) { overflow-y: hidden; }
-        @keyframes homeIconFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
-        .home-floating-icon { animation: homeIconFloat 3.8s ease-in-out infinite; animation-delay: var(--float-delay, 0s); }
-        @media (prefers-reduced-motion: reduce) { .home-floating-icon { animation: none; } }
-        @media (min-width: 768px) { .home-image-hotspot { left: var(--desktop-x) !important; top: var(--desktop-y) !important; width: min(12vw, 180px); } }
-      `}</style>
+      </section>
 
-      <main className="relative z-10 w-full min-h-0 flex-1 flex flex-col items-center">
-        <div className="w-full flex flex-col items-center">
-           {dedicatoriaVisible && <div className="fixed bottom-[calc(78px+env(safe-area-inset-bottom,0px))] right-2 sm:right-5 z-[95] flex flex-col items-center animate-[homeIconFloat_3.8s_ease-in-out_infinite]">
-             <Button variant="ghost" size="icon"
-              onClick={() => setDedicatoriaOpen(true)}
-                className="w-[88px] h-[88px] sm:w-[110px] sm:h-[110px] p-0 rounded-full border-[3px] border-white bg-transparent shadow-[0_0_0_2px_rgba(251,191,36,.8),0_5px_18px_rgba(0,0,0,.5)] hover:bg-transparent hover:scale-110 hover:brightness-110 hover:shadow-[0_0_30px_8px_rgba(255,225,90,.95)] active:scale-110 active:brightness-150 focus-visible:ring-4 focus-visible:ring-amber-400 transition-all duration-200 cursor-pointer"
-              title="Dedicatória"
-              aria-label="Abrir dedicatória"
-            >
-              <img loading="lazy" decoding="async" src={dedicatoryIcon} alt="" className="h-full w-full object-contain drop-shadow-[0_0_12px_rgba(255,220,90,.75)] transition-all duration-300 group-hover:brightness-125" />
-             </Button>
-
-          </div>}
-
-        </div>
-      </main>
-
-
+      {dedicatoryVisible && (
+        <button type="button" onClick={() => setDedicatoriaOpen(true)} aria-label="Abrir Dedicatória" title="Dedicatória"
+          className="lemos-home-dedication"
+          style={{ position: "absolute", right: 8, bottom: "calc(153px + env(safe-area-inset-bottom, 0px))", zIndex: 40, width: 66, height: 66, padding: 0, background: "transparent", border: 0, cursor: "pointer", filter: "drop-shadow(0 0 10px #f6c84c)" }}>
+          <img src="/dedicatoria.webp" alt="Dedicatória" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+        </button>
+      )}
       <DedicatoriaModal open={dedicatoriaOpen} onOpenChange={setDedicatoriaOpen} />
-
-    </div>
+      <style>{`
+        @keyframes lemosHomeFloat { 0%,100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+        .lemos-home-orbit-image { animation: lemosHomeFloat 3.6s ease-in-out infinite; }
+        .lemos-home-orbit-button:hover .lemos-home-orbit-image, .lemos-home-orbit-button:focus-visible .lemos-home-orbit-image { filter: drop-shadow(0 0 25px #ffe16c) brightness(1.25) !important; }
+        .lemos-home-orbit-button:active { scale: 1.08; }
+        @media (min-width: 700px) { .lemos-home-orbit-button { width: 135px !important; height: 135px !important; } }
+        @media (prefers-reduced-motion: reduce) { .lemos-home-orbit-image { animation: none; } }
+      `}</style>
+    </main>
   );
 }
