@@ -106,7 +106,7 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
   { id: "wordbuilder" as const, label: "Construtor de Palavras", icon: "/construtor-de-palavras.webp" },
   { id: "quiz" as const, label: "Quiz Bíblico", icon: quizIcon },
  ];
- const positions = [{left:"50%",top:"26%"},{left:"20%",top:"47%"},{left:"50%",top:"47%"},{left:"80%",top:"47%"},{left:"50%",top:"69%"}];
+ const positions = [{left:"50%",top:"20%"},{left:"18%",top:"38%"},{left:"82%",top:"38%"},{left:"23%",top:"72%"},{left:"77%",top:"72%"}];
  if (index===null || !current) {
   return (
    <section className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
