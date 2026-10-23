@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import loginBackground from "@/assets/login-optimized.webp";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 
-/** Acesso da família exclusivamente pela conta Google. */
+/** Acesso da família por Google ou link de e-mail. */
 export default function Login() {
-  const [busy, setBusy] = useState<"google" | null>(null);
+  const [busy, setBusy] = useState<"google" | "email" | null>(null);
   const [pressed, setPressed] = useState<"google" | null>(null);
+  const [emailLoginOpen, setEmailLoginOpen] = useState(false);
+  const [emailAddress, setEmailAddress] = useState("");
+  const [liaOpen, setLiaOpen] = useState(false);
   const navigate = useNavigate();
   const [checkingSession, setCheckingSession] = useState(true);
 
@@ -78,6 +81,31 @@ export default function Login() {
   };
 
 
+  const enterWithEmail = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (busy) return;
+    const email = emailAddress.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      toast({ title: "Informe um e-mail válido", variant: "destructive" });
+      return;
+    }
+    playTap();
+    setBusy("email");
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: window.location.origin + "/login", shouldCreateUser: true },
+      });
+      if (error) throw error;
+      toast({ title: "Confira seu e-mail", description: "Se o endereço estiver habilitado, você receberá um link para entrar." });
+      setEmailLoginOpen(false);
+    } catch (error) {
+      toast({ title: "Não foi possível enviar o link", description: error instanceof Error ? error.message : "Tente novamente.", variant: "destructive" });
+    } finally {
+      setBusy(null);
+    }
+  };
+
   return (
     <main className="fixed inset-0 w-full overflow-y-auto bg-[#1d381c]" aria-label="Entrar no Lemos a Palavra">
       <div className="relative mx-auto min-h-[100dvh] w-full max-w-[720px] overflow-hidden">
@@ -97,7 +125,7 @@ export default function Login() {
             @media (prefers-reduced-motion: reduce) { .login-motion { animation: none !important; } }
           `}</style>
           <section className="relative -translate-y-[clamp(3rem,10dvh,7rem)] mx-auto w-fit px-4 py-3" aria-label="Escolha a forma de entrar">
-            <div className="flex items-start justify-center gap-5 sm:gap-8">
+            <div className="flex items-start justify-center gap-8 sm:gap-12">
               <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google"
                 className="group flex w-20 items-center justify-center text-white disabled:opacity-80">
                 <span className={`login-motion flex h-[72px] w-[72px] items-center justify-center rounded-full bg-transparent transition-transform group-hover:scale-110 group-active:scale-95 sm:h-20 sm:w-20 ${pressed === "google" ? "google-login-pressed" : "google-login-floating"}`}>
@@ -110,9 +138,29 @@ export default function Login() {
                 </span>
 
               </button>
-
-
+              <button type="button" disabled={busy !== null || checkingSession} onClick={() => { playTap(); setEmailLoginOpen(value => !value); }} aria-label="Entrar por e-mail" title="Entrar por e-mail" className="group flex w-20 items-center justify-center disabled:opacity-60">
+                <span className="login-motion google-login-floating flex h-[72px] w-[72px] items-center justify-center rounded-full bg-transparent transition-transform group-hover:scale-110 group-active:scale-95 sm:h-20 sm:w-20">
+                  <svg viewBox="0 0 64 64" className="h-[62px] w-[62px]" aria-hidden="true">
+                    <circle cx="32" cy="32" r="29" fill="#ffffff" stroke="#f9cc56" strokeWidth="3" />
+                    <rect x="12" y="19" width="40" height="27" rx="5" fill="#4285F4" />
+                    <path d="M13 22 32 36 51 22" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+              </button>
             </div>
+            <div className="mt-3 flex flex-col items-center">
+              <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA" title="Conversar com a LIA" className="login-motion transition-transform hover:scale-105 active:scale-95">
+                <img src="/lia-mascote.png" alt="LIA, sua ajudante" className="h-[82px] w-[82px] object-contain drop-shadow-[0_3px_9px_rgba(0,0,0,.6)] sm:h-24 sm:w-24" />
+              </button>
+              {liaOpen && <p className="mt-1 max-w-[270px] rounded-xl border-2 border-amber-300 bg-white/95 px-3 py-2 text-center text-sm font-semibold text-amber-950 shadow-lg">Oieee! 💛 Entre com Google ou receba um link no seu e-mail! 🎈</p>}
+            </div>
+            {emailLoginOpen && (
+              <form onSubmit={enterWithEmail} className="mx-auto mt-3 flex w-full max-w-xs flex-col gap-2 rounded-xl bg-slate-950/85 p-3">
+                <label htmlFor="lemos-email-login" className="text-center text-xs font-semibold text-white">Receber link de acesso no e-mail</label>
+                <input id="lemos-email-login" type="email" autoComplete="email" required value={emailAddress} onChange={event => setEmailAddress(event.target.value)} placeholder="seuemail@exemplo.com" className="h-11 rounded-md border border-slate-300 bg-white px-3 text-slate-950 placeholder:text-slate-500" />
+                <button type="submit" disabled={busy !== null} className="rounded-md bg-amber-400 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60">{busy === "email" ? "Enviando..." : "Enviar link de acesso"}</button>
+              </form>
+            )
           </section>
         </div>
       </div>
