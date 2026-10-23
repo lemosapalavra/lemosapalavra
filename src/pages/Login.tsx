@@ -1,9 +1,11 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import loginBackground from "@/assets/login-optimized.webp";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
+import { Volume2, VolumeX, X } from "lucide-react";
+import InstallShortcut from "@/components/InstallShortcut";
 
 /** Acesso da família por Google ou link de e-mail. */
 export default function Login() {
@@ -12,6 +14,24 @@ export default function Login() {
   const [emailLoginOpen, setEmailLoginOpen] = useState(false);
   const [emailAddress, setEmailAddress] = useState("");
   const [liaOpen, setLiaOpen] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
+  const speechRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const loginHelp = "Oieee! Bem-vindo ao Lemos a Palavra! Para entrar, clique no ícone do Google e escolha sua conta, ou clique no envelope para receber um link de acesso por e-mail. Quer abrir nosso site mais rápido no celular? Toque em Baixar atalho. Deus te abençoe!";
+  useEffect(() => () => { window.speechSynthesis?.cancel(); }, []);
+  const toggleSpeech = () => {
+    if (!("speechSynthesis" in window)) { toast({ title: "Leitura em voz alta indisponível neste navegador." }); return; }
+    window.speechSynthesis.cancel();
+    if (speechRef.current) { speechRef.current = null; setSpeaking(false); return; }
+    const utterance = new SpeechSynthesisUtterance(loginHelp);
+    utterance.lang = "pt-BR";
+    utterance.rate = 0.94;
+    const voice = window.speechSynthesis.getVoices().find(v => /^pt-BR/i.test(v.lang)) ?? window.speechSynthesis.getVoices().find(v => /^pt/i.test(v.lang));
+    if (voice) utterance.voice = voice;
+    utterance.onend = utterance.onerror = () => { if (speechRef.current === utterance) { speechRef.current = null; setSpeaking(false); } };
+    speechRef.current = utterance;
+    setSpeaking(true);
+    window.speechSynthesis.speak(utterance);
+  };
   const navigate = useNavigate();
   const [checkingSession, setCheckingSession] = useState(true);
 
@@ -152,7 +172,23 @@ export default function Login() {
               <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA" title="Conversar com a LIA" className="login-motion transition-transform hover:scale-105 active:scale-95">
                 <img src="/LIA%20Posso%20Ajudar.webp" alt="LIA — Posso Ajudar?" className="h-auto w-[155px] max-w-[48vw] object-contain drop-shadow-[0_3px_9px_rgba(0,0,0,.6)] sm:w-[190px]" />
               </button>
-              {liaOpen && <p className="mt-1 max-w-[270px] rounded-xl border-2 border-amber-300 bg-white/95 px-3 py-2 text-center text-sm font-semibold text-amber-950 shadow-lg">Oieee! 💛 Entre com Google ou receba um link no seu e-mail! 🎈</p>}
+              {liaOpen && (
+                <div role="dialog" aria-label="Ajuda da LIA no login" className="relative z-20 mt-2 w-[min(310px,88vw)] rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]">
+                  <div className="flex items-center justify-between gap-2 border-b border-white/25 pb-2">
+                    <strong className="text-sm text-yellow-300">COMO ACESSAR O SITE</strong>
+                    <div className="flex items-center gap-1">
+                      <button type="button" onClick={toggleSpeech} aria-label={speaking ? "Parar leitura" : "Ouvir orientação da página"} title={speaking ? "Parar leitura" : "Ouvir orientação"} className="rounded-lg bg-white/15 p-2">{speaking ? <VolumeX size={20} /> : <Volume2 size={20} />}</button>
+                      <button type="button" onClick={() => { setLiaOpen(false); window.speechSynthesis?.cancel(); speechRef.current = null; setSpeaking(false); }} aria-label="Fechar ajuda" className="rounded-lg bg-white/15 p-2"><X size={20} /></button>
+                    </div>
+                  </div>
+                  <p className="mt-3 text-sm leading-relaxed">Oieee! 💛 Para entrar, escolha sua conta no <strong>Google</strong> ou toque no <strong>envelope</strong> para receber um link por e-mail.</p>
+                  <p className="mt-2 text-sm leading-relaxed">Quer entrar mais rápido pelo celular? Baixe o atalho e abra o Lemos a Palavra pelo ícone!</p>
+                  <div className="mt-3 rounded-xl border border-sky-400 bg-sky-950/70 p-2 text-center">
+                    <InstallShortcut compact />
+                    <p className="mt-1 text-xs font-semibold text-white">Baixar atalho para o celular</p>
+                  </div>
+                </div>
+              )}
             </div>
             {emailLoginOpen && (
               <form onSubmit={enterWithEmail} className="mx-auto mt-3 flex w-full max-w-xs flex-col gap-2 rounded-xl bg-slate-950/85 p-3">
