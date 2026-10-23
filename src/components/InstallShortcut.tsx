@@ -87,6 +87,18 @@ export default function InstallShortcut({ compact = false, headerTile = false }:
   }, []);
 
   const handleClick = async () => {
+    if (headerTile) {
+      let profile = "";
+      try {
+        const user = JSON.parse(localStorage.getItem("lemos_user") || "null");
+        profile = String(user?.status ?? user?.perfil ?? user?.profile ?? user?.role ?? user?.tipo ?? "").trim().toLowerCase();
+      } catch { /* Perfil não identificado. */ }
+      if (profile !== "vip") {
+        setDone("O download é exclusivo para usuários com perfil VIP. Confira seu status no ícone de usuário.");
+        return;
+      }
+    }
+    setDone("");
     setBusy(true);
     try {
       import("@/lib/logEvent").then(({ logEvent }) => logEvent("Baixar Atalho"));
