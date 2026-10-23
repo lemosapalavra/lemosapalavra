@@ -135,7 +135,7 @@ export default function Login() {
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
         <div className="relative z-10 flex min-h-[100dvh] flex-col items-center px-4 pt-[max(1.5rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]">
-          <div className="flex-1 min-h-[24vh]" />
+          <div className="flex-1 min-h-[8vh]" />
           <style>{`
             @keyframes loginIconFloat { 0%,100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(255,255,255,.3)); } 50% { transform: scale(1.12); filter: drop-shadow(0 0 18px rgba(255,215,70,.9)); } }
             @keyframes loginIconGlow { 0%,100% { opacity: 1; } 50% { opacity: .96; } }
@@ -144,45 +144,42 @@ export default function Login() {
             .google-login-pressed { animation: loginIconPop .55s ease-out, loginIconGlow 2.6s ease-in-out infinite; }
             @media (prefers-reduced-motion: reduce) { .login-motion { animation: none !important; } }
           `}</style>
-          <section className="relative -translate-y-[clamp(3rem,10dvh,7rem)] mx-auto w-fit px-4 py-3" aria-label="Escolha a forma de entrar">
-            <div className="flex items-start justify-center gap-8 sm:gap-12">
-              <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google" className="group flex w-20 items-center justify-center disabled:opacity-80">
-                <img src="/%C3%8Dcone%20Google%20Dourado.webp" alt="Google" className={`login-motion h-24 w-24 max-w-none object-contain drop-shadow-[0_0_14px_rgba(255,225,90,.8)] transition-transform group-hover:scale-110 group-active:scale-95 sm:h-28 sm:w-28 ${pressed === "google" ? "google-login-pressed" : "google-login-floating"}`} />
-              </button>
-              <button type="button" disabled={busy !== null || checkingSession} onClick={() => { playTap(); setEmailLoginOpen(value => !value); }} aria-label="Entrar por e-mail" title="Entrar por e-mail" className="group flex w-20 items-center justify-center disabled:opacity-60">
-                <img src="/%C3%8Dcone%20e-mail.webp" alt="E-mail" className="login-motion google-login-floating h-24 w-24 max-w-none object-contain drop-shadow-[0_0_14px_rgba(255,225,90,.8)] transition-transform group-hover:scale-110 group-active:scale-95 sm:h-28 sm:w-28" />
-              </button>
+          <section className="relative z-20 mt-auto w-[min(96vw,520px)] max-w-full" aria-label="Escolha como entrar e conheça a LIA">
+            <div className="relative w-full">
+              <img src="/Login%20LIA%20Interativo.webp" alt="LIA com os ícones de acesso Google e e-mail e o balão Posso Ajudar?" className="pointer-events-none block h-auto w-full select-none object-contain" draggable={false} />
+              <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google"
+                className={`login-motion absolute left-[12%] top-[1%] z-20 h-[32%] w-[35%] rounded-full bg-transparent transition-transform hover:scale-105 active:scale-95 disabled:opacity-60 ${pressed === "google" ? "google-login-pressed" : "google-login-floating"}`} />
+              <button type="button" disabled={busy !== null || checkingSession} onClick={() => { playTap(); setEmailLoginOpen(value => !value); }} aria-label="Entrar por e-mail" title="Entrar por e-mail"
+                className="login-motion google-login-floating absolute left-[53%] top-[1%] z-20 h-[32%] w-[35%] rounded-full bg-transparent transition-transform hover:scale-105 active:scale-95 disabled:opacity-60" />
+              <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA — Posso Ajudar?" title="Posso Ajudar?"
+                className="login-motion absolute bottom-0 left-[9%] z-10 h-[68%] w-[85%] bg-transparent transition-transform hover:scale-[1.02] active:scale-[.98]" />
             </div>
             {emailLoginOpen && (
-              <form onSubmit={enterWithEmail} className="mx-auto mt-3 flex w-full max-w-xs flex-col gap-2 rounded-xl bg-slate-950/85 p-3">
+              <form onSubmit={enterWithEmail} className="absolute left-1/2 top-[29%] z-40 flex w-[min(320px,90vw)] -translate-x-1/2 flex-col gap-2 rounded-xl border-2 border-amber-300 bg-slate-950/95 p-3 shadow-xl">
                 <label htmlFor="lemos-email-login" className="text-center text-xs font-semibold text-white">Receber link de acesso no e-mail</label>
                 <input id="lemos-email-login" type="email" autoComplete="email" required value={emailAddress} onChange={event => setEmailAddress(event.target.value)} placeholder="seuemail@exemplo.com" className="h-11 rounded-md border border-slate-300 bg-white px-3 text-slate-950 placeholder:text-slate-500" />
                 <button type="submit" disabled={busy !== null} className="rounded-md bg-amber-400 px-4 py-2 font-semibold text-slate-950 disabled:opacity-60">{busy === "email" ? "Enviando..." : "Enviar link de acesso"}</button>
+                <button type="button" onClick={() => setEmailLoginOpen(false)} className="text-sm font-semibold text-white underline">Fechar</button>
               </form>
             )}
-          </section>
-            <div className="absolute bottom-[max(0px,env(safe-area-inset-bottom))] left-1/2 z-20 flex -translate-x-1/2 flex-col items-center">
-              <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA" title="Conversar com a LIA" className="login-motion relative border-0 bg-transparent p-0 drop-shadow-[0_0_12px_rgba(255,215,85,.85)] transition-transform hover:scale-105 active:scale-95">
-                <img src="/LIA%20Posso%20Ajudar.webp" alt="LIA — Posso Ajudar?" className="h-auto w-[202px] max-w-[70vw] object-contain drop-shadow-[0_0_14px_rgba(255,215,85,.75)] sm:w-[247px]" />
-              </button>
-              {liaOpen && (
-                <div role="dialog" aria-label="Ajuda da LIA no login" className="absolute bottom-full z-30 mb-3 w-[min(310px,88vw)] rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]">
-                  <div className="flex items-center justify-between gap-2 border-b border-white/25 pb-2">
-                    <strong className="text-sm text-yellow-300">COMO ACESSAR O SITE</strong>
-                    <div className="flex items-center gap-1">
-                      <button type="button" onClick={toggleSpeech} aria-label={speaking ? "Parar leitura" : "Ouvir orientação da página"} title={speaking ? "Parar leitura" : "Ouvir orientação"} className="rounded-lg bg-white/15 p-2">{speaking ? <VolumeX size={20} /> : <Volume2 size={20} />}</button>
-                      <button type="button" onClick={() => { setLiaOpen(false); window.speechSynthesis?.cancel(); speechRef.current = null; setSpeaking(false); }} aria-label="Fechar ajuda" className="rounded-lg bg-white/15 p-2"><X size={20} /></button>
-                    </div>
-                  </div>
-                  <p className="mt-3 text-sm leading-relaxed">Oieee! 💛 Para entrar, escolha sua conta no <strong>Google</strong> ou toque no <strong>envelope</strong> para receber um link por e-mail.</p>
-                  <p className="mt-2 text-sm leading-relaxed">Quer entrar mais rápido pelo celular? Baixe o atalho e abra o Lemos a Palavra pelo ícone!</p>
-                  <div className="mt-3 rounded-xl border border-sky-400 bg-sky-950/70 p-2 text-center">
-                    <InstallShortcut compact />
-                    <p className="mt-1 text-xs font-semibold text-white">Baixar atalho para o celular</p>
+            {liaOpen && (
+              <div role="dialog" aria-label="Ajuda da LIA no login" className="absolute bottom-[40%] left-1/2 z-40 w-[min(320px,90vw)] -translate-x-1/2 rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]">
+                <div className="flex items-center justify-between gap-2 border-b border-white/25 pb-2">
+                  <strong className="text-sm text-yellow-300">COMO ACESSAR O SITE</strong>
+                  <div className="flex items-center gap-1">
+                    <button type="button" onClick={toggleSpeech} aria-label={speaking ? "Parar leitura" : "Ouvir orientação da página"} title={speaking ? "Parar leitura" : "Ouvir orientação"} className="rounded-lg bg-white/15 p-2">{speaking ? <VolumeX size={20} /> : <Volume2 size={20} />}</button>
+                    <button type="button" onClick={() => { setLiaOpen(false); window.speechSynthesis?.cancel(); speechRef.current = null; setSpeaking(false); }} aria-label="Fechar ajuda" className="rounded-lg bg-white/15 p-2"><X size={20} /></button>
                   </div>
                 </div>
-              )}
-            </div>
+                <p className="mt-3 text-sm leading-relaxed">Oieee! 💛 Para entrar, escolha sua conta no <strong>Google</strong> ou toque no <strong>envelope</strong> para receber um link por e-mail.</p>
+                <p className="mt-2 text-sm leading-relaxed">Quer entrar mais rápido pelo celular? Baixe o atalho e abra o Lemos a Palavra pelo ícone!</p>
+                <div className="mt-3 rounded-xl border border-sky-400 bg-sky-950/70 p-2 text-center">
+                  <InstallShortcut compact />
+                  <p className="mt-1 text-xs font-semibold text-white">Baixar atalho para o celular</p>
+                </div>
+              </div>
+            )}
+          </section>
         </div>
       </div>
     </main>
