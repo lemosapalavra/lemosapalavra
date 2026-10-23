@@ -19,10 +19,8 @@ export default function LemosBottomNav() {
     let active = true;
     const check = async () => {
       const { data: session } = await supabase.auth.getSession();
-      const uid = session.session?.user?.id;
-      if (!uid || session.session?.user?.email?.trim().toLowerCase() !== "marcelloborbas@gmail.com") { if (active) setIsAdmin(false); return; }
-      const { data, error } = await supabase.rpc("has_role", { _user_id: uid, _role: "admin" });
-      if (active) setIsAdmin(!error && data === true);
+      const email = session.session?.user?.email?.trim().toLowerCase();
+      if (active) setIsAdmin(!!session.session?.user?.id && email === "marcelloborbas@gmail.com");
     };
     void check();
     const { data: sub } = supabase.auth.onAuthStateChange(() => { void check(); });
