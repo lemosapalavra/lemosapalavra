@@ -9,7 +9,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import ShareButton from "@/components/ShareButton";
 import MascoteLia from "@/components/MascoteLia";
 import UserCorner from "@/components/UserCorner";
-import HomeTopNav from "@/components/HomeTopNav";
+import LemosBottomNav from "@/components/LemosBottomNav";
 import Index from "./pages/Index.tsx";
 import { useAnalyticsTracker } from "@/hooks/useAnalyticsTracker";
 import { supabase } from "@/integrations/supabase/client";
@@ -213,7 +213,7 @@ const AdminOnly = ({ children }: { children: React.ReactNode }) => {
 /** Rodapé global — escondido no Álbum para não conflitar com as figurinhas. */
 const GlobalFooter = () => {
   const location = useLocation();
-  const hidden = location.pathname.startsWith("/album") || location.pathname === "/" || location.pathname === "/familia" || location.pathname === "/login" || location.pathname === "/login-sms" || location.pathname === "/jogos" || location.pathname === "/atividades" || location.pathname === "/louvores" || location.pathname === "/musicas" || location.pathname === "/lemosplay" || location.pathname === "/veja" || location.pathname === "/ouca";
+  const hidden = true || location.pathname.startsWith("/album") || location.pathname === "/" || location.pathname === "/familia" || location.pathname === "/login" || location.pathname === "/login-sms" || location.pathname === "/jogos" || location.pathname === "/atividades" || location.pathname === "/louvores" || location.pathname === "/musicas" || location.pathname === "/lemosplay" || location.pathname === "/veja" || location.pathname === "/ouca";
   useEffect(() => {
     document.body.classList.toggle("no-global-footer", hidden);
     return () => document.body.classList.remove("no-global-footer");
@@ -237,15 +237,6 @@ const AutoUpdater = () => {
   return null;
 };
 
-const GlobalTopMenu = () => {
-  const location = useLocation();
-  if (location.pathname === "/" || location.pathname === "/login" || location.pathname === "/login-sms") return null;
-  const transparentHeader = location.pathname === "/lemos-play" || location.pathname === "/louvores" || location.pathname === "/veja" || location.pathname === "/ouca";
-  return <header className={`fixed top-0 inset-x-0 z-[60] h-[60px] sm:h-[76px] ${transparentHeader ? "bg-transparent shadow-none" : "bg-gradient-to-b from-amber-100/95 via-amber-100/85 to-amber-100/60 shadow-sm"}`}>
-    <div className="flex h-full items-start justify-center pl-1 pr-[135px] sm:pl-[155px] sm:pr-[200px]"><HomeTopNav /></div>
-  </header>;
-};
-
 /** Seta de retorno única, sempre logo abaixo do botão Início do menu superior. */
 const GlobalBackArrow = () => {
   const location = useLocation();
@@ -263,7 +254,7 @@ const GlobalBackArrow = () => {
       }}
       aria-label="Voltar à página anterior"
       title="Voltar à página anterior"
-      className="fixed left-[52px] sm:left-[42px] top-[84px] sm:top-[98px] z-[100] flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-amber-400 bg-white/95 text-amber-900 shadow-lg transition-transform hover:scale-105"
+      className="fixed left-[52px] sm:left-[42px] top-[72px] sm:top-[85px] z-[100] flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-amber-400 bg-white/95 text-amber-900 shadow-lg transition-transform hover:scale-105"
     >
       <ArrowLeft size={24} />
     </button>
@@ -350,7 +341,7 @@ const App = () => (
         <RouteMetaSync />
         {/* MysticBackground removed to improve page load performance */}
         <AuthAwareDecorations />
-        <GlobalTopMenu />
+        <LemosBottomNav />
         <GlobalBackArrow />
         <Suspense fallback={<PageFallback />}>
           <Routes>
