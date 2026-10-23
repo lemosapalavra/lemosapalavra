@@ -260,6 +260,25 @@ export default function Configuracao() {
 
         </div>
 
+        {/* Áreas temáticas de administração dos veículos e suas mídias. */}
+        <section className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
+          <h3 className="font-display text-lg font-bold text-foreground mb-3">Transportes e animações</h3>
+          <p className="text-xs text-muted-foreground mb-3">Acesse as áreas relacionadas aos personagens e vídeos do site.</p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {[
+              { label: "Aviãozinho", path: "/lemosplay" },
+              { label: "Trenzinho", path: "/lemosplay" },
+              { label: "Kartzinho", path: "/lemosplay" },
+              { label: "14-bis", path: "/lemosplay" },
+            ].map(item => (
+              <button key={item.label} type="button" onClick={() => navigate(item.path)}
+                className="rounded-xl border-2 border-amber-300 bg-gradient-to-br from-amber-50 to-yellow-100 px-3 py-4 text-center text-sm font-bold text-amber-950 shadow-sm transition hover:brightness-110 focus-visible:ring-2 focus-visible:ring-amber-500">
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </section>
+
         {/* Atalhos para páginas configuráveis */}
         <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
           <h3 className="font-display text-lg font-bold text-foreground mb-3">⚡ Atalhos para Configurar Páginas</h3>
