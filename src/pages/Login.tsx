@@ -169,7 +169,7 @@ export default function Login() {
               </button>
             </div>
             <div className="relative mt-3 flex flex-col items-center">
-              <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA" title="Conversar com a LIA" className="login-motion relative translate-y-[clamp(3rem,10dvh,7rem)] transition-transform hover:scale-105 active:scale-95">
+              <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA" title="Conversar com a LIA" className="login-motion relative translate-y-[clamp(3rem,10dvh,7rem)] rounded-3xl border-[3px] border-white/90 bg-white/10 p-1 shadow-[0_0_0_2px_rgba(255,215,85,.85),0_0_18px_6px_rgba(255,255,255,.85),0_0_34px_12px_rgba(255,210,65,.55),0_6px_16px_rgba(0,0,0,.4)] backdrop-blur-[2px] transition-transform hover:scale-105 active:scale-95">
                 <img src="/LIA%20Posso%20Ajudar.webp" alt="LIA — Posso Ajudar?" className="h-auto w-[155px] max-w-[48vw] object-contain drop-shadow-[0_3px_9px_rgba(0,0,0,.6)] sm:w-[190px]" />
               </button>
               {liaOpen && (
