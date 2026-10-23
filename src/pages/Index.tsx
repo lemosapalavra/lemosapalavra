@@ -1,5 +1,5 @@
 import homeMobile from "@/assets/home-optimized.webp";
-import dedicatoryIcon from "@/assets/dedicatoria-optimized.webp";
+const dedicatoryIcon = "/dedicatoria.webp";
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -137,11 +137,11 @@ function IndexV1() {
            {dedicatoriaVisible && <div className="fixed bottom-3 right-2 sm:right-5 z-[45] flex flex-col items-center animate-[homeIconFloat_3.8s_ease-in-out_infinite]">
              <Button variant="ghost" size="icon"
               onClick={() => setDedicatoriaOpen(true)}
-                className="w-[88px] h-[88px] sm:w-[110px] sm:h-[110px] p-0 rounded-full border-[3px] border-white bg-transparent shadow-[0_0_0_2px_rgba(251,191,36,.8),0_5px_18px_rgba(0,0,0,.5)] hover:bg-transparent hover:scale-110 hover:brightness-110 hover:shadow-[0_0_22px_rgba(255,255,255,.9)] active:scale-95 focus-visible:ring-4 focus-visible:ring-amber-400 transition-all duration-200 cursor-pointer"
+                className="w-[88px] h-[88px] sm:w-[110px] sm:h-[110px] p-0 rounded-full border-[3px] border-white bg-transparent shadow-[0_0_0_2px_rgba(251,191,36,.8),0_5px_18px_rgba(0,0,0,.5)] hover:bg-transparent hover:scale-110 hover:brightness-110 hover:shadow-[0_0_30px_8px_rgba(255,225,90,.95)] active:scale-110 active:brightness-150 focus-visible:ring-4 focus-visible:ring-amber-400 transition-all duration-200 cursor-pointer"
               title="Dedicatória"
               aria-label="Abrir dedicatória"
             >
-              <img loading="lazy" decoding="async" src={dedicatoryIcon} alt="" className="h-full w-full object-contain drop-shadow-lg" />
+              <img loading="lazy" decoding="async" src={dedicatoryIcon} alt="" className="h-full w-full object-contain drop-shadow-[0_0_12px_rgba(255,220,90,.75)] transition-all duration-300 group-hover:brightness-125" />
              </Button>
 
           </div>}
