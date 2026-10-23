@@ -20,7 +20,7 @@ const cleanSpeechText = (text: string) => text.replace(/[^\p{L}\p{N}\p{P}\p{Zs}\
  */
 
 const PAGE_TIPS: Record<string, string> = {
-  "/": "Oieee! 💛 Escolha Veja, Ouça, Aprenda ou Álbum para começar nossa aventura! ✨",
+  "/": "Olá! Sou a LIA. Escolha Veja, Ouça, Aprenda ou Álbum para começar.",
   "/biblia": "Aqui você encontra a Bíblia! 📖 Escolha o Antigo ou o Novo Testamento para descobrir a Palavra de Deus. 💛",
   "/louvores": "Lá, lá, lá! 🎶 Escolha um louvor e cante comigo! 🎤",
   "/veja": "Pipoca pronta? 🍿 Escolha um vídeo! Assista e ganhe moedinhas! 🪙",
@@ -137,7 +137,7 @@ export default function MascoteLia() {
 
   if (!expanded) {
     return (
-      <div className={`fixed z-[9998] flex flex-col items-center gap-2 ${onHome ? "left-1 sm:left-4" : "right-2 sm:right-4"} ${liaPosition}`}>
+      <div className={`fixed z-[9998] flex flex-col items-center gap-2 ${onHome ? "left-[-16px] sm:left-[-12px]" : "right-2 sm:right-4"} ${liaPosition}`}>
       <Button variant="ghost"
         onMouseEnter={(event) => { if ((event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(true); }}
         onFocus={() => setExpanded(true)}
@@ -161,10 +161,10 @@ export default function MascoteLia() {
 
   return (
     <div onMouseLeave={(event) => { if (!onHome && (event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(false); }}
-      className={`fixed z-[9998] flex flex-col items-end gap-1 ${onHome ? "left-1 sm:left-4" : "right-2 sm:right-4"} ${liaPosition}`}>
+      className={`fixed z-[9998] flex flex-col items-end gap-1 ${onHome ? "left-[-16px] sm:left-[-12px]" : "right-2 sm:right-4"} ${liaPosition}`}>
       {/* Ajuda com o mesmo painel azul, cabeçalho e controles da página de login. */}
       <div role="dialog" aria-label="Ajuda da LIA" className={onHome
-        ? "pointer-events-auto fixed bottom-[calc(90px+env(safe-area-inset-bottom,0px))] left-1/2 z-[9999] w-[min(320px,90vw)] -translate-x-1/2 rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"
+        ? "pointer-events-auto fixed bottom-[calc(325px+env(safe-area-inset-bottom,0px))] left-2 z-[9999] w-[min(320px,calc(100vw-16px))] max-h-[45dvh] overflow-y-auto rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"
         : "pointer-events-auto relative w-[min(78vw,320px)] max-w-sm rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"}>
         <div className="flex items-center justify-between gap-2 border-b border-white/25 pb-2">
           <strong className="text-sm text-yellow-300">POSSO AJUDAR?</strong>
