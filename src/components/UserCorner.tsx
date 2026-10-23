@@ -109,8 +109,8 @@ export default function UserCorner() {
   const greeting = new Date().getHours() < 12 ? "Bom dia" : new Date().getHours() < 18 ? "Boa tarde" : "Boa noite";
   if (true) return (
     <>
-      <div className="fixed right-1 top-1 sm:top-1 z-[75] flex flex-col items-end gap-1">
-        <button type="button" onClick={() => setMenu(v => !v)} aria-label="Opções do usuário" aria-expanded={menu}
+      <div className="fixed right-1 top-1 sm:top-1 z-[110] flex flex-col items-end gap-1">
+        <button type="button" onClick={(event) => { event.stopPropagation(); setMenu(v => !v); }} aria-label="Opções do usuário" aria-expanded={menu}
           className="flex w-[132px] min-[390px]:w-[145px] sm:w-[190px] min-w-0 items-center gap-1.5 rounded-2xl border-[3px] border-amber-400 bg-gradient-to-br from-[#a9652c] via-[#794015] to-[#49250c] px-1.5 py-1.5 text-left text-amber-50 shadow-[0_4px_12px_rgba(0,0,0,.5)]">
           <img src={resolveAvatar(user.avatar)} onError={e => { if (!e.currentTarget.src.endsWith(iconUsuario)) e.currentTarget.src = iconUsuario; }} alt={user.name}
             className="h-9 w-9 min-[390px]:h-10 min-[390px]:w-10 sm:h-12 sm:w-12 shrink-0 rounded-full border-2 border-amber-300 bg-white object-contain" />
@@ -120,7 +120,7 @@ export default function UserCorner() {
             <span className="block text-[10px] sm:text-xs">{welcome}</span><span className="block font-extrabold text-yellow-200">🪙 {coins}</span>
           </span>
         </button>
-        {menu && <div className="flex flex-col items-end gap-2 rounded-xl bg-white/95 p-2 shadow-lg">
+        {menu && <div className="relative z-[111] flex flex-col items-end gap-2 rounded-xl bg-white/95 p-2 shadow-lg">
           <div className="w-full px-1 py-1 text-center text-sm font-bold text-amber-950">Status: {profileStatus(user)}</div>
           <div className="flex flex-wrap justify-end gap-1">
           <Button size="sm" variant="outline" onClick={() => { setOpen(true); setMenu(false); }}>Meu Mural</Button>
