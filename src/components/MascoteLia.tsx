@@ -70,7 +70,7 @@ export default function MascoteLia() {
   const location = useLocation();
   const onHome = location.pathname === "/";
   const onAlbum = location.pathname === "/album";
-  const onVideos = location.pathname === "/lemosplay" || location.pathname === "/veja";
+  const onVideos = ["/lemosplay", "/veja", "/ouca", "/musicas", "/louvores"].includes(location.pathname);
   const persistentHelp = onAlbum || onVideos;
   
   const [expanded, setExpanded] = useState(false);
