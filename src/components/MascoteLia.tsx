@@ -6,6 +6,8 @@ const liaForPages = "/lia-paginas.webp";
 const liaFallback = "/lia-mascote.png";
 import { Button } from "@/components/ui/button";
 
+const cleanSpeechText = (text: string) => text.replace(/[^\\p{L}\\p{N}\\p{P}\\p{Zs}\\n]/gu, "").replace(/\\s+/g, " ").trim();
+
 /**
  * LIA — mascote guia do site.
  * Fica recolhida como um ícone pequeno (não atrapalha no celular).
@@ -118,10 +120,12 @@ export default function MascoteLia() {
     if (!("speechSynthesis" in window)) return;
     if (speaking) { window.speechSynthesis.cancel(); speechRef.current=null; setSpeaking(false); return; }
     window.speechSynthesis.cancel();
-    const speech = new SpeechSynthesisUtterance(message);
-    speech.lang="pt-BR"; speech.rate=0.94;
+    const speech = new SpeechSynthesisUtterance(cleanSpeechText(message));
+    speech.lang="pt-BR"; speech.rate=0.94; speech.pitch=1.18;
     const voices=window.speechSynthesis.getVoices();
-    speech.voice=voices.find(v=>/^pt-BR/i.test(v.lang)) || voices.find(v=>/^pt/i.test(v.lang)) || null;
+    const portugueseVoices = voices.filter(v => /^pt(-|$)/i.test(v.lang));
+    const femaleVoice = portugueseVoices.find(v => /maria|francisca|luciana|helena|fernanda|camila|vitoria|vitória|female|feminina|mulher|google português do brasil/i.test(v.name));
+    speech.voice = femaleVoice || portugueseVoices.find(v => /^pt-BR/i.test(v.lang)) || portugueseVoices[0] || null;
     speech.onend=speech.onerror=()=>{ if(speechRef.current===speech){speechRef.current=null;setSpeaking(false);} };
     speechRef.current=speech;setSpeaking(true);window.speechSynthesis.speak(speech);
   };
@@ -169,7 +173,7 @@ export default function MascoteLia() {
             <button type="button" onClick={() => { setExpanded(false); window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }} aria-label="Fechar ajuda" className="rounded-lg bg-white/15 p-2"><X size={20} /></button>
           </div>
         </div>
-        <p className="mt-3 text-sm leading-relaxed">{message}</p>
+        <p className="mt-3 text-sm leading-relaxed">{cleanSpeechText(message)}</p>
       </div>
 
       <div className="flex flex-col items-center gap-2">
