@@ -18,6 +18,11 @@ export default function Louvores() {
   const [viewed, setViewed] = useState<Record<string, boolean>>(() => { try { return JSON.parse(localStorage.getItem("lemos_media_viewed") || "{}"); } catch { return {}; } });
   const [playingCategory, setPlayingCategory] = useState<ListenCategory>("musicas");
   const [config, setConfig] = useState(() => loadConfig());
+  const [hiddenUnlocked, setHiddenUnlocked] = useState(() => isHiddenUnlocked());
+  const [askingPassword, setAskingPassword] = useState(false);
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const [pendingHidden, setPendingHidden] = useState<string | null>(null);
 
   useEffect(() => { markSeen("louvores", louvoresTitles); }, []);
   useEffect(() => {
