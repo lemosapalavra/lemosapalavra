@@ -32,6 +32,10 @@ const dedicatoriaTexts: { aramaic: string; pt: string }[] = [
     pt: "Se, por meio desta obra, uma única **vida** se aproximar de **Jesus**, então todas as provações e tribulações enfrentadas ao longo do meu caminho terão valido a pena.",
   },
   {
+    aramaic: "",
+    pt: "**Lemos a Palavra — Onde a Palavra ganha Vida, a fé encontra espaço para crescer e cada criança descobre o valor do amor de Deus.**",
+  },
+  {
     aramaic: "ܠܐܠܗܐ ܫܘܒܚܐ ܘܐܝܩܪܐ ܘܬܫܒܘܚܬܐ ܠܥܠܡ ܥܠܡܝܢ ܐܡܝܢ",
     pt: "**A Deus toda a honra, toda a glória e todo o louvor, pelos séculos dos séculos. Amém.**",
   },
