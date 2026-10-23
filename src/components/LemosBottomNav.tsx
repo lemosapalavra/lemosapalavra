@@ -1,4 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
+import { createPortal } from "react-dom";
 import { House, BookOpen, Heart, HandHeart, Settings } from "lucide-react";
 
 const items = [
@@ -13,8 +14,8 @@ export default function LemosBottomNav() {
   const { pathname } = useLocation();
   if (pathname === "/login" || pathname === "/login-sms") return null;
 
-  return (
-    <nav aria-label="Menu principal Lemos a Palavra" className="fixed inset-x-0 bottom-0 z-[110] border-t-[3px] border-amber-400 bg-gradient-to-br from-[#a9652c] via-[#794015] to-[#49250c] shadow-[0_-4px_16px_rgba(0,0,0,.5)]" style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
+  return createPortal(
+    <nav aria-label="Menu principal Lemos a Palavra" className="fixed inset-x-0 bottom-0 z-[9999] border-t-[3px] border-amber-400 bg-gradient-to-br from-[#a9652c] via-[#794015] to-[#49250c] shadow-[0_-4px_16px_rgba(0,0,0,.5)]" style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
       <div className="mx-auto flex h-[65px] max-w-[640px] items-stretch justify-around">
         {items.map(({ label, path, Icon }) => (
           <NavLink key={path} to={path} end={path === "/"} aria-label={label}
@@ -31,6 +32,7 @@ export default function LemosBottomNav() {
           </NavLink>
         ))}
       </div>
-    </nav>
+    </nav>,
+    document.body
   );
 }
