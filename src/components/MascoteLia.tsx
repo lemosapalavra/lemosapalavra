@@ -69,6 +69,7 @@ const CONTEXT_TIPS: Record<string, string> = {
 export default function MascoteLia() {
   const location = useLocation();
   const onHome = location.pathname === "/";
+  const onAlbum = location.pathname === "/album";
   
   const [expanded, setExpanded] = useState(false);
   const [speaking,setSpeaking] = useState(false);
@@ -140,14 +141,15 @@ export default function MascoteLia() {
     ? "bottom-[calc(90px+env(safe-area-inset-bottom,0px))]"
     : "bottom-[calc(77px+env(safe-area-inset-bottom,0px))]";
 
-  if (!liaVisible) return null;
+  // O álbum depende da LIA para explicar pacotinhos e figurinhas.
+  if (!liaVisible && !onAlbum) return null;
 
   if (!expanded) {
     return (
       <div data-lemos-lia="" className={`fixed z-[9998] flex flex-col items-center gap-2 left-[-16px] sm:left-[-12px] ${liaPosition}`}>
       <Button variant="ghost"
-        onMouseEnter={(event) => { if ((event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(true); }}
-        onFocus={() => setExpanded(true)}
+        onMouseEnter={(event) => { if (!onAlbum && (event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(true); }}
+        onFocus={() => { if (!onAlbum) setExpanded(true); }}
         onClick={() => setExpanded(true)}
         aria-label="Falar com a LIA, sua ajudante"
         title="Falar com a LIA, sua ajudante"
@@ -167,13 +169,13 @@ export default function MascoteLia() {
   }
 
   return (
-    <div onMouseLeave={(event) => { if (!onHome && (event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(false); }}
+    <div onMouseLeave={(event) => { if (!onHome && !onAlbum && (event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(false); }}
       className={`fixed z-[9998] flex flex-col items-end gap-1 left-[-16px] sm:left-[-12px] ${liaPosition}`}>
       {/* Ajuda com o mesmo painel azul, cabeçalho e controles da página de login. */}
       <div role="dialog" aria-label="Ajuda da LIA" className={onHome
         ? "pointer-events-auto fixed bottom-[calc(325px+env(safe-area-inset-bottom,0px))] left-2 z-[9999] w-[min(320px,calc(100vw-16px))] max-h-[45dvh] overflow-y-auto rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"
         : location.pathname === "/album"
-        ? "pointer-events-auto fixed bottom-[calc(245px+env(safe-area-inset-bottom,0px))] left-2 z-[9999] w-[min(320px,calc(100vw-16px))] max-h-[45dvh] overflow-y-auto rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"
+        ? "pointer-events-auto fixed bottom-[calc(250px+env(safe-area-inset-bottom,0px))] left-2 z-[9999] w-[min(320px,calc(100vw-16px))] max-h-[45dvh] overflow-y-auto rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"
         : "pointer-events-auto relative w-[min(78vw,320px)] max-w-sm rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"}>
         <div className="flex items-center justify-between gap-2 border-b border-white/25 pb-2">
           <strong className="text-sm text-yellow-300">POSSO AJUDAR?</strong>
