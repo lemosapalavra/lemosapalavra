@@ -37,7 +37,7 @@ function resolveAvatar(value?: string): string {
   return avatarNames[key] || (legacy ? avatarNames[legacy[1].toLowerCase()] : undefined) || raw;
 }
 import { Button } from "@/components/ui/button";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
 /**
@@ -47,6 +47,7 @@ import { supabase } from "@/integrations/supabase/client";
  */
 export default function UserCorner() {
   const { coins } = useCoins();
+  const navigate = useNavigate();
   const pathname = useLocation().pathname;
   const onHome = pathname === "/";
   const [user, setUser] = useState<{ name?: string; avatar?: string; status?: string; perfil?: string; profile?: string; role?: string; tipo?: string } | null>(null);
@@ -124,6 +125,7 @@ export default function UserCorner() {
           <div className="w-full px-1 py-1 text-center text-sm font-bold text-amber-950">Status: {profileStatus(user)}</div>
           <div className="flex flex-wrap justify-end gap-1">
           <Button size="sm" variant="outline" onClick={() => { setOpen(true); setMenu(false); }}>Meu Mural</Button>
+          <Button size="sm" variant="outline" onClick={() => { setMenu(false); navigate("/tesouros"); }}>🏆 Premiações</Button>
           <Button size="sm" variant="destructive" onClick={logout}>Sair</Button>
           </div>
         </div>}
