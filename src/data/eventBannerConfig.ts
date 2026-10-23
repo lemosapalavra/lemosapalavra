@@ -39,7 +39,12 @@ export function loadEventBanner(): EventBannerConfig {
     const raw = localStorage.getItem(KEY);
     if (!raw) return defaultEventBanner();
     const parsed = JSON.parse(raw) as Partial<EventBannerConfig>;
-    return { ...defaultEventBanner(), ...parsed };
+    // Atualizações do vídeo do 14 Bis: substitui URLs antigas salvas pelo painel.
+    const cfg = { ...defaultEventBanner(), ...parsed };
+    if (cfg.videoUrl && cfg.videoUrl !== bisVideo.url && cfg.videoUrl.includes("ele-e-o-meu-irmao")) {
+      cfg.videoUrl = bisVideo.url;
+    }
+    return cfg;
   } catch {
     return defaultEventBanner();
   }

@@ -228,18 +228,35 @@ const repairConfig = (cfg: LemosPlayConfig, def: LemosPlayConfig): LemosPlayConf
 
 
 
+// Atualizações do vídeo "Ele é o Meu Irmão": substitui a URL antiga salva
+// em configurações anteriores (painel admin / Ouça) pela nova versão.
+const swapLegacyBis = (cfg: LemosPlayConfig): LemosPlayConfig => {
+  const swapEntry = (e: PlayEntry): PlayEntry => ({
+    ...e,
+    src: e.src.includes("ele-e-o-meu-irmao.mp4") && e.src !== bisVid.url ? bisVid.url : e.src,
+    poster: e.poster?.includes("ele-e-o-meu-irmao-cover") && e.poster !== bisThumb.url ? bisThumb.url : e.poster,
+  });
+  return {
+    ...cfg,
+    filmes: cfg.filmes.map(swapEntry),
+    musicas: cfg.musicas.map(swapEntry),
+    louvores: cfg.louvores.map(swapEntry),
+    series: cfg.series.map((g) => ({ ...g, videos: g.videos.map(swapEntry) })),
+  };
+};
+
 export function loadConfig(): LemosPlayConfig {
   try {
     const raw = localStorage.getItem(KEY);
     if (!raw) return defaultConfig();
     const parsed = JSON.parse(raw) as Partial<LemosPlayConfig>;
     const def = defaultConfig();
-    return repairConfig({
+    return swapLegacyBis(repairConfig({
       filmes: parsed.filmes ?? def.filmes,
       series: parsed.series ?? def.series,
       musicas: parsed.musicas ?? def.musicas,
       louvores: parsed.louvores ?? def.louvores,
-    }, def);
+    }, def));
   } catch {
     return defaultConfig();
   }
