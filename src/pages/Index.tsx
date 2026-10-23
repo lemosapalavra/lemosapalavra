@@ -99,10 +99,10 @@ function IndexV1() {
           A camada cobre a mesma área da imagem de fundo, incluindo o cabeçalho. */}
       <div className="absolute inset-0 z-20 pointer-events-none">
         {([
-          { label: "VEJA", image: vejaFlutuante, mobile: [50, 44], desktop: [50, 48] },
-          { label: "OUÇA", image: oucaFlutuante, mobile: [24, 61], desktop: [26, 63] },
-          { label: "APRENDA", image: aprendaFlutuante, mobile: [76, 61], desktop: [74, 63] },
-          { label: "ÁLBUM", image: albumFlutuante, mobile: [50, 77], desktop: [50, 79] },
+          { label: "VEJA", image: vejaFlutuante, mobile: [50, 26], desktop: [50, 28] },
+          { label: "OUÇA", image: oucaFlutuante, mobile: [20, 47], desktop: [23, 49] },
+          { label: "APRENDA", image: aprendaFlutuante, mobile: [80, 47], desktop: [77, 49] },
+          { label: "ÁLBUM", image: albumFlutuante, mobile: [50, 68], desktop: [50, 70] },
         ] as const).map(({ label, image, mobile, desktop }, index) => (
           <button
             key={label}
@@ -119,7 +119,7 @@ function IndexV1() {
               ["--float-delay" as string]: `${index * -0.65}s`,
             }}
           >
-            <img src={image} alt="" draggable={false} className="home-floating-icon block w-full h-full object-contain drop-shadow-lg" />
+            <img src={image} alt="" draggable={false} className="home-floating-icon block w-full h-full object-contain drop-shadow-[0_0_16px_rgba(255,218,70,.95)]" />
           </button>
         ))}
       </div>
