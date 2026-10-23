@@ -91,17 +91,6 @@ export default function InstallShortcut({ compact = false, headerTile = false }:
       setDone("O download estará disponível somente para usuários de nível VIP. Ainda não está liberado.");
       return;
     }
-    if (false) {
-      let profile = "";
-      try {
-        const user = JSON.parse(localStorage.getItem("lemos_user") || "null");
-        profile = String(user?.status ?? user?.perfil ?? user?.profile ?? user?.role ?? user?.tipo ?? "").trim().toLowerCase();
-      } catch { /* Perfil não identificado. */ }
-      if (profile !== "vip") {
-        setDone("O download é exclusivo para usuários com perfil VIP. Confira seu status no ícone de usuário.");
-        return;
-      }
-    }
     setDone("");
     setBusy(true);
     try {
