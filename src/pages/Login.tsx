@@ -123,7 +123,7 @@ export default function Login() {
     try {
       const { error } = await supabase.auth.signInWithOtp({
         email,
-        options: { emailRedirectTo: window.location.origin + "/login", shouldCreateUser: true },
+        options: { emailRedirectTo: window.location.origin + "/auth/callback", shouldCreateUser: true },
       });
       if (error) throw error;
       toast({ title: "Confira seu e-mail", description: "Se o endereço estiver habilitado, você receberá um link para entrar." });
