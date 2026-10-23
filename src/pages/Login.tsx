@@ -144,7 +144,7 @@ export default function Login() {
             .google-login-pressed { animation: loginIconPop .55s ease-out, loginIconGlow 2.6s ease-in-out infinite; }
             @media (prefers-reduced-motion: reduce) { .login-motion { animation: none !important; } }
           `}</style>
-          <section className="relative mx-auto flex w-fit flex-col items-center px-4 pt-3 pb-0" aria-label="Escolha a forma de entrar">
+          <section className="relative -translate-y-[clamp(3rem,10dvh,7rem)] mx-auto w-fit px-4 py-3" aria-label="Escolha a forma de entrar">
             <div className="flex items-start justify-center gap-8 sm:gap-12">
               <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google"
                 className="group flex w-20 items-center justify-center text-white disabled:opacity-80">
@@ -168,8 +168,8 @@ export default function Login() {
                 </span>
               </button>
             </div>
-            <div className="mt-3 flex flex-col items-center">
-              <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA" title="Conversar com a LIA" className="login-motion transition-transform hover:scale-105 active:scale-95">
+            <div className="relative mt-3 flex flex-col items-center">
+              <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA" title="Conversar com a LIA" className="login-motion relative translate-y-[clamp(3rem,10dvh,7rem)] transition-transform hover:scale-105 active:scale-95">
                 <img src="/LIA%20Posso%20Ajudar.webp" alt="LIA — Posso Ajudar?" className="h-auto w-[155px] max-w-[48vw] object-contain drop-shadow-[0_3px_9px_rgba(0,0,0,.6)] sm:w-[190px]" />
               </button>
               {liaOpen && (
@@ -198,7 +198,6 @@ export default function Login() {
               </form>
             )}
           </section>
-          <div className="flex-1 min-h-0" />
         </div>
       </div>
     </main>
