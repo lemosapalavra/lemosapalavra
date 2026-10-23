@@ -71,6 +71,7 @@ export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void})
  };
  const puzzleImage=avatarJesus;
  const rewardKey = `activity:game:${game}`;
+ const rewardAmount = game === "memory" ? COINS.memory : game === "jigsaw" ? COINS.jigsaw : game === "wordbuilder" ? COINS.wordbuilder : game === "quiz" ? COINS.quiz : game === "maze" ? COINS.maze : COINS.connect;
  const total = game === "memory" ? deck.length : game === "jigsaw" ? 9 : game === "wordbuilder" ? wordRounds.length : game === "quiz" ? quizRounds.length : game === "fishing" ? 6 : game === "pairs" ? 5 : 8;
  const completed = game === "memory" ? deck.length > 0 && found.length === deck.length
   : game === "jigsaw" ? tiles.length === 9 && tiles.every((x,i)=>x===i)
@@ -84,15 +85,15 @@ export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void})
  const latest = useRef({progress:0,completed:false});
  latest.current = {progress,completed};
  useEffect(() => {
-  if (completed) awardProgress(rewardKey, COINS.atividade, true, "Atividade concluída! Você recebeu o prêmio integral.");
- }, [completed, rewardKey]);
+  if (completed) awardProgress(rewardKey, rewardAmount, true, "Atividade concluída! Você recebeu o prêmio integral.");
+ }, [completed, rewardKey, rewardAmount]);
  useEffect(() => {
   return () => {
    if (latest.current.progress > 0 && !latest.current.completed) {
-    awardProgress(rewardKey, COINS.atividade, false, "Atividade incompleta: revise e conclua para receber as moedas restantes.");
+    awardProgress(rewardKey, rewardAmount, false, "Atividade incompleta: revise e conclua para receber as moedas restantes.");
    }
   };
- }, [rewardKey]);
+ }, [rewardKey, rewardAmount]);
 
  return <section className="fixed inset-x-0 bottom-0 top-[118px] sm:top-[130px] z-[55] overflow-y-auto bg-[#fff7df] px-3 pt-3 pb-5 text-amber-950" role="dialog" aria-modal="true" aria-label={gameTitle[game]}>
   <div className="mx-auto max-w-3xl rounded-3xl border-4 border-amber-400 bg-white/95 p-4 shadow-xl">
