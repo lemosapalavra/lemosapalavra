@@ -107,7 +107,12 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
   { id: "wordbuilder" as const, label: "Construtor de Palavras", icon: palavrasIcon },
   { id: "quiz" as const, label: "Quiz Bíblico", icon: quizIcon },
  ];
- const positions = [{left:"50%",top:"20%"},{left:"18%",top:"38%"},{left:"82%",top:"38%"},{left:"23%",top:"72%"},{left:"77%",top:"72%"}];
+ // Cinco ícones distribuídos em um pentágono regular ao redor do centro.
+ // Coordenadas calculadas em um círculo: mesmo raio para todos os centros.
+ const positions = Array.from({ length: 5 }, (_, i) => {
+  const angle = (-90 + i * 72) * Math.PI / 180;
+  return { left: `${50 + 32 * Math.cos(angle)}%`, top: `${49 + 32 * Math.sin(angle)}%` };
+ });
  if (index===null || !current) {
   return (
    <section className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
