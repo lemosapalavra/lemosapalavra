@@ -5,7 +5,7 @@ import palavrasIcon from "@/assets/jogos/construa-palavras-icon.webp";
 import memoriaIcon from "@/assets/jogos/memoria-icon.webp";
 import quebraIcon from "@/assets/jogos/quebra-cabeca-icon.webp";
 import quizIcon from "@/assets/jogos/quiz-biblico-icon.webp";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 
