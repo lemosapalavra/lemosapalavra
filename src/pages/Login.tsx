@@ -149,13 +149,11 @@ export default function Login() {
             @media (prefers-reduced-motion: reduce) { .login-motion, .login-artwork-float, .login-sparkle { animation: none !important; } }
           `}</style>
           <section className="relative z-20 mt-auto flex w-full max-w-[520px] flex-col items-center" aria-label="Escolha como entrar e conheça a LIA">
-            <div className="flex w-full items-center justify-center gap-[clamp(22px,7vw,52px)]">
-              <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google" className="group relative w-[clamp(76px,24vw,118px)] shrink-0 bg-transparent p-0 disabled:opacity-60">
-                <img src="/%C3%8Dcone%20Google%20Dourado.webp" alt="Google" className={`login-motion h-auto w-full object-contain drop-shadow-[0_0_18px_rgba(255,215,75,.95)] group-hover:brightness-150 ${pressed === "google" ? "google-login-pressed" : "google-login-floating"}`} />
-              </button>
-              <button type="button" disabled={busy !== null || checkingSession} onClick={() => { playTap(); setEmailLoginOpen(value => !value); }} aria-label="Entrar por e-mail" title="Entrar por e-mail" className="group relative w-[clamp(76px,24vw,118px)] shrink-0 bg-transparent p-0 disabled:opacity-60">
-                <img src="/%C3%8Dcone%20e-mail.webp" alt="E-mail" className="login-motion google-login-floating h-auto w-full object-contain drop-shadow-[0_0_14px_rgba(255,215,75,.7)] group-hover:brightness-125" style={{ animationDelay: ".7s" }} />
-              </button>
+            {/* Os ícones superiores já fazem parte da arte de fundo.
+                Áreas de toque independentes evitam duplicar Google e e-mail. */}
+            <div className="pointer-events-none absolute inset-x-0 top-[-38vh] z-30 mx-auto flex w-[min(76vw,330px)] items-center justify-between">
+              <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google" className="login-motion pointer-events-auto google-login-floating h-[clamp(68px,21vw,108px)] w-[clamp(68px,21vw,108px)] rounded-full border-0 bg-transparent shadow-[0_0_18px_5px_rgba(255,220,75,.24)] disabled:opacity-60" />
+              <button type="button" disabled={busy !== null || checkingSession} onClick={() => { playTap(); setEmailLoginOpen(value => !value); }} aria-label="Entrar por e-mail" title="Entrar por e-mail" className="login-motion pointer-events-auto google-login-floating h-[clamp(68px,21vw,108px)] w-[clamp(68px,21vw,108px)] rounded-full border-0 bg-transparent shadow-[0_0_18px_5px_rgba(255,220,75,.24)] disabled:opacity-60" style={{ animationDelay: ".7s" }} />
             </div>
             <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA — Posso Ajudar?" title="Posso Ajudar?" className="group relative mt-3 w-[min(62vw,245px)] border-0 bg-transparent p-0">
               <img src="/LIA%20Posso%20Ajudar.webp" alt="LIA — Posso Ajudar?" className="login-artwork-float login-motion h-auto w-full object-contain drop-shadow-[0_0_10px_rgba(255,215,75,.5)] group-hover:brightness-110" />
