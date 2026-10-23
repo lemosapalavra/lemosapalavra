@@ -219,10 +219,11 @@ export default function Configuracao() {
         <OwnerAccessCard />
 
         </>}
-        {adminSection === "aparencia" && <IconVisibilityConfig />
+        {adminSection === "aparencia" && <IconVisibilityConfig />}
         {adminSection === "conteudo" && <>
         <ContentAccessConfig />
         <ListenContentConfig />
+
 
         </>}
         {adminSection === "relatorios" && <>
