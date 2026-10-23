@@ -1,3 +1,5 @@
+import { awardProgress } from "@/hooks/useCoins";
+import { COINS } from "@/data/coinRewards";
 import quemSouEu1 from "@/assets/aprenda/quem-sou-eu-1.webp";
 import palavrasIcon from "@/assets/jogos/construa-palavras-icon.webp";
 import memoriaIcon from "@/assets/jogos/memoria-icon.webp";
@@ -98,6 +100,21 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
  const selectCard=(i:number)=>{if(flipped.includes(i)||matched.includes(i)||flipped.length===2)return;const next=[...flipped,i];setFlipped(next);if(next.length===2){setMoves(m=>m+1);if(deck[next[0]].id===deck[next[1]].id){setMatched(m=>[...m,...next]);setFlipped([]);}}};
  const current=index===null?null:activities[index];
  const score=current?.questions?.filter((q,i)=>answers[i]===q.answer).length??0;
+ const activityReward = index === null ? "" : `activity:learn:${index}`;
+ const activityCompleted = Boolean(current && (current.kind === "memory" ? deck.length > 0 && matched.length === deck.length : checked && score === current.questions?.length));
+ const activityStarted = Boolean(current && (current.kind === "memory" ? moves > 0 : Object.keys(answers).length > 0));
+ const rewardSnapshot = useRef({started:false,completed:false});
+ rewardSnapshot.current = {started:activityStarted,completed:activityCompleted};
+ useEffect(() => {
+  if (activityCompleted && activityReward) awardProgress(activityReward, COINS.quiz, true, "Desafio concluído!");
+ }, [activityCompleted, activityReward]);
+ useEffect(() => {
+  if (!activityReward) return;
+  return () => {
+   if (rewardSnapshot.current.started && !rewardSnapshot.current.completed)
+    awardProgress(activityReward, COINS.quiz, false, "Desafio incompleto. Revise e conclua para receber as moedas restantes.");
+  };
+ }, [activityReward]);
  const dayNumber = Math.floor(Date.now() / 86400000);
  const dailyWhoIndex = 6 + (dayNumber % 4);
  const dailyWho = { activityIndex: dailyWhoIndex, icon: quemSouEu1, title: "Quem Sou Eu?" };
