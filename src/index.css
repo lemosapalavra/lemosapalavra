@@ -290,3 +290,17 @@ main::-webkit-scrollbar, section::-webkit-scrollbar, div::-webkit-scrollbar {
 @media (prefers-reduced-motion: reduce) {
   :where(button, a, [role="button"]):has(> img) > img { transition: none !important; }
 }
+
+/* Brilho dourado padronizado nos ícones interativos do site e do login.
+   Usa apenas filter/scale para preservar o layout responsivo. */
+:where(button, a, [role="button"]):has(> img):not(:disabled):not([aria-disabled="true"]):hover > img,
+:where(button, a, [role="button"]):has(> img):not(:disabled):not([aria-disabled="true"]):focus-visible > img,
+:where(button, a, [role="button"]):has(> img):not(:disabled):not([aria-disabled="true"]):active > img {
+  filter: brightness(1.35) saturate(1.35) drop-shadow(0 0 16px rgba(255,218,70,.98)) drop-shadow(0 0 27px rgba(255,230,115,.72)) !important;
+}
+:where(button, a, [role="button"]):has(> img):not(:disabled):not([aria-disabled="true"]):hover > img,
+:where(button, a, [role="button"]):has(> img):not(:disabled):not([aria-disabled="true"]):focus-visible > img { scale: 1.08; }
+:where(button, a, [role="button"]):has(> img):not(:disabled):not([aria-disabled="true"]):active > img { scale: .97; }
+@media (hover: none) {
+  :where(button, a, [role="button"]):has(> img):hover > img { scale: 1; }
+}
