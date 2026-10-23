@@ -29,8 +29,3 @@ export const MATERIAIS: MaterialPremio[] = [
 export function statusForPoints(points: number) {
   return [...STATUS].reverse().find(s => points >= s.min) || STATUS[0];
 }
-export function pointsForCurrentUser(): number {
-  // Pontos ainda não são concedidos: não confundir moedas gastáveis com experiência.
-  // Implementar persistência por conta e concessão idempotente antes de ativar evolução.
-  return 0;
-}
