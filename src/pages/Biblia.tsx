@@ -289,7 +289,7 @@ export default function Biblia() {
     <div className="min-h-screen py-6 px-4" style={{ background: "transparent" }}>
       <div className="max-w-4xl mx-auto">
         {showBibleMenu && !selectedBook ? (
-          <div className="fixed inset-0 z-40 bg-cover bg-center" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.16),rgba(255,255,255,.16)), url('/Bíblia.webp')" }}>
+          <div className="fixed inset-0 z-40 bg-cover bg-center" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.20),rgba(255,255,255,.20)), url('/Bíblia.webp')" }}>
             <div className="absolute inset-0 flex items-center justify-center pt-16">
               <div className="relative w-[min(88vw,480px)] aspect-square">
                 {tabs.map((t, i) => {
