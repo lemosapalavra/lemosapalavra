@@ -1,4 +1,5 @@
 import quemSouEu1 from "@/assets/aprenda/quem-sou-eu-1.webp";
+import palavrasIcon from "@/assets/jogos/construa-palavras-icon.webp";
 import memoriaIcon from "@/assets/jogos/memoria-icon.webp";
 import quebraIcon from "@/assets/jogos/quebra-cabeca-icon.webp";
 import quizIcon from "@/assets/jogos/quiz-biblico-icon.webp";
@@ -103,7 +104,7 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
  const games = [
   { id: "memory" as const, label: "Memória Bíblica", icon: memoriaIcon },
   { id: "jigsaw" as const, label: "Quebra-Cabeça", icon: quebraIcon },
-  { id: "wordbuilder" as const, label: "Construtor de Palavras", icon: "/construtor-de-palavras.webp" },
+  { id: "wordbuilder" as const, label: "Construtor de Palavras", icon: palavrasIcon },
   { id: "quiz" as const, label: "Quiz Bíblico", icon: quizIcon },
  ];
  const positions = [{left:"50%",top:"20%"},{left:"18%",top:"38%"},{left:"82%",top:"38%"},{left:"23%",top:"72%"},{left:"77%",top:"72%"}];
@@ -119,7 +120,7 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
       <button key={game.id} type="button" onClick={()=>onGameSelect?.(game.id)} aria-label={game.label} title={game.label}
        className="absolute pointer-events-auto flex aspect-square w-[clamp(68px,20vw,120px)] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-transparent p-0 drop-shadow-[0_0_15px_rgba(255,215,60,.85)] transition-transform hover:scale-110 active:scale-95"
        style={positions[n+1]}>
-       <img src={game.icon} alt={game.label} className="h-full w-full object-contain" onError={(event) => { if (game.id === "wordbuilder") event.currentTarget.src = "/quiz.webp"; }} />
+       <img src={game.icon} alt={game.label} className="h-full w-full object-contain" />
       </button>
     ))}
    </section>
