@@ -77,3 +77,15 @@ createRoot(document.getElementById("root")!).render(
     <App />
   </HelmetProvider>
 );
+
+
+// Retira a transição de abertura assim que a interface React estiver pronta.
+const dismissLaunch = () => {
+  const splash = document.getElementById("lemos-launch");
+  if (!splash) return;
+  splash.style.opacity = "0";
+  splash.style.pointerEvents = "none";
+  window.setTimeout(() => splash.remove(), 450);
+};
+window.requestAnimationFrame(() => window.requestAnimationFrame(dismissLaunch));
+window.setTimeout(dismissLaunch, 8000);
