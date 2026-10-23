@@ -251,7 +251,7 @@ const GlobalBackArrow = () => {
       }}
       aria-label="Voltar à página anterior"
       title="Voltar à página anterior"
-      className="fixed left-[52px] sm:left-[42px] top-[72px] sm:top-[85px] z-[100] flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-amber-400 bg-white/95 text-amber-900 shadow-lg transition-transform hover:scale-105"
+      className="fixed left-2 sm:left-4 top-[39px] min-[390px]:top-[43px] sm:top-[48px] z-[100] flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border-2 border-amber-400 bg-white/95 text-amber-900 shadow-lg transition-transform hover:scale-105"
     >
       <ArrowLeft size={24} />
     </button>
