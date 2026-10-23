@@ -107,23 +107,26 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
   { id: "wordbuilder" as const, label: "Construtor de Palavras", icon: palavrasIcon },
   { id: "quiz" as const, label: "Quiz Bíblico", icon: quizIcon },
  ];
- // Cinco ícones distribuídos em um pentágono regular ao redor do centro.
- // Coordenadas calculadas em um círculo: mesmo raio para todos os centros.
- const positions = Array.from({ length: 5 }, (_, i) => {
-  const angle = (-90 + i * 72) * Math.PI / 180;
-  return { left: `${50 + 32 * Math.cos(angle)}%`, top: `${49 + 32 * Math.sin(angle)}%` };
- });
+ // Cinco ícones acima da área reservada à LIA no canto inferior esquerdo.
+ // Posições relativas a uma área superior segura, com centro visual livre.
+ const positions = [
+  {left:"50%",top:"17%"},
+  {left:"20%",top:"32%"},
+  {left:"80%",top:"32%"},
+  {left:"34%",top:"52%"},
+  {left:"75%",top:"52%"},
+ ];
  if (index===null || !current) {
   return (
    <section className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
     <button type="button" onClick={()=>open(dailyWho.activityIndex)} aria-label="Quem Sou Eu? — desafio do dia" title="Quem Sou Eu? — desafio do dia"
-      className="absolute pointer-events-auto aspect-square w-[clamp(72px,22vw,125px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent p-0 animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:scale-110 drop-shadow-[0_0_15px_rgba(255,215,60,.8)]"
+      className="absolute pointer-events-auto aspect-square w-[clamp(64px,19vw,112px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent p-0 animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:scale-110 drop-shadow-[0_0_15px_rgba(255,215,60,.8)]"
       style={positions[0]}>
       <img src={dailyWho.icon} alt="Quem Sou Eu?" className="h-full w-full object-contain" />
     </button>
     {games.map((game,n)=>(
       <button key={game.id} type="button" onClick={()=>onGameSelect?.(game.id)} aria-label={game.label} title={game.label}
-       className="absolute pointer-events-auto flex aspect-square w-[clamp(68px,20vw,120px)] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-transparent p-0 drop-shadow-[0_0_15px_rgba(255,215,60,.85)] transition-transform hover:scale-110 active:scale-95"
+       className="absolute pointer-events-auto flex aspect-square w-[clamp(62px,18vw,108px)] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-transparent p-0 drop-shadow-[0_0_15px_rgba(255,215,60,.85)] transition-transform hover:scale-110 active:scale-95"
        style={positions[n+1]}>
        <img src={game.icon} alt={game.label} className="h-full w-full object-contain" />
       </button>
