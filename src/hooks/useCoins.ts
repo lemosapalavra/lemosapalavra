@@ -65,6 +65,26 @@ export function awardOnce(key: string, amount: number, label?: string): boolean 
   return true;
 }
 
+/** Prêmio progressivo: parcial recebe metade; ao concluir, credita somente a diferença.
+ * Uma atividade pode ser revista sem duplicar a recompensa integral.
+ */
+export function awardProgress(key: string, fullAmount: number, completed: boolean, label?: string): boolean {
+  if (!key || fullAmount <= 0) return false;
+  const claims = readClaims();
+  const previous = claims[key] || 0;
+  const target = completed ? fullAmount : Math.ceil(fullAmount / 2);
+  if (previous >= target) return false;
+  const delta = target - previous;
+  claims[key] = target;
+  writeClaims(claims);
+  addCoins(delta);
+  toast.success(`🪙 +${delta} moedinhas!`, {
+    description: label || (completed ? "Atividade concluída!" : "Atividade incompleta. Revise para ganhar o restante."),
+    duration: 3500,
+  });
+  return true;
+}
+
 /** Build a key scoped to the current local date (YYYY-MM-DD). */
 export function todayKey(prefix: string): string {
   const d = new Date();
