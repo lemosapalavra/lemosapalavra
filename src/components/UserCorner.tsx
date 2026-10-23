@@ -11,6 +11,10 @@ import MeuMural from "@/components/MeuMural";
 import { useCoins } from "@/hooks/useCoins";
 const iconUsuario = "/usuario.png";
 function profileStatus(user: Record<string, unknown> | null): string {
+  if (String(user?.email || "").trim().toLowerCase() === "marcelloborbas@gmail.com") return "Administrador";
+  return "Visitante";
+}
+function previousProfileStatus(user: Record<string, unknown> | null): string {
   const raw = String(user?.status ?? user?.perfil ?? user?.profile ?? user?.role ?? user?.tipo ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
   if (raw === "vip") return "VIP";
   if (raw === "familia" || raw === "family") return "Família";
