@@ -86,7 +86,7 @@ function IndexV1() {
 
       {/* Ícones independentes e clicáveis, com animação e brilho, sobre o fundo único.
           A camada cobre a mesma área da imagem de fundo, incluindo o cabeçalho. */}
-      <div className="absolute inset-0 z-20 pointer-events-none">
+      <div className="absolute inset-0 z-[70] pointer-events-none">
         {([
           { label: "VEJA", image: vejaFlutuante, mobile: [50, 40], desktop: [50, 43] },
           { label: "OUÇA", image: oucaFlutuante, mobile: [21, 50], desktop: [28, 55] },
@@ -99,7 +99,7 @@ function IndexV1() {
             title={`Abrir ${label}`}
             aria-label={`Abrir ${label}`}
             onClick={() => handleItemClick(label)}
-            className="home-image-hotspot group absolute pointer-events-auto z-20 w-[24%] max-w-[180px] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent cursor-pointer touch-manipulation transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-400"
+            className="home-image-hotspot group absolute pointer-events-auto z-[71] w-[24%] max-w-[180px] aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent cursor-pointer touch-manipulation transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-4 focus-visible:outline-amber-400"
             style={{
               left: `${mobile[0]}%`,
               top: `${mobile[1]}%`,
@@ -108,7 +108,7 @@ function IndexV1() {
               ["--float-delay" as string]: `${index * -0.65}s`,
             }}
           >
-            <img src={image} alt="" draggable={false} className={`home-floating-icon block w-full h-full object-contain drop-shadow-[0_0_17px_rgba(255,218,70,.98)] group-hover:brightness-125 group-active:brightness-150`} />
+            <img src={image} alt={label} draggable={false} loading="eager" className="home-floating-icon block w-full h-full object-contain opacity-100 drop-shadow-[0_0_17px_rgba(255,218,70,.98)] group-hover:brightness-125 group-active:brightness-150" />
           </button>
         ))}
       </div>
