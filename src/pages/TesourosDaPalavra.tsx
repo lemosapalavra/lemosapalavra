@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Download, LockKeyhole, Trophy } from "lucide-react";
-import { MATERIAIS, STATUS, pointsForCurrentUser, statusForPoints } from "@/data/tesourosDaPalavra";
+import { MATERIAIS, STATUS, statusForPoints } from "@/data/tesourosDaPalavra";
+import { useRewardExperience } from "@/hooks/useRewardExperience";
 
 export default function TesourosDaPalavra() {
   const navigate = useNavigate();
-  const points = pointsForCurrentUser();
+  const { points: storedPoints, loading } = useRewardExperience();
+  const points = storedPoints ?? 0;
   const current = statusForPoints(points);
   const next = STATUS.find(s => s.min > points);
   return (
@@ -15,11 +17,11 @@ export default function TesourosDaPalavra() {
           <h1 className="flex items-center gap-2 font-display text-2xl font-black"><Trophy className="text-amber-600"/> Tesouros da Palavra</h1>
           <p className="mt-2 text-sm">Aprenda, evolua e conquiste materiais educativos e bíblicos para baixar.</p>
           <div className="mt-4 rounded-2xl border border-amber-400 bg-white/85 p-4">
-            <p className="font-bold">Seu status: {current.name} — {current.title}</p>
-            <p className="mt-1 text-sm">{points} pontos de experiência</p>
-            {next && <p className="mt-1 text-xs">Próximo status: {next.name}, aos {next.min} pontos</p>}
+            <p className="font-bold">Seu status: {storedPoints === null ? "Aguardando ativação" : `${current.name} — ${current.title}`}</p>
+            <p className="mt-1 text-sm">{storedPoints === null ? (loading ? "Carregando seus pontos..." : "Pontuação indisponível até a ativação do sistema.") : `${points} pontos de experiência`}</p>
+            {storedPoints !== null && next && <p className="mt-1 text-xs">Próximo status: {next.name}, aos {next.min} pontos</p>}
             <div className="mt-3 h-3 overflow-hidden rounded-full bg-amber-100"><div className="h-full rounded-full bg-amber-500" style={{ width: next ? `${Math.max(0,Math.min(100,(points-current.min)/(next.min-current.min)*100))}%` : "100%" }}/></div>
-            <p className="mt-2 text-xs text-amber-800">A pontuação por atividades será ativada após a integração segura às contas. Suas moedinhas e figurinhas não serão alteradas.</p>
+            <p className="mt-2 text-xs text-amber-800">Os pontos são independentes das moedinhas. A concessão automática por atividades será ativada após validação.</p>
           </div>
         </div>
         <h2 className="mb-3 mt-7 text-xl font-black">Níveis de conquista</h2>
@@ -34,8 +36,8 @@ export default function TesourosDaPalavra() {
         <div className="grid gap-3 sm:grid-cols-2">
           {MATERIAIS.map(m => {
             const required = STATUS.find(s => s.id === m.requiredStatus)!;
-            const unlocked = points >= required.min;
-            const available = unlocked && !!m.url;
+            const unlocked = storedPoints !== null && points >= required.min;
+            const available = unlocked && !!m.url && m.url.startsWith("/premios/");
             return <article key={m.id} className="rounded-2xl border-2 border-amber-300 bg-white p-4 shadow">
               <div className="flex items-start gap-3"><div className="rounded-xl bg-amber-100 p-3">{available ? <Download/> : <LockKeyhole/>}</div><div className="min-w-0 flex-1"><h3 className="font-bold">{m.title}</h3><p className="text-sm text-amber-800">{m.description}</p><p className="mt-1 text-xs font-bold">Status: {required.name}</p></div></div>
               {available ? <a href={m.url} download className="mt-3 block rounded-xl bg-emerald-700 p-2 text-center font-bold text-white">Baixar arquivo</a> : <p className="mt-3 rounded-xl bg-amber-50 p-2 text-center text-xs font-bold text-amber-900">{unlocked ? "Material em preparação" : `Desbloqueia em ${required.name} • material em preparação`}</p>}
