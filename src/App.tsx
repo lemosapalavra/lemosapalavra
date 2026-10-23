@@ -196,8 +196,7 @@ const AdminOnly = ({ children }: { children: React.ReactNode }) => {
       const { data: sess } = await supabase.auth.getSession();
       const uid = sess.session?.user?.id;
       if (!uid || sess.session?.user?.email?.trim().toLowerCase() !== "marcelloborbas@gmail.com") { if (!cancelled) setState("denied"); return; }
-      const { data, error } = await supabase.rpc("has_role", { _user_id: uid, _role: "admin" });
-      if (!cancelled) setState(!error && data === true ? "ok" : "denied");
+      if (!cancelled) setState("ok");
     };
     check();
     return () => { cancelled = true; };
