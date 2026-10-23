@@ -88,7 +88,7 @@ export default function InstallShortcut({ compact = false, headerTile = false }:
 
   const handleClick = async () => {
     if (headerTile) {
-      setDone(current => current ? "" : "O download estará disponível somente para usuários de nível VIP. Ainda não está liberado.");
+      setDone(current => current ? "" : "Disponível para status VIP");
       return;
     }
     setDone("");
