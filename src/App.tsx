@@ -28,6 +28,7 @@ const Jogos = lazy(() => import("./pages/Jogos.tsx"));
 const PedidosOracao = lazy(() => import("./pages/PedidosOracao.tsx"));
 const Atividades = lazy(() => import("./pages/Atividades.tsx"));
 const Album = lazy(() => import("./pages/Album.tsx"));
+const TesourosDaPalavra = lazy(() => import("./pages/TesourosDaPalavra.tsx"));
 const LemosPlay = lazy(() => import("./pages/LemosPlay.tsx"));
 const Configuracao = lazy(() => import("./pages/Configuracao.tsx"));
 const Estatisticas = lazy(() => import("./pages/Estatisticas.tsx"));
@@ -56,6 +57,7 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
   "/jogos": { title: "Jogos Bíblicos — Lemos a Palavra", description: "Jogos bíblicos interativos e atividades para a família." },
   "/pedidos-oracao": { title: "Pedidos de Oração — Lemos a Palavra", description: "Envie e acompanhe pedidos de oração com carinho." },
   "/atividades": { title: "Atividades — Lemos a Palavra", description: "Jogos interativos: colorir, caça-palavras, memória e quebra-cabeça." },
+  "/tesouros": { title: "Tesouros da Palavra — Premiações", description: "Conquiste status e desbloqueie materiais bíblicos educativos." },
   "/album": { title: "Álbum de Figurinhas — Lemos a Palavra", description: "Colecione figurinhas bíblicas com raridades e molduras especiais." },
   "/lemosplay": { title: "Lemos Play — Vídeos Bíblicos", description: "Vídeos animados de histórias bíblicas: Gênesis, Jesus, Séries, Músicas e Louvores." },
   "/historias-biblicas": { title: "Histórias Bíblicas — Lemos a Palavra", description: "Histórias bíblicas ilustradas para crianças." },
@@ -357,6 +359,7 @@ const App = () => (
               <Route path="/pedidos-oracao" element={<PedidosOracao />} />
               <Route path="/atividades" element={<Atividades />} />
               <Route path="/album" element={<Album />} />
+              <Route path="/tesouros" element={<TesourosDaPalavra />} />
               <Route path="/config" element={<AdminOnly><Configuracao /></AdminOnly>} />
               <Route path="/estatisticas" element={<AdminOnly><Estatisticas /></AdminOnly>} />
               <Route path="/lemosplay" element={<LemosPlay />} />
