@@ -153,12 +153,12 @@ export default function InstallShortcut({ compact = false }: { compact?: boolean
           disabled={busy}
           aria-label="Baixar atalho clicável da Lemos a Palavra"
           title="Clique para baixar o atalho da Lemos a Palavra"
-          className={`relative group rounded-full border-[3px] border-white bg-transparent shadow-[0_0_0_2px_rgba(251,191,36,.8),0_5px_18px_rgba(0,0,0,.5)] p-0 hover:bg-transparent hover:scale-110 hover:brightness-110 hover:shadow-[0_0_22px_rgba(255,255,255,.9)] active:scale-95 focus-visible:ring-4 focus-visible:ring-amber-400 transition-all duration-200 cursor-pointer disabled:opacity-60 ${compact ? "h-[88px] w-[88px] sm:h-[110px] sm:w-[110px]" : "h-32 w-32 sm:h-40 sm:w-40"}`}
+          className={`relative group border-0 bg-transparent shadow-none p-0 hover:bg-transparent hover:scale-110 hover:brightness-110 hover:shadow-[0_0_22px_rgba(255,255,255,.9)] active:scale-95 focus-visible:ring-4 focus-visible:ring-amber-400 transition-all duration-200 cursor-pointer disabled:opacity-60 ${compact ? "h-[88px] w-[88px] sm:h-[110px] sm:w-[110px]" : "h-32 w-32 sm:h-40 sm:w-40"}`}
         >
           <img loading="lazy" decoding="async"
-            src={compact ? shortcutIcon : "/favicon.png"}
+            src="/baixar%20atalho.webp"
             alt="Baixe o Atalho"
-            className="h-full w-full object-contain drop-shadow-lg"
+            className="h-full w-full object-contain drop-shadow-[0_0_12px_rgba(255,215,70,.75)]"
           />
            {compact ? null : <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-primary text-primary-foreground font-display font-extrabold rounded-full shadow-lg text-xs sm:text-sm px-3 py-1">{busy ? "Preparando…" : "📥 Baixar atalho"}</span>}
         </Button>
