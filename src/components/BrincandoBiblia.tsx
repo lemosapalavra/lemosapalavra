@@ -127,11 +127,11 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
  // Cinco posições simétricas nas laterais e no topo, sem invadir o
  // centro ilustrado nem a área inferior reservada à LIA.
  const positions = [
-  {left:"50%",top:"17%"},
-  {left:"17%",top:"32%"},
-  {left:"83%",top:"32%"},
-  {left:"17%",top:"55%"},
-  {left:"83%",top:"55%"},
+  {left:"50%",top:"17%"}, // Quem Sou Eu?
+  {left:"83%",top:"32%"}, // Memória Bíblica
+  {left:"83%",top:"55%"}, // Quebra-Cabeça: abaixo da Memória
+  {left:"17%",top:"55%"}, // Construtor: abaixo do Quiz
+  {left:"17%",top:"32%"}, // Quiz Bíblico
  ];
  if (index===null || !current) {
   return (
