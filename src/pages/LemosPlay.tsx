@@ -232,6 +232,12 @@ export default function LemosPlay() {
   );
 
   const [playing, setPlaying] = useState<PlayItem | null>(null);
+  // Oculta temporariamente os elementos globais durante a reprodução.
+  useEffect(() => {
+    document.body.classList.toggle("lemos-video-playing", Boolean(playing));
+    return () => document.body.classList.remove("lemos-video-playing");
+  }, [playing]);
+
   // Abre diretamente o vídeo indicado por um convite compartilhado.
   useEffect(() => {
     const videoId = new URLSearchParams(window.location.search).get("video");
