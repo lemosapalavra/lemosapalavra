@@ -134,13 +134,13 @@ export default function MascoteLia() {
   };
   const avatar = liaForPages;
   const liaVisible = useIconVisible("lia");
-  const liaPosition = onHome ? "bottom-[calc(77px+env(safe-area-inset-bottom,0px))]" : "bottom-[calc(80px+env(safe-area-inset-bottom,0px))] sm:bottom-[calc(85px+env(safe-area-inset-bottom,0px))]";
+  const liaPosition = "bottom-[calc(77px+env(safe-area-inset-bottom,0px))]";
 
   if (!liaVisible) return null;
 
   if (!expanded) {
     return (
-      <div className={`fixed z-[9998] flex flex-col items-center gap-2 ${onHome ? "left-[-16px] sm:left-[-12px]" : "right-2 sm:right-4"} ${liaPosition}`}>
+      <div className={`fixed z-[9998] flex flex-col items-center gap-2 left-[-16px] sm:left-[-12px] ${liaPosition}`}>
       <Button variant="ghost"
         onMouseEnter={(event) => { if ((event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(true); }}
         onFocus={() => setExpanded(true)}
@@ -149,10 +149,10 @@ export default function MascoteLia() {
         title="Falar com a LIA, sua ajudante"
         className="h-auto flex flex-col items-center gap-1 !bg-transparent !border-0 !shadow-none hover:!bg-transparent transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:ring-4 focus-visible:ring-yellow-400"
       >
-        <span className={onHome ? "w-[clamp(150px,51.6vw,246px)] h-[clamp(150px,51.6vw,246px)] block animate-[liaFloat_3.4s_ease-in-out_infinite] drop-shadow-[0_0_12px_rgba(255,215,70,.95)]" : "w-[78px] h-[78px] sm:w-[100px] sm:h-[100px] rounded-full bg-white shadow-[0_5px_18px_rgba(120,58,8,.65),0_0_0_3px_rgba(255,217,87,.65)] border-[3px] border-amber-400 overflow-hidden block animate-[liaFloat_3.4s_ease-in-out_infinite]"}>
+        <span className={"w-[clamp(150px,51.6vw,246px)] h-[clamp(150px,51.6vw,246px)] block animate-[liaFloat_3.4s_ease-in-out_infinite] drop-shadow-[0_0_12px_rgba(255,215,70,.95)]"}>
           <img src={avatar} alt="LIA" className="w-full h-full object-contain object-bottom" loading="eager" onError={(e) => { if (e.currentTarget.src.endsWith("lia-paginas.webp")) e.currentTarget.src = liaFallback; }} />
         </span>
-        <span className={onHome ? "sr-only" : "font-display font-extrabold text-[11px] sm:text-xs text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap"}>
+        <span className={"sr-only"}>
           Oi, sou a LIA
         </span>
       </Button>
@@ -164,7 +164,7 @@ export default function MascoteLia() {
 
   return (
     <div onMouseLeave={(event) => { if (!onHome && (event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(false); }}
-      className={`fixed z-[9998] flex flex-col items-end gap-1 ${onHome ? "left-[-16px] sm:left-[-12px]" : "right-2 sm:right-4"} ${liaPosition}`}>
+      className={`fixed z-[9998] flex flex-col items-end gap-1 left-[-16px] sm:left-[-12px] ${liaPosition}`}>
       {/* Ajuda com o mesmo painel azul, cabeçalho e controles da página de login. */}
       <div role="dialog" aria-label="Ajuda da LIA" className={onHome
         ? "pointer-events-auto fixed bottom-[calc(325px+env(safe-area-inset-bottom,0px))] left-2 z-[9999] w-[min(320px,calc(100vw-16px))] max-h-[45dvh] overflow-y-auto rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"
@@ -189,11 +189,11 @@ export default function MascoteLia() {
         <img
           src={avatar}
           alt="LIA, a mascote que ajuda você a navegar"
-          className={onHome ? "w-[clamp(150px,51.6vw,246px)] h-[clamp(150px,51.6vw,246px)] object-contain object-bottom drop-shadow-[0_0_12px_rgba(255,215,70,.95)] animate-[liaFloat_3.4s_ease-in-out_infinite] select-none" : "w-[78px] h-[78px] sm:w-[100px] sm:h-[100px] object-cover object-top rounded-full border-[3px] border-amber-400 shadow-[0_5px_18px_rgba(120,58,8,.65),0_0_0_3px_rgba(255,217,87,.65)] animate-[liaFloat_3.4s_ease-in-out_infinite] select-none"}
+          className={"w-[clamp(150px,51.6vw,246px)] h-[clamp(150px,51.6vw,246px)] object-contain object-bottom drop-shadow-[0_0_12px_rgba(255,215,70,.95)] animate-[liaFloat_3.4s_ease-in-out_infinite] select-none"}
           onError={(e) => { if (e.currentTarget.src.endsWith("lia-paginas.webp")) e.currentTarget.src = liaFallback; }}
           draggable={false}
         />
-        <span className={onHome ? "sr-only" : "mt-1 block font-display font-extrabold text-xs sm:text-sm text-amber-900 bg-white/90 border border-amber-300 rounded-full px-2 py-0.5 shadow whitespace-nowrap"}>
+        <span className={"sr-only"}>
           Oi, sou a LIA
         </span>
       </Button>
