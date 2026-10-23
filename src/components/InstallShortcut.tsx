@@ -155,7 +155,7 @@ export default function InstallShortcut({ compact = false }: { compact?: boolean
           className={`relative group border-0 bg-transparent shadow-none p-0 hover:bg-transparent hover:scale-110 hover:brightness-110 hover:shadow-[0_0_22px_rgba(255,255,255,.9)] active:scale-95 focus-visible:ring-4 focus-visible:ring-amber-400 transition-all duration-200 cursor-pointer disabled:opacity-60 ${compact ? "h-[88px] w-[88px] sm:h-[110px] sm:w-[110px]" : "h-32 w-32 sm:h-40 sm:w-40"}`}
         >
           <img loading="lazy" decoding="async"
-            src="/baixar%20atalho.webp"
+            src="/login-atalho.webp"
             alt="Baixe o Atalho"
             className="h-full w-full object-contain drop-shadow-[0_0_12px_rgba(255,215,70,.75)]"
           />
