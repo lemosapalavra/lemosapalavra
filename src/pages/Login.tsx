@@ -1,3 +1,4 @@
+import { getLiaFeminineVoice } from "@/lib/liaVoice";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import loginBackground from "@/assets/login-optimized.webp";
 import googleIcon from "@/assets/login-google-icon.webp";
@@ -29,11 +30,12 @@ export default function Login() {
     utterance.lang = "pt-BR";
     utterance.rate = 0.94;
     utterance.pitch = 1.16;
-    const voices = window.speechSynthesis.getVoices();
-    const portuguese = voices.filter(v => /^pt(-|$)/i.test(v.lang));
-    const feminine = portuguese.find(v => /maria|francisca|luciana|helena|fernanda|camila|vitoria|vitória|female|feminina|mulher/i.test(v.name));
-    const voice = feminine || portuguese.find(v => /^pt-BR/i.test(v.lang)) || portuguese[0];
-    if (voice) utterance.voice = voice;
+    const voice = getLiaFeminineVoice(window.speechSynthesis.getVoices());
+    if (!voice) {
+      toast({ title: "Voz feminina indisponível", description: "Este aparelho não disponibilizou uma voz feminina em português. A fala não será reproduzida com voz masculina." });
+      return;
+    }
+    utterance.voice = voice;
     utterance.onend = utterance.onerror = () => { if (speechRef.current === utterance) { speechRef.current = null; setSpeaking(false); } };
     speechRef.current = utterance;
     setSpeaking(true);
