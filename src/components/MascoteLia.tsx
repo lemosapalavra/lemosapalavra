@@ -114,7 +114,7 @@ export default function MascoteLia() {
     return (
       <div className={`fixed left-2 z-[45] flex flex-col items-center gap-2 sm:left-4 ${liaPosition}`}>
       <Button variant="ghost"
-        onMouseEnter={(event) => { if (event.nativeEvent.pointerType === "mouse") setExpanded(true); }}
+        onMouseEnter={(event) => { if ((event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(true); }}
         onFocus={() => setExpanded(true)}
         onClick={() => setExpanded(true)}
         aria-label="Falar com a LIA, sua ajudante"
@@ -135,7 +135,7 @@ export default function MascoteLia() {
   }
 
   return (
-    <div onMouseLeave={(event) => { if (event.nativeEvent.pointerType === "mouse") setExpanded(false); }}
+    <div onMouseLeave={(event) => { if ((event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(false); }}
       className={`fixed left-2 z-[45] flex flex-col items-start gap-1 sm:left-4 ${liaPosition}`}>
       {/* Balão acima da cabeça da LIA */}
       <div className="pointer-events-auto relative w-[78vw] max-w-sm rounded-2xl bg-white/95 backdrop-blur border-2 border-amber-300 shadow-xl px-3 py-2">

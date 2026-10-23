@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { Play } from "lucide-react";
+import { Play, Lock, LockOpen } from "lucide-react";
 import ColonialVideoFrame from "@/components/ColonialVideoFrame";
 import { normalizeVideo } from "@/lib/videoEmbed";
 import VideoSideActions from "@/components/VideoSideActions";
@@ -11,12 +11,18 @@ import { loadConfig, type PlayEntry } from "@/data/lemosPlayConfig";
 import { getListenEntries, type ListenCategory } from "@/data/listenCatalog";
 import { markSeen } from "@/lib/newContent";
 import { louvoresTitles } from "@/data/contentIndex";
+import { HIDDEN_VIDEOS, isHiddenUnlocked, unlockHiddenVideos, lockHiddenVideos } from "@/data/hiddenVideos";
 
 export default function Louvores() {
   const [playing, setPlaying] = useState<PlayEntry | null>(null);
   const [viewed, setViewed] = useState<Record<string, boolean>>(() => { try { return JSON.parse(localStorage.getItem("lemos_media_viewed") || "{}"); } catch { return {}; } });
   const [playingCategory, setPlayingCategory] = useState<ListenCategory>("musicas");
   const [config, setConfig] = useState(() => loadConfig());
+  const [hiddenUnlocked, setHiddenUnlocked] = useState(() => isHiddenUnlocked());
+  const [askingPassword, setAskingPassword] = useState(false);
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const [pendingHidden, setPendingHidden] = useState<string | null>(null);
 
   useEffect(() => { markSeen("louvores", louvoresTitles); }, []);
   useEffect(() => {
@@ -77,6 +83,70 @@ export default function Louvores() {
     </section>
   );
 
+  const tryUnlock = () => {
+    if (unlockHiddenVideos(password)) {
+      setHiddenUnlocked(true);
+      setAskingPassword(false);
+      setPassword("");
+      setPasswordError(false);
+      if (pendingHidden) {
+        const video = HIDDEN_VIDEOS.find(v => v.id === pendingHidden);
+        setPendingHidden(null);
+        if (video) openHiddenVideo(video);
+      }
+    } else {
+      setPasswordError(true);
+    }
+  };
+
+  const openHiddenVideo = (video: (typeof HIDDEN_VIDEOS)[number]) => {
+    setPlayingCategory("musicas");
+    setPlaying({ id: `oculto:${video.id}`, title: video.title, src: video.src, poster: video.poster } as PlayEntry);
+  };
+
+  const handleHiddenClick = (video: (typeof HIDDEN_VIDEOS)[number]) => {
+    if (hiddenUnlocked) {
+      openHiddenVideo(video);
+    } else {
+      setPendingHidden(video.id);
+      setPassword("");
+      setPasswordError(false);
+      setAskingPassword(true);
+    }
+  };
+
+  const renderHiddenSection = () => (
+    <section className="mb-9" aria-label="Vídeos ocultos">
+      <h2 className="text-xl sm:text-3xl font-extrabold px-5 sm:px-12 mb-4 flex items-center gap-2">
+        Vídeos ocultos
+        {hiddenUnlocked ? (
+          <button onClick={() => { lockHiddenVideos(); setHiddenUnlocked(false); }} title="Bloquear novamente" className="text-amber-300 hover:text-amber-200 transition"><LockOpen className="w-5 h-5" /></button>
+        ) : (
+          <Lock className="w-5 h-5 text-amber-300" />
+        )}
+      </h2>
+      <div className="flex gap-3 sm:gap-5 overflow-x-auto px-5 sm:px-12 pb-5 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {HIDDEN_VIDEOS.map(video => (
+          <div key={video.id} className="shrink-0 w-[148px] sm:w-[195px] rounded-xl bg-zinc-900/80 p-2 hover:bg-zinc-800 transition">
+            <button onClick={() => handleHiddenClick(video)} className="w-full text-left group">
+              <div className="aspect-[3/4] rounded-lg overflow-hidden bg-zinc-800 relative">
+                <img src={video.poster} alt="" loading="lazy" className={`h-full w-full object-cover transition-transform ${hiddenUnlocked ? "group-hover:scale-105" : "grayscale"}`} />
+                {!hiddenUnlocked && (
+                  <span className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-black/40">
+                    <Lock className="w-8 h-8 text-amber-300" />
+                    <span className="text-[10px] font-bold text-amber-300 uppercase tracking-wide">Senha mestra</span>
+                  </span>
+                )}
+                {hiddenUnlocked && <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/30 transition"><Play className="w-10 h-10 text-white fill-white" /></span>}
+              </div>
+              <span className="block mt-2 text-sm font-semibold text-white line-clamp-2 min-h-[2.5rem]">{video.title}</span>
+            </button>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+
   return (
     <div className="lemos-media-page min-h-screen bg-black text-white">
       <style>{`html:has(.lemos-media-page), body:has(.lemos-media-page) { scrollbar-width: none; } html:has(.lemos-media-page)::-webkit-scrollbar, body:has(.lemos-media-page)::-webkit-scrollbar { display: none; width: 0; }`}</style>
@@ -95,7 +165,34 @@ export default function Louvores() {
       <main className="max-w-7xl mx-auto py-7 sm:py-10">
         {renderSection("Músicas", musicas, "musicas")}
         {renderSection("Louvores", louvores, "louvores")}
+        {renderHiddenSection()}
       </main>
+      {askingPassword && (
+        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4" onClick={() => setAskingPassword(false)}>
+          <div className="w-full max-w-sm rounded-2xl bg-zinc-900 p-6 shadow-xl border border-amber-300/30" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center gap-2 mb-3">
+              <Lock className="w-6 h-6 text-amber-300" />
+              <h3 className="font-display text-xl font-bold">Vídeos ocultos</h3>
+            </div>
+            <p className="text-sm text-zinc-300 mb-4">Digite a senha mestra para assistir a estes vídeos.</p>
+            <input
+              type="password"
+              inputMode="numeric"
+              autoFocus
+              value={password}
+              onChange={e => { setPassword(e.target.value); setPasswordError(false); }}
+              onKeyDown={e => { if (e.key === "Enter") tryUnlock(); }}
+              placeholder="Senha mestra"
+              className={`w-full rounded-lg bg-zinc-800 px-4 py-3 text-white placeholder-zinc-500 outline-none border ${passwordError ? "border-red-500" : "border-zinc-700 focus:border-amber-300"}`}
+            />
+            {passwordError && <p className="mt-2 text-sm text-red-400 font-semibold">Senha incorreta. Tente novamente.</p>}
+            <div className="mt-4 flex gap-2">
+              <button onClick={tryUnlock} className="flex-1 rounded-full bg-amber-300 px-5 py-2.5 font-bold text-zinc-900 hover:bg-amber-200 transition">Desbloquear</button>
+              <button onClick={() => setAskingPassword(false)} className="rounded-full bg-zinc-700 px-5 py-2.5 font-bold text-white hover:bg-zinc-600 transition">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
