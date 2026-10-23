@@ -11,20 +11,20 @@ import { loadConfig, type PlayEntry } from "@/data/lemosPlayConfig";
 import { getListenEntries, type ListenCategory } from "@/data/listenCatalog";
 import { markSeen } from "@/lib/newContent";
 import { louvoresTitles } from "@/data/contentIndex";
-import { HIDDEN_VIDEOS, isHiddenUnlocked, unlockHiddenVideos, lockHiddenVideos } from "@/data/hiddenVideos";
+import { HIDDEN_VIDEOS, unlockHiddenVideos, lockHiddenVideos } from "@/data/hiddenVideos";
 
 export default function Louvores() {
   const [playing, setPlaying] = useState<PlayEntry | null>(null);
   const [viewed, setViewed] = useState<Record<string, boolean>>(() => { try { return JSON.parse(localStorage.getItem("lemos_media_viewed") || "{}"); } catch { return {}; } });
   const [playingCategory, setPlayingCategory] = useState<ListenCategory>("musicas");
   const [config, setConfig] = useState(() => loadConfig());
-  const [hiddenUnlocked, setHiddenUnlocked] = useState(() => isHiddenUnlocked());
+  const [hiddenUnlocked, setHiddenUnlocked] = useState(false);
   const [askingPassword, setAskingPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [pendingHidden, setPendingHidden] = useState<string | null>(null);
 
-  useEffect(() => { markSeen("louvores", louvoresTitles); }, []);
+  useEffect(() => { markSeen("louvores", louvoresTitles); lockHiddenVideos(); }, []);
   useEffect(() => {
     const sync = () => setConfig(loadConfig());
     window.addEventListener("lemos_play_config_change", sync);
@@ -102,6 +102,10 @@ export default function Louvores() {
   const openHiddenVideo = (video: (typeof HIDDEN_VIDEOS)[number]) => {
     setPlayingCategory("musicas");
     setPlaying({ id: `oculto:${video.id}`, title: video.title, src: video.src, poster: video.poster } as PlayEntry);
+    // A autorização vale somente para esta reprodução. Todos os vídeos
+    // voltam a ficar bloqueados, inclusive se o usuário sair antes do fim.
+    lockHiddenVideos();
+    setHiddenUnlocked(false);
   };
 
   const handleHiddenClick = (video: (typeof HIDDEN_VIDEOS)[number]) => {
