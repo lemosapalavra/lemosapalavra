@@ -150,7 +150,7 @@ export default function Login() {
             </div>
             <div className="mt-3 flex flex-col items-center">
               <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA" title="Conversar com a LIA" className="login-motion transition-transform hover:scale-105 active:scale-95">
-                <img src="/lia-mascote.png" alt="LIA, sua ajudante" className="h-[82px] w-[82px] object-contain drop-shadow-[0_3px_9px_rgba(0,0,0,.6)] sm:h-24 sm:w-24" />
+                <img src="/LIA%20Posso%20Ajudar.webp" alt="LIA — Posso Ajudar?" className="h-auto w-[155px] max-w-[48vw] object-contain drop-shadow-[0_3px_9px_rgba(0,0,0,.6)] sm:w-[190px]" />
               </button>
               {liaOpen && <p className="mt-1 max-w-[270px] rounded-xl border-2 border-amber-300 bg-white/95 px-3 py-2 text-center text-sm font-semibold text-amber-950 shadow-lg">Oieee! 💛 Entre com Google ou receba um link no seu e-mail! 🎈</p>}
             </div>
