@@ -19,7 +19,7 @@ export default function Login() {
   const [liaOpen, setLiaOpen] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const speechRef = useRef<SpeechSynthesisUtterance | null>(null);
-  const loginHelp = "Oieee! Bem-vindo ao Lemos a Palavra! Para entrar, clique no ícone do Google e escolha sua conta, ou clique no envelope para receber um link de acesso por e-mail. Quer abrir nosso site mais rápido no celular? Toque em Baixar atalho. Deus te abençoe!";
+  const loginHelp = "Oieee! Para entrar, escolha sua conta no Google ou toque no envelope para receber um link por e-mail. Quer entrar mais rápido pelo celular? Baixe o atalho e abra o Lemos a Palavra pelo ícone!";
   useEffect(() => () => { window.speechSynthesis?.cancel(); }, []);
   const toggleSpeech = () => {
     if (!("speechSynthesis" in window)) { toast({ title: "Leitura em voz alta indisponível neste navegador." }); return; }
@@ -184,8 +184,7 @@ export default function Login() {
                     <button type="button" onClick={() => { setLiaOpen(false); window.speechSynthesis?.cancel(); speechRef.current = null; setSpeaking(false); }} aria-label="Fechar ajuda" className="rounded-lg bg-white/15 p-2"><X size={20} /></button>
                   </div>
                 </div>
-                <p className="mt-3 text-sm leading-relaxed">Oieee! 💛 Para entrar, escolha sua conta no <strong>Google</strong> ou toque no <strong>envelope</strong> para receber um link por e-mail.</p>
-                <p className="mt-2 text-sm leading-relaxed">Quer entrar mais rápido pelo celular? Baixe o atalho e abra o Lemos a Palavra pelo ícone!</p>
+                <p className="mt-3 text-sm leading-relaxed">{loginHelp}</p>
                 <div className="mt-3 rounded-xl border border-sky-400 bg-sky-950/70 p-2 text-center">
                   <InstallShortcut compact />
                   <p className="mt-1 text-xs font-semibold text-white">Baixar atalho para o celular</p>
