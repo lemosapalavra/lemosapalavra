@@ -146,26 +146,11 @@ export default function Login() {
           `}</style>
           <section className="relative -translate-y-[clamp(3rem,10dvh,7rem)] mx-auto w-fit px-4 py-3" aria-label="Escolha a forma de entrar">
             <div className="flex items-start justify-center gap-8 sm:gap-12">
-              <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google"
-                className="group flex w-20 items-center justify-center text-white disabled:opacity-80">
-                <span className={`login-motion flex h-[72px] w-[72px] items-center justify-center rounded-full border-[3px] border-white bg-white/20 shadow-[0_0_0_2px_rgba(255,215,85,.9),0_0_16px_5px_rgba(255,255,255,.9),0_0_28px_9px_rgba(255,210,65,.65),0_5px_12px_rgba(0,0,0,.45)] backdrop-blur-[2px] transition-transform group-hover:scale-110 group-active:scale-95 sm:h-20 sm:w-20 ${pressed === "google" ? "google-login-pressed" : "google-login-floating"}`}>
-                  <svg viewBox="0 0 48 48" className="h-11 w-11" aria-hidden="true">
-                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5Z"/>
-                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.28 5.48-4.81 7.18l7.73 6C44.37 38.03 46.98 31.88 46.98 24.55Z"/>
-                    <path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.2A23.9 23.9 0 0 0 0 24c0 3.87.93 7.52 2.56 10.78l7.97-6.19Z"/>
-                    <path fill="#34A853" d="M24 48c6.48 0 11.92-2.13 15.89-5.8l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48Z"/>
-                  </svg>
-                </span>
-
+              <button type="button" disabled={busy !== null || checkingSession} onClick={() => void enterWithGoogle()} aria-label="Entrar com Google" title="Entrar com Google" className="group flex w-20 items-center justify-center disabled:opacity-80">
+                <img src="/%C3%8Dcone%20Google%20Dourado.webp" alt="Google" className={`login-motion h-24 w-24 max-w-none object-contain drop-shadow-[0_0_14px_rgba(255,225,90,.8)] transition-transform group-hover:scale-110 group-active:scale-95 sm:h-28 sm:w-28 ${pressed === "google" ? "google-login-pressed" : "google-login-floating"}`} />
               </button>
               <button type="button" disabled={busy !== null || checkingSession} onClick={() => { playTap(); setEmailLoginOpen(value => !value); }} aria-label="Entrar por e-mail" title="Entrar por e-mail" className="group flex w-20 items-center justify-center disabled:opacity-60">
-                <span className="login-motion google-login-floating flex h-[72px] w-[72px] items-center justify-center rounded-full border-[3px] border-white bg-white/20 shadow-[0_0_0_2px_rgba(255,215,85,.9),0_0_16px_5px_rgba(255,255,255,.9),0_0_28px_9px_rgba(255,210,65,.65),0_5px_12px_rgba(0,0,0,.45)] backdrop-blur-[2px] transition-transform group-hover:scale-110 group-active:scale-95 sm:h-20 sm:w-20">
-                  <svg viewBox="0 0 64 64" className="h-[62px] w-[62px]" aria-hidden="true">
-                    <circle cx="32" cy="32" r="29" fill="#ffffff" stroke="#f9cc56" strokeWidth="3" />
-                    <rect x="12" y="19" width="40" height="27" rx="5" fill="#4285F4" />
-                    <path d="M13 22 32 36 51 22" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </span>
+                <img src="/%C3%8Dcone%20e-mail.webp" alt="E-mail" className="login-motion google-login-floating h-24 w-24 max-w-none object-contain drop-shadow-[0_0_14px_rgba(255,225,90,.8)] transition-transform group-hover:scale-110 group-active:scale-95 sm:h-28 sm:w-28" />
               </button>
             </div>
             {emailLoginOpen && (
@@ -177,8 +162,8 @@ export default function Login() {
             )}
           </section>
             <div className="absolute bottom-[max(0px,env(safe-area-inset-bottom))] left-1/2 z-20 flex -translate-x-1/2 flex-col items-center">
-              <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA" title="Conversar com a LIA" className="login-motion relative rounded-3xl border-[3px] border-white/90 bg-white/10 p-1 shadow-[0_0_0_2px_rgba(255,215,85,.85),0_0_18px_6px_rgba(255,255,255,.85),0_0_34px_12px_rgba(255,210,65,.55),0_6px_16px_rgba(0,0,0,.4)] backdrop-blur-[2px] transition-transform hover:scale-105 active:scale-95">
-                <img src="/LIA%20Posso%20Ajudar.webp" alt="LIA — Posso Ajudar?" className="h-auto w-[202px] max-w-[70vw] object-contain drop-shadow-[0_3px_9px_rgba(0,0,0,.6)] sm:w-[247px]" />
+              <button type="button" onClick={() => { playTap(); setLiaOpen(value => !value); }} aria-label="Conversar com a LIA" title="Conversar com a LIA" className="login-motion relative border-0 bg-transparent p-0 drop-shadow-[0_0_12px_rgba(255,215,85,.85)] transition-transform hover:scale-105 active:scale-95">
+                <img src="/LIA%20Posso%20Ajudar.webp" alt="LIA — Posso Ajudar?" className="h-auto w-[202px] max-w-[70vw] object-contain drop-shadow-[0_0_14px_rgba(255,215,85,.75)] sm:w-[247px]" />
               </button>
               {liaOpen && (
                 <div role="dialog" aria-label="Ajuda da LIA no login" className="absolute bottom-full z-30 mb-3 w-[min(310px,88vw)] rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]">
