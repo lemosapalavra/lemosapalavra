@@ -46,14 +46,14 @@ export default function TesourosDaPalavra() {
             <p className="font-black">{s.name}</p><p className="text-xs">{s.title}</p><p className="mt-1 text-xs font-semibold">{s.min} pontos</p>
           </div>)}
         </div>
-        <div className="relative mt-7 mb-4">
-          <button type="button" onClick={() => { if (downloadHelp) stopAudio(); setDownloadHelp(v => !v); }} aria-expanded={downloadHelp} aria-label="Como funcionam os downloads" className="inline-flex items-center gap-2 rounded-full border-2 border-amber-400 bg-white px-4 py-2 font-extrabold text-amber-900 shadow"><Download size={21}/> Downloads</button>
-          {downloadHelp && <div role="dialog" aria-label="Explicação dos downloads" className="relative mt-4 max-w-sm rounded-[20px] border-[3px] border-amber-400 bg-white p-4 text-slate-900 shadow-[0_0_14px_rgba(255,200,35,.8)]">
+        <div className="relative mt-7 mb-4" onMouseEnter={() => setDownloadHelp(true)} onMouseLeave={() => { stopAudio(); setDownloadHelp(false); }}>
+          <button type="button" onClick={() => document.getElementById("biblioteca-premiacoes")?.scrollIntoView({ behavior: "smooth", block: "start" })} onFocus={() => setDownloadHelp(true)} aria-describedby="downloads-explicacao" aria-label="Como funcionam os downloads" className="inline-flex items-center gap-2 rounded-full border-2 border-amber-400 bg-white px-4 py-2 font-extrabold text-amber-900 shadow"><Download size={21}/> Downloads</button>
+          {downloadHelp && <div id="downloads-explicacao" role="tooltip" aria-label="Explicação dos downloads" className="relative mt-4 max-w-sm rounded-[20px] border-[3px] border-amber-400 bg-white p-4 text-slate-900 shadow-[0_0_14px_rgba(255,200,35,.8)]">
             <span aria-hidden="true" className="absolute -top-[13px] left-8 h-[22px] w-[22px] rotate-45 border-l-[3px] border-t-[3px] border-amber-400 bg-white"/>
             <div className="relative flex items-start gap-2"><div className="min-w-0 flex-1 text-[13px] font-medium leading-relaxed"><p>Bem-vindo ao Tesouro da Palavra!</p><p className="mt-2">Aqui, cada brincadeira vira uma linda conquista!</p><p className="mt-2">Brinque, aprenda, ganhe pontos e desbloqueie presentes bíblicos para baixar!</p><strong className="mt-2 block font-extrabold text-amber-900">Cada tesouro é uma semente de amor que Deus planta em seu coração!</strong></div><div className="flex shrink-0 flex-col gap-2"><button type="button" onClick={toggleAudio} aria-label={speaking ? "Parar gravação da LIA" : "Ouvir gravação da LIA"} className="rounded-full border-2 border-amber-400 bg-green-700 p-2 text-white shadow">{speaking ? <VolumeX size={18}/> : <Volume2 size={18}/>}</button><button type="button" onClick={() => { stopAudio(); setDownloadHelp(false); }} aria-label="Fechar explicação" className="rounded-full border border-amber-300 bg-white p-2 text-slate-700 shadow"><X size={18}/></button></div></div>
           </div>}
         </div>
-        <h2 className="mb-3 mt-7 text-xl font-black">Biblioteca de premiações</h2>
+        <h2 id="biblioteca-premiacoes" className="mb-3 mt-7 scroll-mt-24 text-xl font-black">Biblioteca de premiações</h2>
         <p className="mb-4 text-sm">Os materiais serão adicionados gradualmente. As conquistas serão permanentes e cumulativas.</p>
         <div className="grid gap-3 sm:grid-cols-2">
           {MATERIAIS.map(m => {
