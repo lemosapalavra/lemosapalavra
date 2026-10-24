@@ -126,11 +126,12 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
  ];
  // Quatro jogos distribuídos ao redor do círculo central APRENDA.
  // O desafio Quem Sou Eu permanece disponível nos dados, mas sem ícone nesta tela.
+ // Mesmo arranjo em losango da página Inicial: acima, esquerda, direita e abaixo.
  const positions = [
-  {left:"23%",top:"31%"}, // Memória — superior esquerdo
-  {left:"77%",top:"31%"}, // Quebra-Cabeça — superior direito
-  {left:"23%",top:"55%"}, // Construtor — inferior esquerdo
-  {left:"77%",top:"55%"}, // Quiz — inferior direito
+  {left:"50%",top:"37%"}, // Memória — acima do círculo
+  {left:"82%",top:"51%"}, // Quebra-Cabeça — direita
+  {left:"18%",top:"51%"}, // Construtor — esquerda
+  {left:"50%",top:"67%"}, // Quiz — abaixo do círculo
  ];
  if (index===null || !current) {
   return (
