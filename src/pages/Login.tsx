@@ -178,20 +178,16 @@ export default function Login() {
               </form>
             )}
             {liaOpen && (
-              <div role="dialog" aria-label="Ajuda da LIA no login" className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-50 flex max-h-[min(72dvh,540px)] w-[min(340px,92vw)] -translate-x-1/2 flex-col rounded-[26px] border-[3px] border-amber-400 bg-white/95 p-3 text-slate-900 shadow-[0_0_24px_rgba(255,215,80,.75)]">
-                <div className="flex shrink-0 items-center justify-between gap-2 border-b border-amber-300 pb-2">
-                  <strong className="text-sm font-bold text-amber-800">LIA</strong>
-                  <div className="flex items-center gap-2">
-                    <button type="button" onClick={toggleSpeech} aria-label={speaking ? "Parar gravação" : "Ouvir gravação da LIA"} title={speaking ? "Parar gravação" : "Ouvir gravação da LIA"} className="rounded-full bg-emerald-600 p-2 text-white shadow-md hover:bg-emerald-700">{speaking ? <VolumeX size={20} /> : <Volume2 size={20} />}</button>
-                    <button type="button" onClick={() => { setLiaOpen(false); stopSpeech(); }} aria-label="Fechar ajuda" className="rounded-full border border-amber-300 bg-white p-2 text-slate-700"><X size={20} /></button>
+              <div role="dialog" aria-label="Ajuda da LIA no login" className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-50 w-[min(340px,92vw)] -translate-x-1/2 rounded-[20px] border-[3px] border-amber-400 bg-white p-3 text-slate-900 shadow-[0_0_14px_rgba(255,200,35,.8)]">
+                <div aria-hidden="true" className="pointer-events-none absolute -bottom-[13px] left-[22%] h-[23px] w-[23px] rotate-45 border-b-[3px] border-r-[3px] border-amber-400 bg-white" />
+                <div className="relative flex items-start gap-2">
+                  <div className="min-w-0 flex-1">
+                    <div className="max-h-[min(50dvh,330px)] overflow-y-auto overscroll-contain">
+                      <p className="whitespace-pre-line text-[13px] font-medium leading-[1.35] text-slate-900">{loginHelp}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="min-h-0 overflow-y-auto">
-                  <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-slate-900">{loginHelp}</p>
-                  <div className="mt-3 rounded-xl border border-amber-300 bg-amber-50 p-2 text-center">
-                    <InstallShortcut compact />
-                    <p className="mt-1 text-xs font-semibold text-slate-800">Baixar atalho para o celular</p>
-                  </div>
+                  <button type="button" onClick={toggleSpeech} aria-label={speaking ? "Parar gravação" : "Ouvir gravação da LIA"} title={speaking ? "Parar gravação" : "Ouvir gravação da LIA"} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-amber-400 bg-green-700 text-white shadow-[0_2px_6px_rgba(0,0,0,.35)] hover:bg-green-600">{speaking ? <VolumeX size={19} /> : <Volume2 size={19} />}</button>
+                  <button type="button" onClick={() => { setLiaOpen(false); stopSpeech(); }} aria-label="Fechar ajuda" className="absolute -right-1 -top-1 translate-x-1/2 -translate-y-1/2 rounded-full bg-white p-1 text-slate-700 shadow-sm"><X size={15} /></button>
                 </div>
               </div>
             )}
