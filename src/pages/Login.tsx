@@ -178,12 +178,13 @@ export default function Login() {
               </form>
             )}
             {liaOpen && (
-              <div role="dialog" aria-label="Ajuda da LIA no login" className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-50 w-[min(340px,92vw)] -translate-x-1/2 rounded-[20px] border-[3px] border-amber-400 bg-white p-3 text-slate-900 shadow-[0_0_14px_rgba(255,200,35,.8)]">
+              <div role="dialog" aria-label="Ajuda da LIA no login" className="fixed bottom-[calc(245px+env(safe-area-inset-bottom,0px))] sm:bottom-[calc(280px+env(safe-area-inset-bottom,0px))] left-1/2 z-50 w-[min(340px,92vw)] -translate-x-1/2 rounded-[20px] border-[3px] border-amber-400 bg-white p-3 text-slate-900 shadow-[0_0_14px_rgba(255,200,35,.8)]">
                 <div aria-hidden="true" className="pointer-events-none absolute -bottom-[13px] left-[22%] h-[23px] w-[23px] rotate-45 border-b-[3px] border-r-[3px] border-amber-400 bg-white" />
                 <div className="relative flex items-start gap-2">
                   <div className="min-w-0 flex-1">
                     <div className="max-h-[min(50dvh,330px)] overflow-y-auto overscroll-contain">
-                      <p className="whitespace-pre-line text-[13px] font-medium leading-[1.35] text-slate-900">{loginHelp}</p>
+                      <p className="whitespace-pre-line text-[13px] font-medium leading-[1.35] text-slate-900">{loginHelp.split("Jesus te ama e nós também!")[0].trimEnd()}</p>
+                      <p className="mt-3 text-center text-[15px] font-extrabold leading-snug text-slate-900">Jesus te ama e nós também!</p>
                     </div>
                   </div>
                   <button type="button" onClick={toggleSpeech} aria-label={speaking ? "Parar gravação" : "Ouvir gravação da LIA"} title={speaking ? "Parar gravação" : "Ouvir gravação da LIA"} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-amber-400 bg-green-700 text-white shadow-[0_2px_6px_rgba(0,0,0,.35)] hover:bg-green-600">{speaking ? <VolumeX size={19} /> : <Volume2 size={19} />}</button>
