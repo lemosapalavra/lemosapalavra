@@ -36,7 +36,7 @@ const PAGE_TIPS: Record<string, string> = {
   "/album": "Este é o Álbum! 🎁 Use suas moedinhas para abrir pacotinhos e completar o Volume 1. O Volume 2 será liberado depois! 🌈",
   "/historias-do-dia": "Obaaa! 📚 Qual será a historinha de hoje? Vamos descobrir! ✨",
   "/historias-biblicas": "Era uma vez... 📖 Escolha uma história da Bíblia! 🌟",
-  "/login": "Oieee! 💛 Já tem conta? Entre! É novo? Vamos nos cadastrar! 🎈",
+  "/login": "Olá, é uma imensa alegria ter você por aqui!\nSeja muito bem-vindo ao nosso cantinho de fé, amor e descobertas!\n\nVamos lá! Comece entrando com o Google ou clique no envelope para receber seu link por e-mail.\n\nFacilite seu acesso! Baixe o atalho no celular, espere um pouquinho e prontinho!\n\nAgora é só aproveitar! Jesus te ama e nós também!",
   "/login-sms": "Trim-trim! 📱 Digite seu código e venha brincar! ✨",
   "/admin/whatsapp": "Oie! 💌 Vamos cuidar dos recadinhos? 🌷",
   "/familia": "Ebaaa, família! 🥰 Vamos aprender e brincar juntos? 🌻",
