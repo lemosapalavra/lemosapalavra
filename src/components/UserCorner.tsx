@@ -81,7 +81,7 @@ export default function UserCorner() {
 
   const [menu, setMenu] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
-  const userHelpText = "Olá! Que alegria ter você aqui! No Status, você descobre como seu perfil está identificado no site. No Meu Mural, acompanhe suas atividades, moedinhas e conquistas! Em Premiações, descubra seus Tesouros da Palavra. E quando quiser terminar sua visita, toque em Sair para encerrar sua conta com segurança. Jesus te ama e nós também!";
+  const userHelpText = "Que alegria ter você aqui! No Status, conheça seu perfil! Em Mural, acompanhe suas moedinhas e conquistas! Em Premiações, descubra seus Tesouros da Palavra! E para encerrar sua visita, é só clicar em Sair! Jesus te ama e nós também!";
   const speakHelp = () => {
     if (!("speechSynthesis" in window)) return;
     window.speechSynthesis.cancel();
@@ -135,7 +135,7 @@ export default function UserCorner() {
         {menu && helpOpen && <div role="dialog" aria-label="Explicação da LIA sobre o usuário" className="relative z-[112] w-[min(320px,calc(100vw-16px))] rounded-[22px] border-[3px] border-amber-400 bg-white p-3 text-slate-900 shadow-[0_0_16px_rgba(245,158,11,.65)]">
           <span aria-hidden="true" className="absolute -top-[12px] right-9 h-[20px] w-[20px] rotate-45 border-l-[3px] border-t-[3px] border-amber-400 bg-white" />
           <div className="relative flex items-start justify-between gap-2"><strong className="text-sm text-amber-900">A LIA explica! 💛</strong><div className="flex gap-1"><button type="button" onClick={speakHelp} aria-label="Ouvir explicação da LIA" className="rounded-full border-2 border-amber-400 bg-green-700 p-2 text-white shadow"><Volume2 size={17}/></button><button type="button" onClick={() => { setHelpOpen(false); window.speechSynthesis?.cancel(); }} aria-label="Fechar fala da LIA" className="rounded-full border border-amber-300 bg-white p-2 text-slate-700"><X size={17}/></button></div></div>
-          <div className="mt-2 max-h-[min(34dvh,220px)] overflow-y-auto text-[13px] leading-relaxed"><p>Olá! Que alegria ter você aqui!</p><p className="mt-2">No <strong>Status</strong>, você descobre como seu perfil está identificado no site.</p><p className="mt-2">No <strong>Meu Mural</strong>, acompanhe suas atividades, moedinhas e conquistas!</p><p className="mt-2">Em <strong>Premiações</strong>, descubra seus Tesouros da Palavra.</p><p className="mt-2">E quando quiser terminar sua visita, toque em <strong>Sair</strong> para encerrar sua conta com segurança.</p><strong className="mt-2 block text-amber-900">Jesus te ama e nós também!</strong></div>
+          <div className="mt-2 max-h-[min(34dvh,220px)] overflow-y-auto text-[13px] leading-relaxed"><p>Que alegria ter você aqui!</p><p className="mt-2">No <strong>Status</strong>, conheça seu perfil!</p><p className="mt-2">Em <strong>Mural</strong>, acompanhe suas moedinhas e conquistas!</p><p className="mt-2">Em <strong>Premiações</strong>, descubra seus Tesouros da Palavra!</p><p className="mt-2">E para encerrar sua visita, é só clicar em <strong>Sair</strong>!</p><strong className="mt-2 block text-amber-900">Jesus te ama e nós também!</strong></div>
         </div>}
         {menu && <div className="relative z-[111] flex flex-col items-end gap-2 rounded-xl bg-white/95 p-2 shadow-lg">
           <div className="w-full px-1 py-1 text-center text-sm font-bold text-amber-950">Status: {profileStatus(user)}</div>
