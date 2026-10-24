@@ -121,8 +121,8 @@ export default function UserCorner() {
   const greeting = new Date().getHours() < 12 ? "Bom dia" : new Date().getHours() < 18 ? "Boa tarde" : "Boa noite";
   if (true) return (
     <>
-      <div className="fixed right-1 top-1 sm:top-1 z-[110] flex flex-col items-end gap-1">
-        <button type="button" onClick={(event) => { event.stopPropagation(); setMenu(v => { if (v) { setHelpOpen(false); window.speechSynthesis?.cancel(); } else { setHelpOpen(true); } return !v; }); }} aria-label="Opções do usuário" aria-expanded={menu}
+      <div className="fixed right-1 top-1 sm:top-1 z-[110] flex flex-col items-end gap-1" onMouseEnter={() => setHelpOpen(true)} onMouseLeave={() => { setHelpOpen(false); window.speechSynthesis?.cancel(); }}>
+        <button type="button" onClick={(event) => { event.stopPropagation(); setHelpOpen(false); window.speechSynthesis?.cancel(); setMenu(v => !v); }} onFocus={() => { if (!menu) setHelpOpen(true); }} aria-label="Opções do usuário" aria-expanded={menu}
           className="flex w-[132px] min-[390px]:w-[145px] sm:w-[190px] min-w-0 items-center gap-1.5 rounded-2xl border-[3px] border-amber-400 bg-gradient-to-br from-[#a9652c] via-[#794015] to-[#49250c] px-1.5 py-1.5 text-left text-amber-50 shadow-[0_4px_12px_rgba(0,0,0,.5)]">
           <img src={resolveAvatar(user.avatar)} onError={e => { if (!e.currentTarget.src.endsWith(iconUsuario)) e.currentTarget.src = iconUsuario; }} alt={user.name}
             className="h-9 w-9 min-[390px]:h-10 min-[390px]:w-10 sm:h-12 sm:w-12 shrink-0 rounded-full border-2 border-amber-300 bg-white object-contain" />
@@ -132,7 +132,7 @@ export default function UserCorner() {
             <span className="block text-[10px] sm:text-xs">{welcome}</span><span className="block font-extrabold text-yellow-200">🪙 {coins}</span>
           </span>
         </button>
-        {menu && helpOpen && <div role="dialog" aria-label="Explicação da LIA sobre o usuário" className="relative z-[112] w-[min(320px,calc(100vw-16px))] rounded-[22px] border-[3px] border-amber-400 bg-white p-3 text-slate-900 shadow-[0_0_16px_rgba(245,158,11,.65)]">
+        {helpOpen && !menu && <div role="tooltip" aria-label="Explicação da LIA sobre o usuário" className="relative z-[112] w-[min(320px,calc(100vw-16px))] rounded-[22px] border-[3px] border-amber-400 bg-white p-3 text-slate-900 shadow-[0_0_16px_rgba(245,158,11,.65)]">
           <span aria-hidden="true" className="absolute -top-[12px] right-9 h-[20px] w-[20px] rotate-45 border-l-[3px] border-t-[3px] border-amber-400 bg-white" />
           <div className="relative flex items-start justify-between gap-2"><strong className="text-sm text-amber-900">A LIA explica! 💛</strong><div className="flex gap-1"><button type="button" onClick={speakHelp} aria-label="Ouvir explicação da LIA" className="rounded-full border-2 border-amber-400 bg-green-700 p-2 text-white shadow"><Volume2 size={17}/></button><button type="button" onClick={() => { setHelpOpen(false); window.speechSynthesis?.cancel(); }} aria-label="Fechar fala da LIA" className="rounded-full border border-amber-300 bg-white p-2 text-slate-700"><X size={17}/></button></div></div>
           <div className="mt-2 max-h-[min(34dvh,220px)] overflow-y-auto text-[13px] leading-relaxed"><p>Olá, que alegria em ver você aqui!</p><p className="mt-2">Em <strong>Status</strong>, você conhece o seu perfil!</p><p className="mt-2">No <strong>Mural</strong>, você acompanha suas conquistas!</p><p className="mt-2">Em <strong>Premiações</strong>, descobre seus Tesouros!</p><p className="mt-2">E para encerrar sua visita, é só clicar em <strong>Sair</strong>!</p><strong className="mt-2 block text-amber-900">Jesus te ama e nós também!</strong></div>
