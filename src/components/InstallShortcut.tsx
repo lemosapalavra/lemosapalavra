@@ -1,8 +1,9 @@
 import shortcutImage from "@/assets/login-shortcut-icon.webp";
 import { useIconVisible } from "@/lib/iconVisibility";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
-import { Download } from "lucide-react";
+import { Download, Volume2, VolumeX, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 declare global {
@@ -74,6 +75,21 @@ export default function InstallShortcut({ compact = false, headerTile = false }:
   const [busy, setBusy] = useState(false);
   const atalhoVisible = useIconVisible("atalho");
   const [done, setDone] = useState<string>("");
+  const navigate = useNavigate();
+  const [downloadHelpOpen, setDownloadHelpOpen] = useState(false);
+  const [downloadSpeaking, setDownloadSpeaking] = useState(false);
+  const downloadAudioRef = useRef<HTMLAudioElement | null>(null);
+  const stopDownloadAudio = () => { downloadAudioRef.current?.pause(); downloadAudioRef.current = null; setDownloadSpeaking(false); };
+  useEffect(() => () => { downloadAudioRef.current?.pause(); }, []);
+  const toggleDownloadAudio = () => {
+    if (downloadAudioRef.current) { stopDownloadAudio(); return; }
+    const audio = new Audio("/audio/lia/lia-downloads.mp3");
+    downloadAudioRef.current = audio;
+    audio.onended = () => { if (downloadAudioRef.current === audio) { downloadAudioRef.current = null; setDownloadSpeaking(false); } };
+    audio.onerror = () => { if (downloadAudioRef.current === audio) { downloadAudioRef.current = null; setDownloadSpeaking(false); } };
+    setDownloadSpeaking(true);
+    void audio.play().catch(() => { if (downloadAudioRef.current === audio) { downloadAudioRef.current = null; setDownloadSpeaking(false); } });
+  };
 
   useEffect(() => {
     const on = () => setInstallable(!!window.__lemosDeferredInstall);
@@ -88,7 +104,9 @@ export default function InstallShortcut({ compact = false, headerTile = false }:
 
   const handleClick = async () => {
     if (headerTile) {
-      setDone(current => current ? "" : "Disponível para status VIP");
+      stopDownloadAudio();
+      setDownloadHelpOpen(false);
+      navigate("/tesouros");
       return;
     }
     setDone("");
@@ -140,15 +158,29 @@ export default function InstallShortcut({ compact = false, headerTile = false }:
   const siteUrl = typeof window !== "undefined" ? `${window.location.origin}/` : "https://lemosapalavra.live/";
 
   if (headerTile) return (
-    <div className="flex flex-col items-center">
-      <button type="button" onClick={handleClick} disabled={busy}
-        aria-label="Informações sobre download" aria-expanded={!!done}
-        title="Download"
+    <div className="relative flex flex-col items-start" onMouseEnter={() => setDownloadHelpOpen(true)} onMouseLeave={() => { setDownloadHelpOpen(false); stopDownloadAudio(); }}>
+      <button type="button" onClick={handleClick} onFocus={() => setDownloadHelpOpen(true)} disabled={busy}
+        aria-label="Abrir Tesouro da Palavra e downloads" aria-describedby={downloadHelpOpen ? "lia-home-downloads" : undefined}
+        title="Tesouro da Palavra"
         className="flex w-[132px] min-[390px]:w-[145px] sm:w-[190px] min-w-0 items-center gap-2 rounded-2xl border-[3px] border-amber-400 bg-gradient-to-br from-[#a9652c] via-[#794015] to-[#49250c] px-2 py-2 text-left text-amber-50 shadow-[0_4px_12px_rgba(0,0,0,.5)] transition-transform hover:scale-105 active:scale-95 disabled:opacity-60">
         <Download aria-hidden="true" className="h-9 w-9 shrink-0 rounded-full border-2 border-amber-300 bg-amber-100/20 p-1.5 text-yellow-200 sm:h-11 sm:w-11" />
-        <span className="min-w-0 text-xs font-extrabold sm:text-sm">{busy ? "Preparando..." : "Dowload"}</span>
+        <span className="min-w-0 text-xs font-extrabold sm:text-sm">{busy ? "Preparando..." : "Download"}</span>
       </button>
-      {done && <div role="status" className="relative z-[100] mt-1 max-w-[220px] rounded-lg border border-amber-300 bg-[#102f4a]/95 p-2 text-xs text-white shadow-lg">{done}</div>}
+      {downloadHelpOpen && <div id="lia-home-downloads" role="tooltip" className="absolute left-0 top-full z-[120] mt-3 w-[min(320px,calc(100vw-16px))] rounded-[22px] border-[3px] border-amber-400 bg-white p-3 text-slate-900 shadow-[0_0_16px_rgba(245,158,11,.65)]">
+        <span aria-hidden="true" className="absolute -top-[12px] left-9 h-[20px] w-[20px] rotate-45 border-l-[3px] border-t-[3px] border-amber-400 bg-white" />
+        <div className="relative flex items-start gap-2">
+          <div className="min-w-0 flex-1 text-[13px] font-medium leading-relaxed">
+            <p>Bem-vindo ao Tesouro da Palavra!</p>
+            <p className="mt-2">Aqui, cada brincadeira vira uma linda conquista!</p>
+            <p className="mt-2">Brinque, aprenda, ganhe pontos e desbloqueie presentes bíblicos para baixar!</p>
+            <strong className="mt-2 block font-extrabold text-amber-900">Cada tesouro é uma semente de amor que Deus planta em seu coração!</strong>
+          </div>
+          <div className="flex shrink-0 flex-col gap-2">
+            <button type="button" onClick={toggleDownloadAudio} aria-label={downloadSpeaking ? "Parar gravação da LIA" : "Ouvir gravação da LIA"} className="rounded-full border-2 border-amber-400 bg-green-700 p-2 text-white shadow">{downloadSpeaking ? <VolumeX size={17}/> : <Volume2 size={17}/>}</button>
+            <button type="button" onClick={() => { setDownloadHelpOpen(false); stopDownloadAudio(); }} aria-label="Fechar explicação" className="rounded-full border border-amber-300 bg-white p-2 text-slate-700"><X size={17}/></button>
+          </div>
+        </div>
+      </div>}
     </div>
   );
 
