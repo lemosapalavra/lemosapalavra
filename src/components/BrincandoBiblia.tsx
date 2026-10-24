@@ -137,15 +137,15 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
   return (
    <section className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
     <button type="button" onClick={()=>open(dailyWho.activityIndex)} aria-label="Quem Sou Eu? — desafio do dia" title="Quem Sou Eu? — desafio do dia"
-      className="absolute pointer-events-auto aspect-square w-[clamp(62px,18vw,100px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent p-0 animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:scale-110 drop-shadow-[0_0_15px_rgba(255,215,60,.8)]"
+      className="absolute pointer-events-auto aspect-square w-[clamp(62px,18vw,100px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent p-0 animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:scale-110 "
       style={positions[0]}>
-      <img src={dailyWho.icon} alt="Quem Sou Eu?" className="h-full w-full object-contain" />
+      <img src={dailyWho.icon} alt="Quem Sou Eu?" className="h-full w-full object-contain [mask-image:radial-gradient(circle,black_80%,transparent_98%)]" />
     </button>
     {games.map((game,n)=>(
       <button key={game.id} type="button" onClick={()=>onGameSelect?.(game.id)} aria-label={game.label} title={game.label}
-       className="absolute pointer-events-auto flex aspect-square w-[clamp(62px,18vw,100px)] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-transparent p-0 drop-shadow-[0_0_15px_rgba(255,215,60,.85)] transition-transform hover:scale-110 active:scale-95"
+       className="absolute pointer-events-auto flex aspect-square w-[clamp(62px,18vw,100px)] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-transparent p-0  transition-transform hover:scale-110 active:scale-95"
        style={positions[n+1]}>
-       <img src={game.icon} alt={game.label} className="h-full w-full object-contain" />
+       <img src={game.icon} alt={game.label} className="h-full w-full object-contain [mask-image:radial-gradient(circle,black_80%,transparent_98%)]" />
       </button>
     ))}
    </section>
