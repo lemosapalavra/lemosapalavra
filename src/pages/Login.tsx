@@ -1,4 +1,3 @@
-import { getLiaFeminineVoice } from "@/lib/liaVoice";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import loginBackground from "@/assets/login-optimized.webp";
 import googleIcon from "@/assets/login-google-icon.webp";
@@ -19,27 +18,24 @@ export default function Login() {
   const [emailAddress, setEmailAddress] = useState("");
   const [liaOpen, setLiaOpen] = useState(false);
   const [speaking, setSpeaking] = useState(false);
-  const speechRef = useRef<SpeechSynthesisUtterance | null>(null);
-  const loginHelp = "Olá! Para ter acesso, entre com sua conta do Google,\nou clique no envelope para receber um link por e-mail.\nQuer acesso rápido pelo celular? Baixe o atalho e aguarde a instalação, é rápido!";
-  useEffect(() => () => { window.speechSynthesis?.cancel(); }, []);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const loginHelp = "Olá, é uma imensa alegria em ter você por aqui!\nSeja muito bem-vindo ao nosso cantinho de fé, amor e descobertas!\n\nVamos lá! Comece entrando com o Google ou clique no envelope para receber seu link por e-mail.\n\nFacilite seu acesso único! Baixe o atalho no celular, espere um pouquinho e prontinho!\n\nAgora é só aproveitar! Jesus te ama e nós também!";
+  useEffect(() => () => { audioRef.current?.pause(); window.speechSynthesis?.cancel(); }, []);
+  const stopSpeech = () => {
+    audioRef.current?.pause();
+    audioRef.current = null;
+    window.speechSynthesis?.cancel();
+    setSpeaking(false);
+  };
   const toggleSpeech = () => {
-    if (!("speechSynthesis" in window)) { toast({ title: "Leitura em voz alta indisponível neste navegador." }); return; }
-    window.speechSynthesis.cancel();
-    if (speechRef.current) { speechRef.current = null; setSpeaking(false); return; }
-    const utterance = new SpeechSynthesisUtterance(loginHelp);
-    utterance.lang = "pt-BR";
-    utterance.rate = 0.94;
-    utterance.pitch = 1.16;
-    const voice = getLiaFeminineVoice(window.speechSynthesis.getVoices());
-    if (!voice) {
-      toast({ title: "Voz feminina indisponível", description: "Este aparelho não disponibilizou uma voz feminina em português. A fala não será reproduzida com voz masculina." });
-      return;
-    }
-    utterance.voice = voice;
-    utterance.onend = utterance.onerror = () => { if (speechRef.current === utterance) { speechRef.current = null; setSpeaking(false); } };
-    speechRef.current = utterance;
+    if (speaking) { stopSpeech(); return; }
+    window.speechSynthesis?.cancel();
+    const audio = new Audio("/audio/lia/lia-login.mp3");
+    audioRef.current = audio;
     setSpeaking(true);
-    window.speechSynthesis.speak(utterance);
+    audio.onended = () => { if (audioRef.current === audio) { audioRef.current = null; setSpeaking(false); } };
+    audio.onerror = () => { if (audioRef.current === audio) { audioRef.current = null; setSpeaking(false); toast({ title: "Não foi possível carregar a gravação da LIA." }); } };
+    void audio.play().catch(() => { if (audioRef.current === audio) { audioRef.current = null; setSpeaking(false); toast({ title: "Toque novamente para ouvir a LIA." }); } });
   };
   const navigate = useNavigate();
   const [checkingSession, setCheckingSession] = useState(true);
@@ -187,7 +183,7 @@ export default function Login() {
                   <strong className="text-sm text-yellow-300">COMO ACESSAR O SITE</strong>
                   <div className="flex items-center gap-1">
                     <button type="button" onClick={toggleSpeech} aria-label={speaking ? "Parar leitura" : "Ouvir orientação da página"} title={speaking ? "Parar leitura" : "Ouvir orientação"} className="rounded-lg bg-white/15 p-2">{speaking ? <VolumeX size={20} /> : <Volume2 size={20} />}</button>
-                    <button type="button" onClick={() => { setLiaOpen(false); window.speechSynthesis?.cancel(); speechRef.current = null; setSpeaking(false); }} aria-label="Fechar ajuda" className="rounded-lg bg-white/15 p-2"><X size={20} /></button>
+                    <button type="button" onClick={() => { setLiaOpen(false); stopSpeech(); }} aria-label="Fechar ajuda" className="rounded-lg bg-white/15 p-2"><X size={20} /></button>
                   </div>
                 </div>
                 <p className="mt-3 text-sm leading-relaxed">{loginHelp}</p>
