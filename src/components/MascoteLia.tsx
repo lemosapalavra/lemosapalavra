@@ -198,7 +198,7 @@ export default function MascoteLia() {
             <button type="button" onClick={() => { setExpanded(false); recordedAudioRef.current?.pause(); recordedAudioRef.current=null; window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }} aria-label="Fechar ajuda" className="rounded-full bg-amber-100 p-2 text-amber-950 hover:bg-amber-200"><X size={20} /></button>
           </div>
         </div>
-        <p className="relative mt-3 max-h-[calc(min(42dvh,300px)-90px)] overflow-y-auto overscroll-contain whitespace-pre-line text-sm font-medium leading-relaxed text-slate-900">{cleanSpeechText(message)}</p>
+        <p className="relative mt-3 max-h-[calc(min(42dvh,300px)-90px)] overflow-y-auto overscroll-contain whitespace-pre-line text-sm font-medium leading-relaxed text-slate-900">{location.pathname === "/biblia" ? <>{cleanSpeechText(message).split("A cada página, uma nova descoberta. Cada palavrinha é uma sementinha de amor que Jesus planta em seu coração!")[0]}<strong className="block mt-2 font-extrabold text-amber-900">A cada página, uma nova descoberta. Cada palavrinha é uma sementinha de amor que Jesus planta em seu coração!</strong></> : cleanSpeechText(message)}</p>
       </div>
 
       <div className="flex flex-col items-center gap-2">
