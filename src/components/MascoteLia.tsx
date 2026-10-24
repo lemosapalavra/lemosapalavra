@@ -174,11 +174,7 @@ export default function MascoteLia() {
     <div onMouseLeave={(event) => { if (!onHome && !persistentHelp && (event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(false); }}
       className={`fixed z-[9998] flex flex-col items-end gap-1 left-[-16px] sm:left-[-12px] ${liaPosition}`}>
       {/* Ajuda com o mesmo painel azul, cabeçalho e controles da página de login. */}
-      <div role="dialog" aria-label="Ajuda da LIA" className={onHome
-        ? "pointer-events-auto fixed bottom-[calc(325px+env(safe-area-inset-bottom,0px))] left-2 z-[9999] w-[min(320px,calc(100vw-16px))] max-h-[45dvh] overflow-y-auto rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"
-        : persistentHelp
-        ? "pointer-events-auto fixed bottom-[calc(250px+env(safe-area-inset-bottom,0px))] left-2 z-[9999] w-[min(320px,calc(100vw-16px))] max-h-[45dvh] overflow-y-auto rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"
-        : "pointer-events-auto relative w-[min(78vw,320px)] max-w-sm rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]"}>
+      <div role="dialog" aria-label="Ajuda da LIA" className="pointer-events-auto fixed left-2 right-2 bottom-[calc(230px+env(safe-area-inset-bottom,0px))] sm:bottom-[calc(260px+env(safe-area-inset-bottom,0px))] z-[9999] w-auto max-w-[320px] max-h-[min(42dvh,300px)] overflow-y-auto overscroll-contain break-words rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]">
         <div className="flex items-center justify-between gap-2 border-b border-white/25 pb-2">
           <span aria-hidden="true" />
           <div className="flex items-center gap-1">
