@@ -88,6 +88,7 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
                 </div>
               </div>
 
+              {cfg.videoUrl && <img src="/images/maozinha-14bis.png" alt="" aria-hidden="true" draggable={false} className="pointer-events-none absolute z-10 w-10 sm:w-12 h-auto select-none plane-hand-pulse" style={{ top: "31%", left: "47%", filter: "drop-shadow(0 2px 4px rgba(0,0,0,.45))" }} />}
               <img loading="lazy" decoding="async"
                 src={planeSrc}
                 onClick={handleClick}
@@ -125,6 +126,9 @@ export default function EventBannerPlane({ isAuthenticated = false }: { isAuthen
         .plane-clickable:active {
           filter: drop-shadow(2px 0 0 white) drop-shadow(-2px 0 0 white) drop-shadow(0 2px 0 white) drop-shadow(0 -2px 0 white) brightness(1.25);
         }
+        @keyframes plane-hand-pulse { 0%, 100% { transform: scale(1); opacity: .9; } 50% { transform: scale(1.2); opacity: 1; } }
+        .plane-hand-pulse { animation: plane-hand-pulse 1.3s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) { .plane-hand-pulse { animation: none; } }
         @keyframes plane-rtl {
           0%   { transform: translateX(calc(100vw + 12rem)); }
           100% { transform: translateX(-30rem); }
