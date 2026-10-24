@@ -76,6 +76,7 @@ export default function MascoteLia() {
   const [expanded, setExpanded] = useState(false);
   const [speaking,setSpeaking] = useState(false);
   const speechRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const recordedAudioRef = useRef<HTMLAudioElement | null>(null);
   const [context, setContext] = useState<string | null>(null);
 
   useEffect(() => {
@@ -85,8 +86,8 @@ export default function MascoteLia() {
   }, []);
 
   // Recolhe ao trocar de página
-  useEffect(() => { setExpanded(false); setContext(null); window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }, [location.pathname]);
-  useEffect(() => () => window.speechSynthesis?.cancel(), []);
+  useEffect(() => { setExpanded(false); setContext(null); recordedAudioRef.current?.pause(); recordedAudioRef.current = null; window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }, [location.pathname]);
+  useEffect(() => () => { recordedAudioRef.current?.pause(); window.speechSynthesis?.cancel(); }, []);
 
   useEffect(() => {
     const onCtx = (e: Event) => setContext(((e as CustomEvent).detail as string) || null);
@@ -122,9 +123,23 @@ export default function MascoteLia() {
     : activityMessage || (currentContext && CONTEXT_TIPS[currentContext]) || PAGE_TIPS[location.pathname] || (!logged ? LOGIN_TIP : PAGE_TIPS["/"]);
 
   const toggleSpeech = () => {
+    if (speaking) { recordedAudioRef.current?.pause(); recordedAudioRef.current = null; window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); return; }
+    recordedAudioRef.current?.pause();
+    recordedAudioRef.current = null;
+    window.speechSynthesis?.cancel();
+    if (location.pathname === "/login") {
+      const audio = new Audio("/audio/lia/lia-login.mp3");
+      recordedAudioRef.current = audio;
+      audio.onended = () => { if (recordedAudioRef.current === audio) { recordedAudioRef.current = null; setSpeaking(false); } };
+      audio.onerror = () => { if (recordedAudioRef.current === audio) { recordedAudioRef.current = null; setSpeaking(false); speakBrowserVoice(); } };
+      setSpeaking(true);
+      audio.play().catch(() => { if (recordedAudioRef.current === audio) { recordedAudioRef.current = null; setSpeaking(false); speakBrowserVoice(); } });
+      return;
+    }
+    speakBrowserVoice();
+  };
+  const speakBrowserVoice = () => {
     if (!("speechSynthesis" in window)) return;
-    if (speaking) { window.speechSynthesis.cancel(); speechRef.current=null; setSpeaking(false); return; }
-    window.speechSynthesis.cancel();
     const speech = new SpeechSynthesisUtterance(cleanSpeechText(message));
     speech.lang="pt-BR"; speech.rate=0.94; speech.pitch=1.18;
     const femaleVoice = getLiaFeminineVoice(window.speechSynthesis.getVoices());
@@ -179,7 +194,7 @@ export default function MascoteLia() {
         <div className="relative flex items-center justify-end gap-2 border-b border-amber-200 pb-2">
           <div className="flex items-center gap-1">
             <button type="button" onClick={toggleSpeech} aria-label={speaking ? "Parar leitura" : "Ouvir orientação da página"} className="rounded-full bg-green-700 p-2 text-white hover:bg-green-600">{speaking ? <VolumeX size={20} /> : <Volume2 size={20} />}</button>
-            <button type="button" onClick={() => { setExpanded(false); window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }} aria-label="Fechar ajuda" className="rounded-full bg-amber-100 p-2 text-amber-950 hover:bg-amber-200"><X size={20} /></button>
+            <button type="button" onClick={() => { setExpanded(false); recordedAudioRef.current?.pause(); recordedAudioRef.current=null; window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }} aria-label="Fechar ajuda" className="rounded-full bg-amber-100 p-2 text-amber-950 hover:bg-amber-200"><X size={20} /></button>
           </div>
         </div>
         <p className="relative mt-3 max-h-[calc(min(42dvh,300px)-90px)] overflow-y-auto overscroll-contain whitespace-pre-line text-sm font-medium leading-relaxed text-slate-900">{cleanSpeechText(message)}</p>
@@ -187,7 +202,7 @@ export default function MascoteLia() {
 
       <div className="flex flex-col items-center gap-2">
       <Button variant="ghost"
-        onClick={() => { setExpanded(false); window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }}
+        onClick={() => { setExpanded(false); recordedAudioRef.current?.pause(); recordedAudioRef.current=null; window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }}
         aria-label="Recolher a LIA"
         title="Toque para recolher a LIA"
         className="pointer-events-auto h-auto flex-col !bg-transparent !border-0 !shadow-none hover:!bg-transparent transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:ring-4 focus-visible:ring-yellow-400"
