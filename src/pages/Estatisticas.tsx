@@ -253,6 +253,36 @@ export default function Estatisticas() {
           </button>
         </div>
 
+        {/* Visão atualizada dos conteúdos, sem apresentar métricas não coletadas como fatos. */}
+        <section className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
+          <h2 className="font-display text-lg font-bold text-foreground mb-2">📚 Conteúdos e experiências do site</h2>
+          <p className="text-xs text-muted-foreground mb-4">Mapa das áreas atuais do Lemos a Palavra. Os números de acesso abaixo são calculados somente a partir dos registros disponíveis no período selecionado.</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {[
+              { label: "Início", route: "/", emoji: "🏠" },
+              { label: "Bíblia", route: "/biblia", emoji: "📖" },
+              { label: "Devocionais", route: "/devocionais", emoji: "💛" },
+              { label: "Orar", route: "/orar", emoji: "🙏" },
+              { label: "Veja", route: "/veja", emoji: "🎬" },
+              { label: "Ouça", route: "/ouca", emoji: "🎵" },
+              { label: "Aprenda · 4 jogos", route: "/atividades", emoji: "🧩" },
+              { label: "Álbum", route: "/album", emoji: "🃏" },
+              { label: "Tesouro da Palavra", route: "/tesouros", emoji: "🏆" },
+            ].map(item => {
+              const views = globalRows.filter(r => r.page === item.route || r.page.toLowerCase() === item.label.toLowerCase()).reduce((sum, r) => sum + r.total, 0);
+              return <div key={item.route} className="rounded-xl border border-border bg-background/60 p-3">
+                <p className="font-bold text-sm text-foreground">{item.emoji} {item.label}</p>
+                <p className="text-xs text-muted-foreground mt-1">{views} acesso(s) identificado(s)</p>
+                <button type="button" onClick={() => navigate(item.route)} className="mt-2 text-xs font-bold text-primary underline underline-offset-2">Abrir página</button>
+              </div>;
+            })}
+          </div>
+          <div className="mt-4 rounded-xl border border-amber-300 bg-amber-50 p-3 text-amber-950 text-sm">
+            <strong>Novidades:</strong> LIA com narrações gravadas por atividade, quatro ícones na página Aprenda, 14-Bis interativo, recompensas em moedinhas e área Tesouro da Palavra.
+            <p className="mt-1 text-xs">Os pontos de experiência, downloads de premiações e conclusões individuais ainda não possuem um painel estatístico completo. Não são contabilizados como concluídos sem registros reais.</p>
+          </div>
+        </section>
+
         {/* Global cross-user analytics */}
         <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
           <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
