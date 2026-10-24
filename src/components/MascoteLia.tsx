@@ -21,7 +21,7 @@ const cleanSpeechText = (text: string) => text.replace(/[^\p{L}\p{N}\p{P}\p{Zs}\
  */
 
 const PAGE_TIPS: Record<string, string> = {
-  "/": "Olá, sou a LIA!\nEscolha entre os ícones flutuantes: Veja, Ouça, Aprenda ou Álbum\ne comece sua escalada Bíblica!",
+  "/": "Aqui é tudo bem facinho!\n\nEscolha um ícone flutuante e comece sua aventura bíblica!\n\nLá no alto, ganhe moedinhas fazendo tarefinhas superfáceis!\n\nNo seu ícone, acompanhe sua categoria e conquistas!\n\nE no menu de baixo, descubra maneiras de viver e compartilhar sua fé!\n\nProntinho! Vamos aprender e nos divertir com a Palavra de Deus!",
   "/biblia": "Aqui você encontra a Bíblia! 📖 Escolha o Antigo ou o Novo Testamento para descobrir a Palavra de Deus. 💛",
   "/louvores": "Lá, lá, lá! 🎶 Escolha um louvor e cante comigo! 🎤",
   "/veja": "Pipoca pronta? 🍿 Escolha um vídeo! Assista e ganhe moedinhas! 🪙",
@@ -127,8 +127,8 @@ export default function MascoteLia() {
     recordedAudioRef.current?.pause();
     recordedAudioRef.current = null;
     window.speechSynthesis?.cancel();
-    if (location.pathname === "/login") {
-      const audio = new Audio("/audio/lia/lia-login.mp3");
+    if (location.pathname === "/login" || location.pathname === "/") {
+      const audio = new Audio(location.pathname === "/" ? "/audio/lia/lia-inicio.mp3" : "/audio/lia/lia-login.mp3");
       recordedAudioRef.current = audio;
       audio.onended = () => { if (recordedAudioRef.current === audio) { recordedAudioRef.current = null; setSpeaking(false); } };
       audio.onerror = () => { if (recordedAudioRef.current === audio) { recordedAudioRef.current = null; setSpeaking(false); speakBrowserVoice(); } };
