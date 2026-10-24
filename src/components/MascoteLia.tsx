@@ -92,7 +92,7 @@ export default function MascoteLia() {
   useEffect(() => () => { recordedAudioRef.current?.pause(); window.speechSynthesis?.cancel(); }, []);
 
   useEffect(() => {
-    const onCtx = (e: Event) => setContext(((e as CustomEvent).detail as string) || null);
+    const onCtx = (e: Event) => { recordedAudioRef.current?.pause(); recordedAudioRef.current = null; window.speechSynthesis?.cancel(); speechRef.current = null; setSpeaking(false); setContext(((e as CustomEvent).detail as string) || null); };
     window.addEventListener("lemos:lia-context", onCtx);
     return () => window.removeEventListener("lemos:lia-context", onCtx);
   }, []);
