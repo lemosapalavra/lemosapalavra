@@ -1,10 +1,12 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Download, LockKeyhole, Trophy } from "lucide-react";
+import { ArrowLeft, Download, LockKeyhole, Trophy, X } from "lucide-react";
 import { MATERIAIS, STATUS, statusForPoints } from "@/data/tesourosDaPalavra";
 import { useRewardExperience } from "@/hooks/useRewardExperience";
 
 export default function TesourosDaPalavra() {
   const navigate = useNavigate();
+  const [downloadHelp, setDownloadHelp] = useState(false);
   const { points: storedPoints, loading } = useRewardExperience();
   const points = storedPoints ?? 0;
   const current = statusForPoints(points);
@@ -30,6 +32,13 @@ export default function TesourosDaPalavra() {
             <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full border-4 border-amber-400 text-2xl shadow" style={{ backgroundColor: s.color }}>★</div>
             <p className="font-black">{s.name}</p><p className="text-xs">{s.title}</p><p className="mt-1 text-xs font-semibold">{s.min} pontos</p>
           </div>)}
+        </div>
+        <div className="relative mt-7 mb-4">
+          <button type="button" onClick={() => setDownloadHelp(v => !v)} aria-expanded={downloadHelp} aria-label="Como funcionam os downloads" className="inline-flex items-center gap-2 rounded-full border-2 border-amber-400 bg-white px-4 py-2 font-extrabold text-amber-900 shadow"><Download size={21}/> Downloads <span className="text-xs font-semibold">Como funciona?</span></button>
+          {downloadHelp && <div role="dialog" aria-label="Explicação dos downloads" className="relative mt-4 max-w-sm rounded-[20px] border-[3px] border-amber-400 bg-white p-4 text-slate-900 shadow-[0_0_14px_rgba(255,200,35,.8)]">
+            <span aria-hidden="true" className="absolute -top-[13px] left-8 h-[22px] w-[22px] rotate-45 border-l-[3px] border-t-[3px] border-amber-400 bg-white"/>
+            <div className="relative flex items-start gap-2"><div className="min-w-0 flex-1 text-[13px] font-medium leading-relaxed"><p>Obaaa! Aqui você encontra tesouros para aprender mais sobre a Bíblia!</p><p className="mt-2">Participe das atividades, conquiste pontos de experiência e avance de nível para liberar materiais educativos.</p><strong className="mt-2 block font-extrabold text-amber-900">Cada conquista é uma nova oportunidade de aprender com a Palavra de Deus!</strong><p className="mt-2">Quando um material estiver disponível e liberado, toque em Baixar arquivo. As moedinhas continuam sendo usadas no Álbum!</p><p className="mt-2 text-xs text-amber-800">Os materiais e a pontuação automática ainda estão em preparação.</p></div><button type="button" onClick={() => setDownloadHelp(false)} aria-label="Fechar explicação" className="shrink-0 rounded-full border-2 border-amber-400 bg-green-700 p-2 text-white shadow"><X size={18}/></button></div>
+          </div>}
         </div>
         <h2 className="mb-3 mt-7 text-xl font-black">Biblioteca de premiações</h2>
         <p className="mb-4 text-sm">Os materiais serão adicionados gradualmente. As conquistas serão permanentes e cumulativas.</p>
