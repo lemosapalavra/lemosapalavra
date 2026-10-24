@@ -9,6 +9,11 @@ export default function Atividades() {
   const [selectedGame,setSelectedGame] = useState<"memory"|"jigsaw"|"wordbuilder"|"quiz"|null>(null);
   useEffect(() => {
     if (!selectedGame) return;
+    window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: selectedGame }));
+    return () => window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: null }));
+  }, [selectedGame]);
+  useEffect(() => {
+    if (!selectedGame) return;
     const handleBack = (event: Event) => {
       event.preventDefault();
       setSelectedGame(null);
