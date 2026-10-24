@@ -22,7 +22,7 @@ const cleanSpeechText = (text: string) => text.replace(/[^\p{L}\p{N}\p{P}\p{Zs}\
 
 const PAGE_TIPS: Record<string, string> = {
   "/": "Aqui é tudo bem facinho!\n\nEscolha um ícone flutuante e comece sua aventura bíblica!\n\nLá no alto, ganhe moedinhas fazendo tarefinhas superfáceis!\n\nNo seu ícone, acompanhe sua categoria e conquistas!\n\nE no menu de baixo, descubra maneiras de viver e compartilhar sua fé!\n\nProntinho! Vamos aprender e nos divertir com a Palavra de Deus!",
-  "/biblia": "Aqui você encontra a Bíblia! 📖 Escolha o Antigo ou o Novo Testamento para descobrir a Palavra de Deus. 💛",
+  "/biblia": "Olha! Esta é a Bíblia, o seu guia de vida!\n\nEscolha o Antigo ou o Novo Testamento e embarque numa linda aventura pela Palavra de Deus!\n\nE sabe o que é mais legal? Enquanto você lê e aprende, também ganha moedinhas!\n\nA cada página, uma nova descoberta. Cada palavrinha é uma sementinha de amor que Jesus planta em seu coração!",
   "/louvores": "Lá, lá, lá! 🎶 Escolha um louvor e cante comigo! 🎤",
   "/veja": "Pipoca pronta? 🍿 Escolha um vídeo! Assista e ganhe moedinhas! 🪙",
   "/ouca": "Ouviu a música? 🎵 Escolha um louvor e cante comigo! 💛",
@@ -127,8 +127,9 @@ export default function MascoteLia() {
     recordedAudioRef.current?.pause();
     recordedAudioRef.current = null;
     window.speechSynthesis?.cancel();
-    if (location.pathname === "/login" || location.pathname === "/") {
-      const audio = new Audio(location.pathname === "/" ? "/audio/lia/lia-inicio.mp3" : "/audio/lia/lia-login.mp3");
+    if (location.pathname === "/login" || location.pathname === "/" || location.pathname === "/biblia") {
+      const audioPath = location.pathname === "/" ? "/audio/lia/lia-inicio.mp3" : location.pathname === "/biblia" ? "/audio/lia/lia-biblia.mp3" : "/audio/lia/lia-login.mp3";
+      const audio = new Audio(audioPath);
       recordedAudioRef.current = audio;
       audio.onended = () => { if (recordedAudioRef.current === audio) { recordedAudioRef.current = null; setSpeaking(false); } };
       audio.onerror = () => { if (recordedAudioRef.current === audio) { recordedAudioRef.current = null; setSpeaking(false); speakBrowserVoice(); } };
