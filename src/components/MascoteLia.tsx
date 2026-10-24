@@ -31,7 +31,7 @@ const PAGE_TIPS: Record<string, string> = {
   "/jogos": "Vamos brincar e aprender! 🧩 Escolha Memória, Quiz, Quebra-Cabeça ou Palavras. Depois volte ao Aprenda para mais descobertas! ✨",
   "/atividades": "Bem-vindo ao Aprenda! 🌟 Escolha um jogo ou o desafio Quem Sou Eu? de hoje. Complete as atividades e ganhe moedinhas! 🪙",
   "/devocionais": "Olá! Vamos ler o devocional de hoje?\n\nTem uma mensagem especial de Deus esperando por você!\n\nLeia e encha seu coração de amor e ainda ganhe moedinhas!\n\nCada devocional é um carinho de Deus que ilumina seu dia e ensina seu coração a espalhar amor e bondade!",
-  "/pedidos-oracao": "Psiu! 🙏 Vamos conversar com Deus? Ore com carinho e ganhe moedinhas! 💛",
+  "/pedidos-oracao": "Olá, que tal conversarmos com Deus hoje?\n\nOrar é abrir seu coraçãozinho e contar tudinho para Ele, é como fazemos com nosso melhor amigo!\n\nA cada oração, seu coração se enche de fé, amor e esperança!\n\nOre com carinho e ainda ganhe moedinhas!",
   "/tesouros": "Tesouros da Palavra! 🏆 Aqui você acompanha seus status e descobre os materiais bíblicos que poderá desbloquear! ✨",
   "/album": "Este é o Álbum! 🎁 Use suas moedinhas para abrir pacotinhos e completar o Volume 1. O Volume 2 será liberado depois! 🌈",
   "/historias-do-dia": "Obaaa! 📚 Qual será a historinha de hoje? Vamos descobrir! ✨",
@@ -127,8 +127,8 @@ export default function MascoteLia() {
     recordedAudioRef.current?.pause();
     recordedAudioRef.current = null;
     window.speechSynthesis?.cancel();
-    if (location.pathname === "/login" || location.pathname === "/" || location.pathname === "/biblia" || location.pathname === "/devocionais") {
-      const audioPath = location.pathname === "/" ? "/audio/lia/lia-inicio.mp3" : location.pathname === "/biblia" ? "/audio/lia/lia-biblia.mp3" : location.pathname === "/devocionais" ? "/audio/lia/lia-devocional.mp3" : "/audio/lia/lia-login.mp3";
+    if (location.pathname === "/login" || location.pathname === "/" || location.pathname === "/biblia" || location.pathname === "/devocionais" || location.pathname === "/pedidos-oracao") {
+      const audioPath = location.pathname === "/" ? "/audio/lia/lia-inicio.mp3" : location.pathname === "/biblia" ? "/audio/lia/lia-biblia.mp3" : location.pathname === "/devocionais" ? "/audio/lia/lia-devocional.mp3" : location.pathname === "/pedidos-oracao" ? "/audio/lia/lia-orar.mp3" : "/audio/lia/lia-login.mp3";
       const audio = new Audio(audioPath);
       recordedAudioRef.current = audio;
       audio.onended = () => { if (recordedAudioRef.current === audio) { recordedAudioRef.current = null; setSpeaking(false); } };
@@ -198,7 +198,7 @@ export default function MascoteLia() {
             <button type="button" onClick={() => { setExpanded(false); recordedAudioRef.current?.pause(); recordedAudioRef.current=null; window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }} aria-label="Fechar ajuda" className="rounded-full bg-amber-100 p-2 text-amber-950 hover:bg-amber-200"><X size={20} /></button>
           </div>
         </div>
-        <p className="relative mt-3 max-h-[calc(min(42dvh,300px)-90px)] overflow-y-auto overscroll-contain whitespace-pre-line text-sm font-medium leading-relaxed text-slate-900">{location.pathname === "/biblia" ? <>{cleanSpeechText(message).split("A cada página, uma nova descoberta. Cada palavrinha é uma sementinha de amor que Jesus planta em seu coração!")[0]}<strong className="block mt-2 font-extrabold text-amber-900">A cada página, uma nova descoberta. Cada palavrinha é uma sementinha de amor que Jesus planta em seu coração!</strong></> : location.pathname === "/devocionais" ? <>{cleanSpeechText(message).split("Cada devocional é um carinho de Deus que ilumina seu dia e ensina seu coração a espalhar amor e bondade!")[0]}<strong className="block mt-2 font-extrabold text-amber-900">Cada devocional é um carinho de Deus que ilumina seu dia e ensina seu coração a espalhar amor e bondade!</strong></> : cleanSpeechText(message)}</p>
+        <p className="relative mt-3 max-h-[calc(min(42dvh,300px)-90px)] overflow-y-auto overscroll-contain whitespace-pre-line text-sm font-medium leading-relaxed text-slate-900">{location.pathname === "/biblia" ? <>{cleanSpeechText(message).split("A cada página, uma nova descoberta. Cada palavrinha é uma sementinha de amor que Jesus planta em seu coração!")[0]}<strong className="block mt-2 font-extrabold text-amber-900">A cada página, uma nova descoberta. Cada palavrinha é uma sementinha de amor que Jesus planta em seu coração!</strong></> : location.pathname === "/devocionais" ? <>{cleanSpeechText(message).split("Cada devocional é um carinho de Deus que ilumina seu dia e ensina seu coração a espalhar amor e bondade!")[0]}<strong className="block mt-2 font-extrabold text-amber-900">Cada devocional é um carinho de Deus que ilumina seu dia e ensina seu coração a espalhar amor e bondade!</strong></> : location.pathname === "/pedidos-oracao" ? <>{cleanSpeechText(message).split("A cada oração, seu coração se enche de fé, amor e esperança!")[0]}<strong className="block mt-2 font-extrabold text-amber-900">A cada oração, seu coração se enche de fé, amor e esperança!</strong><span className="block mt-2">Ore com carinho e ainda ganhe moedinhas!</span></> : cleanSpeechText(message)}</p>
       </div>
 
       <div className="flex flex-col items-center gap-2">
