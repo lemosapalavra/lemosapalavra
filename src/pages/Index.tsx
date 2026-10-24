@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useIconVisible } from "@/lib/iconVisibility";
 import DedicatoriaModal from "@/components/DedicatoriaModal";
 import InstallShortcut from "@/components/InstallShortcut";
+import EventBannerPlane from "@/components/EventBannerPlane";
 
 const homeIcons = [
   { label: "Veja", src: "/veja-flutuante.webp", route: "/lemosplay", x: 50, y: 41 },
@@ -44,6 +45,7 @@ export default function Index() {
           <img src="/dedicatoria.webp" alt="Dedicatória" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
         </button>
       )}
+      <EventBannerPlane />
       <DedicatoriaModal open={dedicatoriaOpen} onOpenChange={setDedicatoriaOpen} />
       <style>{`
         @keyframes lemosHomeFloat { 0%,100% { translate: 0 0; } 50% { translate: 0 -8px; } }
