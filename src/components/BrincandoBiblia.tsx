@@ -124,27 +124,21 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
   { id: "wordbuilder" as const, label: "Construtor de Palavras", icon: palavrasIcon },
   { id: "quiz" as const, label: "Quiz Bíblico", icon: quizIcon },
  ];
- // Cinco posições simétricas nas laterais e no topo, sem invadir o
- // centro ilustrado nem a área inferior reservada à LIA.
+ // Quatro jogos distribuídos ao redor do círculo central APRENDA.
+ // O desafio Quem Sou Eu permanece disponível nos dados, mas sem ícone nesta tela.
  const positions = [
-  {left:"50%",top:"17%"}, // Quem Sou Eu?
-  {left:"83%",top:"32%"}, // Memória Bíblica
-  {left:"83%",top:"55%"}, // Quebra-Cabeça: abaixo da Memória
-  {left:"17%",top:"55%"}, // Construtor: abaixo do Quiz
-  {left:"17%",top:"32%"}, // Quiz Bíblico
+  {left:"23%",top:"31%"}, // Memória — superior esquerdo
+  {left:"77%",top:"31%"}, // Quebra-Cabeça — superior direito
+  {left:"23%",top:"55%"}, // Construtor — inferior esquerdo
+  {left:"77%",top:"55%"}, // Quiz — inferior direito
  ];
  if (index===null || !current) {
   return (
    <section className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
-    <button type="button" onClick={()=>open(dailyWho.activityIndex)} aria-label="Quem Sou Eu? — desafio do dia" title="Quem Sou Eu? — desafio do dia"
-      className="absolute pointer-events-auto aspect-square w-[clamp(62px,18vw,100px)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-transparent p-0 animate-[lemosGentleFloat_5s_ease-in-out_infinite] hover:scale-110 "
-      style={positions[0]}>
-      <img src={dailyWho.icon} alt="Quem Sou Eu?" className="h-full w-full object-contain [mask-image:radial-gradient(circle,black_80%,transparent_98%)]" />
-    </button>
     {games.map((game,n)=>(
       <button key={game.id} type="button" onClick={()=>onGameSelect?.(game.id)} aria-label={game.label} title={game.label}
-       className="absolute pointer-events-auto flex aspect-square w-[clamp(62px,18vw,100px)] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-transparent p-0  transition-transform hover:scale-110 active:scale-95"
-       style={positions[n+1]}>
+       className="absolute pointer-events-auto flex aspect-square w-[clamp(62px,18vw,100px)] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-transparent p-0 transition-transform hover:scale-110 active:scale-95"
+       style={positions[n]}>
        <img src={game.icon} alt={game.label} className="h-full w-full object-contain [mask-image:radial-gradient(circle,black_80%,transparent_98%)]" />
       </button>
     ))}
