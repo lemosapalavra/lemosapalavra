@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { awardOnce, hasClaimed } from "@/hooks/useCoins";
+import { COINS } from "@/data/coinRewards";
 import { applySoftVoice, ensureVoicesLoaded } from "@/lib/speak";
 
 import PageHeader from "@/components/PageHeader";
@@ -139,6 +141,7 @@ export default function Biblia() {
   const [fontSize, setFontSize] = useState(16);
   const [fromSticker, setFromSticker] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+  const [rewardRefresh, setRewardRefresh] = useState(0);
 
 
   // Deep-link via ?book=Gênesis&chapter=1 (usado a partir do Álbum)
@@ -254,6 +257,17 @@ export default function Biblia() {
   const chapterTheme = selectedBook && selectedChapter
     ? chapterThemes[selectedBook]?.[selectedChapter]
     : null;
+
+  const chapterRewardKey = selectedBook && selectedChapter
+    ? `biblia:capitulo:${bookIdMap[selectedBook]}:${selectedChapter}`
+    : "";
+  const chapterRewardClaimed = rewardRefresh >= 0 && !!chapterRewardKey && hasClaimed(chapterRewardKey);
+  const completeChapterReading = () => {
+    if (!chapterRewardKey || loadingVerses || verseError || !verses.length) return;
+    if (awardOnce(chapterRewardKey, COINS.bibleChapter, `Leitura concluída: ${selectedBook} ${selectedChapter}!`)) {
+      setRewardRefresh((value) => value + 1);
+    }
+  };
 
   const goToNextChapter = () => {
     if (selectedBook && selectedChapter && selectedChapter < totalChapters) {
@@ -420,6 +434,17 @@ export default function Biblia() {
                     {v.text}
                   </p>
                 ))}
+              </div>
+            )}
+
+            {!loadingVerses && !verseError && verses.length > 0 && (
+              <div className="mt-6 rounded-xl border-2 border-amber-400 bg-amber-50 p-4 text-center text-amber-950">
+                <p className="mb-2 text-sm font-semibold">📖 Terminou de ler este capítulo?</p>
+                <button type="button" onClick={completeChapterReading} disabled={chapterRewardClaimed}
+                  className="rounded-full bg-green-800 px-5 py-3 font-bold text-white shadow hover:bg-green-700 disabled:cursor-default disabled:bg-green-100 disabled:text-green-900">
+                  {chapterRewardClaimed ? "✓ Capítulo concluído — moedinhas recebidas" : `🪙 Concluir leitura e ganhar ${COINS.bibleChapter} moedinhas`}
+                </button>
+                <p className="mt-2 text-xs">Cada capítulo dá moedinhas apenas uma vez.</p>
               </div>
             )}
 
