@@ -173,16 +173,16 @@ export default function MascoteLia() {
   return (
     <div onMouseLeave={(event) => { if (!onHome && !persistentHelp && (event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(false); }}
       className={`fixed z-[9998] flex flex-col items-end gap-1 left-[-16px] sm:left-[-12px] ${liaPosition}`}>
-      {/* Ajuda com o mesmo painel azul, cabeçalho e controles da página de login. */}
-      <div role="dialog" aria-label="Ajuda da LIA" className="pointer-events-auto fixed left-2 right-2 bottom-[calc(230px+env(safe-area-inset-bottom,0px))] sm:bottom-[calc(260px+env(safe-area-inset-bottom,0px))] z-[9999] w-auto max-w-[320px] max-h-[min(42dvh,300px)] overflow-y-auto overscroll-contain break-words rounded-2xl border-2 border-amber-300 bg-[#102f4a]/95 p-3 text-white shadow-[0_0_22px_rgba(255,215,80,.6)]">
-        <div className="flex items-center justify-between gap-2 border-b border-white/25 pb-2">
-          <span aria-hidden="true" />
+      {/* Balão de fala padrão da LIA: branco, borda dourada e ponta voltada à mascote. */}
+      <div role="dialog" aria-label="Ajuda da LIA" className="pointer-events-auto fixed left-2 right-2 bottom-[calc(230px+env(safe-area-inset-bottom,0px))] sm:bottom-[calc(260px+env(safe-area-inset-bottom,0px))] z-[9999] w-auto max-w-[320px] max-h-[min(42dvh,300px)] break-words rounded-[26px] border-[3px] border-amber-400 bg-white/95 p-3 text-slate-900 shadow-[0_5px_22px_rgba(115,66,0,.35)]">
+        <div aria-hidden="true" className="pointer-events-none absolute -bottom-[17px] left-[52px] h-[30px] w-[30px] rotate-45 border-b-[3px] border-r-[3px] border-amber-400 bg-white" />
+        <div className="relative flex items-center justify-end gap-2 border-b border-amber-200 pb-2">
           <div className="flex items-center gap-1">
-            <button type="button" onClick={toggleSpeech} aria-label={speaking ? "Parar leitura" : "Ouvir orientação da página"} className="rounded-lg bg-white/15 p-2">{speaking ? <VolumeX size={20} /> : <Volume2 size={20} />}</button>
-            <button type="button" onClick={() => { setExpanded(false); window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }} aria-label="Fechar ajuda" className="rounded-lg bg-white/15 p-2"><X size={20} /></button>
+            <button type="button" onClick={toggleSpeech} aria-label={speaking ? "Parar leitura" : "Ouvir orientação da página"} className="rounded-full bg-green-700 p-2 text-white hover:bg-green-600">{speaking ? <VolumeX size={20} /> : <Volume2 size={20} />}</button>
+            <button type="button" onClick={() => { setExpanded(false); window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }} aria-label="Fechar ajuda" className="rounded-full bg-amber-100 p-2 text-amber-950 hover:bg-amber-200"><X size={20} /></button>
           </div>
         </div>
-        <p className="mt-3 whitespace-pre-line text-sm leading-relaxed">{cleanSpeechText(message)}</p>
+        <p className="relative mt-3 max-h-[calc(min(42dvh,300px)-90px)] overflow-y-auto overscroll-contain whitespace-pre-line text-sm font-medium leading-relaxed text-slate-900">{cleanSpeechText(message)}</p>
       </div>
 
       <div className="flex flex-col items-center gap-2">
