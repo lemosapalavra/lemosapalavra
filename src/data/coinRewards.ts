@@ -5,6 +5,8 @@
  * e o que o usuário realmente recebe.
  */
 export const COINS = {
+  /** Leitura concluída de cada capítulo bíblico (uma vez por capítulo) */
+  bibleChapter: 2,
   /** Devocional do dia */
   devocional: 2,
   /** Dedicatória (assistir + ouvir por completo) */
