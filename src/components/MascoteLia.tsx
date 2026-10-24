@@ -46,7 +46,8 @@ const PAGE_TIPS: Record<string, string> = {
 
 /** Falas por contexto — enviadas por `lemos:lia-context`. */
 const CONTEXT_TIPS: Record<string, string> = {
-  "quiz": "Quiz Bíblico! 🏆 Escolha a resposta e ganhe moedinhas! 🪙",
+  "quiz": "Bem-vindo ao Quiz Bíblico de hoje!\n\nBrinque e descubra as maravilhas da Bíblia!\n\nNo Quiz Bíblico de hoje, cada perguntinha é uma aventura cheia de surpresas e descobertas sobre Deus!\n\nPense com carinho, escolha suas respostas e mostre tudo o que aprendeu!\n\nComplete os desafios, divirta-se e ganhe muitas moedinhas!",
+  "activity:Quiz Bíblico": "Bem-vindo ao Quiz Bíblico de hoje!\n\nBrinque e descubra as maravilhas da Bíblia!\n\nNo Quiz Bíblico de hoje, cada perguntinha é uma aventura cheia de surpresas e descobertas sobre Deus!\n\nPense com carinho, escolha suas respostas e mostre tudo o que aprendeu!\n\nComplete os desafios, divirta-se e ganhe muitas moedinhas!",
   "activity:Quem Sou Eu? — Parte 3": "Olá! Chegamos ao Quem Sou Eu de hoje — Parte 3!\n\nPreparado para desvendar novos mistérios da Bíblia?\n\nLeia as dicas, pense com carinho e descubra quem está escondidinho em cada desafio!\n\nCada resposta é uma nova descoberta sobre os personagens da Palavra de Deus!\n\nVamos brincar, aprender e descobrir tudinho juntinhos!",
   "memory": "Cadê o par? 🃏 Ache as cartinhas iguais! ✨",
   "coloring": "Obaaa, artista! 🎨 Pinte bem bonito e ganhe moedinhas! 🪙",
@@ -128,8 +129,8 @@ export default function MascoteLia() {
     recordedAudioRef.current?.pause();
     recordedAudioRef.current = null;
     window.speechSynthesis?.cancel();
-    if (location.pathname === "/atividades" && currentContext === "activity:Quem Sou Eu? — Parte 3") {
-      const audio = new Audio("/audio/lia/lia-quem-sou-eu-parte-3.mp3");
+    if (location.pathname === "/atividades" && (currentContext === "activity:Quem Sou Eu? — Parte 3" || currentContext === "activity:Quiz Bíblico" || currentContext === "quiz")) {
+      const audio = new Audio(currentContext === "activity:Quem Sou Eu? — Parte 3" ? "/audio/lia/lia-quem-sou-eu-parte-3.mp3" : "/audio/lia/lia-quiz-biblico.mp3");
       recordedAudioRef.current = audio;
       audio.onended = () => { if (recordedAudioRef.current === audio) { recordedAudioRef.current = null; setSpeaking(false); } };
       audio.onerror = () => { if (recordedAudioRef.current === audio) { recordedAudioRef.current = null; setSpeaking(false); speakBrowserVoice(); } };
@@ -138,7 +139,7 @@ export default function MascoteLia() {
       return;
     }
     if (location.pathname === "/login" || location.pathname === "/" || location.pathname === "/biblia" || location.pathname === "/devocionais" || location.pathname === "/pedidos-oracao" || location.pathname === "/veja" || location.pathname === "/ouca" || location.pathname === "/atividades" || location.pathname === "/album") {
-      const audioPath = location.pathname === "/" ? "/audio/lia/lia-inicio.mp3" : location.pathname === "/biblia" ? "/audio/lia/lia-biblia.mp3" : location.pathname === "/devocionais" ? "/audio/lia/lia-devocional.mp3" : location.pathname === "/pedidos-oracao" ? "/audio/lia/lia-orar.mp3" : location.pathname === "/veja" ? "/audio/lia/lia-veja.mp3" : location.pathname === "/ouca" ? "/audio/lia/lia-ouca.mp3" : location.pathname === "/atividades" && currentContext === "activity:Quem Sou Eu? — Parte 3" ? <>{cleanSpeechText(message).split("Cada resposta é uma nova descoberta sobre os personagens da Palavra de Deus!")[0]}<strong className="block mt-2 font-extrabold text-amber-900">Cada resposta é uma nova descoberta sobre os personagens da Palavra de Deus!</strong><span className="block mt-2">Vamos brincar, aprender e descobrir tudinho juntinhos!</span></> : location.pathname === "/atividades" ? (currentContext ? "" : "/audio/lia/lia-aprenda.mp3") : location.pathname === "/album" ? (currentContext === "album:pages" ? "/audio/lia/lia-album-vol1.mp3" : "/audio/lia/lia-album.mp3") : "/audio/lia/lia-login.mp3";
+      const audioPath = location.pathname === "/" ? "/audio/lia/lia-inicio.mp3" : location.pathname === "/biblia" ? "/audio/lia/lia-biblia.mp3" : location.pathname === "/devocionais" ? "/audio/lia/lia-devocional.mp3" : location.pathname === "/pedidos-oracao" ? "/audio/lia/lia-orar.mp3" : location.pathname === "/veja" ? "/audio/lia/lia-veja.mp3" : location.pathname === "/ouca" ? "/audio/lia/lia-ouca.mp3" : location.pathname === "/atividades" && (currentContext === "activity:Quiz Bíblico" || currentContext === "quiz") ? <>{cleanSpeechText(message).split("No Quiz Bíblico de hoje, cada perguntinha é uma aventura cheia de surpresas e descobertas sobre Deus!")[0]}<strong className="block mt-2 font-extrabold text-amber-900">No Quiz Bíblico de hoje, cada perguntinha é uma aventura cheia de surpresas e descobertas sobre Deus!</strong><span className="block mt-2">Pense com carinho, escolha suas respostas e mostre tudo o que aprendeu!{"\n\n"}Complete os desafios, divirta-se e ganhe muitas moedinhas!</span></> : location.pathname === "/atividades" && currentContext === "activity:Quem Sou Eu? — Parte 3" ? <>{cleanSpeechText(message).split("Cada resposta é uma nova descoberta sobre os personagens da Palavra de Deus!")[0]}<strong className="block mt-2 font-extrabold text-amber-900">Cada resposta é uma nova descoberta sobre os personagens da Palavra de Deus!</strong><span className="block mt-2">Vamos brincar, aprender e descobrir tudinho juntinhos!</span></> : location.pathname === "/atividades" ? (currentContext ? "" : "/audio/lia/lia-aprenda.mp3") : location.pathname === "/album" ? (currentContext === "album:pages" ? "/audio/lia/lia-album-vol1.mp3" : "/audio/lia/lia-album.mp3") : "/audio/lia/lia-login.mp3";
       if (!audioPath) { speakBrowserVoice(); return; }
       const audio = new Audio(audioPath);
       recordedAudioRef.current = audio;
