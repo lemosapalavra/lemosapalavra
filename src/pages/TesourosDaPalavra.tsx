@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Download, LockKeyhole, Trophy, X, Volume2, VolumeX } from "lucide-react";
+import { Download, LockKeyhole, Trophy, X, Volume2, VolumeX } from "lucide-react";
 import { MATERIAIS, STATUS, statusForPoints } from "@/data/tesourosDaPalavra";
 import { useRewardExperience } from "@/hooks/useRewardExperience";
 
 export default function TesourosDaPalavra() {
-  const navigate = useNavigate();
   const [downloadHelp, setDownloadHelp] = useState(false);
   const [speaking, setSpeaking] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -27,7 +25,6 @@ export default function TesourosDaPalavra() {
   return (
     <main className="min-h-[100dvh] bg-[#f7ecd3] px-4 pb-28 pt-24 text-amber-950">
       <div className="mx-auto max-w-4xl">
-        <button onClick={() => navigate(-1)} className="mb-4 inline-flex items-center gap-2 rounded-full border-2 border-amber-500 bg-white px-4 py-2 font-bold shadow"><ArrowLeft size={18}/> Voltar</button>
         <div className="rounded-3xl border-4 border-amber-500 bg-gradient-to-br from-[#fff8e6] to-[#f5dca5] p-5 shadow-xl">
           <h1 className="flex items-center gap-2 font-display text-2xl font-black"><Trophy className="text-amber-600"/> Tesouros da Palavra</h1>
           <p className="mt-2 text-sm">Aprenda, evolua e conquiste materiais educativos e bíblicos para baixar.</p>

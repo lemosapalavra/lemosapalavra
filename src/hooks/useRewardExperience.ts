@@ -13,10 +13,10 @@ export function useRewardExperience() {
       if (!active) return;
       if (!auth.user) { setPoints(null); setLoading(false); return; }
       // Tabela nova pode ainda não existir no ambiente publicado.
-      const result = await (supabase as any).from("reward_experience")
-        .select("points").eq("user_id", auth.user.id).maybeSingle();
+      const result = await (supabase as any).from("user_points")
+        .select("total_points").eq("user_id", auth.user.id).maybeSingle();
       if (!active) return;
-      setPoints(result.error ? null : Number(result.data?.points ?? 0));
+      setPoints(result.error ? null : Number(result.data?.total_points ?? 0));
       setLoading(false);
     };
     void refresh();

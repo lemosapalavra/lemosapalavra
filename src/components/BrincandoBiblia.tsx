@@ -127,7 +127,7 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
   { id: "wordbuilder", label: "Construtor de Palavras", icon: palavrasIcon, action: () => onGameSelect?.("wordbuilder") },
   { id: "quiz", label: "Quiz Bíblico", icon: quizIcon, action: () => onGameSelect?.("quiz") },
  ];
- const positions = [
+ const playIconClick = () => {\n  try { const audio = new Audio("/audio/click.mp3"); audio.volume = 0.5; void audio.play().catch(() => {}); } catch { /* sound optional */ }\n };\n const positions = [
   {left:"50%",top:"28%"},
   {left:"18%",top:"38%"},
   {left:"82%",top:"38%"},
@@ -138,11 +138,11 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
   return (
    <section className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
     {games.map((game,n)=>(
-      <button key={game.id} type="button" onClick={game.action} aria-label={game.label} title={game.label}
-       className="absolute pointer-events-auto flex aspect-square w-[clamp(62px,18vw,100px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-0 bg-transparent p-0 shadow-none transition-transform hover:scale-110 active:scale-95"
+      <button key={game.id} type="button" onClick={() => { playIconClick(); game.action(); }} aria-label={game.label} title={game.label}
+       className="lemos-aprenda-orbit-button absolute pointer-events-auto flex aspect-square w-[clamp(76px,25vw,125px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-0 bg-transparent p-0 shadow-none"
        style={positions[n]}>
        <img src={game.icon} alt={game.label}
-        className="block h-full w-full rounded-full object-contain mix-blend-multiply [mask-image:radial-gradient(circle,black_64%,transparent_88%)]"
+        className="lemos-aprenda-orbit-image block h-full w-full rounded-full object-contain"
        />
       </button>
     ))}
