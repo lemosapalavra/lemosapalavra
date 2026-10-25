@@ -137,7 +137,7 @@ export default function Biblia() {
   useEffect(() => {
     if (!selectedBook && (tab === "antigo" || tab === "novo" || tab === "dicionario")) window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: tab === "antigo" ? "biblia:antigo" : tab === "novo" ? "biblia:novo" : "biblia:pesquisar" }));
     else window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: null }));
-    return () => window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: null }));
+    return () => { window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: null })); };
   }, [tab, selectedBook]);
   const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
   const [verses, setVerses] = useState<Verse[]>([]);
