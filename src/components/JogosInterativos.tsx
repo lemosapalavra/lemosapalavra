@@ -91,9 +91,36 @@ export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void})
   quizAwardRequested.current = true;
   const submitted = quizRounds.map((_, i) => answers[i]);
   void (async () => {
-   const { data, error } = await supabase.functions.invoke("award-quiz-points", { body: { answers: submitted } });
-   if (error) { toast.error("Não foi possível registrar os pontos do Tesouro."); return; }
-   if (data?.awarded) { toast.success("Você ganhou 50 pontos no Tesouros da Palavra!"); window.dispatchEvent(new Event("lemos:reward-experience")); }
+   const { data: sessionResult, error: sessionError } = await supabase.auth.getSession();
+   if (sessionError || !sessionResult.session?.access_token) {
+    toast.error("Entre novamente com sua conta Google para receber os pontos do Tesouro.");
+    return;
+   }
+   const { data, error } = await supabase.functions.invoke("award-quiz-points", {
+    body: { answers: submitted },
+    headers: { Authorization: `Bearer ${sessionResult.session.access_token}` },
+   });
+   if (error) {
+    const response = "context" in error ? (error as { context?: Response }).context : undefined;
+    const status = response?.status;
+    // Only report a safe HTTP status, never session tokens or private server errors.
+    console.warn("Falha na premiação do Quiz", { status: status ?? "sem resposta" });
+    toast.error(status === 401 || status === 403
+     ? "Sua sessão não foi aceita (401/403). Saia, entre novamente com Google e refaça o Quiz."
+     : status === 422
+     ? "As respostas não foram aceitas pelo servidor (422)."
+     : `Não foi possível registrar os pontos do Tesouro${status ? ` (erro ${status})` : " (falha de conexão)"}.`);
+    return;
+   }
+   if (data?.awarded) {
+    toast.success("Você ganhou 50 pontos no Tesouros da Palavra!");
+    window.dispatchEvent(new Event("lemos:reward-experience"));
+   } else if (data?.awarded === false) {
+    toast.info("Este Quiz já foi premiado. Seus pontos anteriores foram preservados.");
+    window.dispatchEvent(new Event("lemos:reward-experience"));
+   } else {
+    toast.error("O servidor não confirmou a premiação. Tente novamente mais tarde.");
+   }
   })();
  }, [game, completed, answers]);
  const latest = useRef({progress:0,completed:false});
