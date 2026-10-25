@@ -131,7 +131,7 @@ type Tab = "antigo" | "novo" | "dicionario";
 export default function Biblia() {
   const [tab, setTab] = useState<Tab>("antigo");
   useEffect(() => {
-    if (!selectedBook && (tab === "antigo" || tab === "novo")) window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: tab === "antigo" ? "biblia:antigo" : "biblia:novo" }));
+    if (!selectedBook && (tab === "antigo" || tab === "novo" || tab === "dicionario")) window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: tab === "antigo" ? "biblia:antigo" : tab === "novo" ? "biblia:novo" : "biblia:pesquisar" }));
     else window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: null }));
     return () => window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: null }));
   }, [tab, selectedBook]);
