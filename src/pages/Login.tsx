@@ -185,6 +185,7 @@ export default function Login() {
                     <div className="max-h-[min(50dvh,330px)] overflow-y-auto overscroll-contain">
                       <p className="whitespace-pre-line text-[13px] font-medium leading-[1.35] text-slate-900">{loginHelp.split("Jesus te ama e nós também!")[0].trimEnd()}</p>
                       <p className="mt-3 text-center text-[15px] font-extrabold leading-snug text-slate-900">Jesus te ama e nós também!</p>
+                      <div className="mt-3 border-t border-amber-200 pt-3"><p className="mb-2 text-center text-xs font-bold text-amber-900">Baixe o atalho para acessar mais rápido!</p><InstallShortcut compact /></div>
                     </div>
                   </div>
                   <button type="button" onClick={toggleSpeech} aria-label={speaking ? "Parar gravação" : "Ouvir gravação da LIA"} title={speaking ? "Parar gravação" : "Ouvir gravação da LIA"} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-amber-400 bg-green-700 text-white shadow-[0_2px_6px_rgba(0,0,0,.35)] hover:bg-green-600">{speaking ? <VolumeX size={19} /> : <Volume2 size={19} />}</button>
