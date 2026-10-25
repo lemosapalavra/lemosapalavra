@@ -135,18 +135,18 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
     } catch { /* sound optional */ }
   };
   const positions = [
-  {left:"50%",top:"28%"},
-  {left:"18%",top:"38%"},
-  {left:"82%",top:"38%"},
-  {left:"19%",top:"58%"},
-  {left:"81%",top:"58%"},
+  {left:"50%",top:"23%"},
+  {left:"24%",top:"38%"},
+  {left:"76%",top:"38%"},
+  {left:"24%",top:"55%"},
+  {left:"76%",top:"55%"},
  ];
  if (index===null || !current) {
   return (
-   <section className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
+   <section className="absolute inset-x-0 top-[80px] bottom-[calc(85px+env(safe-area-inset-bottom,0px))] z-20 pointer-events-none overflow-hidden">
     {games.map((game,n)=>(
       <button key={game.id} type="button" onClick={() => { playIconClick(); game.action(); }} aria-label={game.label} title={game.label}
-       className="lemos-aprenda-orbit-button absolute pointer-events-auto flex aspect-square w-[clamp(76px,25vw,125px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-0 bg-transparent p-0 shadow-none"
+       className="lemos-aprenda-orbit-button absolute pointer-events-auto flex aspect-square w-[clamp(68px,21vw,110px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-0 bg-transparent p-0 shadow-none"
        style={positions[n]}>
        <img src={game.icon} alt={game.label}
         className="lemos-aprenda-orbit-image block h-full w-full rounded-full object-contain"
@@ -204,7 +204,7 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
   </>
  );
  return (
-  <section className="fixed inset-x-0 bottom-0 top-[118px] sm:top-[130px] z-[55] overflow-y-auto bg-amber-50 p-4">
+  <section className="fixed inset-x-0 bottom-[calc(70px+env(safe-area-inset-bottom,0px))] top-[105px] sm:top-[115px] z-[55] overflow-y-auto bg-white p-4">
    <div className="mx-auto max-w-4xl rounded-3xl border-4 border-amber-400 bg-gradient-to-b from-amber-100 via-white to-sky-100 p-4 shadow-xl">
     <h2 className="text-center text-xl font-extrabold text-amber-950">{current.title}</h2>
     <p className="mb-5 text-center text-sm text-amber-800">📖 {current.verse}</p>
