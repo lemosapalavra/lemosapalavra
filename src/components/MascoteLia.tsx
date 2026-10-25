@@ -240,7 +240,7 @@ export default function MascoteLia() {
         title="Falar com a LIA, sua ajudante"
         className="h-auto flex flex-col items-center gap-1 !bg-transparent !border-0 !shadow-none hover:!bg-transparent transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:ring-4 focus-visible:ring-yellow-400"
       >
-        <span className={"${compactLia ? "w-[58px] h-[58px] sm:w-[72px] sm:h-[72px]" : "w-[clamp(120px,41.28vw,196.8px)] h-[clamp(120px,41.28vw,196.8px)]"} block animate-[liaFloat_3.4s_ease-in-out_infinite] drop-shadow-[0_0_12px_rgba(255,215,70,.95)]"}>
+        <span className={`${compactLia ? "w-[58px] h-[58px] sm:w-[72px] sm:h-[72px]" : "w-[clamp(120px,41.28vw,196.8px)] h-[clamp(120px,41.28vw,196.8px)]"} block animate-[liaFloat_3.4s_ease-in-out_infinite] drop-shadow-[0_0_12px_rgba(255,215,70,.95)]`}>
           <img src={avatar} alt="LIA" className="w-full h-full object-contain object-bottom" loading="eager" onError={(e) => { if (e.currentTarget.src.endsWith("lia-paginas.webp")) e.currentTarget.src = liaFallback; }} />
         </span>
         <span className={"sr-only"}>
