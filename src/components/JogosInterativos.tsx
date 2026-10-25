@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { awardProgress } from "@/hooks/useCoins";
 import { COINS } from "@/data/coinRewards";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import avatarJesus from "@/assets/avatar-jesus.png";
 import avatarMaria from "@/assets/avatar-maria.png";
 import avatarDavi from "@/assets/avatar-davi.png";
@@ -82,6 +84,18 @@ export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void})
  const progress = game === "memory" ? found.length : game === "jigsaw" ? (tiles.length ? tiles.filter((x,i)=>x===i).length : 0)
   : game === "wordbuilder" ? round : game === "quiz" ? Object.keys(answers).length
   : game === "fishing" ? fishCaught.length : game === "pairs" ? pairFound.length : mazeStep;
+ const quizAwardRequested = useRef(false);
+ useEffect(() => { quizAwardRequested.current = false; }, [game]);
+ useEffect(() => {
+  if (game !== "quiz" || !completed || quizAwardRequested.current) return;
+  quizAwardRequested.current = true;
+  const submitted = quizRounds.map((_, i) => answers[i]);
+  void (async () => {
+   const { data, error } = await supabase.functions.invoke("award-quiz-points", { body: { answers: submitted } });
+   if (error) { toast.error("Não foi possível registrar os pontos do Tesouro."); return; }
+   if (data?.awarded) { toast.success("Você ganhou 50 pontos no Tesouros da Palavra!"); window.dispatchEvent(new Event("lemos:reward-experience")); }
+  })();
+ }, [game, completed, answers]);
  const latest = useRef({progress:0,completed:false});
  latest.current = {progress,completed};
  useEffect(() => {
