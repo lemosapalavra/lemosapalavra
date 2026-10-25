@@ -42,7 +42,7 @@ export default function TesourosDaPalavra() {
         <h2 className="mb-3 mt-7 text-xl font-black">Níveis de conquista</h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {STATUS.map(s => <div key={s.id} className="rounded-2xl border-2 border-amber-300 bg-white p-3 text-center shadow" style={{ borderTopColor: s.color, borderTopWidth: 5 }}>
-            <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full border-4 border-amber-400 text-2xl shadow" style={{ backgroundColor: s.color }}>★</div>
+            <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full border-4 border-amber-400 text-2xl shadow" style={{ backgroundColor: s.color }}><img src={"/images/conquistas/nivel-" + s.id + ".webp"} alt={s.name} className="h-full w-full object-contain" /></div>
             <p className="font-black">{s.name}</p><p className="text-xs">{s.title}</p><p className="mt-1 text-xs font-semibold">{s.min} pontos</p>
           </div>)}
         </div>
