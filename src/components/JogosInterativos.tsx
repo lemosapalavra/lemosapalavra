@@ -45,6 +45,7 @@ export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void})
  const [chosen,setChosen]=useState<number|null>(null);
  const [round,setRound]=useState(0);
  const [letters,setLetters]=useState<number[]>([]);
+ const [completedWords,setCompletedWords]=useState<string[]>([]);
  const [selected,setSelected]=useState<number|null>(null);
  const [answers,setAnswers]=useState<Record<number,number>>({});
  const [mazeStep,setMazeStep]=useState(0);
@@ -53,7 +54,7 @@ export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void})
  const reset=()=>{
   setFishCaught([]);
   setDeck(scramble(12).map(i=>i%6));setTurned([]);setFound([]);
-  setTiles(scramble(9));setChosen(null);setRound(0);setLetters([]);
+  setTiles(scramble(9));setChosen(null);setRound(0);setLetters([]);setCompletedWords([]);
   setSelected(null);setAnswers({});setMazeStep(0);setPairChoice(null);setPairFound([]);
  };
  useEffect(()=>{reset();},[game]);
@@ -96,6 +97,38 @@ export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void})
    if (data?.awarded) { toast.success("Você ganhou 50 pontos no Tesouros da Palavra!"); window.dispatchEvent(new Event("lemos:reward-experience")); }
   })();
  }, [game, completed, answers]);
+ const wordAwardRequested = useRef(false);
+ useEffect(() => { wordAwardRequested.current = false; }, [game]);
+ useEffect(() => {
+  if (game !== "wordbuilder" || !completed || wordAwardRequested.current || completedWords.length !== wordRounds.length) return;
+  wordAwardRequested.current = true;
+  void (async () => {
+   const { data: sessionResult, error: sessionError } = await supabase.auth.getSession();
+   if (sessionError || !sessionResult.session?.access_token) {
+    toast.error("Entre com sua conta Google para receber os pontos de experiência.");
+    return;
+   }
+   const { data, error } = await supabase.functions.invoke("award-wordbuilder-points", {
+    body: { answers: completedWords },
+    headers: { Authorization: `Bearer ${sessionResult.session.access_token}` },
+   });
+   if (error) {
+    const response = "context" in error ? (error as { context?: Response }).context : undefined;
+    console.warn("Falha na premiação do Construtor", { status: response?.status ?? "sem resposta" });
+    toast.error("Não foi possível registrar os 50 pontos de experiência. Tente novamente mais tarde.");
+    return;
+   }
+   if (data?.awarded === true) {
+    toast.success("Você ganhou 50 pontos de experiência no Tesouros da Palavra!");
+    window.dispatchEvent(new Event("lemos:reward-experience"));
+   } else if (data?.awarded === false) {
+    toast.info("Este desafio já foi premiado. Seus pontos foram preservados.");
+    window.dispatchEvent(new Event("lemos:reward-experience"));
+   } else {
+    toast.error("O servidor não confirmou a premiação de experiência.");
+   }
+  })();
+ }, [game, completed, completedWords]);
  const latest = useRef({progress:0,completed:false});
  latest.current = {progress,completed};
  useEffect(() => {
@@ -155,7 +188,7 @@ export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void})
     {letters.length===currentWord.answer.length && <p className={`mt-3 font-bold ${doneWord===currentWord.answer?"text-green-700":"text-red-700"}`}>{doneWord===currentWord.answer?"Muito bem! Palavra correta!":"Tente outra ordem para as letras."}</p>}
     <div className="mt-4 flex flex-wrap gap-2">
      <button onClick={()=>setLetters([])} className="rounded-full bg-amber-200 px-4 py-2 font-bold">Recomeçar palavra</button>
-     {doneWord===currentWord.answer && <button onClick={()=>{setRound(r=>r+1);setLetters([]);}} className="rounded-full bg-green-700 px-4 py-2 font-bold text-white">Próxima palavra</button>}
+     {doneWord===currentWord.answer && <button onClick={()=>{setCompletedWords(prev=>[...prev,currentWord.answer]);setRound(r=>r+1);setLetters([]);}} className="rounded-full bg-green-700 px-4 py-2 font-bold text-white">Próxima palavra</button>}
     </div>
    </>}
    {game==="quiz" && <>
