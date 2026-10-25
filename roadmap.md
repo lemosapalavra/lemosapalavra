@@ -1,5 +1,5 @@
 # Roadmap
-- [ ] Adicionar e executar testes isolados da pontuação do quiz: acerto único e saldo preservado em respostas incorretas.
+- [x] Adicionar e executar testes isolados da pontuação do quiz: acerto único e saldo preservado em respostas incorretas (4 testes passaram; banco real não alterado).
 - [x] Atualizar o vídeo "Ele é o Meu Irmão" (anexo de 23/10) no 14 Bis e em Ouça, incluindo migração das URLs antigas salvas.
 - [x] Corrigir a prévia de `/atividades` para exibir somente as 16 atividades de `BrincandoBiblia.tsx`, sem restaurar a versão antiga.
 - [x] Substituir o ícone de Atividades pelo anexo “FAÇA”.
