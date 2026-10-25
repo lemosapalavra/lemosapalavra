@@ -187,13 +187,13 @@ export default function JogosInterativos({game}:{game:GameId;onClose?:()=>void})
    </>}
    {game==="quiz" && <>
     <p className="mb-3">Responda às perguntas bíblicas e descubra sua pontuação.</p>
-    {quizRounds.map((item,i)=><div key={i} className="mb-4 rounded-xl border border-amber-200 p-3">
+    {quizRounds.map((item,i)=><div key={i} className={`mb-4 rounded-xl border border-amber-200 p-3 ${i === quizRounds.length - 1 ? "max-[639px]:ml-[112px] max-[639px]:mr-0 max-[639px]:p-2" : ""}`}> 
      <p className="mb-2 font-bold">{i+1}. {item.q}</p>
      <div className="flex flex-wrap gap-2">{item.options.map((opt,j)=><button key={j} onClick={()=>setAnswers(a=>({...a,[i]:j}))}
       className={`rounded-full border-2 px-3 py-2 ${answers[i]===j?"border-green-700 bg-green-100":"border-amber-300 bg-white"}`}>{opt}</button>)}</div>
     </div>)}
     {Object.keys(answers).length===quizRounds.length && <p className="font-extrabold text-green-700">Você acertou {quizRounds.filter((q,i)=>answers[i]===q.answer).length} de {quizRounds.length} perguntas!</p>}
-    <button onClick={()=>setAnswers({})} className="mt-3 rounded-full bg-amber-200 px-4 py-2 font-bold">Refazer quiz</button>
+    <div className="max-[639px]:ml-[112px]"><button onClick={()=>setAnswers({})} className="mt-3 rounded-full bg-amber-200 px-4 py-2 font-bold">Refazer quiz</button></div>
    </>}
    {game==="pairs" && <>
     <p className="mb-3">Escolha um personagem e depois o acontecimento correspondente.</p>
