@@ -23,7 +23,8 @@ export function useRewardExperience() {
     const { data: subscription } = supabase.auth.onAuthStateChange(() => { void refresh(); });
     const onFocus = () => { void refresh(); };
     window.addEventListener("focus", onFocus);
-    return () => { active = false; subscription.subscription.unsubscribe(); window.removeEventListener("focus", onFocus); };
+    window.addEventListener("lemos:reward-experience", onFocus);
+    return () => { active = false; subscription.subscription.unsubscribe(); window.removeEventListener("focus", onFocus); window.removeEventListener("lemos:reward-experience", onFocus); };
   }, []);
   return { points, loading };
 }
