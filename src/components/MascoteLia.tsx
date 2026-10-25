@@ -77,6 +77,8 @@ export default function MascoteLia() {
   const onAlbum = location.pathname === "/album";
   const onVideos = ["/lemosplay", "/veja", "/ouca", "/musicas", "/louvores"].includes(location.pathname);
   const persistentHelp = onAlbum || onVideos;
+  // On content-heavy screens, keep the assistant compact so it does not cover questions or text.
+  const compactLia = !onHome;
   
   const [expanded, setExpanded] = useState(false);
   const [speaking,setSpeaking] = useState(false);
@@ -217,7 +219,7 @@ export default function MascoteLia() {
 
   if (!expanded) {
     return (
-      <div data-lemos-lia="" className={`fixed z-[9998] flex flex-col items-center gap-2 left-[-16px] sm:left-[-12px] ${liaPosition}`}>
+      <div data-lemos-lia="" className={`fixed z-[9998] flex flex-col items-center gap-2 ${compactLia ? "left-0 sm:left-1" : "left-[-16px] sm:left-[-12px]"} ${liaPosition}`}>
       <Button variant="ghost"
         onMouseEnter={(event) => { if (!persistentHelp && (event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(true); }}
         onFocus={() => { if (!persistentHelp) setExpanded(true); }}
@@ -226,7 +228,7 @@ export default function MascoteLia() {
         title="Falar com a LIA, sua ajudante"
         className="h-auto flex flex-col items-center gap-1 !bg-transparent !border-0 !shadow-none hover:!bg-transparent transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:ring-4 focus-visible:ring-yellow-400"
       >
-        <span className={"w-[clamp(120px,41.28vw,196.8px)] h-[clamp(120px,41.28vw,196.8px)] block animate-[liaFloat_3.4s_ease-in-out_infinite] drop-shadow-[0_0_12px_rgba(255,215,70,.95)]"}>
+        <span className={"${compactLia ? "w-[58px] h-[58px] sm:w-[72px] sm:h-[72px]" : "w-[clamp(120px,41.28vw,196.8px)] h-[clamp(120px,41.28vw,196.8px)]"} block animate-[liaFloat_3.4s_ease-in-out_infinite] drop-shadow-[0_0_12px_rgba(255,215,70,.95)]"}>
           <img src={avatar} alt="LIA" className="w-full h-full object-contain object-bottom" loading="eager" onError={(e) => { if (e.currentTarget.src.endsWith("lia-paginas.webp")) e.currentTarget.src = liaFallback; }} />
         </span>
         <span className={"sr-only"}>
@@ -264,7 +266,7 @@ export default function MascoteLia() {
         <img
           src={avatar}
           alt="LIA, a mascote que ajuda você a navegar"
-          className={"w-[clamp(120px,41.28vw,196.8px)] h-[clamp(120px,41.28vw,196.8px)] object-contain object-bottom drop-shadow-[0_0_12px_rgba(255,215,70,.95)] animate-[liaFloat_3.4s_ease-in-out_infinite] select-none"}
+          className={`${compactLia ? "w-[58px] h-[58px] sm:w-[72px] sm:h-[72px]" : "w-[clamp(120px,41.28vw,196.8px)] h-[clamp(120px,41.28vw,196.8px)]"} object-contain object-bottom drop-shadow-[0_0_12px_rgba(255,215,70,.95)] animate-[liaFloat_3.4s_ease-in-out_infinite] select-none`}
           onError={(e) => { if (e.currentTarget.src.endsWith("lia-paginas.webp")) e.currentTarget.src = liaFallback; }}
           draggable={false}
         />
