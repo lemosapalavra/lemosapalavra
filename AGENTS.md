@@ -4,3 +4,4 @@
 - Keep all age-range content controls in the single administrator configuration page; this prevents scattered, inconsistent access settings.
 - Version icon configuration storage when replacing the active icon set; this prevents older browser preferences from restoring obsolete icons.
 - Share the music and praise catalog between Veja and Ouça; this keeps administrator visibility controls consistent across both pages.
+- Test the quiz HTTP handler with isolated auth and RPC doubles; regression tests must not change real users or balances, and mocked idempotence is not proof of live SQL behavior.
