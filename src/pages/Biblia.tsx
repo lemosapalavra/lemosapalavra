@@ -327,7 +327,6 @@ export default function Biblia() {
           </div>
         ) : (
           <>
-            {!selectedBook && <button onClick={() => setShowBibleMenu(true)} className="mb-5 rounded-full border-2 border-amber-400 bg-green-900 px-5 py-3 font-extrabold text-white shadow-lg hover:bg-green-800">← Voltar aos ícones</button>}
             {!selectedBook && tab !== "dicionario" && (
               <input type="text" placeholder="Pesquisar livro..." value={search} onChange={(e) => setSearch(e.target.value)}
                 className="mb-6 w-full rounded-xl border-2 border-amber-400 bg-white px-4 py-3 text-slate-900 shadow-lg focus:outline-none focus:ring-4 focus:ring-amber-200" />
