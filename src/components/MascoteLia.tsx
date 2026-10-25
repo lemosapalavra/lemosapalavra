@@ -46,6 +46,7 @@ const PAGE_TIPS: Record<string, string> = {
 
 /** Falas por contexto — enviadas por `lemos:lia-context`. */
 const CONTEXT_TIPS: Record<string, string> = {
+  "biblia:pesquisar": "Vamos explorar a Bíblia?\n\nBem-vindo ao Pesquisar na Bíblia!\n\nQuer encontrar uma história, um versículo ou uma palavra especial de Deus?\n\nÉ bem facinho! Digite o que procura e deixe a Bíblia revelar suas lindas mensagens!\n\nCada pesquisa é uma nova descoberta, cheia de fé, amor e sabedoria!\n\nVamos descobrir juntinhos os tesouros da Palavra de Deus!",
   "biblia:novo": "Agora vamos começar uma nova aventura!\n\nEste é o Novo Testamento!\n\nAqui você vai conhecer a linda história de Jesus, desde seu nascimento até seus milagres, ensinamentos e sua maravilhosa ressurreição!\n\nDescubra como Jesus ensinou o amor, o perdão, a bondade e nos mostrou o caminho para Deus!\n\nAbra seu coração, caminhe com Jesus nessa aventura e ganhe moedinhas enquanto aprende!",
   "biblia:antigo": "Agora é a hora! Vamos viajar no tempo?\n\nBem-vindo ao Velho Testamento!\n\nAqui começa uma aventura incrível, desde a criação do mundo até as histórias de Noé, Abraão, Moisés e do corajoso Davi!\n\nCada história revela o amor, as promessas e os ensinamentos de Deus!\n\nAbra seu coração, descubra essas maravilhas e ganhe moedinhas enquanto aprende!",
   "quiz": "Bem-vindo ao Quiz Bíblico de hoje!\n\nBrinque e descubra as maravilhas da Bíblia!\n\nNo Quiz Bíblico de hoje, cada perguntinha é uma aventura cheia de surpresas e descobertas sobre Deus!\n\nPense com carinho, escolha suas respostas e mostre tudo o que aprendeu!\n\nComplete os desafios, divirta-se e ganhe muitas moedinhas!",
@@ -142,6 +143,15 @@ export default function MascoteLia() {
     recordedAudioRef.current?.pause();
     recordedAudioRef.current = null;
     window.speechSynthesis?.cancel();
+    if (location.pathname === "/biblia" && currentContext === "biblia:pesquisar") {
+      const audio = new Audio("/audio/lia/lia-pesquisa-biblia.mp3");
+      recordedAudioRef.current = audio;
+      audio.onended = () => { if (recordedAudioRef.current === audio) { recordedAudioRef.current = null; setSpeaking(false); } };
+      audio.onerror = () => { if (recordedAudioRef.current === audio) { recordedAudioRef.current = null; setSpeaking(false); speakBrowserVoice(); } };
+      setSpeaking(true);
+      void audio.play().catch(() => { if (recordedAudioRef.current === audio) { recordedAudioRef.current = null; setSpeaking(false); speakBrowserVoice(); } });
+      return;
+    }
     if (location.pathname === "/biblia" && currentContext === "biblia:novo") {
       const audio = new Audio("/audio/lia/lia-biblia-novo-testamento.mp3");
       recordedAudioRef.current = audio;
