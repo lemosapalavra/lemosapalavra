@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Download, LockKeyhole, Trophy, X, Volume2, VolumeX } from "lucide-react";
+import { BookOpen, Download, Gift, LockKeyhole, Sparkles, Star, Trophy, X, Volume2, VolumeX } from "lucide-react";
 import { MATERIAIS, STATUS, statusForPoints } from "@/data/tesourosDaPalavra";
 import { useRewardExperience } from "@/hooks/useRewardExperience";
 
@@ -23,12 +23,23 @@ export default function TesourosDaPalavra() {
   const current = statusForPoints(points);
   const next = STATUS.find(s => s.min > points);
   return (
-    <main className="min-h-[100dvh] bg-[#f7ecd3] px-4 pb-28 pt-24 text-amber-950">
-      <div className="mx-auto max-w-4xl">
-        <div className="rounded-3xl border-4 border-amber-500 bg-gradient-to-br from-[#fff8e6] to-[#f5dca5] p-5 shadow-xl">
-          <h1 className="flex items-center gap-2 font-display text-2xl font-black"><Trophy className="text-amber-600"/> Tesouros da Palavra</h1>
-          <p className="mt-2 text-sm">Aprenda, evolua e conquiste materiais educativos e bíblicos para baixar.</p>
-          <div className="mt-4 rounded-2xl border border-amber-400 bg-white/85 p-4">
+    <main className="relative min-h-[100dvh] overflow-hidden bg-gradient-to-b from-[#fff9e9] via-[#fff0c8] to-[#f7e5bc] px-4 pb-28 pt-24 text-amber-950">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden"><div className="absolute -left-24 top-32 h-72 w-72 rounded-full bg-amber-200/35 blur-3xl"/><div className="absolute -right-24 top-[40%] h-80 w-80 rounded-full bg-sky-200/35 blur-3xl"/></div>
+      <div className="relative mx-auto max-w-4xl">
+        <div className="relative overflow-hidden rounded-[30px] border-4 border-amber-400 bg-gradient-to-br from-[#fffef6] via-[#fff0c5] to-[#f9d68a] p-5 shadow-[0_12px_30px_rgba(135,83,14,.18)]">
+          <div aria-hidden="true" className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/60 blur-2xl"/>
+          <div className="relative flex flex-col items-center gap-3 text-center sm:flex-row sm:text-left">
+            <div className="relative flex h-28 w-28 shrink-0 items-center justify-center rounded-[28px] border-2 border-amber-300 bg-white/75 shadow-lg sm:h-32 sm:w-32">
+              <BookOpen className="absolute bottom-3 h-16 w-16 text-amber-800" strokeWidth={1.6}/>
+              <Sparkles className="absolute right-3 top-2 h-8 w-8 animate-pulse text-yellow-500"/>
+              <Star className="absolute left-3 top-4 h-6 w-6 fill-yellow-400 text-yellow-500"/>
+              <Trophy className="absolute top-5 h-11 w-11 text-amber-600 drop-shadow" strokeWidth={2.2}/>
+            </div>
+            <div><p className="mb-1 text-xs font-black uppercase tracking-[.2em] text-amber-700">Uma aventura de fé e descobertas</p><h1 className="font-display text-2xl font-black leading-tight sm:text-3xl">Tesouros da Palavra <Sparkles className="inline h-6 w-6 text-amber-500"/></h1>
+              <p className="mt-2 text-sm font-medium">Cada história aprendida é uma conquista! Explore a Bíblia, avance de nível e descubra presentes especiais.</p>
+            </div>
+          </div>
+          <div className="relative mt-5 rounded-2xl border-2 border-amber-300 bg-white/90 p-4 shadow-sm">
             <p className="font-bold">Seu status: {storedPoints === null ? "Aguardando ativação" : `${current.name} — ${current.title}`}</p>
             <p className="mt-1 text-sm">{storedPoints === null ? (loading ? "Carregando seus pontos..." : "Pontuação indisponível até a ativação do sistema.") : `${points} pontos de experiência`}</p>
             {storedPoints !== null && next && <p className="mt-1 text-xs">Próximo status: {next.name}, aos {next.min} pontos</p>}
@@ -36,12 +47,14 @@ export default function TesourosDaPalavra() {
             <p className="mt-2 text-xs text-amber-800">Os pontos são independentes das moedinhas. A concessão automática por atividades será ativada após validação.</p>
           </div>
         </div>
-        <h2 className="mb-3 mt-7 text-xl font-black">Níveis de conquista</h2>
+        <div className="mb-3 mt-8 flex items-center gap-2"><Trophy className="h-6 w-6 text-amber-600"/><h2 className="text-xl font-black">Sua jornada de conquistas</h2></div>
+        <p className="mb-4 text-sm text-amber-900">Cada medalha conta um novo capítulo da sua aventura!</p>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {STATUS.map(s => <div key={s.id} className="rounded-2xl border-2 border-amber-300 bg-white p-3 text-center shadow" style={{ borderTopColor: s.color, borderTopWidth: 5 }}>
-            <div className="mx-auto mb-2 flex h-20 w-20 items-center justify-center rounded-full text-2xl" ><img src={"/images/conquistas/nivel-" + s.id + ".webp"} alt={s.name} className={"h-full w-full object-contain " + (storedPoints === null || points < s.min ? "grayscale opacity-50" : "")} /></div>
-            <p className="font-black">{s.name}</p><p className="text-xs">{s.title}</p><p className="mt-1 text-xs font-semibold">{s.min} pontos</p>
-          </div>)}
+          {STATUS.map(s => { const achieved = storedPoints !== null && points >= s.min; const isCurrent = achieved && current.id === s.id; return <div key={s.id} className={`relative rounded-[24px] border-2 p-3 text-center shadow-md transition-transform duration-200 hover:-translate-y-1 ${isCurrent ? "border-amber-500 bg-gradient-to-b from-[#fff5cd] to-white ring-2 ring-amber-300" : "border-amber-200 bg-white/95"}`} style={{ borderTopColor: s.color, borderTopWidth: 5 }}>
+            {isCurrent && <span className="absolute right-2 top-2 rounded-full bg-amber-500 px-2 py-1 text-[10px] font-black text-white">Meu nível</span>}
+            <div className={`mx-auto mb-2 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-b from-amber-50 to-amber-100 p-1 text-2xl ${achieved ? "shadow-[0_0_18px_rgba(251,191,36,.5)]" : ""}`} ><img src={"/images/conquistas/nivel-" + s.id + ".webp"} alt={s.name} className={"h-full w-full object-contain " + (storedPoints === null || points < s.min ? "grayscale opacity-50" : "")} /></div>
+            <p className="font-black">{s.name}</p><p className="text-xs">{s.title}</p><p className="mt-1 text-xs font-semibold">{s.min} pontos</p><p className={`mt-2 text-[11px] font-bold ${achieved ? "text-emerald-700" : "text-amber-700"}`}>{achieved ? "★ Conquistado!" : "☆ A conquistar"}</p>
+          </div>})}
         </div>
         <div className="relative mt-7 mb-4" onMouseEnter={() => setDownloadHelp(true)} onMouseLeave={() => { stopAudio(); setDownloadHelp(false); }}>
           <button type="button" onClick={() => document.getElementById("biblioteca-premiacoes")?.scrollIntoView({ behavior: "smooth", block: "start" })} onFocus={() => setDownloadHelp(true)} aria-describedby="downloads-explicacao" aria-label="Como funcionam os downloads" className="inline-flex items-center gap-2 rounded-full border-2 border-amber-400 bg-white px-4 py-2 font-extrabold text-amber-900 shadow"><Download size={21}/> Downloads</button>
@@ -50,14 +63,14 @@ export default function TesourosDaPalavra() {
             <div className="relative flex items-start gap-2"><div className="min-w-0 flex-1 text-[13px] font-medium leading-relaxed"><p>Bem-vindo ao Tesouro da Palavra!</p><p className="mt-2">Aqui, cada brincadeira vira uma linda conquista!</p><p className="mt-2">Brinque, aprenda, ganhe pontos e desbloqueie presentes bíblicos para baixar!</p><strong className="mt-2 block font-extrabold text-amber-900">Cada tesouro é uma semente de amor que Deus planta em seu coração!</strong></div><div className="flex shrink-0 flex-col gap-2"><button type="button" onClick={toggleAudio} aria-label={speaking ? "Parar gravação da LIA" : "Ouvir gravação da LIA"} className="rounded-full border-2 border-amber-400 bg-green-700 p-2 text-white shadow">{speaking ? <VolumeX size={18}/> : <Volume2 size={18}/>}</button><button type="button" onClick={() => { stopAudio(); setDownloadHelp(false); }} aria-label="Fechar explicação" className="rounded-full border border-amber-300 bg-white p-2 text-slate-700 shadow"><X size={18}/></button></div></div>
           </div>}
         </div>
-        <h2 id="biblioteca-premiacoes" className="mb-3 mt-7 scroll-mt-24 text-xl font-black">Biblioteca de premiações</h2>
+        <h2 id="biblioteca-premiacoes" className="mb-3 mt-7 flex scroll-mt-24 items-center gap-2 text-xl font-black"><Gift className="h-6 w-6 text-amber-600"/> Biblioteca de premiações</h2>
         <p className="mb-4 text-sm">Os materiais serão adicionados gradualmente. As conquistas serão permanentes e cumulativas.</p>
         <div className="grid gap-3 sm:grid-cols-2">
           {MATERIAIS.map(m => {
             const required = STATUS.find(s => s.id === m.requiredStatus)!;
             const unlocked = storedPoints !== null && points >= required.min;
             const available = unlocked && !!m.url && m.url.startsWith("/premios/");
-            return <article key={m.id} className="rounded-2xl border-2 border-amber-300 bg-white p-4 shadow">
+            return <article key={m.id} className="rounded-2xl border-2 border-amber-300 bg-white/95 p-4 shadow-md transition-shadow hover:shadow-lg">
               <div className="flex items-start gap-3"><div className="rounded-xl bg-amber-100 p-3">{available ? <Download/> : <LockKeyhole/>}</div><div className="min-w-0 flex-1"><h3 className="font-bold">{m.title}</h3><p className="text-sm text-amber-800">{m.description}</p><p className="mt-1 text-xs font-bold">Status: {required.name}</p></div></div>
               {available ? <a href={m.url} download className="mt-3 block rounded-xl bg-emerald-700 p-2 text-center font-bold text-white">Baixar arquivo</a> : <p className="mt-3 rounded-xl bg-amber-50 p-2 text-center text-xs font-bold text-amber-900">{unlocked ? "Material em preparação" : `Desbloqueia em ${required.name} • material em preparação`}</p>}
             </article>;
