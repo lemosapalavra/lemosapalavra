@@ -127,7 +127,14 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
   { id: "wordbuilder", label: "Construtor de Palavras", icon: palavrasIcon, action: () => onGameSelect?.("wordbuilder") },
   { id: "quiz", label: "Quiz Bíblico", icon: quizIcon, action: () => onGameSelect?.("quiz") },
  ];
- const playIconClick = () => {\n  try { const audio = new Audio("/audio/click.mp3"); audio.volume = 0.5; void audio.play().catch(() => {}); } catch { /* sound optional */ }\n };\n const positions = [
+  const playIconClick = () => {
+    try {
+      const audio = new Audio("/audio/click.mp3");
+      audio.volume = 0.5;
+      void audio.play().catch(() => {});
+    } catch { /* sound optional */ }
+  };
+  const positions = [
   {left:"50%",top:"28%"},
   {left:"18%",top:"38%"},
   {left:"82%",top:"38%"},
