@@ -59,7 +59,7 @@ quiz("Quiz: Jesus e as Crianças","Marcos 10:13–16",[
 const weekdayNames = ["Domingo","Segunda-feira","Terça-feira","Quarta-feira","Quinta-feira","Sexta-feira","Sábado"];
 const activityIcons = ["📖","⛵","🌳","❤️","🦁","🌈","👑","🐟","⭐","🕊️","💪","🙏","🚢","🍞","🐋","🌊","👶","🌊","🐑","✨","👧"];
 function shuffle<T,>(arr:T[]):T[]{return [...arr].sort(()=>Math.random()-.5);}
-export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;onGameSelect?:(game:"memory"|"jigsaw"|"wordbuilder"|"quiz")=>void}) {
+export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;onGameSelect?:(game:"memory"|"jigsaw"|"wordbuilder"|"quiz"|"verse")=>void}) {
  const [index,setIndex]=useState<number|null>(null);
  const [params,setParams]=useSearchParams();
  const today = new Date();
@@ -126,6 +126,7 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
   { id: "jigsaw", label: "Quebra-Cabeça", icon: quebraIcon, action: () => onGameSelect?.("jigsaw") },
   { id: "wordbuilder", label: "Construtor de Palavras", icon: palavrasIcon, action: () => onGameSelect?.("wordbuilder") },
   { id: "quiz", label: "Quiz Bíblico", icon: quizIcon, action: () => onGameSelect?.("quiz") },
+  { id: "verse", label: "Complete o Versículo", icon: null, action: () => onGameSelect?.("verse") },
  ];
   const playIconClick = () => {
     try {
@@ -135,11 +136,12 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
     } catch { /* sound optional */ }
   };
   const positions = [
-  {left:"50%",top:"23%"},
-  {left:"24%",top:"38%"},
-  {left:"76%",top:"38%"},
-  {left:"24%",top:"55%"},
-  {left:"76%",top:"55%"},
+  {left:"25%",top:"26%"},
+  {left:"75%",top:"26%"},
+  {left:"25%",top:"46%"},
+  {left:"75%",top:"46%"},
+  {left:"25%",top:"66%"},
+  {left:"75%",top:"66%"},
  ];
  if (index===null || !current) {
   return (
@@ -148,9 +150,7 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
       <button key={game.id} type="button" onClick={() => { playIconClick(); game.action(); }} aria-label={game.label} title={game.label}
        className="lemos-aprenda-orbit-button absolute pointer-events-auto flex aspect-square w-[clamp(68px,21vw,110px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center border-0 bg-transparent p-0 shadow-none"
        style={positions[n]}>
-       <img src={game.icon} alt={game.label}
-        className="lemos-aprenda-orbit-image block h-full w-full object-contain"
-       />
+       {game.icon ? <img src={game.icon} alt={game.label} className="lemos-aprenda-orbit-image block h-full w-full object-contain" /> : <span className="lemos-aprenda-orbit-image flex h-full w-full flex-col items-center justify-center rounded-full border-[4px] border-yellow-400 bg-gradient-to-br from-purple-500 via-indigo-700 to-violet-950 text-white shadow-[0_4px_14px_rgba(0,0,0,.3)]"><span aria-hidden="true" className="text-[clamp(28px,8vw,48px)] leading-none">📖</span><span className="mt-1 px-1 text-center text-[clamp(9px,2.4vw,13px)] font-black uppercase leading-tight [text-shadow:1px_2px_1px_#402160]">Complete<br/>o Versículo</span></span>}
       </button>
     ))}
    </section>
