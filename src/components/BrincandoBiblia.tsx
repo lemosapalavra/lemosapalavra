@@ -146,10 +146,10 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
    <section className="absolute inset-x-0 top-[80px] bottom-[calc(85px+env(safe-area-inset-bottom,0px))] z-20 pointer-events-none overflow-hidden">
     {games.map((game,n)=>(
       <button key={game.id} type="button" onClick={() => { playIconClick(); game.action(); }} aria-label={game.label} title={game.label}
-       className="lemos-aprenda-orbit-button absolute pointer-events-auto flex aspect-square w-[clamp(68px,21vw,110px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-0 bg-transparent p-0 shadow-none"
+       className="lemos-aprenda-orbit-button absolute pointer-events-auto flex aspect-square w-[clamp(68px,21vw,110px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center border-0 bg-transparent p-0 shadow-none"
        style={positions[n]}>
        <img src={game.icon} alt={game.label}
-        className="lemos-aprenda-orbit-image block h-full w-full rounded-full object-contain"
+        className="lemos-aprenda-orbit-image block h-full w-full object-contain"
        />
       </button>
     ))}
