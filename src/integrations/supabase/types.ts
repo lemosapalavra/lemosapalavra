@@ -38,6 +38,33 @@ export type Database = {
         }
         Relationships: []
       }
+      point_events: {
+        Row: {
+          activity_key: string
+          completion_key: string
+          created_at: string
+          id: string
+          points: number
+          user_id: string
+        }
+        Insert: {
+          activity_key: string
+          completion_key: string
+          created_at?: string
+          id?: string
+          points: number
+          user_id: string
+        }
+        Update: {
+          activity_key?: string
+          completion_key?: string
+          created_at?: string
+          id?: string
+          points?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           age_range: string | null
@@ -74,6 +101,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_achievements: {
+        Row: {
+          achievement_key: string
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          achievement_key: string
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          achievement_key?: string
+          unlocked_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_points: {
+        Row: {
+          total_points: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          total_points?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          total_points?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -100,6 +163,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      award_verified_activity_points: {
+        Args: {
+          p_activity_key: string
+          p_completion_key: string
+          p_points: number
+          p_user_id: string
+        }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
