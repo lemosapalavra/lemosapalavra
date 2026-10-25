@@ -25,8 +25,10 @@ export default function TesourosDaPalavra() {
   return (
     <main className="relative min-h-[100dvh] overflow-hidden bg-gradient-to-b from-[#d8f3ff] via-[#fff0bf] to-[#f5d18c] px-4 pb-28 pt-24 text-amber-950">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden"><div className="absolute -left-24 top-32 h-72 w-72 rounded-full bg-amber-200/35 blur-3xl"/><div className="absolute -right-24 top-[40%] h-80 w-80 rounded-full bg-sky-200/35 blur-3xl"/></div>
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 bg-[url('/images/tesouros-da-palavra.png')] bg-cover bg-top bg-no-repeat opacity-35" />
       <div className="relative mx-auto max-w-4xl">
         <div className="relative mb-5 overflow-hidden rounded-[30px] border-[5px] border-[#d69a31] bg-gradient-to-b from-[#62c7f4] via-[#b9ebcb] to-[#f8d684] px-4 pb-5 pt-7 text-center shadow-[0_15px_30px_rgba(98,62,16,.28)]">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[url('/images/tesouros-da-palavra.png')] bg-cover bg-center opacity-35"/>
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-40" style={{backgroundImage:"radial-gradient(circle at 20% 25%, #fff 0 2px, transparent 4px), radial-gradient(circle at 80% 15%, #fff9b4 0 4px, transparent 8px), radial-gradient(circle at 65% 72%, #fff 0 2px, transparent 5px)",backgroundSize:"85px 95px"}}/>
           <div className="relative mx-auto w-fit rounded-[24px] border-4 border-[#e9b451] bg-gradient-to-b from-[#9b561e] to-[#61300e] px-5 py-3 shadow-[0_8px_0_#8b4c16,0_12px_20px_#6c471f80]"><span className="absolute -top-7 left-1/2 -translate-x-1/2 text-4xl drop-shadow-lg">👑</span><h1 className="font-display text-3xl font-black leading-tight text-[#ffdc72] [text-shadow:2px_3px_0_#6d350c] sm:text-5xl">Tesouros<br/>da Palavra</h1></div>
           <p className="relative mx-auto mt-5 max-w-sm rounded-xl bg-white/85 px-3 py-2 text-sm font-extrabold text-amber-950 shadow-sm">Conquiste, aprenda e descubra os tesouros da Bíblia!</p>
