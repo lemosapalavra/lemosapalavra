@@ -212,7 +212,7 @@ export default function MascoteLia() {
   const avatar = liaForPages;
   const liaVisible = useIconVisible("lia");
   const liaPosition = location.pathname === "/atividades"
-    ? "bottom-[calc(100px+env(safe-area-inset-bottom,0px))] top-auto"
+    ? "bottom-[calc(78px+env(safe-area-inset-bottom,0px))] top-auto"
     : persistentHelp
       ? "bottom-[calc(90px+env(safe-area-inset-bottom,0px))]"
       : "bottom-[calc(77px+env(safe-area-inset-bottom,0px))]";
@@ -248,7 +248,7 @@ export default function MascoteLia() {
     <div data-lemos-lia="" onMouseLeave={(event) => { if (!onHome && !persistentHelp && location.pathname !== "/atividades" && (event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(false); }}
       className={`fixed z-[9998] flex flex-col items-end gap-1 ${compactLia ? "left-0 sm:left-1" : "left-[-16px] sm:left-[-12px]"} ${liaPosition}`}>
       {/* Balão de fala padrão da LIA: branco, borda dourada e ponta voltada à mascote. */}
-      <div role="dialog" aria-label="Ajuda da LIA" className={`pointer-events-auto fixed left-2 right-2 ${location.pathname === "/atividades" ? "bottom-[calc(245px+env(safe-area-inset-bottom,0px))] top-auto sm:bottom-[calc(270px+env(safe-area-inset-bottom,0px))]" : "bottom-[calc(100px+env(safe-area-inset-bottom,0px))] sm:bottom-[calc(120px+env(safe-area-inset-bottom,0px))]"} z-[9999] w-auto max-w-[320px] max-h-[min(42dvh,300px)] break-words rounded-[26px] border-[3px] border-amber-400 bg-white/95 p-3 text-slate-900 shadow-[0_5px_22px_rgba(115,66,0,.35)]`}>
+      <div role="dialog" aria-label="Ajuda da LIA" className={`pointer-events-auto fixed left-2 right-2 ${location.pathname === "/atividades" ? "bottom-[calc(225px+env(safe-area-inset-bottom,0px))] top-auto sm:bottom-[calc(250px+env(safe-area-inset-bottom,0px))]" : "bottom-[calc(100px+env(safe-area-inset-bottom,0px))] sm:bottom-[calc(120px+env(safe-area-inset-bottom,0px))]"} z-[9999] w-auto max-w-[320px] max-h-[min(42dvh,300px)] break-words rounded-[26px] border-[3px] border-amber-400 bg-white/95 p-3 text-slate-900 shadow-[0_5px_22px_rgba(115,66,0,.35)]`}>
         <div aria-hidden="true" className="pointer-events-none absolute -bottom-[17px] left-[52px] h-[30px] w-[30px] rotate-45 border-b-[3px] border-r-[3px] border-amber-400 bg-white" />
         <div className="relative flex items-center justify-end gap-2 border-b border-amber-200 pb-2">
           <div className="flex items-center gap-1">
