@@ -130,6 +130,11 @@ type Tab = "antigo" | "novo" | "dicionario";
 
 export default function Biblia() {
   const [tab, setTab] = useState<Tab>("antigo");
+  useEffect(() => {
+    if (tab === "antigo" && !selectedBook) window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: "biblia:antigo" }));
+    else window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: null }));
+    return () => window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: null }));
+  }, [tab, selectedBook]);
   const [showBibleMenu, setShowBibleMenu] = useState(true);
   const [search, setSearch] = useState("");
   const [dictSearch, setDictSearch] = useState("");
