@@ -13,7 +13,7 @@ Deno.serve(async (req) => {
     const url = Deno.env.get("SUPABASE_URL");
     const anon = Deno.env.get("SUPABASE_ANON_KEY");
     const service = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-    if (!url || !anon || !service) throw new Error("Missing Supabase configuration");
+    if (!url || !anon || !service) return Response.json({ error: "Configuração incompleta do servidor.", code: "SERVER_CONFIG" }, { status: 500, headers: cors });
     const authClient = createClient(url, anon, { global: { headers: { Authorization: authorization } } });
     const { data: { user }, error } = await authClient.auth.getUser();
     if (error || !user) return new Response("Unauthorized", { status: 401, headers: cors });
@@ -29,7 +29,11 @@ Deno.serve(async (req) => {
       p_completion_key: "quiz-v1",
       p_points: 50,
     });
-    if (awardError) throw awardError;
+    if (awardError) {
+      console.error("Quiz points database failure", { code: awardError.code, message: awardError.message });
+      const code = ["42883", "PGRST202"].includes(awardError.code) ? "RPC_MISSING" : awardError.code === "42501" ? "RPC_PERMISSION" : "RPC_ERROR";
+      return Response.json({ error: "Falha ao registrar os pontos no banco.", code }, { status: 500, headers: cors });
+    }
     return Response.json({ awarded: data === true, points: data === true ? 50 : 0 }, { headers: cors });
   } catch (error) {
     console.error("award-quiz-points failed", error);
