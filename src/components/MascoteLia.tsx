@@ -46,6 +46,7 @@ const PAGE_TIPS: Record<string, string> = {
 
 /** Falas por contexto — enviadas por `lemos:lia-context`. */
 const CONTEXT_TIPS: Record<string, string> = {
+  "biblia:antigo": "Agora é a hora! Vamos viajar no tempo?\n\nBem-vindo ao Velho Testamento!\n\nAqui começa uma aventura incrível, desde a criação do mundo até as histórias de Noé, Abraão, Moisés e do corajoso Davi!\n\nCada história revela o amor, as promessas e os ensinamentos de Deus!\n\nAbra seu coração, descubra essas maravilhas e ganhe moedinhas enquanto aprende!",
   "quiz": "Bem-vindo ao Quiz Bíblico de hoje!\n\nBrinque e descubra as maravilhas da Bíblia!\n\nNo Quiz Bíblico de hoje, cada perguntinha é uma aventura cheia de surpresas e descobertas sobre Deus!\n\nPense com carinho, escolha suas respostas e mostre tudo o que aprendeu!\n\nComplete os desafios, divirta-se e ganhe muitas moedinhas!",
   "activity:Quiz Bíblico": "Bem-vindo ao Quiz Bíblico de hoje!\n\nBrinque e descubra as maravilhas da Bíblia!\n\nNo Quiz Bíblico de hoje, cada perguntinha é uma aventura cheia de surpresas e descobertas sobre Deus!\n\nPense com carinho, escolha suas respostas e mostre tudo o que aprendeu!\n\nComplete os desafios, divirta-se e ganhe muitas moedinhas!",
   "activity:Quem Sou Eu? — Parte 3": "Olá! Chegamos ao Quem Sou Eu de hoje — Parte 3!\n\nPreparado para desvendar novos mistérios da Bíblia?\n\nLeia as dicas, pense com carinho e descubra quem está escondidinho em cada desafio!\n\nCada resposta é uma nova descoberta sobre os personagens da Palavra de Deus!\n\nVamos brincar, aprender e descobrir tudinho juntinhos!",
@@ -140,6 +141,15 @@ export default function MascoteLia() {
     recordedAudioRef.current?.pause();
     recordedAudioRef.current = null;
     window.speechSynthesis?.cancel();
+    if (location.pathname === "/biblia" && currentContext === "biblia:antigo") {
+      const audio = new Audio("/audio/lia/lia-biblia-velho-testamento.mp3");
+      recordedAudioRef.current = audio;
+      audio.onended = () => { if (recordedAudioRef.current === audio) { recordedAudioRef.current = null; setSpeaking(false); } };
+      audio.onerror = () => { if (recordedAudioRef.current === audio) { recordedAudioRef.current = null; setSpeaking(false); speakBrowserVoice(); } };
+      setSpeaking(true);
+      void audio.play().catch(() => { if (recordedAudioRef.current === audio) { recordedAudioRef.current = null; setSpeaking(false); speakBrowserVoice(); } });
+      return;
+    }
     if (location.pathname === "/atividades" && (currentContext === "activity:Quem Sou Eu? — Parte 3" || currentContext === "activity:Quiz Bíblico" || currentContext === "quiz" || currentContext === "wordbuilder" || currentContext === "memory" || currentContext === "jigsaw")) {
       const audio = new Audio(currentContext === "activity:Quem Sou Eu? — Parte 3" ? "/audio/lia/lia-quem-sou-eu-parte-3.mp3" : currentContext === "wordbuilder" ? "/audio/lia/lia-construtor-palavras.mp3" : currentContext === "memory" ? "/audio/lia/lia-memoria.mp3" : currentContext === "jigsaw" ? "/audio/lia/lia-quebra-cabeca.mp3" : "/audio/lia/lia-quiz-biblico.mp3");
       recordedAudioRef.current = audio;
