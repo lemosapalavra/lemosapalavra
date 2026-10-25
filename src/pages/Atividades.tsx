@@ -10,7 +10,7 @@ export default function Atividades() {
   useEffect(() => {
     if (!selectedGame) return;
     window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: selectedGame }));
-    return () => window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: null }));
+    return () => { window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: null })); };
   }, [selectedGame]);
   useEffect(() => {
     if (!selectedGame) return;
