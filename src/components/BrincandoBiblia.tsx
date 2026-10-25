@@ -118,29 +118,32 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
  const dayNumber = Math.floor(Date.now() / 86400000);
  const dailyWhoIndex = 6 + (dayNumber % 4);
  const dailyWho = { activityIndex: dailyWhoIndex, icon: quemSouEu1, title: "Quem Sou Eu?" };
+ // Cinco ícones orgânicos, sem recipiente quadrado ou halo branco.
+ // Quem Sou Eu abre o desafio diário já existente e conserva sua locução própria.
  const games = [
-  { id: "memory" as const, label: "Memória Bíblica", icon: memoriaIcon },
-  { id: "jigsaw" as const, label: "Quebra-Cabeça", icon: quebraIcon },
-  { id: "wordbuilder" as const, label: "Construtor de Palavras", icon: palavrasIcon },
-  { id: "quiz" as const, label: "Quiz Bíblico", icon: quizIcon },
+  { id: "who", label: "Quem Sou Eu?", icon: quemSouEu1, action: () => open(dailyWho.activityIndex) },
+  { id: "memory", label: "Memória Bíblica", icon: memoriaIcon, action: () => onGameSelect?.("memory") },
+  { id: "jigsaw", label: "Quebra-Cabeça", icon: quebraIcon, action: () => onGameSelect?.("jigsaw") },
+  { id: "wordbuilder", label: "Construtor de Palavras", icon: palavrasIcon, action: () => onGameSelect?.("wordbuilder") },
+  { id: "quiz", label: "Quiz Bíblico", icon: quizIcon, action: () => onGameSelect?.("quiz") },
  ];
- // Quatro jogos distribuídos ao redor do círculo central APRENDA.
- // O desafio Quem Sou Eu permanece disponível nos dados, mas sem ícone nesta tela.
- // Mesmo arranjo em losango da página Inicial: acima, esquerda, direita e abaixo.
  const positions = [
-  {left:"50%",top:"37%"}, // Memória — acima do círculo
-  {left:"82%",top:"51%"}, // Quebra-Cabeça — direita
-  {left:"18%",top:"51%"}, // Construtor — esquerda
-  {left:"50%",top:"67%"}, // Quiz — abaixo do círculo
+  {left:"50%",top:"28%"},
+  {left:"18%",top:"38%"},
+  {left:"82%",top:"38%"},
+  {left:"19%",top:"58%"},
+  {left:"81%",top:"58%"},
  ];
  if (index===null || !current) {
   return (
    <section className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
     {games.map((game,n)=>(
-      <button key={game.id} type="button" onClick={()=>onGameSelect?.(game.id)} aria-label={game.label} title={game.label}
-       className="absolute pointer-events-auto flex aspect-square w-[clamp(62px,18vw,100px)] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full bg-transparent p-0 transition-transform hover:scale-110 active:scale-95"
+      <button key={game.id} type="button" onClick={game.action} aria-label={game.label} title={game.label}
+       className="absolute pointer-events-auto flex aspect-square w-[clamp(62px,18vw,100px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-0 bg-transparent p-0 shadow-none transition-transform hover:scale-110 active:scale-95"
        style={positions[n]}>
-       <img src={game.icon} alt={game.label} className="h-full w-full object-contain [mask-image:radial-gradient(circle,black_80%,transparent_98%)]" />
+       <img src={game.icon} alt={game.label}
+        className="block h-full w-full rounded-full object-contain mix-blend-multiply [mask-image:radial-gradient(circle,black_64%,transparent_88%)]"
+       />
       </button>
     ))}
    </section>
