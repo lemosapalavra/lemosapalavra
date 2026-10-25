@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
 import AdminMembersPanel from "@/components/AdminMembersPanel";
+import RewardAdminPanel from "@/components/RewardAdminPanel";
 import { loadVideoInteractionsCfg, saveVideoInteractionsCfg } from "@/data/videoInteractionsConfig";
 import { useIsAdmin, setAdminMode, canBeAdmin } from "@/hooks/useIsAdmin";
 import LemosPlayAdminPanel from "@/components/LemosPlayAdminPanel";
@@ -221,6 +222,7 @@ export default function Configuracao() {
         </>}
         {adminSection === "aparencia" && <IconVisibilityConfig />}
         {adminSection === "conteudo" && <>
+        <RewardAdminPanel />
         <ContentAccessConfig />
         <ListenContentConfig />
 
