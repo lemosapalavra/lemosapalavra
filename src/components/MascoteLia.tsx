@@ -79,6 +79,7 @@ export default function MascoteLia() {
   const persistentHelp = onAlbum || onVideos;
   // On content-heavy screens, keep the assistant compact so it does not cover questions or text.
   const compactLia = !onHome;
+  const liaSize = compactLia ? "w-[clamp(94px,27vw,126px)] h-[clamp(94px,27vw,126px)]" : "w-[clamp(120px,41.28vw,196.8px)] h-[clamp(120px,41.28vw,196.8px)]";
   
   const [expanded, setExpanded] = useState(false);
   const [speaking,setSpeaking] = useState(false);
@@ -210,21 +211,11 @@ export default function MascoteLia() {
   };
   const avatar = liaForPages;
   const liaVisible = useIconVisible("lia");
-  const liaPosition = persistentHelp
-    ? "bottom-[calc(90px+env(safe-area-inset-bottom,0px))]"
-    : "bottom-[calc(77px+env(safe-area-inset-bottom,0px))]";
-
-  // Durante jogos em tela cheia, a mascote não deve cobrir perguntas ou respostas.
-  // O botão continua disponível ao voltar à seleção das atividades.
-  useEffect(() => {
-    const styleId = "lemos-lia-game-visibility";
-    if (document.getElementById(styleId)) return;
-    const style = document.createElement("style");
-    style.id = styleId;
-    style.textContent = `body:has(section[role="dialog"][aria-modal="true"][aria-label]) [data-lemos-lia] { display: none !important; }`;
-    document.head.appendChild(style);
-    return () => { style.remove(); };
-  }, []);
+  const liaPosition = location.pathname === "/atividades"
+    ? "top-[72px] bottom-auto sm:top-[82px]"
+    : persistentHelp
+      ? "bottom-[calc(90px+env(safe-area-inset-bottom,0px))]"
+      : "bottom-[calc(77px+env(safe-area-inset-bottom,0px))]";
 
   // O álbum depende da LIA para explicar pacotinhos e figurinhas.
   if (!liaVisible && !persistentHelp) return null;
@@ -240,7 +231,7 @@ export default function MascoteLia() {
         title="Falar com a LIA, sua ajudante"
         className="h-auto flex flex-col items-center gap-1 !bg-transparent !border-0 !shadow-none hover:!bg-transparent transition-transform duration-200 hover:scale-110 active:scale-95 focus-visible:ring-4 focus-visible:ring-yellow-400"
       >
-        <span className={`${compactLia ? "w-[58px] h-[58px] sm:w-[72px] sm:h-[72px]" : "w-[clamp(120px,41.28vw,196.8px)] h-[clamp(120px,41.28vw,196.8px)]"} block animate-[liaFloat_3.4s_ease-in-out_infinite] drop-shadow-[0_0_12px_rgba(255,215,70,.95)]`}>
+        <span className={`${liaSize} block animate-[liaFloat_3.4s_ease-in-out_infinite] drop-shadow-[0_0_12px_rgba(255,215,70,.95)]`}>
           <img src={avatar} alt="LIA" className="w-full h-full object-contain object-bottom" loading="eager" onError={(e) => { if (e.currentTarget.src.endsWith("lia-paginas.webp")) e.currentTarget.src = liaFallback; }} />
         </span>
         <span className={"sr-only"}>
@@ -255,9 +246,9 @@ export default function MascoteLia() {
 
   return (
     <div data-lemos-lia="" onMouseLeave={(event) => { if (!onHome && !persistentHelp && (event.nativeEvent as PointerEvent).pointerType !== "touch") setExpanded(false); }}
-      className={`fixed z-[9998] flex flex-col items-end gap-1 left-[-16px] sm:left-[-12px] ${liaPosition}`}>
+      className={`fixed z-[9998] flex flex-col items-end gap-1 ${compactLia ? "left-0 sm:left-1" : "left-[-16px] sm:left-[-12px]"} ${liaPosition}`}>
       {/* Balão de fala padrão da LIA: branco, borda dourada e ponta voltada à mascote. */}
-      <div role="dialog" aria-label="Ajuda da LIA" className="pointer-events-auto fixed left-2 right-2 bottom-[calc(230px+env(safe-area-inset-bottom,0px))] sm:bottom-[calc(260px+env(safe-area-inset-bottom,0px))] z-[9999] w-auto max-w-[320px] max-h-[min(42dvh,300px)] break-words rounded-[26px] border-[3px] border-amber-400 bg-white/95 p-3 text-slate-900 shadow-[0_5px_22px_rgba(115,66,0,.35)]">
+      <div role="dialog" aria-label="Ajuda da LIA" className="pointer-events-auto fixed left-2 right-2 bottom-[calc(100px+env(safe-area-inset-bottom,0px))] sm:bottom-[calc(120px+env(safe-area-inset-bottom,0px))] z-[9999] w-auto max-w-[320px] max-h-[min(42dvh,300px)] break-words rounded-[26px] border-[3px] border-amber-400 bg-white/95 p-3 text-slate-900 shadow-[0_5px_22px_rgba(115,66,0,.35)]">
         <div aria-hidden="true" className="pointer-events-none absolute -bottom-[17px] left-[52px] h-[30px] w-[30px] rotate-45 border-b-[3px] border-r-[3px] border-amber-400 bg-white" />
         <div className="relative flex items-center justify-end gap-2 border-b border-amber-200 pb-2">
           <div className="flex items-center gap-1">
@@ -278,7 +269,7 @@ export default function MascoteLia() {
         <img
           src={avatar}
           alt="LIA, a mascote que ajuda você a navegar"
-          className={`${compactLia ? "w-[58px] h-[58px] sm:w-[72px] sm:h-[72px]" : "w-[clamp(120px,41.28vw,196.8px)] h-[clamp(120px,41.28vw,196.8px)]"} object-contain object-bottom drop-shadow-[0_0_12px_rgba(255,215,70,.95)] animate-[liaFloat_3.4s_ease-in-out_infinite] select-none`}
+          className={`${liaSize} object-contain object-bottom drop-shadow-[0_0_12px_rgba(255,215,70,.95)] animate-[liaFloat_3.4s_ease-in-out_infinite] select-none`}
           onError={(e) => { if (e.currentTarget.src.endsWith("lia-paginas.webp")) e.currentTarget.src = liaFallback; }}
           draggable={false}
         />
