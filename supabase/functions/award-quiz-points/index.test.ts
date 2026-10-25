@@ -33,6 +33,15 @@ async function withIsolatedLedger(
   test: (ledger: { balance: number; events: Map<string, Award>; calls: Award[] }) => Promise<void>,
 ) {
   const ledger = { balance: 120, events: new Map<string, Award>(), calls: [] as Award[] };
+  // SDK clients start background refresh timers, even with fake credentials.
+  // Track and dispose them while retaining Deno's resource/leak checks.
+  const timers: number[] = [];
+  const realSetInterval = globalThis.setInterval;
+  const intervalStub = stub(globalThis, "setInterval", (...args: Parameters<typeof setInterval>) => {
+    const timer = realSetInterval(...args);
+    timers.push(timer);
+    return timer;
+  });
   const envStub = stub(Deno.env, "get", (name: string) => {
     if (name === "SUPABASE_URL") return "https://quiz-tests.invalid";
     if (name === "SUPABASE_ANON_KEY") return "test-only-anon-key";
@@ -67,6 +76,8 @@ async function withIsolatedLedger(
   } finally {
     fetchStub.restore();
     envStub.restore();
+    for (const timer of timers) clearInterval(timer);
+    intervalStub.restore();
   }
 }
 
