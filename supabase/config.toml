@@ -1,3 +1,6 @@
 project_id = "ptwzwxymilyjscddsaym"
 [functions.phone-auth]
 verify_jwt = true
+
+[functions.award-quiz-points]
+verify_jwt = true
