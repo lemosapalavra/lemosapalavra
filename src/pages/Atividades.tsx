@@ -2,11 +2,12 @@ import { useNavigate } from "react-router-dom";
 import BrincandoBiblia from "@/components/BrincandoBiblia";
 import { useEffect, useState } from "react";
 import JogosInterativos from "@/components/JogosInterativos";
+import CompleteVersiculo from "@/components/CompleteVersiculo";
 
 /** Cenario APRENDA com quatro desafios Quem Sou Eu. */
 export default function Atividades() {
   const navigate = useNavigate();
-  const [selectedGame,setSelectedGame] = useState<"memory"|"jigsaw"|"wordbuilder"|"quiz"|null>(null);
+  const [selectedGame,setSelectedGame] = useState<"memory"|"jigsaw"|"wordbuilder"|"quiz"|"verse"|null>(null);
   useEffect(() => {
     if (!selectedGame) return;
     window.dispatchEvent(new CustomEvent("lemos:lia-context", { detail: selectedGame }));
@@ -26,7 +27,7 @@ export default function Atividades() {
     <main id="aprenda-novo" className="relative isolate h-[100dvh] w-full overflow-hidden bg-[#bdebf7]">
       <img src="/Aprenda.webp" alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-center opacity-80" />
       <BrincandoBiblia onBack={() => navigate("/")} onGameSelect={setSelectedGame} />
-      {selectedGame && <JogosInterativos game={selectedGame} onClose={()=>setSelectedGame(null)} />}
+      {selectedGame === "verse" ? <CompleteVersiculo onClose={()=>setSelectedGame(null)} /> : selectedGame && <JogosInterativos game={selectedGame} onClose={()=>setSelectedGame(null)} />}
     </main>
   );
 }
