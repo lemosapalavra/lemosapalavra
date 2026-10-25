@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { HeartHandshake, HandHeart, Heart, UsersRound, Sparkles } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import { toast } from "@/hooks/use-toast";
 import { awardOnce } from "@/hooks/useCoins";
@@ -6,19 +7,12 @@ import { saveToMural } from "@/lib/mural";
 import iconPedidos from "@/assets/icon-pedidos-oracao.png";
 import heroKids from "@/assets/paginas/kids-oracao.png.asset.json";
 
-// Ilustrações bíblicas por tipo de oração.
-import imgCriacao from "@/assets/historia-criacao.png";
-import imgAdaoEva from "@/assets/historia-adao-eva-1.png";
-import imgMoises from "@/assets/historia-moises-1.png";
-import imgNoe from "@/assets/historia-noe-1.png";
-import imgDavi from "@/assets/historia-davi-golias.png";
-
 const tiposOracao = [
-  { id: "adoracao", label: "Oração de Adoração", desc: "Louvor e amor para Deus com um coração alegre.", emoji: "🙌", color: "from-amber-300 to-yellow-400", image: imgCriacao },
-  { id: "confissao", label: "Oração de Confissão", desc: "Falar com sinceridade e pedir perdão a Deus.", emoji: "🙏", color: "from-pink-300 to-rose-400", image: imgAdaoEva },
-  { id: "peticao", label: "Oração de Petição", desc: "Levar seus pedidos e necessidades para Deus.", emoji: "💛", color: "from-sky-300 to-cyan-400", image: imgMoises },
-  { id: "intercessao", label: "Oração de Intercessão", desc: "Orar por amigos, família e outras pessoas.", emoji: "🤝", color: "from-emerald-300 to-teal-400", image: imgNoe },
-  { id: "agradecimento", label: "Oração de Agradecimento", desc: "Dizer obrigado pelas bênçãos e pelo cuidado de Deus.", emoji: "🌟", color: "from-violet-300 to-fuchsia-400", image: imgDavi },
+  { id: "adoracao", label: "Oração de Adoração", desc: "Louvor e amor para Deus com um coração alegre.", emoji: "🙌", color: "from-amber-300 to-yellow-400", icon: Sparkles },
+  { id: "confissao", label: "Oração de Confissão", desc: "Falar com sinceridade e pedir perdão a Deus.", emoji: "🙏", color: "from-pink-300 to-rose-400", icon: Heart },
+  { id: "peticao", label: "Oração de Petição", desc: "Levar seus pedidos e necessidades para Deus.", emoji: "💛", color: "from-sky-300 to-cyan-400", icon: HandHeart },
+  { id: "intercessao", label: "Oração de Intercessão", desc: "Orar por amigos, família e outras pessoas.", emoji: "🤝", color: "from-emerald-300 to-teal-400", icon: UsersRound },
+  { id: "agradecimento", label: "Oração de Agradecimento", desc: "Dizer obrigado pelas bênçãos e pelo cuidado de Deus.", emoji: "🌟", color: "from-violet-300 to-fuchsia-400", icon: HeartHandshake },
 ];
 
 
@@ -179,9 +173,8 @@ export default function PedidosOracao() {
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className={`relative w-14 h-14 shrink-0 rounded-2xl bg-gradient-to-br ${tipo.color} shadow-md overflow-hidden`}>
-                      <img src={tipo.image} alt={tipo.label} loading="lazy" decoding="async" className="w-full h-full object-cover" />
-                      <span className="absolute -bottom-0.5 -right-0.5 text-lg drop-shadow">{tipo.emoji}</span>
+                    <div className={`flex w-14 h-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${tipo.color} shadow-md`} aria-hidden="true">
+                      <tipo.icon className="h-8 w-8 text-amber-950" strokeWidth={2.2} />
                     </div>
 
                     <div>
