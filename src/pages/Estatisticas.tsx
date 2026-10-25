@@ -265,7 +265,7 @@ export default function Estatisticas() {
               { label: "Orar", route: "/orar", emoji: "🙏" },
               { label: "Veja", route: "/veja", emoji: "🎬" },
               { label: "Ouça", route: "/ouca", emoji: "🎵" },
-              { label: "Aprenda · 4 jogos", route: "/atividades", emoji: "🧩" },
+              { label: "Aprenda · 5 atividades", route: "/atividades", emoji: "🧩" },
               { label: "Álbum", route: "/album", emoji: "🃏" },
               { label: "Tesouro da Palavra", route: "/tesouros", emoji: "🏆" },
             ].map(item => {
@@ -278,7 +278,7 @@ export default function Estatisticas() {
             })}
           </div>
           <div className="mt-4 rounded-xl border border-amber-300 bg-amber-50 p-3 text-amber-950 text-sm">
-            <strong>Novidades:</strong> LIA com narrações gravadas por atividade, quatro ícones na página Aprenda, 14-Bis interativo, recompensas em moedinhas e área Tesouro da Palavra.
+            <strong>Novidades:</strong> LIA com narrações gravadas por atividade, cinco atividades na página Aprenda, 14-Bis interativo, recompensas em moedinhas e área Tesouro da Palavra.
             <p className="mt-1 text-xs">Os pontos de experiência, downloads de premiações e conclusões individuais ainda não possuem um painel estatístico completo. Não são contabilizados como concluídos sem registros reais.</p>
           </div>
         </section>
