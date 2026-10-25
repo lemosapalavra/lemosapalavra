@@ -164,9 +164,9 @@ export default function Configuracao() {
         <nav aria-label="Seções da administração" className="mb-5 grid grid-cols-2 gap-2 sm:grid-cols-3">
           {([
             ["pessoas", "Pessoas", "Usuários e status"],
-            ["conteudo", "Conteúdo", "Acesso e páginas"],
+            ["conteudo", "Conteúdo", "Páginas, jogos e LIA"],
             ["aparencia", "Aparência", "Ícones e visibilidade"],
-            ["midia", "Mídia", "Vídeos e transportes"],
+            ["midia", "Mídia", "Vídeos, áudios e 14-Bis"],
             ["relatorios", "Relatórios", "Visitas e estatísticas"],
             ["sistema", "Sistema", "Ajustes avançados"],
           ] as const).map(([id, title, subtitle]) => (
@@ -289,16 +289,17 @@ export default function Configuracao() {
 
         </>}
         {adminSection === "midia" && <>
-        {/* Áreas temáticas de administração dos veículos e suas mídias. */}
         <section className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
-          <h3 className="font-display text-lg font-bold text-foreground mb-3">Transportes e animações</h3>
-          <p className="text-xs text-muted-foreground mb-3">Acesse as áreas relacionadas aos personagens e vídeos do site.</p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <h3 className="font-display text-lg font-bold text-foreground mb-2">🎙️ LIA, vídeos e animações</h3>
+          <p className="text-xs text-muted-foreground mb-3">As locuções da LIA ficam em <code>public/audio/lia/</code>. Cada seção utiliza sua gravação específica; esta área mostra os destinos, mas não edita os arquivos MP3.</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {[
-              { label: "Aviãozinho", path: "/lemosplay" },
-              { label: "Trenzinho", path: "/lemosplay" },
-              { label: "Kartzinho", path: "/lemosplay" },
-              { label: "14-bis", path: "/lemosplay" },
+              { label: "🎬 Veja", path: "/lemosplay" },
+              { label: "🎵 Ouça", path: "/musicas" },
+              { label: "📖 Bíblia e LIA", path: "/biblia" },
+              { label: "🧩 Aprenda e LIA", path: "/atividades" },
+              { label: "✈️ 14-Bis · Início", path: "/" },
+              { label: "🏆 Tesouro da Palavra", path: "/tesouros" },
             ].map(item => (
               <button key={item.label} type="button" onClick={() => navigate(item.path)}
                 className="rounded-xl border-2 border-amber-300 bg-gradient-to-br from-amber-50 to-yellow-100 px-3 py-4 text-center text-sm font-bold text-amber-950 shadow-sm transition hover:brightness-110 focus-visible:ring-2 focus-visible:ring-amber-500">
@@ -310,6 +311,19 @@ export default function Configuracao() {
 
         </>}
         {adminSection === "conteudo" && <>
+        <section className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
+          <h3 className="font-display text-lg font-bold text-foreground mb-2">📚 Conteúdos revisados</h3>
+          <p className="text-sm text-muted-foreground mb-3">Referência das experiências atualmente oferecidas ao público. Esta lista não representa número de acessos nem conclusão de atividades.</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div className="rounded-xl border border-border p-3"><strong>📖 Bíblia</strong><p>Antigo Testamento, Novo Testamento e pesquisa no Dicionário Bíblico, com locuções próprias da LIA.</p></div>
+            <div className="rounded-xl border border-border p-3"><strong>🧩 Aprenda · 5 atividades</strong><p>Quem Sou Eu, Memória, Quiz Bíblico, Construtor de Palavras e Quebra-Cabeça.</p></div>
+            <div className="rounded-xl border border-border p-3"><strong>🙏 Orar</strong><p>Adoração, Confissão, Petição, Intercessão e Agradecimento, com ícones temáticos.</p></div>
+            <div className="rounded-xl border border-border p-3"><strong>🏆 Tesouro da Palavra</strong><p>Seis níveis de conquistas; pontuação e liberação de downloads ainda em implantação.</p></div>
+            <div className="rounded-xl border border-border p-3"><strong>🎬 Veja e 🎵 Ouça</strong><p>Histórias em vídeo, músicas e louvores.</p></div>
+            <div className="rounded-xl border border-border p-3"><strong>📸 Álbum</strong><p>Figurinhas, pacotinhos e moedas, separados dos pontos de experiência.</p></div>
+          </div>
+          <p className="mt-3 text-xs text-muted-foreground">Os controles legados de atividades por faixa etária continuam disponíveis abaixo para não alterar permissões existentes; nem todos correspondem a ícones da página Aprenda.</p>
+        </section>
         {/* Atalhos para páginas configuráveis */}
         <div className="bg-popover rounded-2xl p-5 shadow-md border border-border mb-6">
           <h3 className="font-display text-lg font-bold text-foreground mb-3">⚡ Atalhos para Configurar Páginas</h3>
@@ -320,12 +334,13 @@ export default function Configuracao() {
             {[
               { label: "🏠 Início", path: "/" },
               { label: "📖 Bíblia", path: "/biblia" },
-              { label: "🎵 Louvores", path: "/louvores" },
+              { label: "🎬 Veja", path: "/lemosplay" },
+              { label: "🎵 Ouça", path: "/musicas" },
               { label: "✨ Devocionais", path: "/devocionais" },
-              { label: "🙏 Pedidos de Oração", path: "/pedidos-oracao" },
-              { label: "🎮 Atividades", path: "/atividades" },
+              { label: "🙏 Orar", path: "/pedidos-oracao" },
+              { label: "🧩 Aprenda · 5 atividades", path: "/atividades" },
               { label: "📸 Álbum", path: "/album" },
-              { label: "🎬 Lemos Play", path: "/lemosplay" },
+              { label: "🏆 Tesouro da Palavra", path: "/tesouros" },
             ].map((p) => (
               <button
                 key={p.path}
