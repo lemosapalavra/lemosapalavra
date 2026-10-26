@@ -126,7 +126,7 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
   { id: "jigsaw", label: "Quebra-Cabeça", icon: quebraIcon, action: () => onGameSelect?.("jigsaw") },
   { id: "wordbuilder", label: "Construtor de Palavras", icon: palavrasIcon, action: () => onGameSelect?.("wordbuilder") },
   { id: "quiz", label: "Quiz Bíblico", icon: quizIcon, action: () => onGameSelect?.("quiz") },
-  { id: "verse", label: "Complete o Versículo", icon: null, action: () => onGameSelect?.("verse") },
+  { id: "verse", label: "Complete o Versículo", icon: "/Complete%20o%20Vers%C3%ADculo%20B%C3%ADblico.png", action: () => onGameSelect?.("verse") },
  ];
   const playIconClick = () => {
     try {
@@ -148,9 +148,9 @@ export default function BrincandoBiblia({onBack,onGameSelect}:{onBack:()=>void;o
    <section className="absolute inset-x-0 top-[80px] bottom-[calc(85px+env(safe-area-inset-bottom,0px))] z-20 pointer-events-none overflow-hidden">
     {games.map((game,n)=>(
       <button key={game.id} type="button" onClick={() => { playIconClick(); game.action(); }} aria-label={game.label} title={game.label}
-       className="lemos-aprenda-orbit-button absolute pointer-events-auto flex aspect-square w-[clamp(68px,21vw,110px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center border-0 bg-transparent p-0 shadow-none"
+       className="lemos-aprenda-orbit-button absolute pointer-events-auto flex aspect-square w-[clamp(68px,21vw,110px)] -translate-x-1/2 -translate-y-1/2 items-center justify-center border-0 bg-transparent p-0 shadow-none ring-0 outline-none"
        style={positions[n]}>
-       {game.icon ? <img src={game.icon} alt={game.label} className="lemos-aprenda-orbit-image block h-full w-full object-contain" /> : <span className="lemos-aprenda-orbit-image flex h-full w-full flex-col items-center justify-center rounded-full border-[4px] border-yellow-400 bg-gradient-to-br from-purple-500 via-indigo-700 to-violet-950 text-white shadow-[0_4px_14px_rgba(0,0,0,.3)]"><span aria-hidden="true" className="text-[clamp(28px,8vw,48px)] leading-none">📖</span><span className="mt-1 px-1 text-center text-[clamp(9px,2.4vw,13px)] font-black uppercase leading-tight [text-shadow:1px_2px_1px_#402160]">Complete<br/>o Versículo</span></span>}
+       {game.icon ? <img src={game.icon} alt={game.label} className="lemos-aprenda-orbit-image block h-full w-full object-contain [filter:none!important] [box-shadow:none!important] [border:none!important]" /> : <span className="lemos-aprenda-orbit-image flex h-full w-full flex-col items-center justify-center rounded-full border-[4px] border-yellow-400 bg-gradient-to-br from-purple-500 via-indigo-700 to-violet-950 text-white shadow-[0_4px_14px_rgba(0,0,0,.3)]"><span aria-hidden="true" className="text-[clamp(28px,8vw,48px)] leading-none">📖</span><span className="mt-1 px-1 text-center text-[clamp(9px,2.4vw,13px)] font-black uppercase leading-tight [text-shadow:1px_2px_1px_#402160]">Complete<br/>o Versículo</span></span>}
       </button>
     ))}
    </section>
