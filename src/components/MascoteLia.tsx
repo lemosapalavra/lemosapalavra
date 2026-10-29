@@ -1,3 +1,4 @@
+import { useLiaHighlight } from "@/lib/useLiaHighlight";
 import { getLiaFeminineVoice } from "@/lib/liaVoice";
 import { useIconVisible } from "@/lib/iconVisibility";
 import { useEffect, useRef, useState } from "react";
@@ -83,6 +84,7 @@ export default function MascoteLia() {
   
   const [expanded, setExpanded] = useState(false);
   const [speaking,setSpeaking] = useState(false);
+  const [boundaryIndex,setBoundaryIndex] = useState<number | null>(null);
   const speechRef = useRef<SpeechSynthesisUtterance | null>(null);
   const recordedAudioRef = useRef<HTMLAudioElement | null>(null);
   const [context, setContext] = useState<string | null>(null);
@@ -141,7 +143,9 @@ export default function MascoteLia() {
   const activityHighlight = location.pathname === "/atividades" && currentContext ? ACTIVITY_HIGHLIGHTS[currentContext] : undefined;
   const activityParts = activityHighlight ? message.split(activityHighlight) : null;
 
+  const highlighted = useLiaHighlight(message, speaking, recordedAudioRef.current, boundaryIndex);
   const toggleSpeech = () => {
+    setBoundaryIndex(null);
     if (speaking) { recordedAudioRef.current?.pause(); recordedAudioRef.current = null; window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); return; }
     recordedAudioRef.current?.pause();
     recordedAudioRef.current = null;
@@ -206,6 +210,7 @@ export default function MascoteLia() {
     const portugueseVoice = availableVoices.find((voice) => voice.lang.toLowerCase() === "pt-br")
       || availableVoices.find((voice) => voice.lang.toLowerCase().startsWith("pt"));
     if (femaleVoice || portugueseVoice) speech.voice = femaleVoice || portugueseVoice!;
+    speech.onboundary=(event)=>{ if(speechRef.current===speech) setBoundaryIndex(event.charIndex); };
     speech.onend=speech.onerror=()=>{ if(speechRef.current===speech){speechRef.current=null;setSpeaking(false);} };
     speechRef.current=speech;setSpeaking(true);window.speechSynthesis.speak(speech);
   };
@@ -256,7 +261,7 @@ export default function MascoteLia() {
             <button type="button" onClick={() => { setExpanded(false); recordedAudioRef.current?.pause(); recordedAudioRef.current=null; window.speechSynthesis?.cancel(); speechRef.current=null; setSpeaking(false); }} aria-label="Fechar ajuda" className="rounded-full bg-amber-100 p-2 text-amber-950 hover:bg-amber-200"><X size={20} /></button>
           </div>
         </div>
-        <p className="relative mt-3 max-h-[calc(min(42dvh,300px)-90px)] overflow-y-auto overscroll-contain whitespace-pre-line text-sm font-medium leading-relaxed text-slate-900">{location.pathname === "/biblia" ? <>{cleanSpeechText(message).split("A cada página, uma nova descoberta. Cada palavrinha é uma sementinha de amor que Jesus planta em seu coração!")[0]}<strong className="block mt-2 font-extrabold text-amber-900">A cada página, uma nova descoberta. Cada palavrinha é uma sementinha de amor que Jesus planta em seu coração!</strong></> : location.pathname === "/devocionais" ? <>{cleanSpeechText(message).split("Cada devocional é um carinho de Deus que ilumina seu dia e ensina seu coração a espalhar amor e bondade!")[0]}<strong className="block mt-2 font-extrabold text-amber-900">Cada devocional é um carinho de Deus que ilumina seu dia e ensina seu coração a espalhar amor e bondade!</strong></> : location.pathname === "/pedidos-oracao" ? <>{cleanSpeechText(message).split("A cada oração, seu coração se enche de fé, amor e esperança!")[0]}<strong className="block mt-2 font-extrabold text-amber-900">A cada oração, seu coração se enche de fé, amor e esperança!</strong><span className="block mt-2">Ore com carinho e ainda ganhe moedinhas!</span></> : location.pathname === "/veja" ? <>{cleanSpeechText(message).split("Cada história traz uma linda lição de fé, amor e amizade com Deus!")[0]}<strong className="block mt-2 font-extrabold text-amber-900">Cada história traz uma linda lição de fé, amor e amizade com Deus!</strong><span className="block mt-2">Assista, aprenda e ainda ganhe moedinhas!</span></> : location.pathname === "/ouca" ? <>{cleanSpeechText(message).split("Sabia que cantar louvores é uma linda maneira de agradecer e demonstrar nosso amor a Deus?")[0]}<strong className="block mt-2 font-extrabold text-amber-900">Sabia que cantar louvores é uma linda maneira de agradecer e demonstrar nosso amor a Deus?</strong><span className="block mt-2">Cante com o coração, divirta-se e ganhe moedinhas!</span></> : location.pathname === "/atividades" && activityParts && activityParts.length === 2 ? <>{activityParts[0]}<strong className="block mt-2 font-extrabold text-amber-900">{activityHighlight}</strong>{activityParts[1]}</> : location.pathname === "/atividades" ? <>{message}</> : location.pathname === "/album" && currentContext === "album:pages" ? <>{cleanSpeechText(message).split("Abra, descubra, colecione e divirta-se nessa aventura bíblica!")[0]}<strong className="block mt-2 font-extrabold text-amber-900">Abra, descubra, colecione e divirta-se nessa aventura bíblica!</strong></> : location.pathname === "/album" && !currentContext ? <>{cleanSpeechText(message).split("Cada figurinha é um pedacinho dessa linda aventura com Deus!")[0]}<strong className="block mt-2 font-extrabold text-amber-900">Cada figurinha é um pedacinho dessa linda aventura com Deus!</strong><span className="block mt-2">Complete seu álbum e prepare-se para o próximo desafio!</span></> : cleanSpeechText(message)}</p>
+        <p className="relative mt-3 max-h-[calc(min(42dvh,300px)-90px)] overflow-y-auto overscroll-contain whitespace-pre-line text-sm font-medium leading-relaxed text-slate-900">{highlighted.map(part => <span key={part.key} className={part.highlighted ? "font-extrabold text-[#b8860b]" : ""}>{part.text}</span>)}</p>
       </div>
 
       <div className="flex flex-col items-center gap-2">
